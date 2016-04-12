@@ -103,7 +103,6 @@ Documents can be shared between iOS, tvOS and OSX.
     // The indexes
     private var _indexes=Array<String>()
     
-    
     /// We store the URL of the active security bookmarks
     private var _activeSecurityBookmarks=[NSURL]()
     
