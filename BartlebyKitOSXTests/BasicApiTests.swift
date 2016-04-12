@@ -124,7 +124,6 @@ class BasicApiTests: XCTestCase {
     
     // MARK: 3 - Read User while not auth.
     
-    
     func test301_ReadUserByID_ShouldFail_Because_of_Logout(){
         
         let expectation = expectationWithDescription("ReadUserById should respond")
