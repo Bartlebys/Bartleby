@@ -34,7 +34,6 @@ public enum SecurityScopedBookMarkError:ErrorType {
     // Scoped URL
     case GetScopedURLRessourceFailed(message:String)
     case BookMarkIsStale
-    
 }
 
 
