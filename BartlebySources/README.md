@@ -9,7 +9,6 @@ Bartleby orchestrates the access to registries ...
 + One NSDocument == One Registry 
 + One registry == N x collections of entities grouped in a unique dataspace.
 
-
 ### registry.registryMetadata
 
 ### registry.rootObject
