@@ -214,7 +214,7 @@ Documents can be shared between iOS, tvOS and OSX.
         // Setup the default collaboration server
         self.registryMetadata.collaborationServerURL=Bartleby.DEFAULT_API_BASE_URL
         // First registration
-        Bartleby.sharedInstance.register(self);
+        Bartleby.sharedInstance.declare(self);
     }
     
     #endif
