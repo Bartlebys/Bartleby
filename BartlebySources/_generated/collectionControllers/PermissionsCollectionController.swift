@@ -184,7 +184,6 @@ import ObjectMapper
                     // Find the object just added
                     let row = sorted.indexOf(item)!
                     // Begin the edit in the first column
-                    //Bartleby.bprint("starting edit of \(object) in row \(row)",file:#file,function:#function,line:#line)
                     tableView.editColumn(0, row: row, withEvent: nil, select: true)
                  }
 
@@ -204,7 +203,7 @@ import ObjectMapper
             }
 
         }else{
-            //Bartleby.bprint("casting error",file:#file,function:#function,line:#line)
+           
         }
     }
 

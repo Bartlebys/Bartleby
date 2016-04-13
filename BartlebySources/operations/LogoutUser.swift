@@ -53,7 +53,6 @@ import Foundation
                                 body: NSLocalizedString("authentication logout",
                                     comment: "authentication logout failure description")+" | \(result.value)",
                                 trigger:{ (selectedIndex) -> () in
-                                    Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                             })
                             reactions.append(failureReaction)
                             failure(context:context)
@@ -72,7 +71,6 @@ import Foundation
                                         body: NSLocalizedString("termination of session",
                                             comment: "termination of session failure description | \(result.value)"),
                                         trigger:{ (selectedIndex) -> () in
-                                            Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                                     })
                                     reactions.append(failureReaction)
                                     failure(context:context)

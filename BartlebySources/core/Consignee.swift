@@ -58,7 +58,9 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
     public func track(result: AnyObject?, context: Consignable) {
         if trackingIsEnabled == true {
             trackingStack.append((result:result,context:context))
-            Bartleby.bprint("\(result)\n\(context)")
+        }
+        if trackingIsEnabled == true{
+            Bartleby.bprint("\(result)\n\(context)",file:#file,function:#function,line:#line)
         }
     }
     
@@ -66,11 +68,13 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
     
     public var trackingIsEnabled:Bool=false
     
+    public var bprintTrackedEntries:Bool=false
+    
     public var trackingStack=[(result:AnyObject?,context:Consignable)]()
     
     public func dumpStack(){
         for (result,context) in trackingStack{
-            Bartleby.bprint("\n\(context):\n\(result)\n")
+            print("\n\(context):\n\(result)\n")
         }
     }
     
@@ -214,7 +218,7 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
     
     
     public func logMessage(title:String,body:String)->(){
-        Bartleby.bprint("\(title):\n\(body)")
+        Bartleby.bprint("\(title):\n\(body)",file:#file,function:#function,line: #line)
     }
     
     // MARK: - IOS only

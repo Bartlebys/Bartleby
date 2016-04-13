@@ -33,7 +33,7 @@ import Foundation
     
     static let b_version = "1.0"
     static let b_release = "beta1"
-    static var enableBPrint:Bool=true
+    static var enableBPrint:Bool=false
     
     /// The version string of Bartleby framework
     public static var versionString:String{

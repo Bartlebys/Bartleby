@@ -126,7 +126,6 @@ import ObjectMapper
                 do{
                     let ic:OperationsCollectionController = try registry.getCollection()
                     ic.add(self._operation)
-                    //Bartleby.bprint("\(ic.UID)->OPCOUNT=\(ic.items.count)",file:#file,function:#function,line:#line)
                 }catch{
                     Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
@@ -237,7 +236,6 @@ inDataSpace spaceUID:String,
                             comment: "Unsuccessfull attempt"),
                             body:"\(m) \n \(response)" ,
                             trigger:{ (selectedIndex) -> () in
-                            //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                         })
                         reactions.append(failureReaction)
                         failure(context:context)
@@ -258,8 +256,7 @@ inDataSpace spaceUID:String,
                                     comment: "Unsuccessfull attempt"),
                                     body: "\(m) \n \(response)",
                                     trigger:{ (selectedIndex) -> () in
-                                    //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
-                                })
+                                    })
                                 reactions.append(failureReaction)
                                 failure(context:context)
                             }
