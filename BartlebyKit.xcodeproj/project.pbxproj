@@ -720,11 +720,11 @@
 		E53E2AC21CA57DBA0079ED23 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
 				E53E2AC41CA57DBA0079ED23 /* Consignation.swift */,
 				E53E2AC51CA57DBA0079ED23 /* Consignee.swift */,
 				E53E2AC61CA57DBA0079ED23 /* Default.swift */,
-				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AD51CA57DBA0079ED23 /* Registry.swift */,
 			);
 			path = core;
