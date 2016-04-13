@@ -349,5 +349,20 @@ import Foundation
         return randomString
     }
     
+    
+    /**
+     Returns the search path directory
+     
+     - parameter searchPath: the search Path
+     
+     - returns: the URL
+     */
+    public static func getSearchPath(searchPath:NSSearchPathDirectory)->NSURL?{
+        let urls = NSFileManager.defaultManager().URLsForDirectory(searchPath, inDomains: .UserDomainMask)
+        if urls.count>0{
+            return urls[0]
+        }
+        return nil
+    }
        
 }
