@@ -58,6 +58,7 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
     public func track(result: AnyObject?, context: Consignable) {
         if trackingIsEnabled == true {
             trackingStack.append((result:result,context:context))
+            Bartleby.bprint("\(result)\n\(context)")
         }
     }
     
