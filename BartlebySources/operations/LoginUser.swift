@@ -60,7 +60,6 @@ import Foundation
                         comment: "Unsuccessfull attempt"),
                     body:"\(m) httpStatus code = \(response?.statusCode ?? 0 )" ,
                     trigger:{ (selectedIndex) -> () in
-                        Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
@@ -80,7 +79,6 @@ import Foundation
                                 comment: "Unsuccessfull attempt"),
                             body:"\(m) httpStatus code = \(statusCode)" ,
                             trigger:{ (selectedIndex) -> () in
-                                Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                         })
                         reactions.append(failureReaction)
                         failure(context:context)

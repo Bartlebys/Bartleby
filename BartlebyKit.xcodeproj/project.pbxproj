@@ -253,6 +253,7 @@
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E56C004B1C8ED4A800BB6B19 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E570BFA51CBE48BB00F6814B /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E57BE0F31CBC05E50038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */; };
 		E5959C071CA6702200557BDB /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
@@ -718,11 +719,11 @@
 		E53E2AC21CA57DBA0079ED23 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
 				E53E2AC41CA57DBA0079ED23 /* Consignation.swift */,
 				E53E2AC51CA57DBA0079ED23 /* Consignee.swift */,
 				E53E2AC61CA57DBA0079ED23 /* Default.swift */,
-				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AD51CA57DBA0079ED23 /* Registry.swift */,
 			);
 			path = core;
@@ -1192,6 +1193,7 @@
 				E51834CA1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E53E2B3B1CA57DBA0079ED23 /* CreateTrigger.swift in Sources */,
 				E53E2B5F1CA57DBA0079ED23 /* DeleteTrigger.swift in Sources */,
+				E570BFA51CBE48BB00F6814B /* UserProtocol.swift in Sources */,
 				E53E2B831CA57DBA0079ED23 /* ReadLockersByQuery.swift in Sources */,
 				E53E2B351CA57DBA0079ED23 /* CreatePermission.swift in Sources */,
 				E53E2BF21CA57DBA0079ED23 /* BartlebyFileIO.swift in Sources */,

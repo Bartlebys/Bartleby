@@ -17,7 +17,7 @@ import Foundation
 // MARK: - global PHP Style String functions
 
 struct PString{
-   
+    
     static func strtoupper(string:String)->String{
         return string.uppercaseString
     }
@@ -38,7 +38,7 @@ struct PString{
      Returns a sub string
      
      - parameter string: the string
-     - parameter start:  If start is negative, the returned string will start at the start'th character from the end of string.     
+     - parameter start:  If start is negative, the returned string will start at the start'th character from the end of string.
      - parameter length: length
      
      - returns: the sub string
@@ -99,7 +99,7 @@ struct PString{
             let regex = try NSRegularExpression(pattern: pattern, options: [.CaseInsensitive])
             return regex.stringByReplacingMatchesInString(subject, options: [], range: NSMakeRange(0,strlen(subject)), withTemplate:replacement)
         }catch{
-            print(error)
+            Bartleby.bprint("\(error)",file:#file,function:#function,line: #line)
         }
         return subject
     }
@@ -130,7 +130,7 @@ extension String{
             let matchCount = regex.numberOfMatchesInString(self, options: [], range: NSMakeRange(0, self.characters.count))
             return matchCount > 0
         }catch{
-            print(error)
+            Bartleby.bprint("\(error)",file:#file,function:#function,line: #line)
         }
         return false
     }
@@ -141,7 +141,7 @@ extension String{
             let matches = regex.matchesInString(self, options: [], range: NSMakeRange(0, self.characters.count))
             return matches
         }catch{
-             print(error)
+            Bartleby.bprint("\(error)",file:#file,function:#function,line: #line)
         }
         return nil
     }

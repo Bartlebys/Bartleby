@@ -109,7 +109,6 @@ import ObjectMapper
 				                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
 				                body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
 				                trigger:{ (selectedIndex) -> () in
-				                    //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
 				            })
 				            reactions.append(failureReaction)
 				            failure(context:context)
@@ -125,7 +124,6 @@ import ObjectMapper
 									            comment: "Deserialization issue"),
 									        body:"(result.value)",
 									        trigger:{ (selectedIndex) -> () in
-									            //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
 									    })
 									   reactions.append(failureReaction)
 									   failure(context:context)
@@ -139,7 +137,6 @@ import ObjectMapper
 				                    title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
 				                    body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
 				                    trigger:{ (selectedIndex) -> () in
-				                        //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
 				                })
 				               reactions.append(failureReaction)
 				               failure(context:context)

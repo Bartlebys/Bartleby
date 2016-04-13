@@ -134,7 +134,6 @@ import Foundation
                         comment: "Unsuccessfull attempt"),
                     body:"\(m) httpStatus code = \(response?.statusCode ?? 0 ) | \(result.value)" ,
                     trigger:{ (selectedIndex) -> () in
-                        Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
@@ -151,7 +150,6 @@ import Foundation
                                     comment: "Deserialization issue"),
                                 body:"(result.value)",
                                 trigger:{ (selectedIndex) -> () in
-                                    //Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                             })
                             reactions.append(failureReaction)
                             failure(context:context)
@@ -168,7 +166,6 @@ import Foundation
                                 comment: "Unsuccessfull attempt"),
                             body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
                             trigger:{ (selectedIndex) -> () in
-                                Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)",file:#file,function:#function,line:#line)
                         })
                         reactions.append(failureReaction)
                         failure(context:context)
@@ -232,7 +229,6 @@ import Foundation
                     return;
                 }
             }else{
-                
                 context.result="SpaceUID is not valid"
                 failure(context: context)
                 return;

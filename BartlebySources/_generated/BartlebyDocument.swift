@@ -374,7 +374,6 @@ import UIKit
 
              if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
             if let user=self.usersArrayController?.selectedObjects.first as? User{
-                //Bartleby.bprint("KVO Selected \(user)",file:#file,function:#function,line:#line)
                 self.selectedUser=user
                 return
             }
@@ -383,7 +382,6 @@ import UIKit
 
          if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
             if let locker=self.lockersArrayController?.selectedObjects.first as? Locker{
-                //Bartleby.bprint("KVO Selected \(locker)",file:#file,function:#function,line:#line)
                 self.selectedLocker=locker
                 return
             }
@@ -392,7 +390,6 @@ import UIKit
 
          if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
             if let group=self.groupsArrayController?.selectedObjects.first as? Group{
-                //Bartleby.bprint("KVO Selected \(group)",file:#file,function:#function,line:#line)
                 self.selectedGroup=group
                 return
             }
@@ -401,7 +398,6 @@ import UIKit
 
          if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
             if let permission=self.permissionsArrayController?.selectedObjects.first as? Permission{
-                //Bartleby.bprint("KVO Selected \(permission)",file:#file,function:#function,line:#line)
                 self.selectedPermission=permission
                 return
             }
@@ -410,7 +406,6 @@ import UIKit
 
          if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
             if let operation=self.operationsArrayController?.selectedObjects.first as? Operation{
-                //Bartleby.bprint("KVO Selected \(operation)",file:#file,function:#function,line:#line)
                 self.selectedOperation=operation
                 return
             }
@@ -419,7 +414,6 @@ import UIKit
 
          if keyPath=="selectionIndexes" && self.triggersArrayController == object as? NSArrayController {
             if let trigger=self.triggersArrayController?.selectedObjects.first as? Trigger{
-                //Bartleby.bprint("KVO Selected \(trigger)",file:#file,function:#function,line:#line)
                 self.selectedTrigger=trigger
                 return
             }

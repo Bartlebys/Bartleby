@@ -30,7 +30,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     // The id is always  created locally
     // and used as primary index by MONGODB
-    internal var _id:String=Default.NO_UID
+    private var _id:String=Default.NO_UID
     
     private var _referenceName:String=Default.NO_NAME
     
@@ -51,7 +51,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     // MARK: -
     
-    internal func _createUIDifNecessary(){
+    private func _createUIDifNecessary(){
         if _id==Default.NO_UID{
             _id=Bartleby.createUID()
             Registry.register(self) // register on creation
@@ -189,6 +189,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         super.init()
         _id=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.UID_KEY)! as NSString? )
         referenceName=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.REFERENCE_NAME_KEY)! as NSString?)
+        Registry.register(self)//registration on deserialization
     }
     
     public class func supportsSecureCoding() -> Bool{

@@ -33,7 +33,7 @@ import Foundation
     
     static let b_version = "1.0"
     static let b_release = "beta1"
-    static var enableBPrint:Bool=true
+    static var enableBPrint:Bool=false
     
     /// The version string of Bartleby framework
     public static var versionString:String{
@@ -349,5 +349,20 @@ import Foundation
         return randomString
     }
     
+    
+    /**
+     Returns the search path directory
+     
+     - parameter searchPath: the search Path
+     
+     - returns: the URL
+     */
+    public static func getSearchPath(searchPath:NSSearchPathDirectory)->NSURL?{
+        let urls = NSFileManager.defaultManager().URLsForDirectory(searchPath, inDomains: .UserDomainMask)
+        if urls.count>0{
+            return urls[0]
+        }
+        return nil
+    }
        
 }

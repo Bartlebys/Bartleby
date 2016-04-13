@@ -214,7 +214,7 @@ Documents can be shared between iOS, tvOS and OSX.
         // Setup the default collaboration server
         self.registryMetadata.collaborationServerURL=Bartleby.DEFAULT_API_BASE_URL
         // First registration
-        Bartleby.sharedInstance.register(self);
+        Bartleby.sharedInstance.declare(self);
     }
     
     #endif
@@ -286,7 +286,6 @@ Documents can be shared between iOS, tvOS and OSX.
         let collectionName=collection.d_collectionName
         _collections.append(collection)
         _indexes.append(collectionName)
-        //Bartleby.bprint("Proxy->Adding \(collectionName) collection using \(collection.referenceName)")
     }
     
     
@@ -422,9 +421,10 @@ Documents can be shared between iOS, tvOS and OSX.
                             self.delete(currentOperation)
                             do{
                                 let ic:OperationsCollectionController = try self.getCollection()
-                                Bartleby.bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)")
+                                Bartleby.bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)",file: #file,function: #function,line: #line)
                             }catch{
-                                Bartleby.bprint("OperationsCollectionController getCollection \(error)")
+                                Bartleby.bprint("OperationsCollectionController getCollection \(error)",file: #file,function: #function,line: #line)
+
                             }
                     }
                 }
@@ -548,8 +548,6 @@ Documents can be shared between iOS, tvOS and OSX.
                         
                         if let collection = self._collectionByName(metadatum.collectionName) as? CollectibleCollection {
                             
-                            //Bartleby.bprint("\(collection.UID)->Serializing \(collectionfileName)")
-                            
                             // We use multiple files
                             
                             var collectionData = collection.serialize()
@@ -605,7 +603,7 @@ Documents can be shared between iOS, tvOS and OSX.
                         self.registryMetadata=registryMetadata
                     }else{
                         // There is an error
-                        Bartleby.bprint("\(r)")
+                        Bartleby.bprint("ERROR \(r)",file: #file,function: #function,line: #line)
                         return
                     }
                     // IMPORTANT we swap the UID
@@ -633,7 +631,6 @@ Documents can be shared between iOS, tvOS and OSX.
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
                                     proxy.patchWithSerializedData(collectionData)
-                                    //Bartleby.bprint("\(proxy.UID)->Deserialized \(metadatum.collectionName)")
                                     
                                 }
                             }else{
@@ -650,7 +647,7 @@ Documents can be shared between iOS, tvOS and OSX.
             do{
                 try self._refreshProxies()
             }catch{
-                Bartleby.bprint("Proxies refreshing failure \(error)")
+                Bartleby.bprint("Proxies refreshing failure \(error)",file: #file,function: #function,line: #line)
             }
             self.registryDidLoad()
         }
