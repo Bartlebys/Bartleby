@@ -526,7 +526,8 @@
 				E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */,
 				E518343D1CA52F96006ED867 /* CryptoHelper.swift */,
 			);
-			path = CryptoHelper;
+			name = CryptoHelper;
+			path = ../CryptoHelper;
 			sourceTree = "<group>";
 		};
 		E53E2A611CA57DBA0079ED23 /* BartlebySources */ = {
