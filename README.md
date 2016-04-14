@@ -1,2 +1,9 @@
-# BartlebyKit
-BartlebyKit (OSX, iOS, ... )
+# Bartleby
+
+## BartlebyCLI
+
+An awesome command line.
+
+## BartlebyKit
+
+For (OSX, iOS, ... ).
