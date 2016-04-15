@@ -7,4 +7,17 @@
    <FileRef
       location = "group:BartlebyCLI/bartleby.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:BartlebySync/bsync.xcodeproj">
+   </FileRef>
+   <Group
+      location = "container:"
+      name = "Vendors">
+      <FileRef
+         location = "group:Vendors/Alamofire/Alamofire.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Vendors/ObjectMapper/ObjectMapper.xcodeproj">
+      </FileRef>
+   </Group>
 </Workspace>

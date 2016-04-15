@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C7575CE4A52424D6C48BB376B4D4C2095D15C083",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "67620B5EFA902936DF04070AF595B76AB0333747" : 0,
+    "CBF5F70D4EDC8047BC75C25236002B0EA7F6B15B" : 0,
+    "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127" : 0,
+    "C7575CE4A52424D6C48BB376B4D4C2095D15C083" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F46DB471-3911-4D62-B49D-6C7EAC0237A0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "67620B5EFA902936DF04070AF595B76AB0333747" : "Bartleby\/Vendors\/Alamofire\/",
+    "CBF5F70D4EDC8047BC75C25236002B0EA7F6B15B" : "Bartleby\/Vendors\/CommandLine\/",
+    "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127" : "Bartleby\/Vendors\/ObjectMapper\/",
+    "C7575CE4A52424D6C48BB376B4D4C2095D15C083" : "Bartleby\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Bartleby",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Bartleby.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Hearst-DD\/ObjectMapper.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58AAB0051E2B4EEDF1845A552012E6D0EBAD9127"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Alamofire\/Alamofire.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "67620B5EFA902936DF04070AF595B76AB0333747"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Bartlebys\/Bartleby.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C7575CE4A52424D6C48BB376B4D4C2095D15C083"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/benoit-pereira-da-silva\/CommandLine\/",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CBF5F70D4EDC8047BC75C25236002B0EA7F6B15B"
+    }
+  ]
+}

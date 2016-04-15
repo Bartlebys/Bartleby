@@ -7,20 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5BB611C01CBFEB2C00D23B4F /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611AF1CBFEB2C00D23B4F /* FromJSON.swift */; };
-		5BB611C11CBFEB2C00D23B4F /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B01CBFEB2C00D23B4F /* Map.swift */; };
-		5BB611C21CBFEB2C00D23B4F /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B11CBFEB2C00D23B4F /* Mappable.swift */; };
-		5BB611C31CBFEB2C00D23B4F /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B21CBFEB2C00D23B4F /* Mapper.swift */; };
-		5BB611C41CBFEB2C00D23B4F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B31CBFEB2C00D23B4F /* Operators.swift */; };
-		5BB611C51CBFEB2C00D23B4F /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B41CBFEB2C00D23B4F /* ToJSON.swift */; };
-		5BB611C61CBFEB2C00D23B4F /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B81CBFEB2C00D23B4F /* CustomDateFormatTransform.swift */; };
-		5BB611C71CBFEB2C00D23B4F /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611B91CBFEB2C00D23B4F /* DateFormatterTransform.swift */; };
-		5BB611C81CBFEB2C00D23B4F /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BA1CBFEB2C00D23B4F /* DateTransform.swift */; };
-		5BB611C91CBFEB2C00D23B4F /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BB1CBFEB2C00D23B4F /* EnumTransform.swift */; };
-		5BB611CA1CBFEB2C00D23B4F /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BC1CBFEB2C00D23B4F /* ISO8601DateTransform.swift */; };
-		5BB611CB1CBFEB2C00D23B4F /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BD1CBFEB2C00D23B4F /* TransformOf.swift */; };
-		5BB611CC1CBFEB2C00D23B4F /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BE1CBFEB2C00D23B4F /* TransformType.swift */; };
-		5BB611CD1CBFEB2C00D23B4F /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB611BF1CBFEB2C00D23B4F /* URLTransform.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E53E26D21CA571F50079ED23 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E264F1CA571F50079ED23 /* BartlebyDocument.swift */; };
 		E53E26D31CA571F50079ED23 /* AliasesCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26511CA571F50079ED23 /* AliasesCollectionController.swift */; };
@@ -137,6 +123,20 @@
 		E53E27431CA571F50079ED23 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26D11CA571F50079ED23 /* UIX.swift */; };
 		E57BE0F51CBC08480038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F41CBC08480038454C /* UserProtocol.swift */; };
 		E585BC991CAEE7C800EB92EE /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585BC981CAEE7C800EB92EE /* User+Auth.swift */; };
+		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
+		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
+		E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E131CC0E63400A7ECD1 /* Mappable.swift */; };
+		E5B98E1A1CC0E63400A7ECD1 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E141CC0E63400A7ECD1 /* Mapper.swift */; };
+		E5B98E1B1CC0E63400A7ECD1 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E151CC0E63400A7ECD1 /* Operators.swift */; };
+		E5B98E1C1CC0E63400A7ECD1 /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E161CC0E63400A7ECD1 /* ToJSON.swift */; };
+		E5B98E261CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E1E1CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift */; };
+		E5B98E271CC0E63C00A7ECD1 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E1F1CC0E63C00A7ECD1 /* DateFormatterTransform.swift */; };
+		E5B98E281CC0E63C00A7ECD1 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E201CC0E63C00A7ECD1 /* DateTransform.swift */; };
+		E5B98E291CC0E63C00A7ECD1 /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E211CC0E63C00A7ECD1 /* EnumTransform.swift */; };
+		E5B98E2A1CC0E63C00A7ECD1 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E221CC0E63C00A7ECD1 /* ISO8601DateTransform.swift */; };
+		E5B98E2B1CC0E63C00A7ECD1 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E231CC0E63C00A7ECD1 /* TransformOf.swift */; };
+		E5B98E2C1CC0E63C00A7ECD1 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */; };
+		E5B98E2D1CC0E63C00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */; };
 		E5CD99EA1C86D96E00C64569 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D71C86D96E00C64569 /* Alamofire.swift */; };
 		E5CD99EB1C86D96E00C64569 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D81C86D96E00C64569 /* Download.swift */; };
 		E5CD99EC1C86D96E00C64569 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D91C86D96E00C64569 /* Error.swift */; };
@@ -179,20 +179,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5BB611AF1CBFEB2C00D23B4F /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
-		5BB611B01CBFEB2C00D23B4F /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		5BB611B11CBFEB2C00D23B4F /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
-		5BB611B21CBFEB2C00D23B4F /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
-		5BB611B31CBFEB2C00D23B4F /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
-		5BB611B41CBFEB2C00D23B4F /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
-		5BB611B81CBFEB2C00D23B4F /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
-		5BB611B91CBFEB2C00D23B4F /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
-		5BB611BA1CBFEB2C00D23B4F /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
-		5BB611BB1CBFEB2C00D23B4F /* EnumTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
-		5BB611BC1CBFEB2C00D23B4F /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
-		5BB611BD1CBFEB2C00D23B4F /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
-		5BB611BE1CBFEB2C00D23B4F /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
-		5BB611BF1CBFEB2C00D23B4F /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -312,6 +298,20 @@
 		E53E26D11CA571F50079ED23 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E57BE0F41CBC08480038454C /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E585BC981CAEE7C800EB92EE /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
+		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
+		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
+		E5B98E141CC0E63400A7ECD1 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
+		E5B98E151CC0E63400A7ECD1 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		E5B98E161CC0E63400A7ECD1 /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
+		E5B98E1E1CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
+		E5B98E1F1CC0E63C00A7ECD1 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
+		E5B98E201CC0E63C00A7ECD1 /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
+		E5B98E211CC0E63C00A7ECD1 /* EnumTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
+		E5B98E221CC0E63C00A7ECD1 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
+		E5B98E231CC0E63C00A7ECD1 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
+		E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
+		E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
 		E5CD99D71C86D96E00C64569 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CD99D81C86D96E00C64569 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		E5CD99D91C86D96E00C64569 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -356,39 +356,11 @@
 		5BB611AD1CBFEB2C00D23B4F /* ObjectMapper */ = {
 			isa = PBXGroup;
 			children = (
-				5BB611AE1CBFEB2C00D23B4F /* Core */,
-				5BB611B71CBFEB2C00D23B4F /* Transforms */,
+				E5B98E1D1CC0E63C00A7ECD1 /* Transforms */,
+				E5B98E101CC0E63400A7ECD1 /* Core */,
 			);
 			name = ObjectMapper;
 			path = ../../../Carthage/Checkouts/ObjectMapper/ObjectMapper;
-			sourceTree = "<group>";
-		};
-		5BB611AE1CBFEB2C00D23B4F /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				5BB611AF1CBFEB2C00D23B4F /* FromJSON.swift */,
-				5BB611B01CBFEB2C00D23B4F /* Map.swift */,
-				5BB611B11CBFEB2C00D23B4F /* Mappable.swift */,
-				5BB611B21CBFEB2C00D23B4F /* Mapper.swift */,
-				5BB611B31CBFEB2C00D23B4F /* Operators.swift */,
-				5BB611B41CBFEB2C00D23B4F /* ToJSON.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		5BB611B71CBFEB2C00D23B4F /* Transforms */ = {
-			isa = PBXGroup;
-			children = (
-				5BB611B81CBFEB2C00D23B4F /* CustomDateFormatTransform.swift */,
-				5BB611B91CBFEB2C00D23B4F /* DateFormatterTransform.swift */,
-				5BB611BA1CBFEB2C00D23B4F /* DateTransform.swift */,
-				5BB611BB1CBFEB2C00D23B4F /* EnumTransform.swift */,
-				5BB611BC1CBFEB2C00D23B4F /* ISO8601DateTransform.swift */,
-				5BB611BD1CBFEB2C00D23B4F /* TransformOf.swift */,
-				5BB611BE1CBFEB2C00D23B4F /* TransformType.swift */,
-				5BB611BF1CBFEB2C00D23B4F /* URLTransform.swift */,
-			);
-			path = Transforms;
 			sourceTree = "<group>";
 		};
 		E50A3AAB1C453A6D004BB7E3 = {
@@ -423,16 +395,14 @@
 		E50A3ABE1C453AC1004BB7E3 /* Embedded-Modules */ = {
 			isa = PBXGroup;
 			children = (
-				5BB611AD1CBFEB2C00D23B4F /* ObjectMapper */,
-				E53E264D1CA571F50079ED23 /* BartlebySources */,
-				E5CD99D51C86D96E00C64569 /* Alamofire */,
-				E5D086C81C550E7500F0090E /* CommandLine */,
+				E5B98E001CC0DC9B00A7ECD1 /* Vendors */,
+				E53E264D1CA571F50079ED23 /* Shared */,
 				E5D085F51C550E1900F0090E /* CryptoHelper */,
 			);
 			name = "Embedded-Modules";
 			sourceTree = "<group>";
 		};
-		E53E264D1CA571F50079ED23 /* BartlebySources */ = {
+		E53E264D1CA571F50079ED23 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				E53E264E1CA571F50079ED23 /* _generated */,
@@ -446,8 +416,8 @@
 				E53E26CB1CA571F50079ED23 /* tools */,
 				E53E26D01CA571F50079ED23 /* ui */,
 			);
-			name = BartlebySources;
-			path = ../BartlebyKit/BartlebySources;
+			name = Shared;
+			path = ../Shared;
 			sourceTree = "<group>";
 		};
 		E53E264E1CA571F50079ED23 /* _generated */ = {
@@ -701,6 +671,46 @@
 			path = ui;
 			sourceTree = "<group>";
 		};
+		E5B98E001CC0DC9B00A7ECD1 /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				E5D086C81C550E7500F0090E /* CommandLine */,
+				E5CD99D51C86D96E00C64569 /* Alamofire */,
+				5BB611AD1CBFEB2C00D23B4F /* ObjectMapper */,
+			);
+			name = Vendors;
+			sourceTree = "<group>";
+		};
+		E5B98E101CC0E63400A7ECD1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */,
+				E5B98E121CC0E63400A7ECD1 /* Map.swift */,
+				E5B98E131CC0E63400A7ECD1 /* Mappable.swift */,
+				E5B98E141CC0E63400A7ECD1 /* Mapper.swift */,
+				E5B98E151CC0E63400A7ECD1 /* Operators.swift */,
+				E5B98E161CC0E63400A7ECD1 /* ToJSON.swift */,
+			);
+			name = Core;
+			path = ../../../../Bartlebys/Bartleby/Vendors/ObjectMapper/ObjectMapper/Core;
+			sourceTree = "<group>";
+		};
+		E5B98E1D1CC0E63C00A7ECD1 /* Transforms */ = {
+			isa = PBXGroup;
+			children = (
+				E5B98E1E1CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift */,
+				E5B98E1F1CC0E63C00A7ECD1 /* DateFormatterTransform.swift */,
+				E5B98E201CC0E63C00A7ECD1 /* DateTransform.swift */,
+				E5B98E211CC0E63C00A7ECD1 /* EnumTransform.swift */,
+				E5B98E221CC0E63C00A7ECD1 /* ISO8601DateTransform.swift */,
+				E5B98E231CC0E63C00A7ECD1 /* TransformOf.swift */,
+				E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */,
+				E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */,
+			);
+			name = Transforms;
+			path = ../../../../Bartlebys/Bartleby/Vendors/ObjectMapper/ObjectMapper/Transforms;
+			sourceTree = "<group>";
+		};
 		E5CD99D51C86D96E00C64569 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
@@ -723,7 +733,7 @@
 				E5CD99E91C86D96E00C64569 /* Validation.swift */,
 			);
 			name = Alamofire;
-			path = ../../../Carthage/Checkouts/Alamofire/Source;
+			path = ../Vendors/Alamofire/Source;
 			sourceTree = "<group>";
 		};
 		E5D085F51C550E1900F0090E /* CryptoHelper */ = {
@@ -747,7 +757,7 @@
 				E5D086CC1C550E7500F0090E /* StringExtensions.swift */,
 			);
 			name = CommandLine;
-			path = ../../Dependencies/CommandLine;
+			path = ../Vendors/CommandLine/CommandLine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -822,8 +832,8 @@
 				E53E26D51CA571F50079ED23 /* LockersCollectionController.swift in Sources */,
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
-				5BB611C11CBFEB2C00D23B4F /* Map.swift in Sources */,
-				5BB611CC1CBFEB2C00D23B4F /* TransformType.swift in Sources */,
+				E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */,
+				E5B98E2C1CC0E63C00A7ECD1 /* TransformType.swift in Sources */,
 				E53E26FA1CA571F50079ED23 /* DeleteTrigger.swift in Sources */,
 				E53E27051CA571F50079ED23 /* ReadLockersByIds.swift in Sources */,
 				E53E27321CA571F50079ED23 /* Identifiable.swift in Sources */,
@@ -832,7 +842,7 @@
 				E53E26D31CA571F50079ED23 /* AliasesCollectionController.swift in Sources */,
 				E53E26DC1CA571F50079ED23 /* BaseObject.swift in Sources */,
 				E53E26E31CA571F50079ED23 /* Tag.swift in Sources */,
-				5BB611C81CBFEB2C00D23B4F /* DateTransform.swift in Sources */,
+				E5B98E281CC0E63C00A7ECD1 /* DateTransform.swift in Sources */,
 				E53E26D41CA571F50079ED23 /* GroupsCollectionController.swift in Sources */,
 				E53E27181CA571F50079ED23 /* UpdateTrigger.swift in Sources */,
 				E53E27341CA571F50079ED23 /* RegistryMetadata.swift in Sources */,
@@ -869,14 +879,14 @@
 				E53E26E81CA571F50079ED23 /* CreateGroup.swift in Sources */,
 				E53E26DF1CA571F50079ED23 /* Locker.swift in Sources */,
 				E53E26E01CA571F50079ED23 /* ObjectError.swift in Sources */,
-				5BB611C61CBFEB2C00D23B4F /* CustomDateFormatTransform.swift in Sources */,
+				E5B98E261CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
 				E5D0869E1C550E1900F0090E /* CryptoHelper.swift in Sources */,
 				E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */,
 				E5CD99EC1C86D96E00C64569 /* Error.swift in Sources */,
 				E5CD99FA1C86D96E00C64569 /* Validation.swift in Sources */,
 				E5CD99F51C86D96E00C64569 /* Result.swift in Sources */,
-				5BB611CB1CBFEB2C00D23B4F /* TransformOf.swift in Sources */,
-				5BB611CD1CBFEB2C00D23B4F /* URLTransform.swift in Sources */,
+				E5B98E2B1CC0E63C00A7ECD1 /* TransformOf.swift in Sources */,
+				E5B98E2D1CC0E63C00A7ECD1 /* URLTransform.swift in Sources */,
 				E53E27381CA571F50079ED23 /* Registry.swift in Sources */,
 				E53E270E1CA571F50079ED23 /* ReadUsersByIds.swift in Sources */,
 				E5D086CE1C550E7500F0090E /* Option.swift in Sources */,
@@ -888,7 +898,7 @@
 				E53E26D71CA571F50079ED23 /* PermissionsCollectionController.swift in Sources */,
 				E53E26D61CA571F50079ED23 /* OperationsCollectionController.swift in Sources */,
 				E53E27401CA571F50079ED23 /* HTTPManager.swift in Sources */,
-				5BB611C91CBFEB2C00D23B4F /* EnumTransform.swift in Sources */,
+				E5B98E291CC0E63C00A7ECD1 /* EnumTransform.swift in Sources */,
 				E53E27011CA571F50079ED23 /* ReadGroupById.swift in Sources */,
 				E53E271E1CA571F50079ED23 /* JDataPerformer.swift in Sources */,
 				E53E26ED1CA571F50079ED23 /* CreatePermissions.swift in Sources */,
@@ -898,7 +908,7 @@
 				E53E27351CA571F50079ED23 /* Serializable.swift in Sources */,
 				E53E27301CA571F50079ED23 /* HTTPCommand.swift in Sources */,
 				E53E26F21CA571F50079ED23 /* DeleteAlias.swift in Sources */,
-				5BB611C41CBFEB2C00D23B4F /* Operators.swift in Sources */,
+				E5B98E1B1CC0E63400A7ECD1 /* Operators.swift in Sources */,
 				E5CD99ED1C86D96E00C64569 /* Manager.swift in Sources */,
 				E53E272F1CA571F50079ED23 /* CryptoDelegate.swift in Sources */,
 				E5CD99F01C86D96E00C64569 /* Notifications.swift in Sources */,
@@ -906,7 +916,7 @@
 				E53E26DA1CA571F50079ED23 /* Alias.swift in Sources */,
 				E53E26E61CA571F50079ED23 /* CreateAlias.swift in Sources */,
 				E53E27151CA571F50079ED23 /* UpdateLockers.swift in Sources */,
-				5BB611C71CBFEB2C00D23B4F /* DateFormatterTransform.swift in Sources */,
+				E5B98E271CC0E63C00A7ECD1 /* DateFormatterTransform.swift in Sources */,
 				E53E26EA1CA571F50079ED23 /* CreateLocker.swift in Sources */,
 				E53E26EE1CA571F50079ED23 /* CreateTrigger.swift in Sources */,
 				E5D0869C1C550E1900F0090E /* CryptedStringKeyValueTransform.swift in Sources */,
@@ -935,16 +945,16 @@
 				E53E270D1CA571F50079ED23 /* ReadUserById.swift in Sources */,
 				E5CD99F31C86D96E00C64569 /* Response.swift in Sources */,
 				E53E271C1CA571F50079ED23 /* BaseObject+Protocols.swift in Sources */,
-				5BB611C01CBFEB2C00D23B4F /* FromJSON.swift in Sources */,
-				5BB611C31CBFEB2C00D23B4F /* Mapper.swift in Sources */,
-				5BB611CA1CBFEB2C00D23B4F /* ISO8601DateTransform.swift in Sources */,
-				5BB611C21CBFEB2C00D23B4F /* Mappable.swift in Sources */,
+				E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */,
+				E5B98E1A1CC0E63400A7ECD1 /* Mapper.swift in Sources */,
+				E5B98E2A1CC0E63C00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
+				E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */,
 				E5CD99F71C86D96E00C64569 /* Stream.swift in Sources */,
 				E53E26F71CA571F50079ED23 /* DeleteLockers.swift in Sources */,
 				E53E26F11CA571F50079ED23 /* CreateUsers.swift in Sources */,
 				E53E27201CA571F50079ED23 /* JHTTPCommand.swift in Sources */,
 				E5CD99EA1C86D96E00C64569 /* Alamofire.swift in Sources */,
-				5BB611C51CBFEB2C00D23B4F /* ToJSON.swift in Sources */,
+				E5B98E1C1CC0E63400A7ECD1 /* ToJSON.swift in Sources */,
 				E53E27131CA571F50079ED23 /* UpdateGroups.swift in Sources */,
 				E5D0869D1C550E1900F0090E /* CryptedStringTransform.swift in Sources */,
 				E53E27141CA571F50079ED23 /* UpdateLocker.swift in Sources */,

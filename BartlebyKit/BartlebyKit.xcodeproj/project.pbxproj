@@ -528,7 +528,7 @@
 			path = ../CryptoHelper;
 			sourceTree = "<group>";
 		};
-		E53E2A611CA57DBA0079ED23 /* BartlebySources */ = {
+		E53E2A611CA57DBA0079ED23 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				E53E2A621CA57DBA0079ED23 /* _generated */,
@@ -542,7 +542,8 @@
 				E53E2ADF1CA57DBA0079ED23 /* tools */,
 				E53E2AE41CA57DBA0079ED23 /* ui */,
 			);
-			path = BartlebySources;
+			name = Shared;
+			path = ../Shared;
 			sourceTree = "<group>";
 		};
 		E53E2A621CA57DBA0079ED23 /* _generated */ = {
@@ -839,7 +840,7 @@
 		E576E0A81C3A67BD00F1ED6B = {
 			isa = PBXGroup;
 			children = (
-				E53E2A611CA57DBA0079ED23 /* BartlebySources */,
+				E53E2A611CA57DBA0079ED23 /* Shared */,
 				E51834381CA52F96006ED867 /* CryptoHelper */,
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
 				E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
