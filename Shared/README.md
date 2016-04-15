@@ -21,7 +21,6 @@ A dataspace is defined by a "spaceUID"
 3. A user is located in a Single "dataspace" characterized by in a unique spaceUID
 4. Only one User is the spaceUID creator.
 
-
 ## Locker 
 
 A locker is a piece of data that allows to deliver data securely to one targeted user
