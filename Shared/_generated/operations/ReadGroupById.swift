@@ -24,7 +24,7 @@ import ObjectMapper
 						sucessHandler success:(group:Group)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("/group/\(groupId)")
 				    let dictionary:Dictionary<String, AnyObject>=[:]
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadGroupById" ,forMethod:"GET", and: pathURL)

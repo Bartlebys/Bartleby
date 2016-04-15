@@ -193,7 +193,7 @@ import ObjectMapper
 inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
-                var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+                let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
                 let pathURL=baseURL.URLByAppendingPathComponent("/triggers")
                 var parameters=Dictionary<String, AnyObject>()
                 var collection=[Dictionary<String, AnyObject>]()

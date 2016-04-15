@@ -24,7 +24,7 @@ import ObjectMapper
 						sucessHandler success:(permission:Permission)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("/permission/\(permissionId)")
 				    let dictionary:Dictionary<String, AnyObject>=[:]
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadPermissionById" ,forMethod:"GET", and: pathURL)

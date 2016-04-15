@@ -24,7 +24,7 @@ import ObjectMapper
 						sucessHandler success:(alias:Alias)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("/alias/\(aliasId)")
 				    let dictionary:Dictionary<String, AnyObject>=[:]
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadAliasById" ,forMethod:"GET", and: pathURL)

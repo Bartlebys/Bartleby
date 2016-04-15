@@ -24,7 +24,7 @@ import ObjectMapper
 						sucessHandler success:(locker:Locker)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("/locker/\(lockerId)")
 				    let dictionary:Dictionary<String, AnyObject>=[:]
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)

@@ -192,7 +192,7 @@ import ObjectMapper
 inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
-                var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+                let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
                 let pathURL=baseURL.URLByAppendingPathComponent("/alias")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["alias"]=Mapper<Alias>().toJSON(alias)

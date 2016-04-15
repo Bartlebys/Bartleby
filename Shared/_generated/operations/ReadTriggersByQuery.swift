@@ -81,7 +81,7 @@ import ObjectMapper
 						sucessHandler success:(triggers:[Trigger])->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("/triggersByQuery")
 				    let dictionary:Dictionary<String, AnyObject>?=Mapper().toJSON(parameters)
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadTriggersByQuery" ,forMethod:"POST", and: pathURL)
