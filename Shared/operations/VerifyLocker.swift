@@ -98,7 +98,7 @@ import Foundation
                                                     accessGranted success:(locker:Locker)->(),
                                                     accessRefused failure:(context:JHTTPResponse)->()){
         
-        var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
+        let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("locker/verify")
         let dictionary:Dictionary<String, AnyObject>?=["lockerUID":lockerUID,"code":code]
         let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"VerifyLocker" ,forMethod:"POST", and: pathURL)
