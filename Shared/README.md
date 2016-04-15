@@ -112,4 +112,3 @@ func validateScore(raiseNumberPointer: AutoreleasingUnsafeMutablePointer<NSNumbe
 4. *core* contains Bartleby's core
 5. *tools* some generic tools like Pluralization
 7. *ui* minimal UI compatibility layer
-
