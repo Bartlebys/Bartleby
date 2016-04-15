@@ -13,33 +13,33 @@ import Foundation
 public protocol BartlebyConfiguration{
     
     // The key used to encrypt / decrypt
-    static var KEY:String { get }
+    static var KEY:String { get set }
     
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    static var SHARED_SALT:String { get }
+    static var SHARED_SALT:String { get set }
 
     // Collaboration server base URL
     // eg : http://yd.local/api/v1
-    static var API_BASE_URL:NSURL { get }
+    static var API_BASE_URL:NSURL { get set }
     
     // Bartleby Bprint
-    static var ENABLE_BPRINT:Bool { get }
+    static var ENABLE_BPRINT:Bool { get set }
     
     // Consignation
-    static var API_CALL_TRACKING_IS_ENABLED:Bool { get }
+    static var API_CALL_TRACKING_IS_ENABLED:Bool { get set }
 
     // Should we save the password by Default ?
-    static var SAVE_PASSWORD_DEFAULT_VALUE:Bool { get }
+    static var SAVE_PASSWORD_DEFAULT_VALUE:Bool { get set }
     
     // If set to JSON for example would be Indented
-    static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool { get }
+    static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool { get set }
     
     // The min password size
-    static var MIN_PASSWORD_SIZE:UInt { get }
+    static var MIN_PASSWORD_SIZE:UInt { get set }
     
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    static var PASSWORD_CHAR_CART:String { get }
+    static var PASSWORD_CHAR_CART:String { get set }
     
 }
 
@@ -50,71 +50,36 @@ public struct BartlebyDefaultConfiguration:BartlebyConfiguration{
     
     
     // The key used to encrypt / decrypt
-    public static var KEY:String {
-        get {
-            return ""
-        }
-    }
+    public static var KEY:String=""
     
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    public static var SHARED_SALT:String {
-        get {
-            return ""
-        }
-    }
+    public static var SHARED_SALT:String=""
     
     // Collaboration server base URL
     // eg : http://yd.local/api/v1
-    public static var API_BASE_URL:NSURL {
-        get {
-            return NSURL()
-        }
-    }
+    public static var API_BASE_URL:NSURL=NSURL()
+    
     // Bartleby Bprint
-    public static var ENABLE_BPRINT:Bool{
-        get {
-            return true
-        }
-    }
+    public static var ENABLE_BPRINT:Bool=true
     
     // Consignation
-    public static var  API_CALL_TRACKING_IS_ENABLED:Bool{
-        get {
-            return true
-        }
-    }
+    public static var  API_CALL_TRACKING_IS_ENABLED:Bool=true
     
     // Should we save the password by Default ?
-    public static var SAVE_PASSWORD_DEFAULT_VALUE:Bool{
-        get {
-            return false
-        }
-    }
+    public static var SAVE_PASSWORD_DEFAULT_VALUE:Bool=false
 
 
     // If set to JSON for example would be Indented
-    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool{
-        get {
-            return false
-        }
-    }
+    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool=false
 
 
     // The min password size
-    public static var MIN_PASSWORD_SIZE:UInt {
-        get {
-            return 6
-        }
-    }
+    public static var MIN_PASSWORD_SIZE:UInt=6
 
     
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    public static var  PASSWORD_CHAR_CART:String {
-        get {
-            return Default.DEFAULT_PASSWORD_CHAR_CART
-        }
-    }
+    public static var  PASSWORD_CHAR_CART:String=Default.DEFAULT_PASSWORD_CHAR_CART
 
     
 }
