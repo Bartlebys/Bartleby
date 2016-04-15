@@ -1,5 +1,5 @@
-CHANNEL="youdub"
-REPOSITORY="YouDubOSX"
+CHANNEL="bartlebys"
+REPOSITORY="Bartleby"
 MESSAGE=$(git log --oneline -1)
 REVISION=$(git rev-parse HEAD)
 
@@ -23,7 +23,7 @@ PAYLOAD="{ \
         \"color\": \"$COLOR\", \
         \"pretext\": \"\", \
         \"author_name\": \"$MESSAGE\", \
-        \"author_link\": \"http://gitlab.lylo.tv/YouDub/$REPOSITORY/commit/$REVISION\", \
+        \"author_link\": \"https://github.com/Bartlebys/$REPOSITORY/commit/$REVISION\", \
         \"author_icon\": \"\", \
         \"title\": \"${XCS_BOT_NAME}: ${XCS_INTEGRATION_RESULT}\", \
         \"title_link\": \"xcbot://xcodeci.lylo.tv/botID/${XCS_BOT_ID}/integrationID/${XCS_INTEGRATION_ID}\", \
