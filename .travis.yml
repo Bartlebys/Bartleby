@@ -1,12 +1,18 @@
 language: objective-c
 osx_image: xcode7.3
 xcode_workspace: Bartleby.xcworkspace
-xcode_scheme:
-- Bartleby OSX
-- Bartleby iOS
-- bsync
-- bartleby
-- BsyncXPC
+matrix:
+  include:
+    - env: BartlebyOSX
+      xcode_scheme: Bartleby OSX
+    - env: BartlebyiOS
+      xcode_scheme: Bartleby iOS
+    - env: bsync
+      xcode_scheme: bsync
+    - env: bartleby
+      xcode_scheme: bartleby
+    - env: BsyncXPC
+      xcode_scheme: BsyncXPC
 notifications:
   email: false
   slack:
