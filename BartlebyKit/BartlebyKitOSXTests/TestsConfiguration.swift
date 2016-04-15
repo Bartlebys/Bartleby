@@ -12,17 +12,10 @@ import BartlebyKit
 public class TestsConfiguration:BartlebyConfiguration{
     
     // The cryptographic key used to encrypt/decrypt the data
-    public static var KEY:String{
-        get{
-            return "UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
-        }
-    }
+    public static var KEY:String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
     
-    public static var SHARED_SALT:String{
-        get{
-            return "xyx38-d890x-899h-123e-30x6-3234e"
-        }
-    }
+    
+    public static var SHARED_SALT:String="xyx38-d890x-899h-123e-30x6-3234e"
     
     //MARK: - URLS
     
@@ -39,52 +32,31 @@ public class TestsConfiguration:BartlebyConfiguration{
                 //return NSURL(string:"https://api.lylo.tv/www/api/v1")!
             }
         }
+        set{
+            
+        }
     }
     
     
     // Bartleby Bprint
-    public static var ENABLE_BPRINT:Bool{
-        get {
-            return true
-        }
-    }
+    public static var ENABLE_BPRINT:Bool=true
     
     // Consignation
-    public static var  API_CALL_TRACKING_IS_ENABLED:Bool{
-        get {
-            return true
-        }
-    }
+    public static var API_CALL_TRACKING_IS_ENABLED:Bool=true
+    
     
     // Should we save the password by Default ?
-    public static var SAVE_PASSWORD_DEFAULT_VALUE:Bool{
-        get {
-            return false
-        }
-    }
-    
+    public static var SAVE_PASSWORD_DEFAULT_VALUE:Bool=false
     
     // If set to JSON for example would be Indented
-    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool{
-        get {
-            return false
-        }
-    }
+    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool=false
     
     
     // The min password size
-    public static var MIN_PASSWORD_SIZE:UInt {
-        get {
-            return 6
-        }
-    }
+    public static var MIN_PASSWORD_SIZE:UInt=6
     
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    public static var PASSWORD_CHAR_CART:String {
-        get {
-            return "ABCDEFGH1234567890"
-        }
-    }
-
+    public static var PASSWORD_CHAR_CART:String="ABCDEFGH1234567890"
+    
 }
 
