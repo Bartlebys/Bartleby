@@ -57,7 +57,6 @@ The user UID is controlled and the code is verifyed
 ```swift 
 // This flag should be set to true when a collaborative server has acknowledge the object creation
 var distributed:Bool=false
-
 ```
 
 ## Validation ##
