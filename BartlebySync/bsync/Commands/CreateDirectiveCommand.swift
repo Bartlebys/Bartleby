@@ -116,14 +116,11 @@ class CreateDirectiveCommand: CommandBase {
             let key = secretKey.value!
             let salt = sharedSalt.value!
             
-            // We configure Bartleby
-            Bartleby.sharedInstance.configure(
-                key,
-                sharedSalt: salt,
-                defaultApiBaseURL: nil,
-                trackingIsEnabled: false
-            )
-
+            // Do not setup an URL
+            Bartleby.configuration.KEY=key
+            Bartleby.configuration.SHARED_SALT=salt
+            Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+            Bartleby.sharedInstance.configureWith(Bartleby.configuration)
             
             if let directives:BsyncDirectives=Mapper<BsyncDirectives>().map([String : AnyObject]()){
                 

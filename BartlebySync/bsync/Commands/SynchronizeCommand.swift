@@ -227,9 +227,9 @@ public class SynchronizeCommand:CommandBase{
                 
                 // Bartleby should have be configured before.
                 // We setup the default base url.
-                Bartleby.DEFAULT_API_BASE_URL=apiBaseURL
                 
-                
+                Bartleby.configuration.API_BASE_URL=apiBaseURL
+                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                 let user=User()
                 user.spaceUID=spaceUID!
                 if let email=email{

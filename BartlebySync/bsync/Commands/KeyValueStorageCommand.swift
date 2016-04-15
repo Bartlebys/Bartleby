@@ -75,13 +75,12 @@ class KeyValueStorageCommand: CommandBase {
                 let key = secretKey.value!+password.value!
                 let salt = sharedSalt.value!
                 
-                // We configure Bartleby with a dummy URL.
-                Bartleby.sharedInstance.configure(
-                    key,
-                    sharedSalt: salt,
-                    defaultApiBaseURL: nil,
-                    trackingIsEnabled: false
-                )
+                // Configure Bartleby without a specific URL
+                Bartleby.configuration.KEY=key
+                Bartleby.configuration.SHARED_SALT=salt
+                Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+                
                 
                 if var keyValueStorage=Mapper<CryptedKeyValueStorage>().map([String : AnyObject]()){
                     let folderPath=path.value!+"/"

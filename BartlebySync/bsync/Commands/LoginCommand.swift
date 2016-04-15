@@ -67,15 +67,13 @@ class LoginCommand: CommandBase {
                     
                     // We prefer to configure completly Bartleby
                     // When using it's api.
-                    // For future extensions.
-                    Bartleby.sharedInstance.configure(
-                        Bartleby.randomStringWithLength(32),// We generate a randon secret key
-                        sharedSalt: sharedSalt.value!,
-                        defaultApiBaseURL: baseApiURL!,
-                        trackingIsEnabled: false
-                    )
+                    // For future extensions
+                    Bartleby.configuration.API_BASE_URL=baseApiURL!
+                    Bartleby.configuration.KEY=Bartleby.randomStringWithLength(32)
+                    Bartleby.configuration.SHARED_SALT=sharedSalt.value!
+                    Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+                    Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                     
-                
                     let user=User()
                     user.spaceUID=spaceUID.value!
                     if let email=email.value{

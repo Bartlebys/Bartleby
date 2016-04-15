@@ -149,7 +149,7 @@ protocol IdentifiableCardContext{
     public func getPasswordForDMG()->String{
         // This method will not return a correct password if Bartleby is not correctly initialized.
         do {
-            return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.SHARED_SALT))
+            return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))
         } catch {
             Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
             return "default-password-on-crypto-failure"

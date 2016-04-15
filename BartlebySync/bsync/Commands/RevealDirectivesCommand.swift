@@ -54,13 +54,13 @@ public class RevealDirectivesCommand: CommandBase {
      */
     public static func revealDirectives(filePath:String,secretKey:String,sharedSalt:String,verbose:Bool=true){
         
-        // We configure Bartleby
-        Bartleby.sharedInstance.configure(
-            secretKey,
-            sharedSalt: sharedSalt,
-            defaultApiBaseURL: nil,
-            trackingIsEnabled: false
-        )
+        
+        // Configure Bartleby without a specific URL
+        Bartleby.configuration.KEY=secretKey
+        Bartleby.configuration.SHARED_SALT=sharedSalt
+        Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+        Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+    
         
         let fp:String=filePath
         guard NSFileManager.defaultManager().fileExistsAtPath(fp)==true else{

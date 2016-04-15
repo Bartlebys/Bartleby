@@ -60,13 +60,13 @@ public class RunDirectivesCommand:CommandBase {
 
         self.isVerbose=verbose
         
-        // We configure Bartleby
-        Bartleby.sharedInstance.configure(
-            secretKey,
-            sharedSalt: sharedSalt,
-            defaultApiBaseURL: nil,
-            trackingIsEnabled: false
-        )
+         // We configure Bartleby
+        Bartleby.configuration.API_BASE_URL=NSURL()
+        Bartleby.configuration.KEY=secretKey
+        Bartleby.configuration.SHARED_SALT=sharedSalt
+        Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=true
+        Bartleby.configuration.ENABLE_BPRINT=verbose
+        Bartleby.sharedInstance.configureWith(Bartleby.configuration)
         
         let fp:String=filePath
         

@@ -121,15 +121,12 @@ import Foundation
                 callBack(success: false, message: validityMessage)
                 return;
             }
-            
-            // We configure Bartleby
-            Bartleby.sharedInstance.configure(
-                secretKey,
-                sharedSalt: sharedSalt,
-                defaultApiBaseURL: nil,
-                trackingIsEnabled: false
-            )
-            
+        
+            Bartleby.configuration.KEY=secretKey
+            Bartleby.configuration.SHARED_SALT=sharedSalt
+            Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+            Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+     
             // Save the file
             if var JSONString:NSString = Mapper().toJSONString(directives){
                 do{

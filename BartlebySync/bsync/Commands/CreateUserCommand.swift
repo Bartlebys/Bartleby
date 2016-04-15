@@ -39,14 +39,12 @@ class CreateUserCommand : CommandBase {
                 
                 if let url = NSURL(string: base) {
                     
-                    // We configure Bartleby
-                    Bartleby.sharedInstance.configure(
-                        Bartleby.randomStringWithLength(32),// We generate a randon secret key because we don't use it for user creation
-                        sharedSalt: salt,
-                        defaultApiBaseURL: url,
-                        trackingIsEnabled: false,
-                        bprintIsEnabled: verbosity.value
-                    )
+                    Bartleby.configuration.API_BASE_URL=url
+                    Bartleby.configuration.KEY=Bartleby.randomStringWithLength(32)
+                    Bartleby.configuration.SHARED_SALT=salt
+                    Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+                    Bartleby.configuration.ENABLE_BPRINT=verbosity.value
+                    Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                     
                     let user=User()
                     user.spaceUID = space

@@ -52,11 +52,9 @@ class LogoutCommand: CommandBase {
                     // We prefer to configure completly Bartleby
                     // When using it's api.
                     // For future extensions.
+                    Bartleby.configuration.API_BASE_URL = baseApiURL!
+                    Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                 
-                    BartlebyDefaultConfiguration.API_BASE_URL = baseApiURL
-                    Bartleby.sharedInstance.configure(BartlebyDefaultConfiguration)
-                
-            
                     LogoutUser.execute(fromDataSpace:spaceUID.value!, sucessHandler: { () -> () in
                         print ("Successful logout")
                         exit(EX_OK)
