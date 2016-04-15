@@ -1,7 +1,12 @@
 language: objective-c
 osx_image: xcode7.3
 xcode_workspace: Bartleby.xcworkspace
-xcode_scheme: Bartleby OSX
+xcode_scheme:
+- Bartleby OSX
+- Bartleby iOS
+- bsync
+- bartleby
+- BsyncXPC
 notifications:
   slack:
     secure: CpB02U5lkoYEQxaI0Q9wpNKSUfWWAX2d2WdvfdEQr7FZwTBIfhxMuZ+R1ujoBCTXcX6BNbTxfcieBYOvM3edYu2We9r1UcAMmQRo4DTzq9QCsoVh6sIaNqTwshHco1/FT98NnhErvOhyL5V3Zwtn1rWt43J82VMLwPyZQTpGDPQChYmlroEic1XBu7EOVFa8XcmMqrSqXkXALYhfrRyN+eD3QoNxNqEGQsAxHF3Wbni+olYV7yHKOJsqlXGfaZkqjEaEzlv+hZ45wMNXs84+tqWrCt+2omk5QX+eIfVrAzKayDkgHU1GksEs2g72oCQqPHKLTCZxC7UVUbM6A9aoTJ7DE7f3OGIoqsUhEdhTriKGwhyoY9jgShXBASQnzO3zILAC+nxd1b060rznFguSP+2+ahB0Sn+wQY7Iyu87bukgFkhI/d0lf1cTR3jYN6/FRVfSGtQSa4BNJfOb0IPWnLX6U1Q1XaYMj8o6MghKEGzDVsqIOIpxh2YuMOdsqEliZh5jXq8ytafd8+B94hH9NoG8goXzCeKsGEj5iS5MixsdSX71768jv2CrjoASOo/q1lRolgwdNUr5n+yNde/qacMHXWTm34X9EtEsLctwgB2uAaVxQSsFIPGRtYj5shQF6+Ty+wV6YGdEgcj3QsYyOm4duNdmi8Xojfvjvt5GAPE=
