@@ -2,6 +2,7 @@
 This document summarizes BartlebyKit essential concepts. 
 
 ## Bartleby
+
 Bartleby orchestrates the access to registries ... 
 
 ## registries / registry
