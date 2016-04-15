@@ -2,6 +2,7 @@
 This document summarizes BartlebyKit essential concepts. 
 
 ## Bartleby
+
 Bartleby orchestrates the access to registries ... 
 
 ## registries / registry
@@ -20,7 +21,6 @@ A dataspace is defined by a "spaceUID"
 2. the spaceUID is also used locally by Bartleby.swift to resolve the collaboration server URL.
 3. A user is located in a Single "dataspace" characterized by in a unique spaceUID
 4. Only one User is the spaceUID creator.
-
 
 ## Locker 
 
@@ -51,6 +51,7 @@ Business Access Control
 The user UID is controlled and the code is verifyed
 
 -----
+
 # TO BE MOVED IN ANOTHER DOCUMENT 
 
 # Models #
@@ -58,7 +59,6 @@ The user UID is controlled and the code is verifyed
 ```swift 
 // This flag should be set to true when a collaborative server has acknowledge the object creation
 var distributed:Bool=false
-
 ```
 
 ## Validation ##
@@ -112,4 +112,3 @@ func validateScore(raiseNumberPointer: AutoreleasingUnsafeMutablePointer<NSNumbe
 4. *core* contains Bartleby's core
 5. *tools* some generic tools like Pluralization
 7. *ui* minimal UI compatibility layer
-

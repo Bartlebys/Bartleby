@@ -127,25 +127,6 @@ class bsyncMiscTests: XCTestCase {
         
     }
     
-    
-    func createATestFolder()->NSURL{
-        if let url=NSURL(string: "file://\(NSHomeDirectory())/Desktop/test_folder/"){
-            let fsm=NSFileManager()
-            if !fsm.fileExistsAtPath(url.path!){
-                do{
-                    try fsm.createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
-                }catch{
-                    // Silent catch, the folder may exist..
-                }
-            }
-            return url
-        }
-        return NSURL()
-    }
-
-    
-    
-    
     func randomStringWithLength (len : Int) -> String {
         // We exclude possibily confusing signs "oOiI01" to make random strings less ambiguous
         let signs = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789"
