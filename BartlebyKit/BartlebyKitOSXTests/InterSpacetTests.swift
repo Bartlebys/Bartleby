@@ -23,26 +23,21 @@ class InterSpaceTests: XCTestCase {
     
     override static func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configure(
-            TestsConfiguration.KEY,
-            sharedSalt: TestsConfiguration.SHARED_SALT,
-            defaultApiBaseURL: TestsConfiguration.BASE_URL,
-            trackingIsEnabled: TestsConfiguration.trackAllApiCalls
-        )
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     // MARK: 0 - Initialization
     
     func test000_purgeTheCookiesForTheDomain(){
-        print("Using : \(TestsConfiguration.BASE_URL)")
+        print("Using : \(TestsConfiguration.API_BASE_URL)")
         
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             for cookie in cookies{
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
         
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
     }

@@ -230,7 +230,7 @@ import Foundation
      - returns: the salted value
      */
     static public func salt(string:String)->String{
-        return CryptoHelper.hash(string.stringByAppendingString(Bartleby.SHARED_SALT))
+        return CryptoHelper.hash(string.stringByAppendingString(Bartleby.configuration.SHARED_SALT))
     }
     
 }

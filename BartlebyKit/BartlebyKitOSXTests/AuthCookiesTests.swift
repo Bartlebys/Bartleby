@@ -19,26 +19,21 @@ class AuthCookiesTests: XCTestCase {
     
     override static func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configure(
-            TestsConfiguration.KEY,
-            sharedSalt: TestsConfiguration.SHARED_SALT,
-            defaultApiBaseURL: TestsConfiguration.BASE_URL,
-            trackingIsEnabled: TestsConfiguration.trackAllApiCalls
-        )
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     // MARK: - User Creation
     
     func test000_purgeCookiesForTheDomain(){
-        print("Using : \(TestsConfiguration.BASE_URL)")
+        print("Using : \(TestsConfiguration.API_BASE_URL)")
         
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             for cookie in cookies{
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
         
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
     }
@@ -81,7 +76,7 @@ class AuthCookiesTests: XCTestCase {
                        sucessHandler: { () -> () in
                         expectation.fulfill()
                         
-                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
                             XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
                         }else{
                             XCTFail("Auth requires a cookie")
@@ -107,7 +102,7 @@ class AuthCookiesTests: XCTestCase {
         LogoutUser.execute(fromDataSpace: AuthCookiesTests._spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in
@@ -129,7 +124,7 @@ class AuthCookiesTests: XCTestCase {
                        sucessHandler: { () -> () in
                         expectation.fulfill()
                         
-                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
                             XCTAssertTrue((cookies.count>0), "We should  have at least one cookie  #\(cookies.count)")
                         }else{
                             XCTFail("Auth requires a cookie")
@@ -176,7 +171,7 @@ class AuthCookiesTests: XCTestCase {
         LogoutUser.execute(fromDataSpace:AuthCookiesTests._spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.BASE_URL){
+                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in

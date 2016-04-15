@@ -33,9 +33,9 @@ import ObjectMapper
 	//The user's phone number. Can be the secondary Identification source 
 	public var phoneNumber:String?
 	//The hashed version of the user password
-	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Default.passwordsCharCart))"
+	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"
 	//An activation code
-	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Default.passwordsCharCart))"
+	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"
 	//User Status
 	public enum Status:String{
 		case New = "new"

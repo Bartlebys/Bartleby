@@ -24,10 +24,7 @@ import Foundation
                                  sucessHandler success:()->(),
                                  failureHandler failure:(context:JHTTPResponse)->()){
 
-        var baseURL:NSURL=Bartleby.DEFAULT_API_BASE_URL
-        if let url=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID) {
-            baseURL=url
-        }
+        var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("user/login")
         let dictionary:Dictionary<String, AnyObject>?=["userUID":user.UID,"password":password]
         let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:user.spaceUID,withActionName:"LoginUser" ,forMethod:"POST", and: pathURL)

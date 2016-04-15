@@ -15,13 +15,7 @@ class CryptoHelperTests: XCTestCase {
     
     override static func setUp() {
         super.setUp()
-        
-        Bartleby.sharedInstance.configure(
-            TestsConfiguration.KEY,
-            sharedSalt: TestsConfiguration.SHARED_SALT,
-            defaultApiBaseURL: TestsConfiguration.BASE_URL,
-            trackingIsEnabled: TestsConfiguration.trackAllApiCalls
-        )
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     func testEncryptDataDecryptData() {

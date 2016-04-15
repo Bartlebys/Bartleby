@@ -194,7 +194,7 @@ Documents can be shared between iOS, tvOS and OSX.
             self.registryMetadata.spaceUID=self.registryMetadata.UID
         }
         // Setup the default collaboration server
-        self.registryMetadata.collaborationServerURL=Bartleby.DEFAULT_API_BASE_URL
+        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
         
         // Configure the schemas
         self.configureSchema()
@@ -212,7 +212,7 @@ Documents can be shared between iOS, tvOS and OSX.
         super.init(fileURL: url)
         self.configureSchema()
         // Setup the default collaboration server
-        self.registryMetadata.collaborationServerURL=Bartleby.DEFAULT_API_BASE_URL
+        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
         // First registration
         Bartleby.sharedInstance.declare(self);
     }

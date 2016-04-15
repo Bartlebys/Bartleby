@@ -33,7 +33,7 @@ import ObjectMapper
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
 	public var URLBookmarkData:Dictionary<String, AnyObject> = [String:AnyObject]()
 	//Save the password or not?
-	dynamic public var saveThePassword:Bool = Default.SAVE_PASSWORD_DEFAULT_VALUE
+	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
 	dynamic public var assetsFolderURL:NSURL?
 

@@ -117,7 +117,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     public func serialize()->NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
         do{
-            if Default.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
+            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
                 return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
             }else{
                 return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
@@ -155,7 +155,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     
     public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        if let data = Mapper().toJSONString(self, prettyPrint: Default.HUMAN_FORMATTED_SERIALIZATON_FORMAT){
+        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT){
             return (self.UID,self.d_collectionName,data,0,0,0,0,0,"")
         }else{
             let s="{\"Persitency Error - serialization failed\"}"

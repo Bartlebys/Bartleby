@@ -19,10 +19,7 @@ import Foundation
     static public func execute(fromDataSpace spaceUID:String,
                                sucessHandler success:()->(),
                                              failureHandler failure:(context:JHTTPResponse)->()){
-                    var baseURL:NSURL=Bartleby.DEFAULT_API_BASE_URL
-                    if let url=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID) {
-                        baseURL=url
-                    }
+                    var baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
                     let pathURL=baseURL.URLByAppendingPathComponent("user/logout")
 				    let dictionary:Dictionary<String, AnyObject>=[:]
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"LogoutUser" ,forMethod:"POST", and: pathURL)

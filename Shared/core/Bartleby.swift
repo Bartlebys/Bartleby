@@ -16,14 +16,14 @@ import Foundation
 // Bartleby 2.0 will implement storage layers for larger data set, and distant aliases
 
 @objc(Bartleby) public class  Bartleby : Consignee {
-
-    static public var SHARED_SALT:String=""
     
-    static public var DEFAULT_API_BASE_URL=NSURL()
+    
+    static public var configuration:BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
     
     static public var delayBetweenOperationsInSeconds:Double=10
     
     static public var cryptoDelegate:CryptoDelegate=NoCrypto()
+    
 
     /// The standard singleton shared instance
     public static let sharedInstance: Bartleby = {
@@ -44,27 +44,21 @@ import Foundation
     
     /**
      Should be called on Init of the Document.
-     
-     - parameter key:          the crypt key
-     - parameter sharedSalt:        the shared salt
-     - parameter defaultApiBaseURL: the default base URL.
      */
-    public func configure(  key:String,
-                            sharedSalt:String,
-                            defaultApiBaseURL:NSURL?,
-                            trackingIsEnabled:Bool=true,
-                            bprintIsEnabled:Bool=true){
-        Bartleby.enableBPrint=bprintIsEnabled
+    public func configureWith(configuration:BartlebyConfiguration.Type){
+        
+        //Initialize the crypto delegate with the valid KEY & SALT
+        Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT)
+        
+        // Store the configuration
+        Bartleby.configuration=configuration
+       
+        // Enable Bprint?
+        Bartleby.enableBPrint=Bartleby.configuration.ENABLE_BPRINT
         Bartleby.bprint("Bartleby Start time : \(Bartleby._startTime)",file:#file,function:#function,line:#line)
+        
+        // Configure the HTTP Manager
         HTTPManager.configure()
-        Bartleby.SHARED_SALT=sharedSalt
-        if let url=defaultApiBaseURL {
-            Bartleby.DEFAULT_API_BASE_URL=url
-            NSUserDefaults.standardUserDefaults().setValue(url.absoluteString, forKey:Default.SERVER_KEY)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-        Bartleby.cryptoDelegate=CryptoHelper(key: key, salt: sharedSalt)
-        self.trackingIsEnabled=trackingIsEnabled
     }
     
     
@@ -75,11 +69,13 @@ import Foundation
     
     // MARK: - Collaboration server
     
-    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL?{
+    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL{
         if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
-            return registry.registryMetadata.collaborationServerURL
+            if let collaborationServerURL=registry.registryMetadata.collaborationServerURL{
+                return collaborationServerURL
+            }
         }
-        return nil
+        return Bartleby.configuration.API_BASE_URL
     }
     
     // MARK: - Registries
