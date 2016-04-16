@@ -4,11 +4,15 @@ xcode_workspace: Bartleby.xcworkspace
 matrix:
   include:
     - xcode_scheme: "Bartleby OSX"
+      xcode_sdk: macosx10.11
     - xcode_scheme: "Bartleby iOS"
       xcode_sdk: iphonesimulator
     - xcode_scheme: bsync
+      xcode_sdk: macosx10.11
     - xcode_scheme: bartleby
+      xcode_sdk: macosx10.11
     - xcode_scheme: BsyncXPC
+      xcode_sdk: macosx10.11
 script: xctool build test -scheme $TRAVIS_XCODE_SCHEME -sdk $TRAVIS_XCODE_SDK
 notifications:
   email: false
