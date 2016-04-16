@@ -332,7 +332,7 @@ import Foundation
      
      - returns: the string
      */
-    public static func randomStringWithLength (len : Int,signs:String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
+    public static func randomStringWithLength (len : UInt,signs:String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
         var randomString = ""
         for _ in (0 ..< len){
             let length = UInt32 (signs.characters.count)
