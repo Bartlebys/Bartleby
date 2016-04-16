@@ -3,28 +3,16 @@ osx_image: xcode7.3
 xcode_workspace: Bartleby.xcworkspace
 matrix:
   include:
-    - env: DESC="Bartleby OSX" TEST=test
-      xcode_project: BartlebyKit/BartlebyKit.xcodeproj
-      xcode_scheme: "Bartleby OSX"
-      xcode_sdk: macosx10.11
+    - env: DESC="Bartleby OSX"
+      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby OSX"
     - env: DESC="Bartleby iOS"
-      xcode_project: BartlebyKit/BartlebyKit.xcodeproj
-      xcode_scheme: "Bartleby iOS"
-      xcode_sdk: iphonesimulator
-    - env: DESC=bsync TEST=test
-      xcode_project: BartlebySync/bsync.xcodeproj
-      xcode_scheme: bsync
-      xcode_sdk: macosx10.11
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE "Bartleby iOS" -sdk iphonesimulator
+    - env: DESC=bsync
+      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bsync"
     - env: DESC=BsyncXPC
-      xcode_project: BartlebySync/bsync.xcodeproj
-      xcode_scheme: BsyncXPC
-      xcode_sdk: macosx10.11
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "BsyncXPC"
     - env: DESC=bartleby
-      xcode_project: BartlebyCLI/bartleby.xcodeproj
-      xcode_scheme: bartleby
-      xcode_sdk: macosx10.11
-#script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
-script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -verbose
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bartleby"
 notifications:
   email: false
   slack:
