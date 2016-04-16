@@ -13,7 +13,7 @@ matrix:
       xcode_sdk: macosx10.11
     - xcode_scheme: BsyncXPC
       xcode_sdk: macosx10.11
-script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK
+script: xcodebuild build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
 notifications:
   email: false
   slack:
