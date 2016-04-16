@@ -6,7 +6,7 @@ matrix:
     - env: DESC="Bartleby OSX"
       script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby OSX"
     - env: DESC="Bartleby iOS"
-      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE "Bartleby iOS" -sdk iphonesimulator
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby iOS" -sdk iphonesimulator
     - env: DESC=bsync
       script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bsync"
     - env: DESC=BsyncXPC
