@@ -23,7 +23,8 @@ matrix:
       xcode_project: BartlebyCLI/bartleby.xcodeproj
       xcode_scheme: bartleby
       xcode_sdk: macosx10.11
-script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
+#script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
+script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -verbose
 notifications:
   email: false
   slack:
