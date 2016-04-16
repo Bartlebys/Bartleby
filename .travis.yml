@@ -3,16 +3,13 @@ osx_image: xcode7.3
 xcode_workspace: Bartleby.xcworkspace
 matrix:
   include:
-    - env: BartlebyOSX
-      xcode_scheme: Bartleby OSX
-    - env: BartlebyiOS
-      xcode_scheme: Bartleby iOS
-    - env: bsync
-      xcode_scheme: bsync
-    - env: bartleby
-      xcode_scheme: bartleby
-    - env: BsyncXPC
-      xcode_scheme: BsyncXPC
+    - xcode_scheme: Bartleby OSX
+    - xcode_scheme: Bartleby iOS
+      xcode_sdk: iphonesimulator
+    - xcode_scheme: bsync
+    - xcode_scheme: bartleby
+    - xcode_scheme: BsyncXPC
+script: xctool build test -scheme $TRAVIS_XCODE_SCHEME -sdk $TRAVIS_XCODE_SDK
 notifications:
   email: false
   slack:
