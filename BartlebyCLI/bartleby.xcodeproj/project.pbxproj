@@ -360,7 +360,7 @@
 				E5B98E101CC0E63400A7ECD1 /* Core */,
 			);
 			name = ObjectMapper;
-			path = ../../../Carthage/Checkouts/ObjectMapper/ObjectMapper;
+			path = ObjectMapper/ObjectMapper;
 			sourceTree = "<group>";
 		};
 		E50A3AAB1C453A6D004BB7E3 = {
@@ -679,6 +679,7 @@
 				5BB611AD1CBFEB2C00D23B4F /* ObjectMapper */,
 			);
 			name = Vendors;
+			path = ../Vendors;
 			sourceTree = "<group>";
 		};
 		E5B98E101CC0E63400A7ECD1 /* Core */ = {
@@ -691,8 +692,7 @@
 				E5B98E151CC0E63400A7ECD1 /* Operators.swift */,
 				E5B98E161CC0E63400A7ECD1 /* ToJSON.swift */,
 			);
-			name = Core;
-			path = ../../../../Bartlebys/Bartleby/Vendors/ObjectMapper/ObjectMapper/Core;
+			path = Core;
 			sourceTree = "<group>";
 		};
 		E5B98E1D1CC0E63C00A7ECD1 /* Transforms */ = {
@@ -707,8 +707,7 @@
 				E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */,
 				E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */,
 			);
-			name = Transforms;
-			path = ../../../../Bartlebys/Bartleby/Vendors/ObjectMapper/ObjectMapper/Transforms;
+			path = Transforms;
 			sourceTree = "<group>";
 		};
 		E5CD99D51C86D96E00C64569 /* Alamofire */ = {
@@ -733,7 +732,7 @@
 				E5CD99E91C86D96E00C64569 /* Validation.swift */,
 			);
 			name = Alamofire;
-			path = ../Vendors/Alamofire/Source;
+			path = Alamofire/Source;
 			sourceTree = "<group>";
 		};
 		E5D085F51C550E1900F0090E /* CryptoHelper */ = {
@@ -757,7 +756,7 @@
 				E5D086CC1C550E7500F0090E /* StringExtensions.swift */,
 			);
 			name = CommandLine;
-			path = ../Vendors/CommandLine/CommandLine;
+			path = CommandLine/CommandLine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
