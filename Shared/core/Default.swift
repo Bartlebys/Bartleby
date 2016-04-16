@@ -28,6 +28,7 @@ public protocol BartlebyConfiguration{
     
     // Consignation
     static var API_CALL_TRACKING_IS_ENABLED:Bool { get set }
+    static var BPRINT_API_TRACKED_CALLS:Bool { get set }
 
     // Should we save the password by Default ?
     static var SAVE_PASSWORD_DEFAULT_VALUE:Bool { get set }
@@ -41,13 +42,15 @@ public protocol BartlebyConfiguration{
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     static var PASSWORD_CHAR_CART:String { get set }
     
+    // Delay between chained operations
+    static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS:Double { get set }
+    
 }
 
 
 // MARK: - BartlebyDefaultConfiguration
 
 public struct BartlebyDefaultConfiguration:BartlebyConfiguration{
-    
     
     // The key used to encrypt / decrypt
     public static var KEY:String=""
@@ -62,25 +65,26 @@ public struct BartlebyDefaultConfiguration:BartlebyConfiguration{
     
     // Bartleby Bprint
     public static var ENABLE_BPRINT:Bool=true
-    
+
     // Consignation
-    public static var  API_CALL_TRACKING_IS_ENABLED:Bool=true
+    public static var API_CALL_TRACKING_IS_ENABLED:Bool=true
+    public static var BPRINT_API_TRACKED_CALLS:Bool=true
+
     
     // Should we save the password by Default ?
     public static var SAVE_PASSWORD_DEFAULT_VALUE:Bool=false
 
-
     // If set to JSON for example would be Indented
     public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool=false
-
 
     // The min password size
     public static var MIN_PASSWORD_SIZE:UInt=6
 
+    // Delay between chained operations
+    public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS:Double=Double(1/10)
     
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART:String=Default.DEFAULT_PASSWORD_CHAR_CART
-
     
 }
 

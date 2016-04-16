@@ -20,8 +20,6 @@ import Foundation
     
     static public var configuration:BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
     
-    static public var delayBetweenOperationsInSeconds:Double=10
-    
     static public var cryptoDelegate:CryptoDelegate=NoCrypto()
     
 
@@ -33,7 +31,7 @@ import Foundation
     
     static let b_version = "1.0"
     static let b_release = "beta1"
-    static var enableBPrint:Bool=false
+    private static var _enableBPrint:Bool=false
     
     /// The version string of Bartleby framework
     public static var versionString:String{
@@ -54,7 +52,10 @@ import Foundation
         Bartleby.configuration=configuration
        
         // Enable Bprint?
-        Bartleby.enableBPrint=Bartleby.configuration.ENABLE_BPRINT
+        Bartleby._enableBPrint=configuration.ENABLE_BPRINT
+        self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
+        self.bprintTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
+        
         Bartleby.bprint("Bartleby Start time : \(Bartleby._startTime)",file:#file,function:#function,line:#line)
         
         // Configure the HTTP Manager
@@ -288,7 +289,7 @@ import Foundation
      - parameter context: a contextual string
      */
     public static func bprint(message:AnyObject?,file:String = "", function:String = "",line:Int = -1){
-        if(self.enableBPrint){
+        if(self._enableBPrint){
             if let message=message{
                 func padded<T>(number:T,_ numberOfDigit:Int,_ char:String=" ",_ left:Bool=true)->String{
                     var s="\(number)"

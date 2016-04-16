@@ -59,12 +59,13 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
         if trackingIsEnabled == true {
             trackingStack.append((result:result,context:context))
         }
-        if trackingIsEnabled == true{
+        if bprintTrackedEntries == true{
             Bartleby.bprint("\(result)\n\(context)",file:#file,function:#function,line:#line)
         }
     }
     
     // MARK:  Simple stack management
+    
     
     public var trackingIsEnabled:Bool=false
     

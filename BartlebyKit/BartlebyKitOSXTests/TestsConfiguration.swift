@@ -43,6 +43,7 @@ public class TestsConfiguration:BartlebyConfiguration{
     
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED:Bool=true
+    public static var BPRINT_API_TRACKED_CALLS: Bool=true
     
     
     // Should we save the password by Default ?
@@ -51,6 +52,7 @@ public class TestsConfiguration:BartlebyConfiguration{
     // If set to JSON for example would be Indented
     public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT:Bool=false
     
+    public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double=Double(1/100)
     
     // The min password size
     public static var MIN_PASSWORD_SIZE:UInt=6

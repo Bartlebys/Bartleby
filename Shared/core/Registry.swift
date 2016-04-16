@@ -424,11 +424,10 @@ Documents can be shared between iOS, tvOS and OSX.
                                 Bartleby.bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)",file: #file,function: #function,line: #line)
                             }catch{
                                 Bartleby.bprint("OperationsCollectionController getCollection \(error)",file: #file,function: #function,line: #line)
-
                             }
                     }
                 }
-                Bartleby.executeAfter(Bartleby.delayBetweenOperationsInSeconds, closure: { 
+                Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: {
                     self.pushChainedOperation(operations, iterator: &iterator)
                 })
                 }, failureHandler: { (context) -> () in
