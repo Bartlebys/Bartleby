@@ -3,17 +3,22 @@ osx_image: xcode7.3
 xcode_workspace: Bartleby.xcworkspace
 matrix:
   include:
-    - xcode_scheme: "Bartleby OSX"
+    - env: DESC="Bartleby OSX" TEST=test
+      xcode_scheme: "Bartleby OSX"
       xcode_sdk: macosx10.11
-    - xcode_scheme: "Bartleby iOS"
+    - env: DESC="Bartleby iOS"
+      xcode_scheme: "Bartleby iOS"
       xcode_sdk: iphonesimulator
-    - xcode_scheme: bsync
+    - env: DESC=bsync TEST=test
+      xcode_scheme: bsync
       xcode_sdk: macosx10.11
-    - xcode_scheme: bartleby
+    - env: DESC=bartleby
+      xcode_scheme: bartleby
       xcode_sdk: macosx10.11
-    - xcode_scheme: BsyncXPC
+    - env: DESC=BsyncXPC
+      xcode_scheme: BsyncXPC
       xcode_sdk: macosx10.11
-script: xcodebuild build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
+script: xcodebuild build $TEST -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$TRAVIS_XCODE_SCHEME" -sdk $TRAVIS_XCODE_SDK -verbose
 notifications:
   email: false
   slack:
