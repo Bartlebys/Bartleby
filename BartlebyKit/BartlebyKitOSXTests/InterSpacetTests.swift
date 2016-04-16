@@ -102,7 +102,7 @@ class InterSpaceTests: XCTestCase {
             }
         }
     }
-
+    
     // MARK: 2 - Login
     func test201_LoginUser1(){
         
@@ -111,9 +111,9 @@ class InterSpaceTests: XCTestCase {
             // Space id is very important
             LoginUser.execute(user,
                               //inDataSpace: InterSpaceTests._spaceUID1,
-                              withPassword: InterSpaceTests._password1,
-                              sucessHandler: { () -> () in
-                                expectation.fulfill()
+                withPassword: InterSpaceTests._password1,
+                sucessHandler: { () -> () in
+                    expectation.fulfill()
             }) { (context) -> () in
                 expectation.fulfill()
                 XCTFail("Status code \(context.httpStatusCode)")
@@ -179,12 +179,115 @@ class InterSpaceTests: XCTestCase {
     
     // MARK: 4 - Update test TODO
     // change space uid and try to logout and login in the new space
+    func test401_LogoutUser1(){
+        let expectation = expectationWithDescription("LogoutUser should respond")
+        LogoutUser.execute(fromDataSpace: InterSpaceTests._spaceUID1,
+                           sucessHandler: { (context) -> () in
+                            expectation.fulfill()
+        }) { (context) -> () in
+            expectation.fulfill()
+            XCTFail("Status code \(context.httpStatusCode)")
+        }
+        
+        waitForExpectationsWithTimeout(5.0){ error -> Void in
+            if let error = error {
+                Bartleby.bprint("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func test402_LoginUser_withModifiedSpaceID_ShoudFail() {
+        let expectation = expectationWithDescription("LoginUser should respond")
+        if let user = JSerializer.volatileDeepCopy(InterSpaceTests._user1) {
+            if let user = user {
+                user.spaceUID = InterSpaceTests._spaceUID2
+                
+                user.login(withPassword: InterSpaceTests._password1,
+                           sucessHandler: {
+                            expectation.fulfill()
+                            XCTFail("It should be impossible to login in another space")
+                }) { (context) -> () in
+                    expectation.fulfill()
+                    XCTAssertEqual(context.httpStatusCode, 404)
+                }
+                
+                waitForExpectationsWithTimeout(5.0){ error -> Void in
+                    if let error = error {
+                        Bartleby.bprint("Error: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
     
     // MARK: 5 - Delete test TODO
     
-    // MARK: 5 - Deletion and log out
+    func test501_LoginUser1(){
+        
+        let expectation = expectationWithDescription("LoginUser should respond")
+        if let user = InterSpaceTests._user1 {
+            // Space id is very important
+            LoginUser.execute(user,
+                              //inDataSpace: InterSpaceTests._spaceUID1,
+                withPassword: InterSpaceTests._password1,
+                sucessHandler: { () -> () in
+                    expectation.fulfill()
+            }) { (context) -> () in
+                expectation.fulfill()
+                XCTFail("Status code \(context.httpStatusCode)")
+            }
+            
+            waitForExpectationsWithTimeout(5.0){ error -> Void in
+                if let error = error {
+                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            XCTFail("Invalid user")
+        }
+    }
+
+    func test502_DeleteUser2_FromOtherSpace_ShouldFail(){
+        let expectation = expectationWithDescription("DeleteUser should respond")
+        DeleteUser.execute(InterSpaceTests._userID2,
+                           fromDataSpace: InterSpaceTests._spaceUID2,
+                           sucessHandler: { (context) -> () in
+                            expectation.fulfill()
+                            XCTFail("It should be impossible delete a user in another space")
+        }) { (context) -> () in
+            expectation.fulfill()
+            XCTAssertEqual(context.httpStatusCode, 403)
+        }
+        
+        waitForExpectationsWithTimeout(5.0){ error -> Void in
+            if let error = error {
+                Bartleby.bprint("Error: \(error.localizedDescription)")
+            }
+        }
+    }
     
-    func test501_DeleteUser1(){
+    func test502_DeleteUser2_FromCurrentSpace_ThatIsNotInIt_ShouldFail(){
+        let expectation = expectationWithDescription("DeleteUser should respond")
+        DeleteUser.execute(InterSpaceTests._userID2,
+                           fromDataSpace: InterSpaceTests._spaceUID1,
+                           sucessHandler: { (context) -> () in
+                            expectation.fulfill()
+                            XCTFail("It should be impossible delete a user in another space from the current space")
+        }) { (context) -> () in
+            expectation.fulfill()
+            XCTAssertEqual(context.httpStatusCode, 403) // Maybe we should receive 404?
+        }
+        
+        waitForExpectationsWithTimeout(5.0){ error -> Void in
+            if let error = error {
+                Bartleby.bprint("Error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // MARK: 6 - Deletion and log out
+    
+    func test601_DeleteUser1(){
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(InterSpaceTests._userID1,
                            fromDataSpace: InterSpaceTests._spaceUID1,
@@ -202,7 +305,7 @@ class InterSpaceTests: XCTestCase {
         }
     }
     
-    func test502_LogoutUser1(){
+    func test602_LogoutUser1(){
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(fromDataSpace: InterSpaceTests._spaceUID1,
                            sucessHandler: { (context) -> () in
@@ -219,15 +322,15 @@ class InterSpaceTests: XCTestCase {
         }
     }
     
-    func test503_LoginUser2(){
+    func test603_LoginUser2(){
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = InterSpaceTests._user2 {
             // Space id is very important
             LoginUser.execute(user,
                               //inDataSpace:InterSpaceTests._spaceUID2,
-                              withPassword: InterSpaceTests._password2,
-                              sucessHandler: { () -> () in
-                                expectation.fulfill()
+                withPassword: InterSpaceTests._password2,
+                sucessHandler: { () -> () in
+                    expectation.fulfill()
             }) { (context) -> () in
                 expectation.fulfill()
                 XCTFail("Status code \(context.httpStatusCode)")
@@ -242,8 +345,8 @@ class InterSpaceTests: XCTestCase {
             XCTFail("Invalid user")
         }
     }
-
-    func test504_DeleteUser2(){
+    
+    func test604_DeleteUser2(){
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(InterSpaceTests._userID2,
                            fromDataSpace: InterSpaceTests._spaceUID2,
@@ -261,7 +364,7 @@ class InterSpaceTests: XCTestCase {
         }
     }
     
-    func test505_LogoutUser2(){
+    func test605_LogoutUser2(){
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(fromDataSpace: InterSpaceTests._spaceUID2,
                            sucessHandler: { (context) -> () in
