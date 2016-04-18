@@ -20,7 +20,7 @@ public protocol BartlebyConfiguration{
     static var SHARED_SALT:String { get set }
 
     // Collaboration server base URL
-    // eg : http://yd.local/api/v1
+    // eg : https://demo.bartlebys.org/api/v1
     static var API_BASE_URL:NSURL { get set }
     
     // Bartleby Bprint
@@ -60,7 +60,7 @@ public struct BartlebyDefaultConfiguration:BartlebyConfiguration{
     public static var SHARED_SALT:String=""
     
     // Collaboration server base URL
-    // eg : http://yd.local/api/v1
+    // eg : https://demo.bartlebys.org/api/v1
     public static var API_BASE_URL:NSURL=NSURL()
     
     // Bartleby Bprint
@@ -109,9 +109,9 @@ public struct Default{
     static public let NO_KEY:String="NO_KEY"
     static public let NO_PATH:String="NO_PATH"
     static public let NO_CAKE:String="NO_CAKE"
-    
     static public let NO_INT_INDEX=Int.max
     
+    // A bunch of char in wich to pick to compose a random password 
     static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
     
 }
