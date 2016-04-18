@@ -13,30 +13,15 @@ public class TestsConfiguration:BartlebyConfiguration{
     
     // The cryptographic key used to encrypt/decrypt the data
     public static var KEY:String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
-    
-    
+
     public static var SHARED_SALT:String="xyx38-d890x-899h-123e-30x6-3234e"
     
     //MARK: - URLS
-    
-    static let useTestEnvironment=false
+
     
     static let trackAllApiCalls=true
     
-    public static var API_BASE_URL:NSURL {
-        get{
-            if useTestEnvironment {
-                return NSURL(string:"http://yd.local/api/v1")!
-            } else {
-                return NSURL(string:"https://pereira-da-silva.com/clients/lylo/www/api/v1")!
-                //return NSURL(string:"https://api.lylo.tv/www/api/v1")!
-            }
-        }
-        set{
-            
-        }
-    }
-    
+    public static var API_BASE_URL=__BASE_URL
     
     // Bartleby Bprint
     public static var ENABLE_BPRINT:Bool=true
@@ -59,6 +44,30 @@ public class TestsConfiguration:BartlebyConfiguration{
     
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var PASSWORD_CHAR_CART:String="ABCDEFGH1234567890"
+    
+
+    //MARK: - Variable base URL
+    
+    enum Environment {
+        case Local
+        case Development
+        case Production
+    }
+    
+    static var currentEnvironment:Environment = .Development
+    
+    static private var __BASE_URL:NSURL {
+        get{
+            switch currentEnvironment {
+            case .Local:
+                return NSURL(string:"http://yd.local/api/v1")!
+            case .Development:
+                return NSURL(string:"https://dev.api.lylo.tv/api/v1")!
+            case .Production:
+                return NSURL(string:"https://api.lylo.tv/api/v1")!
+            }
+        }
+    }
     
 }
 
