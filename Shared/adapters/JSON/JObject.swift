@@ -22,19 +22,14 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
 
 // Notice the @objc(Name)
 // http://stackoverflow.com/a/24196632/341994
-
+// MARK: - JObject Class
 @objc(JObject) public class JObject : NSObject,NSCopying,Mappable,Persistent,Serializable,Identifiable,NSSecureCoding{
     
-    
-    // Key Mapping
-    
-    // The id is always  created locally
-    // and used as primary index by MONGODB
-    private var _id:String=Default.NO_UID
+    // MARK: - ReferenceName
     
     private var _referenceName:String=Default.NO_NAME
     
-    // The class name
+    // The reference name is equivalent to the class name as a String
     public var referenceName:String{
         get{
             if _referenceName == Default.NO_NAME{
@@ -51,18 +46,12 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     // MARK: -
     
-    private func _createUIDifNecessary(){
-        if _id==Default.NO_UID{
-            _id=Bartleby.createUID()
-            Registry.register(self) // register on creation
-        }
-    }
-    
     override required public init() {
         super.init()
     }
-
     
+    
+    // MARK: - Mappable
     public required init?(_ map: Map) {
         super.init()
         mapping(map)
@@ -72,13 +61,30 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     public func mapping(map: Map) {
         _id <- map[Default.UID_KEY]
         referenceName <- map[Default.REFERENCE_NAME_KEY]
-        if map.mappingType == MappingType.FromJSON{
-            Registry.register(self)//register on deserialization
+    }
+    
+    // MARK: - Identifiable
+    
+    // This  id is always  created locally and used as primary index by MONGODB
+    private var _id:String=Default.NO_UID{
+        didSet{
+            if _id != Default.NO_UID {
+                Registry.register(self)
+            }else{
+                Bartleby.bprint("¡WARNING! multiple allocation of _ID ", file: #file, function: #function, line: #line)
+            }
         }
     }
     
-    // MARK : Identifiable
     
+    
+    // The creation of a Unique Identifier is ressource intensive.
+    //We create the UID only if necessary.
+    private func _createUIDifNecessary(){
+        if _id == Default.NO_UID{
+            _id=Bartleby.createUID()
+        }
+    }
     
     final public var UID:String{
         get{
@@ -97,7 +103,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         return JObject.collectionName
     }
     
-    // MARK: CustomStringConvertible
+    // MARK: - CustomStringConvertible
     
     override public var description: String {
         get{
@@ -110,8 +116,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK : Serializable
-    
+    // MARK: - Serializable
     
     
     public func serialize()->NSData {
@@ -150,8 +155,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK : Persistent
-    
+    // MARK: - Persistent
     
     
     public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
@@ -177,19 +181,18 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK: NSecureCoding
+    // MARK: - NSecureCoding
     
     
     public func encodeWithCoder(aCoder: NSCoder){
         aCoder.encodeObject(_id, forKey: Default.UID_KEY)
         aCoder.encodeObject(referenceName, forKey: Default.REFERENCE_NAME_KEY)
     }
-
+    
     public required init?(coder decoder: NSCoder){
         super.init()
         _id=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.UID_KEY)! as NSString? )
         referenceName=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.REFERENCE_NAME_KEY)! as NSString?)
-        Registry.register(self)//registration on deserialization
     }
     
     public class func supportsSecureCoding() -> Bool{
@@ -197,7 +200,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK: NSCopying
+    // MARK: - NSCopying
     
     /*
      
@@ -209,7 +212,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         let data:NSData=JSerializer.serialize(self)
         return JSerializer.deserialize(data) as! AnyObject
     }
-   
+    
     
 }
 
