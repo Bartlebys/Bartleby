@@ -146,10 +146,6 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--secretKey abcdef"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

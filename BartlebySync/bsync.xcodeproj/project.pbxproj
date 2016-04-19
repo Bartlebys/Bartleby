@@ -1192,13 +1192,13 @@
 		E552B7A21C3D4E49001CD53B /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
 				E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */,
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
 				E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */,
 				E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */,
 				E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */,
+				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */,
 				E552B7A81C3D4E49001CD53B /* BsyncSession.swift */,
 				E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */,

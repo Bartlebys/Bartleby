@@ -8,6 +8,26 @@
 
 import XCTest
 
+class Horse : Mappable {
+    var name: String?;
+    
+    var numberOfLegs: Int?;
+    
+    required init() {
+        
+    }
+    
+    required init?(_ map: Map) {
+        
+    }
+    
+    func mapping(map: Map) {
+        name <- map["name"]
+        numberOfLegs <- map["numberOfLegs"]
+    }
+    
+}
+
 class BsyncKeyValueStorageTests: XCTestCase {
     private static let _kvsPath = NSTemporaryDirectory() + Bartleby.randomStringWithLength(6) + ".kvs";
     let _kvs = BsyncKeyValueStorage(filePath: BsyncKeyValueStorageTests._kvsPath)
@@ -42,7 +62,10 @@ class BsyncKeyValueStorageTests: XCTestCase {
     
     func test101_Upsert1() {
         XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsPath))
-        _kvs["key1"] = "value1"
+        let horse = Horse()
+        horse.name = "Rocinante"
+        horse.numberOfLegs = 4
+        _kvs.upsert("horse", value: horse)
     }
     
     func test102_Upsert2() {
@@ -55,20 +78,21 @@ class BsyncKeyValueStorageTests: XCTestCase {
     }
     
     func test104_Read() {
-        if let value = _kvs["key1"] {
-            XCTAssertEqual(value, "value1")
+        if let horse: Horse = _kvs.read("horse") {
+            XCTAssertEqual(horse.name, "Rocinante")
+            XCTAssertEqual(horse.numberOfLegs, 4)
         } else {
             XCTFail("No value with key key1")
         }
     }
     
     func test105_Delete() {
-        _kvs.delete("key1")
+        _kvs.delete("horse")
     }
     
     func test106_ReadAfterDelete_ShouldFail() {
-        if let _ = _kvs["key1"] {
-            XCTFail("The key key1 should have been deleted")
+        if let _ = _kvs["horse"] {
+            XCTFail("The key \"horse\" should have been deleted")
         }
     }
     

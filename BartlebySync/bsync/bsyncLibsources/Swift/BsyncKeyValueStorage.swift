@@ -14,7 +14,7 @@ enum BsyncKeyValueStorageError : ErrorType {
 }
 
 class BsyncKeyValueStorage {
-    private var _kvs = CryptedKeyValueStorage>()
+    private var _kvs = Mapper<CryptedKeyValueStorage>().map([String : AnyObject]())
     private var _filePath: String
     private var _shouldSave = false
     
@@ -66,6 +66,22 @@ class BsyncKeyValueStorage {
                 kvs.storage[key] = newValue
                 _shouldSave = true
             }
+        }
+    }
+    
+    // For generic mappable, I wasn't able to use a subscript
+    func read<T: Mappable>(key: String) -> T? {
+        if let kvs = _kvs {
+            return Mapper<T>().map(kvs.storage[key])
+        } else {
+            return nil
+        }
+    }
+    
+    func upsert<T: Mappable>(key: String, value: T) {
+        if let kvs = _kvs {
+            kvs.storage[key] = Mapper<T>().toJSONString(value)
+            _shouldSave = true
         }
     }
     
