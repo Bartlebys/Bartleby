@@ -280,6 +280,25 @@ class BsyncXPCHelper{
     }
     
     
+    /**
+     Unmount the DMG using BsyncXPC
+     
+     - parameter volumeName: the volume name
+     - parameter completion: the completion handler
+     */
+    func unMountDMG(volumeName:String, completion:(success:Bool, message:String?, volumeName:String)->()) {
+        let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
+            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            completion(success: false, message: message, volumeName: volumeName)
+            return;
+        }
+        if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
+            xpc.detachVolume(volumeName, callBack: { (success, message) in
+                completion(success: success, message: message, volumeName: volumeName)
+            })
+        }
+    }
+    
     
     /**
      Creates a card 
@@ -357,7 +376,6 @@ class BsyncXPCHelper{
                 if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
                     xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandler)
                 }
-                
                 
     }
     
