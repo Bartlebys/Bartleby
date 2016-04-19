@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B2502251CBA600D002FBF56 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5B65FE6C1CAAC157000D5BB9 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
@@ -30,6 +32,8 @@
 		5B8E5D641C8D7FF0002CFA03 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C11C550E6800F0090E /* CommandLine.swift */; };
 		5B8E5D651C8D8003002CFA03 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C31C550E6800F0090E /* Option.swift */; };
 		5B8E5D661C8D8003002CFA03 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C41C550E6800F0090E /* StringExtensions.swift */; };
+		5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		5B9941401CC53898004B5F91 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		5BB60F3F1CBFE3C500D23B4F /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */; };
 		5BB60F401CBFE3C500D23B4F /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */; };
 		5BB60F421CBFE3C500D23B4F /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3B1CBFE3C500D23B4F /* CryptedKeyValueStorage.swift */; };
@@ -616,6 +620,8 @@
 /* Begin PBXFileReference section */
 		5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDMGSyncTests.swift; sourceTree = "<group>"; };
 		5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncHashMapTests.swift; sourceTree = "<group>"; };
+		5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncKeyValueStorage.swift; sourceTree = "<group>"; };
+		5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncKeyValueStorageTests.swift; sourceTree = "<group>"; };
 		5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		5BB60F3B1CBFE3C500D23B4F /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
 		5BB60F3C1CBFE3C500D23B4F /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
@@ -1186,6 +1192,7 @@
 		E552B7A21C3D4E49001CD53B /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
 				E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */,
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
@@ -1346,6 +1353,7 @@
 				5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */,
 				E5C0CED61C36CCDD00F3B7B8 /* Info.plist */,
 				E5A557CB1C8EC9DF009A9A63 /* README.md */,
+				5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */,
 			);
 			path = bsyncTests;
 			sourceTree = "<group>";
@@ -1622,6 +1630,7 @@
 				5BB610B11CBFE51900D23B4F /* ReadPermissionsByIds.swift in Sources */,
 				5BB60FFD1CBFE51900D23B4F /* BaseCollectionMetadatum.swift in Sources */,
 				5BB611451CBFE51900D23B4F /* CollectibleCollection.swift in Sources */,
+				5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */,
 				E53E27521CA572940079ED23 /* Alamofire.swift in Sources */,
 				5BB611911CBFE51900D23B4F /* VerifyLocker.swift in Sources */,
 				5BB6105D1CBFE51900D23B4F /* DeleteAliases.swift in Sources */,
@@ -1929,6 +1938,7 @@
 				5BB6109E1CBFE51900D23B4F /* ReadGroupsByQuery.swift in Sources */,
 				5BB60F4F1CBFE4E200D23B4F /* CryptedKeyValueStorage.swift in Sources */,
 				5BB6104A1CBFE51900D23B4F /* CreateTrigger.swift in Sources */,
+				5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */,
 				E552B7BE1C3D4E49001CD53B /* PdSSyncContext.m in Sources */,
 				5B8E5D601C8D7FCD002CFA03 /* Stream.swift in Sources */,
 				5BB6103A1CBFE51900D23B4F /* CreateLocker.swift in Sources */,
@@ -1944,6 +1954,7 @@
 				5B65FE6C1CAAC157000D5BB9 /* LocalDMGSyncTests.swift in Sources */,
 				5BB610A21CBFE51900D23B4F /* ReadLockerById.swift in Sources */,
 				5B8E5D5C1C8D7FCD002CFA03 /* Response.swift in Sources */,
+				5B9941401CC53898004B5F91 /* BsyncKeyValueStorageTests.swift in Sources */,
 				5B8E5D591C8D7FCD002CFA03 /* Notifications.swift in Sources */,
 				5BB60FEE1CBFE51900D23B4F /* PermissionsCollectionController.swift in Sources */,
 				E585044E1C3FA12000E2F64A /* LoginCommand.swift in Sources */,
@@ -2026,6 +2037,7 @@
 				E55C926A1CBF853D008163F6 /* RevealDirectivesCommand.swift in Sources */,
 				5BB610F31CBFE51900D23B4F /* UpdateTrigger.swift in Sources */,
 				E55C92621CBF853D008163F6 /* CreateUIDCommand.swift in Sources */,
+				5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */,
 				5BB6116F1CBFE51900D23B4F /* Serializer.swift in Sources */,
 				5BB610171CBFE51900D23B4F /* Operation.swift in Sources */,
 				5BB610CF1CBFE51900D23B4F /* ReadUsersByQuery.swift in Sources */,

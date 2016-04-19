@@ -79,114 +79,93 @@ class KeyValueStorageCommand: CommandBase {
                 Bartleby.configuration.KEY=key
                 Bartleby.configuration.SHARED_SALT=salt
                 Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+                Bartleby.configuration.BPRINT_API_TRACKED_CALLS = false
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                 
-                
-                if var keyValueStorage=Mapper<CryptedKeyValueStorage>().map([String : AnyObject]()){
-                    let folderPath=path.value!+"/"
-                    let filePath=folderPath + "kvs.data"
-                    var shouldSave=true
-                    let fm=NSFileManager.defaultManager()
-                    var isAFolder : ObjCBool = false
-                    if fm.fileExistsAtPath(folderPath, isDirectory: &isAFolder){
-                        if isAFolder{
-                            if fm.fileExistsAtPath(filePath){
-                                if let data=NSData(contentsOfFile: filePath){
-                                    let JSONString=String(data: data, encoding: NSUTF8StringEncoding)
-                                    if let k = Mapper<CryptedKeyValueStorage>().map(JSONString){
-                                        keyValueStorage=k
-                                    }else{
-                                        print("Raw Deserialization failed - Corrupted data")
-                                        exit(EX__BASE)
-                                    }
-                                }else{
-                                    print("Humm there is a problem with your data")
-                                    exit(EX__BASE)
-                                }
-                            }
-                        }else{
-                            print("\(folderPath) is not a directory")
-                            exit(EX__BASE)
-                        }
-                    }else{
-                        print("Unexisting folder \(folderPath)")
+                let folderPath=path.value!+"/"
+                let filePath=folderPath + "kvs.data"
+                let fm=NSFileManager.defaultManager()
+                var isAFolder : ObjCBool = false
+                if fm.fileExistsAtPath(folderPath, isDirectory: &isAFolder){
+                    if !isAFolder{
+                        print("\(folderPath) is not a directory")
                         exit(EX__BASE)
                     }
-                    
-                    switch op.value {
-                    case .Upsert?:
-                        if let k=keyArg.value,v=value.value{
-                            keyValueStorage.storage[k]=v
-                        }else{
-                            print("We creating or updating a (key,value) pair")
-                            print("key and value must be defined!")
-                            let k = (keyArg.value ?? "is void" )
-                            let v = (value.value ?? "is void" )
-                            print("Key: \(k)")
-                            print("Value: \(v)")
-                            exit(EX__BASE)
-                        }
-                    case .Read?:
-                        if let k=keyArg.value{
+                } else {
+                    print("Unexisting folder \(folderPath)")
+                    exit(EX__BASE)
+                }
+                
+                let kvs = BsyncKeyValueStorage(filePath: filePath)
+                
+                try kvs.open()
+                
+                switch op.value {
+                case .Upsert?:
+                    if let k=keyArg.value,v=value.value{
+                        kvs[k] = v
+                    } else {
+                        print("We creating or updating a (key,value) pair")
+                        print("key and value must be defined!")
+                        let k = (keyArg.value ?? "is void" )
+                        let v = (value.value ?? "is void" )
+                        print("Key: \(k)")
+                        print("Value: \(v)")
+                        exit(EX__BASE)
+                    }
+                case .Read?:
+                    if let k=keyArg.value{
+                        if let v = kvs[k] {
                             print("The value of \(k) is: ")
                             print("")
-                            print(keyValueStorage.storage[k]!)
+                            print(v)
                             print("")
-                            shouldSave=false
-                        }else{
-                            print("Undefined key")
-                            exit(EX__BASE)
+                        } else {
+                            print("Error retrieving key")
                         }
-                    case .Delete?:
-                        if let k=keyArg.value{
-                            keyValueStorage.storage.removeValueForKey(k)
-                        }else{
-                            print("Undefined key")
-                            exit(EX__BASE)
-                        }
-                    case .Enumerate?:
-                        for (k,v) in keyValueStorage.storage{
-                            print("\(k)=\(v)")
-                        }
-                        shouldSave=false
-                    case .RemoveAll?:
-                        if notInteractive.value==true{
-                            try fm.removeItemAtPath(filePath)
-                        }else{
-                            print("This deletion is irreversible - Do you want to delete all the data Y/N?")
-                            if let s=input() {
-                                if s.lowercaseString == "y" {
-                                    try fm.removeItemAtPath(filePath)
-                                }else{
-                                    
-                                }
-                            }else{
-                                print("Infinite loop?")
-                                exit(EX__BASE)
-                            }
-                        }
-                        shouldSave=false
-                    case nil:
-                        break
+                    } else {
+                        print("Undefined key")
+                        exit(EX__BASE)
                     }
-                    if shouldSave {
-                        // Save the file
-                        if let s:String = keyValueStorage.toJSONString(){
-                            if let sdata:NSData=s.dataUsingEncoding(NSUTF8StringEncoding){
-                                sdata.writeToFile(filePath,atomically: true)
-                                print("Data has been saved in \(filePath)")
-                                exit(EX_OK)
+                case .Delete?:
+                    if let k=keyArg.value{
+                        kvs.delete(k)
+                    } else {
+                        print("Undefined key")
+                        exit(EX__BASE)
+                    }
+                case .Enumerate?:
+                    for (k,v) in kvs.enumerate() {
+                        print("\(k)=\(v)")
+                    }
+                case .RemoveAll?:
+                    if notInteractive.value==true{
+                        try kvs.removeAll()
+                    } else {
+                        print("This deletion is irreversible - Do you want to delete all the data Y/N?")
+                        if let s=input() {
+                            if s.lowercaseString == "y" {
+                                try kvs.removeAll()
                             }
-                            
-                        }else{
-                            print("Humm a strange error has occured.")
+                        } else {
+                            print("Infinite loop?")
                             exit(EX__BASE)
                         }
-                    }else{
-                        exit(EX_OK)
                     }
+                case nil:
+                    break
                 }
+                
+                try kvs.save()
+
+                exit(EX_OK)
             }
+        } catch BsyncKeyValueStorageError.CorruptedData {
+            print("Raw Deserialization failed - Corrupted data")
+            exit(EX__BASE)
+        } catch BsyncKeyValueStorageError.OtherDataProblem {
+            print("Humm there is a problem with your data")
+            exit(EX__BASE)
         } catch {
             cli.printUsage(error)
             exit(EX_USAGE)

@@ -24,6 +24,7 @@ import Foundation
     
     // CRYPTED
     public var spaceUID:String?
+    public var user:User?
     public var email:String?
     public var password:String?
     public var phoneNumber:String?
