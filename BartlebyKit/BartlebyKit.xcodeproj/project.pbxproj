@@ -269,6 +269,7 @@
 		E5959C0D1CA6702800557BDB /* SerializableInvocationSampleInvalid.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00551C8ED51D00BB6B19 /* SerializableInvocationSampleInvalid.swift */; };
 		E5959C0E1CA6702800557BDB /* ComposedPrintMessageSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00561C8ED51D00BB6B19 /* ComposedPrintMessageSample.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
+		E5CC50421CC65F97000EA88C /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC50411CC65F97000EA88C /* TasksScheduler.swift */; };
 		E5D9BCE61CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 		E5D9BCE71CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 /* End PBXBuildFile section */
@@ -443,6 +444,7 @@
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E57BE0F21CBC05E50038454C /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
+		E5CC50411CC65F97000EA88C /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alias+Facilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -721,6 +723,7 @@
 			children = (
 				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
+				E5CC50411CC65F97000EA88C /* TasksScheduler.swift */,
 				E53E2AC41CA57DBA0079ED23 /* Consignation.swift */,
 				E53E2AC51CA57DBA0079ED23 /* Consignee.swift */,
 				E53E2AC61CA57DBA0079ED23 /* Default.swift */,
@@ -1031,6 +1034,7 @@
 				E53E2AE91CA57DBA0079ED23 /* AliasesCollectionController.swift in Sources */,
 				E53E2BB81CA57DBA0079ED23 /* UpdateTrigger.swift in Sources */,
 				E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
+				E5CC50421CC65F97000EA88C /* TasksScheduler.swift in Sources */,
 				E53E2B761CA57DBA0079ED23 /* ReadGroupsByIds.swift in Sources */,
 				E53E2B5B1CA57DBA0079ED23 /* DeletePermissions.swift in Sources */,
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
