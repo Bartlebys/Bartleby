@@ -14,7 +14,7 @@ extension NSData{
         if let dsi = JSerializer.deserialize(self) as? RespondingInvocation {
             dsi.invoke(responseClosure)
         }else{
-            Bartleby.bprint("NSData Failure executeSerializedInvocation with a responseClosure")
+            bprint("NSData Failure executeSerializedInvocation with a responseClosure")
         }
     }
     
@@ -22,7 +22,7 @@ extension NSData{
         if let dsi = JSerializer.deserialize(self) as? SerializableInvocation {
             dsi.invoke()
         }else{
-            Bartleby.bprint("NSData Failure during Deserialization")
+            bprint("NSData Failure during Deserialization")
         }
     }
     

@@ -89,7 +89,7 @@ class LockerTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0) { (error) in
                 if let error = error {
-                    Bartleby.bprint(error.localizedDescription)
+                    bprint(error.localizedDescription)
                 }
             }
         }else{
@@ -118,7 +118,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }
@@ -136,7 +136,7 @@ class LockerTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         }
@@ -167,7 +167,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }
@@ -188,7 +188,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }
@@ -211,7 +211,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }
@@ -228,7 +228,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -253,7 +253,7 @@ class LockerTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         }
@@ -278,7 +278,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }
@@ -299,7 +299,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(100.0) { (error) in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -316,7 +316,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -342,7 +342,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -362,7 +362,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -382,7 +382,7 @@ class LockerTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         }
@@ -404,7 +404,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -425,7 +425,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -446,7 +446,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -463,7 +463,7 @@ class LockerTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }

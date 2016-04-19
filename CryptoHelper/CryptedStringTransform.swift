@@ -23,7 +23,7 @@ import Foundation
             do {
                 return try Bartleby.cryptoDelegate.decryptString(s)
             } catch  {
-                Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
+                bprint("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil
@@ -34,7 +34,7 @@ import Foundation
             do {
                 return try Bartleby.cryptoDelegate.encryptString(s)
             } catch  {
-                Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
+                bprint("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil

@@ -60,7 +60,7 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
             trackingStack.append((result:result,context:context))
         }
         if bprintTrackedEntries == true{
-            Bartleby.bprint("\(result)\n\(context)",file:#file,function:#function,line:#line)
+            bprint("\(result)\n\(context)",file:#file,function:#function,line:#line)
         }
     }
     
@@ -219,7 +219,7 @@ public class Consignee:AbstractConsignee,ConcreteConsignee,ConcreteTracker,Consi
     
     
     public func logMessage(title:String,body:String)->(){
-        Bartleby.bprint("\(title):\n\(body)",file:#file,function:#function,line: #line)
+        bprint("\(title):\n\(body)",file:#file,function:#function,line: #line)
     }
     
     // MARK: - IOS only

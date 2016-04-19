@@ -421,9 +421,9 @@ Documents can be shared between iOS, tvOS and OSX.
                             self.delete(currentOperation)
                             do{
                                 let ic:OperationsCollectionController = try self.getCollection()
-                                Bartleby.bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)",file: #file,function: #function,line: #line)
+                                bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)",file: #file,function: #function,line: #line)
                             }catch{
-                                Bartleby.bprint("OperationsCollectionController getCollection \(error)",file: #file,function: #function,line: #line)
+                                bprint("OperationsCollectionController getCollection \(error)",file: #file,function: #function,line: #line)
                             }
                     }
                 }
@@ -602,7 +602,7 @@ Documents can be shared between iOS, tvOS and OSX.
                         self.registryMetadata=registryMetadata
                     }else{
                         // There is an error
-                        Bartleby.bprint("ERROR \(r)",file: #file,function: #function,line: #line)
+                        bprint("ERROR \(r)",file: #file,function: #function,line: #line)
                         return
                     }
                     // IMPORTANT we swap the UID
@@ -646,7 +646,7 @@ Documents can be shared between iOS, tvOS and OSX.
             do{
                 try self._refreshProxies()
             }catch{
-                Bartleby.bprint("Proxies refreshing failure \(error)",file: #file,function: #function,line: #line)
+                bprint("Proxies refreshing failure \(error)",file: #file,function: #function,line: #line)
             }
             self.registryDidLoad()
         }

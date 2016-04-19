@@ -119,7 +119,7 @@ class LocalDMGSyncTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0) { (error) in
             if let error = error {
-                Bartleby.bprint(error.localizedDescription)
+                bprint(error.localizedDescription)
             }
         }
     }

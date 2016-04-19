@@ -65,7 +65,7 @@ import BartlebyKit
             }catch{
                 switch error{
                 case SerializableInvocationError.ArgumentsTypeMisMatch : 
-                    Bartleby.bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+                    bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
                     break
                     // You can handle execution Exception
                 default:
@@ -85,7 +85,7 @@ import BartlebyKit
             }catch{
                 switch error{
                 case SerializableInvocationError.ArgumentsTypeMisMatch : 
-                    Bartleby.bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+                    bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
                     break
                     // You can handle execution Exception
                 default:

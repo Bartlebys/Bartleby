@@ -40,7 +40,7 @@ class SerializableInvocations: XCTestCase {
         }catch{
             switch error{
             case SerializableInvocationError.ArgumentsTypeMisMatch :
-                Bartleby.bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
                 hasThrownArgumentsTypeMisMatch=true
                 break
             // You can handle execution Exception
@@ -77,7 +77,7 @@ class SerializableInvocations: XCTestCase {
         }catch {
             switch error{
             case SerializableInvocationError.ArgumentsTypeMisMatch :
-                Bartleby.bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
                 hasThrownArgumentsTypeMisMatch=true
                 break
             // You can handle execution Exception
@@ -101,7 +101,7 @@ class SerializableInvocations: XCTestCase {
         }catch{
             switch error{
             case SerializableInvocationError.ArgumentsTypeMisMatch :
-                Bartleby.bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
                 break
             // You can handle execution Exception
             default:

@@ -74,7 +74,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -98,7 +98,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -130,7 +130,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -159,7 +159,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -181,7 +181,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -206,7 +206,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(200.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -235,7 +235,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -256,7 +256,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -276,7 +276,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -302,7 +302,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -327,7 +327,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -347,7 +347,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -367,7 +367,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -391,7 +391,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -418,7 +418,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -442,7 +442,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -463,7 +463,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -493,7 +493,7 @@ class AccessControlTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -516,7 +516,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -536,7 +536,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -556,7 +556,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -576,7 +576,7 @@ class AccessControlTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }

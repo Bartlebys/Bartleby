@@ -121,7 +121,7 @@ import Foundation
                 body: NSLocalizedString("Please Check your connection or your configuration!",
                     comment: "Please Check your connection or your configuration!"),
                 trigger:{ (selectedIndex) -> () in
-                    Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)")
+                    bprint("Post presentation message selectedIndex:\(selectedIndex)")
             })
             
             if result.isFailure {
@@ -134,7 +134,7 @@ import Foundation
                     }else{
                         reactions.append(failureReaction)
                         if(result.value != ""){
-                            Bartleby.bprint(result.value)
+                            bprint(result.value)
                         }
                         failureHandler(context:context)
                     }
@@ -183,7 +183,7 @@ import Foundation
                 body: NSLocalizedString("Credentials are not valid",
                     comment: "Credentials are not valid"),
                 trigger:{ (selectedIndex) -> () in
-                    Bartleby.bprint("Post presentation message selectedIndex:\(selectedIndex)")
+                    bprint("Post presentation message selectedIndex:\(selectedIndex)")
             })
             
             if result.isFailure {
@@ -196,7 +196,7 @@ import Foundation
                     }else{
                         reactions.append(failureReaction)
                         if(result.value != ""){
-                            Bartleby.bprint(result.value)
+                            bprint(result.value)
                         }
                         failureHandler(context:context)
                     }

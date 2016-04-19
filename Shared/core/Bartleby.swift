@@ -9,7 +9,6 @@
 
 import Foundation
 
-
 //MARK: - Bartleby
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
@@ -56,7 +55,7 @@ import Foundation
         self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
         self.bprintTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
         
-        Bartleby.bprint("Bartleby Start time : \(Bartleby._startTime)",file:#file,function:#function,line:#line)
+        bprint("Bartleby Start time : \(Bartleby._startTime)",file:#file,function:#function,line:#line)
         
         // Configure the HTTP Manager
         HTTPManager.configure()
@@ -279,7 +278,7 @@ import Foundation
     
     /**
      Print indirection with guided contextual info
-     Usage : Bartleby.bprint("<Message>",file:#file,function:#function,line:#line")
+     Usage : bprint("<Message>",file:#file,function:#function,line:#line")
      You can create code snippet
      
      - parameter items: the items to print
@@ -363,3 +362,26 @@ import Foundation
     }
        
 }
+
+
+// MARK: - Global functions
+
+/**
+ Print indirection with guided contextual info
+ Usage : bprint("<Message>",file:#file,function:#function,line:#line")
+ You can create code snippet
+ 
+ - parameter items: the items to print
+ - parameter file:  the file
+ - parameter line:  the line
+ - parameter function : the function name
+ - parameter context: a contextual string
+ */
+public func bprint(message:AnyObject?,file:String = "", function:String = "",line:Int = -1){
+    Bartleby.bprint(message, file: file, function: function, line: line)
+}
+
+
+
+
+

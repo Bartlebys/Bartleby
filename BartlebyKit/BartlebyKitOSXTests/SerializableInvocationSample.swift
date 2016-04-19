@@ -58,7 +58,7 @@ import BartlebyKit
     // 2# Implement the invocation logic invoke()
     
     func invoke(){
-        Bartleby.bprint("PRINT \(_serializableArguments.message)",file:#file,function:#function,line: #line)
+        bprint("PRINT \(_serializableArguments.message)",file:#file,function:#function,line: #line)
     }
     
 

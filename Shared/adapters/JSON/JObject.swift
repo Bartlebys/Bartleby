@@ -66,12 +66,20 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     // MARK: - Identifiable
     
     // This  id is always  created locally and used as primary index by MONGODB
+    
+    private var _warningCounter=0
+    
     private var _id:String=Default.NO_UID{
-        didSet{
+        willSet (identifier){
             if _id != Default.NO_UID {
+                self._warningCounter += 1
+                //bprint("¡WARNING(\(self._warningCounter))! multiple allocation of \(identifier) \(self.referenceName) \(self.hash)", file: #file, function: #function, line: #line)
+                Registry.unRegister(self)
+            }
+        }
+        didSet{
+            if self._id != Default.NO_UID {
                 Registry.register(self)
-            }else{
-                Bartleby.bprint("¡WARNING! multiple allocation of _ID ", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -81,8 +89,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     // The creation of a Unique Identifier is ressource intensive.
     //We create the UID only if necessary.
     private func _createUIDifNecessary(){
-        if _id == Default.NO_UID{
-            _id=Bartleby.createUID()
+        if self._id == Default.NO_UID{
+            self._id=Bartleby.createUID()
         }
     }
     
@@ -142,7 +150,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
             }
         }catch{
             //Silent catch
-            Bartleby.bprint("deserialize ERROR \(error)")
+            bprint("deserialize ERROR \(error)")
         }
         // If there is an issue we relay to the serializer
         
@@ -185,9 +193,9 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     
     public func encodeWithCoder(aCoder: NSCoder){
-        aCoder.encodeObject(_id, forKey: Default.UID_KEY)
         aCoder.encodeObject(referenceName, forKey: Default.REFERENCE_NAME_KEY)
-    }
+        aCoder.encodeObject(_id, forKey: Default.UID_KEY)
+     }
     
     public required init?(coder decoder: NSCoder){
         super.init()

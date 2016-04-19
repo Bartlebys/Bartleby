@@ -32,7 +32,7 @@ public class CryptedStringKeyValueTransform:TransformType{
                         return dictionary
                     }
                 } catch  {
-                    Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
+                    bprint("\(error)", file: #file, function: #function, line: #line)
                 }
                 
             }
@@ -50,7 +50,7 @@ public class CryptedStringKeyValueTransform:TransformType{
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(cryptedDictionary, options: NSJSONWritingOptions.PrettyPrinted)
                 return String(data: jsonData, encoding: NSUTF8StringEncoding)
             } catch {
-                Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
+                bprint("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil

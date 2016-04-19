@@ -63,7 +63,7 @@ class AuthCookiesTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -89,7 +89,7 @@ class AuthCookiesTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -112,7 +112,7 @@ class AuthCookiesTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -136,7 +136,7 @@ class AuthCookiesTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -160,7 +160,7 @@ class AuthCookiesTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -181,7 +181,7 @@ class AuthCookiesTests: XCTestCase {
         
         waitForExpectationsWithTimeout(7.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }

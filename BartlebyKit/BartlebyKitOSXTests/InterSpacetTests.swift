@@ -68,7 +68,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
         
@@ -98,7 +98,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -121,7 +121,7 @@ class InterSpaceTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -148,7 +148,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -172,7 +172,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -191,7 +191,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -213,7 +213,7 @@ class InterSpaceTests: XCTestCase {
                 
                 waitForExpectationsWithTimeout(5.0){ error -> Void in
                     if let error = error {
-                        Bartleby.bprint("Error: \(error.localizedDescription)")
+                        bprint("Error: \(error.localizedDescription)")
                     }
                 }
             }
@@ -239,7 +239,7 @@ class InterSpaceTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -261,7 +261,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -280,7 +280,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -300,7 +300,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -317,7 +317,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -338,7 +338,7 @@ class InterSpaceTests: XCTestCase {
             
             waitForExpectationsWithTimeout(5.0){ error -> Void in
                 if let error = error {
-                    Bartleby.bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)")
                 }
             }
         } else {
@@ -359,7 +359,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }
@@ -376,7 +376,7 @@ class InterSpaceTests: XCTestCase {
         
         waitForExpectationsWithTimeout(5.0){ error -> Void in
             if let error = error {
-                Bartleby.bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)")
             }
         }
     }

@@ -151,7 +151,7 @@ protocol IdentifiableCardContext{
         do {
             return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))
         } catch {
-            Bartleby.bprint("\(error)", file: #file, function: #function, line: #line)
+            bprint("\(error)", file: #file, function: #function, line: #line)
             return "default-password-on-crypto-failure"
         }
     }
