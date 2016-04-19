@@ -116,11 +116,17 @@ import ObjectMapper
     func commit(){
         let context=Context(code:3799478402, caller: "DeleteLockers.commit")
         if let registry = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
-            //if registry.deleteByIds(self._ids, fromCollectionWithName:"lockers"){                // Prepare the operation
+
+                // Prepare the operation
+                self._operation.defineUID()
                 self._operation.counter=0
                 self._operation.status=Operation.Status.Pending
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
+                self._operation.spaceUID=self._spaceUID
+                if let rootUser=registry.registryMetadata.rootUser{
+                    self._operation.creatorUID=rootUser.UID
+                }
 
                 // Provision the operation.
                 do{

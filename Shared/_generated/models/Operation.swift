@@ -30,6 +30,8 @@ import ObjectMapper
 		case Unsucessful = "unsucessful"
 	}
 	public var status:Status = .None
+	//The data space UID can be shared between multiple registries.
+	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The invocation counter
 	public var counter:Int?
 	//The creationdate
@@ -51,6 +53,7 @@ import ObjectMapper
 		responseData <- map["responseData"]
 		baseUrl <- (map["baseUrl"],URLTransform())
 		status <- map["status"]
+		spaceUID <- map["spaceUID"]
 		counter <- map["counter"]
 		creationDate <- (map["creationDate"],ISO8601DateTransform())
 		lastInvocationDate <- (map["lastInvocationDate"],ISO8601DateTransform())
@@ -65,6 +68,7 @@ import ObjectMapper
 		responseData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseData")as? Dictionary<String, AnyObject>
 		baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
 		status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
+		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		counter=decoder.decodeIntegerForKey("counter") 
 		creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
@@ -83,6 +87,7 @@ import ObjectMapper
 			coder.encodeObject(baseUrl,forKey:"baseUrl")
 		}
 		coder.encodeObject(status.rawValue ,forKey:"status")
+		coder.encodeObject(spaceUID,forKey:"spaceUID")
 		if let counter = self.counter {
 			coder.encodeInteger(counter,forKey:"counter")
 		}
