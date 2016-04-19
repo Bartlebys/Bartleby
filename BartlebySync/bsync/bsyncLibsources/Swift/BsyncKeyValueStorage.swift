@@ -14,7 +14,7 @@ enum BsyncKeyValueStorageError : ErrorType {
 }
 
 class BsyncKeyValueStorage {
-    private var _kvs = Mapper<CryptedKeyValueStorage>().map([String : AnyObject]())
+    private var _kvs = CryptedKeyValueStorage>()
     private var _filePath: String
     private var _shouldSave = false
     

@@ -14,10 +14,13 @@ public class CryptedKeyValueStorage:Mappable{
     
     
     var storage:[String:String]=[String:String]()
-
+    
+    public required init(){
+    }
     
     // MARK: Mappable
     
+ 
     public required init?(_ map: Map) {
         self.mapping(map)
     }
