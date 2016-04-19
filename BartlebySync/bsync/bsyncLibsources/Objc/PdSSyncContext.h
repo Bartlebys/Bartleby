@@ -40,9 +40,6 @@
 // If set to true any unexisting tree will be created on first sync
 @property (nonatomic)BOOL autoCreateTrees;
 
-
-@property (nonatomic)NSString*_Nullable creationKey;
-
 /**
  * The url are considerated as the file tree root
  *
@@ -50,7 +47,7 @@
  *  or              : file:///~/Desktop/test/
  *
  *  If the url is distant we extract the tree id.
- *  And determine th base url by truncated before the /tree/ component
+ *  And determine the base url by truncated before the /tree/ component
  *  eg :    http://yd.local/api/v1/BartlebySync/tree/nameOfTree/
  *          => base url is : http://yd.local/api/v1/BartlebySync/
  *          => tree id is : nameOfTree

@@ -23,7 +23,7 @@ class CreateDirectiveCommand: CommandBase {
             helpMessage: "A password")
         
         let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID",required: true,
-            helpMessage: "A spaceUID")
+            helpMessage: "A space UID")
         
         let filePath = StringOption(shortFlag: "f", longFlag: "file",required: true,
             helpMessage: "The file path e.f ~/Desktop/Samples/directives.json")
@@ -42,9 +42,6 @@ class CreateDirectiveCommand: CommandBase {
                                  helpMessage: "An email")
         
         // Optionnal
-        
-        let creativeKey = StringOption(shortFlag: "r", longFlag: "creativeKey",required: false,
-            helpMessage: "The creative key can be used if a distant tree creation is necessary")
         
         let automaticTreesCreation = BoolOption(shortFlag: "a", longFlag: "automatic-trees-creation",required: false,
             helpMessage: "Creates automatically distant trees")
@@ -69,7 +66,6 @@ class CreateDirectiveCommand: CommandBase {
             password,
             spaceUID,
             filePath,
-            creativeKey,
             automaticTreesCreation,
             secretKey,
             sharedSalt,
@@ -142,7 +138,6 @@ class CreateDirectiveCommand: CommandBase {
                 if hashMapViewName.value != nil {
                     directives.hashMapViewName=hashMapViewName.value!
                 }
-                directives.creativeKey=creativeKey.value
                 directives.email=email.value
                 directives.phoneNumber=phoneNumber.value
                 directives.password=password.value

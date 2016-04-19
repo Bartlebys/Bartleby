@@ -128,7 +128,6 @@ public class RunDirectivesCommand:CommandBase {
                                                 password: directives.password,
                                                 spaceUID: directives.spaceUID,
                                                 sharedSalt: directives.salt,
-                                                creativeKey:  directives.creativeKey,
                                                 verbose:verbose,
                                                 autoCreateTrees: directives.automaticTreeCreation)
             }
@@ -146,7 +145,6 @@ public class RunDirectivesCommand:CommandBase {
                                             sourceURL: directives.sourceURL!,
                                             andDestinationUrl: directives.destinationURL!,
                                             restrictedTo: directives.hashMapViewName,
-                                            creationKey: directives.creativeKey,
                                             autoCreateTrees: directives.automaticTreeCreation
                                         )
                 

@@ -9,7 +9,6 @@
 import XCTest
 
 class LocalDMGSyncTests: XCTestCase {
-    private static let _creativeKey = "local-sync-tests-key"
     private static let _diskManager = BsyncImageDiskManager()
     private static let _fileManager = NSFileManager()
     
@@ -85,7 +84,6 @@ class LocalDMGSyncTests: XCTestCase {
         let directives = BsyncDirectives()
         directives.sourceURL = LocalDMGSyncTests._masterVolumeURL
         directives.destinationURL = LocalDMGSyncTests._slaveVolumeURL
-        directives.creativeKey = LocalDMGSyncTests._creativeKey
         
         let directivesURL = LocalDMGSyncTests._masterVolumeURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
         BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
@@ -103,8 +101,7 @@ class LocalDMGSyncTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronize should success")
         let context = BsyncContext(sourceURL: LocalDMGSyncTests._masterVolumeURL,
                                    andDestinationUrl: LocalDMGSyncTests._slaveVolumeURL,
-                                   restrictedTo: BsyncDirectives.NO_HASHMAPVIEW,
-                                   creationKey: LocalDMGSyncTests._creativeKey)
+                                   restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
             try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message) in

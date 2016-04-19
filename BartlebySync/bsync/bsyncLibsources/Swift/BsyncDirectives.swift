@@ -33,7 +33,6 @@ import Foundation
     
     public var sourceURL:NSURL?
     public var destinationURL:NSURL?
-    public var creativeKey:String? //E.g For autocreation of trees
     public var hashMapViewName:String=BsyncDirectives.NO_HASHMAPVIEW
     
     public var computeTheHashMap:Bool=true
@@ -48,9 +47,6 @@ import Foundation
     public func areValid()->(valid:Bool,message:String?){
         if sourceURL == nil || destinationURL == nil {
             return (false,NSLocalizedString("The source and the destination must be set", comment: "The source and the destination must be set"))
-        }
-        if creativeKey == nil{
-            return (false,NSLocalizedString("The creative key must be set", comment: "The creative key must be set"))
         }
         if hashMapViewName != BsyncDirectives.NO_HASHMAPVIEW {
             // We currently support only down streams with hashMapView
@@ -78,11 +74,10 @@ import Foundation
      
      - returns: the directives
      */
-    public static func upStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL, creativeKey:String)->BsyncDirectives{
+    public static func upStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL)->BsyncDirectives{
         let directives=BsyncDirectives()
         directives.sourceURL=localURL
         directives.destinationURL=distantURL
-        directives.creativeKey=creativeKey
         return directives
         
     }
@@ -95,11 +90,10 @@ import Foundation
      
      - returns: the directives
      */
-    public static func downStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL,creativeKey:String)->BsyncDirectives{
+    public static func downStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL)->BsyncDirectives{
         let directives=BsyncDirectives()
         directives.sourceURL=distantURL
         directives.destinationURL=localURL
-        directives.creativeKey=creativeKey
         return directives
     }
     
@@ -119,10 +113,8 @@ import Foundation
         automaticTreeCreation <- map["automaticTreeCreation"]
         if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
             hashMapViewName <- map["hashMapViewName"]
-            creativeKey <- map["creativeKey"]
         }else{
             hashMapViewName <- (map["hashMapViewName"],CryptedStringTransform()) // Crypted to prevent discovery
-            creativeKey <- (map["creativeKey"],CryptedStringTransform())
         }
         
     }
@@ -135,7 +127,6 @@ import Foundation
         super.encodeWithCoder(coder)
         coder.encodeObject(sourceURL, forKey: "sourceURL")
         coder.encodeObject(destinationURL, forKey: "destinationURL")
-        coder.encodeObject(creativeKey, forKey: "creativeKey")
         coder.encodeObject(hashMapViewName, forKey: "hashMapViewName")
         coder.encodeBool(computeTheHashMap, forKey: "computeTheHashMap")
         coder.encodeBool(automaticTreeCreation, forKey: "automaticTreeCreation")
@@ -146,7 +137,6 @@ import Foundation
         super.init(coder: decoder)
         self.sourceURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"sourceURL") as NSURL?
         self.destinationURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"destinationURL") as NSURL?
-        self.creativeKey=String(decoder.decodeObjectOfClass(NSString.self, forKey:"creativeKey") as NSString?)
         self.hashMapViewName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"hashMapViewName") as NSString?)
         self.computeTheHashMap=decoder.decodeBoolForKey("computeTheHashMap")
         self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")

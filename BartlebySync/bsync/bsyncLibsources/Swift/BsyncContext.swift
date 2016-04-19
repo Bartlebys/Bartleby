@@ -40,9 +40,8 @@ import Foundation
         super.init()
     }
     
-    init(sourceURL: NSURL, andDestinationUrl: NSURL, restrictedTo hashMapViewName:String?,creationKey:String?,autoCreateTrees:Bool=false){
+    init(sourceURL: NSURL, andDestinationUrl: NSURL, restrictedTo hashMapViewName:String?,autoCreateTrees:Bool=false){
         super.init(sourceURL: sourceURL, andDestinationUrl: andDestinationUrl, restrictedTo: hashMapViewName)
-        self.creationKey=creationKey
         self.autoCreateTrees=autoCreateTrees
     }
     
@@ -64,7 +63,6 @@ import Foundation
         self.hashMapViewName <- map["hashMapViewName"]
         self.numberOfCompletedCommands <- map["numberOfCompletedCommands"]
         self.numberOfCommands <- map["numberOfCommands"]
-        self.creationKey <- map["creationKey"]
         self.autoCreateTrees <- map["autoCreateTrees"]
     }
 }

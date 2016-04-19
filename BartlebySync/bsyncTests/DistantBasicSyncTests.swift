@@ -10,7 +10,6 @@ import XCTest
 
 class DistantBasicSyncTests: XCTestCase {
     private static let _fileManager = NSFileManager()
-    private static let _creativeKey = "local-sync-tests-key"
 
     private static let _treeName = Bartleby.randomStringWithLength(6)
     private static let _upFolderPath = NSTemporaryDirectory() + _treeName
@@ -38,7 +37,6 @@ class DistantBasicSyncTests: XCTestCase {
         let directives = BsyncDirectives()
         directives.sourceURL = DistantBasicSyncTests._upFolderURL
         directives.destinationURL = DistantBasicSyncTests._distantTreeURL
-        directives.creativeKey = DistantBasicSyncTests._creativeKey
         
         let directivesURL = DistantBasicSyncTests._upFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
         BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
@@ -54,8 +52,7 @@ class DistantBasicSyncTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronize should success")
         let context = BsyncContext(sourceURL: DistantBasicSyncTests._upFolderURL,
                                    andDestinationUrl: DistantBasicSyncTests._distantTreeURL,
-                                   restrictedTo: BsyncDirectives.NO_HASHMAPVIEW,
-                                   creationKey: DistantBasicSyncTests._creativeKey)
+                                   restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
             try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message) in

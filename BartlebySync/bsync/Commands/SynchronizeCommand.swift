@@ -144,7 +144,6 @@ public class SynchronizeCommand:CommandBase{
                                 password:String?,
                                 spaceUID:String?,
                                 sharedSalt:String?,
-                                creativeKey:String?=nil,
                                 verbose:Bool=true,
                                 autoCreateTrees:Bool=false
         
@@ -155,7 +154,6 @@ public class SynchronizeCommand:CommandBase{
         let context=BsyncContext(   sourceURL: sourceURL,
                                     andDestinationUrl: destinationURL,
                                     restrictedTo: hashMapViewName,
-                                    creationKey:creativeKey,
                                     autoCreateTrees:autoCreateTrees
                                 )
         

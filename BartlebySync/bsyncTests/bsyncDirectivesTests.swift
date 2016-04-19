@@ -17,7 +17,7 @@ class bsyncDirectivesTests: XCTestCase {
         do {
             try fsm.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: nil)
             let sourceURL=TestConfiguration.distantTestTreeUrl
-            let directives = BsyncDirectives.upStreamDirectivesWithDistantURL(sourceURL, localURL: folderURL, creativeKey: TestConfiguration.creativeKey)
+            let directives = BsyncDirectives.upStreamDirectivesWithDistantURL(sourceURL, localURL: folderURL)
             BsyncAdmin.createDirectives(directives, saveTo: folderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false))
             let fsm=NSFileManager()
             if fsm.fileExistsAtPath(folderURL.path!){

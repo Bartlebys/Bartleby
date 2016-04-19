@@ -204,8 +204,6 @@
 - (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         NSMutableDictionary*parameters=[NSMutableDictionary dictionary];
-        if(_syncContext.creationKey)
-            [parameters setObject:_syncContext.creationKey forKey:@"key"];
         
         
         NSURL*baseUrl=[_syncContext.destinationBaseUrl URLByAppendingPathComponent:@"/install"];
@@ -297,25 +295,18 @@
 
     
     
-    if(! _syncContext.creationKey || ! _syncContext.credentials.spaceUID ){
-        printf("Invalid context creation key or credentials.spaceUID ");
+    if(! _syncContext.credentials.spaceUID ){
+        printf("Invalid context credentials.spaceUID ");
         block(NO,0);
     }else{
-        NSMutableDictionary*parameters=[NSMutableDictionary dictionary];
-        [parameters setObject:_syncContext.creationKey forKey:@"key"];
-        
         // URL
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/create/tree/%@",identifier]];
-        NSURL*urlWithParameters=[baseUrl URLByAppendingQueryStringDictionary:parameters];
-        
-        
-        
         
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
                                                                            withActionName:@"BartlebySyncCreateTree"
                                                                                 forMethod:@"POST"
-                                                                                      and:urlWithParameters];
+                                                                                      and:baseUrl];
         
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if(!error && response){
@@ -411,21 +402,18 @@
          withTreeWithId:(NSString*)identifier
      andCompletionBlock:(void (^)(BOOL success, NSInteger statusCode))block{
     
-    if( ! _syncContext.creationKey || ! _syncContext.credentials.spaceUID  ){
+    if( ! _syncContext.credentials.spaceUID  ){
         printf("Invalid context creationKey and credentials.spaceUID must be set");
         block(NO,0);
     }else{
         // URL
-        NSMutableDictionary*parameters=[NSMutableDictionary dictionary];
-        [parameters setObject:_syncContext.creationKey forKey:@"key"];
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
-        NSURL*urlWithParameters=[baseUrl URLByAppendingQueryStringDictionary:parameters];
     
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
                                                                            withActionName:@"BartlebySyncTouchTree"
                                                                                 forMethod:@"POST"
-                                                                                      and:urlWithParameters];
+                                                                                      and:baseUrl];
         
 
     // TASK
