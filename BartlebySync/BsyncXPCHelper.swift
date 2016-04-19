@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 
-class BsyncXPCHelperHandler {
+class BsyncXPCHelperDMGHandler {
     
     var detachImageOnCompletion:Bool
     
@@ -65,8 +65,8 @@ class BsyncXPCHelper{
      - parameter completionBlock:        the completionBlock
      */
     func createDMG(card:BsyncDMGCard
-        ,thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperHandler)->()
-        ,completion:BsyncXPCHelperHandler)->(){
+        ,thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperDMGHandler)->()
+        ,completion:BsyncXPCHelperDMGHandler)->(){
             
             // The card must be valid
             let validation=card.evaluate()
@@ -192,8 +192,8 @@ class BsyncXPCHelper{
      - parameter completionBlock:  the completion block
      */
     func mountDMG(card:BsyncDMGCard,
-                  thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperHandler)->(),
-                  completion:BsyncXPCHelperHandler)->() {
+                  thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperDMGHandler)->(),
+                  completion:BsyncXPCHelperDMGHandler)->() {
             
             // The car must be valid
             let validation=card.evaluate()
@@ -213,7 +213,7 @@ class BsyncXPCHelper{
                 let finalCompletion = completion
                 // Then Create an encapsulated internal "completion" object
                 // That will be called before to call the externalCompletion
-                let internalCompletion = BsyncXPCHelperHandler(onCompletion: { (success, message) -> () in
+                let internalCompletion = BsyncXPCHelperDMGHandler(onCompletion: { (success, message) -> () in
                     if success && completion.detachImageOnCompletion {
                         // We must detach
                             xpc.detachVolume(card.volumeName,
