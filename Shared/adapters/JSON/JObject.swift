@@ -84,11 +84,13 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         }
     }
     
+
     
-    
-    // The creation of a Unique Identifier is ressource intensive.
-    //We create the UID only if necessary.
-    private func _createUIDifNecessary(){
+    /**
+     The creation of a Unique Identifier is ressource intensive.
+     We create the UID only if necessary.
+     */
+    public func defineUID(){
         if self._id == Default.NO_UID{
             self._id=Bartleby.createUID()
         }
@@ -96,7 +98,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     final public var UID:String{
         get{
-            self._createUIDifNecessary()
+            self.defineUID()
             return _id
         }
     }
