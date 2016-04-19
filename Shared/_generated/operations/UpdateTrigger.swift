@@ -205,13 +205,13 @@ inDataSpace spaceUID:String,
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"UpdateTrigger" ,forMethod:"PUT", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseString{ response in
+
                     // Store the response
                     let request=response.request
                     let result=response.result
                     let response=response.response
 
                     // Bartleby consignation
-
                     let context = JHTTPResponse( code: 2801184089,
                         caller: "UpdateTrigger.execute",
                         relatedURL:request?.URL,

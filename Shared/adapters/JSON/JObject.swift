@@ -73,7 +73,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         willSet (identifier){
             if _id != Default.NO_UID {
                 self._warningCounter += 1
-                bprint("¡WARNING(\(self._warningCounter))! multiple allocation of \(identifier) \(self.referenceName) \(self.hash)", file: #file, function: #function, line: #line)
+                //bprint("¡WARNING(\(self._warningCounter))! multiple allocation of \(identifier) \(self.referenceName) \(self.hash)", file: #file, function: #function, line: #line)
                 Registry.unRegister(self)
             }
         }

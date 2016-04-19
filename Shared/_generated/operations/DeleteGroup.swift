@@ -203,13 +203,13 @@ fromDataSpace spaceUID:String,
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteGroup" ,forMethod:"DELETE", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseString{ response in
+
                     // Store the response
                     let request=response.request
                     let result=response.result
                     let response=response.response
 
                     // Bartleby consignation
-
                     let context = JHTTPResponse( code: 4184959228,
                         caller: "DeleteGroup.execute",
                         relatedURL:request?.URL,

@@ -212,13 +212,13 @@ inDataSpace spaceUID:String,
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreateAliases" ,forMethod:"POST", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseString{ response in
+
                     // Store the response
                     let request=response.request
                     let result=response.result
                     let response=response.response
 
                     // Bartleby consignation
-
                     let context = JHTTPResponse( code: 983958117,
                         caller: "CreateAliases.execute",
                         relatedURL:request?.URL,
