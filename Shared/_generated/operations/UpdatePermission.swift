@@ -39,11 +39,13 @@ import ObjectMapper
         super.mapping(map)
 		_permission <- map["_permission"]
 		_spaceUID <- map["_spaceUID"]
+		_observationUID <- map["_observationUID"]
+		_operation.spaceUID <- map["_operation.spaceUID"]
+		_operation.creatorUID <- map["_operation.creatorUID"]
 		_operation.status <- map["_operation.status"]
 		_operation.counter <- map["_operation.counter"]
 		_operation.creationDate <- (map["_operation.creationDate"],ISO8601DateTransform())
 		_operation.baseUrl <- (map["_operation.baseUrl"],URLTransform())
-		_observationUID <- map["_observationUID"]
     }
 
 
@@ -53,11 +55,13 @@ import ObjectMapper
         super.init(coder: decoder)
 		_permission=decoder.decodeObjectOfClass(Permission.self, forKey: "_permission")! 
 		_spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
+		_observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
+		_operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
+		_operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
 		_operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
 		_operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
 		_operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
 		_operation.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"_operation.baseUrl") as NSURL?
-		_observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
 
     }
 
@@ -65,6 +69,9 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeObject(_permission,forKey:"_permission")
 		coder.encodeObject(_spaceUID,forKey:"_spaceUID")
+		coder.encodeObject(_observationUID,forKey:"_observationUID")
+		coder.encodeObject(_operation.spaceUID,forKey:"_operation.spaceUID")
+		coder.encodeObject(_operation.creatorUID,forKey:"_operation.creatorUID")
 		coder.encodeObject(_operation.status.rawValue ,forKey:"_operation.status")
 		if let _operation_counter = self._operation.counter {
 			coder.encodeInteger(_operation_counter,forKey:"_operation.counter")
@@ -75,7 +82,6 @@ import ObjectMapper
 		if let _operation_baseUrl = self._operation.baseUrl {
 			coder.encodeObject(_operation_baseUrl,forKey:"_operation.baseUrl")
 		}
-		coder.encodeObject(_observationUID,forKey:"_observationUID")
     }
 
 
@@ -117,7 +123,8 @@ import ObjectMapper
         let context=Context(code:2238199822, caller: "UpdatePermission.commit")
         if let registry = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
 
-                // Prepare the operation
+                // Prepare the operation serialization
+                self.defineUID()
                 self._operation.defineUID()
                 self._operation.counter=0
                 self._operation.status=Operation.Status.Pending
@@ -126,6 +133,7 @@ import ObjectMapper
                 self._operation.spaceUID=self._spaceUID
                 if let rootUser=registry.registryMetadata.rootUser{
                     self._operation.creatorUID=rootUser.UID
+                    self.creatorUID=rootUser.UID
                 }
 
                 // Provision the operation.
