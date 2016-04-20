@@ -48,12 +48,13 @@ class CreateUserCommand : CommandBase {
                     
                     let user=User()
                     user.spaceUID = space
+                    user.creatorUID = user.UID
                     user.password = pw
                     
-                    print (user.UID)
                     
                     CreateUser.execute(user, inDataSpace: space,
                                        sucessHandler: { (context) in
+                                        print (user.UID)
                                         exit(EX_OK)
                         }, failureHandler: { (context) in
                             // Print a JSON failure description

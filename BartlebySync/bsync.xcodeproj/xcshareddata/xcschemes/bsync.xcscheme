@@ -78,15 +78,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-user"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "kvs"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--do"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "upsert"
@@ -94,11 +94,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "read"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--key pouet"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--value baba"
@@ -106,7 +106,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--folder $HOME/temp/kvs"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-directives --user RjgzNkE5QTItMzY5OC00QTMyLUJGQUYtQ0Y5NDVDQ0NGN0VC --source ~/Desktop/UP_SYNC_DEMO/TREE-DEMO1 --destination http://yd.local/api/v1/BartlebySync/tree/TREE-DEMO1 --creativeKey default-creative-key"
@@ -114,15 +114,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--url http://yd.local/api/v1"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = " --password 12345"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
-            isEnabled = "NO">
+            argument = "--spaceUID OUVGOUEzNzYtMzQxMy00MzNBLUFGQjMtNUExMTk5QkUxMTZF"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
