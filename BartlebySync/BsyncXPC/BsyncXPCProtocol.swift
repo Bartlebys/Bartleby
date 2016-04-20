@@ -100,7 +100,7 @@ import Foundation
      - returns: N/A
      */
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String
-        ,handler:(taskIndex:Int,totalTaskCount:Int,taskProgress:Double,progressMessage:String?,completed:Bool,successfulCompletion:Bool,completionMessage:String?)->())->()
+        ,handler:ComposedProgressAndCompletionHandler)->()
     
     
 

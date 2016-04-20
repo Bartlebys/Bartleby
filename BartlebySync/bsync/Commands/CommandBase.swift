@@ -75,9 +75,9 @@ public class CommandBase{
     
     // MARK: Versatile completion
     
-    var progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?)->())?
+    var progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())?
     
-    func addProgressBlock(progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?)->())){
+    func addProgressBlock(progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())){
         self.progressBlock=progressBlock
     }
     

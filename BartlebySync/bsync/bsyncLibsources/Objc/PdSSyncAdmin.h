@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger,
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message))progressBlock
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message, NSData* _Nullable data))progressBlock
                  andCompletionBlock:(void(^_Nonnull)(BOOL success,NSString*_Nullable message))completionBlock;
 
 

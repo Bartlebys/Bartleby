@@ -94,7 +94,7 @@ public enum BsyncAdminError:ErrorType{
      - parameter progressBlock:   its progress block
      - parameter completionBlock: its completion block
      */
-    public func synchronizeWithprogressBlock(progressBlock : ((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?)->())?,
+    public func synchronizeWithprogressBlock(progressBlock : ((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())?,
                                             completionBlock : ((success:Bool, message:String?) -> Void)) throws{
         if let admin=self._admin{
             admin.synchronizeWithprogressBlock(progressBlock, andCompletionBlock:completionBlock)

@@ -156,34 +156,14 @@ import Foundation
      - returns: N/A
      */
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String
-        ,handler:(taskIndex:Int,totalTaskCount:Int,taskProgress:Double,progressMessage:String?,completed:Bool,successfulCompletion:Bool,completionMessage:String?)->())->(){
+        ,handler:ComposedProgressAndCompletionHandler)->(){
             
             
             // Those handlers produce an adaptation 
             // From the unique handler form 
             // progress and completion handlers.
        
-            let handlers=ProgressAndCompletionHandler { (success, message) -> () in
-                // By convention we inject false progress information
-                handler(    taskIndex: 0,           // Dummy Progress section
-                            totalTaskCount: 0,      // Dummy
-                            taskProgress: 1,        // Dummy
-                            progressMessage: nil,
-                            completed: true,
-                            successfulCompletion: success,
-                            completionMessage: message)
-            }
-            
-            handlers.addProgressBlock { (taskIndex, totalTaskCount, taskProgress, message) -> () in
-                handler(    taskIndex: taskIndex,
-                            totalTaskCount: totalTaskCount,
-                            taskProgress: taskProgress,
-                            progressMessage: message,
-                            completed: false,               // Dummy Completion section
-                            successfulCompletion: false,    // Dummy
-                            completionMessage:nil )         // Dummy
-            }
-            
+            let handlers=ProgressAndCompletionHandler.handlersFrom(handler)
         
             // This command is composed and complex
             // So we have adopted a versatile completion and progress

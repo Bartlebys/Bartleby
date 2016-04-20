@@ -27,7 +27,6 @@ public protocol Serializer{
     func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
     
     
-    
     /**
      Serialize an instance
      
@@ -47,7 +46,6 @@ public protocol Serializer{
      */
     func deserialize(data:NSData) -> Serializable
     
-
     
     /**
      Serialize an instance

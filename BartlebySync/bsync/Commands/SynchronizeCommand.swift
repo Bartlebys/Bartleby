@@ -191,7 +191,7 @@ public class SynchronizeCommand:CommandBase{
                 do {
                     let admin:BsyncAdmin=BsyncAdmin(context:context)
                     if self.progressBlock == nil {
-                         self.addProgressBlock({ (taskIndex, totalTaskCount, taskProgress, message) -> () in
+                         self.addProgressBlock({ (taskIndex, totalTaskCount, taskProgress, message,nil) -> () in
                             if let m=message {
                                 self.printVerbose(m)
                             }else{

@@ -64,7 +64,7 @@
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message))progressBlock
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable))progressBlock
                  andCompletionBlock:(void(^_Nonnull)(BOOL success,NSString*_Nullable message))completionBlock{
     
     
@@ -86,7 +86,7 @@
 }
 
 
--(void)_prepareAndSynchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message))progressBlock
+-(void)_prepareAndSynchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
                             andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock
                                numberOfAttempt:(int)attempts{
     attempts++;
@@ -131,7 +131,7 @@
 
 
 
-- (void)_synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message))progressBlock
+- (void)_synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
                    andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock{
     
     
@@ -148,12 +148,12 @@
             
             NSString*s=[NSString stringWithFormat:@"Source\n%@",[sourceHashMap dictionaryRepresentation]];
             NSString*d=[NSString stringWithFormat:@"Destination\n%@",[destinationHashMap dictionaryRepresentation]];
-            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"# SYNCRONIZATION #"]);
-            progressBlock(0,cmdCounts,0.f,s);
-            progressBlock(0,cmdCounts,0.f,d);
+            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"# SYNCRONIZATION #"],nil);
+            progressBlock(0,cmdCounts,0.f,s,nil);
+            progressBlock(0,cmdCounts,0.f,d,nil);
             
             
-            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"DeltaPathMap\n%@",[dpm dictionaryRepresentation]]);
+            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"DeltaPathMap\n%@",[dpm dictionaryRepresentation]],nil);
             NSMutableString*cmdString=[NSMutableString string];
             [cmdString appendString:@"## Commands to be executed : ##\n"];
             for (NSString*cmd in commands) {
@@ -166,13 +166,13 @@
                 [cmdString appendString:tmpCmdString];
             }
             [cmdString appendString:@"## End of Commands List ##"];
-            progressBlock(0,cmdCounts,0.f,cmdString);
+            progressBlock(0,cmdCounts,0.f,cmdString,nil);
             
             
             _interpreter= [PdSCommandInterpreter interpreterWithBunchOfCommand:commands context:self->_syncContext
                                                                  progressBlock:^(uint taskIndex, double progress) {
                                                                      NSString*cmd=([commands count]>taskIndex)?[commands objectAtIndex:taskIndex]:@"POST CMD";
-                                                                     progressBlock(taskIndex,cmdCounts,progress,cmd);
+                                                                     progressBlock(taskIndex,cmdCounts,progress,cmd,nil);
                                                                  } andCompletionBlock:^(BOOL success, NSString *message) {
                                                                      completionBlock(success,message);
                                                                  }];

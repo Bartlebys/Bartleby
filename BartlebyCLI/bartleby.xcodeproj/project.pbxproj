@@ -163,6 +163,7 @@
 		E5D086CD1C550E7500F0090E /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C91C550E7500F0090E /* CommandLine.swift */; };
 		E5D086CE1C550E7500F0090E /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086CB1C550E7500F0090E /* Option.swift */; };
 		E5D086CF1C550E7500F0090E /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086CC1C550E7500F0090E /* StringExtensions.swift */; };
+		E5D940F61CC7B5E500956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940F51CC7B5E500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D9BCED1CABCA61008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCEC1CABCA61008BEEC3 /* Alias+Facilities.swift */; };
 /* End PBXBuildFile section */
 
@@ -339,6 +340,7 @@
 		E5D086CB1C550E7500F0090E /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5D086CC1C550E7500F0090E /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		E5D086D01C550EFD00F0090E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5D940F51CC7B5E500956C99 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5D9BCEC1CABCA61008BEEC3 /* Alias+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alias+Facilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -655,6 +657,7 @@
 		E53E26CB1CA571F50079ED23 /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				E5D940F51CC7B5E500956C99 /* ProgressAndCompletionHandler.swift */,
 				E53E26CC1CA571F50079ED23 /* BFileManager.swift */,
 				E53E26CD1CA571F50079ED23 /* HTTPManager.swift */,
 				E53E26CE1CA571F50079ED23 /* Pluralization.swift */,
@@ -947,6 +950,7 @@
 				E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */,
 				E5B98E1A1CC0E63400A7ECD1 /* Mapper.swift in Sources */,
 				E5B98E2A1CC0E63C00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
+				E5D940F61CC7B5E500956C99 /* ProgressAndCompletionHandler.swift in Sources */,
 				E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */,
 				E5CD99F71C86D96E00C64569 /* Stream.swift in Sources */,
 				E53E26F71CA571F50079ED23 /* DeleteLockers.swift in Sources */,

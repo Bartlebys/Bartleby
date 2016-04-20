@@ -12,9 +12,15 @@ import Foundation
     import ObjectMapper
 #endif
 
-
 public class JSerializer:Serializer{
     
+    /**
+     Deserializes from NSData
+     
+     - parameter data: the binary data
+     
+     - returns: an instance (or an ObjectError)
+     */
     static public func deserialize(data:NSData) ->Serializable {
         do {
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
@@ -30,13 +36,19 @@ public class JSerializer:Serializer{
         return e
     }
     
+    
+    /**
+     Deserializes from NSData
+     
+     - parameter dictionary: the dictionnary
+     
+     - returns: an instance (or an ObjectError)
+     */
     static public func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable{
         if let referenceName:String = dictionary[Default.REFERENCE_NAME_KEY] as? String {
-            
-            // referenceName=referenceName.stringByReplacingOccurrencesOfString("NSKVONotifying_",withString:"")
             if let Reference:Collectible.Type = NSClassFromString(referenceName) as? Collectible.Type {  
                 if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary: dictionary)
+                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
                     mappable.mapping(map)
                     if let serializable = mappable as? Serializable{
                         return serializable
@@ -66,7 +78,7 @@ public class JSerializer:Serializer{
     }
     
     
-    
+
     public func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable{
        return JSerializer.deserializeFromDictionary(dictionary)
     }
@@ -90,8 +102,5 @@ public class JSerializer:Serializer{
             return "json"
         }
     }
-    
-    
-    
 
 }

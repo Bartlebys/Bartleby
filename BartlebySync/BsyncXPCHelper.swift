@@ -363,10 +363,10 @@ class BsyncXPCHelper{
                 // We need to provide a unique block to be compatible with the XPC context
                 // So we use an handler adapter that relays to the progress and completion handlers
                 // to mask the constraint.
-                let indirectHandler:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,progressMessage:String?,completed:Bool,successfulCompletion:Bool,completionMessage:String?)->())={
-                    (taskIndex,totalTaskCount,taskProgress,progressMessage,completed,successfulCompletion,completionMessage)-> Void in
+            let indirectHandler:ComposedProgressAndCompletionHandler={
+                (taskIndex,totalTaskCount,taskProgress,progressMessage,data,completed,successfulCompletion,completionMessage)-> Void in
                     if let progressBlock=handlers.progressBlock{
-                        progressBlock(taskIndex:taskIndex,totalTaskCount:totalTaskCount,taskProgress:taskProgress,message:progressMessage)
+                        progressBlock(taskIndex:taskIndex,totalTaskCount:totalTaskCount,taskProgress:taskProgress,message:progressMessage,data:nil)
                     }
                     if completed{
                         handlers.completionBlock(success: completed,message: completionMessage)

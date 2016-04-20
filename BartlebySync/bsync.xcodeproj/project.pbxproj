@@ -439,7 +439,6 @@
 		E53E28E21CA572E20079ED23 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
 		E53E28E31CA572E20079ED23 /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		E53E28E41CA572E20079ED23 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
-		E53E28E51CA572E80079ED23 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5831C741C52A9F8009703A8 /* ProgressAndCompletionHandler.swift */; };
 		E53E28E61CA572E80079ED23 /* SnapshotCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594061C3E627A000576AD /* SnapshotCommand.swift */; };
 		E53E28E71CA572E80079ED23 /* RecoverCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594081C3E639A000576AD /* RecoverCommand.swift */; };
 		E53E28E81CA572E80079ED23 /* CreateHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */; };
@@ -501,7 +500,6 @@
 		E55C925C1CBF84ED008163F6 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C41C550E6800F0090E /* StringExtensions.swift */; };
 		E55C92621CBF853D008163F6 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		E55C92631CBF853D008163F6 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
-		E55C92641CBF853D008163F6 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5831C741C52A9F8009703A8 /* ProgressAndCompletionHandler.swift */; };
 		E55C92651CBF853D008163F6 /* SnapshotCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594061C3E627A000576AD /* SnapshotCommand.swift */; };
 		E55C92661CBF853D008163F6 /* RecoverCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594081C3E639A000576AD /* RecoverCommand.swift */; };
 		E55C92671CBF853D008163F6 /* CreateHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */; };
@@ -537,7 +535,6 @@
 		E55FF29C1C3ED5C000BD49DB /* CreateDmgCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */; };
 		E5667CCF1C478EAB007073FA /* RevealDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */; };
 		E56A8FEB1C8DF4EF0043F90E /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
-		E56A8FFF1C8DF5090043F90E /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5831C741C52A9F8009703A8 /* ProgressAndCompletionHandler.swift */; };
 		E56A90001C8DF5120043F90E /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A90A11C8DFF2C0043F90E /* bsyncBasicTests.swift */; };
 		E57BC7E61C401536004FA8B1 /* SynchronizeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */; };
@@ -590,6 +587,8 @@
 		E5B98EBE1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5B98EBF1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5C0CF201C36CD6E00F3B7B8 /* TestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestConfiguration.swift */; };
+		E5D940E81CC7B5B500956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
+		E5D940E91CC7B5BB00956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
@@ -702,7 +701,7 @@
 		5BB60FA01CBFE51900D23B4F /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		5BB60FA11CBFE51900D23B4F /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
 		5BB60FA41CBFE51900D23B4F /* BaseObject+Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseObject+Protocols.swift"; sourceTree = "<group>"; };
-		5BB60FA51CBFE51900D23B4F /* JCollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCollectionMetadatum.swift; sourceTree = "<group>"; };
+		5BB60FA51CBFE51900D23B4F /* JCollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JCollectionMetadatum.swift; path = JSON/JCollectionMetadatum.swift; sourceTree = "<group>"; };
 		5BB60FA61CBFE51900D23B4F /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
 		5BB60FA71CBFE51900D23B4F /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		5BB60FA81CBFE51900D23B4F /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
@@ -802,7 +801,6 @@
 		E578DD1D1C3AD08200617627 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Dependencies/ObjectMapper/build/Debug/ObjectMapper.framework; sourceTree = "<group>"; };
 		E578DEB31C3AD2FE00617627 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Dependencies/Alamofire/build/Debug/Alamofire.framework; sourceTree = "<group>"; };
 		E578DEB51C3AD30400617627 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Dependencies/ObjectMapper/build/Debug/ObjectMapper.framework; sourceTree = "<group>"; };
-		E5831C741C52A9F8009703A8 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCHelper.swift; sourceTree = "<group>"; };
 		E58504491C3F9F6000E2F64A /* KeyValueStorageCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueStorageCommand.swift; sourceTree = "<group>"; };
 		E585044C1C3FA12000E2F64A /* LoginCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCommand.swift; sourceTree = "<group>"; };
@@ -854,6 +852,7 @@
 		E5D086C11C550E6800F0090E /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		E5D086C31C550E6800F0090E /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5D086C41C550E6800F0090E /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPC.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5C61CBF5E5E006AFA2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5FEE5E61CBF5FA2006AFA2E /* BsyncXPC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BsyncXPC-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1028,6 +1027,7 @@
 		5BB60FA21CBFE51900D23B4F /* adapters */ = {
 			isa = PBXGroup;
 			children = (
+				5BB60FA51CBFE51900D23B4F /* JCollectionMetadatum.swift */,
 				5BB60FA31CBFE51900D23B4F /* JSON */,
 			);
 			path = adapters;
@@ -1037,7 +1037,6 @@
 			isa = PBXGroup;
 			children = (
 				5BB60FA41CBFE51900D23B4F /* BaseObject+Protocols.swift */,
-				5BB60FA51CBFE51900D23B4F /* JCollectionMetadatum.swift */,
 				5BB60FA61CBFE51900D23B4F /* JDataPerformer.swift */,
 				5BB60FA71CBFE51900D23B4F /* JDocument.swift */,
 				5BB60FA81CBFE51900D23B4F /* JHTTPCommand.swift */,
@@ -1140,6 +1139,7 @@
 		5BB60FD21CBFE51900D23B4F /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */,
 				5BB60FD31CBFE51900D23B4F /* BFileManager.swift */,
 				5BB60FD41CBFE51900D23B4F /* HTTPManager.swift */,
 				5BB60FD51CBFE51900D23B4F /* Pluralization.swift */,
@@ -1211,7 +1211,6 @@
 			children = (
 				5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */,
 				5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */,
-				E5831C741C52A9F8009703A8 /* ProgressAndCompletionHandler.swift */,
 				E54594061C3E627A000576AD /* SnapshotCommand.swift */,
 				E54594081C3E639A000576AD /* RecoverCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
@@ -1648,6 +1647,7 @@
 				5BB610291CBFE51900D23B4F /* CreateAlias.swift in Sources */,
 				5BB60FED1CBFE51900D23B4F /* PermissionsCollectionController.swift in Sources */,
 				E5B98EBA1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
+				E5D940E81CC7B5B500956C99 /* ProgressAndCompletionHandler.swift in Sources */,
 				E5B98EB11CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
 				5BB610411CBFE51900D23B4F /* CreatePermission.swift in Sources */,
 				E53E28F31CA572E80079ED23 /* CommandBase.swift in Sources */,
@@ -1701,7 +1701,6 @@
 				5BB611211CBFE51900D23B4F /* JSerializer.swift in Sources */,
 				5BB610A91CBFE51900D23B4F /* ReadLockersByQuery.swift in Sources */,
 				E5B98EA21CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
-				E53E28E51CA572E80079ED23 /* ProgressAndCompletionHandler.swift in Sources */,
 				E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */,
 				5BB611491CBFE51900D23B4F /* CollectionMetadatum.swift in Sources */,
 				5BB610AD1CBFE51900D23B4F /* ReadPermissionById.swift in Sources */,
@@ -1932,7 +1931,6 @@
 				5BB611061CBFE51900D23B4F /* JCollectionMetadatum.swift in Sources */,
 				5BB611861CBFE51900D23B4F /* User+Auth.swift in Sources */,
 				5BB60FDE1CBFE51900D23B4F /* AliasesCollectionController.swift in Sources */,
-				E56A8FFF1C8DF5090043F90E /* ProgressAndCompletionHandler.swift in Sources */,
 				5BB610D21CBFE51900D23B4F /* UpdateAlias.swift in Sources */,
 				5BB610AE1CBFE51900D23B4F /* ReadPermissionById.swift in Sources */,
 				5BB6109E1CBFE51900D23B4F /* ReadGroupsByQuery.swift in Sources */,
@@ -2012,7 +2010,6 @@
 				5BB610A71CBFE51900D23B4F /* ReadLockersByIds.swift in Sources */,
 				5BB610D71CBFE51900D23B4F /* UpdateAliases.swift in Sources */,
 				5BB611831CBFE51900D23B4F /* NSURL+Parameters.swift in Sources */,
-				E55C92641CBF853D008163F6 /* ProgressAndCompletionHandler.swift in Sources */,
 				E55C92761CBF854D008163F6 /* HashMap.m in Sources */,
 				5BB60FEB1CBFE51900D23B4F /* OperationsCollectionController.swift in Sources */,
 				5BB611731CBFE51900D23B4F /* UserProtocol.swift in Sources */,
@@ -2056,6 +2053,7 @@
 				E55C926C1CBF853D008163F6 /* CleanupCommand.swift in Sources */,
 				E5B98EBC1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
 				E5B98EB31CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
+				E5D940E91CC7B5BB00956C99 /* ProgressAndCompletionHandler.swift in Sources */,
 				5BB6119B1CBFE51900D23B4F /* BFileManager.swift in Sources */,
 				5BB60FFB1CBFE51900D23B4F /* Alias.swift in Sources */,
 				5BB60FF31CBFE51900D23B4F /* TriggersCollectionController.swift in Sources */,
