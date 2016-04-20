@@ -399,6 +399,7 @@
 		5BB9F8511CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5BF4DF801CC7E3D800965DC0 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
+		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
 		E53E27521CA572940079ED23 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		E53E27531CA572940079ED23 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
@@ -1881,6 +1882,7 @@
 				E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */,
 				E5667CCF1C478EAB007073FA /* RevealDirectivesCommand.swift in Sources */,
 				5BB60FE21CBFE51900D23B4F /* GroupsCollectionController.swift in Sources */,
+				5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */,
 				E5B98EBB1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
 				5B8E5D631C8D7FCD002CFA03 /* Validation.swift in Sources */,
 				5BB610661CBFE51900D23B4F /* DeleteGroups.swift in Sources */,
