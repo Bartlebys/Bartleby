@@ -114,7 +114,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "login"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-directives"
@@ -122,22 +122,18 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--user QkM4OTk2NTItRDAzRi00OUNBLThBNDktMjI5RDRBQkRBNDUy"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--api http://yd.local/api/v1"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = " --password 12345"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--source $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--file $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1/directives.bsync"
+            argument = "--api http://yd.local/api/v1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = " --password 12345"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--source $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
@@ -146,15 +142,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "run"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--file ~/UP_SYNC_DEMO/directives.bsync"
-            isEnabled = "NO">
+            argument = "--file $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1/directives.bsync"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"

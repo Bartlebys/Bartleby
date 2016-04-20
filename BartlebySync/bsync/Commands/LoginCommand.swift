@@ -62,7 +62,7 @@ class LoginCommand: CommandBase {
                         })
                     } else {
                         print("No user with id: \(userUID)")
-                        exit(EX_NOUSER)
+                        exit(EX__BASE)
                     }
                 } else {
                     print("Invalid API URL \(api)")
