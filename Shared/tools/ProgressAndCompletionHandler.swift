@@ -8,7 +8,7 @@
 import Foundation
 
 // A composed Closure with a progress and acompletion section
-typealias ComposedProgressAndCompletionHandler = (taskIndex:Int,totalTaskCount:Int,taskProgress:Double,progressMessage:String?,data:NSData?,completed:Bool,successfulCompletion:Bool,completionMessage:String?)->()
+public typealias ComposedProgressAndCompletionHandler = (taskIndex:Int,totalTaskCount:Int,taskProgress:Double,progressMessage:String?,data:NSData?,completed:Bool,successfulCompletion:Bool,completionMessage:String?)->()
 
 
 //  Generally Used in XPC facades because we can pass only one block per XPC call
@@ -16,15 +16,15 @@ typealias ComposedProgressAndCompletionHandler = (taskIndex:Int,totalTaskCount:I
 @objc(ProgressAndCompletionHandler) public class ProgressAndCompletionHandler:NSObject{
     
     /// The progress block
-    var progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())?
+    public var progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())?
     
-    func addProgressBlock(progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())){
+    public func addProgressBlock(progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())){
         self.progressBlock=progressBlock
     }
     /// The completion block
-    var completionBlock:((success:Bool,message:String?)->())
+    public var completionBlock:((success:Bool,message:String?)->())
     
-    init(completionBlock:((success:Bool,message:String?)->())){
+    public init(completionBlock:((success:Bool,message:String?)->())){
         self.completionBlock=completionBlock
     }
 
@@ -34,7 +34,7 @@ typealias ComposedProgressAndCompletionHandler = (taskIndex:Int,totalTaskCount:I
      - parameter composedHandler: the composed handler
      - returns: an instance of ProgressAndCompletionHandler
      */
-    static func handlersFrom(composedHandler:ComposedProgressAndCompletionHandler)->ProgressAndCompletionHandler{
+    public static func handlersFrom(composedHandler:ComposedProgressAndCompletionHandler)->ProgressAndCompletionHandler{
         
         // Those handlers produce an adaptation
         // From the unique handler form
