@@ -8,9 +8,6 @@
 
 import Foundation
 
-extension String: Initializable {
-    
-}
 
 extension String:Serializable {
     
@@ -22,7 +19,7 @@ extension String:Serializable {
         }
     }
     
-    public func deserialize(data:NSData) ->DataSerializable {
+    public func deserialize(data:NSData) ->Serializable {
         if let string=String(data: data,encoding:NSUTF8StringEncoding){
             return string
         } else {
@@ -32,7 +29,7 @@ extension String:Serializable {
         }
     }
     
-    public func patchWithSerializedData(data:NSData) ->DataSerializable {
+    public func patchWithSerializedData(data:NSData) ->Serializable {
         return self
     }
     

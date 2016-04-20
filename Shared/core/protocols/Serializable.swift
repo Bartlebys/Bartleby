@@ -15,10 +15,10 @@ import Foundation
 /**
  *   Any object that is serializable can be serialized deserialized
  */
-public protocol DataSerializable  {
+public protocol Serializable  {
     
     //The class should be securely intializable with a simple init
-    //init()
+    init()
     
     /**
      Serialize the current object with its type
@@ -27,7 +27,7 @@ public protocol DataSerializable  {
      */
     func serialize() -> NSData
 
-    func deserialize(data:NSData) ->DataSerializable
+    func deserialize(data:NSData) ->Serializable
     
     // TODO: Should be splitter in a specific protocol
     /**
@@ -38,7 +38,7 @@ public protocol DataSerializable  {
      
      - returns: the patched Object
      */
-    func patchWithSerializedData(data:NSData) ->DataSerializable
+    func patchWithSerializedData(data:NSData) ->Serializable
     
     /**
      Should return a dictionary composed of native members that can be serialized (!)
@@ -49,23 +49,12 @@ public protocol DataSerializable  {
 
 }
 
-/**
- *  Must implement init
- */
-public protocol Initializable{
-    init()
-}
 
 
 public enum SerializableError : ErrorType {
 }
 
-/**
-*   Any object that is serializable can be serialized deserialized 
-*/
-public protocol Serializable:DataSerializable,Initializable {
-    
-}
+
 
 
 
