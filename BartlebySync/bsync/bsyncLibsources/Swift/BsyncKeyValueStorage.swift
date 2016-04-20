@@ -13,8 +13,13 @@ enum BsyncKeyValueStorageError : ErrorType {
     case OtherDataProblem
 }
 
+extension String:DataSerializable{
+    
+}
+
 class BsyncKeyValueStorage {
-    private var _kvs = Mapper<CryptedKeyValueStorage>().map([String : AnyObject]())
+    
+    private var _kvs = [String : DataSerializable]()
     private var _filePath: String
     private var _shouldSave = false
     
@@ -53,7 +58,7 @@ class BsyncKeyValueStorage {
         
     }
     
-    subscript (key: String) -> String? {
+    subscript (key: String) -> DataSerializable? {
         get {
             if let kvs = _kvs {
                 return kvs.storage[key]
@@ -70,7 +75,7 @@ class BsyncKeyValueStorage {
     }
     
     // For generic mappable, I wasn't able to use a subscript
-    func read<T: Mappable>(key: String) -> T? {
+    func read<T: DataSerializable>(key: String) -> T? {
         if let kvs = _kvs {
             return Mapper<T>().map(kvs.storage[key])
         } else {
@@ -78,7 +83,7 @@ class BsyncKeyValueStorage {
         }
     }
     
-    func upsert<T: Mappable>(key: String, value: T) {
+    func upsert<T: DataSerializable>(key: String, value: T) {
         if let kvs = _kvs {
             kvs.storage[key] = Mapper<T>().toJSONString(value)
             _shouldSave = true

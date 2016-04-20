@@ -44,7 +44,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK: -
+    // MARK: - Initializable
     
     override required public init() {
         super.init()
@@ -126,8 +126,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
-    // MARK: - Serializable
     
+    
+    
+    // MARK: - DataSerializable
     
     public func serialize()->NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
@@ -143,6 +145,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
+    
+    // MARK: - Serializable & Cie
+
+
     public func patchWithSerializedData(data: NSData) -> Serializable {
         do{
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
@@ -160,10 +166,17 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
+    
     public func dictionaryRepresentation()->[String:AnyObject]{
         return Mapper().toJSON(self)
     }
     
+
+    
+    public func deserialize(data:NSData)->DataSerializable{
+        return JSerializer.deserialize(data)
+    }
+
     
     // MARK: - Persistent
     
