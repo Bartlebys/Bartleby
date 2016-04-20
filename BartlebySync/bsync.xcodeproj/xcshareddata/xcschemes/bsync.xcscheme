@@ -142,11 +142,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "run"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1/directives.bsync"
@@ -160,12 +160,16 @@
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--verbose"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = ""
             value = ""
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>
