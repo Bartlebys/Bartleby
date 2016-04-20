@@ -10,7 +10,6 @@
 		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B2502251CBA600D002FBF56 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
-		5B65FE6C1CAAC157000D5BB9 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
 		5B8E5D531C8D7FCD002CFA03 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		5B8E5D541C8D7FCD002CFA03 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
@@ -33,7 +32,6 @@
 		5B8E5D651C8D8003002CFA03 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C31C550E6800F0090E /* Option.swift */; };
 		5B8E5D661C8D8003002CFA03 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086C41C550E6800F0090E /* StringExtensions.swift */; };
 		5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
-		5B9941401CC53898004B5F91 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		5BB60F3F1CBFE3C500D23B4F /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */; };
 		5BB60F401CBFE3C500D23B4F /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */; };
 		5BB60F421CBFE3C500D23B4F /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3B1CBFE3C500D23B4F /* CryptedKeyValueStorage.swift */; };
@@ -399,7 +397,6 @@
 		5BB611AB1CBFE51900D23B4F /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60FD81CBFE51900D23B4F /* UIX.swift */; };
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BB9F8511CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
-		5BC8F16B1CB3A75900B00866 /* DistantBasicSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* DistantBasicSyncTests.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5BF4DF801CC7E3D800965DC0 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
@@ -590,6 +587,7 @@
 		E5C0CF201C36CD6E00F3B7B8 /* TestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestConfiguration.swift */; };
 		E5D940E81CC7B5B500956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D940E91CC7B5BB00956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
+		E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
@@ -1915,7 +1913,6 @@
 				5BB6115E1CBFE51900D23B4F /* Persistent.swift in Sources */,
 				5BB6119E1CBFE51900D23B4F /* HTTPManager.swift in Sources */,
 				5B8E5D581C8D7FCD002CFA03 /* NetworkReachabilityManager.swift in Sources */,
-				5BC8F16B1CB3A75900B00866 /* DistantBasicSyncTests.swift in Sources */,
 				5BB611A61CBFE51900D23B4F /* PString.swift in Sources */,
 				5BB6100E1CBFE51900D23B4F /* Locker.swift in Sources */,
 				E552B7B81C3D4E49001CD53B /* PdSFileManager.m in Sources */,
@@ -1931,6 +1928,7 @@
 				5BB60F4E1CBFE4E200D23B4F /* CryptedDataTransform.swift in Sources */,
 				E552B7B21C3D4E49001CD53B /* NSData+CRC.m in Sources */,
 				5BB611061CBFE51900D23B4F /* JCollectionMetadatum.swift in Sources */,
+				E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */,
 				5BB611861CBFE51900D23B4F /* User+Auth.swift in Sources */,
 				5BB60FDE1CBFE51900D23B4F /* AliasesCollectionController.swift in Sources */,
 				5BB610D21CBFE51900D23B4F /* UpdateAlias.swift in Sources */,
@@ -1951,10 +1949,8 @@
 				5BB6110E1CBFE51900D23B4F /* JDocument.swift in Sources */,
 				5BB610861CBFE51900D23B4F /* DeleteUsers.swift in Sources */,
 				5BB9F8511CB555B900B83252 /* CreateUserCommand.swift in Sources */,
-				5B65FE6C1CAAC157000D5BB9 /* LocalDMGSyncTests.swift in Sources */,
 				5BB610A21CBFE51900D23B4F /* ReadLockerById.swift in Sources */,
 				5B8E5D5C1C8D7FCD002CFA03 /* Response.swift in Sources */,
-				5B9941401CC53898004B5F91 /* BsyncKeyValueStorageTests.swift in Sources */,
 				5B8E5D591C8D7FCD002CFA03 /* Notifications.swift in Sources */,
 				5BB60FEE1CBFE51900D23B4F /* PermissionsCollectionController.swift in Sources */,
 				E585044E1C3FA12000E2F64A /* LoginCommand.swift in Sources */,

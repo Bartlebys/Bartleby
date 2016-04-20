@@ -55,7 +55,7 @@ class DistantBasicSyncTests: XCTestCase {
                                    restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
-            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message) in
+            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message,data) in
                 print("\(taskIndex)/\(totalTaskCount)")
             }) { (success, message) in
                 print(message)

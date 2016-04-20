@@ -9,6 +9,8 @@
 import XCTest
 
 class LocalDMGSyncTests: XCTestCase {
+    
+    
     private static let _diskManager = BsyncImageDiskManager()
     private static let _fileManager = NSFileManager()
     
@@ -30,7 +32,7 @@ class LocalDMGSyncTests: XCTestCase {
     
     private static let _filePath = _masterVolumePath + "test.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
-    
+
     // MARK: Master DMG creation, attach and directive creation
     func test001_CreateMasterDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.createImageDisk(LocalDMGSyncTests._masterDMGPath,
@@ -46,10 +48,14 @@ class LocalDMGSyncTests: XCTestCase {
         }
     }
     
+    
     func test002_AttachMasterDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.attachVolume(from: LocalDMGSyncTests._masterDMGFullPath, withPassword: LocalDMGSyncTests._masterDMGPassword))
     }
     
+    
+   
+     
     func test003_CreateFileInDMG() {
         do {
             try LocalDMGSyncTests._fileContent.writeToFile(LocalDMGSyncTests._filePath, atomically: false, encoding: NSUTF8StringEncoding)
@@ -61,6 +67,8 @@ class LocalDMGSyncTests: XCTestCase {
         }
     }
     
+     
+     
     // MARK: Slave DMG creation, attach and directives creation
     func test101_CreateSlaveDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.createImageDisk(LocalDMGSyncTests._slaveDMGPath,
@@ -94,6 +102,7 @@ class LocalDMGSyncTests: XCTestCase {
         }
     }
     
+    
     // MARK: Run synchronization
     func test201_RunDirectives() {
         print(LocalDMGSyncTests._masterVolumeURL)
@@ -104,7 +113,7 @@ class LocalDMGSyncTests: XCTestCase {
                                    restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
-            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message) in
+            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message,data) in
                 print("\(taskIndex)/\(totalTaskCount)")
             }) { (success, message) in
                 print(message)
@@ -146,4 +155,5 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Error deleting master DMG")
         }
     }
+
 }
