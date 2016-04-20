@@ -83,7 +83,7 @@ class KeyValueStorageCommand: CommandBase {
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
                 
                 let folderPath=path.value!+"/"
-                let filePath=folderPath + "kvs.data"
+                let filePath=folderPath + "kvs.json"
                 let fm=NSFileManager.defaultManager()
                 var isAFolder : ObjCBool = false
                 if fm.fileExistsAtPath(folderPath, isDirectory: &isAFolder){
@@ -96,7 +96,7 @@ class KeyValueStorageCommand: CommandBase {
                     exit(EX__BASE)
                 }
                 
-                let kvs = BsyncKeyValueStorage(filePath: filePath)
+                let kvs = BsyncKeyValueStorage(url: NSURL(fileURLWithPath: filePath))
                 
                 try kvs.open()
                 

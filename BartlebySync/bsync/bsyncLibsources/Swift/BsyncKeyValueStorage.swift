@@ -47,19 +47,21 @@ enum BsyncKeyValueStorageError : ErrorType {
 class BsyncKeyValueStorage {
     
     private var _kvs = [String : String]()
-    private var _filePath: String
+    private var _url: NSURL
     private var _shouldSave = false
     
-    init(filePath: String) {
-        _filePath = filePath
+    init(url: NSURL) {
+        self._url = url
     }
     
     func open() throws {
         let fm = NSFileManager.defaultManager()
-        if fm.fileExistsAtPath(_filePath){
-            if let data=NSData(contentsOfFile: _filePath){
-                if let kvs = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as? [String: String] {
-                    _kvs = kvs
+        if let path = _url.path {
+            if fm.fileExistsAtPath(path){
+                if let data=NSData(contentsOfFile: path){
+                    if let kvs = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as? [String: String] {
+                        _kvs = kvs
+                    }
                 }
             }
         }
@@ -69,9 +71,17 @@ class BsyncKeyValueStorage {
         if(_shouldSave) {
             let json = try NSJSONSerialization.dataWithJSONObject(_kvs, options: NSJSONWritingOptions.PrettyPrinted)
             
-            try json.writeToFile(_filePath, options: NSDataWritingOptions.AtomicWrite)
+            let fm = NSFileManager.defaultManager()
+            if let folderUrl = _url.URLByDeletingLastPathComponent {
+                if let folderPath = folderUrl.path {
+                    if !fm.fileExistsAtPath(folderPath) {
+                        try fm.createDirectoryAtURL(folderUrl, withIntermediateDirectories: false, attributes: [:])
+                    }
+                }
+                try json.writeToURL(_url, options: NSDataWritingOptions.AtomicWrite)
+            }
+            
         }
-        
     }
     
     subscript (key: String) -> Serializable? {
@@ -121,7 +131,7 @@ class BsyncKeyValueStorage {
     // Maybe we should
     func removeAll() throws {
         let fm = NSFileManager()
-        try fm.removeItemAtPath(_filePath)
+        try fm.removeItemAtURL(_url)
         _shouldSave = false
     }
 }

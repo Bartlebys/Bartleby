@@ -23,24 +23,27 @@ class CreateUserCommand : CommandBase {
         let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID",required: true,
                                     helpMessage: "A spaceUID")
         
+        let secretKey = StringOption(shortFlag: "y", longFlag: "secretKey",required: true,
+                                     helpMessage: "The secret key to encryp the data (if not set we use bsync's default)")
+        
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt",required: true,
                                       helpMessage: "The salt used for authentication.")
         
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",required: false,
                                    helpMessage: "Print verbose messages.")
         
-        cli.addOptions(baseURLString, password, spaceUID, sharedSalt, verbosity)
+        cli.addOptions(baseURLString, password, spaceUID, secretKey, sharedSalt, verbosity)
         
         do {
             try cli.parse()
             
             
-            if let base = baseURLString.value, pw = password.value, let space = spaceUID.value, let salt = sharedSalt.value {
+            if let base = baseURLString.value, pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
                 
                 if let url = NSURL(string: base) {
                     
                     Bartleby.configuration.API_BASE_URL=url
-                    Bartleby.configuration.KEY=Bartleby.randomStringWithLength(32)
+                    Bartleby.configuration.KEY=key
                     Bartleby.configuration.SHARED_SALT=salt
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
                     Bartleby.configuration.ENABLE_BPRINT=verbosity.value
@@ -58,14 +61,14 @@ class CreateUserCommand : CommandBase {
                                         
                                         // Storing user in the KVS:
                                         let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-                                        if let kvsPath = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json").path {
-                                            let kvs = BsyncKeyValueStorage(filePath: kvsPath)
-                                            do {
-                                                try kvs.open()
-                                                kvs[user.UID] = user
-                                            } catch {
-                                                print("Error storing the user")
-                                            }
+                                        let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                                        let kvs = BsyncKeyValueStorage(url: kvsUrl)
+                                        do {
+                                            try kvs.open()
+                                            kvs[user.UID] = user
+                                            try kvs.save()
+                                        } catch {
+                                            print("Error storing the user:\(error)")
                                         }
                                         
                                         exit(EX_OK)
