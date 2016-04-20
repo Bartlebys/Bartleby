@@ -588,6 +588,7 @@
 		E5D940E81CC7B5B500956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D940E91CC7B5BB00956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
+		E5D9B8B01CC7EC89004196C1 /* DistantBasicSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* DistantBasicSyncTests.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
@@ -1930,6 +1931,7 @@
 				5BB611061CBFE51900D23B4F /* JCollectionMetadatum.swift in Sources */,
 				E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */,
 				5BB611861CBFE51900D23B4F /* User+Auth.swift in Sources */,
+				E5D9B8B01CC7EC89004196C1 /* DistantBasicSyncTests.swift in Sources */,
 				5BB60FDE1CBFE51900D23B4F /* AliasesCollectionController.swift in Sources */,
 				5BB610D21CBFE51900D23B4F /* UpdateAlias.swift in Sources */,
 				5BB610AE1CBFE51900D23B4F /* ReadPermissionById.swift in Sources */,
