@@ -55,6 +55,19 @@ class CreateUserCommand : CommandBase {
                     CreateUser.execute(user, inDataSpace: space,
                                        sucessHandler: { (context) in
                                         print (user.UID)
+                                        
+                                        // Storing user in the KVS:
+                                        let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
+                                        if let kvsPath = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json").path {
+                                            let kvs = BsyncKeyValueStorage(filePath: kvsPath)
+                                            do {
+                                                try kvs.open()
+                                                kvs[user.UID] = user
+                                            } catch {
+                                                print("Error storing the user")
+                                            }
+                                        }
+                                        
                                         exit(EX_OK)
                         }, failureHandler: { (context) in
                             // Print a JSON failure description
