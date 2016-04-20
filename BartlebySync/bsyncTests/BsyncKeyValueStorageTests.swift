@@ -76,7 +76,7 @@ class BsyncKeyValueStorageTests: XCTestCase {
 //        }
 //    }
     
-    func test105_Delete() {
+    func test106_Delete() {
         _kvs.delete("user1")
     }
     
@@ -86,12 +86,12 @@ class BsyncKeyValueStorageTests: XCTestCase {
         }
     }
     
-    func test106_Enumerate() {
+    func test107_Enumerate() {
         let all = _kvs.enumerate()
         XCTAssertEqual(all.count, 2)
     }
     
-    func test107_RemoveAll() {
+    func test108_RemoveAll() {
         do {
             try _kvs.removeAll()
             XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
@@ -100,7 +100,7 @@ class BsyncKeyValueStorageTests: XCTestCase {
         }
     }
     
-    func test108_EnumerateAfterRemoveAll() {
+    func test109_EnumerateAfterRemoveAll() {
         let kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
         XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
 
@@ -112,7 +112,7 @@ class BsyncKeyValueStorageTests: XCTestCase {
         XCTAssertEqual(0, kvs.enumerate().count)
     }
     
-//    func test109_SerializableString() {
+//    func test110_SerializableString() {
 //        let s1 = "Rocinante"
 //        let data1 = s1.serialize()
 //        if let s2 = JSerializer.deserialize(data1) as? String {
