@@ -103,9 +103,7 @@ class KeyValueStorageCommand: CommandBase {
                 switch op.value {
                 case .Upsert?:
                     if let k=keyArg.value,v=value.value{
-                        if let v = v as? Serializable {
-                            kvs[k] = v
-                        }
+                        kvs[k] = v
                     } else {
                         print("We creating or updating a (key,value) pair")
                         print("key and value must be defined!")

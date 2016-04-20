@@ -12,7 +12,7 @@ extension String: Initializable {
     
 }
 
-extension String:DataSerializable {
+extension String:Serializable {
     
     public func serialize() -> NSData {
         if let data=self.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
@@ -83,6 +83,7 @@ class BsyncKeyValueStorage {
                 if let cryptedValueData = NSData(base64EncodedString: base64CryptedValueString, options: [.IgnoreUnknownCharacters]) {
                     do {
                         let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
+                        // TODO: Generalize to any serializer
                         return JSerializer.deserialize(decryptedValueData)
                         
                     } catch {
@@ -94,7 +95,7 @@ class BsyncKeyValueStorage {
         }
         set(newValue) {
             if let newValue = newValue {
-                let newValueData = JSerializer.serialize(newValue)
+                let newValueData = newValue.serialize()
                 do {
                     let newValueCryptedData = try Bartleby.cryptoDelegate.encryptData(newValueData)
                     let newValueBase64CryptedString = newValueCryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
