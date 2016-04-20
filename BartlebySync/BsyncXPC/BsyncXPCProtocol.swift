@@ -5,8 +5,9 @@
 //  Created by Benoit Pereira da silva on 20/01/2016.
 //  Copyright © 2016 Benoit Pereira da silva. All rights reserved.
 //
-
-import Foundation
+#if !USE_EMBEDDED_MODULES
+    import BartlebyKit
+#endif
 
 /**
  * The BsyncXPC services protocol
@@ -14,7 +15,7 @@ import Foundation
  *  So be careful with secret and shared salt.
  */
 @objc(BsyncXPCProtocol) protocol BsyncXPCProtocol:BartlebyFileIO{
-    
+
     
     // MARK:- Disk Image Management
     
