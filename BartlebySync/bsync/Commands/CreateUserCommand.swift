@@ -14,8 +14,8 @@ class CreateUserCommand : CommandBase {
     override init() {
         super.init()
         
-        let baseURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
-                                         helpMessage: "BartlebySync base url e.g http://yd.local/api/v1/BartlebySync")
+        let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
+                                         helpMessage: "Bartleby base url e.g http://yd.local/api/v1")
         
         let password = StringOption(shortFlag: "p", longFlag: "password",required: true,
                                     helpMessage: "A password is  required for authentication.")
@@ -32,13 +32,13 @@ class CreateUserCommand : CommandBase {
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",required: false,
                                    helpMessage: "Print verbose messages.")
         
-        cli.addOptions(baseURLString, password, spaceUID, secretKey, sharedSalt, verbosity)
+        cli.addOptions(api, password, spaceUID, secretKey, sharedSalt, verbosity)
         
         do {
             try cli.parse()
             
             
-            if let base = baseURLString.value, pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
+            if let base = api.value, pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
                 
                 if let url = NSURL(string: base) {
                     
@@ -78,7 +78,7 @@ class CreateUserCommand : CommandBase {
                             exit(EX_USAGE)
                     })
                 }else{
-                    print("Invalid source URL \(base)")
+                    print("Invalid API URL \(base)")
                     exit(EX__BASE)
                 }
             }

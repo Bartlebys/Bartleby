@@ -106,10 +106,14 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-user"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "login"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -117,11 +121,11 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--user RjQxRDE5NzUtMzcxRi00MUI0LTg3REEtRkUzMEM2Q0IyNDlC"
-            isEnabled = "NO">
+            argument = "--user QkM4OTk2NTItRDAzRi00OUNBLThBNDktMjI5RDRBQkRBNDUy"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--url http://yd.local/api/v1"
+            argument = "--api http://yd.local/api/v1"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
