@@ -133,11 +133,15 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--source $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1"
+            argument = "--source $HOME/Desktop/bsync_xcode/Sycamore"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--destination http://yd.local/api/v1/BartlebySync/tree/Sycamore"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--automatic-trees-creation"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
@@ -149,7 +153,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--file $HOME/Desktop/UP_SYNC_DEMO/TREE-DEMO1/directives.bsync"
+            argument = "--file $HOME/Desktop/bsync_xcode/Sycamore/directives.bsync"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
