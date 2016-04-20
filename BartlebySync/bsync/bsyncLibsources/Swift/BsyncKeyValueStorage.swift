@@ -8,18 +8,48 @@
 
 import Foundation
 
+extension String: Initializable {
+    
+}
+
+extension String:DataSerializable {
+    
+    public func serialize() -> NSData {
+        if let data=self.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
+            return data
+        } else {
+            return NSData()
+        }
+    }
+    
+    public func deserialize(data:NSData) ->DataSerializable {
+        if let string=String(data: data,encoding:NSUTF8StringEncoding){
+            return string
+        } else {
+            let e = ObjectError()
+            e.message = "UTF8 string encoding error"
+            return e
+        }
+    }
+    
+    public func patchWithSerializedData(data:NSData) ->DataSerializable {
+        return self
+    }
+    
+    public func dictionaryRepresentation()->[String:AnyObject] {
+        return [String: AnyObject]()
+    }
+    
+}
+
 enum BsyncKeyValueStorageError : ErrorType {
     case CorruptedData
     case OtherDataProblem
 }
 
-extension String:DataSerializable{
-    
-}
-
 class BsyncKeyValueStorage {
     
-    private var _kvs = [String : DataSerializable]()
+    private var _kvs = [String : String]()
     private var _filePath: String
     private var _shouldSave = false
     
@@ -31,78 +61,61 @@ class BsyncKeyValueStorage {
         let fm = NSFileManager.defaultManager()
         if fm.fileExistsAtPath(_filePath){
             if let data=NSData(contentsOfFile: _filePath){
-                let JSONString=String(data: data, encoding: NSUTF8StringEncoding)
-                if let k = Mapper<CryptedKeyValueStorage>().map(JSONString){
-                    _kvs = k
-                } else {
-                    throw BsyncKeyValueStorageError.CorruptedData
+                if let kvs = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as? [String: String] {
+                    _kvs = kvs
                 }
-            } else {
-                throw BsyncKeyValueStorageError.OtherDataProblem
             }
         }
     }
     
     func save() throws {
         if(_shouldSave) {
-            if let s:String = _kvs?.toJSONString(){
-                if let sdata:NSData=s.dataUsingEncoding(NSUTF8StringEncoding){
-                    sdata.writeToFile(_filePath,atomically: true)
-                    _shouldSave = false
-                }
-                
-            } else {
-                throw BsyncKeyValueStorageError.OtherDataProblem
-            }
+            let json = try NSJSONSerialization.dataWithJSONObject(_kvs, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            try json.writeToFile(_filePath, options: NSDataWritingOptions.AtomicWrite)
         }
         
     }
     
-    subscript (key: String) -> DataSerializable? {
+    subscript (key: String) -> Serializable? {
         get {
-            if let kvs = _kvs {
-                return kvs.storage[key]
-            } else {
-                return nil
+            if let base64CryptedValueString = _kvs[key] {
+                if let cryptedValueData = NSData(base64EncodedString: base64CryptedValueString, options: [.IgnoreUnknownCharacters]) {
+                    do {
+                        let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
+                        return JSerializer.deserialize(decryptedValueData)
+                        
+                    } catch {
+                        
+                    }
+                }
             }
-        }
-        set(newValue) {
-            if let kvs = _kvs {
-                kvs.storage[key] = newValue
-                _shouldSave = true
-            }
-        }
-    }
-    
-    // For generic mappable, I wasn't able to use a subscript
-    func read<T: DataSerializable>(key: String) -> T? {
-        if let kvs = _kvs {
-            return Mapper<T>().map(kvs.storage[key])
-        } else {
             return nil
         }
-    }
-    
-    func upsert<T: DataSerializable>(key: String, value: T) {
-        if let kvs = _kvs {
-            kvs.storage[key] = Mapper<T>().toJSONString(value)
-            _shouldSave = true
+        set(newValue) {
+            if let newValue = newValue {
+                let newValueData = JSerializer.serialize(newValue)
+                do {
+                    let newValueCryptedData = try Bartleby.cryptoDelegate.encryptData(newValueData)
+                    let newValueBase64CryptedString = newValueCryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                    _kvs[key] = newValueBase64CryptedString
+                    _shouldSave = true
+                } catch {
+                    
+                }
+            }
         }
     }
     
     func delete(key: String) {
-        if let kvs = _kvs {
-            kvs.storage.removeValueForKey(key)
-            _shouldSave = true
-        }
+        _kvs.removeValueForKey(key)
+        _shouldSave = true
     }
     
     func enumerate() -> [(String, String)] {
         var result = [(String, String)]()
-        if let kvs = _kvs {
-            for (k, v) in kvs.storage {
-                result.append((k, v))
-            }
+        for (k, v) in _kvs {
+            result.append((k, v))
         }
         return result
     }

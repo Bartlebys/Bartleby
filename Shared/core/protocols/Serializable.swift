@@ -29,6 +29,24 @@ public protocol DataSerializable  {
 
     func deserialize(data:NSData) ->DataSerializable
     
+    // TODO: Should be splitter in a specific protocol
+    /**
+     Patch an existant instance by deserializing the data from NSData
+     This approach is usefull for proxies.
+     
+     - parameter data: the NSData
+     
+     - returns: the patched Object
+     */
+    func patchWithSerializedData(data:NSData) ->DataSerializable
+    
+    /**
+     Should return a dictionary composed of native members that can be serialized (!)
+     
+     - returns: the dictionary
+     */
+    func dictionaryRepresentation()->[String:AnyObject]
+
 }
 
 /**
@@ -46,24 +64,6 @@ public enum SerializableError : ErrorType {
 *   Any object that is serializable can be serialized deserialized 
 */
 public protocol Serializable:DataSerializable,Initializable {
-    
-    
-    /**
-     Patch an existant instance by deserializing the data from NSData
-     This approach is usefull for proxies.
-     
-     - parameter data: the NSData
-     
-     - returns: the patched Object
-     */
-    func patchWithSerializedData(data:NSData) ->Serializable
-    
-    /**
-     Should return a dictionary composed of native members that can be serialized (!)
-     
-     - returns: the dictionary
-     */
-    func dictionaryRepresentation()->[String:AnyObject]
     
 }
 

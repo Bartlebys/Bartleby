@@ -149,7 +149,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     // MARK: - Serializable & Cie
 
 
-    public func patchWithSerializedData(data: NSData) -> Serializable {
+    public func patchWithSerializedData(data: NSData) -> DataSerializable {
         do{
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                 let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)

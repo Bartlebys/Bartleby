@@ -138,10 +138,6 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--salt salty-sauce"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
