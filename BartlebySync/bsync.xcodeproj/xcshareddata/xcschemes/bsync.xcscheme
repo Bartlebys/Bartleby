@@ -78,23 +78,51 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-user"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "kvs"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "create-directives --email cEGzG@lylo.tv --source ~/Desktop/UP_SYNC_DEMO/TREE-DEMO1 --destination http://yd.local/api/v1/BartlebySync/tree/TREE-DEMO1 --creativeKey default-creative-key"
+            argument = "--do"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "upsert"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "read"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--key pouet"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--value baba"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--folder $HOME/temp/kvs"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "create-directives --user RjgzNkE5QTItMzY5OC00QTMyLUJGQUYtQ0Y5NDVDQ0NGN0VC --source ~/Desktop/UP_SYNC_DEMO/TREE-DEMO1 --destination http://yd.local/api/v1/BartlebySync/tree/TREE-DEMO1 --creativeKey default-creative-key"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--url http://yd.local/api/v1"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = " --password 12345"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = " --password 3jdx4q"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--spaceUID MjAxQTMyQTQtNTY4My00ODNGLUJGM0MtRjdDOTBBMzM3QUJD"
-            isEnabled = "YES">
+            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
@@ -110,13 +138,24 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--salt salty-sauce"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = ""
+            value = ""
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

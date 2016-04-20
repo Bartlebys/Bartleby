@@ -17,7 +17,7 @@ class DistantBasicSyncTests: XCTestCase {
     private static let _filePath = _upFolderPath + "/file.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
     
-    private static let _apiUrl = TestConfiguration.localSyncApiUrl
+    private static let _apiUrl = TestConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync")
     private static let _distantTreeURL = _apiUrl.URLByAppendingPathComponent("tree/\(_treeName)")
 
     // MARK: 1 - Prepare folder and directives

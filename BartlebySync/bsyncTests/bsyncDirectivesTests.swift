@@ -16,7 +16,7 @@ class bsyncDirectivesTests: XCTestCase {
         let folderURL = NSURL(fileURLWithPath: NSTemporaryDirectory() + Bartleby.randomStringWithLength(6))
         do {
             try fsm.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: nil)
-            let sourceURL=TestConfiguration.distantTestTreeUrl
+            let sourceURL=TestConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/testTree")
             let directives = BsyncDirectives.upStreamDirectivesWithDistantURL(sourceURL, localURL: folderURL)
             BsyncAdmin.createDirectives(directives, saveTo: folderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false))
             let fsm=NSFileManager()
