@@ -157,14 +157,33 @@ import Foundation
      - returns:  N/A
      */
     func fileExistsAtPath(path: String,
-        callBack:(exists:Bool,isADirectory:Bool,message:String?)->())->(){
+                          callBack:(exists:Bool,isADirectory:Bool,success:Bool,message:String?)->())->(){
             
             var isAFolder : ObjCBool = false
             let result=NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isAFolder)
             let isADirectory:Bool = isAFolder.boolValue
-            callBack(exists:result,isADirectory:isADirectory,message: nil)
-            
+            callBack(exists:result,isADirectory:isADirectory,success: true,message: nil)
     }
+    
+    
+    /**
+     Removes the item at a given path
+     Use with caution !
+     
+     - parameter path:     path
+     - parameter callBack: the call back
+     */
+    func removeItemAtPath(path: String,
+                               callBack:(success:Bool,message:String?)->())->(){
+        do{
+            try NSFileManager.defaultManager().removeItemAtPath(path)
+            callBack(success: true, message: nil)
+        }catch {
+            callBack(success: false, message: "\(error)")
+        }
+    }
+    
+    
     
     /**
      Copies the file

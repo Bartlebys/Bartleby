@@ -10,8 +10,8 @@ import Foundation
 
 
 /**
- *  Provides an abstraction for file IO.
- * Generally on Mac OS a barlebty app uses BsyncXPC and 
+ * Provides an abstraction for file IO.
+ * Sandoboxed os x App can use BsyncXPCHelper that implement BartlebyFileIO
  */
 @objc protocol BartlebyFileIO{
     
@@ -107,17 +107,27 @@ import Foundation
     
     
     
-    
+
     /**
      Determines if a file exists and is a directory.
      
      - parameter path:     the path
      - parameter callBack: the call back
      
-     - returns:  N/A
+     - returns: N/A
      */
     func fileExistsAtPath(path: String,
-        callBack:(exists:Bool,isADirectory:Bool,message:String?)->())->()
+                          callBack:(exists:Bool,isADirectory:Bool,success:Bool,message:String?)->())->()
+    
+    /**
+     Removes the item at a given path
+     Use with caution !
+     
+     - parameter path:     path
+     - parameter callBack: the call back
+     */
+    func removeItemAtPath(path: String,
+                          callBack:(success:Bool,message:String?)->())->()
     
     /**
      Copies the file

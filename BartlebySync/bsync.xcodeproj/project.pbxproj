@@ -767,7 +767,7 @@
 		E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdSSyncAdmin.m; sourceTree = "<group>"; };
 		E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PdSSyncContext.h; sourceTree = "<group>"; };
 		E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PdSSyncContext.m; sourceTree = "<group>"; };
-		E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncAdmin.swift; sourceTree = "<group>"; };
+		E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BsyncAdmin.swift; path = ../Swift/BsyncAdmin.swift; sourceTree = "<group>"; };
 		E552B7A41C3D4E49001CD53B /* BsyncContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncContext.swift; sourceTree = "<group>"; };
 		E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectives.swift; sourceTree = "<group>"; };
 		E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncImageDiskManager.swift; sourceTree = "<group>"; };
@@ -1175,6 +1175,7 @@
 				E552B7941C3D4E49001CD53B /* NSData+CRC.m */,
 				E552B7991C3D4E49001CD53B /* PdSFileManager.h */,
 				E552B79A1C3D4E49001CD53B /* PdSFileManager.m */,
+				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
 				E552B79B1C3D4E49001CD53B /* PdSLocalAnalyzer.h */,
 				E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */,
 				E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */,
@@ -1186,7 +1187,6 @@
 		E552B7A21C3D4E49001CD53B /* Swift */ = {
 			isa = PBXGroup;
 			children = (
-				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
 				E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */,
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
 				E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */,
