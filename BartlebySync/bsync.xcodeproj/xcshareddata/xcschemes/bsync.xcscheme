@@ -118,7 +118,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-directives"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--user QkM4OTk2NTItRDAzRi00OUNBLThBNDktMjI5RDRBQkRBNDUy"
@@ -126,23 +126,23 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--api http://yd.local/api/v1"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = " --password 12345"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--source $HOME/Desktop/bsync_xcode/Sycamore"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--destination http://yd.local/api/v1/BartlebySync/tree/Sycamore"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--automatic-trees-creation"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
@@ -150,7 +150,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "run"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/Desktop/bsync_xcode/Sycamore/directives.bsync"

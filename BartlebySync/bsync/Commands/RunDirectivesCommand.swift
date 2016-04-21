@@ -123,10 +123,8 @@ public class RunDirectivesCommand:CommandBase {
                 synchronizeCommand.synchronize( directives.sourceURL!,
                                                 destinationURL: directives.destinationURL!,
                                                 hashMapViewName: hashMapviewName,
-                                                email: directives.email,
-                                                phoneNumber: directives.phoneNumber,
+                                                user: directives.user,
                                                 password: directives.password,
-                                                spaceUID: directives.spaceUID,
                                                 sharedSalt: directives.salt,
                                                 verbose:verbose,
                                                 autoCreateTrees: directives.automaticTreeCreation)

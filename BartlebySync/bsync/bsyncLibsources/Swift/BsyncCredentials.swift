@@ -23,11 +23,8 @@ import Foundation
     
     
     // CRYPTED
-    public var spaceUID:String?
     public var user:User?
-    public var email:String?
     public var password:String?
-    public var phoneNumber:String?
     public var salt:String?
     
     public required override init(){
@@ -45,15 +42,11 @@ import Foundation
     
     public func mapping(map: Map) {
         if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
-            spaceUID <- map["spaceUID"]
-            email <- map["email"]
-            phoneNumber <- map["phoneNumber"]
+            user <- map["user"]
             password <- map ["password"]
             salt <- map ["salt"]
         }else{
-            spaceUID <- (map["spaceUID"],CryptedStringTransform())
-            email <- (map["email"],CryptedStringTransform())
-            phoneNumber <- (map["phoneNumber"],CryptedStringTransform())
+            user <- (map["user"],CryptedSerializableTransform())
             password <- (map ["password"],CryptedStringTransform())
             salt <- (map ["salt"],CryptedStringTransform())
         }
@@ -63,17 +56,13 @@ import Foundation
     // MARK: NSecureCoding
     
     public func encodeWithCoder(coder: NSCoder){
-        coder.encodeObject(spaceUID, forKey: "spaceUID")
-        coder.encodeObject(email, forKey: "email")
-        coder.encodeObject(phoneNumber, forKey: "phoneNumber")
+        coder.encodeObject(user, forKey: "user")
         coder.encodeObject(password, forKey: "password")
         coder.encodeObject(salt, forKey: "salt")
     }
     
     public required init?(coder decoder: NSCoder){
-        self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
-        self.email=String(decoder.decodeObjectOfClass(NSString.self, forKey:"email") as NSString?)
-        self.phoneNumber=String(decoder.decodeObjectOfClass(NSString.self, forKey:"phoneNumber") as NSString?)
+        self.user=User(coder: decoder)
         self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey:"password") as NSString?)
         self.salt=String(decoder.decodeObjectOfClass(NSString.self, forKey:"salt") as NSString?)
     }

@@ -295,15 +295,15 @@
 
     
     
-    if(! _syncContext.credentials.spaceUID ){
-        printf("Invalid context credentials.spaceUID ");
+    if(! _syncContext.credentials.user ){
+        printf("Invalid context credentials.user ");
         block(NO,0);
     }else{
         // URL
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/create/tree/%@",identifier]];
         
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncCreateTree"
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
@@ -402,15 +402,15 @@
          withTreeWithId:(NSString*)identifier
      andCompletionBlock:(void (^)(BOOL success, NSInteger statusCode))block{
     
-    if( ! _syncContext.credentials.spaceUID  ){
-        printf("Invalid context creationKey and credentials.spaceUID must be set");
+    if( ! _syncContext.credentials.user  ){
+        printf("Invalid context credentials.user must be set");
         block(NO,0);
     }else{
         // URL
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
     
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncTouchTree"
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
@@ -574,8 +574,8 @@
                andTreeWithId:(NSString*)identifier
          withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
     
-    if( ! _syncContext.credentials.spaceUID ){
-        printf("Invalid context credentials.spaceUID ");
+    if( ! _syncContext.credentials.user ){
+        printf("Invalid context credentials.user ");
         block(NO,0);
     }else{
         // URL
@@ -584,7 +584,7 @@
         NSURL*urlWithParameters=[url URLByAppendingQueryStringDictionary:parameters];
         
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncGetHashMap"
                                                                                 forMethod:@"GET"
                                                                                       and:urlWithParameters];
@@ -775,8 +775,8 @@
                andTreeWithId:(NSString*)identifier
          withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
     
-    if( !_syncContext.hashMapViewName || !_syncContext.sourceTreeId || ! _syncContext.credentials.spaceUID  ){
-        printf("Invalid context hashMapViewName, sourceTreeId and credentials.spaceUID must be set");
+    if( !_syncContext.hashMapViewName || !_syncContext.sourceTreeId || ! _syncContext.credentials.user  ){
+        printf("Invalid context hashMapViewName, sourceTreeId and credentials.user must be set");
         block(NO,0);
     }else{
         
@@ -792,7 +792,7 @@
     NSURL*urlWithParameters=[url URLByAppendingQueryStringDictionary:parameters];
 
     // REQUEST
-    NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.spaceUID
+    NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncGetFile"
                                                                                 forMethod:@"GET"
                                                                                       and:urlWithParameters];

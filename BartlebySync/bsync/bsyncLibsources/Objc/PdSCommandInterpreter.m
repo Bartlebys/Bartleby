@@ -443,7 +443,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         
 
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncUploadFileTo"
                                                                                 forMethod:@"POST"
                                                                                       and:url];
@@ -569,7 +569,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
             
  
             // REQUEST
-            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.spaceUID
+            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                                withActionName:@"BartlebySyncGetFile"
                                                                                     forMethod:@"GET"
                                                                                           and:urlWithParameters];
@@ -764,7 +764,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         NSURL*url=[[NSURL URLWithString:URLString] URLByAppendingQueryStringDictionary:parameters];
         
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                                 forMethod:@"POST"
                                                                                       and:url];

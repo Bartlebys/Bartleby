@@ -20,7 +20,7 @@ class CreateDirectiveCommand: CommandBase {
                                                 helpMessage: "URL of the destination folder")
         
         let userUID = StringOption(shortFlag: "u", longFlag: "user", required: true,
-                                    helpMessage: "A user")
+                                   helpMessage: "A user")
         
         let password = StringOption(shortFlag: "p", longFlag: "password", required: true,
                                     helpMessage: "A password")
@@ -104,72 +104,68 @@ class CreateDirectiveCommand: CommandBase {
             Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
             Bartleby.sharedInstance.configureWith(Bartleby.configuration)
             
-            if let directives:BsyncDirectives=Mapper<BsyncDirectives>().map([String : AnyObject]()){
+            let directives = BsyncDirectives()
+            
+            directives.sourceURL=sourceURL
+            directives.destinationURL=destinationURL
+            // The logic computeTheHashMap / dontComputeHashMap is inversed
+            if dontComputeHashMap.wasSet{
+                directives.computeTheHashMap=false
+            }else{
+                directives.computeTheHashMap=true
+            }
+            if automaticTreesCreation.wasSet{
+                directives.automaticTreeCreation=true
+            }else{
+                directives.automaticTreeCreation=false
+            }
+            
+            if hashMapViewName.value != nil {
+                directives.hashMapViewName=hashMapViewName.value!
+            }
+            
+            // TODO: Update with Bartleby helper
+            let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
+            let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+            let kvs = BsyncKeyValueStorage(url: kvsUrl)
+            
+            try kvs.open()
+            
+            if let userUID = userUID.value, let user = kvs[userUID] as? User {
                 
-                directives.sourceURL=sourceURL
-                directives.destinationURL=destinationURL
-                // The logic computeTheHashMap / dontComputeHashMap is inversed
-                if dontComputeHashMap.wasSet{
-                    directives.computeTheHashMap=false
-                }else{
-                    directives.computeTheHashMap=true
-                }
-                if automaticTreesCreation.wasSet{
-                    directives.automaticTreeCreation=true
-                }else{
-                    directives.automaticTreeCreation=false
-                }
+                directives.user = user
+                directives.password=password.value
+                directives.salt=sharedSalt.value
                 
-                if hashMapViewName.value != nil {
-                    directives.hashMapViewName=hashMapViewName.value!
-                }
-                
-                let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-                let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
-                let kvs = BsyncKeyValueStorage(url: kvsUrl)
-                
-                try kvs.open()
-                
-                if let userUID = userUID.value, let user = kvs[userUID] as? User {
-                    
-                    directives.spaceUID = user.spaceUID
-                    directives.user = user
-                    directives.password=password.value
-                    directives.salt=sharedSalt.value
-                    
-                    // IMPORTANT !
-                    let validity=directives.areValid()
-                    guard validity.valid else{
-                        if let explanation=validity.message{
-                            print("Directives are not valid : \(explanation)")
-                        }else{
-                            print("Directives are not valid")
-                        }
-                        exit(EX__BASE)
-                    }
-                    
-                    if var JSONString:NSString = Mapper().toJSONString(directives){
-                        let filePath=filePath.value!
-                        do{
-                            JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                            try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
-                        }catch{
-                            print("\(error)")
-                            exit(EX__BASE)
-                        }
-                        print("Directives have be saved to:\(filePath)")
-                        exit(EX_OK)
-                        
+                // IMPORTANT !
+                let validity=directives.areValid()
+                guard validity.valid else{
+                    if let explanation=validity.message{
+                        print("Directives are not valid : \(explanation)")
                     }else{
-                        print("The serialization has failed")
-                        exit(EX__BASE)
+                        print("Directives are not valid")
                     }
-                } else {
-                    print("No user with id: \(userUID)")
                     exit(EX__BASE)
                 }
-            }else{
-                print("Unexpected instanciation error")
+                
+                if var JSONString:NSString = Mapper().toJSONString(directives){
+                    let filePath=filePath.value!
+                    do{
+                        JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
+                        try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+                    }catch{
+                        print("\(error)")
+                        exit(EX__BASE)
+                    }
+                    print("Directives have be saved to:\(filePath)")
+                    exit(EX_OK)
+                    
+                }else{
+                    print("The serialization has failed")
+                    exit(EX__BASE)
+                }
+            } else {
+                print("No user with id: \(userUID)")
                 exit(EX__BASE)
             }
             

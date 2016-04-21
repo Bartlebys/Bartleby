@@ -33,7 +33,7 @@ class CreateUserCommand : CommandBase {
         let email = StringOption(shortFlag: "e", longFlag: "email", required: false,
                                  helpMessage: "The email can be used to set the verification method")
         
-        let phone = StringOption(shortFlag: "p", longFlag: "phone", required: false,
+        let phone = StringOption(shortFlag: "n", longFlag: "phone", required: false,
                                  helpMessage: "The phone number can be used to set the verification method")
         
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",required: false,

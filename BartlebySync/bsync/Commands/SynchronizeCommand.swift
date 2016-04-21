@@ -37,14 +37,10 @@ public class SynchronizeCommand:CommandBase{
         // Barleby Authentication group of arguments
         // You can login and synchronize in one call.
         
-        let email = StringOption(shortFlag: "e", longFlag: "email",required: false,
-            helpMessage: "An email may be required for authentication.")
-        let phoneNumber = StringOption(shortFlag: "n", longFlag: "phoneNumber",required: false,
-                                 helpMessage: "An phoneNumber may be required for authentication.")
+        let userUID = StringOption(shortFlag: "u", longFlag: "user",
+                                   helpMessage: "A user UID may be required for authentification")
         let password = StringOption(shortFlag: "p", longFlag: "password",required: false,
             helpMessage: "An password may be required for authentication")
-        let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID",required: false,
-            helpMessage: "A spaceUID may be required for authentication.")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt",required: false,
             helpMessage: "The salt used for authentication.")
         
@@ -55,10 +51,8 @@ public class SynchronizeCommand:CommandBase{
                         automaticTreesCreation,
                         help,
                         verbosity,
-                        email,
-                        phoneNumber,
+                        userUID,
                         password,
-                        spaceUID,
                         sharedSalt )
         
         do {
@@ -66,19 +60,28 @@ public class SynchronizeCommand:CommandBase{
             
             self.isVerbose=verbosity.value
             
-            if email.wasSet || phoneNumber.wasSet || password.wasSet || spaceUID.wasSet || sharedSalt.wasSet {
-                if (!email.wasSet  && !phoneNumber.wasSet) || !password.wasSet || !spaceUID.wasSet || !sharedSalt.wasSet{
+            var user: User?
+            
+            if userUID.wasSet || password.wasSet || sharedSalt.wasSet {
+                if !userUID.wasSet || !password.wasSet || !sharedSalt.wasSet{
                     print("")
-                    print("When you setup an identifier email or phone number. You must setup a, password, spaceUID and a salt.")
+                    print("When you setup a user identifier, you must setup a, password, and a salt.")
                     print("Before to proceeding to synchronization \"bsync\" will proceed to authentication")
                     print("")
-                    print("\temail was set = \(email.wasSet)")
-                     print("\tphoneNumber was set = \(phoneNumber.wasSet)")
+                    print("\tuser was set = \(userUID.wasSet)")
                     print("\tpassword was set = \(password.wasSet)")
-                    print("\tspaceUID was set = \(spaceUID.wasSet)")
                     print("\tsharedSalt was set = \(sharedSalt.wasSet)")
                     print("")
                     exit(EX__BASE)
+                }
+                
+                if let userUID = userUID.value {
+                    let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
+                    let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                    let kvs = BsyncKeyValueStorage(url: kvsUrl)
+
+                    try kvs.open()
+                    user = kvs[userUID] as? User
                 }
             }
             
@@ -103,10 +106,8 @@ public class SynchronizeCommand:CommandBase{
             self.synchronize( sourceURL,
                                             destinationURL: destinationURL,
                                             hashMapViewName: hashMapViewName.value,
-                                            email: email.value,
-                                            phoneNumber: phoneNumber.value,
+                                            user: user,
                                             password: password.value,
-                                            spaceUID: spaceUID.value,
                                             sharedSalt: sharedSalt.value,
                                             verbose:verbosity.value,
                                             autoCreateTrees:automaticTreesCreation.wasSet)
@@ -125,24 +126,19 @@ public class SynchronizeCommand:CommandBase{
      - parameter sourceURL:       the sourceURL
      - parameter destinationURL:  the destinationURL
      - parameter hashMapViewName: hashMapViewName
-     - parameter email:           email
-     - parameter phoneNumber      phoneNumber
+     - parameter user:            the user
      - parameter password:        password
-     - parameter spaceUID:      spaceUID
      - parameter sharedSalt:      sharedSalt
-     - parameter creativeKey :    creativeKey
      - parameter verbose :        verbose or not
-     - parameter verbose :        autoCreateTrees or not
+     - parameter autoCreateTrees: autoCreateTrees or not
     
      
      */
     public func synchronize( sourceURL:NSURL,
                                 destinationURL:NSURL,
                                 hashMapViewName:String?,
-                                email:String?,
-                                phoneNumber:String?,
+                                user:User?,
                                 password:String?,
-                                spaceUID:String?,
                                 sharedSalt:String?,
                                 verbose:Bool=true,
                                 autoCreateTrees:Bool=false
@@ -158,10 +154,8 @@ public class SynchronizeCommand:CommandBase{
                                 )
         
         context.credentials=BsyncCredentials()
-        context.credentials?.spaceUID=spaceUID
+        context.credentials?.user=user
         context.credentials?.salt=sharedSalt
-        context.credentials?.email=email
-        context.credentials?.phoneNumber=phoneNumber
         context.credentials?.password=password
             
         var url:NSURL?
@@ -219,7 +213,7 @@ public class SynchronizeCommand:CommandBase{
             
         }
         
-        if ((email != nil || phoneNumber != nil) && password != nil && spaceUID != nil && sharedSalt != nil) {
+        if let user = user, let password = password, let sharedSalt = sharedSalt {
             
             if let apiBaseURL=url{
                 
@@ -227,19 +221,10 @@ public class SynchronizeCommand:CommandBase{
                 // We setup the default base url.
                 
                 Bartleby.configuration.API_BASE_URL=apiBaseURL
+                Bartleby.configuration.SHARED_SALT=sharedSalt
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                let user=User()
-                user.spaceUID=spaceUID!
-                if let email=email{
-                    user.email=email
-                    user.verificationMethod = .ByEmail
-                }
-                else if let phoneNumber=phoneNumber{
-                    user.phoneNumber=phoneNumber
-                    user.verificationMethod = .ByPhoneNumber
-                }
             
-                LoginUser.execute(user, withPassword: password!, sucessHandler: {
+                LoginUser.execute(user, withPassword: password, sucessHandler: {
                     print ("Successful login")
                     doSync()
                     }, failureHandler: { (context) in
