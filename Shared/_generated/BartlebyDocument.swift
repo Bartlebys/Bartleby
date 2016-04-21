@@ -343,9 +343,9 @@ import UIKit
 			try self.registryMetadata.configureSchema(triggerDefinition)
 
         }catch RegistryError.DuplicatedCollectionName(let collectionName){
-            Bartleby.bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
+            bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
         }catch {
-            Bartleby.bprint("\(error)",file:#file,function:#function,line:#line)
+            bprint("\(error)",file:#file,function:#function,line:#line)
         }
 
         // #2 Registers the collections

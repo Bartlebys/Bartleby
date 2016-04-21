@@ -30,7 +30,7 @@ class BsyncXPCHelperDMGHandler {
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-class BsyncXPCHelper{
+@objc(BsyncXPCHelper) class BsyncXPCHelper:NSObject,BartlebyFileIO{
     
     static var masterFileName="Master"
     

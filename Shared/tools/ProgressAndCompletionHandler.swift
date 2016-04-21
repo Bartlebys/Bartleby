@@ -24,7 +24,7 @@ public typealias ComposedProgressAndCompletionHandler = (taskIndex:Int,totalTask
     /// The completion block
     public var completionBlock:((success:Bool,message:String?)->())
     
-    public init(completionBlock:((success:Bool,message:String?)->())){
+    public required init(completionBlock:((success:Bool,message:String?)->())){
         self.completionBlock=completionBlock
     }
 

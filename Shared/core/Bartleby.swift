@@ -66,17 +66,7 @@ import Foundation
         super.init()
     }
     
-    
-    // MARK: - Collaboration server
-    
-    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL{
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
-            if let collaborationServerURL=registry.registryMetadata.collaborationServerURL{
-                return collaborationServerURL
-            }
-        }
-        return Bartleby.configuration.API_BASE_URL
-    }
+
     
     // MARK: - Registries
     
@@ -341,8 +331,40 @@ import Foundation
             let c=signs.characters[idx]
             randomString.append(c)
         }
-        
         return randomString
+    }
+    
+    
+    
+    // MARK: - Paths & URL
+    
+    
+    /**
+     Call
+     
+     - parameter spaceUID: the spaceUID
+     
+     - returns: the
+     */
+    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL{
+        if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
+            if let collaborationServerURL=registry.registryMetadata.collaborationServerURL{
+                return collaborationServerURL
+            }
+        }
+        return Bartleby.configuration.API_BASE_URL
+    }
+    
+    /**
+     Returns a storage
+     
+     - parameter spaceUID: the spaceUID
+     
+     - returns: the Application folder URL
+     */
+    public func getApplicationDataFolderURL(spaceUID:String)->NSURL{
+        let folder=Bartleby.getSearchPathURL(.ApplicationSupportDirectory)!
+        return folder.URLByAppendingPathComponent("Bartleby/\(spaceUID)/")
     }
     
     
@@ -353,7 +375,7 @@ import Foundation
      
      - returns: the URL
      */
-    public static func getSearchPath(searchPath:NSSearchPathDirectory)->NSURL?{
+    public static func getSearchPathURL(searchPath:NSSearchPathDirectory)->NSURL?{
         let urls = NSFileManager.defaultManager().URLsForDirectory(searchPath, inDomains: .UserDomainMask)
         if urls.count>0{
             return urls[0]

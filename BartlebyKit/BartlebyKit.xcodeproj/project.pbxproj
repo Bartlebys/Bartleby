@@ -545,7 +545,6 @@
 				E53E2ABC1CA57DBA0079ED23 /* components */,
 				E53E2AC21CA57DBA0079ED23 /* core */,
 				E53E2AD61CA57DBA0079ED23 /* extensions */,
-				E53E2AD91CA57DBA0079ED23 /* models */,
 				E53E2ADA1CA57DBA0079ED23 /* operations */,
 				E53E2ADE1CA57DBA0079ED23 /* README.md */,
 				E53E2ADF1CA57DBA0079ED23 /* tools */,
@@ -763,6 +762,7 @@
 		E53E2AD61CA57DBA0079ED23 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E53E2AD91CA57DBA0079ED23 /* models */,
 				E53E2AD71CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift */,
 				E53E2AD81CA57DBA0079ED23 /* NSURL+Parameters.swift */,
 				E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */,
@@ -775,7 +775,8 @@
 			isa = PBXGroup;
 			children = (
 			);
-			path = models;
+			name = models;
+			path = ../models;
 			sourceTree = "<group>";
 		};
 		E53E2ADA1CA57DBA0079ED23 /* operations */ = {
