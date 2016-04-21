@@ -14,6 +14,8 @@
 		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; };
 		5BFDA6FF1CC27A05002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */; };
 		5BFDA7021CC27A87002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */; };
+		E50A6EFA1CC8D7AE00F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedJObjectTransform.swift */; };
+		E50A6EFB1CC8D7AE00F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedJObjectTransform.swift */; };
 		E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51029171CB68FC50040FC2C /* JObjectTests.swift */; };
 		E51718B01CAEE43900A0CD1A /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51718AF1CAEE43900A0CD1A /* User+Auth.swift */; };
 		E51718B11CAEE43900A0CD1A /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51718AF1CAEE43900A0CD1A /* User+Auth.swift */; };
@@ -308,6 +310,7 @@
 		5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../Debug-iphoneos/Alamofire.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "../Debug-iphonesimulator/ObjectMapper.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50A6EF91CC8D7AE00F89311 /* CryptedJObjectTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedJObjectTransform.swift; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* JObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObjectTests.swift; sourceTree = "<group>"; };
 		E51718AF1CAEE43900A0CD1A /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E51834391CA52F96006ED867 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
@@ -527,6 +530,7 @@
 				E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */,
 				E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */,
 				E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */,
+				E50A6EF91CC8D7AE00F89311 /* CryptedJObjectTransform.swift */,
 				E518343D1CA52F96006ED867 /* CryptoHelper.swift */,
 			);
 			name = CryptoHelper;
@@ -1113,6 +1117,7 @@
 				E53E2B041CA57DBA0079ED23 /* BaseObject.swift in Sources */,
 				E53E2C0C1CA57DBA0079ED23 /* RegistryMetadata.swift in Sources */,
 				E53E2BFD1CA57DBA0079ED23 /* CryptoDelegate.swift in Sources */,
+				E50A6EFA1CC8D7AE00F89311 /* CryptedJObjectTransform.swift in Sources */,
 				E53E2B581CA57DBA0079ED23 /* DeletePermission.swift in Sources */,
 				E53E2B2E1CA57DBA0079ED23 /* CreateLocker.swift in Sources */,
 				E53E2AEC1CA57DBA0079ED23 /* GroupsCollectionController.swift in Sources */,
@@ -1248,6 +1253,7 @@
 				E51718B11CAEE43900A0CD1A /* User+Auth.swift in Sources */,
 				E53E2AE71CA57DBA0079ED23 /* BartlebyDocument.swift in Sources */,
 				E53E2B081CA57DBA0079ED23 /* BaseRegistryMetadata.swift in Sources */,
+				E50A6EFB1CC8D7AE00F89311 /* CryptedJObjectTransform.swift in Sources */,
 				E53E2B651CA57DBA0079ED23 /* DeleteUser.swift in Sources */,
 				E53E2BEF1CA57DBA0079ED23 /* Default.swift in Sources */,
 				E53E2C1C1CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift in Sources */,

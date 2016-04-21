@@ -400,6 +400,9 @@
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5BF4DF801CC7E3D800965DC0 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
+		E50A6EFE1CC8DE4D00F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedJObjectTransform.swift */; };
+		E50A6EFF1CC8DE5000F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedJObjectTransform.swift */; };
+		E50A6F001CC8DE5100F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedJObjectTransform.swift */; };
 		E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
 		E53E27521CA572940079ED23 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		E53E27531CA572940079ED23 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
@@ -748,6 +751,7 @@
 		5BC8F16A1CB3A75900B00866 /* DistantBasicSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistantBasicSyncTests.swift; sourceTree = "<group>"; };
 		5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUIDCommand.swift; sourceTree = "<group>"; };
 		E5091D9C1C4F8DB200E640A2 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		E50A6EFD1CC8DE4D00F89311 /* CryptedJObjectTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedJObjectTransform.swift; sourceTree = "<group>"; };
 		E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncCredentials.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
 		E54594061C3E627A000576AD /* SnapshotCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotCommand.swift; sourceTree = "<group>"; };
@@ -893,6 +897,7 @@
 		5BB60F391CBFE3C500D23B4F /* CryptoHelper */ = {
 			isa = PBXGroup;
 			children = (
+				E50A6EFD1CC8DE4D00F89311 /* CryptedJObjectTransform.swift */,
 				5BB60F3A1CBFE3C500D23B4F /* CryptedDataTransform.swift */,
 				5BB60F3B1CBFE3C500D23B4F /* CryptedKeyValueStorage.swift */,
 				5BB60F3C1CBFE3C500D23B4F /* CryptedStringKeyValueTransform.swift */,
@@ -1733,6 +1738,7 @@
 				5BB610851CBFE51900D23B4F /* DeleteUsers.swift in Sources */,
 				E53E28D81CA572D80079ED23 /* NSData+CRC.m in Sources */,
 				5BB610C91CBFE51900D23B4F /* ReadUsersByIds.swift in Sources */,
+				E50A6EFE1CC8DE4D00F89311 /* CryptedJObjectTransform.swift in Sources */,
 				5BB60FDD1CBFE51900D23B4F /* AliasesCollectionController.swift in Sources */,
 				5BB611151CBFE51900D23B4F /* JHTTPResponse.swift in Sources */,
 				5BB610311CBFE51900D23B4F /* CreateGroup.swift in Sources */,
@@ -1787,6 +1793,7 @@
 				5BB610621CBFE51900D23B4F /* DeleteGroup.swift in Sources */,
 				5B8E5D5A1C8D7FCD002CFA03 /* ParameterEncoding.swift in Sources */,
 				E552B7CA1C3D4E49001CD53B /* BsyncSession.swift in Sources */,
+				E50A6F001CC8DE5100F89311 /* CryptedJObjectTransform.swift in Sources */,
 				E5B98E9A1CC0E6CD00A7ECD1 /* Map.swift in Sources */,
 				5BB610921CBFE51900D23B4F /* ReadAliasesByQuery.swift in Sources */,
 				5BB611521CBFE51900D23B4F /* HTTPCommand.swift in Sources */,
@@ -2140,6 +2147,7 @@
 				5BB611171CBFE51900D23B4F /* JHTTPResponse.swift in Sources */,
 				5BB610331CBFE51900D23B4F /* CreateGroup.swift in Sources */,
 				5BB6103F1CBFE51900D23B4F /* CreateLockers.swift in Sources */,
+				E50A6EFF1CC8DE5000F89311 /* CryptedJObjectTransform.swift in Sources */,
 				E55C92551CBF84ED008163F6 /* ServerTrustPolicy.swift in Sources */,
 				E55C92561CBF84ED008163F6 /* Stream.swift in Sources */,
 				E55C92571CBF84ED008163F6 /* Timeline.swift in Sources */,
