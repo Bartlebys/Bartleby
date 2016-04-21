@@ -14,6 +14,9 @@ import Foundation
 #endif
 
 public class CryptedStringTransform:TransformType{
+    public init() {
+        
+    }
     
     public typealias Object = String
     public typealias JSON = String
