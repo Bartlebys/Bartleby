@@ -475,7 +475,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                        NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                        NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                        printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                       if (httpStatusCode==201) {
+                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
                                                            [strongSelf _nextCommand];
                                                            return ;
                                                        }
@@ -509,7 +509,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                                       NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                                       printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                                      if (httpStatusCode==201) {
+                                                                      if (httpStatusCode>=200 && httpStatusCode<300) {
                                                                           [strongSelf _nextCommand];
                                                                           return ;
                                                                       }
@@ -779,7 +779,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                                    NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                                    NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                                    printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                                   if (httpStatusCode==201) {
+                                                                   if (httpStatusCode>=200 && httpStatusCode<300) {
                                                                        [strongSelf _successFullEnd];
                                                                        return ;
                                                                    }

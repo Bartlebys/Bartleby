@@ -421,7 +421,7 @@
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                          if(!error && response){
                                                              NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
-                                                             if (HTTPStatusCode>=200 && HTTPStatusCode<=300){
+                                                             if (HTTPStatusCode>=200 && HTTPStatusCode<300){
                                                                  block(YES,HTTPStatusCode);
                                                                  return;
                                                              }else{
