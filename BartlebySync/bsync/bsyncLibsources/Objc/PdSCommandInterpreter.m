@@ -487,7 +487,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                    
                                                    NSString *msg=@"No message";
                                                    if (error) {
-                                                       msg=[NSString stringWithFormat:@"Error on file upload: %@",[weakSelf _stringFromError:error]];
+                                                       msg=[NSString stringWithFormat:@"Error on file upload: %@",[strongSelf _stringFromError:error]];
                                                    }
                                                    [strongSelf _interruptOnFault:msg];
                                                    
@@ -521,7 +521,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                                   
                                                                   NSString *msg=@"No message";
                                                                   if (error) {
-                                                                      msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[weakSelf _stringFromError:error]];
+                                                                      msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[strongSelf _stringFromError:error]];
                                                                   }
                                                                   [strongSelf _interruptOnFault:msg];
                                                               }]];
@@ -617,7 +617,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
                                                                       
                                                                       NSString *msg=@"No message";
                                                                       if (error) {
-                                                                          msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[weakSelf _stringFromError:error]];
+                                                                          msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[strongSelf _stringFromError:error]];
                                                                       }
                                                                       [strongSelf _interruptOnFault:msg];
                                                                       
