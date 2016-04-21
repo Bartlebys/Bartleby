@@ -606,8 +606,7 @@
                                                                  NSError *cryptoError = nil;
                                                                  cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     NSString*message=@"String decryption error";
-                                                                     printf("%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
                                                                      data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
@@ -814,8 +813,7 @@
                                                                  NSError *cryptoError = nil;
                                                                  cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     NSString*message=@"String decryption error";
-                                                                     printf("%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
                                                                      data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
