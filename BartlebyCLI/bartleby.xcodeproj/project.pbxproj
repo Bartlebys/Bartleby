@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
-		E50A6F021CC8DE7700F89311 /* CryptedJObjectTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedJObjectTransform.swift */; };
+		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
 		E53E26D21CA571F50079ED23 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E264F1CA571F50079ED23 /* BartlebyDocument.swift */; };
 		E53E26D31CA571F50079ED23 /* AliasesCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26511CA571F50079ED23 /* AliasesCollectionController.swift */; };
 		E53E26D41CA571F50079ED23 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26521CA571F50079ED23 /* GroupsCollectionController.swift */; };
@@ -184,7 +184,7 @@
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
-		E50A6F011CC8DE7700F89311 /* CryptedJObjectTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedJObjectTransform.swift; sourceTree = "<group>"; };
+		E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E53E264F1CA571F50079ED23 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E53E26511CA571F50079ED23 /* AliasesCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasesCollectionController.swift; sourceTree = "<group>"; };
 		E53E26521CA571F50079ED23 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
@@ -743,7 +743,7 @@
 		E5D085F51C550E1900F0090E /* CryptoHelper */ = {
 			isa = PBXGroup;
 			children = (
-				E50A6F011CC8DE7700F89311 /* CryptedJObjectTransform.swift */,
+				E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */,
 				E5D085F61C550E1900F0090E /* CryptedDataTransform.swift */,
 				E5D085F71C550E1900F0090E /* CryptedKeyValueStorage.swift */,
 				E5D085F81C550E1900F0090E /* CryptedStringKeyValueTransform.swift */,
@@ -921,7 +921,7 @@
 				E53E26DA1CA571F50079ED23 /* Alias.swift in Sources */,
 				E53E26E61CA571F50079ED23 /* CreateAlias.swift in Sources */,
 				E53E27151CA571F50079ED23 /* UpdateLockers.swift in Sources */,
-				E50A6F021CC8DE7700F89311 /* CryptedJObjectTransform.swift in Sources */,
+				E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E5B98E271CC0E63C00A7ECD1 /* DateFormatterTransform.swift in Sources */,
 				E53E26EA1CA571F50079ED23 /* CreateLocker.swift in Sources */,
 				E53E26EE1CA571F50079ED23 /* CreateTrigger.swift in Sources */,

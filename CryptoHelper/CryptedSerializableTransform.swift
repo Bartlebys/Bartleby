@@ -12,9 +12,9 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc public class CryptedJObjectTransform:NSObject,TransformType{
+public class CryptedSerializableTransform<T: Serializable>: TransformType{
     
-    public typealias Object = JObject
+    public typealias Object = T
     public typealias JSON = String
     
     private let _CRYPTED_OBJECT_KEY = "cryptedJObject"

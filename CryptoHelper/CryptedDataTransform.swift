@@ -13,7 +13,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc public class CryptedDataTransform:NSObject,TransformType{
+public class CryptedDataTransform:TransformType{
     
     public typealias Object = NSData
     public typealias JSON = String
