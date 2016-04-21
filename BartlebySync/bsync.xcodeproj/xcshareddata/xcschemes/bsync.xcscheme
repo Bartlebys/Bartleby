@@ -37,6 +37,26 @@
                BlueprintName = "bsyncTests"
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BsyncKeyValueStorageTests">
+               </Test>
+               <Test
+                  Identifier = "LocalDMGSyncTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncBasicTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncDirectivesTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncHashMapTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncMiscTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
@@ -106,11 +126,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-user"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "login"
@@ -118,11 +134,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-directives"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--user QkM4OTk2NTItRDAzRi00OUNBLThBNDktMjI5RDRBQkRBNDUy"
-            isEnabled = "NO">
+            argument = "--user MzUxRURDRDItMzU0NS00NDE3LTk0QjctQzA4RTcyODcxMkRC"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--api http://yd.local/api/v1"
