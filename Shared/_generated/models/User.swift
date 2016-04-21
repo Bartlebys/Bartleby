@@ -22,6 +22,7 @@ import ObjectMapper
 	public var spaceUID:String = "\(Bartleby.createUID())"
 	//the verification method
 	public enum VerificationMethod:String{
+		case None = "None"
 		case ByPhoneNumber = "ByPhoneNumber"
 		case ByEmail = "ByEmail"
 	}
