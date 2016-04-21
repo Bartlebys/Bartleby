@@ -751,6 +751,12 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         
         
         NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
+        NSError*cryptoError=nil;
+        jsonHashMap=[[Bartleby cryptoDelegate] decryptString:jsonHashMap error:&cryptoError];
+        if(cryptoError){
+            [self _interruptOnFault:@"CryptoError"];
+            return;
+        }
         
         PdSCommandInterpreter *__weak weakSelf=self;
         
@@ -883,6 +889,15 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         
         // Write the Hash Map
         NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
+        NSError*cryptoError=nil;
+        jsonHashMap=[[Bartleby cryptoDelegate] decryptString:jsonHashMap error:&cryptoError];
+        if(cryptoError){
+            [self _interruptOnFault:@"CryptoError"];
+            return;
+        }
+        
+        
+        
         NSString*relativePathOfHashMapFile=[_context.destinationTreeId stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
         NSURL *hashMapFileUrl=[_context.destinationBaseUrl URLByAppendingPathComponent:relativePathOfHashMapFile];
         

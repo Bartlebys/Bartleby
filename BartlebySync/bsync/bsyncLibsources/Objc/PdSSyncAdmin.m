@@ -602,11 +602,11 @@
                                                                  // So we need to proceed to multiple transformations.
                                                                  // from data to string and from string to data before to JSON deserialize
                                                                  NSString*cryptoString=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                 
+                                                                 printf("Pre decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                  NSError *cryptoError = nil;
                                                                  cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     printf("String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("Post decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
                                                                      data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
@@ -809,11 +809,11 @@
                                                                  // So we need to proceed to multiple transformations.
                                                                  // from data to string and from string to data before to JSON deserialize
                                                                  NSString*cryptoString=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                 
+                                                                 printf("Pre decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                  NSError *cryptoError = nil;
                                                                  cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     printf("String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("Post decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
                                                                      data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
