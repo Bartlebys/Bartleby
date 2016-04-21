@@ -29,10 +29,20 @@ class CreateUserCommand : CommandBase {
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt",required: true,
                                       helpMessage: "The salt used for authentication.")
         
+        // Optional parameters
+        let email = StringOption(shortFlag: "e", longFlag: "email", required: false,
+                                 helpMessage: "The email can be used to set the verification method")
+        
+        let phone = StringOption(shortFlag: "p", longFlag: "phone", required: false,
+                                 helpMessage: "The phone number can be used to set the verification method")
+        
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",required: false,
                                    helpMessage: "Print verbose messages.")
         
-        cli.addOptions(api, password, spaceUID, secretKey, sharedSalt, verbosity)
+        
+        
+        // TODO: Add email and/or phone to implement
+        cli.addOptions(api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
         
         do {
             try cli.parse()
@@ -53,7 +63,15 @@ class CreateUserCommand : CommandBase {
                     user.spaceUID = space
                     user.creatorUID = user.UID
                     user.password = pw
-                    
+                    user.verificationMethod = .None
+                    if let email = email.value {
+                        user.email = email
+                        user.verificationMethod = .ByEmail
+                    }
+                    if let phone = phone.value {
+                        user.phoneNumber = phone
+                        user.verificationMethod = .ByPhoneNumber
+                    }
                     
                     CreateUser.execute(user, inDataSpace: space,
                                        sucessHandler: { (context) in
