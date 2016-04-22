@@ -1,5 +1,5 @@
 //
-//  DistantBasicSyncTests.swift
+//  BsyncAdminUpDownSyncTests.swift
 //  bsync
 //
 //  Created by Martin Delille on 05/04/2016.
@@ -8,13 +8,13 @@
 
 import XCTest
 
-class DistantBasicSyncTests: XCTestCase {
+class BsyncAdminUpDownSyncTests: XCTestCase {
     private static let _spaceUID = Bartleby.createUID()
     private static let _password = Bartleby.randomStringWithLength(6)
     private static var _user: User?
     
     private static let _treeName = Bartleby.randomStringWithLength(6)
-    private static let _upFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/DistantBasicSyncTests/Up/\(_treeName)")
+    private static let _upFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/BsyncAdminUpDownSyncTests/Up/\(_treeName)")
     private static let _upFolderPath = _upFolderURL.path!
     private static let _upFilePath = _upFolderPath + "/file.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
@@ -22,7 +22,7 @@ class DistantBasicSyncTests: XCTestCase {
     private static let _apiUrl = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync")
     private static let _distantTreeURL = _apiUrl.URLByAppendingPathComponent("tree/\(_treeName)")
     
-    private static let _downFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/DistantBasicSyncTests/Down/\(_treeName)")
+    private static let _downFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/BsyncAdminUpDownSyncTests/Down/\(_treeName)")
     private static let _downFolderPath = _downFolderURL.path!
     private static let _downFilePath = _downFolderPath + "/file.txt"
     
@@ -58,11 +58,11 @@ class DistantBasicSyncTests: XCTestCase {
         
         let user=User()
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
-        user.password = DistantBasicSyncTests._password
-        user.spaceUID = DistantBasicSyncTests._spaceUID
-        DistantBasicSyncTests._user = user
+        user.password = BsyncAdminUpDownSyncTests._password
+        user.spaceUID = BsyncAdminUpDownSyncTests._spaceUID
+        BsyncAdminUpDownSyncTests._user = user
         
-        CreateUser.execute(user, inDataSpace: DistantBasicSyncTests._spaceUID, sucessHandler: { (context) in
+        CreateUser.execute(user, inDataSpace: BsyncAdminUpDownSyncTests._spaceUID, sucessHandler: { (context) in
             expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
@@ -78,22 +78,22 @@ class DistantBasicSyncTests: XCTestCase {
     func test201_CreateFileInUpFolder() {
         let expectation = expectationWithDescription("All files should be created")
         // Create down folder
-        DistantBasicSyncTests._fm.createDirectoryAtPath(DistantBasicSyncTests._downFolderPath, withIntermediateDirectories: true, attributes: nil, callBack: { (success, message) in
+        BsyncAdminUpDownSyncTests._fm.createDirectoryAtPath(BsyncAdminUpDownSyncTests._downFolderPath, withIntermediateDirectories: true, attributes: nil, callBack: { (success, message) in
             // Create up folder
-            DistantBasicSyncTests._fm.createDirectoryAtPath(DistantBasicSyncTests._upFolderPath, withIntermediateDirectories: true, attributes: nil, callBack: { (success, message) in
+            BsyncAdminUpDownSyncTests._fm.createDirectoryAtPath(BsyncAdminUpDownSyncTests._upFolderPath, withIntermediateDirectories: true, attributes: nil, callBack: { (success, message) in
                 XCTAssertTrue(success, "\(message)")
                 if success {
                     // Create file
-                    DistantBasicSyncTests._fm.writeString(DistantBasicSyncTests._fileContent, path: DistantBasicSyncTests._upFilePath, atomically: true, encoding: NSUTF8StringEncoding, callBack: { (success, message) in
+                    BsyncAdminUpDownSyncTests._fm.writeString(BsyncAdminUpDownSyncTests._fileContent, path: BsyncAdminUpDownSyncTests._upFilePath, atomically: true, encoding: NSUTF8StringEncoding, callBack: { (success, message) in
                         XCTAssertTrue(success, "\(message)")
                         // Check file existence
-                        DistantBasicSyncTests._fm.fileExistsAtPath(DistantBasicSyncTests._upFilePath, callBack: { (exists, isADirectory, success, message) in
+                        BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._upFilePath, callBack: { (exists, isADirectory, success, message) in
                             XCTAssertTrue(exists, "\(message)")
                             XCTAssertFalse(isADirectory, "\(message)")
                             // Check file content
-                            DistantBasicSyncTests._fm.readString(contentsOfFile: DistantBasicSyncTests._upFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._upFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
                                 XCTAssertTrue(success, "\(message)")
-                                XCTAssertEqual(string, DistantBasicSyncTests._fileContent, "\(message)")
+                                XCTAssertEqual(string, BsyncAdminUpDownSyncTests._fileContent, "\(message)")
                                 expectation.fulfill()
                             })
                         })
@@ -111,16 +111,16 @@ class DistantBasicSyncTests: XCTestCase {
     func test202_CreateDirectives_UpToDistant() {
         let directives = BsyncDirectives()
         // Credentials:
-        directives.user = DistantBasicSyncTests._user
-        directives.password = DistantBasicSyncTests._password
+        directives.user = BsyncAdminUpDownSyncTests._user
+        directives.password = BsyncAdminUpDownSyncTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
         // Directives:
-        directives.sourceURL = DistantBasicSyncTests._upFolderURL
-        directives.destinationURL = DistantBasicSyncTests._distantTreeURL
+        directives.sourceURL = BsyncAdminUpDownSyncTests._upFolderURL
+        directives.destinationURL = BsyncAdminUpDownSyncTests._distantTreeURL
         directives.automaticTreeCreation = true
         
-        let directivesURL = DistantBasicSyncTests._upFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
+        let directivesURL = BsyncAdminUpDownSyncTests._upFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
         let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
         
         if(!success) {
@@ -130,7 +130,7 @@ class DistantBasicSyncTests: XCTestCase {
                 XCTFail("Unknown error")
             }
         } else {
-            DistantBasicSyncTests._fm.fileExistsAtPath(DistantBasicSyncTests._upDirectivePath, callBack: { (exists, isADirectory, success, message) in
+            BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._upDirectivePath, callBack: { (exists, isADirectory, success, message) in
                 XCTAssertTrue(exists, "\(message)")
                 XCTAssertFalse(isADirectory, "\(message)")
             })
@@ -140,16 +140,16 @@ class DistantBasicSyncTests: XCTestCase {
     func test203_CreateDirectives_DistantToDown() {
         let directives = BsyncDirectives()
         // Credentials:
-        directives.user = DistantBasicSyncTests._user
-        directives.password = DistantBasicSyncTests._password
+        directives.user = BsyncAdminUpDownSyncTests._user
+        directives.password = BsyncAdminUpDownSyncTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
         // Directives:
-        directives.sourceURL = DistantBasicSyncTests._distantTreeURL
-        directives.destinationURL = DistantBasicSyncTests._downFolderURL
+        directives.sourceURL = BsyncAdminUpDownSyncTests._distantTreeURL
+        directives.destinationURL = BsyncAdminUpDownSyncTests._downFolderURL
         directives.automaticTreeCreation = true
         
-        let directivesURL = DistantBasicSyncTests._downFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
+        let directivesURL = BsyncAdminUpDownSyncTests._downFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
         let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
         
         if(!success) {
@@ -159,7 +159,7 @@ class DistantBasicSyncTests: XCTestCase {
                 XCTFail("Unknown error")
             }
         } else {
-            DistantBasicSyncTests._fm.fileExistsAtPath(DistantBasicSyncTests._downDirectivePath, callBack: { (exists, isADirectory, success, message) in
+            BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._downDirectivePath, callBack: { (exists, isADirectory, success, message) in
                 XCTAssertTrue(success, "\(message)")
                 XCTAssertFalse(isADirectory)
                 XCTAssertTrue(exists)
@@ -171,12 +171,12 @@ class DistantBasicSyncTests: XCTestCase {
     // MARK: 3 - Run local analyser
     
     func test301_RunLocalAnalyser_UpPath() {
-        print(DistantBasicSyncTests._downDirectivePath)
+        print(BsyncAdminUpDownSyncTests._downDirectivePath)
         let expectation = expectationWithDescription("Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         do {
-            try analyzer.createHashMapFromLocalPath(DistantBasicSyncTests._upFolderPath, progressBlock: { (hash, path, index) in
+            try analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._upFolderPath, progressBlock: { (hash, path, index) in
                 print("\(index) checksum of \(path) is \(hash)")
                 }, completionBlock: { (hashMap) in
                     expectation.fulfill()
@@ -191,12 +191,12 @@ class DistantBasicSyncTests: XCTestCase {
     }
     
     func test302_RunLocalAnalyser_DownPath() {
-        print(DistantBasicSyncTests._downDirectivePath)
+        print(BsyncAdminUpDownSyncTests._downDirectivePath)
         let expectation = expectationWithDescription("Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         do {
-            try analyzer.createHashMapFromLocalPath(DistantBasicSyncTests._downFolderPath, progressBlock: { (hash, path, index) in
+            try analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._downFolderPath, progressBlock: { (hash, path, index) in
                 print("\(index) checksum of \(path) is \(hash)")
                 }, completionBlock: { (hashMap) in
                     expectation.fulfill()
@@ -212,10 +212,10 @@ class DistantBasicSyncTests: XCTestCase {
     
     // MARK: 4 - Run synchronization
     func test401_LoginUser() {
-        print(DistantBasicSyncTests._downDirectivePath)
+        print(BsyncAdminUpDownSyncTests._downDirectivePath)
         let expectation = expectationWithDescription("LoginUser should respond")
-        if let user = DistantBasicSyncTests._user {
-            user.login(withPassword: DistantBasicSyncTests._password,
+        if let user = BsyncAdminUpDownSyncTests._user {
+            user.login(withPassword: BsyncAdminUpDownSyncTests._password,
                        sucessHandler: { () -> () in
                         expectation.fulfill()
             }) { (context) ->() in
@@ -235,20 +235,10 @@ class DistantBasicSyncTests: XCTestCase {
     }
     
     func test402_RunDirectives_UpToDistant() {
-        print(DistantBasicSyncTests._downDirectivePath)
+        print(BsyncAdminUpDownSyncTests._downDirectivePath)
         let expectation = expectationWithDescription("Synchronization should complete")
         
-//        let cmd = RunDirectivesCommand { (success, message) in
-//            expectation.fulfill()
-//            XCTAssertTrue(success, "\(message)")
-//        }
-//        cmd.runAsCommandLine = false
-//        cmd.addProgressBlock({ (taskIndex, totalTaskCount, taskProgress, message, data) in
-//            bprint("\(taskIndex)/\(totalTaskCount)/\(message)", file: #file, function: #function, line: #line)
-//        })
-//        cmd.runDirectives(DistantBasicSyncTests._upDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT)
-        
-        DistantBasicSyncTests._fm.readString(contentsOfFile: DistantBasicSyncTests._upDirectivePath, encoding: NSUTF8StringEncoding) { (string, success, message) in
+        BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._upDirectivePath, encoding: NSUTF8StringEncoding) { (string, success, message) in
             XCTAssertTrue(success, "\(message)")
             if let upDirectives = Mapper<BsyncDirectives>().map(string) {
                 
@@ -256,8 +246,8 @@ class DistantBasicSyncTests: XCTestCase {
                 XCTAssertTrue(validity.valid, "\(validity.message)")
                 
                 
-                let context = BsyncContext(sourceURL: DistantBasicSyncTests._upFolderURL,
-                                           andDestinationUrl: DistantBasicSyncTests._distantTreeURL,
+                let context = BsyncContext(sourceURL: BsyncAdminUpDownSyncTests._upFolderURL,
+                                           andDestinationUrl: BsyncAdminUpDownSyncTests._distantTreeURL,
                                            restrictedTo: nil,
                                            autoCreateTrees: true)
                 context.credentials = BsyncCredentials()
@@ -292,18 +282,19 @@ class DistantBasicSyncTests: XCTestCase {
     }
     
     func test403_RunDirectives_DistantToDown() {
-        print(DistantBasicSyncTests._downDirectivePath)
+        print(BsyncAdminUpDownSyncTests._downDirectivePath)
         let expectation = expectationWithDescription("Synchronization should complete")
-        
-        DistantBasicSyncTests._fm.readString(contentsOfFile: DistantBasicSyncTests._downDirectivePath, encoding: NSUTF8StringEncoding) { (string, success, message) in
+     
+
+        BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._downDirectivePath, encoding: NSUTF8StringEncoding) { (string, success, message) in
             XCTAssertTrue(success, "\(message)")
             if let downDirectives = Mapper<BsyncDirectives>().map(string) {
                 
                 let validity = downDirectives.areValid()
                 XCTAssertTrue(validity.valid, "\(validity.message)")
                 
-                let context = BsyncContext(sourceURL: DistantBasicSyncTests._distantTreeURL,
-                                           andDestinationUrl: DistantBasicSyncTests._downFolderURL,
+                let context = BsyncContext(sourceURL: BsyncAdminUpDownSyncTests._distantTreeURL,
+                                           andDestinationUrl: BsyncAdminUpDownSyncTests._downFolderURL,
                                            restrictedTo: nil,
                                            autoCreateTrees: true)
                 context.credentials = BsyncCredentials()
@@ -340,12 +331,12 @@ class DistantBasicSyncTests: XCTestCase {
     func test404_CheckFileHasBeenDownloaded() {
         let expectation = expectationWithDescription("File has been checked")
         
-        DistantBasicSyncTests._fm.fileExistsAtPath(DistantBasicSyncTests._downFilePath) { (exists, isADirectory, success, message) in
+        BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._downFilePath) { (exists, isADirectory, success, message) in
             XCTAssertTrue(success, "\(message)")
             XCTAssertTrue(exists)
-            DistantBasicSyncTests._fm.readString(contentsOfFile: DistantBasicSyncTests._downFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._downFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
                 XCTAssertTrue(success, "\(message)")
-                XCTAssertEqual(string, DistantBasicSyncTests._fileContent)
+                XCTAssertEqual(string, BsyncAdminUpDownSyncTests._fileContent)
                 expectation.fulfill()
             })
         }

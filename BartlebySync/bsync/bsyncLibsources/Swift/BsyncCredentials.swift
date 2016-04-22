@@ -19,7 +19,7 @@ import Foundation
     
     
     /// Debug facility
-    public static let DEBUG_DISABLE_ENCRYPTION=false // Should always be set to false in production (!)
+    public static let DEBUG_DISABLE_ENCRYPTION=true // Should always be set to false in production (!)
     
     
     // CRYPTED

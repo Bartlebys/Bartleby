@@ -196,5 +196,4 @@ public enum BsyncAdminError:ErrorType{
     @objc public func progressMessage(message: String!) {
         print(message);
     }
-
 }

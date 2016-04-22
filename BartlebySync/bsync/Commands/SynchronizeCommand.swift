@@ -107,132 +107,19 @@ class SynchronizeCommand:CommandBase{
                 exit(EX__BASE)
             }
             
-            self.synchronize( sourceURL,
+            let runner = BsyncDirectivesRunner()
+            runner.synchronize( sourceURL,
                                             destinationURL: destinationURL,
                                             hashMapViewName: hashMapViewName.value,
                                             user: user,
                                             password: password.value,
                                             sharedSalt: sharedSalt.value,
-                                            verbose:verbosity.value,
-                                            autoCreateTrees:automaticTreesCreation.wasSet)
-            
-            
+                                            autoCreateTrees:automaticTreesCreation.wasSet,
+                                            handlers: self)
             
         } catch {
             cli.printUsage(error)
             exit(EX_USAGE)
         }
     }
-    
-    /**
-     The synchronization implementation
-     
-     - parameter sourceURL:       the sourceURL
-     - parameter destinationURL:  the destinationURL
-     - parameter hashMapViewName: hashMapViewName
-     - parameter user:            the user
-     - parameter password:        password
-     - parameter sharedSalt:      sharedSalt
-     - parameter verbose :        verbose or not
-     - parameter autoCreateTrees: autoCreateTrees or not
-    
-     
-     */
-    func synchronize( sourceURL:NSURL,
-                                destinationURL:NSURL,
-                                hashMapViewName:String?,
-                                user:User?,
-                                password:String?,
-                                sharedSalt:String?,
-                                verbose:Bool=true,
-                                autoCreateTrees:Bool=false
-        
-        ){
-                                        
-        // Syncronization context
-                                        
-        let context=BsyncContext(   sourceURL: sourceURL,
-                                    andDestinationUrl: destinationURL,
-                                    restrictedTo: hashMapViewName,
-                                    autoCreateTrees:autoCreateTrees
-                                )
-        
-        context.credentials=BsyncCredentials()
-        context.credentials?.user=user
-        context.credentials?.salt=sharedSalt
-        context.credentials?.password=password
-            
-        var url:NSURL?
-        switch context.mode(){
-        case BsyncMode.SourceIsDistantDestinationIsLocal:
-            url=sourceURL
-        case BsyncMode.SourceIsLocalDestinationIsDistant:
-            url=destinationURL
-        default:
-            url=nil
-        }
-        // If there is an url let's determine the API base url.
-        // it should be before baseAPI_URL/BartlebySync/tree/...
-        // eg.: http://yd.local/api/v1/BartlebySync/tree/nameOfTree/
-        
-        if var stringURL=url?.absoluteString{
-            let r=stringURL.rangeOfString("/BartlebySync")
-            if let foundIndex=r?.startIndex{
-                // extract the base URL
-                url=NSURL(string: stringURL.substringToIndex(foundIndex))
-            }
-        }
-    
-        // Synchronization handler
-        func doSync(){
-            
-                do {
-                    let admin:BsyncAdmin=BsyncAdmin(context:context)
-                    if self.progressBlock == nil {
-                         self.addProgressBlock({ (taskIndex, totalTaskCount, taskProgress, message,nil) -> () in
-                            if let m=message {
-                                self.printVerbose(m)
-                            }else{
-                                self.printVerbose("\(taskIndex)/\(totalTaskCount) \(taskProgress)")
-                            }
-                         })
-                    }
-                    
-                    try admin.synchronizeWithprogressBlock(self.progressBlock!, completionBlock:self.completionBlock)
-                }catch{
-                    self.completion_EXIT(EX__BASE,message:"An error has occured during synchronization: \(error)")
-                    return
-                }
-            
-        }
-        
-        if let user = user, let password = password, let sharedSalt = sharedSalt {
-            
-            if let apiBaseURL=url{
-                
-                // Bartleby should have be configured before.
-                // We setup the default base url.
-                
-                Bartleby.configuration.API_BASE_URL=apiBaseURL
-                Bartleby.configuration.SHARED_SALT=sharedSalt
-                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-            
-                LoginUser.execute(user, withPassword: password, sucessHandler: {
-                    print ("Successful login")
-                    doSync()
-                    }, failureHandler: { (context) in
-                        // Print a JSON failure description
-                        self.completion_EXIT(EX__BASE,message:"An error has occured during login: \(context.description)\n")
-                        return
-                })
-
-            }else{
-                doSync()
-            }
-            
-        }else{
-            doSync()
-        }
-    }
-    
 }

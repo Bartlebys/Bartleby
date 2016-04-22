@@ -25,15 +25,15 @@ import Foundation
      - returns: nothing
      */
     func createImageDisk(imageFilePath:String,volumeName:String,size:String,password:String?,
-        callBack:(success:Bool,message:String?)->())->(){
-            print("imageFilePath \(imageFilePath)")
-            let dmgManager=BsyncImageDiskManager()
-            do{
-                let result = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
-                callBack(success: result, message:nil)
-            }catch {
-                callBack(success: false, message:"An error has occured")
-            }
+                         callBack:(success:Bool,message:String?)->())->(){
+        print("imageFilePath \(imageFilePath)")
+        let dmgManager=BsyncImageDiskManager()
+        do{
+            let result = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
+            callBack(success: result, message:nil)
+        }catch {
+            callBack(success: false, message:"An error has occured")
+        }
     }
     
     /**
@@ -46,14 +46,14 @@ import Foundation
      - returns: return value description
      */
     func attachVolume(from path:String,withPassword:String?,
-        callBack:(success:Bool,message:String?)->())->(){
-            let dmgManager=BsyncImageDiskManager()
-            do{
-                let result = try dmgManager.attachVolume(from: path, withPassword: withPassword)
-                callBack(success: result, message:nil)
-            }catch {
-                callBack(success: false, message:"An error has occured")
-            }
+                           callBack:(success:Bool,message:String?)->())->(){
+        let dmgManager=BsyncImageDiskManager()
+        do{
+            let result = try dmgManager.attachVolume(from: path, withPassword: withPassword)
+            callBack(success: result, message:nil)
+        }catch {
+            callBack(success: false, message:"An error has occured")
+        }
     }
     
     /**
@@ -66,10 +66,10 @@ import Foundation
      - returns: N/A
      */
     func attachVolume(identifiedBy card:BsyncDMGCard,
-        callBack:(success:Bool,message:String?)->())->(){
-            let password=card.getPasswordForDMG()
-            self.attachVolume(from: card.path, withPassword: password, callBack:callBack)
-            
+                                   callBack:(success:Bool,message:String?)->())->(){
+        let password=card.getPasswordForDMG()
+        self.attachVolume(from: card.path, withPassword: password, callBack:callBack)
+        
     }
     
     
@@ -81,14 +81,14 @@ import Foundation
      
      */
     func detachVolume(named:String,
-        callBack:(success:Bool,message:String?)->())->(){
-            let dmgManager=BsyncImageDiskManager()
-            do{
-                let result = try dmgManager.detachVolume(named)
-                callBack(success: result, message:nil)
-            }catch {
-                callBack(success: false, message:"An error has occured")
-            }
+                      callBack:(success:Bool,message:String?)->())->(){
+        let dmgManager=BsyncImageDiskManager()
+        do{
+            let result = try dmgManager.detachVolume(named)
+            callBack(success: result, message:nil)
+        }catch {
+            callBack(success: false, message:"An error has occured")
+        }
     }
     
     
@@ -96,51 +96,51 @@ import Foundation
     // MARK: - Directives
     
     /**
-    Create the directives
-    
-    - parameter directives: the directives
-    - parameter secretKey:  the secret key to encrypt the directives
-    - parameter sharedSalt: the shared salt
-    - parameter callBack:   the call back
-    
-    - returns: N/A
-    */
+     Create the directives
+     
+     - parameter directives: the directives
+     - parameter secretKey:  the secret key to encrypt the directives
+     - parameter sharedSalt: the shared salt
+     - parameter callBack:   the call back
+     
+     - returns: N/A
+     */
     func createDirectives(directives:BsyncDirectives,secretKey:String,sharedSalt:String, filePath:String,
-        callBack:(success:Bool,message:String?)->())->(){
-            
-            // Check the validity
-            
-            let validity=directives.areValid()
-            guard validity.valid else{
-                var validityMessage=""
-                if let explanation=validity.message{
-                    validityMessage="Directives are not valid : \(explanation)"
-                }else{
-                    validityMessage="Directives are not valid"
-                }
-                callBack(success: false, message: validityMessage)
+                          callBack:(success:Bool,message:String?)->())->(){
+        
+        // Check the validity
+        
+        let validity=directives.areValid()
+        guard validity.valid else{
+            var validityMessage=""
+            if let explanation=validity.message{
+                validityMessage="Directives are not valid : \(explanation)"
+            }else{
+                validityMessage="Directives are not valid"
+            }
+            callBack(success: false, message: validityMessage)
+            return;
+        }
+        
+        Bartleby.configuration.KEY=secretKey
+        Bartleby.configuration.SHARED_SALT=sharedSalt
+        Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+        Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+        
+        // Save the file
+        if var JSONString:NSString = Mapper().toJSONString(directives){
+            do{
+                JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
+                try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            }catch{
+                callBack(success: false, message: "\(error)")
                 return;
             }
+            callBack(success: true, message: "Directives have be saved to:\(filePath)")
+        }else{
+            callBack(success: false, message: "Serialization failure")
+        }
         
-            Bartleby.configuration.KEY=secretKey
-            Bartleby.configuration.SHARED_SALT=sharedSalt
-            Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
-            Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-     
-            // Save the file
-            if var JSONString:NSString = Mapper().toJSONString(directives){
-                do{
-                    JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                    try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
-                }catch{
-                    callBack(success: false, message: "\(error)")
-                    return;
-                }
-                callBack(success: true, message: "Directives have be saved to:\(filePath)")
-            }else{
-                callBack(success: false, message: "Serialization failure")
-            }
-            
     }
     
     
@@ -152,36 +152,18 @@ import Foundation
      - parameter sharedSalt:    the shared salt
      - parameter handler:       the progress and completion block (we can pass only one block per XPC call)
      
-     
      - returns: N/A
      */
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String
         ,handler:ComposedProgressAndCompletionHandler)->(){
-            
-            
-            // Those handlers produce an adaptation 
-            // From the unique handler form 
-            // progress and completion handlers.
-       
-            let handlers=ProgressAndCompletionHandler.handlersFrom(handler)
         
-            // This command is composed and complex
-            // So we have adopted a versatile completion and progress
-            // To reuse the command implementation.
-            let runDirectivesCommand=RunDirectivesCommand(completionBlock: handlers.completionBlock)
-            if handlers.progressBlock != nil {
-                runDirectivesCommand.addProgressBlock(handlers.progressBlock!)
-            }
-            
-            //run the directive command itself
-            runDirectivesCommand.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, verbose: false)
+        // Those handlers produce an adaptation
+        // From the unique handler form
+        // progress and completion handlers.
+        let handlers=ProgressAndCompletionHandler.handlersFrom(handler)
         
-    
-            
+        let runner = BsyncDirectivesRunner()
+        
+        runner.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, handlers: handlers)
     }
-    
-    
-
-    
-    
 }

@@ -43,7 +43,7 @@ import Foundation
         super.init()
     }
     
-    
+    // TODO: Test credential are not nil when using distant url (source or destination)
     public func areValid()->(valid:Bool,message:String?){
         if sourceURL == nil || destinationURL == nil {
             return (false,NSLocalizedString("The source and the destination must be set", comment: "The source and the destination must be set"))
@@ -51,7 +51,7 @@ import Foundation
         if hashMapViewName != BsyncDirectives.NO_HASHMAPVIEW {
             // We currently support only down streams with hashMapView
             if let scheme=destinationURL?.scheme{
-                if (BsyncDirectives.distantSchemes.indexOf( scheme ) != nil) {
+                if (BsyncDirectives.distantSchemes.indexOf( scheme ) != nil) { // TODO: enforce scheme testing
                     return (false,NSLocalizedString("Hash map views must be restricted to down stream synchronisation", comment: "Hash map views must be restricted to down stream synchronisation"))
                 }else{
                     // It's ok.
@@ -142,7 +142,12 @@ import Foundation
         self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")
     }
     
-    
+    public static func run(directivePath: String, pAndChandler: ProgressAndCompletionHandler) {
+        if let p = pAndChandler.progressBlock {
+            p(taskIndex: 0, totalTaskCount: 10, taskProgress: 0, message: nil, data: nil)
+        }
+        pAndChandler.completionBlock(success: true, message: nil)
+    }
     
     
 }
