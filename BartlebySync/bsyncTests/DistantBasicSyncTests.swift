@@ -68,7 +68,7 @@ class DistantBasicSyncTests: XCTestCase {
                             XCTAssertTrue(exists, "\(message)")
                             XCTAssertFalse(isADirectory, "\(message)")
                             // Check file content
-                            fm.readString(contentsOfFile: DistantBasicSyncTests._filePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                            fm.readString(contentsOfFile: DistantBasicSyncTests._upFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
                                 XCTAssertTrue(success, "\(message)")
                                 XCTAssertEqual(string, DistantBasicSyncTests._fileContent, "\(message)")
                                 expectation.fulfill()
