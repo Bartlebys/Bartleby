@@ -72,7 +72,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -96,7 +96,7 @@ class AccessControlTests: XCTestCase {
                     XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -128,7 +128,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -157,7 +157,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -179,7 +179,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -233,7 +233,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -254,7 +254,7 @@ class AccessControlTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -300,7 +300,7 @@ class AccessControlTests: XCTestCase {
                     XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -325,7 +325,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -345,7 +345,7 @@ class AccessControlTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -365,7 +365,7 @@ class AccessControlTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -389,7 +389,7 @@ class AccessControlTests: XCTestCase {
                 user.email = AccessControlTests._creatorEmail
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -416,7 +416,7 @@ class AccessControlTests: XCTestCase {
                 user.email = AccessControlTests._thirdUserEmail
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -461,7 +461,7 @@ class AccessControlTests: XCTestCase {
                     XCTAssertEqual(context.httpStatusCode, 423)
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -491,7 +491,7 @@ class AccessControlTests: XCTestCase {
                     XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -514,7 +514,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -534,7 +534,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -554,7 +554,7 @@ class AccessControlTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }

@@ -11,8 +11,8 @@ import Foundation
 class CreateUserCommand : CommandBase {
     
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
         
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
                                          helpMessage: "Bartleby base url e.g http://yd.local/api/v1")

@@ -67,7 +67,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -88,7 +88,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -110,7 +110,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -132,7 +132,7 @@ class BasicApiTests: XCTestCase {
             expectation.fulfill()
             XCTAssertEqual(context.httpStatusCode, 403)
         }
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -154,7 +154,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -188,7 +188,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -220,7 +220,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -242,7 +242,7 @@ class BasicApiTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 404)
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -296,7 +296,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -337,7 +337,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -355,7 +355,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -384,7 +384,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -403,7 +403,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }

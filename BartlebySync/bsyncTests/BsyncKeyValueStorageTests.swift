@@ -18,7 +18,7 @@ class BsyncKeyValueStorageTests: XCTestCase {
     override static func setUp() {
         super.setUp()
         
-        Bartleby.sharedInstance.configureWith(TestConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     override func setUp() {

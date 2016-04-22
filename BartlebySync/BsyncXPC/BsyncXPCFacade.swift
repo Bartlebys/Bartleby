@@ -168,12 +168,10 @@ import Foundation
             // This command is composed and complex
             // So we have adopted a versatile completion and progress
             // To reuse the command implementation.
-            let runDirectivesCommand=RunDirectivesCommand()
+            let runDirectivesCommand=RunDirectivesCommand(completionBlock: handlers.completionBlock)
             if handlers.progressBlock != nil {
                 runDirectivesCommand.addProgressBlock(handlers.progressBlock!)
             }
-            runDirectivesCommand.addcompletionBlock(handlers.completionBlock)
-            
             
             //run the directive command itself
             runDirectivesCommand.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, verbose: false)

@@ -27,8 +27,8 @@ class KeyValueStorageCommand: CommandBase {
         case RemoveAll = "remove-all" // the file
     }
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
         
         let op = EnumOption<KeyValueStorageCommand.Actions>(shortFlag: "d", longFlag: "do", required: true,
             helpMessage:"What to do on key-values for a given path"+"\n\t\"upsert\"to insert or create a new key-value, \n\t\"delete\" to delete a key-value pair,\n\t\"enumerate\" to enumerate the current key-value,\n\t\"read\" for read\n\tremove-all to destroy the file")

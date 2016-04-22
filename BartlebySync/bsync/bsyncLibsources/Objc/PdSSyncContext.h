@@ -11,6 +11,9 @@
 
 @interface PdSSyncContext : NSObject
 
+// To be used by the install command
+@property (nonatomic)NSString* _Nullable repositoryPath;
+
 @property (nonatomic,strong)HashMap *_Nullable finalHashMap;
 
 @property (nonatomic)NSString* _Nullable sourceTreeId;

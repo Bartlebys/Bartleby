@@ -11,8 +11,9 @@ import Cocoa
 class LoginCommand: CommandBase {
     
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
                                helpMessage: "API url e.g http://yd.local/api/v1")
         let userUID = StringOption(shortFlag: "u", longFlag: "user", required: true,

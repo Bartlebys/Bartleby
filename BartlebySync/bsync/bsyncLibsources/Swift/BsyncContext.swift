@@ -56,6 +56,7 @@ import Foundation
     public func mapping(map: Map) {
         self.credentials <- map ["credentials"]
         self.hashmapAsADictionary <- map["hashmapAsADictionary"]
+        self.repositoryPath <- map["repositoryPath"]
         self.sourceTreeId <- map["sourceTreeId"]
         self.destinationTreeId <- map["destinationTreeId"]
         self.sourceBaseUrl <- (map["sourceBaseUrl"],URLTransform())

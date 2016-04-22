@@ -119,7 +119,7 @@ class bsyncMiscTests: XCTestCase {
          
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }

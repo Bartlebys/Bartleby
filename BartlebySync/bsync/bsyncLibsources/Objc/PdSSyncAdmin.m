@@ -64,7 +64,7 @@
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable))progressBlock
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
                  andCompletionBlock:(void(^_Nonnull)(BOOL success,NSString*_Nullable message))completionBlock{
     
     
@@ -203,8 +203,8 @@
  */
 - (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
-        NSMutableDictionary*parameters=[NSMutableDictionary dictionary];
         
+        NSDictionary*parameters=@{@"repositoryPath": _syncContext.repositoryPath};
         
         NSURL*baseUrl=[_syncContext.destinationBaseUrl URLByAppendingPathComponent:@"/install"];
         NSURL*urlWithParameters=[baseUrl URLByAppendingQueryStringDictionary:parameters];
@@ -533,15 +533,14 @@
                                                  error:&stringLoadingError];
     if(!stringLoadingError){
         NSError*cryptoError=nil;
-        NSData *data = [[NSData alloc] initWithBase64EncodedString:string options:NSDataBase64DecodingIgnoreUnknownCharacters];
-        // Uncomment to debug
-        // [(CryptoHelper*)[Bartleby cryptoDelegate] dumpDebug];
-        data=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
+        
+        string = [[Bartleby cryptoDelegate] decryptString:string error:&cryptoError];
         if (cryptoError){
             NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map crypto error %@",cryptoError];
             printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
             return nil;
         }else{
+            NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
                 // We use mutable containers and leaves by default.
@@ -579,18 +578,17 @@
         block(NO,0);
     }else{
         // URL
-        NSMutableDictionary*parameters=[NSMutableDictionary dictionary];
         url=[url URLByAppendingPathComponent:[NSString stringWithFormat:@"/hashMap/tree/%@",identifier]];
-        NSURL*urlWithParameters=[url URLByAppendingQueryStringDictionary:parameters];
         
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncGetHashMap"
                                                                                 forMethod:@"GET"
-                                                                                      and:urlWithParameters];
+                                                                                      and:url];
     
     // TASK
     
+        NSLog(@"%@",[request URLString]);
     [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                          if(!error && response){
@@ -733,15 +731,13 @@
                                                  error:&stringLoadingError];
     if(!stringLoadingError){
         NSError*cryptoError=nil;
-        NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
-        // Uncomment to debug
-        // [(CryptoHelper*)[Bartleby cryptoDelegate] dumpDebug];
-        data=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
+        string = [[Bartleby cryptoDelegate] decryptString:string error:&cryptoError];
         if (cryptoError){
-            NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map crypto error %@",cryptoError];
+            NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map view crypto error %@",cryptoError];
             printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
             return nil;
         }else{
+            NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
                 // We use mutable containers and leaves by default.
@@ -754,12 +750,12 @@
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
-                    NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map type missmatch on deserialization %@",hashMapUrl];
+                    NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map view type missmatch on deserialization %@",hashMapUrl];
                     printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
                 }
             }
             @catch (NSException *exception) {
-                NSString*message=[[NSString alloc]initWithFormat:@"get local hash map :%@",exception];
+                NSString*message=[[NSString alloc]initWithFormat:@"get local hash map view:%@",exception];
                 printf("Exception on %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
             }
         }

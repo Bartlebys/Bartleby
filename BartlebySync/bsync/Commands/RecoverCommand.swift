@@ -11,8 +11,8 @@ import Foundation
 
 class RecoverCommand:CommandBase {
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
         
         let sourcePath = StringOption(shortFlag: "s", longFlag: "snapshot", required: true,
             helpMessage: "Path to the snapshot folder")

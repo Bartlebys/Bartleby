@@ -123,7 +123,7 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Synchronize failed")
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }

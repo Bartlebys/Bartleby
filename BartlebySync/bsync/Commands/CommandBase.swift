@@ -9,14 +9,15 @@
 import Foundation
 
 
-public class CommandBase{
+public class CommandBase: ProgressAndCompletionHandler {
 
     
     public var isVerbose=true
     
     let cli = CommandLine()
-    
-    init(){
+
+    public required init(completionBlock:((success:Bool,message:String?)->())){
+        super.init(completionBlock: completionBlock)
         cli.usesSubCommands=true
     }
     
@@ -58,38 +59,10 @@ public class CommandBase{
             }
             exit(exitCode)
         }
-        if ( self.completionBlock != nil ){
-            if exitCode == EX_OK {
-                self.completionBlock!(success: true,message: message)
-            }else{
-                self.completionBlock!(success: false,message: message)
-            }
+        if exitCode == EX_OK {
+            self.completionBlock(success: true,message: message)
         }else{
-            let m=message ?? ""
-            print("No completion block found (!) exit code \(exitCode) message: \(m)")
+            self.completionBlock(success: false,message: message)
         }
     }
-    
-    
-    
-    
-    // MARK: Versatile completion
-    
-    var progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())?
-    
-    func addProgressBlock(progressBlock:((taskIndex:Int,totalTaskCount:Int,taskProgress:Double,message:String?,data:NSData?)->())){
-        self.progressBlock=progressBlock
-    }
-    
-    
-    // MARK: Versatile completion
-    
-    /// This completion block is used when not running as a commandline
-    var completionBlock:((success:Bool,message:String?)->())?
-    
-    func addcompletionBlock(completionBlock:((success:Bool,message:String?)->())){
-        self.completionBlock=completionBlock
-    }
-    
-    
 }

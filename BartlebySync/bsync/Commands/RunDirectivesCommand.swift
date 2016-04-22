@@ -11,7 +11,11 @@ import Foundation
 /*
 
 */
-public class RunDirectivesCommand:CommandBase {
+class RunDirectivesCommand:CommandBase {
+ 
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+    }
     
     /**
      The commandline mode execution
@@ -56,7 +60,7 @@ public class RunDirectivesCommand:CommandBase {
      - parameter sharedSalt: the shared salt
      - parameter verbose:    verbose or not
      */
-    public func runDirectives(filePath:String,secretKey:String,sharedSalt:String,verbose:Bool=true){
+    func runDirectives(filePath:String,secretKey:String,sharedSalt:String,verbose:Bool=true){
 
         self.isVerbose=verbose
         
@@ -80,7 +84,9 @@ public class RunDirectivesCommand:CommandBase {
         do{
             // If the file is named .json the file is deleted.
             JSONString = try NSString(contentsOfFile: fp, encoding: NSUTF8StringEncoding) as String
-            JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
+            if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
+                JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
+            }
         }catch{
             self.completion_EXIT(EX__BASE,message:"Deserialization of directives has failed \(fp) \(JSONString)")
             return
@@ -116,8 +122,7 @@ public class RunDirectivesCommand:CommandBase {
                 
                 let hashMapviewName:String?=(directives.hashMapViewName == BsyncDirectives.NO_HASHMAPVIEW) ? nil : directives.hashMapViewName
                 
-                let synchronizeCommand=SynchronizeCommand()
-                synchronizeCommand.completionBlock=self.completionBlock
+                let synchronizeCommand=SynchronizeCommand(completionBlock: self.completionBlock)
                 synchronizeCommand.progressBlock=self.progressBlock
                 
                 synchronizeCommand.synchronize( directives.sourceURL!,

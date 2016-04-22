@@ -87,7 +87,7 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0) { (error) in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
                 if let error = error {
                     bprint(error.localizedDescription)
                 }
@@ -116,7 +116,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -134,7 +134,7 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -165,7 +165,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -186,7 +186,7 @@ class LockerTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -209,7 +209,7 @@ class LockerTests: XCTestCase {
                 XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -251,7 +251,7 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -276,7 +276,7 @@ class LockerTests: XCTestCase {
             
         }
 
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -340,7 +340,7 @@ class LockerTests: XCTestCase {
             XCTAssertEqual(context.code, 1)
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -360,7 +360,7 @@ class LockerTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(5.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -380,7 +380,7 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -402,7 +402,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -423,7 +423,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -444,7 +444,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }

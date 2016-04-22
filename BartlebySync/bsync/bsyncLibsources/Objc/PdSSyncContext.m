@@ -25,6 +25,7 @@
 
 }
 
+@synthesize repositoryPath = _repositoryPath;
 @synthesize syncID = _syncID;
 @synthesize sourceBaseUrl = _sourceBaseUrl;
 @synthesize destinationBaseUrl = _destinationBaseUrl;
@@ -162,6 +163,7 @@
 - (NSString*)contextDescription{
     NSMutableString*description=[NSMutableString stringWithString:@"# Synchro context description #\n"];
     [description appendFormat:@"%@\n",[kBsyncModeStrings objectAtIndex:[self mode]]];
+    [description appendFormat:@"Repository path : %@\n",_repositoryPath];
     [description appendFormat:@"Source Base Url : %@\n",_sourceBaseUrl];
     [description appendFormat:@"Destination Base Url : %@\n",_destinationBaseUrl];
     [description appendFormat:@"Source Tree Id : %@\n",_sourceTreeId];

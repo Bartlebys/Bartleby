@@ -9,7 +9,9 @@
 import Foundation
 
 @objc public class CryptoHelper:NSObject,CryptoDelegate{
-    
+    // (!Should always be set to false (debug only)
+    private static let DISABLE_CRYPTO = true
+
     let salt:String
     
     let key:String
@@ -68,7 +70,7 @@ import Foundation
      - returns: A string
      */
     public func decryptString(string:String) throws ->String{
-        if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
+       if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
             let decrypted=try decryptData(data)
             if let decryptedString=String(data: decrypted,encoding:NSUTF8StringEncoding){
                 return decryptedString
@@ -81,8 +83,6 @@ import Foundation
         throw CryptoError.CodingError(message: "Base 64 decoding has failed")
     }
     
-    
-
     /**
      Encrypt a data buffer
      
@@ -93,7 +93,10 @@ import Foundation
      - returns: An encrypted buffer
      */
     public func encryptData(data:NSData) throws ->NSData{
-        let crypted=try self._encryptOperation(CCOperation(kCCEncrypt),on: data)
+        if CryptoHelper.DISABLE_CRYPTO {
+            return data
+        }
+      let crypted=try self._encryptOperation(CCOperation(kCCEncrypt),on: data)
         return crypted
     }
     
@@ -107,6 +110,9 @@ import Foundation
      - returns: A decrypted buffer
      */
     public func decryptData(data:NSData) throws ->NSData{
+        if CryptoHelper.DISABLE_CRYPTO {
+            return data
+        }
         return try self._encryptOperation(CCOperation(kCCDecrypt),on:data)
     }
     

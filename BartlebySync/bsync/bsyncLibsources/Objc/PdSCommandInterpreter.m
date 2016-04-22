@@ -752,7 +752,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         
         NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
         NSError*cryptoError=nil;
-        jsonHashMap=[[Bartleby cryptoDelegate] decryptString:jsonHashMap error:&cryptoError];
+        jsonHashMap=[[Bartleby cryptoDelegate] encryptString:jsonHashMap error:&cryptoError];
         if(cryptoError){
             [self _interruptOnFault:@"CryptoError"];
             return;
@@ -890,7 +890,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
         // Write the Hash Map
         NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
         NSError*cryptoError=nil;
-        jsonHashMap=[[Bartleby cryptoDelegate] decryptString:jsonHashMap error:&cryptoError];
+        jsonHashMap=[[Bartleby cryptoDelegate] encryptString:jsonHashMap error:&cryptoError];
         if(cryptoError){
             [self _interruptOnFault:@"CryptoError"];
             return;

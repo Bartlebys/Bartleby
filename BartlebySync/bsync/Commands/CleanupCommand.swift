@@ -11,8 +11,9 @@ import Foundation
 
 class CleanupCommand:CommandBase {
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+        
         let folderPath = StringOption(shortFlag: "p", longFlag: "path", required: true,
             helpMessage: "Path to the folder to be clean.")
         let help = BoolOption(shortFlag: "h", longFlag: "help",

@@ -10,8 +10,8 @@ import Cocoa
 
 class CreateDirectiveCommand: CommandBase {
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
         
         let sourceURLString = StringOption(shortFlag: "s", longFlag: "source", required: true,
                                            helpMessage: "URL of the source folder")

@@ -11,8 +11,8 @@ import Foundation
 class CreateUIDCommand : CommandBase {
     
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
         
         do {
             try cli.parse()

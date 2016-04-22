@@ -69,5 +69,6 @@ public class TestsConfiguration:BartlebyConfiguration{
         }
     }
     
+    public static let TIME_OUT_DURATION = 5.0
 }
 

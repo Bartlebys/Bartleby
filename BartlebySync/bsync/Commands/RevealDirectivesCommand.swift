@@ -8,11 +8,11 @@
 
 import Cocoa
 
-public class RevealDirectivesCommand: CommandBase {
+class RevealDirectivesCommand: CommandBase {
     
-    override init() {
-        super.init()
-        
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+                
         let filePath = StringOption(shortFlag: "f", longFlag: "file", required: true,
             helpMessage: "Path to the directive file.")
         
@@ -52,7 +52,7 @@ public class RevealDirectivesCommand: CommandBase {
      - parameter sharedSalt:    the sharedSalt
      - parameter verbose:       verbose or not
      */
-    public static func revealDirectives(filePath:String,secretKey:String,sharedSalt:String,verbose:Bool=true){
+    static func revealDirectives(filePath:String,secretKey:String,sharedSalt:String,verbose:Bool=true){
         
         
         // Configure Bartleby without a specific URL

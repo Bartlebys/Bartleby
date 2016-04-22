@@ -61,7 +61,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -86,7 +86,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                 XCTFail("Status code \(context.httpStatusCode)")
             }
             
-            waitForExpectationsWithTimeout(5.0){ error -> Void in
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -113,7 +113,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                     XCTAssert(context.httpStatusCode >= 400 )
                 }
                 
-                waitForExpectationsWithTimeout(5.0){ error -> Void in
+                waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
                     if let error = error {
                         bprint("Error: \(error.localizedDescription)")
                     }
@@ -140,7 +140,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
@@ -157,7 +157,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
         
-        waitForExpectationsWithTimeout(5.0){ error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }

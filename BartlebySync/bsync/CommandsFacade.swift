@@ -8,14 +8,27 @@
 
 import Cocoa
 
+
 public struct CommandsFacade {
     
     static let args = Process.arguments
+    
+    typealias CompletionBlock = (success:Bool,message:String?)->()
+
     
     let executableName = NSString(string: args.first!).pathComponents.last!
     let firstArgumentAfterExecutablePath: String? = (args.count >= 2) ? args[1] : nil
     
     public func actOnArguments(){
+        
+        let completionBlock: CompletionBlock = { (success, message) in
+                if(success) {
+                    exit(EX_OK)
+                } else {
+                    print(message)
+                    exit(EX__BASE)
+                }
+        }
         switch firstArgumentAfterExecutablePath{
         case nil:
             print(self._noArgMessage())
@@ -24,49 +37,49 @@ public struct CommandsFacade {
             print(self._noArgMessage())
             exit(EX_USAGE)
         case "create-uid"?:
-            let _ = CreateUIDCommand()
+            let _ = CreateUIDCommand(completionBlock: completionBlock)
         case "create-user"?:
-            let _ = CreateUserCommand()
+            let _ = CreateUserCommand(completionBlock: completionBlock)
         case "login"?:
-            let _ = LoginCommand()
+            let _ = LoginCommand(completionBlock: completionBlock)
         case "logout"?:
-            let _ = LogoutCommand()
+            let _ = LogoutCommand(completionBlock: completionBlock)
         case "verify"?,"verify-credentials"?:
-            let _ = VerifyCredentialsCommand()
+            let _ = VerifyCredentialsCommand(completionBlock: completionBlock)
         case "synchronize"?:
             // Proceed to authentication if necessary
             // Synchronizes from and to local or distant tree
             // Starts a new session or resumes the current session
             // Uses a snapshot most of the time
-             let _ = SynchronizeCommand().executeCMD()
+             let _ = SynchronizeCommand(completionBlock: completionBlock).executeCMD()
         case "cd"?,"create-directives"?:
             // Runs the synchronization directives
-            let _ = CreateDirectiveCommand()
+            let _ = CreateDirectiveCommand(completionBlock: completionBlock)
             
         case "rd"?,"reveal-directives"?:
-            let _ = RevealDirectivesCommand()
+            let _ = RevealDirectivesCommand(completionBlock: completionBlock)
         case "run"?,"run-directives"?:
             // Runs the synchronization directives
-             let _ = RunDirectivesCommand().executeCMD()
+             let _ = RunDirectivesCommand(completionBlock: completionBlock).executeCMD()
         case "create-hashmap"?,"create-hashMap"?:
             // Creates a hash map for given folder
-            let _ = CreateHashMapCommand()
+            let _ = CreateHashMapCommand(completionBlock: completionBlock)
         case "kvs"?,"key-value-storage"?,"keystore"?:
             // Runs the synchronization directives
-            let _ = KeyValueStorageCommand()
+            let _ = KeyValueStorageCommand(completionBlock: completionBlock)
         case "cleanup"?:
             // Deletes the snapshots and hashmaps from the .bsync folder
             // Even if locked.
-             let _ = CleanupCommand()
+             let _ = CleanupCommand(completionBlock: completionBlock)
         case "create-dmg"?,"create-disk-image"?:
             // Creates and mount a dmg
-             let _ = CreateDmgCommand()
+             let _ = CreateDmgCommand(completionBlock: completionBlock)
         case "snapshot"?:
             // Creates a crypted chunked snapshot with its own hashmap for each chunk
-             let _ = SnapshotCommand()
+             let _ = SnapshotCommand(completionBlock: completionBlock)
         case "recover"?,"recover-from-snapshot"?:
             // Recovers a tree from crypted snapshot
-             let _ = RecoverCommand()
+             let _ = RecoverCommand(completionBlock: completionBlock)
         default:
             // We want to propose the best verb candidate
             let reference=[

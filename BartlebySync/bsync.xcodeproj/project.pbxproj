@@ -588,7 +588,7 @@
 		E5B98EBD1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5B98EBE1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5B98EBF1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
-		E5C0CF201C36CD6E00F3B7B8 /* TestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestConfiguration.swift */; };
+		E5C0CF201C36CD6E00F3B7B8 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */; };
 		E5D940E81CC7B5B500956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D940E91CC7B5BB00956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940E71CC7B5B500956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
@@ -835,7 +835,7 @@
 		E5C0CF171C36CD4300F3B7B8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5C0CF181C36CD6E00F3B7B8 /* bsyncDirectivesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncDirectivesTests.swift; sourceTree = "<group>"; };
 		E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncMiscTests.swift; sourceTree = "<group>"; };
-		E5C0CF1A1C36CD6E00F3B7B8 /* TestConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestConfiguration.swift; sourceTree = "<group>"; };
+		E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CD9A3B1C86DBFC00C64569 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		E5CD9A3C1C86DBFC00C64569 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -1351,7 +1351,7 @@
 			children = (
 				5BC8F16A1CB3A75900B00866 /* DistantBasicSyncTests.swift */,
 				5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */,
-				E5C0CF1A1C36CD6E00F3B7B8 /* TestConfiguration.swift */,
+				E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */,
 				E5C0CF181C36CD6E00F3B7B8 /* bsyncDirectivesTests.swift */,
 				E56A90A11C8DFF2C0043F90E /* bsyncBasicTests.swift */,
 				E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */,
@@ -1966,7 +1966,7 @@
 				5BB60FEE1CBFE51900D23B4F /* PermissionsCollectionController.swift in Sources */,
 				E585044E1C3FA12000E2F64A /* LoginCommand.swift in Sources */,
 				5BB6107A1CBFE51900D23B4F /* DeleteTrigger.swift in Sources */,
-				E5C0CF201C36CD6E00F3B7B8 /* TestConfiguration.swift in Sources */,
+				E5C0CF201C36CD6E00F3B7B8 /* TestsConfiguration.swift in Sources */,
 				E54594141C3E7DD7000576AD /* CommandBase.swift in Sources */,
 				5BB6112E1CBFE51900D23B4F /* Bartleby.swift in Sources */,
 				5BB6105E1CBFE51900D23B4F /* DeleteAliases.swift in Sources */,

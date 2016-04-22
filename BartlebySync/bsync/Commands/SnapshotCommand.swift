@@ -10,8 +10,9 @@ import Foundation
 
 class SnapshotCommand:CommandBase {
     
-    override init() {
-        super.init()
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+        
         
         let sourcePath = StringOption(shortFlag: "f", longFlag: "folder", required: true,
             helpMessage: "Path to the folder you want to snapshoot.")

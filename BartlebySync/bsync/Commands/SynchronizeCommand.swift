@@ -8,7 +8,11 @@
 
 import Foundation
 
-public class SynchronizeCommand:CommandBase{
+class SynchronizeCommand:CommandBase{
+    
+    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+        super.init(completionBlock: completionBlock)
+    }
     
     func executeCMD() {
 
@@ -134,7 +138,7 @@ public class SynchronizeCommand:CommandBase{
     
      
      */
-    public func synchronize( sourceURL:NSURL,
+    func synchronize( sourceURL:NSURL,
                                 destinationURL:NSURL,
                                 hashMapViewName:String?,
                                 user:User?,
@@ -194,18 +198,7 @@ public class SynchronizeCommand:CommandBase{
                          })
                     }
                     
-                    if self.completionBlock == nil {
-                        self.addcompletionBlock({ (success, message) -> () in
-                            if success==true {
-                                self.completion_EXIT(EX_OK,message:nil)
-                                return
-                            }else{
-                                self.completion_EXIT(EX__BASE,message:message)
-                                return
-                            }
-                        })
-                    }
-                    try admin.synchronizeWithprogressBlock(self.progressBlock!, completionBlock:self.completionBlock!)
+                    try admin.synchronizeWithprogressBlock(self.progressBlock!, completionBlock:self.completionBlock)
                 }catch{
                     self.completion_EXIT(EX__BASE,message:"An error has occured during synchronization: \(error)")
                     return
