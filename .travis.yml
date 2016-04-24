@@ -4,15 +4,15 @@ xcode_workspace: Bartleby.xcworkspace
 matrix:
   include:
     - env: DESC="Bartleby OSX"
-      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby OSX"
+      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby OSX" | xcpretty
     - env: DESC="Bartleby iOS"
-      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby iOS" -sdk iphonesimulator
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "Bartleby iOS" -sdk iphonesimulator | xcpretty
     - env: DESC=bsync
-      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bsync"
+      script: xctool build test -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bsync" | xcpretty
     - env: DESC=BsyncXPC
-      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "BsyncXPC"
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "BsyncXPC" | xcpretty
     - env: DESC=bartleby
-      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bartleby"
+      script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "bartleby" | xcpretty
 notifications:
   email: false
   slack:
