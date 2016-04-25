@@ -41,7 +41,7 @@ class CreateUserCommand : CommandBase {
         
         
         
-        // TODO: Add email and/or phone to implement
+        // TODO: Add email and/or phone to implement verification
         cli.addOptions(api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
         
         do {

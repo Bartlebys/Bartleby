@@ -12,7 +12,6 @@ import Foundation
     import ObjectMapper
 #endif
 
-
 public class Base64DataTransform: TransformType {
     public typealias Object = NSData
     public typealias JSON = String
