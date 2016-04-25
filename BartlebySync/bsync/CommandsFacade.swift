@@ -64,6 +64,8 @@ public struct CommandsFacade {
         case "create-hashmap"?,"create-hashMap"?:
             // Creates a hash map for given folder
             let _ = CreateHashMapCommand(completionBlock: completionBlock)
+        case "reveal-hashmap"?:
+            let _ = RevealHashMapCommand(completionBlock: completionBlock)
         case "kvs"?,"key-value-storage"?,"keystore"?:
             // Runs the synchronization directives
             let _ = KeyValueStorageCommand(completionBlock: completionBlock)

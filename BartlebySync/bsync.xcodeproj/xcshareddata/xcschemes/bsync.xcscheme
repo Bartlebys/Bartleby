@@ -114,7 +114,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "create-user"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "login"
@@ -125,32 +125,40 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
+            argument = "reveal-hashmap"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--file $HOME/Desktop/UP_SYNC_DEMO/directives.bsync"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--spaceUID MTNGRTE0QjMtQjU2OS00NkEzLUJCMTctMEI2OTlBMEM5M0Ez"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--user MzUxRURDRDItMzU0NS00NDE3LTk0QjctQzA4RTcyODcxMkRC"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--api http://yd.local/api/v1"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = " --password 12345"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--source $HOME/Desktop/bsync_xcode/Sycamore"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--destination http://yd.local/api/v1/BartlebySync/tree/Sycamore"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--automatic-trees-creation"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-directives"
@@ -162,11 +170,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/Desktop/bsync_xcode/Sycamore/directives.bsync"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
@@ -174,14 +182,19 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--verbose"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = ""
+            key = "BARTLEBY_SECRET_KEY"
+            value = "UnitTestsSharedConfiguration-kJ-O9393972AA"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "BARTLEBY_SHARED_SALT"
             value = ""
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

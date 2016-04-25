@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */; };
 		5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
@@ -625,6 +626,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealHashMapCommand.swift; sourceTree = "<group>"; };
 		5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectivesRunner.swift; sourceTree = "<group>"; };
 		5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDMGSyncTests.swift; sourceTree = "<group>"; };
 		5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncHashMapTests.swift; sourceTree = "<group>"; };
@@ -1226,6 +1228,7 @@
 				E54594061C3E627A000576AD /* SnapshotCommand.swift */,
 				E54594081C3E639A000576AD /* RecoverCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
+				5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */,
 				E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */,
 				E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */,
 				E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */,
@@ -1739,6 +1742,7 @@
 				5BB611751CBFE51900D23B4F /* Registry.swift in Sources */,
 				E53E275B1CA572940079ED23 /* Response.swift in Sources */,
 				E53E27581CA572940079ED23 /* Notifications.swift in Sources */,
+				5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */,
 				E53E27641CA572AB0079ED23 /* Option.swift in Sources */,
 				E53E28ED1CA572E80079ED23 /* CleanupCommand.swift in Sources */,
 				E53E27591CA572940079ED23 /* ParameterEncoding.swift in Sources */,
