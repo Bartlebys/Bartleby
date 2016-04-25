@@ -13,11 +13,11 @@ import Foundation
 #endif
 
 
-class BsyncXPCHelperDMGHandler {
+public class BsyncXPCHelperDMGHandler {
     
-    var detachImageOnCompletion:Bool
+    public var detachImageOnCompletion:Bool
     
-    var callBlock:((success:Bool,message:String?)->())
+    public var callBlock:((success:Bool,message:String?)->())
     
     init(onCompletion:((success:Bool,message:String?)->()), detach:Bool){
         callBlock=onCompletion
