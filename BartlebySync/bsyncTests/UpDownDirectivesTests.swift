@@ -13,7 +13,6 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
     override static func setUp() {
         super.setUp()
         Bartleby.cryptoDelegate = NoCrypto()
-        
     }
 }
 
@@ -23,25 +22,37 @@ class UpDownDirectivesTests: XCTestCase {
     private static let _password = Bartleby.randomStringWithLength(6)
     private static var _user: User?
     
-    private static let _treeName = Bartleby.randomStringWithLength(6)
-    private static let _folderPath = TestsConfiguration.ASSET_PATH + "UpDownDirectivesTests/"
-    private static let _upFolderPath = _folderPath + "Up/"
-    private static let _upFilePath = _upFolderPath + "file.txt"
-    private static let _fileContent = Bartleby.randomStringWithLength(20)
+    private static var _treeName = ""
+    private static var _folderPath = ""
+    private static var _upFolderPath = ""
+    private static var _upFilePath = ""
+    private static var _fileContent = ""
     
-    private static let _apiUrl = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync")
-    private static let _distantTreeURL = _apiUrl.URLByAppendingPathComponent("tree/\(_treeName)")
+    private static var _distantTreeURL = NSURL()
     
-    private static let _downFolderPath = _folderPath + "Down/"
-    private static let _downFilePath = _downFolderPath + "file.txt"
+    private static var _downFolderPath = ""
+    private static var _downFilePath = ""
     
-    private static let _upDirectivePath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
-    private static let _downDirectivePath = _downFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
-    
+    private static var _upDirectivePath = ""
+    private static var _downDirectivePath = ""
     private static let _fm = BFileManager()
     
     override class func setUp() {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+
+        _treeName = Bartleby.randomStringWithLength(6)
+        _folderPath = TestsConfiguration.ASSET_PATH + self.className() + "/"
+        _upFolderPath = _folderPath + "Up/" + _treeName + "/"
+        _upFilePath = _upFolderPath + "file.txt"
+        _fileContent = Bartleby.randomStringWithLength(20)
+        
+        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
+        
+        _downFolderPath = _folderPath + "Down/" + _treeName + "/"
+        _downFilePath = _downFolderPath + "file.txt"
+        
+        _upDirectivePath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
+        _downDirectivePath = _downFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
     }
     
     // MARK: 0 - Initialization
@@ -180,7 +191,6 @@ class UpDownDirectivesTests: XCTestCase {
         }
     }
     func test402_RunDirectives_UpToDistant() {
-        print(UpDownDirectivesTests._downDirectivePath)
         let expectation = expectationWithDescription("Synchronization should complete")
         
         let runner = BsyncDirectivesRunner()
@@ -200,7 +210,6 @@ class UpDownDirectivesTests: XCTestCase {
     }
     
     func test403_RunDirectives_DistantToDown() {
-        print(UpDownDirectivesTests._downDirectivePath)
         let expectation = expectationWithDescription("Synchronization should complete")
         
         let runner = BsyncDirectivesRunner()

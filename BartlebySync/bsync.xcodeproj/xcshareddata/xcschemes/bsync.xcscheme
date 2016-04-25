@@ -37,6 +37,14 @@
                BlueprintName = "bsyncTests"
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BsyncAdminUpDownSyncTests">
+               </Test>
+               <Test
+                  Identifier = "UpDownDirectivesTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
