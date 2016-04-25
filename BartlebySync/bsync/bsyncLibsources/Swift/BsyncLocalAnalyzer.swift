@@ -35,13 +35,11 @@ public struct BsyncLocalAnalyzer {
     
     mutating public func createHashMapFromLocalPath(folderPath:String, progressBlock: ((hash:String, path:String, index:UInt) -> Void)?, completionBlock: (hashMap:HashMap) -> Void) throws{
         
-        let path=folderPath+"/"
-        
-        guard NSFileManager.defaultManager().fileExistsAtPath(path) else{
-            throw BsyncLocalAnalyzerError.InvalidURL(explanations: "Attempt to create an HashMap has failed. \nUnexisting folderPath \(path)")
+        guard NSFileManager.defaultManager().fileExistsAtPath(folderPath) else{
+            throw BsyncLocalAnalyzerError.InvalidURL(explanations: "Attempt to create an HashMap has failed. \nUnexisting folderPath \(folderPath)")
         }
         
-       let folderURL=NSURL(fileURLWithPath: path, isDirectory:true)
+       let folderURL=NSURL(fileURLWithPath: folderPath, isDirectory:true)
         self._localAnalyzer.recomputeHash=self.recomputeHash
         self._localAnalyzer.saveHashInAFile=self.saveHashInAFile
         self._localAnalyzer.createHashMapFromLocalFolderURL(folderURL, dataBlock: nil, progressBlock: progressBlock, andCompletionBlock: completionBlock)

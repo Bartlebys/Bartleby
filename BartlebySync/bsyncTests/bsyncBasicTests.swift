@@ -21,7 +21,7 @@ class bsyncBasicTests: XCTestCase {
     }
     
     func test001_Create_invalid_directivesA() {
-        let directives=BsyncDirectives.upStreamDirectivesWithDistantURL(NSURL(), localURL: NSURL())
+        let directives=BsyncDirectives.upStreamDirectivesWithDistantURL(NSURL(), localPath: "")
         XCTAssertFalse(directives.areValid().valid,"Directives should not be valid")
     }
     

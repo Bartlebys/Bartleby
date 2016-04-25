@@ -362,9 +362,9 @@ import Foundation
      
      - returns: the Application folder URL
      */
-    public func getApplicationDataFolderURL(spaceUID:String)->NSURL{
-        let folder=Bartleby.getSearchPathURL(.ApplicationSupportDirectory)!
-        return folder.URLByAppendingPathComponent("Bartleby/\(spaceUID)/")
+    public func getApplicationDataFolderPath(spaceUID:String)->String{
+        let folder=Bartleby.getSearchPath(.ApplicationSupportDirectory)!
+        return folder + "Bartleby/\(spaceUID)/"
     }
     
     
@@ -373,12 +373,14 @@ import Foundation
      
      - parameter searchPath: the search Path
      
-     - returns: the URL
+     - returns: the path string
      */
-    public static func getSearchPathURL(searchPath:NSSearchPathDirectory)->NSURL?{
+    public static func getSearchPath(searchPath:NSSearchPathDirectory)->String?{
         let urls = NSFileManager.defaultManager().URLsForDirectory(searchPath, inDomains: .UserDomainMask)
         if urls.count>0{
-            return urls[0]
+            if let path = urls[0].path {
+                return path + "/"
+            }
         }
         return nil
     }

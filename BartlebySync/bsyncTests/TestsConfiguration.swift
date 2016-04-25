@@ -72,4 +72,7 @@ public class TestsConfiguration: BartlebyConfiguration {
     }
     
     public static let TIME_OUT_DURATION = 200.0
+    
+    public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncTests/"
+
 }

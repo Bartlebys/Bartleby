@@ -69,15 +69,15 @@ import Foundation
      Creates an upStream directives.
      
      - parameter distantURL:  distantURL should conform with ${API_BASE_URL}BartlebySync/tree/${TREE_ID}
-     - parameter localURL:  localURL should be local :-)
+     - parameter localPath:  path to local folder
      - parameter creativeKey: the creative Key
      
      - returns: the directives
      */
-    public static func upStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL)->BsyncDirectives{
+    public static func upStreamDirectivesWithDistantURL(distantURL:NSURL,localPath:String)->BsyncDirectives{
         let directives=BsyncDirectives()
-        directives.sourceURL=localURL
-        directives.destinationURL=distantURL
+        directives.sourceURL = NSURL(fileURLWithPath: localPath)
+        directives.destinationURL = distantURL
         return directives
         
     }
@@ -85,15 +85,15 @@ import Foundation
      Creates an downStream directives.
      
      - parameter distantURL:  distantURL should conform with ${API_BASE_URL}BartlebySync/tree/${TREE_ID}
-     - parameter localURL:  localURL should be local :-)
+     - parameter localPath:  path to local folder
      - parameter creativeKey: the creative Key
      
      - returns: the directives
      */
-    public static func downStreamDirectivesWithDistantURL(distantURL:NSURL,localURL:NSURL)->BsyncDirectives{
+    public static func downStreamDirectivesWithDistantURL(distantURL:NSURL,localPath:String)->BsyncDirectives{
         let directives=BsyncDirectives()
-        directives.sourceURL=distantURL
-        directives.destinationURL=localURL
+        directives.sourceURL = distantURL
+        directives.destinationURL = NSURL(fileURLWithPath: localPath)
         return directives
     }
     

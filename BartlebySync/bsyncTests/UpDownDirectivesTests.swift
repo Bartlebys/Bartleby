@@ -8,38 +8,46 @@
 
 import XCTest
 
+
+class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
+    override static func setUp() {
+        super.setUp()
+        Bartleby.cryptoDelegate = NoCrypto()
+        
+    }
+}
+
+
 class UpDownDirectivesTests: XCTestCase {
     private static let _spaceUID = Bartleby.createUID()
     private static let _password = Bartleby.randomStringWithLength(6)
     private static var _user: User?
     
     private static let _treeName = Bartleby.randomStringWithLength(6)
-    private static let _upFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/UpDownDirectivesTests/Up/\(_treeName)")
-    private static let _upFolderPath = _upFolderURL.path!
-    private static let _upFilePath = _upFolderPath + "/file.txt"
+    private static let _folderPath = TestsConfiguration.ASSET_PATH + "UpDownDirectivesTests/"
+    private static let _upFolderPath = _folderPath + "Up/"
+    private static let _upFilePath = _upFolderPath + "file.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
     
     private static let _apiUrl = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync")
     private static let _distantTreeURL = _apiUrl.URLByAppendingPathComponent("tree/\(_treeName)")
     
-    private static let _downFolderURL = Bartleby.getSearchPathURL(.DesktopDirectory)!.URLByAppendingPathComponent("bsyncTests/UpDownDirectivesTests/Down/\(_treeName)")
-    private static let _downFolderPath = _downFolderURL.path!
-    private static let _downFilePath = _downFolderPath + "/file.txt"
+    private static let _downFolderPath = _folderPath + "Down/"
+    private static let _downFilePath = _downFolderPath + "file.txt"
     
-    private static let _upDirectivePath = _upFolderPath + "/\(BsyncDirectives.DEFAULT_FILE_NAME)"
-    private static let _downDirectivePath = _downFolderPath + "/\(BsyncDirectives.DEFAULT_FILE_NAME)"
+    private static let _upDirectivePath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
+    private static let _downDirectivePath = _downFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
     
     private static let _fm = BFileManager()
     
-    override static func setUp() {
+    override class func setUp() {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        Bartleby.cryptoDelegate = NoCrypto()
     }
     
     // MARK: 0 - Initialization
     
-    func test000_purgeCookiesForTheDomain(){
-        print("Using : \(TestsConfiguration.API_BASE_URL)")
+    func test000_purgeCookiesForTheDomainAndFiles(){
+        let expectation = expectationWithDescription("Cleaning")
         
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             for cookie in cookies{
@@ -49,6 +57,17 @@ class UpDownDirectivesTests: XCTestCase {
         
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
+        }
+        
+        UpDownDirectivesTests._fm.removeItemAtPath(UpDownDirectivesTests._folderPath) { (success, message) in
+            UpDownDirectivesTests._fm.fileExistsAtPath(UpDownDirectivesTests._folderPath, callBack: { (exists, isADirectory, success, message) in
+                XCTAssertFalse(exists, "\(message)")
+                expectation.fulfill()
+            })
+        }
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+            bprint("\(error)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -109,18 +128,14 @@ class UpDownDirectivesTests: XCTestCase {
     
     
     func test202_CreateDirectives_UpToDistant() {
-        let directives = BsyncDirectives()
+        let directives = BsyncDirectives.upStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._upFolderPath)
+        directives.automaticTreeCreation = true
         // Credentials:
         directives.user = UpDownDirectivesTests._user
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        // Directives:
-        directives.sourceURL = UpDownDirectivesTests._upFolderURL
-        directives.destinationURL = UpDownDirectivesTests._distantTreeURL
-        directives.automaticTreeCreation = true
-        
-        let directivesURL = UpDownDirectivesTests._upFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
+        let directivesURL = NSURL(fileURLWithPath: UpDownDirectivesTests._upDirectivePath)
         let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
         
         if(!success) {
@@ -138,18 +153,15 @@ class UpDownDirectivesTests: XCTestCase {
     }
     
     func test203_CreateDirectives_DistantToDown() {
-        let directives = BsyncDirectives()
+        let directives = BsyncDirectives.downStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._downFolderPath)
+        directives.automaticTreeCreation = true
+
         // Credentials:
         directives.user = UpDownDirectivesTests._user
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        // Directives:
-        directives.sourceURL = UpDownDirectivesTests._distantTreeURL
-        directives.destinationURL = UpDownDirectivesTests._downFolderURL
-        directives.automaticTreeCreation = true
-        
-        let directivesURL = UpDownDirectivesTests._downFolderURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
+        let directivesURL = NSURL(fileURLWithPath: UpDownDirectivesTests._downDirectivePath)
         let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
         
         if(!success) {
