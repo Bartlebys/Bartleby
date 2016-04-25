@@ -35,12 +35,7 @@ public class CryptedDataTransform:TransformType{
     
     public func transformToJSON(value: Object?) -> JSON?{
         if let d=value as NSData? {
-            do{
-                let d = try Bartleby.cryptoDelegate.encryptData(d)
-                return String(data: d,encoding:NSUTF8StringEncoding)
-            }catch{
-                // SILENT CATCH
-            }
+            return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
         }
         return nil
     }

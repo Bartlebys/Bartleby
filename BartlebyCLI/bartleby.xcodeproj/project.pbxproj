@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B16A3561CCE7E31003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3551CCE7E31003E02BA /* Base64DataTransform.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
 		E53E26D21CA571F50079ED23 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E264F1CA571F50079ED23 /* BartlebyDocument.swift */; };
@@ -181,6 +182,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B16A3551CCE7E31003E02BA /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 		E53E269D1CA571F50079ED23 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				5B16A3551CCE7E31003E02BA /* Base64DataTransform.swift */,
 				E53E269E1CA571F50079ED23 /* BaseObject+Protocols.swift */,
 				E53E269F1CA571F50079ED23 /* JCollectionMetadatum.swift */,
 				E53E26A01CA571F50079ED23 /* JDataPerformer.swift */,
@@ -837,6 +840,7 @@
 				E53E26D51CA571F50079ED23 /* LockersCollectionController.swift in Sources */,
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
+				5B16A3561CCE7E31003E02BA /* Base64DataTransform.swift in Sources */,
 				E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */,
 				E5B98E2C1CC0E63C00A7ECD1 /* TransformType.swift in Sources */,
 				E53E26FA1CA571F50079ED23 /* DeleteTrigger.swift in Sources */,

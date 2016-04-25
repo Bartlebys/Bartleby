@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B16A3581CCE7E4E003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */; };
+		5B16A3591CCE7E87003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */; };
 		5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */; };
 		5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
 		5BBF7D451CC8E4E400F2237B /* CryptedSerializableTransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* CryptedSerializableTransformTests.swift */; };
@@ -301,6 +303,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelperTests.swift; sourceTree = "<group>"; };
 		5B5096901CA5824500B8D36E /* LockerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerTests.swift; sourceTree = "<group>"; };
 		5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusTests.swift; sourceTree = "<group>"; };
@@ -682,6 +685,7 @@
 		E53E2AB11CA57DBA0079ED23 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */,
 				E53E2AB21CA57DBA0079ED23 /* BaseObject+Protocols.swift */,
 				E53E2AB31CA57DBA0079ED23 /* JCollectionMetadatum.swift */,
 				E53E2AB41CA57DBA0079ED23 /* JDataPerformer.swift */,
@@ -1024,6 +1028,7 @@
 				E53E2B791CA57DBA0079ED23 /* ReadGroupsByQuery.swift in Sources */,
 				E53E2B011CA57DBA0079ED23 /* BaseCollectionMetadatum.swift in Sources */,
 				E53E2B461CA57DBA0079ED23 /* DeleteAlias.swift in Sources */,
+				5B16A3581CCE7E4E003E02BA /* Base64DataTransform.swift in Sources */,
 				E53E2B2B1CA57DBA0079ED23 /* CreateGroups.swift in Sources */,
 				E53E2BB21CA57DBA0079ED23 /* UpdatePermission.swift in Sources */,
 				E53E2BD61CA57DBA0079ED23 /* JObject.swift in Sources */,
@@ -1229,6 +1234,7 @@
 				E53E2BEC1CA57DBA0079ED23 /* Consignee.swift in Sources */,
 				E53E2B111CA57DBA0079ED23 /* ObjectError.swift in Sources */,
 				E53E2BC21CA57DBA0079ED23 /* UpdateUsers.swift in Sources */,
+				5B16A3591CCE7E87003E02BA /* Base64DataTransform.swift in Sources */,
 				E53E2BC51CA57DBA0079ED23 /* BaseObject+Protocols.swift in Sources */,
 				E53E2BCB1CA57DBA0079ED23 /* JDataPerformer.swift in Sources */,
 				E53E2C281CA57DBA0079ED23 /* VerifyLocker.swift in Sources */,

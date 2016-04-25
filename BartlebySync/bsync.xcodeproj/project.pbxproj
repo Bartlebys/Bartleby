@@ -10,6 +10,8 @@
 		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */; };
+		5B16A3541CCE7BDD003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3531CCE7BDD003E02BA /* Base64DataTransform.swift */; };
+		5B16A35A1CCE7EA0003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3531CCE7BDD003E02BA /* Base64DataTransform.swift */; };
 		5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
@@ -627,6 +629,7 @@
 
 /* Begin PBXFileReference section */
 		5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealHashMapCommand.swift; sourceTree = "<group>"; };
+		5B16A3531CCE7BDD003E02BA /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectivesRunner.swift; sourceTree = "<group>"; };
 		5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDMGSyncTests.swift; sourceTree = "<group>"; };
 		5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncHashMapTests.swift; sourceTree = "<group>"; };
@@ -1049,6 +1052,7 @@
 		5BB60FA31CBFE51900D23B4F /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				5B16A3531CCE7BDD003E02BA /* Base64DataTransform.swift */,
 				5BB60FA41CBFE51900D23B4F /* BaseObject+Protocols.swift */,
 				5BB60FA61CBFE51900D23B4F /* JDataPerformer.swift */,
 				5BB60FA71CBFE51900D23B4F /* JDocument.swift */,
@@ -1635,6 +1639,7 @@
 				5BB611091CBFE51900D23B4F /* JDataPerformer.swift in Sources */,
 				E53E28E41CA572E20079ED23 /* BsyncDMGCard.swift in Sources */,
 				5BB610F11CBFE51900D23B4F /* UpdateTrigger.swift in Sources */,
+				5B16A3541CCE7BDD003E02BA /* Base64DataTransform.swift in Sources */,
 				E5B98E9F1CC0E6CD00A7ECD1 /* Mapper.swift in Sources */,
 				E53E27561CA572940079ED23 /* MultipartFormData.swift in Sources */,
 				E5B98EA81CC0E6CD00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
@@ -1879,6 +1884,7 @@
 				5B8E5D621C8D7FCD002CFA03 /* Upload.swift in Sources */,
 				5BB60FE61CBFE51900D23B4F /* LockersCollectionController.swift in Sources */,
 				5BB6107E1CBFE51900D23B4F /* DeleteTriggers.swift in Sources */,
+				5B16A35A1CCE7EA0003E02BA /* Base64DataTransform.swift in Sources */,
 				5BB610FA1CBFE51900D23B4F /* UpdateUser.swift in Sources */,
 				5BB6106A1CBFE51900D23B4F /* DeleteLocker.swift in Sources */,
 				5BB610061CBFE51900D23B4F /* BaseRegistryMetadata.swift in Sources */,
