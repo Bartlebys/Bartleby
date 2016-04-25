@@ -13,7 +13,7 @@ import Foundation
  * Provides an abstraction for file IO.
  * Sandoboxed os x App can use BsyncXPCHelper that implement BartlebyFileIO
  */
-@objc protocol BartlebyFileIO{
+@objc public protocol BartlebyFileIO{
     
     /**
     Creates a directory

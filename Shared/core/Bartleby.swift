@@ -21,6 +21,8 @@ import Foundation
     
     static public var cryptoDelegate:CryptoDelegate=NoCrypto()
     
+    static public var fileManager:BartlebyFileIO=BFileManager()
+    
 
     /// The standard singleton shared instance
     public static let sharedInstance: Bartleby = {

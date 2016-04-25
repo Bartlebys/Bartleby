@@ -30,7 +30,7 @@ class BsyncXPCHelperDMGHandler {
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-@objc(BsyncXPCHelper) class BsyncXPCHelper:NSObject,BartlebyFileIO{
+@objc(BsyncXPCHelper) public class BsyncXPCHelper:NSObject,BartlebyFileIO{
     
     static var masterFileName="Master"
     
@@ -395,7 +395,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func createDirectoryAtPath(path: String,
+    public func createDirectoryAtPath(path: String,
                                withIntermediateDirectories createIntermediates: Bool,
                                                            attributes: [String : AnyObject]?,
                                                            callBack:(success:Bool,message:String?)->())->(){
@@ -421,7 +421,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: NSData
      */
-    func readData( contentsOfFile path: String,
+    public func readData( contentsOfFile path: String,
                                   options readOptionsMask: NSDataReadingOptions,
                                           callBack:(data:NSData?, success:Bool,message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -443,7 +443,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: NSData
      */
-    func readData( contentsOfFile path: String,
+    public func readData( contentsOfFile path: String,
                                   callBack:(data:NSData?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             callBack(data:nil)
@@ -465,7 +465,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func writeData( data:NSData,
+    public func writeData( data:NSData,
                     path: String,
                     atomically useAuxiliaryFile: Bool,
                                callBack:(success:Bool,message:String?)->())->(){
@@ -488,7 +488,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns : N/A
      */
-    func readString(contentsOfFile path: String,
+    public func readString(contentsOfFile path: String,
                                    encoding enc: NSStringEncoding,
                                             callBack:(string:String?,success:Bool,message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -513,7 +513,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func writeString( string:String,
+    public func writeString( string:String,
                       path: String,
                       atomically useAuxiliaryFile: Bool,
                                  encoding enc: NSStringEncoding,
@@ -537,7 +537,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns:  N/A
      */
-    func fileExistsAtPath(path: String,
+    public func fileExistsAtPath(path: String,
                           callBack:(exists:Bool,isADirectory:Bool,success:Bool,message:String?)->())->(){
         
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -560,7 +560,7 @@ class BsyncXPCHelperDMGHandler {
      - parameter path:     path
      - parameter callBack: the call back
      */
-    func removeItemAtPath(path: String,
+    public func removeItemAtPath(path: String,
                           callBack:(success:Bool,message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
@@ -582,7 +582,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func copyItemAtPath(srcPath: String,
+    public func copyItemAtPath(srcPath: String,
                         toPath dstPath: String,
                                callBack:(success:Bool,message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -604,7 +604,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func moveItemAtPath(srcPath: String,
+    public func moveItemAtPath(srcPath: String,
                         toPath dstPath: String,
                                callBack:(success:Bool,message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -626,7 +626,7 @@ class BsyncXPCHelperDMGHandler {
      
      - returns: N/A
      */
-    func contentsOfDirectoryAtPath(path: String,
+    public func contentsOfDirectoryAtPath(path: String,
                                    callBack:(success:Bool,content:[String],message:String?)->())->(){
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
