@@ -82,7 +82,7 @@ import ObjectMapper
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
 				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-				    let pathURL=baseURL.URLByAppendingPathComponent("/groups")
+				    let pathURL=baseURL.URLByAppendingPathComponent("groups")
 				    let dictionary:Dictionary<String, AnyObject>?=Mapper().toJSON(parameters)
 				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadGroupsByIds" ,forMethod:"GET", and: pathURL)
 				    let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)

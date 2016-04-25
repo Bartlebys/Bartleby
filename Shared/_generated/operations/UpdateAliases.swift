@@ -208,7 +208,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/aliases")
+                let pathURL=baseURL.URLByAppendingPathComponent("aliases")
                 var parameters=Dictionary<String, AnyObject>()
                 var collection=[Dictionary<String, AnyObject>]()
 

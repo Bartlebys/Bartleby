@@ -207,7 +207,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/locker")
+                let pathURL=baseURL.URLByAppendingPathComponent("locker")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["locker"]=Mapper<Locker>().toJSON(locker)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"UpdateLocker" ,forMethod:"PUT", and: pathURL)

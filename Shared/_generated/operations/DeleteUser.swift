@@ -205,7 +205,7 @@ fromDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/user")
+                let pathURL=baseURL.URLByAppendingPathComponent("user")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["userId"]=userId
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteUser" ,forMethod:"DELETE", and: pathURL)

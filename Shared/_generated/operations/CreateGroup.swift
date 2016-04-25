@@ -207,7 +207,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/group")
+                let pathURL=baseURL.URLByAppendingPathComponent("group")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["group"]=Mapper<Group>().toJSON(group)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreateGroup" ,forMethod:"POST", and: pathURL)

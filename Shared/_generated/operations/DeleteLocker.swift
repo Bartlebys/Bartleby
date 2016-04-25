@@ -205,7 +205,7 @@ fromDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/locker")
+                let pathURL=baseURL.URLByAppendingPathComponent("locker")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["lockerId"]=lockerId
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)

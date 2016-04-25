@@ -205,7 +205,7 @@ fromDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/groups")
+                let pathURL=baseURL.URLByAppendingPathComponent("groups")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["ids"]=ids
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteGroups" ,forMethod:"DELETE", and: pathURL)

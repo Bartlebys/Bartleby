@@ -207,7 +207,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/permission")
+                let pathURL=baseURL.URLByAppendingPathComponent("permission")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["permission"]=Mapper<Permission>().toJSON(permission)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"UpdatePermission" ,forMethod:"PUT", and: pathURL)

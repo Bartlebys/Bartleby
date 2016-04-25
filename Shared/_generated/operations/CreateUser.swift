@@ -207,7 +207,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/user")
+                let pathURL=baseURL.URLByAppendingPathComponent("user")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["user"]=Mapper<User>().toJSON(user)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreateUser" ,forMethod:"POST", and: pathURL)

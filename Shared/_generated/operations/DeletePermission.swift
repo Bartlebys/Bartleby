@@ -205,7 +205,7 @@ fromDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/permission")
+                let pathURL=baseURL.URLByAppendingPathComponent("permission")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["permissionId"]=permissionId
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeletePermission" ,forMethod:"DELETE", and: pathURL)

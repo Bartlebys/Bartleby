@@ -207,7 +207,7 @@ inDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/alias")
+                let pathURL=baseURL.URLByAppendingPathComponent("alias")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["alias"]=Mapper<Alias>().toJSON(alias)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreateAlias" ,forMethod:"POST", and: pathURL)

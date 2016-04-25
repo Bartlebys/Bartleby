@@ -205,7 +205,7 @@ fromDataSpace spaceUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("/trigger")
+                let pathURL=baseURL.URLByAppendingPathComponent("trigger")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["triggerId"]=triggerId
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteTrigger" ,forMethod:"DELETE", and: pathURL)
