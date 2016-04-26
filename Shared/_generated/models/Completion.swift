@@ -18,8 +18,8 @@ import ObjectMapper
 @objc(Completion) public class Completion : BaseObject{
 
 
-	//Index of the task
-	public var success:Int = 0
+	//Success if set to true
+	public var success:Bool = true
 	//Total number of tasks
 	public var statusCode:Int = 0
 	//The Message
@@ -48,7 +48,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		success=decoder.decodeIntegerForKey("success") 
+		success=decoder.decodeBoolForKey("success") 
 		statusCode=decoder.decodeIntegerForKey("statusCode") 
 		message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
 		data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
@@ -57,7 +57,7 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeInteger(success,forKey:"success")
+		coder.encodeBool(success,forKey:"success")
 		coder.encodeInteger(statusCode,forKey:"statusCode")
 		coder.encodeObject(message,forKey:"message")
 		if let data = self.data {
