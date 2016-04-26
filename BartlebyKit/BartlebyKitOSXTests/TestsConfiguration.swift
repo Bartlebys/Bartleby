@@ -48,13 +48,15 @@ public class TestsConfiguration:BartlebyConfiguration{
 
     //MARK: - Variable base URL
     
+    
     enum Environment {
         case Local
         case Development
+        case Alternative
         case Production
     }
     
-    static var currentEnvironment:Environment = .Development
+    static var currentEnvironment:Environment = .Alternative
     
     static private var __BASE_URL:NSURL {
         get{
@@ -63,11 +65,14 @@ public class TestsConfiguration:BartlebyConfiguration{
                 return NSURL(string:"http://yd.local/api/v1")!
             case .Development:
                 return NSURL(string:"https://dev.api.lylo.tv/api/v1")!
+            case .Alternative:
+                return NSURL(string: "https://pereira-da-silva.com/clients/lylo/www/api/v1")!
             case .Production:
                 return NSURL(string:"https://api.lylo.tv/api/v1")!
             }
         }
     }
+    
     
     public static let TIME_OUT_DURATION = 5.0
 }
