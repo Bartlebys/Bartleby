@@ -415,7 +415,7 @@ Documents can be shared between iOS, tvOS and OSX.
     public func pushChainedOperation(operations:[Operation],inout iterator:IndexingGenerator<[Operation]>){
         if let currentOperation=iterator.next(){
             self.pushOperation(currentOperation, sucessHandler: { (context) -> () in
-                if let operationDictionary=currentOperation.data{
+                if let operationDictionary=currentOperation.toDictionary{
                     if let referenceName=operationDictionary[Default.REFERENCE_NAME_KEY],
                         uid=operationDictionary[Default.UID_KEY]{
                             self.delete(currentOperation)
@@ -469,7 +469,7 @@ Documents can be shared between iOS, tvOS and OSX.
      - parameter failure:   the failure handler
      */
     public func pushOperation(operation:Operation,sucessHandler success:(context:HTTPResponse)->(),failureHandler failure:(context:HTTPResponse)->()){
-        if let serialized=operation.data{
+        if let serialized=operation.toDictionary{
             if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand{
                 command.push(sucessHandler:success, failureHandler:failure)
             }else{

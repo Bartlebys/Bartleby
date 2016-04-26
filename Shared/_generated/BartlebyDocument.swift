@@ -32,6 +32,7 @@ import UIKit
 
     // Collection Controllers
     // The initial instances are proxies
+	dynamic lazy public var tasks=TasksCollectionController()
 	dynamic lazy public var users=UsersCollectionController()
 	dynamic lazy public var lockers=LockersCollectionController()
 	dynamic lazy public var groups=GroupsCollectionController()
@@ -47,6 +48,26 @@ import UIKit
     // Those array controllers are Owned by their respective ViewControllers
     // Those view Controller are observed here to insure a consistent persitency
 
+
+    weak public var tasksArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the CollectionController
+            self.tasks.arrayController=tasksArrayController
+            // Add observer
+            tasksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
+            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey] as? Int{
+               if self.tasks.items.count > index{
+                   let selection=self.tasks.items[index]
+                   self.tasksArrayController?.setSelectedObjects([selection])
+                }
+             }
+        }
+    }
+        
 
     weak public var usersArrayController: NSArrayController?{
         willSet{
@@ -174,6 +195,20 @@ import UIKit
 
 //Focus indexes persistency
 
+    static public let kSelectedTaskIndexKey="selectedTaskIndexKey"
+    static public let TASK_SELECTED_INDEX_CHANGED_NOTIFICATION="TASK_SELECTED_INDEX_CHANGED_NOTIFICATION"
+    dynamic public var selectedTask:Task?{
+        didSet{
+            if let task = selectedTask {
+                if let index=tasks.items.indexOf(task){
+                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey]=index
+                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASK_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
+                }
+            }
+        }
+    }
+        
+
     static public let kSelectedUserIndexKey="selectedUserIndexKey"
     static public let USER_SELECTED_INDEX_CHANGED_NOTIFICATION="USER_SELECTED_INDEX_CHANGED_NOTIFICATION"
     dynamic public var selectedUser:User?{
@@ -277,6 +312,15 @@ import UIKit
         // #1  Defines the Schema
         super.configureSchema()
 
+        let taskDefinition = JCollectionMetadatum()
+        taskDefinition.proxy = self.tasks
+        // By default we group the observation via the rootObjectUID
+        taskDefinition.observableViaUID = self.registryMetadata.rootObjectUID
+        taskDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        taskDefinition.allowDistantPersistency = true
+        taskDefinition.inMemory = false
+        
+
         let userDefinition = JCollectionMetadatum()
         userDefinition.proxy = self.users
         // By default we group the observation via the rootObjectUID
@@ -335,6 +379,7 @@ import UIKit
         // Proceed to configuration
         do{
 
+			try self.registryMetadata.configureSchema(taskDefinition)
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(groupDefinition)
@@ -372,7 +417,15 @@ import UIKit
     // We prefer to centralize the KVO for selection indexes at the top level
     if let keyPath = keyPath, object = object {
 
-             if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
+             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
+            if let task=self.tasksArrayController?.selectedObjects.first as? Task{
+                self.selectedTask=task
+                return
+            }
+        }
+        
+
+         if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
             if let user=self.usersArrayController?.selectedObjects.first as? User{
                 self.selectedUser=user
                 return
@@ -428,6 +481,14 @@ import UIKit
 
     // MARK:  Delete currently selected items
     
+    public func deleteSelectedTask() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedTask{
+            self.tasks.removeObject(selected)
+        }
+    }
+        
+
     public func deleteSelectedUser() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedUser{

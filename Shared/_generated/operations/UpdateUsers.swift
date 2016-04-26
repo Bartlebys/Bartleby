@@ -147,12 +147,12 @@ import ObjectMapper
                     onSelectedIndex: { (selectedIndex) -> () in
                     })
                 }
-                // The status will mark Operation.hasChanged as true
-                self._operation.data=self.dictionaryRepresentation()
+                self._operation.toDictionary=self.dictionaryRepresentation()
         
                 for item in self._users{
                      item.committed=true
-                 }        }else{
+                 }
+        }else{
             // This registry is not available there is nothing to do.
             let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
@@ -179,14 +179,14 @@ import ObjectMapper
                         
                         self._operation.counter=self._operation.counter!+1
                         self._operation.status=Operation.Status.Successful
-                        self._operation.responseData=Mapper<JHTTPResponse>().toJSON(context)
+                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()
                         success(context:context)
                     },
                     failureHandler: {(context: JHTTPResponse) -> () in
                         self._operation.counter=self._operation.counter!+1
                         self._operation.status=Operation.Status.Unsucessful
-                        self._operation.responseData=Mapper<JHTTPResponse>().toJSON(context)
+                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()
                         failure(context:context)
                     }

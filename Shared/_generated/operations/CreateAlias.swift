@@ -147,8 +147,7 @@ import ObjectMapper
                     onSelectedIndex: { (selectedIndex) -> () in
                     })
                 }
-                // The status will mark Operation.hasChanged as true
-                self._operation.data=self.dictionaryRepresentation()
+                self._operation.toDictionary=self.dictionaryRepresentation()
         
                 self._alias.committed=true
         }else{
@@ -178,14 +177,14 @@ import ObjectMapper
                         registry.markAsDistributed(&self._alias)
                         self._operation.counter=self._operation.counter!+1
                         self._operation.status=Operation.Status.Successful
-                        self._operation.responseData=Mapper<JHTTPResponse>().toJSON(context)
+                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()
                         success(context:context)
                     },
                     failureHandler: {(context: JHTTPResponse) -> () in
                         self._operation.counter=self._operation.counter!+1
                         self._operation.status=Operation.Status.Unsucessful
-                        self._operation.responseData=Mapper<JHTTPResponse>().toJSON(context)
+                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()
                         failure(context:context)
                     }

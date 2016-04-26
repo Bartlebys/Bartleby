@@ -18,8 +18,10 @@ import ObjectMapper
 @objc(Operation) public class Operation : BaseObject{
 
 
-	public var data:Dictionary<String, AnyObject>?
-	public var responseData:Dictionary<String, AnyObject>?
+	//The dictionary representation of a serialized action call
+	public var toDictionary:Dictionary<String, AnyObject>?
+	//The dictionary representation of the last response serialized data
+	public var responseDictionary:Dictionary<String, AnyObject>?
 	public var baseUrl:NSURL?
 	//The invocation Status
 	public enum Status:String{
@@ -49,8 +51,8 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		data <- map["data"]
-		responseData <- map["responseData"]
+		toDictionary <- map["toDictionary"]
+		responseDictionary <- map["responseDictionary"]
 		baseUrl <- (map["baseUrl"],URLTransform())
 		status <- map["status"]
 		spaceUID <- map["spaceUID"]
@@ -64,8 +66,8 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		data=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "data")as? Dictionary<String, AnyObject>
-		responseData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseData")as? Dictionary<String, AnyObject>
+		toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? Dictionary<String, AnyObject>
+		responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? Dictionary<String, AnyObject>
 		baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
 		status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
 		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
@@ -77,11 +79,11 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		if let data = self.data {
-			coder.encodeObject(data,forKey:"data")
+		if let toDictionary = self.toDictionary {
+			coder.encodeObject(toDictionary,forKey:"toDictionary")
 		}
-		if let responseData = self.responseData {
-			coder.encodeObject(responseData,forKey:"responseData")
+		if let responseDictionary = self.responseDictionary {
+			coder.encodeObject(responseDictionary,forKey:"responseDictionary")
 		}
 		if let baseUrl = self.baseUrl {
 			coder.encodeObject(baseUrl,forKey:"baseUrl")
