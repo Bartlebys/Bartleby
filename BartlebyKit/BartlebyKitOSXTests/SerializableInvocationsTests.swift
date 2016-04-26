@@ -75,11 +75,12 @@ class SerializableInvocations: XCTestCase {
             let invocation = try PrintMessageSample(arguments:arguments)
             // Serialize to NSData
             let serializedInvocation:NSData=invocation.serialize()
-            serializedInvocation.executeSerializedInvocation()
+            try serializedInvocation.executeSerializedInvocation()
             
         }catch let exception{
             XCTFail("\(exception)")
         }
+        
     }
 
     

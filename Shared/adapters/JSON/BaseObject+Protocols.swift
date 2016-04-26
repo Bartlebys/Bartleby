@@ -10,7 +10,7 @@ import Foundation
 
 // BaseObject conforms to InvocationResponse and Collectible
 // Let's adopt formally those protocols
-extension BaseObject : Collectible,InvocationResponse{
+extension BaseObject : Collectible{
 
 }
 

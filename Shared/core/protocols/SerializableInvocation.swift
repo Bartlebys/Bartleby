@@ -29,24 +29,4 @@ public protocol SerializableInvocation:Collectible {
     // Run the invocation
     // All the logic is encapuslated.
     func invoke()
-    
-}
-
-
-// MARK: Responding invocation
-
-public protocol InvocationResponse:Collectible{}
-
-// A serializable invocation is a class that encapsulates the arguments
-// in a Serializable object to be passed to a generic invoke method
-// and returns a SerializableInvocation during execution
-public protocol RespondingInvocation:Collectible{
-    
-    // The method to init  with the arguments
-    // implements type safety and throw SerializableInvocationError.ArgumentsTypeMisMatch
-    init(arguments:SerializableArguments) throws
-    
-    // Run the invocation and returns a response.
-    func invoke(responseClosure:()->InvocationResponse)
-    
 }

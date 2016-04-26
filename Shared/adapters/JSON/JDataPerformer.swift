@@ -8,23 +8,21 @@
 
 import Foundation
 
+
+public enum InvocationPerformanceError : ErrorType {
+    case InvocationExpected
+}
+
+
+
 extension NSData{
     
-    func executeSerializedInvocation(responseClosure:()->InvocationResponse){
-        if let dsi = JSerializer.deserialize(self) as? RespondingInvocation {
-            dsi.invoke(responseClosure)
-        }else{
-            bprint("NSData Failure executeSerializedInvocation with a responseClosure")
-        }
-    }
-    
-    public func executeSerializedInvocation()->()  {
+    public func executeSerializedInvocation()throws ->(){
         if let dsi:SerializableInvocation = JSerializer.deserialize(self) as? SerializableInvocation {
             dsi.invoke()
         }else{
-            bprint("NSData Failure during Deserialization")
+           throw InvocationPerformanceError.InvocationExpected
         }
     }
     
-
 }
