@@ -265,7 +265,6 @@
 		E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E56C004B1C8ED4A800BB6B19 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E570BFA51CBE48BB00F6814B /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E577C9B11CCF434A00756BDD /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9B01CCF434A00756BDD /* TasksCollectionController.swift */; };
 		E577C9B31CCF435400756BDD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9B21CCF435400756BDD /* Task.swift */; };
@@ -289,6 +288,9 @@
 		E577CA141CCF71E900756BDD /* ReadTasksByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9BA1CCF436500756BDD /* ReadTasksByQuery.swift */; };
 		E577CA151CCF71E900756BDD /* UpdateTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9BB1CCF436500756BDD /* UpdateTask.swift */; };
 		E577CA161CCF71E900756BDD /* UpdateTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9BC1CCF436500756BDD /* UpdateTasks.swift */; };
+		E577CA3F1CCF9BC000756BDD /* TaskInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */; };
+		E577CA401CCFA3C700756BDD /* TaskInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */; };
+		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E57BE0F31CBC05E50038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */; };
 		E5959C071CA6702200557BDB /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
@@ -491,6 +493,7 @@
 		E577C9BA1CCF436500756BDD /* ReadTasksByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTasksByQuery.swift; sourceTree = "<group>"; };
 		E577C9BB1CCF436500756BDD /* UpdateTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTask.swift; sourceTree = "<group>"; };
 		E577C9BC1CCF436500756BDD /* UpdateTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTasks.swift; sourceTree = "<group>"; };
+		E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInvocation.swift; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E57BE0F21CBC05E50038454C /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5CC50411CC65F97000EA88C /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
@@ -522,7 +525,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E56C004B1C8ED4A800BB6B19 /* BartlebyKit.framework in Frameworks */,
+				E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,6 +836,7 @@
 				E53E2AD81CA57DBA0079ED23 /* NSURL+Parameters.swift */,
 				E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */,
 				E51718AF1CAEE43900A0CD1A /* User+Auth.swift */,
+				E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1098,6 +1102,7 @@
 				E53E2B971CA57DBA0079ED23 /* ReadUserById.swift in Sources */,
 				E53554991CCE809600625D70 /* Progression.swift in Sources */,
 				E53E2BBE1CA57DBA0079ED23 /* UpdateUser.swift in Sources */,
+				E577CA3F1CCF9BC000756BDD /* TaskInvocation.swift in Sources */,
 				E53E2AF81CA57DBA0079ED23 /* TriggersCollectionController.swift in Sources */,
 				E53E2C211CA57DBA0079ED23 /* LoginUser.swift in Sources */,
 				E53E2C0F1CA57DBA0079ED23 /* Serializable.swift in Sources */,
@@ -1256,6 +1261,7 @@
 				E53E2BDD1CA57DBA0079ED23 /* JSerializer.swift in Sources */,
 				E577CA121CCF71E900756BDD /* ReadTaskById.swift in Sources */,
 				E53E2B1D1CA57DBA0079ED23 /* Trigger.swift in Sources */,
+				E577CA401CCFA3C700756BDD /* TaskInvocation.swift in Sources */,
 				E53E2AEA1CA57DBA0079ED23 /* AliasesCollectionController.swift in Sources */,
 				E53E2BB91CA57DBA0079ED23 /* UpdateTrigger.swift in Sources */,
 				E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,

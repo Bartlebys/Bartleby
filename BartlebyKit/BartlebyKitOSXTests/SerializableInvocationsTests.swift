@@ -12,7 +12,7 @@ import ObjectMapper
 import BartlebyKit
 
 
-class SerializableInvocations: XCTestCase {
+class SerializableInvocationsTests: XCTestCase {
     
     override static func setUp() {
         super.setUp()
@@ -57,6 +57,7 @@ class SerializableInvocations: XCTestCase {
             // DYNAMIC == No inference of the type
             if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? SerializableInvocation{
                 deserializedInvocation.invoke()
+                XCTAssert(true)
             }else{
                 XCTFail("Deserialization as failed")
             }
@@ -76,13 +77,29 @@ class SerializableInvocations: XCTestCase {
             // Serialize to NSData
             let serializedInvocation:NSData=invocation.serialize()
             try serializedInvocation.executeSerializedInvocation()
-            
+            XCTAssert(true)
         }catch let exception{
             XCTFail("\(exception)")
         }
         
     }
 
+    
+    func test004_UseATaskInvocation(){
+        let user=User()
+        user.email="bpds@me.com"
+        if let printer =  try? PrintUser(arguments:user){
+            let serializedInvocation=printer.serialize()
+            if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser{
+                deserializedInvocation.invoke()
+                XCTAssert(true)
+            }else{
+                XCTFail("Deserialization as failed")
+            }
+
+        }
+    }
+    
     
     /*
      func testComposedSerializableInvocation() {

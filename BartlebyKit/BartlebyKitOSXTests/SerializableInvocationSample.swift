@@ -10,11 +10,37 @@ import Foundation
 import ObjectMapper
 import BartlebyKit
 
-// THIS SAMPLE FILE IS A TEMPLATE
+
+public class PrintUser: TaskInvocation {
+    
+    // Initializes with the arguments
+    // You MUST IMPLEMENT type safety
+    // and throw SerializableInvocationError.ArgumentsTypeMisMatch
+    public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType)throws{
+        self.init()
+        // You should guarantee type safety on init
+        if arguments is User{
+            self.argumentsData=arguments.serialize()
+        }else{
+            throw SerializableInvocationError.ArgumentsTypeMisMatch
+        }
+    }
+    
+    override public func invoke() {
+        if let user:User = try? self.arguments(){
+            if let email = user.email{
+                bprint("\(email)",file:#file,function:#function,line: #line)
+            }else{
+                bprint("\(user.UID)",file:#file,function:#function,line: #line)
+            }
+            
+        }
+    }
+}
 
 
 
-@objc(PrintMessageSampleArguments) class PrintMessageSampleArguments : BaseObject,SerializableArguments {
+@objc(PrintMessageSampleArguments) class PrintMessageSampleArguments : BaseObject {
     
     //
     var message:String=""
@@ -28,7 +54,7 @@ import BartlebyKit
         super.init(map)
         mapping(map)
     }
-
+    
     required init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,7 +65,7 @@ import BartlebyKit
     }
     
 }
- 
+
 
 // Dont forget to set @objc(ClassName) before your class for invocations
 // You can use "public class PrintMessageSample<ArgumentType:PrintMessageSampleArguments>..." but you will loose the dynamism
@@ -47,19 +73,18 @@ import BartlebyKit
     
     // MARK:- SerializableInvocation
     
-    typealias ArgumentType=PrintMessageSampleArguments
-    
-    internal var _serializableArguments:ArgumentType=ArgumentType()
+    internal var _serializableArguments:PrintMessageSampleArguments=PrintMessageSampleArguments()
     
     
-    public required init(arguments:SerializableArguments) throws{
-        super.init()
-            if arguments is ArgumentType{
-                 self._serializableArguments = arguments as! ArgumentType
-            }else{
-                 throw SerializableInvocationError.ArgumentsTypeMisMatch
-            }
-       
+    
+    public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType) throws{
+        self.init()
+        if arguments is PrintMessageSampleArguments{
+            self._serializableArguments = arguments as! PrintMessageSampleArguments
+        }else{
+            throw SerializableInvocationError.ArgumentsTypeMisMatch
+        }
+        
     }
     
     
@@ -78,8 +103,8 @@ import BartlebyKit
     public required init(){
         super.init()
     }
-
-     // MARK: Mappable
+    
+    // MARK: Mappable
     
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
@@ -90,5 +115,5 @@ import BartlebyKit
         _serializableArguments <- map["_serializableArguments"]
     }
     
-
+    
 }
