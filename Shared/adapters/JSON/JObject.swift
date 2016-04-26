@@ -20,10 +20,11 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     return lhs.UID==rhs.UID
 }
 
+
 // Notice the @objc(Name)
 // http://stackoverflow.com/a/24196632/341994
 // MARK: - JObject Class
-@objc(JObject) public class JObject : NSObject,NSCopying,Mappable,Persistent,Serializable,Identifiable,NSSecureCoding{
+@objc(JObject) public class JObject : NSObject,NSCopying,Mappable,Identifiable,Persistent,NSSecureCoding{
     
     // MARK: - ReferenceName
     
@@ -52,6 +53,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     
     
     // MARK: - Mappable
+    
     public required init?(_ map: Map) {
         super.init()
         mapping(map)
@@ -113,6 +115,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
         return JObject.collectionName
     }
     
+    
     // MARK: - CustomStringConvertible
     
     override public var description: String {
@@ -123,84 +126,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
                 return "Void JObject"
             }
         }
-    }
-    
-    
-    
-    
-    
-    // MARK: - DataSerializable
-    
-    public func serialize()->NSData {
-        let dictionaryRepresentation = self.dictionaryRepresentation()
-        do{
-            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
-            }else{
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
-            }
-        }catch{
-            return NSData()
-        }
-    }
-    
-    
-    
-    // MARK: - Serializable & Cie
-
-
-    public func patchWithSerializedData(data: NSData) -> Serializable {
-        do{
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
-                self.mapping(map)
-                return self
-            }
-        }catch{
-            //Silent catch
-            bprint("deserialize ERROR \(error)")
-        }
-        // If there is an issue we relay to the serializer
-        
-        return JSerializer.deserialize(data)
-    }
-    
-    
-    
-    public func dictionaryRepresentation()->[String:AnyObject]{
-        return Mapper().toJSON(self)
-    }
-    
-
-    
-    public func deserialize(data:NSData)->Serializable{
-        return JSerializer.deserialize(data)
-    }
-
-    
-    // MARK: - Persistent
-    
-    
-    public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT){
-            return (self.UID,self.d_collectionName,data,0,0,0,0,0,"")
-        }else{
-            let s="{\"Persitency Error - serialization failed\"}"
-            return (self.UID,self.d_collectionName,s,0,0,0,0,0,"")
-        }
-    }
-    
-    
-    static public func fromSerializedUTF8String(serializedUTF8String:String)->Serializable{
-        // In our case the serializedUTF8String encapuslate all the required information
-        if let d = serializedUTF8String.dataUsingEncoding(NSUTF8StringEncoding){
-            return JSerializer.deserialize(d)
-        }else{
-            let error=ObjectError()
-            error.message="Error on deserialization of \(serializedUTF8String)"
-            return error
-        }
-        
     }
     
     
@@ -237,7 +162,83 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
     }
     
     
+    // MARK: - Persistent
+    
+    public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT){
+            return (self.UID,self.d_collectionName,data,0,0,0,0,0,"")
+        }else{
+            let s="{\"Persitency Error - serialization failed\"}"
+            return (self.UID,self.d_collectionName,s,0,0,0,0,0,"")
+        }
+    }
+    
+    
+    static public func fromSerializedUTF8String(serializedUTF8String:String)->Serializable{
+        // In our case the serializedUTF8String encapuslate all the required information
+        if let d = serializedUTF8String.dataUsingEncoding(NSUTF8StringEncoding){
+            return JSerializer.deserialize(d)
+        }else{
+            let error=ObjectError()
+            error.message="Error on deserialization of \(serializedUTF8String)"
+            return error
+        }
+        
+    }
 }
+
+
+// MARK: - Serializable
+
+extension JObject:Serializable{
+    
+    
+    public func serialize()->NSData {
+        let dictionaryRepresentation = self.dictionaryRepresentation()
+        do{
+            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
+                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
+            }else{
+                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
+            }
+        }catch{
+            return NSData()
+        }
+    }
+    
+    
+    public func deserialize(data:NSData)->Serializable{
+        return JSerializer.deserialize(data)
+    }
+    
+    
+    
+    public func patchWithSerializedData(data: NSData) -> Serializable {
+        do{
+            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
+                self.mapping(map)
+                return self
+            }
+        }catch{
+            //Silent catch
+            bprint("deserialize ERROR \(error)")
+        }
+        // If there is an issue we relay to the serializer
+        
+        return JSerializer.deserialize(data)
+    }
+    
+    
+    
+    public func dictionaryRepresentation()->[String:AnyObject]{
+        return Mapper().toJSON(self)
+    }
+    
+}
+
+
+
 
 
  

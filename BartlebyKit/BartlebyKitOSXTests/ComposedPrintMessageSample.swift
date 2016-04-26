@@ -9,7 +9,7 @@
 import Foundation
 import ObjectMapper
 import BartlebyKit
-
+/*
 
 @objc(MultiplePrintMessageSampleArguments) class MultiplePrintMessageSampleArguments : BaseObject {
     
@@ -136,4 +136,4 @@ import BartlebyKit
         _serializableArguments <- map["_serializableArguments"]
     }
     
-}
+}*/

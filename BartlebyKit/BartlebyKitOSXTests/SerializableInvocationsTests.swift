@@ -11,106 +11,98 @@ import Alamofire
 import ObjectMapper
 import BartlebyKit
 
-// SHOULD
 
 class SerializableInvocations: XCTestCase {
-    func testSerializableInvocation() {
+    
+    override static func setUp() {
+        super.setUp()
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+    }
+    
+    
+    
+    func test001_SerializableInvocationWithInferedType() {
         
-        var hasThrownArgumentsTypeMisMatch=false
-        
-        
-        // #1 This approach is 100% safe because the execution flow is stopped on Type Missmatch exception
-        
+        // Create an invocation
+        let arguments = PrintMessageSampleArguments()
+        arguments.message="Hello Dolly 001"
         do{
-            // This appproach of Dynamic invocation is 100% type safe.
-            // Create an invocation
-            
-            let arguments = PrintMessageSampleArguments()
-            arguments.message="Hello Dolly 1"
-            
             let invocation = try PrintMessageSample(arguments:arguments)
-            
             // Serialize to NSData
             let serializedInvocation:NSData=invocation.serialize()
             
-            // Execute from serialized Data
-            serializedInvocation.executeSerializedInvocation()
-            
-            
-        }catch{
-            switch error{
-            case SerializableInvocationError.ArgumentsTypeMisMatch :
-                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
-                hasThrownArgumentsTypeMisMatch=true
-                break
-            // You can handle execution Exception
-            default:
-                break
+            // You can run this if you know the inferred type at compilation time
+            if let deserializedInvocation:PrintMessageSample=JSerializer.deserialize(serializedInvocation) as? PrintMessageSample{
+                deserializedInvocation.invoke()
+                XCTAssertTrue(true)
+            }else{
+                XCTFail("Deserialization as failed")
             }
+        }catch let exception{
+            XCTFail("\(exception)")
         }
-        
-        XCTAssertFalse(hasThrownArgumentsTypeMisMatch, "SerializableInvocationError.ArgumentsTypeMisMatch Thrown!")
         
     }
     
     
-    // We pass an invalid argument object with the same signature
-    func testInvalidSerializableInvocation() {
-        
-        var hasThrownArgumentsTypeMisMatch=false
-        
+    func test002_SerializableInvocationWithDynamicType() {
+        // Create an invocation
+        let arguments = PrintMessageSampleArguments()
+        arguments.message="Hello Dolly 002"
         do{
-            // This appproach of Dynamic invocation is 100% type safe.
-            // Create an invocation
-            
-            let arguments = PrintMessageSampleArgumentsInvalid()
-            arguments.message="Hello Dolly 2 should fail"
-            
             let invocation = try PrintMessageSample(arguments:arguments)
-            
             // Serialize to NSData
             let serializedInvocation:NSData=invocation.serialize()
             
-            // Execute from serialized Data
+            // DYNAMIC == No inference of the type
+            if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? SerializableInvocation{
+                deserializedInvocation.invoke()
+            }else{
+                XCTFail("Deserialization as failed")
+            }
+        }catch let exception{
+            XCTFail("\(exception)")
+        }
+    }
+    
+    
+    func test003_SerializableInvocationWithDynamicTypeViaThePerformer() {
+        
+        // Create an invocation
+        let arguments = PrintMessageSampleArguments()
+        arguments.message="Hello Dolly again 003"
+        do{
+            let invocation = try PrintMessageSample(arguments:arguments)
+            // Serialize to NSData
+            let serializedInvocation:NSData=invocation.serialize()
             serializedInvocation.executeSerializedInvocation()
             
-        }catch {
-            switch error{
-            case SerializableInvocationError.ArgumentsTypeMisMatch :
-                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
-                hasThrownArgumentsTypeMisMatch=true
-                break
-            // You can handle execution Exception
-            default:
-                break
-            }
+        }catch let exception{
+            XCTFail("\(exception)")
         }
-        XCTAssertTrue(hasThrownArgumentsTypeMisMatch, "PrintMessageSampleArgumentsInvalid is invalid SerializableInvocationError.ArgumentsTypeMisMatch should have been thrown!")
-        
-        
     }
+
     
-    
-    
-    func testComposedSerializableInvocation() {
-        
-        do{
-            let arguments = MultiplePrintMessageSampleArguments()
-            try ComposedPrintMessageSample(arguments:arguments).invoke()
-            
-        }catch{
-            switch error{
-            case SerializableInvocationError.ArgumentsTypeMisMatch :
-                bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
-                break
-            // You can handle execution Exception
-            default:
-                break
-            }
-        }
-        
-        
-    }
-    
+    /*
+     func testComposedSerializableInvocation() {
+     
+     do{
+     let arguments = MultiplePrintMessageSampleArguments()
+     try ComposedPrintMessageSample(arguments:arguments).invoke()
+     
+     }catch{
+     switch error{
+     case SerializableInvocationError.ArgumentsTypeMisMatch :
+     bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
+     break
+     // You can handle execution Exception
+     default:
+     break
+     }
+     }
+     
+     
+     }
+     */
     
 }

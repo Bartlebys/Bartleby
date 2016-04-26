@@ -19,7 +19,7 @@ extension NSData{
     }
     
     public func executeSerializedInvocation()->()  {
-        if let dsi = JSerializer.deserialize(self) as? SerializableInvocation {
+        if let dsi:SerializableInvocation = JSerializer.deserialize(self) as? SerializableInvocation {
             dsi.invoke()
         }else{
             bprint("NSData Failure during Deserialization")
