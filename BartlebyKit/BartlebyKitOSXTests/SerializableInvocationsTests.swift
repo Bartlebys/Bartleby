@@ -68,7 +68,6 @@ class SerializableInvocationsTests: XCTestCase {
     
     
     func test003_SerializableInvocationWithDynamicTypeViaThePerformer() {
-        
         // Create an invocation
         let arguments = PrintMessageSampleArguments()
         arguments.message="Hello Dolly again 003"
@@ -101,26 +100,38 @@ class SerializableInvocationsTests: XCTestCase {
     }
     
     
-    /*
-     func testComposedSerializableInvocation() {
-     
-     do{
-     let arguments = MultiplePrintMessageSampleArguments()
-     try ComposedPrintMessageSample(arguments:arguments).invoke()
-     
-     }catch{
-     switch error{
-     case SerializableInvocationError.ArgumentsTypeMisMatch :
-     bprint("SerializableInvocationError.ArgumentsTypeMisMatch")
-     break
-     // You can handle execution Exception
-     default:
-     break
-     }
-     }
-     
-     
-     }
-     */
+    func test005_UseATaskInvocationDynamic(){
+        let user=User()
+        user.email="benoit@pereira-da-silva.com"
+        if let printer =  try? PrintUser(arguments:user){
+            let serializedInvocation=printer.serialize()
+            if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? SerializableInvocation{
+                deserializedInvocation.invoke()
+                XCTAssert(true)
+            }else{
+                XCTFail("Deserialization as failed")
+            }
+            
+        }
+    }
+    
+    func test006_SerializableInvocationWithDynamicTypeViaThePerformer() {
+        let user=User()
+        user.email="benoit@chaosmose.com"
+        do{
+            let invocation = try PrintUser(arguments:user)
+            // Serialize to NSData
+            let serializedInvocation:NSData=invocation.serialize()
+            // Try to execute
+            try serializedInvocation.executeSerializedInvocation()
+            XCTAssert(true)
+        }catch let exception{
+            XCTFail("\(exception)")
+        }
+    }
+
+    
+    
+    
     
 }

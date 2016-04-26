@@ -11,6 +11,8 @@ import ObjectMapper
 import BartlebyKit
 
 
+// MARK: - Using a TaskInvocation (that s the best approach)
+
 public class PrintUser: TaskInvocation {
     
     // Initializes with the arguments
@@ -39,6 +41,9 @@ public class PrintUser: TaskInvocation {
 }
 
 
+
+
+// MARK: - Creating a Manual instance
 
 @objc(PrintMessageSampleArguments) class PrintMessageSampleArguments : BaseObject {
     
@@ -75,8 +80,7 @@ public class PrintUser: TaskInvocation {
     
     internal var _serializableArguments:PrintMessageSampleArguments=PrintMessageSampleArguments()
     
-    
-    
+
     public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType) throws{
         self.init()
         if arguments is PrintMessageSampleArguments{
