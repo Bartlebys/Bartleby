@@ -87,13 +87,14 @@ protocol IdentifiableCardContext{
      
      - returns: a block
      */
-    public func evaluate()->(isValid:Bool,message:String?){
+    // TODO: Maybe evaluate should return a Completion?
+    public func evaluate() -> Completion{
         
         // Test the path
         let url=NSURL(fileURLWithPath:path,isDirectory:false)
         let ext=url.pathExtension
         if ext != BsyncDMGCard.DMG_EXTENSION {
-            return (false, NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(path)")
+            return Completion(success: false, message: NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(path)")
         }
         
         // Verify that everything has been set.
@@ -101,9 +102,9 @@ protocol IdentifiableCardContext{
             contextUID == BsyncDMGCard.NOT_SET ||
             path == BsyncDMGCard.NOT_SET ||
             volumeName == BsyncDMGCard.NOT_SET){
-                return (false, NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(path),\n volumeName = \(volumeName)\n")
+            return Completion(success: false, message: NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(path),\n volumeName = \(volumeName)\n")
         }else{
-            return (true,nil)
+            return Completion(success: true)
         }
     }
     

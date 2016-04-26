@@ -10,7 +10,7 @@ import Cocoa
 
 class RevealDirectivesCommand: CommandBase {
     
-    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+    required init(completionBlock: ((completion: Completion) -> ())) {
         super.init(completionBlock: completionBlock)
                 
         let filePath = StringOption(shortFlag: "f", longFlag: "file", required: true,

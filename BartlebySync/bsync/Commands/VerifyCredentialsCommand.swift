@@ -10,7 +10,7 @@ import Cocoa
 
 class VerifyCredentialsCommand: CommandBase {
     
-    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+    required init(completionBlock: ((completion: Completion) -> ())) {
         super.init(completionBlock: completionBlock)
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,

@@ -16,9 +16,19 @@ public class CommandBase: ProgressAndCompletionHandler {
     
     let cli = CommandLine()
 
-    public required init(completionBlock:((success:Bool,message:String?)->())){
+    public required init(completionBlock:((completion: Completion)->())){
         super.init(completionBlock: completionBlock)
-        cli.usesSubCommands=true
+    }
+    
+    public convenience init() {
+        self.init(completionBlock:{ (completion) in
+            if completion.success {
+                exit(EX_OK)
+            } else {
+                print(completion.message)
+                exit(Int32(completion.statusCode))
+            }
+        })
     }
     
     func printVerbose(string: String) {
@@ -33,36 +43,6 @@ public class CommandBase: ProgressAndCompletionHandler {
      - parameter string: the message
      */
     func printVersatile(string:String){
-         if self.runAsCommandLine == true {
-            print(string)
-         }else{
-            // Could be indiriged in future versions 
-            // To provide feed back to the client
-            print(string)
-        }
-    }
-
-    
-    var runAsCommandLine:Bool=true
-    
-     /**
-     A versatile EXIT method to support commandline and XPC or lib calls
-     with the same implementation
-     
-     - parameter code:    the exit code
-     - parameter message: the message
-     */
-    func completion_EXIT(exitCode:Int32,message:String?){
-        if self.runAsCommandLine == true {
-            if let m=message {
-                print(m)
-            }
-            exit(exitCode)
-        }
-        if exitCode == EX_OK {
-            self.completionBlock(success: true,message: message)
-        }else{
-            self.completionBlock(success: false,message: message)
-        }
+        print(string)
     }
 }

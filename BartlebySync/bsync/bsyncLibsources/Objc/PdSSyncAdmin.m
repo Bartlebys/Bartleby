@@ -64,8 +64,8 @@
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
-                 andCompletionBlock:(void(^_Nonnull)(BOOL success,NSString*_Nullable message))completionBlock{
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(Progression*_Nonnull progression))progressBlock
+                 andCompletionBlock:(void(^_Nonnull)(Completion*_Nonnull completion))completionBlock{
     
     
     [self.finalizationDelegate progressMessage:[self.syncContext contextDescription]];
@@ -74,7 +74,10 @@
         BsyncMode mode=[_syncContext mode];
         if(mode==SourceIsLocalDestinationIsDistant || mode==SourceIsDistantDestinationIsDistant){
             // Block the operation.
-            completionBlock(NO,@"Hash Map views should be used on Read only Down streams the synchronization has been cancelled");
+            Completion *completion = [Completion init];
+            completion.success = NO;
+            completion.message = @"Hash Map views should be used on Read only Down streams the synchronization has been cancelled";
+            completionBlock(completion);
             return;
         }
     }
@@ -86,13 +89,17 @@
 }
 
 
--(void)_prepareAndSynchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
-                            andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock
+-(void)_prepareAndSynchronizeWithprogressBlock:(void(^_Nullable)(Progression*_Nonnull progression))progressBlock
+                            andCompletionBlock:(void(^)(Completion*_Nonnull completion))completionBlock
                                numberOfAttempt:(int)attempts{
     attempts++;
+    Completion *completion = [Completion init];
     if(attempts > kRecursiveMaxNumberOfAttempts){
         // This occurs if the recursive call fails.
-        completionBlock(NO,[NSString stringWithFormat:@"Excessive number of attempts of synchronization %i",kRecursiveMaxNumberOfAttempts]);
+        // TODO: Choose status code
+        completion.success = NO;
+        completion.message = [NSString stringWithFormat:@"Excessive number of attempts of synchronization %i", kRecursiveMaxNumberOfAttempts];
+        completionBlock(completion);
         return;
     }
     if(self.syncContext.autoCreateTrees){
@@ -104,6 +111,8 @@
                                  andCompletionBlock:completionBlock];
                 
             }else{
+                completion.success = NO;
+                completion.statusCode = statusCode;
                 if (statusCode==404){
                     NSString*message=@"Auto creation of tree";
                     printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -114,11 +123,13 @@
                                                        andCompletionBlock:completionBlock
                                                           numberOfAttempt:attempts];
                         }else{
-                            completionBlock(NO,[NSString stringWithFormat:@"Failure on createTreesWithCompletionBlock autoCreateTrees==YES with statusCode %i",(int)statusCode]);
+                            completion.message = [NSString stringWithFormat:@"Failure on createTreesWithCompletionBlock autoCreateTrees==YES with statusCode %i",(int)statusCode];
+                            completionBlock(completion);
                         }
                     }];
                 }else{
-                    completionBlock(NO,[NSString stringWithFormat:@"Tree autocreationfailure with status code : %@",@(statusCode)]);
+                    completion.message = [NSString stringWithFormat:@"Tree autocreationfailure with status code : %@",@(statusCode)];
+                    completionBlock(completion);
                     return;
                 }
             }
@@ -131,8 +142,8 @@
 
 
 
-- (void)_synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message,NSData* _Nullable data))progressBlock
-                   andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock{
+- (void)_synchronizeWithprogressBlock:(void(^_Nullable)(Progression*_Nonnull progression))progressBlock
+                   andCompletionBlock:(void(^)(Completion*_Nonnull completion))completionBlock{
     
     
     [self _hashMapsForTreesWithCompletionBlock:^(HashMap *sourceHashMap, HashMap *destinationHashMap, NSInteger statusCode) {
@@ -148,12 +159,17 @@
             
             NSString*s=[NSString stringWithFormat:@"Source\n%@",[sourceHashMap dictionaryRepresentation]];
             NSString*d=[NSString stringWithFormat:@"Destination\n%@",[destinationHashMap dictionaryRepresentation]];
-            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"# SYNCRONIZATION #"],nil);
-            progressBlock(0,cmdCounts,0.f,s,nil);
-            progressBlock(0,cmdCounts,0.f,d,nil);
+            Progression *progression = [Progression init];
+            progression.totalTaskCount = cmdCounts;
+            progression.message = [NSString stringWithFormat:@"# SYNCRONIZATION #"];
+            progressBlock(progression);
+            progression.message = s;
+            progressBlock(progression);
+            progression.message = d;
+            progressBlock(progression);
+            progression.message = [NSString stringWithFormat:@"DeltaPathMap\n%@",[dpm dictionaryRepresentation]];
+            progressBlock(progression);
             
-            
-            progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"DeltaPathMap\n%@",[dpm dictionaryRepresentation]],nil);
             NSMutableString*cmdString=[NSMutableString string];
             [cmdString appendString:@"## Commands to be executed : ##\n"];
             for (NSString*cmd in commands) {
@@ -166,15 +182,23 @@
                 [cmdString appendString:tmpCmdString];
             }
             [cmdString appendString:@"## End of Commands List ##"];
-            progressBlock(0,cmdCounts,0.f,cmdString,nil);
+            progression.message = cmdString;
+            progressBlock(progression);
             
-            
+            // TODO: use new progress and completion block in command interpreter
             _interpreter= [PdSCommandInterpreter interpreterWithBunchOfCommand:commands context:self->_syncContext
                                                                  progressBlock:^(uint taskIndex, double progress) {
                                                                      NSString*cmd=([commands count]>taskIndex)?[commands objectAtIndex:taskIndex]:@"POST CMD";
-                                                                     progressBlock(taskIndex,cmdCounts,progress,cmd,nil);
+                                                                     // TODO: check that we can use pre defined progression variable
+                                                                     assert(progression.totalTaskCount == cmdCounts);
+                                                                     progression.currentTaskIndex = taskIndex;
+                                                                     progression.message = cmd;
+                                                                     progressBlock(progression);
                                                                  } andCompletionBlock:^(BOOL success, NSString *message) {
-                                                                     completionBlock(success,message);
+                                                                     Completion *completion = [Completion init];
+                                                                     completion.success = success;
+                                                                     completion.message = message;
+                                                                     completionBlock(completion);
                                                                  }];
             
             _interpreter.finalizationDelegate=self.finalizationDelegate;
@@ -184,9 +208,11 @@
             
             BOOL sourceHashMapIsNil=(!sourceHashMap);
             BOOL destinationHashMapIsNil=(!destinationHashMap);
-            NSString *m=[NSString stringWithFormat:@"Failure on hashMapsForTreesWithCompletionBlock with statusCode %i\nSource HashMap Is Nil? %@ \ndestination HashMap Is Nil? %@\n"
+            Completion *completion = [Completion init];
+            completion.success = NO;
+            completion.message = [NSString stringWithFormat:@"Failure on hashMapsForTreesWithCompletionBlock with statusCode %i\nSource HashMap Is Nil? %@ \ndestination HashMap Is Nil? %@\n"
                          ,(int)statusCode,sourceHashMapIsNil?@"YES":@"NO",destinationHashMapIsNil?@"YES":@"NO"];
-            completionBlock(NO,m);
+            completionBlock(completion);
             
         }
     }];

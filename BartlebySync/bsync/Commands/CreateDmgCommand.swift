@@ -12,7 +12,7 @@ import Cocoa
 class CreateDmgCommand: CommandBase {
 
     
-    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+    required init(completionBlock: ((completion: Completion) -> ())) {
         super.init(completionBlock: completionBlock)
         
         let path = StringOption(shortFlag: "f", longFlag: "folder", required: true,

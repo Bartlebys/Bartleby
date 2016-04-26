@@ -69,9 +69,10 @@ public class BsyncXPCHelperDMGHandler {
         ,completion:BsyncXPCHelperDMGHandler)->(){
             
             // The card must be valid
-            let validation=card.evaluate()
-            if validation.isValid == false {
-                completion.callBlock(success:false,message: validation.message)
+            let validation = card.evaluate()
+            if !validation.success {
+                // TODO: change callblock to adopt
+                completion.callBlock(success: validation.success, message: validation.message)
                 return
             }
             
@@ -197,7 +198,7 @@ public class BsyncXPCHelperDMGHandler {
             
             // The car must be valid
             let validation=card.evaluate()
-            if validation.isValid == false {
+            if validation.success == false {
                 completion.callBlock(success:false,message: validation.message)
                 return
             }
@@ -346,38 +347,44 @@ public class BsyncXPCHelperDMGHandler {
      - parameter handlers: the handlers
      */
     func runDirectiveForCard(card:BsyncDMGCard
-            ,handlers: ProgressAndCompletionHandler)->(){
-                
-                // The card must be valid
-                let validation=card.evaluate()
-                if validation.isValid == false {
-                    handlers.completionBlock(success:false,message: validation.message)
-                    return
-                }
-                
-                let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-                    handlers.completionBlock(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)")
-                    return;
-                }
-                
-                // We need to provide a unique block to be compatible with the XPC context
-                // So we use an handler adapter that relays to the progress and completion handlers
-                // to mask the constraint.
-            let indirectHandler:ComposedProgressAndCompletionHandler={
-                (taskIndex,totalTaskCount,taskProgress,progressMessage,data,completed,successfulCompletion,completionMessage)-> Void in
-                    if let progressBlock=handlers.progressBlock{
-                        progressBlock(taskIndex:taskIndex,totalTaskCount:totalTaskCount,taskProgress:taskProgress,message:progressMessage,data:nil)
-                    }
-                    if completed{
-                        handlers.completionBlock(success: completed,message: completionMessage)
-                        self.bsyncConnection.invalidate()
-                    }
-                }
-                
-                if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-                    xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandler)
-                }
-                
+        ,handlers: ProgressAndCompletionHandler)->(){
+        
+        // The card must be valid
+        let validation=card.evaluate()
+        if validation.success == false {
+            handlers.completionBlock(validation)
+            return
+        }
+        
+        let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
+            handlers.completionBlock(Completion(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"))
+            return;
+        }
+        
+        
+        // We need to provide a unique block to be compatible with the XPC context
+        // So we use an handler adapter that relays to the progress and completion handlers
+        // to mask the constraint.
+        // TODO: Check if we can use ProgressAndCompletionHandler.getComposedProgressAndCompletionHandler()
+        let indirectHandler:ComposedProgressAndCompletionHandler = {
+            (currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
+            if let progressBlock = handlers.progressBlock {
+                progressBlock(Progression(currentTaskIndex:currentTaskIndex,
+                              totalTaskCount:totalTaskCount,
+                              currentTaskProgress:currentTaskProgress,
+                              message:message,
+                                data: data))
+            }
+            if completed{
+                handlers.completionBlock(Completion(success: completed,message: message))
+                self.bsyncConnection.invalidate()
+            }
+        }
+        
+        if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
+            xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandler)
+        }
+        
     }
     
     

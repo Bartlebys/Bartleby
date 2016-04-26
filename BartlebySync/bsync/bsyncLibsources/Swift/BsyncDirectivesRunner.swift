@@ -28,12 +28,8 @@ class BsyncDirectivesRunner {
         Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=true
         Bartleby.sharedInstance.configureWith(Bartleby.configuration)
         
-        let completionWithStatus: (success: Bool, status: Int, message: String?) -> () = { (success, status, message) in
-            handlers.completionBlock(success: success, message: message)
-        }
-
         if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false{
-            completionWithStatus(success: false, status: Int(EX__BASE), message: "Unexisting path \(filePath)")
+            handlers.completionBlock(Completion(success: false, statusCode: Int(EX__BASE), message: "Unexisting path \(filePath)"))
             return
         }
         
@@ -46,20 +42,20 @@ class BsyncDirectivesRunner {
                 JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
             }
         }catch{
-            completionWithStatus(success: false, status: Int(EX__BASE),message:"Deserialization of directives has failed \(filePath) \(JSONString)")
+            handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Deserialization of directives has failed \(filePath) \(JSONString)"))
             return
         }
         
         if let directives:BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString){
             
             guard directives.sourceURL != nil else {
-                completionWithStatus(success: false, status: Int(EX__BASE),message:"Source URL is void")
+                handlers.completionBlock(Completion(success: false, statusCode: Int(EX__BASE),message:"Source URL is void"))
                 return
             }
             
             
             guard directives.destinationURL != nil else {
-                completionWithStatus(success: false, status: Int(EX__BASE),message:"Destination URL is void")
+                handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Destination URL is void"))
                 return
             }
             
@@ -67,10 +63,10 @@ class BsyncDirectivesRunner {
             let validity=directives.areValid()
             guard validity.valid else{
                 if let explanation=validity.message{
-                    completionWithStatus(success: false, status: Int(EX__BASE),message:"Directives are not valid : \(explanation)")
+                    handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Directives are not valid : \(explanation)"))
                     return
                 }else{
-                    completionWithStatus(success: false, status: Int(EX__BASE),message:"Directives are not valid")
+                    handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Directives are not valid"))
                     return
                 }
             }
@@ -138,27 +134,27 @@ class BsyncDirectivesRunner {
                                             runSynchronizationCommand()
                                     })
                                 }else{
-                                    completionWithStatus(success: false, status: Int(EX__BASE),message:"\(folderPath) is not a directory")
+                                    handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"\(folderPath) is not a directory"))
                                     return
                                 }
                             }else{
-                                completionWithStatus(success: false, status: Int(EX__BASE),message:"Unexisting folder path: \(folderPath)")
+                                handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unexisting folder path: \(folderPath)"))
                                 return
                             }
                             
                         }else{
-                            completionWithStatus(success: false, status: Int(EX__BASE),message:"Url to filtered path error: \(url)")
+                            handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Url to filtered path error: \(url)"))
                             return
                         }
                     }catch BsyncLocalAnalyzerError.InvalidURL(let explanations){
-                        completionWithStatus(success: false, status: Int(EX__BASE),message:explanations)
+                        handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:explanations))
                         return
                     }catch{
-                        completionWithStatus(success: false, status: Int(EX__BASE),message:"Unexpected error \(error)")
+                        handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unexpected error \(error)"))
                         return
                     }
                 }else{
-                    completionWithStatus(success: false, status: Int(EX__BASE),message:"Unsupported mode \(context.mode())")
+                    handlers.completionBlock(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unsupported mode \(context.mode())"))
                     return
                 }
                 
@@ -237,7 +233,7 @@ class BsyncDirectivesRunner {
                 let admin:BsyncAdmin=BsyncAdmin(context:context)
                 try admin.synchronizeWithprogressBlock(handlers.progressBlock, completionBlock:handlers.completionBlock)
             }catch{
-                handlers.completionBlock(success: false, message:"An error has occured during synchronization: \(error)")
+                handlers.completionBlock(Completion(success: false, message:"An error has occured during synchronization: \(error)"))
                 return
             }
             
@@ -259,7 +255,7 @@ class BsyncDirectivesRunner {
                     doSync()
                     }, failureHandler: { (context) in
                         // Print a JSON failure description
-                        handlers.completionBlock(success: false, message:"An error has occured during login: \(context.description)\n")
+                        handlers.completionBlock(Completion(success: false, message:"An error has occured during login: \(context.description)\n"))
                         return
                 })
                 

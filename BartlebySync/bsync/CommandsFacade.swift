@@ -13,22 +13,11 @@ public struct CommandsFacade {
     
     static let args = Process.arguments
     
-    typealias CompletionBlock = (success:Bool,message:String?)->()
-
-    
     let executableName = NSString(string: args.first!).pathComponents.last!
     let firstArgumentAfterExecutablePath: String? = (args.count >= 2) ? args[1] : nil
     
     public func actOnArguments(){
         
-        let completionBlock: CompletionBlock = { (success, message) in
-                if(success) {
-                    exit(EX_OK)
-                } else {
-                    print(message)
-                    exit(EX__BASE)
-                }
-        }
         switch firstArgumentAfterExecutablePath{
         case nil:
             print(self._noArgMessage())
@@ -37,51 +26,51 @@ public struct CommandsFacade {
             print(self._noArgMessage())
             exit(EX_USAGE)
         case "create-uid"?:
-            let _ = CreateUIDCommand(completionBlock: completionBlock)
+            let _ = CreateUIDCommand()
         case "create-user"?:
-            let _ = CreateUserCommand(completionBlock: completionBlock)
+            let _ = CreateUserCommand()
         case "login"?:
-            let _ = LoginCommand(completionBlock: completionBlock)
+            let _ = LoginCommand()
         case "logout"?:
-            let _ = LogoutCommand(completionBlock: completionBlock)
+            let _ = LogoutCommand()
         case "verify"?,"verify-credentials"?:
-            let _ = VerifyCredentialsCommand(completionBlock: completionBlock)
+            let _ = VerifyCredentialsCommand()
         case "synchronize"?:
             // Proceed to authentication if necessary
             // Synchronizes from and to local or distant tree
             // Starts a new session or resumes the current session
             // Uses a snapshot most of the time
-             let _ = SynchronizeCommand(completionBlock: completionBlock).executeCMD()
+             let _ = SynchronizeCommand().executeCMD()
         case "cd"?,"create-directives"?:
             // Runs the synchronization directives
-            let _ = CreateDirectiveCommand(completionBlock: completionBlock)
+            let _ = CreateDirectiveCommand()
             
         case "rd"?,"reveal-directives"?:
-            let _ = RevealDirectivesCommand(completionBlock: completionBlock)
+            let _ = RevealDirectivesCommand()
         case "run"?,"run-directives"?:
             // Runs the synchronization directives
-             let _ = RunDirectivesCommand(completionBlock: completionBlock).executeCMD()
+             let _ = RunDirectivesCommand().executeCMD()
         case "create-hashmap"?,"create-hashMap"?:
             // Creates a hash map for given folder
-            let _ = CreateHashMapCommand(completionBlock: completionBlock)
+            let _ = CreateHashMapCommand()
         case "reveal-hashmap"?:
-            let _ = RevealHashMapCommand(completionBlock: completionBlock)
+            let _ = RevealHashMapCommand()
         case "kvs"?,"key-value-storage"?,"keystore"?:
             // Runs the synchronization directives
-            let _ = KeyValueStorageCommand(completionBlock: completionBlock)
+            let _ = KeyValueStorageCommand()
         case "cleanup"?:
             // Deletes the snapshots and hashmaps from the .bsync folder
             // Even if locked.
-             let _ = CleanupCommand(completionBlock: completionBlock)
+             let _ = CleanupCommand()
         case "create-dmg"?,"create-disk-image"?:
             // Creates and mount a dmg
-             let _ = CreateDmgCommand(completionBlock: completionBlock)
+             let _ = CreateDmgCommand()
         case "snapshot"?:
             // Creates a crypted chunked snapshot with its own hashmap for each chunk
-             let _ = SnapshotCommand(completionBlock: completionBlock)
+             let _ = SnapshotCommand()
         case "recover"?,"recover-from-snapshot"?:
             // Recovers a tree from crypted snapshot
-             let _ = RecoverCommand(completionBlock: completionBlock)
+             let _ = RecoverCommand()
         default:
             // We want to propose the best verb candidate
             let reference=[

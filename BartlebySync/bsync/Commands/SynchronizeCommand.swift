@@ -10,7 +10,7 @@ import Foundation
 
 class SynchronizeCommand:CommandBase{
     
-    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+    required init(completionBlock: ((completion: Completion) -> ())) {
         super.init(completionBlock: completionBlock)
     }
     

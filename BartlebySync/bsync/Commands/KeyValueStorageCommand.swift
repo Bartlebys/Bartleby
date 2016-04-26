@@ -27,7 +27,7 @@ class KeyValueStorageCommand: CommandBase {
         case RemoveAll = "remove-all" // the file
     }
     
-    required init(completionBlock: ((success: Bool, message: String?) -> ())) {
+    required init(completionBlock: ((completion: Completion) -> ())) {
         super.init(completionBlock: completionBlock)
         
         let op = EnumOption<KeyValueStorageCommand.Actions>(shortFlag: "d", longFlag: "do", required: true,

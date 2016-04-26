@@ -10,6 +10,8 @@
 #import "PdSSync.h"
 
 @class BsyncContext;
+@class Progression;
+@class Completion;
 
 @protocol PdSSyncFinalizationDelegate;
 
@@ -51,8 +53,8 @@ typedef NS_ENUM(NSInteger,
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nullable message, NSData* _Nullable data))progressBlock
-                 andCompletionBlock:(void(^_Nonnull)(BOOL success,NSString*_Nullable message))completionBlock;
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(Progression*_Nonnull progression))progressBlock
+                 andCompletionBlock:(void(^_Nonnull)(Completion*_Nonnull completion))completionBlock;
 
 
 #pragma mark - Advanced

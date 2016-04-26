@@ -142,11 +142,12 @@ import Foundation
         self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")
     }
     
+    // TODO: This is what is done in BsyncDirectivesRunner ?
     public static func run(directivePath: String, pAndChandler: ProgressAndCompletionHandler) {
         if let p = pAndChandler.progressBlock {
-            p(taskIndex: 0, totalTaskCount: 10, taskProgress: 0, message: nil, data: nil)
+            p(Progression(currentTaskIndex: 0, totalTaskCount: 10))
         }
-        pAndChandler.completionBlock(success: true, message: nil)
+        pAndChandler.completionBlock(Completion(success: true))
     }
     
     
