@@ -798,8 +798,6 @@
 		E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDirectivesCommand.swift; sourceTree = "<group>"; };
 		E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateHashMapCommand.swift; sourceTree = "<group>"; };
 		E55C91C51CBF7A3D008163F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		E55C92861CBF8E9B008163F6 /* BsyncXPCConfiguration-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BsyncXPCConfiguration-1.png"; sourceTree = "<group>"; };
-		E55C92871CBF8E9B008163F6 /* BsyncXPCConfiguration-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BsyncXPCConfiguration-2.png"; sourceTree = "<group>"; };
 		E55C92881CBF8E9B008163F6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDmgCommand.swift; sourceTree = "<group>"; };
 		E56505141C86058200B79C7E /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
@@ -1251,8 +1249,6 @@
 		E55C92851CBF8E9B008163F6 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				E55C92861CBF8E9B008163F6 /* BsyncXPCConfiguration-1.png */,
-				E55C92871CBF8E9B008163F6 /* BsyncXPCConfiguration-2.png */,
 			);
 			path = Documentation;
 			sourceTree = "<group>";
