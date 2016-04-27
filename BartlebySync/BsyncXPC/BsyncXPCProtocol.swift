@@ -33,7 +33,7 @@
     - returns: N/A
      */
     func createImageDisk(imageFilePath:String,volumeName:String,size:String,password:String?,
-        callBack:(success:Bool,message:String?)->())->()
+        callBack:(CompletionHandler))->()
     
  
     /**
@@ -47,7 +47,7 @@
      - returns: N/A
      */
     func attachVolume(from path:String,withPassword:String?,
-        callBack:(success:Bool,message:String?)->())->()
+        callBack:(CompletionHandler))->()
 
     
     /**
@@ -60,7 +60,7 @@
      - returns: N/A
      */
     func attachVolume(identifiedBy card:BsyncDMGCard,
-        callBack:(success:Bool,message:String?)->())->()
+        callBack:(CompletionHandler))->()
 
 
     /**
@@ -71,7 +71,7 @@
      
      */
     func detachVolume(named:String,
-        callBack:(success:Bool,message:String?)->())->()
+        callBack:(CompletionHandler))->()
     
     
     // MARK: - Directives
@@ -87,7 +87,7 @@
     - returns: N/A
     */
     func createDirectives(directives:BsyncDirectives,secretKey:String,sharedSalt:String, filePath:String,
-        callBack:(success:Bool,message:String?)->())->()
+        callBack:(CompletionHandler))->()
     
     /**
      Runs the directives.
@@ -102,17 +102,6 @@
      */
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String
         ,handler:ComposedProgressAndCompletionHandler)->()
-    
-    
-
-    
-    // MARK: - Local File System Api
-    
-    
-    // Those method are accessor to NSFileManager's related methods.
-    // Due to XPC context they are not throwing exception but using a block call back.
-    
-    
     
     
 }

@@ -7,12 +7,21 @@
 
 import Foundation
 
-// A composed Closure with a progress and acompletion section
+
+// MARK: - TypeAliases
+
+//A composed Closure
+//with a progress and acompletion section
 public typealias ComposedProgressAndCompletionHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
 
+//ProgressHandler
 public typealias ProgressHandler = (_: Progression) -> ()
 
+//CompletionHandler
 public typealias CompletionHandler = (_: Completion) -> ()
+
+
+// MARK: -
 
 //  Generally Used in XPC facades because we can pass only one block per XPC call
 //  So we split the ComposedProgressAndCompletionHandler by calling ProgressAndCompletionHandler.handlersFrom(composed)
@@ -79,13 +88,17 @@ public typealias CompletionHandler = (_: Completion) -> ()
                 let progression = Progression(currentTaskIndex:currentTaskIndex,
                                               totalTaskCount:totalTaskCount,
                                               currentTaskProgress:currentTaskProgress,
-                                              message:message)
+                                              message:message,data: data)
                 progressBlock(progression)
             }
             if completed{
-                self.completionBlock(Completion(success: completed,message: message))
+                self.completionBlock(Completion(success: success,message: message))
             }
         }
         return handler
     }
 }
+
+
+
+

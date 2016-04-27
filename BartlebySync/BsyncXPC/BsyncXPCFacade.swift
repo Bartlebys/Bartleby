@@ -25,14 +25,14 @@ import Foundation
      - returns: nothing
      */
     func createImageDisk(imageFilePath:String,volumeName:String,size:String,password:String?,
-                         callBack:(success:Bool,message:String?)->())->(){
+                         callBack:(CompletionHandler))->(){
         print("imageFilePath \(imageFilePath)")
         let dmgManager=BsyncImageDiskManager()
         do{
             let result = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
-            callBack(success: result, message:nil)
+            callBack(Completion(success: result, message:""))
         }catch {
-            callBack(success: false, message:"An error has occured")
+            callBack(Completion(success: false, message:"An error has occured"))
         }
     }
     
@@ -46,13 +46,13 @@ import Foundation
      - returns: return value description
      */
     func attachVolume(from path:String,withPassword:String?,
-                           callBack:(success:Bool,message:String?)->())->(){
+                           callBack:(CompletionHandler))->(){
         let dmgManager=BsyncImageDiskManager()
         do{
             let result = try dmgManager.attachVolume(from: path, withPassword: withPassword)
-            callBack(success: result, message:nil)
+            callBack(Completion(success: result, message:""))
         }catch {
-            callBack(success: false, message:"An error has occured")
+            callBack(Completion(success: false, message:"An error has occured"))
         }
     }
     
@@ -66,7 +66,7 @@ import Foundation
      - returns: N/A
      */
     func attachVolume(identifiedBy card:BsyncDMGCard,
-                                   callBack:(success:Bool,message:String?)->())->(){
+                                   callBack:(CompletionHandler))->(){
         let password=card.getPasswordForDMG()
         self.attachVolume(from: card.path, withPassword: password, callBack:callBack)
         
@@ -81,13 +81,13 @@ import Foundation
      
      */
     func detachVolume(named:String,
-                      callBack:(success:Bool,message:String?)->())->(){
+                      callBack:(CompletionHandler))->(){
         let dmgManager=BsyncImageDiskManager()
         do{
             let result = try dmgManager.detachVolume(named)
-            callBack(success: result, message:nil)
+            callBack(Completion(success: result, message:""))
         }catch {
-            callBack(success: false, message:"An error has occured")
+            callBack(Completion(success: false, message:"An error has occured"))
         }
     }
     
@@ -106,7 +106,7 @@ import Foundation
      - returns: N/A
      */
     func createDirectives(directives:BsyncDirectives,secretKey:String,sharedSalt:String, filePath:String,
-                          callBack:(success:Bool,message:String?)->())->(){
+                          callBack:(CompletionHandler))->(){
         
         // Check the validity
         
@@ -118,7 +118,7 @@ import Foundation
             }else{
                 validityMessage="Directives are not valid"
             }
-            callBack(success: false, message: validityMessage)
+            callBack(Completion(success: false, message: validityMessage))
             return;
         }
         
@@ -133,12 +133,12 @@ import Foundation
                 JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
                 try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
             }catch{
-                callBack(success: false, message: "\(error)")
+                callBack(Completion(success: false, message: "\(error)"))
                 return;
             }
-            callBack(success: true, message: "Directives have be saved to:\(filePath)")
+            callBack(Completion(success: true, message: "Directives have be saved to:\(filePath)"))
         }else{
-            callBack(success: false, message: "Serialization failure")
+            callBack(Completion(success: false, message: "Serialization failure"))
         }
         
     }

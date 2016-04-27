@@ -17,9 +17,9 @@ public class BsyncXPCHelperDMGHandler {
     
     public var detachImageOnCompletion:Bool
     
-    public var callBlock:((success:Bool,message:String?)->())
+    public var callBlock:CompletionHandler
     
-    init(onCompletion:((success:Bool,message:String?)->()), detach:Bool){
+    init(onCompletion:CompletionHandler, detach:Bool){
         callBlock=onCompletion
         detachImageOnCompletion=detach
     }
@@ -72,13 +72,13 @@ public class BsyncXPCHelperDMGHandler {
             let validation = card.evaluate()
             if !validation.success {
                 // TODO: change callblock to adopt
-                completion.callBlock(success: validation.success, message: validation.message)
+                completion.callBlock(Completion(success: validation.success, message: validation.message))
                 return
             }
             
             
             let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-                completion.callBlock(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)")
+                completion.callBlock(Completion(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"))
                 return;
             }
             
@@ -103,9 +103,7 @@ public class BsyncXPCHelperDMGHandler {
                             xpc.fileExistsAtPath(card.path, callBack: { (exists, isADirectory,success, message) -> () in
                                 if exists {
                                     // We preserve existing DMGs !
-                                    completion.callBlock(success: false,
-                                        message: NSLocalizedString("The disk image already exists ",comment:"The disk image already exists ") + "\(card.path)"
-                                    )
+                                    completion.callBlock(Completion(success: false,message: NSLocalizedString("The disk image already exists ",comment:"The disk image already exists ") + "\(card.path)"))
                                     self.bsyncConnection.invalidate()
                                 }else{
                                     
@@ -119,8 +117,8 @@ public class BsyncXPCHelperDMGHandler {
                                         volumeName:card.volumeName ,
                                         size:card.size,
                                         password:card.getPasswordForDMG(),
-                                        callBack:{ (success, message) -> () in
-                                            if success {
+                                        callBack:{ (completionRef) -> () in
+                                            if completionRef.success {
                                                 
                                                 // If a volume with this name is already mounted
                                                 // We detach the volume
@@ -129,7 +127,7 @@ public class BsyncXPCHelperDMGHandler {
                                                     callBack: { (exists, isADirectory,success, message) -> () in
                                                         if exists{
                                                             xpc.detachVolume(card.volumeName,
-                                                                callBack:{ (success, message) -> () in
+                                                                callBack:{ (detachCompletionRef) -> () in
                                                                     self.mountDMG(card, thenDo: thenDo, completion: completion)
                                                             })
                                                         }else{
@@ -140,9 +138,9 @@ public class BsyncXPCHelperDMGHandler {
                                             }else{
                                                 // Failure on DMG Creation
                                                 
-                                                completion.callBlock(success: false,
+                                                completion.callBlock(Completion(success: false,
                                                     message: NSLocalizedString("The disk creation has failed with message: ",
-                                                        comment:"The disk creation has failed with message:" ) + "\(message)"
+                                                        comment:"The disk creation has failed with message:" ) + "\(message)")
                                                 )
                                                 self.bsyncConnection.invalidate()
                                                 return
@@ -154,20 +152,14 @@ public class BsyncXPCHelperDMGHandler {
                             })
                             
                         }else{
-                            completion.callBlock(success:false,
+                            completion.callBlock(Completion(success:false,
                                 message: NSLocalizedString("Destination folder creation Failure. Path=",
-                                    comment:"Destination folder creation Failure. Path=")+imageFolderPath)
+                                    comment:"Destination folder creation Failure. Path=")+imageFolderPath))
                             self.bsyncConnection.invalidate()
 
                         }
                 })
-                
-                
             }
-            
-            
-            
-            
     }
 
     
@@ -199,12 +191,12 @@ public class BsyncXPCHelperDMGHandler {
             // The car must be valid
             let validation=card.evaluate()
             if validation.success == false {
-                completion.callBlock(success:false,message: validation.message)
+                completion.callBlock(Completion(success:false,message: validation.message))
                 return
             }
             
             let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-                completion.callBlock(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)")
+                completion.callBlock(Completion(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"))
                 return;
             }
             
@@ -214,28 +206,28 @@ public class BsyncXPCHelperDMGHandler {
                 let finalCompletion = completion
                 // Then Create an encapsulated internal "completion" object
                 // That will be called before to call the externalCompletion
-                let internalCompletion = BsyncXPCHelperDMGHandler(onCompletion: { (success, message) -> () in
-                    if success && completion.detachImageOnCompletion {
+                let internalCompletion = BsyncXPCHelperDMGHandler(onCompletion: { (completionRef) -> () in
+                    if completionRef.success && completion.detachImageOnCompletion {
                         // We must detach
                             xpc.detachVolume(card.volumeName,
-                                callBack: { (success, message) -> () in
-                                    if success {
+                                callBack: { (detachCompletionRef) -> () in
+                                    if detachCompletionRef.success {
                                         // END
                                        
-                                        finalCompletion.callBlock(success: true,
-                                            message: "Successful creation of \(card.volumePath)")
+                                        finalCompletion.callBlock(Completion(success: true,
+                                            message: "Successful creation of \(card.volumePath)"))
                                          self.bsyncConnection.invalidate()
                                     }else{
                                         // END
-                                        finalCompletion.callBlock(success: false,
+                                        finalCompletion.callBlock(Completion(success: false,
                                             message:NSLocalizedString("A failure has occured while detaching the Volume: ",
-                                                comment:"A failure has occured when detaching the Volume: ")+"\(message)")
+                                                comment:"A failure has occured when detaching the Volume: ")+"\(detachCompletionRef.message)"))
                                         self.bsyncConnection.invalidate()
                                     }
                             })
                             
                         }else{
-                             finalCompletion.callBlock(success: success, message:message)
+                             finalCompletion.callBlock(Completion(success: completionRef.success, message:completionRef.message))
                         }
                     }, detach: finalCompletion.detachImageOnCompletion)
                 
@@ -246,8 +238,8 @@ public class BsyncXPCHelperDMGHandler {
                     xpc.attachVolume(from: card.path,
                         withPassword: card.getPasswordForDMG(),
                         callBack: {
-                            (success, message) -> () in
-                            if success {
+                            (mountCompletionRef) -> () in
+                            if mountCompletionRef.success {
                                 
                                 // Invoke the doWhen block
                                 // And wait for its result.
@@ -256,8 +248,8 @@ public class BsyncXPCHelperDMGHandler {
                     
                             }else{
                                 // It is a failure.
-                                internalCompletion.callBlock(success:false,message:NSLocalizedString("A failure has occured while attaching the Volume: ",
-                                    comment:"A failure has occured when detaching the Volume: ")+"\(message)")
+                                internalCompletion.callBlock(Completion(success:false,message:NSLocalizedString("A failure has occured while attaching the Volume: ",
+                                    comment:"A failure has occured when detaching the Volume: ")+"\(mountCompletionRef.message)"))
                             }
                     })
                     
@@ -270,7 +262,7 @@ public class BsyncXPCHelperDMGHandler {
                     callBack: { (exists, isADirectory,success, message) -> () in
                         if exists{
                             xpc.detachVolume(card.volumeName,
-                                callBack:{ (success, message) -> () in
+                                callBack:{ (fileExitsCompltionRef) -> () in
                                     mountDMG()
                             })
                         }else{
@@ -295,8 +287,8 @@ public class BsyncXPCHelperDMGHandler {
             return;
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.detachVolume(volumeName, callBack: { (success, message) in
-                completion(success: success, message: message, volumeName: volumeName)
+            xpc.detachVolume(volumeName, callBack: { (detachVolumeCompletionRef) in
+                completion(success: detachVolumeCompletionRef.success, message: detachVolumeCompletionRef.message, volumeName: volumeName)
             })
         }
     }

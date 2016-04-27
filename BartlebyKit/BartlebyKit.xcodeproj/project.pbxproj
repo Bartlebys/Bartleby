@@ -307,6 +307,9 @@
 		E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E56A3E8A1CD0DE4F006B1F71 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC50411CC65F97000EA88C /* TasksScheduler.swift */; };
+		E56A3E8B1CD0E181006B1F71 /* Completion+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */; };
+		E56A3E8C1CD0E181006B1F71 /* Progression+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */; };
 		E570BFA51CBE48BB00F6814B /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E577CA3F1CCF9BC000756BDD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA3E1CCF9BC000756BDD /* Task.swift */; };
 		E577CA401CCFA3C700756BDD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA3E1CCF9BC000756BDD /* Task.swift */; };
@@ -875,7 +878,6 @@
 			children = (
 				5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */,
 				5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */,
-				E53E2AD91CA57DBA0079ED23 /* models */,
 				E53E2AD71CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift */,
 				E53E2AD81CA57DBA0079ED23 /* NSURL+Parameters.swift */,
 				E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */,
@@ -883,14 +885,6 @@
 				E577CA3E1CCF9BC000756BDD /* Task.swift */,
 			);
 			path = extensions;
-			sourceTree = "<group>";
-		};
-		E53E2AD91CA57DBA0079ED23 /* models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = models;
-			path = ../models;
 			sourceTree = "<group>";
 		};
 		E53E2ADA1CA57DBA0079ED23 /* operations */ = {
@@ -1304,6 +1298,7 @@
 				E577CA401CCFA3C700756BDD /* Task.swift in Sources */,
 				E52517A61CD0B68800D873A3 /* UpdateAlias.swift in Sources */,
 				E525177C1CD0B68800D873A3 /* ReadGroupById.swift in Sources */,
+				E56A3E8A1CD0DE4F006B1F71 /* TasksScheduler.swift in Sources */,
 				E525174A1CD0B68800D873A3 /* CreateTasksGroup.swift in Sources */,
 				E525170E1CD0B68800D873A3 /* PermissionsCollectionController.swift in Sources */,
 				E525178C1CD0B68800D873A3 /* ReadPermissionsByQuery.swift in Sources */,
@@ -1323,12 +1318,14 @@
 				E53E2C161CA57DBA0079ED23 /* Serializer.swift in Sources */,
 				E52517521CD0B68800D873A3 /* CreateUser.swift in Sources */,
 				E525179A1CD0B68800D873A3 /* ReadTriggerById.swift in Sources */,
+				E56A3E8C1CD0E181006B1F71 /* Progression+Facilities.swift in Sources */,
 				E52517AA1CD0B68800D873A3 /* UpdateGroup.swift in Sources */,
 				E53E2BE01CA57DBA0079ED23 /* NoCrypto.swift in Sources */,
 				E525178E1CD0B68800D873A3 /* ReadTaskById.swift in Sources */,
 				E52517161CD0B68800D873A3 /* AbstractTask.swift in Sources */,
 				E53E2BF81CA57DBA0079ED23 /* CollectibleCollection.swift in Sources */,
 				E52517BE1CD0B68800D873A3 /* UpdateTrigger.swift in Sources */,
+				E56A3E8B1CD0E181006B1F71 /* Completion+Facilities.swift in Sources */,
 				E525176A1CD0B68800D873A3 /* DeleteTasksGroup.swift in Sources */,
 				E525173A1CD0B68800D873A3 /* CreateGroup.swift in Sources */,
 				E52517561CD0B68800D873A3 /* DeleteAlias.swift in Sources */,

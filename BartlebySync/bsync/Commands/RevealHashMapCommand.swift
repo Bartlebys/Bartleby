@@ -34,7 +34,7 @@ class RevealHashMapCommand: CommandBase {
                 if Bartleby.isValidKey(key) {
                     secretKey = key
                 } else {
-                    self.completionBlock(completion: Completion(success: false, message: "Bad encryption key: \(key)"))
+                    self.completionBlock(Completion(success: false, message: "Bad encryption key: \(key)"))
                     return
                 }
                 
@@ -57,20 +57,20 @@ class RevealHashMapCommand: CommandBase {
                                     do {
                                         let decryptedHashMapString = try Bartleby.cryptoDelegate.decryptString(encryptedHashMapString)
                                         print("# Hash map \(path) #\n\(decryptedHashMapString)\n# End of hash map #")
-                                        self.completionBlock(completion: Completion(success: true))
+                                        self.completionBlock(Completion(success: true))
                                     } catch {
-                                        self.completionBlock(completion: Completion(success: false, message: "Error decrypting \"\(encryptedHashMapString)"))
+                                        self.completionBlock(Completion(success: false, message: "Error decrypting \"\(encryptedHashMapString)"))
                                     }
                                 } else {
-                                    self.completionBlock(completion: Completion(success: false, message: "Bad file"))
+                                    self.completionBlock(Completion(success: false, message: "Bad file"))
                                 }
                             }else {
-                                self.completionBlock(completion: Completion(success: false, message: "Unable to read: \(path)"))
+                                self.completionBlock(Completion(success: false, message: "Unable to read: \(path)"))
                             }
                         })
                         
                     } else {
-                        self.completionBlock(completion: Completion(success: false, message: "Unexisting path: \(path)"))
+                        self.completionBlock(Completion(success: false, message: "Unexisting path: \(path)"))
                     }
                 })
             }
