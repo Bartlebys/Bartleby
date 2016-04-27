@@ -181,6 +181,17 @@ import Foundation
     }
     
     
+    /**
+     Returns the instance by its UID
+     
+     - parameter UID: needle
+    
+     - returns: the instance
+     */
+    static public func obectByUID<T:Collectible>(UID:String)->T?{
+        return Registry.registredObjectByUID(UID) as T?
+    }
+    
     
     /**
      Returns the instances from a collection of aliases

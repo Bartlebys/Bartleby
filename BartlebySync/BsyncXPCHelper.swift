@@ -370,7 +370,7 @@ public class BsyncXPCHelperDMGHandler {
                                 data: data))
             }
             if completed{
-                handlers.completionBlock(Completion(success: completed,message: message))
+                handlers.completionBlock(Completion(success: success,message: message))
                 self.bsyncConnection.invalidate()
             }
         }

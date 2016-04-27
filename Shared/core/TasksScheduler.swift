@@ -27,11 +27,11 @@ extension Task{
 
 extension TasksGroup{
     
-    func start(){
-        Bartleby.scheduler.startTaskGroup(self.groupUID)
+    func start() throws {
+        try Bartleby.scheduler.startTaskGroup(self.groupUID)
     }
-    func pause(onPause:()->()){
-        Bartleby.scheduler.pauseTaskGroup(self.groupUID, onPause: onPause)
+    func pause(onPause:()->())throws {
+        try Bartleby.scheduler.pauseTaskGroup(self.groupUID, onPause: onPause)
     }
     
 }
@@ -39,6 +39,7 @@ extension TasksGroup{
 
 enum TasksSchedulerError:ErrorType {
     case DataSpaceNotFound
+    case TaskGroupNotFound
 }
 
 
@@ -60,12 +61,20 @@ enum TasksSchedulerError:ErrorType {
     }
 
     
-    public func startTaskGroup(groupUID:String){
-        
+    public func startTaskGroup(groupUID:String)throws{
+        if let group:TasksGroup=Bartleby.obectByUID(groupUID){
+            // We start all the tasks
+            // TODO @bpds tasks graphs 
+            for task in group.tasks{
+                task.invoke()
+            }
+        }else{
+            throw TasksSchedulerError.TaskGroupNotFound
+        }
     }
     
-    public func pauseTaskGroup(groupUID:String, onPause:()->()){
-        
+    public func pauseTaskGroup(groupUID:String, onPause:()->())throws{
+        // TODO @bpds
     }
     
     

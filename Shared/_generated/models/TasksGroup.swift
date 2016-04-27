@@ -18,9 +18,9 @@ import ObjectMapper
 @objc(TasksGroup) public class TasksGroup : BaseObject{
 
 
-	//AbstractTask.Status (TODO @bpds find a better solution?)
+	//AbstractTask.Status (TODO @BPDS find a better solution?)
 	public var status:String = "\(AbstractTask.Status.New)"
-	//AbstractTask.Priority(TODO @bpds find a better solution?)
+	//AbstractTask.Priority(TODO @BPDS find a better solution?)
 	public var priority:String = "\(AbstractTask.Priority.Default)"
 	//A collection of Concrete Tasks
 	public var tasks:[Task] = [Task]()
