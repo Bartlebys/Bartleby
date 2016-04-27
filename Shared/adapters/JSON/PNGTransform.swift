@@ -12,7 +12,13 @@ import Foundation
     import ObjectMapper
 #endif
 
-/*
+#if os(OSX)
+    import AppKit
+#elseif os(iOS)
+    import UIKit
+#elseif os(watchOS)
+#elseif os(tvOS)
+#endif
 
 public class PNGTransform: TransformType {
     
@@ -25,17 +31,35 @@ public class PNGTransform: TransformType {
     
     public func transformFromJSON(value: AnyObject?) -> Object?{
         if let string=value as? String{
-            let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters])
-            
+            if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
+                return BXImage.init(data: data)
+            }
         }
         return nil
     }
     
     public func transformToJSON(value: Object?) -> JSON?{
-        if let d=value as NSData? {
-            return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+        if let image=value{
+            #if os(OSX)
+                // We use a tiff representation
+                let data=image.TIFFRepresentation
+                if let d=data {
+                    return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                }
+            #elseif os(iOS)
+                if let image=value{
+                    let data = UIImagePNGRepresentation(image)
+                    if let d=data {
+                        return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                    }
+                }
+            #elseif os(watchOS)
+            #elseif os(tvOS)
+            #endif
+           
+           
         }
-        return nil
+         return nil
     }
 }
- */
+ 

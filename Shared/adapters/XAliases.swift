@@ -33,3 +33,13 @@
 #elseif os(tvOS)
 #endif
 
+extension BXView{
+}
+extension BXViewController{
+}
+extension BXTableView{
+}
+extension BXDocument{
+}
+extension BXImage{
+}
