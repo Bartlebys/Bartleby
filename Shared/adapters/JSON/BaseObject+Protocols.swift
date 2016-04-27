@@ -8,8 +8,8 @@
 
 import Foundation
 
-// BaseObject conforms to InvocationResponse and Collectible
-// Let's adopt formally those protocols
+// BaseObject conforms to Collectible
+// Let's adopt formally this protocol
 extension BaseObject : Collectible{
 
 }

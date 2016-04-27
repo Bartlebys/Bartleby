@@ -29,7 +29,8 @@ public protocol Serializable  {
 
     func deserialize(data:NSData) ->Serializable
     
-    // TODO: Should be splitter in a specific protocol
+    // TODO: Should be splitted in a specific protocol
+    
     /**
      Patch an existant instance by deserializing the data from NSData
      This approach is usefull for proxies.

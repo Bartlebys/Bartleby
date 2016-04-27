@@ -260,8 +260,6 @@
 		E53E2C341CA57DBA0079ED23 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AE21CA57DBA0079ED23 /* Pluralization.swift */; };
 		E53E2C361CA57DBA0079ED23 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AE31CA57DBA0079ED23 /* PString.swift */; };
 		E53E2C371CA57DBA0079ED23 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AE31CA57DBA0079ED23 /* PString.swift */; };
-		E53E2C391CA57DBA0079ED23 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AE51CA57DBA0079ED23 /* UIX.swift */; };
-		E53E2C3A1CA57DBA0079ED23 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AE51CA57DBA0079ED23 /* UIX.swift */; };
 		E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -292,6 +290,10 @@
 		E577CA401CCFA3C700756BDD /* TaskInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E57BE0F31CBC05E50038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
+		E58939611CD085FF00825069 /* PNGTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58939601CD085FF00825069 /* PNGTransform.swift */; };
+		E58939621CD085FF00825069 /* PNGTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58939601CD085FF00825069 /* PNGTransform.swift */; };
+		E58939641CD0880800825069 /* XAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58939631CD0880800825069 /* XAliases.swift */; };
+		E58939651CD0880800825069 /* XAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58939631CD0880800825069 /* XAliases.swift */; };
 		E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */; };
 		E5959C071CA6702200557BDB /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
 		E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */; };
@@ -466,7 +468,6 @@
 		E53E2AE11CA57DBA0079ED23 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E53E2AE21CA57DBA0079ED23 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E53E2AE31CA57DBA0079ED23 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
-		E53E2AE51CA57DBA0079ED23 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -496,6 +497,8 @@
 		E577CA3E1CCF9BC000756BDD /* TaskInvocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskInvocation.swift; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E57BE0F21CBC05E50038454C /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
+		E58939601CD085FF00825069 /* PNGTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PNGTransform.swift; sourceTree = "<group>"; };
+		E58939631CD0880800825069 /* XAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XAliases.swift; sourceTree = "<group>"; };
 		E5CC50411CC65F97000EA88C /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5D940F71CC7B63100956C99 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
@@ -603,7 +606,6 @@
 				E53E2ADA1CA57DBA0079ED23 /* operations */,
 				E53E2ADE1CA57DBA0079ED23 /* README.md */,
 				E53E2ADF1CA57DBA0079ED23 /* tools */,
-				E53E2AE41CA57DBA0079ED23 /* ui */,
 			);
 			name = Shared;
 			path = ../Shared;
@@ -730,6 +732,7 @@
 		E53E2AB01CA57DBA0079ED23 /* adapters */ = {
 			isa = PBXGroup;
 			children = (
+				E58939631CD0880800825069 /* XAliases.swift */,
 				E53E2AB11CA57DBA0079ED23 /* JSON */,
 				E53E2ABB1CA57DBA0079ED23 /* SQLite */,
 			);
@@ -740,6 +743,7 @@
 			isa = PBXGroup;
 			children = (
 				5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */,
+				E58939601CD085FF00825069 /* PNGTransform.swift */,
 				E53E2AB21CA57DBA0079ED23 /* BaseObject+Protocols.swift */,
 				E53E2AB31CA57DBA0079ED23 /* JCollectionMetadatum.swift */,
 				E53E2AB41CA57DBA0079ED23 /* JDataPerformer.swift */,
@@ -869,14 +873,6 @@
 				E53E2AE31CA57DBA0079ED23 /* PString.swift */,
 			);
 			path = tools;
-			sourceTree = "<group>";
-		};
-		E53E2AE41CA57DBA0079ED23 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				E53E2AE51CA57DBA0079ED23 /* UIX.swift */,
-			);
-			path = ui;
 			sourceTree = "<group>";
 		};
 		E54995081C3A754F00C52A9D /* Frameworks */ = {
@@ -1110,6 +1106,7 @@
 				E53E2AEF1CA57DBA0079ED23 /* LockersCollectionController.swift in Sources */,
 				E53E2B9A1CA57DBA0079ED23 /* ReadUsersByIds.swift in Sources */,
 				E577C9C51CCF436500756BDD /* UpdateTasks.swift in Sources */,
+				E58939641CD0880800825069 /* XAliases.swift in Sources */,
 				E53E2B1F1CA57DBA0079ED23 /* User.swift in Sources */,
 				E53E2AF21CA57DBA0079ED23 /* OperationsCollectionController.swift in Sources */,
 				E53E2BAC1CA57DBA0079ED23 /* UpdateLocker.swift in Sources */,
@@ -1179,7 +1176,6 @@
 				E53E2B0A1CA57DBA0079ED23 /* Group.swift in Sources */,
 				E53554961CCE809600625D70 /* Completion.swift in Sources */,
 				E53E2AFB1CA57DBA0079ED23 /* UsersCollectionController.swift in Sources */,
-				E53E2C391CA57DBA0079ED23 /* UIX.swift in Sources */,
 				E53E2BD31CA57DBA0079ED23 /* JHTTPResponse.swift in Sources */,
 				E53E2B401CA57DBA0079ED23 /* CreateUser.swift in Sources */,
 				E53E2B851CA57DBA0079ED23 /* ReadPermissionById.swift in Sources */,
@@ -1193,6 +1189,7 @@
 				E53E2B221CA57DBA0079ED23 /* CreateAlias.swift in Sources */,
 				E53E2AF51CA57DBA0079ED23 /* PermissionsCollectionController.swift in Sources */,
 				E53E2BE51CA57DBA0079ED23 /* Bartleby.swift in Sources */,
+				E58939611CD085FF00825069 /* PNGTransform.swift in Sources */,
 				E53E2BE21CA57DBA0079ED23 /* EventSource.swift in Sources */,
 				E53E2BFA1CA57DBA0079ED23 /* CollectionMetadatum.swift in Sources */,
 				E53E2C061CA57DBA0079ED23 /* Identifiable.swift in Sources */,
@@ -1229,6 +1226,7 @@
 				E53E2BBC1CA57DBA0079ED23 /* UpdateTriggers.swift in Sources */,
 				E53E2B7A1CA57DBA0079ED23 /* ReadGroupsByQuery.swift in Sources */,
 				E53E2B021CA57DBA0079ED23 /* BaseCollectionMetadatum.swift in Sources */,
+				E58939651CD0880800825069 /* XAliases.swift in Sources */,
 				E53E2B471CA57DBA0079ED23 /* DeleteAlias.swift in Sources */,
 				E53E2B2C1CA57DBA0079ED23 /* CreateGroups.swift in Sources */,
 				E53E2BB31CA57DBA0079ED23 /* UpdatePermission.swift in Sources */,
@@ -1312,6 +1310,7 @@
 				E53E2B171CA57DBA0079ED23 /* Permission.swift in Sources */,
 				E53E2BEC1CA57DBA0079ED23 /* Consignee.swift in Sources */,
 				E53E2B111CA57DBA0079ED23 /* ObjectError.swift in Sources */,
+				E58939621CD085FF00825069 /* PNGTransform.swift in Sources */,
 				E577CA0F1CCF71E900756BDD /* CreateTasks.swift in Sources */,
 				E53E2BC21CA57DBA0079ED23 /* UpdateUsers.swift in Sources */,
 				5B16A3591CCE7E87003E02BA /* Base64DataTransform.swift in Sources */,
@@ -1322,7 +1321,6 @@
 				E53E2C011CA57DBA0079ED23 /* HTTPCommand.swift in Sources */,
 				E53E2B0B1CA57DBA0079ED23 /* Group.swift in Sources */,
 				E53E2AFC1CA57DBA0079ED23 /* UsersCollectionController.swift in Sources */,
-				E53E2C3A1CA57DBA0079ED23 /* UIX.swift in Sources */,
 				E53E2BD41CA57DBA0079ED23 /* JHTTPResponse.swift in Sources */,
 				E53E2B411CA57DBA0079ED23 /* CreateUser.swift in Sources */,
 				E53E2B861CA57DBA0079ED23 /* ReadPermissionById.swift in Sources */,

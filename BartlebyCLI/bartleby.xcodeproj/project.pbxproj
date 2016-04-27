@@ -122,7 +122,6 @@
 		E53E27401CA571F50079ED23 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26CD1CA571F50079ED23 /* HTTPManager.swift */; };
 		E53E27411CA571F50079ED23 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26CE1CA571F50079ED23 /* Pluralization.swift */; };
 		E53E27421CA571F50079ED23 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26CF1CA571F50079ED23 /* PString.swift */; };
-		E53E27431CA571F50079ED23 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26D11CA571F50079ED23 /* UIX.swift */; };
 		E577C9F31CCF715500756BDD /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9F21CCF715500756BDD /* TasksCollectionController.swift */; };
 		E577C9F71CCF715D00756BDD /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9F41CCF715D00756BDD /* Completion.swift */; };
 		E577C9F81CCF715D00756BDD /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577C9F51CCF715D00756BDD /* Progression.swift */; };
@@ -138,6 +137,7 @@
 		E577CA0B1CCF716900756BDD /* UpdateTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577CA021CCF716900756BDD /* UpdateTasks.swift */; };
 		E57BE0F51CBC08480038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F41CBC08480038454C /* UserProtocol.swift */; };
 		E585BC991CAEE7C800EB92EE /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585BC981CAEE7C800EB92EE /* User+Auth.swift */; };
+		E58939691CD0886200825069 /* XAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58939681CD0886200825069 /* XAliases.swift */; };
 		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
 		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
 		E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E131CC0E63400A7ECD1 /* Mappable.swift */; };
@@ -313,7 +313,6 @@
 		E53E26CD1CA571F50079ED23 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E53E26CE1CA571F50079ED23 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E53E26CF1CA571F50079ED23 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
-		E53E26D11CA571F50079ED23 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E577C9F21CCF715500756BDD /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E577C9F41CCF715D00756BDD /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E577C9F51CCF715D00756BDD /* Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
@@ -329,6 +328,7 @@
 		E577CA021CCF716900756BDD /* UpdateTasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTasks.swift; sourceTree = "<group>"; };
 		E57BE0F41CBC08480038454C /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E585BC981CAEE7C800EB92EE /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
+		E58939681CD0886200825069 /* XAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XAliases.swift; sourceTree = "<group>"; };
 		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -446,7 +446,6 @@
 				E53E26C61CA571F50079ED23 /* operations */,
 				E53E26CA1CA571F50079ED23 /* README.md */,
 				E53E26CB1CA571F50079ED23 /* tools */,
-				E53E26D01CA571F50079ED23 /* ui */,
 			);
 			name = Shared;
 			path = ../Shared;
@@ -573,6 +572,7 @@
 		E53E269C1CA571F50079ED23 /* adapters */ = {
 			isa = PBXGroup;
 			children = (
+				E58939681CD0886200825069 /* XAliases.swift */,
 				E53E269D1CA571F50079ED23 /* JSON */,
 				E53E26A71CA571F50079ED23 /* SQLite */,
 			);
@@ -708,14 +708,6 @@
 				E53E26CF1CA571F50079ED23 /* PString.swift */,
 			);
 			path = tools;
-			sourceTree = "<group>";
-		};
-		E53E26D01CA571F50079ED23 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				E53E26D11CA571F50079ED23 /* UIX.swift */,
-			);
-			path = ui;
 			sourceTree = "<group>";
 		};
 		E5B98E001CC0DC9B00A7ECD1 /* Vendors */ = {
@@ -996,7 +988,6 @@
 				E5D0869B1C550E1900F0090E /* CryptedKeyValueStorage.swift in Sources */,
 				E53E26DB1CA571F50079ED23 /* BaseCollectionMetadatum.swift in Sources */,
 				E53E27221CA571F50079ED23 /* JObject.swift in Sources */,
-				E53E27431CA571F50079ED23 /* UIX.swift in Sources */,
 				E53E270B1CA571F50079ED23 /* ReadTriggersByIds.swift in Sources */,
 				E53E27331CA571F50079ED23 /* Persistent.swift in Sources */,
 				E5D086CF1C550E7500F0090E /* StringExtensions.swift in Sources */,
@@ -1034,6 +1025,7 @@
 				E53E26F31CA571F50079ED23 /* DeleteAliases.swift in Sources */,
 				E53E26F41CA571F50079ED23 /* DeleteGroup.swift in Sources */,
 				E53E272C1CA571F50079ED23 /* Collectible.swift in Sources */,
+				E58939691CD0886200825069 /* XAliases.swift in Sources */,
 				E53E26F61CA571F50079ED23 /* DeleteLocker.swift in Sources */,
 				E53E273C1CA571F50079ED23 /* LogoutUser.swift in Sources */,
 				E53E27031CA571F50079ED23 /* ReadGroupsByQuery.swift in Sources */,

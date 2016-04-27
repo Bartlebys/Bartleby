@@ -10,32 +10,26 @@
 // Aliases to simplify cross implementation
 // Those type Aliases are used to share signatures not implementation
 
-// MARK: UIX
+
+// MARK: X
+
+// TODO: X alias for watchOS & TvOS
 
 #if os(OSX)
-    
     import AppKit
-    
     public typealias BXView=NSView
     public typealias BXViewController=NSViewController
     public typealias BXTableView=NSTableView
-    
     public typealias BXDocument=NSDocument
-    
+    public typealias BXImage=NSImage
 #elseif os(iOS)
-    
     import UIKit
-    
     public typealias BXView=UIView
     public typealias BXViewController=UIViewController
     public typealias BXTableView=UITableView
-    
     public typealias BXDocument=UIDocument
-    
+    public typealias BXImage=UIImage
 #elseif os(watchOS)
-    // TODO: watchOS
 #elseif os(tvOS)
-    // TODO: tvOS
-
 #endif
 

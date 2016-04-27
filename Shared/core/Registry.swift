@@ -11,10 +11,8 @@ import Foundation
 
 #if os(OSX)
     import AppKit
-    @objc public class UniversalDocument:NSDocument{}
 #else
     import UIKit
-    @objc public class UniversalDocument:UIDocument{}
 #endif
 
 public enum RegistryError:ErrorType{
@@ -57,7 +55,7 @@ In a Document based app Each document have its own Registry.
 Documents can be shared between iOS, tvOS and OSX.
 
 */
-@objc public class Registry:UniversalDocument{
+@objc public class Registry:BXDocument{
     
     // Should always be true
     static public var encryptedMetadata:Bool=true
