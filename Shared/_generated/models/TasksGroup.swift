@@ -18,23 +18,10 @@ import ObjectMapper
 @objc(TasksGroup) public class TasksGroup : BaseObject{
 
 
-	//Task Status
-	public enum Status:String{
-		case New = "new"
-		case Pending = "pending"
-		case Running = "running"
-		case Suspended = "suspended"
-		case Completed = "completed"
-	}
-	public var status:Status = .New
-	//The priority
-	public enum Priority:String{
-		case Background = "Background"
-		case Low = "Low"
-		case Default = "Default"
-		case High = "High"
-	}
-	public var priority:Priority = .Default
+	//AbstractTask.Status (TODO @BPDS find a better solution?)
+	public var status:String = "\(AbstractTask.Status.New)"
+	//AbstractTask.Priority(TODO @BPDS find a better solution?)
+	public var priority:String = "\(AbstractTask.Priority.Default)"
 	//A collection of Concrete Tasks
 	public var tasks:[Task] = [Task]()
 	//The progression state of the group
@@ -67,8 +54,8 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		status=TasksGroup.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		priority=TasksGroup.Priority(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString))! 
+		status=String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString)
+		priority=String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString)
 		tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
 		progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
@@ -78,8 +65,8 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(status.rawValue ,forKey:"status")
-		coder.encodeObject(priority.rawValue ,forKey:"priority")
+		coder.encodeObject(status,forKey:"status")
+		coder.encodeObject(priority,forKey:"priority")
 		coder.encodeObject(tasks,forKey:"tasks")
 		coder.encodeObject(progressionState,forKey:"progressionState")
 		coder.encodeObject(completionState,forKey:"completionState")

@@ -28,6 +28,8 @@ import Foundation
     
     static public var fileManager:BartlebyFileIO=BFileManager()
     
+    static public var scheduler:TasksScheduler=TasksScheduler()
+    
 
     /// The standard singleton shared instance
     public static let sharedInstance: Bartleby = {
