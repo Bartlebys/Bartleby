@@ -82,7 +82,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
     // We need to provide a unique block to be compatible with the XPC context
     // So we use an handler adapter that relays to the progress and completion handlers
     // to mask the constraint.
-    public func getComposedProgressAndCompletionHandler() -> ComposedProgressAndCompletionHandler {
+    public func composedHandlers() -> ComposedProgressAndCompletionHandler {
         let handler: ComposedProgressAndCompletionHandler = {(currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
             if let progressBlock: ProgressHandler = self.progressBlock {
                 let progression = Progression(currentTaskIndex:currentTaskIndex,

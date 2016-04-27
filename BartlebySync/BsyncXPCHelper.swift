@@ -357,7 +357,9 @@ public class BsyncXPCHelperDMGHandler {
         // We need to provide a unique block to be compatible with the XPC context
         // So we use an handler adapter that relays to the progress and completion handlers
         // to mask the constraint.
-        // TODO: Check if we can use ProgressAndCompletionHandler.getComposedProgressAndCompletionHandler()
+        // TODO: @md Check if we can use ProgressAndCompletionHandler.getComposedProgressAndCompletionHandler()
+        // !!! Response to Mr @md i do consider that's not possible by design... 
+        // feel free to try or delete this TODO if you cannot doit
         let indirectHandler:ComposedProgressAndCompletionHandler = {
             (currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
             if let progressBlock = handlers.progressBlock {
