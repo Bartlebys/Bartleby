@@ -44,7 +44,7 @@ public enum BsyncAdminError:ErrorType{
      - parameter folderPath: the folder path
      */
     public static func cleanupFolder(folderPath:String)throws->[String]{
-        // TODO
+        // TODO Implementation required
         let messages=[String]()
         return messages
     }

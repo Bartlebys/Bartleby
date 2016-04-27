@@ -18,7 +18,6 @@ public class PrintUser: Task {
     // Initializes with the arguments
     // You MUST IMPLEMENT type safety
     // and throw SerializableInvocationError.ArgumentsTypeMisMatch
-    // TODO: Try to remove generic
     public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType)throws{
         self.init()
         // You should guarantee type safety on init

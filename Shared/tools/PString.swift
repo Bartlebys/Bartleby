@@ -84,7 +84,6 @@ struct PString{
     
     static let PREG_OFFSET_CAPTURE=1
     
-    //TODO: real implementation
     static func preg_match(pattern:String,_ subject:String, inout _ matches:[String],_ flags:Int = 0, _ offset:Int = 0) ->Int{
         if let subjectWithOffset=substr(subject,offset,strlen(subject)){
             if subjectWithOffset.isMatching(pattern){

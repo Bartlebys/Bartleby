@@ -20,7 +20,6 @@ public enum TaskError : ErrorType {
 }
 
 
-//TODO @bpds change Task to AbstractTask ( we cannot generate SerializableInvocation and create an extension) 
 //So let's consider Task base object are Abstract
 @objc(Task) public class Task:AbstractTask,SerializableInvocation{
    
@@ -45,6 +44,10 @@ public enum TaskError : ErrorType {
      */
     public func arguments<ArgumentType:Serializable>() throws -> ArgumentType{
         if let argumentsData = self.argumentsData {
+            
+            print(argumentsData);
+            //@bpds(#MAJOR) exception on deserialization of CollectionControllers
+            //The KVO stack produces EXCEPTION, and we cannot use a Proxy+Patch Approach
             let deserialized=JSerializer.deserialize(argumentsData)
             if let arguments = deserialized as? ArgumentType{
                 return arguments

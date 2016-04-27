@@ -188,8 +188,9 @@ import Foundation
     
      - returns: the instance
      */
-    static public func obectByUID<T:Collectible>(UID:String)->T?{
-        return Registry.registredObjectByUID(UID) as T?
+    static public func objectByUID<T:Collectible>(UID:String)->T?{
+        let o:T? = Registry.registredObjectByUID(UID)
+        return  o
     }
     
     

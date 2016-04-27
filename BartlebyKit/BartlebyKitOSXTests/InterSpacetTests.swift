@@ -178,7 +178,7 @@ class InterSpaceTests: XCTestCase {
     }
     
     // MARK: 4 - Update test
-    // TODO: change space uid and try to logout and login in the new space
+    // TODO: @md change space uid and try to logout and login in the new space
     func test401_LogoutUser1(){
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(fromDataSpace: InterSpaceTests._spaceUID1,
@@ -220,7 +220,7 @@ class InterSpaceTests: XCTestCase {
         }
     }
     
-    // TODO: Delete test
+    // TODO: @md Delete test
     
     func test501_LoginUser1(){
         
