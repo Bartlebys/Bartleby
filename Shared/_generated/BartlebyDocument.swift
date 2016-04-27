@@ -32,7 +32,7 @@ import UIKit
 
     // Collection Controllers
     // The initial instances are proxies
-	dynamic lazy public var tasks=TasksCollectionController()
+	dynamic lazy public var tasksGroups=TasksGroupsCollectionController()
 	dynamic lazy public var users=UsersCollectionController()
 	dynamic lazy public var lockers=LockersCollectionController()
 	dynamic lazy public var groups=GroupsCollectionController()
@@ -49,20 +49,20 @@ import UIKit
     // Those view Controller are observed here to insure a consistent persitency
 
 
-    weak public var tasksArrayController: NSArrayController?{
+    weak public var tasksGroupsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            tasksGroupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
-            self.tasks.arrayController=tasksArrayController
+            self.tasksGroups.arrayController=tasksGroupsArrayController
             // Add observer
-            tasksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey] as? Int{
-               if self.tasks.items.count > index{
-                   let selection=self.tasks.items[index]
-                   self.tasksArrayController?.setSelectedObjects([selection])
+            tasksGroupsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
+            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupIndexKey] as? Int{
+               if self.tasksGroups.items.count > index{
+                   let selection=self.tasksGroups.items[index]
+                   self.tasksGroupsArrayController?.setSelectedObjects([selection])
                 }
              }
         }
@@ -195,14 +195,14 @@ import UIKit
 
 //Focus indexes persistency
 
-    static public let kSelectedTaskIndexKey="selectedTaskIndexKey"
-    static public let TASK_SELECTED_INDEX_CHANGED_NOTIFICATION="TASK_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedTask:Task?{
+    static public let kSelectedTasksGroupIndexKey="selectedTasksGroupIndexKey"
+    static public let TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION="TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION"
+    dynamic public var selectedTasksGroup:TasksGroup?{
         didSet{
-            if let task = selectedTask {
-                if let index=tasks.items.indexOf(task){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASK_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
+            if let tasksGroup = selectedTasksGroup {
+                if let index=tasksGroups.items.indexOf(tasksGroup){
+                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupIndexKey]=index
+                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
                 }
             }
         }
@@ -312,13 +312,13 @@ import UIKit
         // #1  Defines the Schema
         super.configureSchema()
 
-        let taskDefinition = JCollectionMetadatum()
-        taskDefinition.proxy = self.tasks
+        let tasksGroupDefinition = JCollectionMetadatum()
+        tasksGroupDefinition.proxy = self.tasksGroups
         // By default we group the observation via the rootObjectUID
-        taskDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        taskDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
-        taskDefinition.allowDistantPersistency = true
-        taskDefinition.inMemory = false
+        tasksGroupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
+        tasksGroupDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        tasksGroupDefinition.allowDistantPersistency = true
+        tasksGroupDefinition.inMemory = false
         
 
         let userDefinition = JCollectionMetadatum()
@@ -379,7 +379,7 @@ import UIKit
         // Proceed to configuration
         do{
 
-			try self.registryMetadata.configureSchema(taskDefinition)
+			try self.registryMetadata.configureSchema(tasksGroupDefinition)
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(groupDefinition)
@@ -417,9 +417,9 @@ import UIKit
     // We prefer to centralize the KVO for selection indexes at the top level
     if let keyPath = keyPath, object = object {
 
-             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
-            if let task=self.tasksArrayController?.selectedObjects.first as? Task{
-                self.selectedTask=task
+             if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
+            if let tasksGroup=self.tasksGroupsArrayController?.selectedObjects.first as? TasksGroup{
+                self.selectedTasksGroup=tasksGroup
                 return
             }
         }
@@ -481,10 +481,10 @@ import UIKit
 
     // MARK:  Delete currently selected items
     
-    public func deleteSelectedTask() {
+    public func deleteSelectedTasksGroup() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTask{
-            self.tasks.removeObject(selected)
+        if let selected=self.selectedTasksGroup{
+            self.tasksGroups.removeObject(selected)
         }
     }
         

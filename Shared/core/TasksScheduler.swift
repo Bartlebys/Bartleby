@@ -8,23 +8,26 @@
 
 import Foundation
 
-
 extension Task{
+    
     dynamic var linearTaskList:[Task]{
         get{
             var tasks=[Task]()
-            func childrens(parent:Task, inout tasks:[Task])->[Task]{
-                return parent.children//TODO:implement
+            func childrens(parent:Task, inout tasks:[Task]){
+                //tasks.appendContentsOf(parent.children)
             }
-            return childrens(self, tasks: &tasks)
+            childrens(self, tasks: &tasks)
+            return tasks
         }
     }
+    
+    
 }
 
 @objc(TasksScheduler) public class TasksScheduler:NSObject {
 
- 
-    public func provisionTasks(_:[Task], groupName:String){
+    
+    public func provisionTasks(_:[Task],under groupName:String){
 
     }
     

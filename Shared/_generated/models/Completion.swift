@@ -48,8 +48,8 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		success=decoder.decodeBoolForKey("success")
-		statusCode=decoder.decodeIntegerForKey("statusCode")
+		success=decoder.decodeBoolForKey("success") 
+		statusCode=decoder.decodeIntegerForKey("statusCode") 
 		message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
 		data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
 

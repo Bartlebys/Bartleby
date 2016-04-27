@@ -1,5 +1,5 @@
 //
-//  SerializableInvocation.swift
+//  SerializableInvocationSample.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 08/10/2015.
@@ -7,36 +7,18 @@
 //  All rights reserved you can ask for a license.
 
 import Foundation
+import ObjectMapper
+import BartlebyKit
 
 
-public enum SerializableInvocationError : ErrorType {
-    case ArgumentsTypeMisMatch
-}
+// MARK: - Using a Task (that s the best approach)
 
-// MARK: SerializableInvocation invocations
-
-
-// A serializable invocation is a class that encapsulates the arguments
-// in a Serializable object to be passed to a generic invoke method
-public protocol SerializableInvocation:Serializable {
+public class PrintUser: Task {
     
     // Initializes with the arguments
-    // You MUST IMPLEMENT type safety 
+    // You MUST IMPLEMENT type safety
     // and throw SerializableInvocationError.ArgumentsTypeMisMatch
-    init<ArgumentType:Serializable>(arguments:ArgumentType) throws
-    
-    // Run the invocation
-    // All the logic is encapuslated.
-    func invoke()
-    
-}
-
-// Implementation sample
-
-/*
- 
-public class PrintUser: Task {
- 
+    // TODO: Try to remove generic
     public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType)throws{
         self.init()
         // You should guarantee type safety on init
@@ -46,6 +28,7 @@ public class PrintUser: Task {
             throw SerializableInvocationError.ArgumentsTypeMisMatch
         }
     }
+    
     override public func invoke() {
         if let user:User = try? self.arguments(){
             if let email = user.email{
@@ -57,4 +40,3 @@ public class PrintUser: Task {
         }
     }
 }
-*/

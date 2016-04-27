@@ -14,13 +14,15 @@ import Foundation
 #endif
 
 
-public enum TaskInvocationError : ErrorType {
+public enum TaskError : ErrorType {
     case ArgumentsTypeMisMatch
     case NoArgument
 }
 
 
-@objc(TaskInvocation) public class TaskInvocation:Task,SerializableInvocation{
+//TODO @bpds change Task to AbstractTask ( we cannot generate SerializableInvocation and create an extension) 
+//So let's consider Task base object are Abstract
+@objc(Task) public class Task:AbstractTask,SerializableInvocation{
    
   
     public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType) throws{
@@ -47,10 +49,10 @@ public enum TaskInvocationError : ErrorType {
             if let arguments = deserialized as? ArgumentType{
                 return arguments
             }else{
-                throw TaskInvocationError.ArgumentsTypeMisMatch
+                throw TaskError.ArgumentsTypeMisMatch
             }
         }
-        throw TaskInvocationError.NoArgument
+        throw TaskError.NoArgument
     }
     
     // MARK: Mappable
