@@ -278,7 +278,7 @@ Documents can be shared between iOS, tvOS and OSX.
     
     // MARK: Private Collections Implementation
     // Weak Casting for internal behavior
-    // Those dynamic method are only used internally !!!
+    // Those dynamic method are only used internally 
     
     internal func _addCollection(collection:Collectible) {
         let collectionName=collection.d_collectionName
@@ -824,7 +824,7 @@ Documents can be shared between iOS, tvOS and OSX.
                                                          options: NSURLBookmarkResolutionOptions.WithSecurityScope, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
                                                          bookmarkDataIsStale: &bookmarkIsStale)
                             #else
-                            // (!) TODO to be qualified
+                            // (!) @bpds to be verified
                             let securizedURL = try NSURL(byResolvingBookmarkData: data,
                                                          options: NSURLBookmarkResolutionOptions.WithoutUI, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
                                                          bookmarkDataIsStale: &bookmarkIsStale)
@@ -874,7 +874,7 @@ Documents can be shared between iOS, tvOS and OSX.
                                                            includingResourceValuesForKeys:nil,
                                                            relativeToURL: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
             #else
-            // (!) TODO to be qualified
+            // (!) @bpds to be verified
             let data = try fileURL.bookmarkDataWithOptions(NSURLBookmarkCreationOptions.SuitableForBookmarkFile,
                                                            includingResourceValuesForKeys: nil,
                                                            relativeToURL: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )

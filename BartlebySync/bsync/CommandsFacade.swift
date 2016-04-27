@@ -104,7 +104,8 @@ public struct CommandsFacade {
         s += "\n"
         s += "\nvalid calls are S.V.O sentences like:\"bsync <verb> [options]\""
         s += "\n"
-        s += "\n... TODO bpds => control the signatures !!!!!! "
+        //TODO @md update the doc
+        s += "\n... TODO bpds => control the signatures"
         s += "\n"
         s += "\nAvailable verbs:"
         s += "\n"

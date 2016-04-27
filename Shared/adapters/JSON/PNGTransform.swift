@@ -20,6 +20,8 @@ import Foundation
 #elseif os(tvOS)
 #endif
 
+
+// TODO: @md write the Unit test for OSX and IOS + integrate in all the targets
 public class PNGTransform: TransformType {
     
     public typealias Object = BXImage
@@ -56,8 +58,6 @@ public class PNGTransform: TransformType {
             #elseif os(watchOS)
             #elseif os(tvOS)
             #endif
-           
-           
         }
          return nil
     }

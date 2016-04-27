@@ -1171,7 +1171,6 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
     [self.currentTask resume];
 }
 
-#pragma  MARK @TODO IDENTIFIER
 
 - (NSURLSession*)urlSession{
     if (!self->_urlSession){
