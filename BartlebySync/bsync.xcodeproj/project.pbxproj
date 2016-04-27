@@ -13,7 +13,6 @@
 		5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
-		5B2502251CBA600D002FBF56 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
 		5B8E5D531C8D7FCD002CFA03 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		5B8E5D541C8D7FCD002CFA03 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
@@ -52,7 +51,6 @@
 		5BB60F511CBFE4E200D23B4F /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3D1CBFE3C500D23B4F /* CryptedStringTransform.swift */; };
 		5BB60F521CBFE4E200D23B4F /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3E1CBFE3C500D23B4F /* CryptoHelper.swift */; };
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
-		5BB9F8511CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		E50A6EFE1CC8DE4D00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
@@ -551,12 +549,7 @@
 		E53E28F41CA572F40079ED23 /* CommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */; };
 		E53E28F51CA572F40079ED23 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CEC71C36CC2900F3B7B8 /* main.swift */; };
 		E53E28F61CA572F40079ED23 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
-		E545940A1C3E6409000576AD /* RecoverCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594081C3E639A000576AD /* RecoverCommand.swift */; };
-		E545940B1C3E640D000576AD /* SnapshotCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594061C3E627A000576AD /* SnapshotCommand.swift */; };
-		E545940E1C3E6444000576AD /* CleanupCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940C1C3E642C000576AD /* CleanupCommand.swift */; };
 		E54594111C3E6516000576AD /* BsyncSnapShooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */; };
-		E54594141C3E7DD7000576AD /* CommandBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594121C3E7DD7000576AD /* CommandBase.swift */; };
-		E549575A1C43B57700102771 /* CreateDirectiveCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54957581C43B57700102771 /* CreateDirectiveCommand.swift */; };
 		E552B7AE1C3D4E49001CD53B /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
 		E552B7B01C3D4E49001CD53B /* HashMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7921C3D4E49001CD53B /* HashMap.m */; };
 		E552B7B21C3D4E49001CD53B /* NSData+CRC.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7941C3D4E49001CD53B /* NSData+CRC.m */; };
@@ -570,9 +563,6 @@
 		E552B7C61C3D4E49001CD53B /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
 		E552B7CA1C3D4E49001CD53B /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
-		E552B7D11C3D4EA6001CD53B /* CommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */; };
-		E552B7DA1C3D6C03001CD53B /* RunDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */; };
-		E552B7E91C3D77F3001CD53B /* CreateHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */; };
 		E55C92491CBF84ED008163F6 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		E55C924A1CBF84ED008163F6 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
 		E55C924B1CBF84ED008163F6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3C1C86DBFC00C64569 /* Error.swift */; };
@@ -611,16 +601,9 @@
 		E55C92821CBF8998008163F6 /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		E55C92831CBF8998008163F6 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E55FF2991C3EB8A800BD49DB /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
-		E55FF29C1C3ED5C000BD49DB /* CreateDmgCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */; };
-		E5667CCF1C478EAB007073FA /* RevealDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */; };
 		E56A8FEB1C8DF4EF0043F90E /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
 		E56A90001C8DF5120043F90E /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A90A11C8DFF2C0043F90E /* bsyncBasicTests.swift */; };
-		E57BC7E61C401536004FA8B1 /* SynchronizeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */; };
-		E585044B1C3F9F6000E2F64A /* KeyValueStorageCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58504491C3F9F6000E2F64A /* KeyValueStorageCommand.swift */; };
-		E585044E1C3FA12000E2F64A /* LoginCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585044C1C3FA12000E2F64A /* LoginCommand.swift */; };
-		E58504511C3FA12D00E2F64A /* LogoutCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */; };
-		E58504541C3FA14300E2F64A /* VerifyCredentialsCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */; };
 		E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */; };
 		E5A557CA1C8EC84D009A9A63 /* bsyncMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */; };
 		E5B98E961CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
@@ -1934,7 +1917,6 @@
 				E52519A91CD0BE3F00D873A3 /* OperationsCollectionController.swift in Sources */,
 				E5251A1B1CD0BE3F00D873A3 /* DeleteAliases.swift in Sources */,
 				E5251B531CD0BE3F00D873A3 /* PString.swift in Sources */,
-				E552B7D11C3D4EA6001CD53B /* CommandsFacade.swift in Sources */,
 				E552B7BA1C3D4E49001CD53B /* PdSLocalAnalyzer.m in Sources */,
 				E5251AC61CD0BE3F00D873A3 /* JCollectionMetadatum.swift in Sources */,
 				E5B98E9D1CC0E6CD00A7ECD1 /* Mappable.swift in Sources */,
@@ -1944,7 +1926,6 @@
 				E5251A721CD0BE3F00D873A3 /* ReadTasksByQuery.swift in Sources */,
 				E52519AC1CD0BE3F00D873A3 /* PermissionsCollectionController.swift in Sources */,
 				E5251AE41CD0BE3F00D873A3 /* NoCrypto.swift in Sources */,
-				E549575A1C43B57700102771 /* CreateDirectiveCommand.swift in Sources */,
 				E52519DC1CD0BE3F00D873A3 /* Tag.swift in Sources */,
 				E5251A2D1CD0BE3F00D873A3 /* DeletePermissions.swift in Sources */,
 				E5251AA81CD0BE3F00D873A3 /* UpdateTask.swift in Sources */,
@@ -1953,8 +1934,6 @@
 				5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */,
 				E5B98EB21CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
 				E52519F71CD0BE3F00D873A3 /* CreateLockers.swift in Sources */,
-				E545940A1C3E6409000576AD /* RecoverCommand.swift in Sources */,
-				E585044B1C3F9F6000E2F64A /* KeyValueStorageCommand.swift in Sources */,
 				5B8E5D5A1C8D7FCD002CFA03 /* ParameterEncoding.swift in Sources */,
 				E5251A1E1CD0BE3F00D873A3 /* DeleteGroup.swift in Sources */,
 				E5251A3F1CD0BE3F00D873A3 /* DeleteTriggers.swift in Sources */,
@@ -1992,16 +1971,13 @@
 				E5251A8A1CD0BE3F00D873A3 /* ReadUsersByIds.swift in Sources */,
 				E5251A091CD0BE3F00D873A3 /* CreateTasksGroups.swift in Sources */,
 				E52519D61CD0BE3F00D873A3 /* Permission.swift in Sources */,
-				E58504541C3FA14300E2F64A /* VerifyCredentialsCommand.swift in Sources */,
 				E5B98EA31CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
 				E5251A511CD0BE3F00D873A3 /* ReadGroupById.swift in Sources */,
-				E57BC7E61C401536004FA8B1 /* SynchronizeCommand.swift in Sources */,
 				E5251B021CD0BE3F00D873A3 /* CryptoDelegate.swift in Sources */,
 				E52519E21CD0BE3F00D873A3 /* Trigger.swift in Sources */,
 				E5251A361CD0BE3F00D873A3 /* DeleteTasksGroup.swift in Sources */,
 				E52519A01CD0BE3F00D873A3 /* AliasesCollectionController.swift in Sources */,
 				E5251A841CD0BE3F00D873A3 /* ReadTriggersByQuery.swift in Sources */,
-				5B2502251CBA600D002FBF56 /* CreateUIDCommand.swift in Sources */,
 				E5251ACC1CD0BE3F00D873A3 /* JDocument.swift in Sources */,
 				E5251B411CD0BE3F00D873A3 /* VerifyLocker.swift in Sources */,
 				E5251AED1CD0BE3F00D873A3 /* Consignation.swift in Sources */,
@@ -2068,13 +2044,11 @@
 				E5B98EB51CC0E6CD00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
 				E5251B2F1CD0BE3F00D873A3 /* NSURL+Parameters.swift in Sources */,
 				5B8E5D541C8D7FCD002CFA03 /* Download.swift in Sources */,
-				E545940B1C3E640D000576AD /* SnapshotCommand.swift in Sources */,
 				5BB60F511CBFE4E200D23B4F /* CryptedStringTransform.swift in Sources */,
 				E5251A001CD0BE3F00D873A3 /* CreateTask.swift in Sources */,
 				E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */,
 				E5251A871CD0BE3F00D873A3 /* ReadUserById.swift in Sources */,
 				E5251AC01CD0BE3F00D873A3 /* Base64DataTransform.swift in Sources */,
-				E5667CCF1C478EAB007073FA /* RevealDirectivesCommand.swift in Sources */,
 				E52519A31CD0BE3F00D873A3 /* GroupsCollectionController.swift in Sources */,
 				5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */,
 				E5251ADE1CD0BE3F00D873A3 /* PNGTransform.swift in Sources */,
@@ -2087,11 +2061,9 @@
 				E5251ABA1CD0BE3F00D873A3 /* UpdateUser.swift in Sources */,
 				E552B7C61C3D4E49001CD53B /* BsyncImageDiskManager.swift in Sources */,
 				E5251AAE1CD0BE3F00D873A3 /* UpdateTasksGroup.swift in Sources */,
-				E552B7DA1C3D6C03001CD53B /* RunDirectivesCommand.swift in Sources */,
 				E5251B141CD0BE3F00D873A3 /* Serializable.swift in Sources */,
 				E5251AEA1CD0BE3F00D873A3 /* Bartleby.swift in Sources */,
 				E5251A061CD0BE3F00D873A3 /* CreateTasksGroup.swift in Sources */,
-				E545940E1C3E6444000576AD /* CleanupCommand.swift in Sources */,
 				E5251B291CD0BE3F00D873A3 /* Completion+Facilities.swift in Sources */,
 				E5251B351CD0BE3F00D873A3 /* Task.swift in Sources */,
 				E5251A7E1CD0BE3F00D873A3 /* ReadTriggerById.swift in Sources */,
@@ -2107,9 +2079,7 @@
 				5B8E5D581C8D7FCD002CFA03 /* NetworkReachabilityManager.swift in Sources */,
 				E5251AF91CD0BE3F00D873A3 /* Collectible.swift in Sources */,
 				E552B7B81C3D4E49001CD53B /* PdSFileManager.m in Sources */,
-				E58504511C3FA12D00E2F64A /* LogoutCommand.swift in Sources */,
 				E5251AA21CD0BE3F00D873A3 /* UpdatePermission.swift in Sources */,
-				E552B7E91C3D77F3001CD53B /* CreateHashMapCommand.swift in Sources */,
 				E5251B051CD0BE3F00D873A3 /* HTTPCommand.swift in Sources */,
 				E5251B111CD0BE3F00D873A3 /* RegistryMetadata.swift in Sources */,
 				E5251B1D1CD0BE3F00D873A3 /* UserProtocol.swift in Sources */,
@@ -2119,7 +2089,6 @@
 				E5251AE71CD0BE3F00D873A3 /* EventSource.swift in Sources */,
 				E52519B51CD0BE3F00D873A3 /* UsersCollectionController.swift in Sources */,
 				E5251A0F1CD0BE3F00D873A3 /* CreateTriggers.swift in Sources */,
-				E55FF29C1C3ED5C000BD49DB /* CreateDmgCommand.swift in Sources */,
 				5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
 				5B8E5D551C8D7FCD002CFA03 /* Error.swift in Sources */,
 				5BB60F4E1CBFE4E200D23B4F /* CryptedDataTransform.swift in Sources */,
@@ -2140,7 +2109,6 @@
 				E52519E51CD0BE3F00D873A3 /* User.swift in Sources */,
 				E552B7BE1C3D4E49001CD53B /* PdSSyncContext.m in Sources */,
 				5B8E5D601C8D7FCD002CFA03 /* Stream.swift in Sources */,
-				5BB9F8511CB555B900B83252 /* CreateUserCommand.swift in Sources */,
 				E5251AD81CD0BE3F00D873A3 /* JRegistryMetadata.swift in Sources */,
 				E5251A751CD0BE3F00D873A3 /* ReadTasksGroupById.swift in Sources */,
 				E52519FA1CD0BE3F00D873A3 /* CreatePermission.swift in Sources */,
@@ -2151,12 +2119,10 @@
 				E5251A6C1CD0BE3F00D873A3 /* ReadTaskById.swift in Sources */,
 				5B8E5D591C8D7FCD002CFA03 /* Notifications.swift in Sources */,
 				E52519D01CD0BE3F00D873A3 /* ObjectError.swift in Sources */,
-				E585044E1C3FA12000E2F64A /* LoginCommand.swift in Sources */,
 				E5251B1A1CD0BE3F00D873A3 /* Serializer.swift in Sources */,
 				E5251A151CD0BE3F00D873A3 /* CreateUsers.swift in Sources */,
 				E5C0CF201C36CD6E00F3B7B8 /* TestsConfiguration.swift in Sources */,
 				E52519DF1CD0BE3F00D873A3 /* TasksGroup.swift in Sources */,
-				E54594141C3E7DD7000576AD /* CommandBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
