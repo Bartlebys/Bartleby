@@ -1081,7 +1081,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 #pragma mark -
 
 - (void)_successFullEnd{
-    _completionBlock(YES, PdsStatusErrorNoError,nil);
+    _completionBlock(YES, PdsStatusErrorNoError, @"");
     [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterHasFinalized
                                                         object:self];
 }

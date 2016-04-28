@@ -189,7 +189,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
                 continue
             }
 
-            if (event as NSString).containsString("retry:") {
+            if event.rangeOfString("retry:") != nil {
                 if let reconnectTime = parseRetryTime(event) {
                     self.retryTime = reconnectTime
                 }

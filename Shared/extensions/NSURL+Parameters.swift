@@ -27,19 +27,17 @@ extension NSURL {
         components.path=self.path
         components.query=self.query
         
-        var mutableQueryItems=Array<NSURLQueryItem>()
-        if let queryItems=components.queryItems{
-            for item in  queryItems {
-                mutableQueryItems.append(item)
-            }
+        
+        var queryItems=[String]()
+        if let query = self.query where !query.isEmpty {
+            queryItems.append(query)
         }
         
         // Add the dictionary value
         for (k,v) in dictionary{
-            let queryItem=NSURLQueryItem(name: k, value:"\(v)")
-            mutableQueryItems.append(queryItem)
+            queryItems.append("\(k)=\(v)")
         }
-        components.queryItems=mutableQueryItems
+        components.query = queryItems.joinWithSeparator("&")
         
         return components.URL
     }
