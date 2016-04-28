@@ -11,8 +11,8 @@ import Foundation
 class CreateUserCommand : CommandBase {
     
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
         
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
                                          helpMessage: "Bartleby base url e.g http://yd.local/api/v1")

@@ -16,20 +16,20 @@ public class CommandBase: ProgressAndCompletionHandler {
     
     let cli = CommandLine()
 
-    public required init(completionBlock:((completion: Completion)->())){
-        super.init(completionBlock: completionBlock)
+    public required init(completionHandler:((completion: Completion)->())){
+        super.init(completionHandler: completionHandler)
     }
     
-    public convenience init() {
-        self.init(completionBlock:{ (completion) in
-            if completion.success {
-                exit(EX_OK)
-            } else {
-                print(completion.message)
-                exit(Int32(completion.statusCode))
-            }
-        })
-    }
+//    public convenience init() {
+//        self.init(completionHandler:{ (completion) in
+//            if completion.success {
+//                exit(EX_OK)
+//            } else {
+//                print(completion.message)
+//                exit(Int32(completion.statusCode))
+//            }
+//        })
+//    }
     
     func printVerbose(string: String) {
         if isVerbose {

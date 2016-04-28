@@ -113,7 +113,7 @@ class LocalDMGSyncTests: XCTestCase {
                                    restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
-            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionBlock: { (c) in
+            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionHandler: { (c) in
                 // TODO: @md Reactivate test check wich currently fais
 //                XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()

@@ -10,9 +10,9 @@ import Cocoa
 
 class CreateDirectiveCommand: CommandBase {
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
-        
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
+
         let sourceURLString = StringOption(shortFlag: "s", longFlag: "source", required: true,
                                            helpMessage: "URL of the source folder")
         

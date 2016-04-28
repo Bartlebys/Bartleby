@@ -10,8 +10,8 @@ import Cocoa
 
 class VerifyCredentialsCommand: CommandBase {
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
             helpMessage: "BartlebySync base url e.g http://yd.local/api/v1/BartlebySync")

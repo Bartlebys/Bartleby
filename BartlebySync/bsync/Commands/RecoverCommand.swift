@@ -11,8 +11,8 @@ import Foundation
 
 class RecoverCommand:CommandBase {
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
         
         let sourcePath = StringOption(shortFlag: "s", longFlag: "snapshot", required: true,
             helpMessage: "Path to the snapshot folder")

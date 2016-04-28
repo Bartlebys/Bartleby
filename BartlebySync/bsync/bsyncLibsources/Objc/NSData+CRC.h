@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
+// TODO @md Remove when using SHA1
 @interface NSData (CRC)
 
 - (uint32_t)crc32;

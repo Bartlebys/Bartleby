@@ -18,6 +18,15 @@ public struct CommandsFacade {
     
     public func actOnArguments(){
         
+        let completionHandler: CompletionHandler = { (completion) in
+            if completion.success {
+                exit(EX_OK)
+            } else {
+                print(completion.message)
+                exit(Int32(completion.statusCode))
+            }
+        }
+        
         switch firstArgumentAfterExecutablePath{
         case nil:
             print(self._noArgMessage())
@@ -26,51 +35,51 @@ public struct CommandsFacade {
             print(self._noArgMessage())
             exit(EX_USAGE)
         case "create-uid"?:
-            let _ = CreateUIDCommand()
+            let _ = CreateUIDCommand(completionHandler: completionHandler)
         case "create-user"?:
-            let _ = CreateUserCommand()
+            let _ = CreateUserCommand(completionHandler: completionHandler)
         case "login"?:
-            let _ = LoginCommand()
+            let _ = LoginCommand(completionHandler: completionHandler)
         case "logout"?:
-            let _ = LogoutCommand()
+            let _ = LogoutCommand(completionHandler: completionHandler)
         case "verify"?,"verify-credentials"?:
-            let _ = VerifyCredentialsCommand()
+            let _ = VerifyCredentialsCommand(completionHandler: completionHandler)
         case "synchronize"?:
             // Proceed to authentication if necessary
             // Synchronizes from and to local or distant tree
             // Starts a new session or resumes the current session
             // Uses a snapshot most of the time
-             let _ = SynchronizeCommand().executeCMD()
+            let _ = SynchronizeCommand(completionHandler: completionHandler).executeCMD()
         case "cd"?,"create-directives"?:
             // Runs the synchronization directives
-            let _ = CreateDirectiveCommand()
+            let _ = CreateDirectiveCommand(completionHandler: completionHandler)
             
         case "rd"?,"reveal-directives"?:
-            let _ = RevealDirectivesCommand()
+            let _ = RevealDirectivesCommand(completionHandler: completionHandler)
         case "run"?,"run-directives"?:
             // Runs the synchronization directives
-             let _ = RunDirectivesCommand().executeCMD()
+            let _ = RunDirectivesCommand(completionHandler: completionHandler).executeCMD()
         case "create-hashmap"?,"create-hashMap"?:
             // Creates a hash map for given folder
-            let _ = CreateHashMapCommand()
+            let _ = CreateHashMapCommand(completionHandler: completionHandler)
         case "reveal-hashmap"?:
-            let _ = RevealHashMapCommand()
+            let _ = RevealHashMapCommand(completionHandler: completionHandler)
         case "kvs"?,"key-value-storage"?,"keystore"?:
             // Runs the synchronization directives
-            let _ = KeyValueStorageCommand()
+            let _ = KeyValueStorageCommand(completionHandler: completionHandler)
         case "cleanup"?:
             // Deletes the snapshots and hashmaps from the .bsync folder
             // Even if locked.
-             let _ = CleanupCommand()
+            let _ = CleanupCommand(completionHandler: completionHandler)
         case "create-dmg"?,"create-disk-image"?:
             // Creates and mount a dmg
-             let _ = CreateDmgCommand()
+            let _ = CreateDmgCommand(completionHandler: completionHandler)
         case "snapshot"?:
             // Creates a crypted chunked snapshot with its own hashmap for each chunk
-             let _ = SnapshotCommand()
+            let _ = SnapshotCommand(completionHandler: completionHandler)
         case "recover"?,"recover-from-snapshot"?:
             // Recovers a tree from crypted snapshot
-             let _ = RecoverCommand()
+            let _ = RecoverCommand(completionHandler: completionHandler)
         default:
             // We want to propose the best verb candidate
             let reference=[
@@ -104,7 +113,7 @@ public struct CommandsFacade {
         s += "\n"
         s += "\nvalid calls are S.V.O sentences like:\"bsync <verb> [options]\""
         s += "\n"
-        //TODO @md update the doc 
+        //TODO @md update the doc
         // martin > bpds what do you mean by 'control the signatures'?
         // bpds > verify the conformity of the documentation for each available verb
         s += "\n"
@@ -178,7 +187,7 @@ public struct CommandsFacade {
             self.rows = rows
             matrix = Array(count:cols*rows, repeatedValue:0)
         }
-
+        
         subscript(col:Int, row:Int) -> Int {
             get {
                 return matrix[cols * row + col]

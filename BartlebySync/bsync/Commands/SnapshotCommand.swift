@@ -10,8 +10,8 @@ import Foundation
 
 class SnapshotCommand:CommandBase {
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
         
         
         let sourcePath = StringOption(shortFlag: "f", longFlag: "folder", required: true,

@@ -12,8 +12,8 @@ import Cocoa
 class CreateDmgCommand: CommandBase {
 
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
         
         let path = StringOption(shortFlag: "f", longFlag: "folder", required: true,
             helpMessage: "Path to the folder in wich we will save the image disk.")

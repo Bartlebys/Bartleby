@@ -11,8 +11,8 @@ import Cocoa
 class LoginCommand: CommandBase {
     
     
-    required init(completionBlock: ((completion: Completion) -> ())) {
-        super.init(completionBlock: completionBlock)
+    required init(completionHandler: ((completion: Completion) -> ())) {
+        super.init(completionHandler: completionHandler)
 
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
                                helpMessage: "API url e.g http://yd.local/api/v1")
