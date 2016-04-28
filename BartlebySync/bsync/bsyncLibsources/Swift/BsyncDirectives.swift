@@ -23,6 +23,7 @@ import Foundation
  */
 @objc(BsyncDirectives) public class  BsyncDirectives : BsyncCredentials{
     
+    // @bpds I didn't used this in the tests but nil, shall we remove it???
     public static let NO_HASHMAPVIEW="NO_HASHMAPVIEW"
     
     public static let distantSchemes:[String]=["http","https","ftp","ftps"]
@@ -70,7 +71,6 @@ import Foundation
      
      - parameter distantURL:  distantURL should conform with ${API_BASE_URL}BartlebySync/tree/${TREE_ID}
      - parameter localPath:  path to local folder
-     - parameter creativeKey: the creative Key
      
      - returns: the directives
      */
@@ -82,11 +82,10 @@ import Foundation
         
     }
     /**
-     Creates an downStream directives.
+     Creates a downStream directives.
      
      - parameter distantURL:  distantURL should conform with ${API_BASE_URL}BartlebySync/tree/${TREE_ID}
      - parameter localPath:  path to local folder
-     - parameter creativeKey: the creative Key
      
      - returns: the directives
      */
@@ -94,6 +93,21 @@ import Foundation
         let directives=BsyncDirectives()
         directives.sourceURL = distantURL
         directives.destinationURL = NSURL(fileURLWithPath: localPath)
+        return directives
+    }
+    
+    /**
+     Creates a local directives.
+     
+     - parameter sourcePath:  path to source folder
+     - parameter localPath:  path to destination folder
+     
+     - returns: the directives
+     */
+    public static func localDirectivesWithPath(sourcePath:String, destinationPath:String)->BsyncDirectives{
+        let directives=BsyncDirectives()
+        directives.sourceURL = NSURL(fileURLWithPath: sourcePath)
+        directives.destinationURL = NSURL(fileURLWithPath: destinationPath)
         return directives
     }
     

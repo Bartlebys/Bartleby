@@ -94,10 +94,14 @@ public enum BsyncAdminError:ErrorType{
      - parameter progressBlock:   its progress block
      - parameter completionBlock: its completion block
      */
-    public func synchronizeWithprogressBlock(progressBlock : ((progression: Progression)->())?,
-                                             completionBlock : ((completion: Completion) -> Void)) throws{
+    public func synchronizeWithprogressBlock(progressBlock: ProgressHandler?,
+                                             completionBlock: CompletionHandler) throws{
         if let admin=self._admin{
-            admin.synchronizeWithprogressBlock(progressBlock, andCompletionBlock:completionBlock)
+            admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
+                progressBlock?(Progression(currentTaskIndex:taskIndex, totalTaskCount: totalTaskCount, currentTaskProgress: taskProgress, message: message, data: data))
+                }, andCompletionBlock:{(success, statusCode, message) in
+                    completionBlock(Completion(success: success, statusCode: statusCode, message: message))
+            })
         }else{
             throw BsyncAdminError.UnexistingPdSyncAdmin
         }

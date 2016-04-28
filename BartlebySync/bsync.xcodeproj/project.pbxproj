@@ -55,6 +55,7 @@
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
 		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
+		5BFD56EC1CD20C140081FB64 /* LocalSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */; };
 		E50A6EFE1CC8DE4D00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6F001CC8DE5100F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
@@ -694,6 +695,7 @@
 		5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserCommand.swift; sourceTree = "<group>"; };
 		5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncAdminUpDownSyncTests.swift; sourceTree = "<group>"; };
 		5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUIDCommand.swift; sourceTree = "<group>"; };
+		5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSyncTests.swift; sourceTree = "<group>"; };
 		E5091D9C1C4F8DB200E640A2 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncCredentials.swift; sourceTree = "<group>"; };
@@ -1459,6 +1461,7 @@
 			isa = PBXGroup;
 			children = (
 				5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */,
+				5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */,
 				5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */,
 				E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */,
 				E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */,
@@ -2058,6 +2061,7 @@
 				E5251A7B1CD0BE3F00D873A3 /* ReadTasksGroupsByQuery.swift in Sources */,
 				5B8E5D631C8D7FCD002CFA03 /* Validation.swift in Sources */,
 				E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */,
+				5BFD56EC1CD20C140081FB64 /* LocalSyncTests.swift in Sources */,
 				E5251B081CD0BE3F00D873A3 /* HTTPResponse.swift in Sources */,
 				E5251A931CD0BE3F00D873A3 /* UpdateAliases.swift in Sources */,
 				E5251ABA1CD0BE3F00D873A3 /* UpdateUser.swift in Sources */,

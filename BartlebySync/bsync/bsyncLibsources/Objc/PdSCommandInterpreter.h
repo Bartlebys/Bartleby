@@ -52,7 +52,7 @@ extern NSString * const PdSSyncInterpreterHasFinalized;// Notification
 + (PdSCommandInterpreter*)interpreterWithBunchOfCommand:(NSArray*)bunchOfCommand
                                                 context:(BsyncContext*)context
                                     progressBlock:(void(^)(uint taskIndex,double progress))progressBlock
-                                     andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock;
+                                     andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode, NSString*message))completionBlock;
 
 /**
  *   The dedicated initializer.
@@ -67,7 +67,7 @@ extern NSString * const PdSSyncInterpreterHasFinalized;// Notification
 - (instancetype)initWithBunchOfCommand:(NSArray*)bunchOfCommand
                                context:(BsyncContext*)context
                          progressBlock:(void(^)(uint taskIndex,double progress))progressBlock
-                    andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock;
+                    andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode, NSString*message))completionBlock;
 
 /**
  * Called by the delegate to conclude the sequence of commands.
