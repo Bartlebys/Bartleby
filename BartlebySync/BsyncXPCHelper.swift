@@ -344,12 +344,12 @@ public class BsyncXPCHelperDMGHandler {
         // The card must be valid
         let validation=card.evaluate()
         if validation.success == false {
-            handlers.completionBlock(validation)
+            handlers.on(validation)
             return
         }
         
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.completionBlock(Completion(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"))
+            handlers.on(Completion(success:false, message: NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"))
             return;
         }
         
@@ -362,15 +362,14 @@ public class BsyncXPCHelperDMGHandler {
         // feel free to try or delete this if you cannot doit
         let indirectHandler:ComposedProgressAndCompletionHandler = {
             (currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
-            if let progressBlock = handlers.progressBlock {
-                progressBlock(Progression(currentTaskIndex:currentTaskIndex,
-                              totalTaskCount:totalTaskCount,
-                              currentTaskProgress:currentTaskProgress,
-                              message:message,
-                                data: data))
-            }
+            handlers.notify?(Progression(currentTaskIndex:currentTaskIndex,
+                          totalTaskCount:totalTaskCount,
+                          currentTaskProgress:currentTaskProgress,
+                          message:message,
+                            data: data))
             if completed{
-                handlers.completionBlock(Completion(success: success,message: message))
+                handlers.on(Completion(success: success,message: message))
+                
                 self.bsyncConnection.invalidate()
             }
         }

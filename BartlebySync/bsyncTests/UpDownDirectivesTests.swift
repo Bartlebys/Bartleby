@@ -198,9 +198,6 @@ class UpDownDirectivesTests: XCTestCase {
             expectation.fulfill()
             XCTAssertTrue(completion.success, completion.message)
         }
-        handlers.addProgressBlock { (progression) in
-            bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
-        }
         runner.runDirectives(UpDownDirectivesTests._upDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
@@ -216,9 +213,6 @@ class UpDownDirectivesTests: XCTestCase {
         let handlers = ProgressAndCompletionHandler { (completion) in
             expectation.fulfill()
             XCTAssertTrue(completion.success, completion.message)
-        }
-        handlers.addProgressBlock { (progression) in
-            bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
         }
         runner.runDirectives(UpDownDirectivesTests._downDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in

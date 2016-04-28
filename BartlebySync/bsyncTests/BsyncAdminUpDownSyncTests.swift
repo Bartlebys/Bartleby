@@ -210,12 +210,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
         
         do {
-            try admin.synchronizeWithprogressBlock({ (p) in
-                print("\(p.currentTaskIndex) / \(p.totalTaskCount) / \(p.message)")
-            }) { (c) in
+            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionBlock: { (c) in
                 XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
-            }
+            }))
         } catch {
             XCTFail("Synchronize failed")
         }
@@ -244,12 +242,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
         
         do {
-            try admin.synchronizeWithprogressBlock({ (p) in
-                print("\(p.currentTaskIndex) / \(p.totalTaskCount) / \(p.message)")
-            }) { (c) in
+            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionBlock: { (c) in
                 XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
-            }
+            }))
         } catch {
             XCTFail("Synchronize failed")
         }

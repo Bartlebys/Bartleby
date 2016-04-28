@@ -23,21 +23,21 @@ public typealias CompletionHandler = (_: Completion) -> ()
 
 // MARK: -
 
-//  Generally Used in XPC facades because we can pass only one block per XPC call
+//  Generally Used in XPC facades because we can pass only one handler per XPC call
 //  So we split the ComposedProgressAndCompletionHandler by calling ProgressAndCompletionHandler.handlersFrom(composed)
 @objc(ProgressAndCompletionHandler) public class ProgressAndCompletionHandler:NSObject{
     
-    /// The progress block
-    public var progressBlock: ProgressHandler?
+    /// The progress handler
+    public var notify: ProgressHandler?
     
-    public func addProgressBlock(progressBlock: ProgressHandler){
-        self.progressBlock=progressBlock
+    public func addProgressHandler(progressHandler: ProgressHandler){
+        self.notify = progressHandler
     }
-    /// The completion block
-    public var completionBlock:(CompletionHandler)
+    /// The completion handler
+    public var on:(CompletionHandler)
     
-    public required init(completionBlock: CompletionHandler){
-        self.completionBlock=completionBlock
+    public required init(completionHandler: CompletionHandler){
+        self.on = completionHandler
     }
 
     /**
@@ -53,7 +53,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
         // progress and completion handlers.
         
         let handlers=ProgressAndCompletionHandler {(completion) -> () in
-            // This is the completion block
+            // This is the completion handler
             // By convention we inject false progress information
             composedHandler(currentTaskIndex: 0,   // Dummy Progress section
                 totalTaskCount: 0,              // Dummy
@@ -65,7 +65,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
             )
         }
         
-        handlers.addProgressBlock { (progression) -> () in
+        handlers.addProgressHandler { (progression) -> () in
             composedHandler(currentTaskIndex: progression.currentTaskIndex,
                 totalTaskCount: progression.totalTaskCount,
                 currentTaskProgress: progression.currentTaskProgress,
@@ -79,22 +79,20 @@ public typealias CompletionHandler = (_: Completion) -> ()
     
     }
     
-    // We need to provide a unique block to be compatible with the XPC context
+    // We need to provide a unique handler to be compatible with the XPC context
     // So we use an handler adapter that relays to the progress and completion handlers
     // to mask the constraint.
     public func composedHandlers() -> ComposedProgressAndCompletionHandler {
         let handler: ComposedProgressAndCompletionHandler = {(currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
             
-            if completed{
-                self.completionBlock(Completion(success: success,message: message))
+            if completed {
+                self.on(Completion(success: success,message: message))
             }else{
-                if let progressBlock: ProgressHandler = self.progressBlock {
-                    let progression = Progression(currentTaskIndex:currentTaskIndex,
-                                                  totalTaskCount:totalTaskCount,
-                                                  currentTaskProgress:currentTaskProgress,
-                                                  message:message,data: data)
-                    progressBlock(progression)
-                }
+                self.notify?(Progression(currentTaskIndex:currentTaskIndex,
+                                              totalTaskCount:totalTaskCount,
+                                              currentTaskProgress:currentTaskProgress,
+                                              message:message,
+                                              data: data))
             }
         }
         return handler

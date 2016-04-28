@@ -113,13 +113,11 @@ class LocalDMGSyncTests: XCTestCase {
                                    restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
         do {
-            try admin.synchronizeWithprogressBlock({ (progression) in
-                print("\(progression.currentTaskIndex)/\(progression.totalTaskCount)")
-            }) { (completion) in
-                expectation.fulfill()
+            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionBlock: { (c) in
                 // TODO: @md Reactivate test check wich currently fais
-//                XCTAssertTrue(completion.success, completion.message)
-            }
+//                XCTAssertTrue(c.success, c.message)
+                expectation.fulfill()
+            }))
         } catch {
             XCTFail("Synchronize failed")
         }

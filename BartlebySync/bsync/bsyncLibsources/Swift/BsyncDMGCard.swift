@@ -89,6 +89,7 @@ protocol IdentifiableCardContext{
      */
     public func evaluate() -> Completion{
         
+        // TODO: @md refacor
         // Test the path
         let url=NSURL(fileURLWithPath:path,isDirectory:false)
         let ext=url.pathExtension
