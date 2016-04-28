@@ -202,7 +202,7 @@ class UpDownDirectivesTests: XCTestCase {
             bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
         }
         runner.runDirectives(UpDownDirectivesTests._upDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -221,7 +221,7 @@ class UpDownDirectivesTests: XCTestCase {
             bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
         }
         runner.runDirectives(UpDownDirectivesTests._downDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }

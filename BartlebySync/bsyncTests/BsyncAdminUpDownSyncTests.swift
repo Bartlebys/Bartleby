@@ -210,10 +210,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
         
         do {
-            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message,data) in
-                print("\(taskIndex)/\(totalTaskCount)")
-            }) { (success, message) in
-                XCTAssertTrue(success, "\(message)")
+            try admin.synchronizeWithprogressBlock({ (p) in
+                print("\(p.currentTaskIndex) / \(p.totalTaskCount) / \(p.message)")
+            }) { (c) in
+                XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
             }
         } catch {
@@ -244,10 +244,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
         
         do {
-            try admin.synchronizeWithprogressBlock({ (taskIndex, totalTaskCount, taskProgress, message,data) in
-                print("\(taskIndex)/\(totalTaskCount)")
-            }) { (success, message) in
-                XCTAssertTrue(success, "\(message)")
+            try admin.synchronizeWithprogressBlock({ (p) in
+                print("\(p.currentTaskIndex) / \(p.totalTaskCount) / \(p.message)")
+            }) { (c) in
+                XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
             }
         } catch {
