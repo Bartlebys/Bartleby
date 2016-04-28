@@ -84,15 +84,17 @@ public typealias CompletionHandler = (_: Completion) -> ()
     // to mask the constraint.
     public func composedHandlers() -> ComposedProgressAndCompletionHandler {
         let handler: ComposedProgressAndCompletionHandler = {(currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
-            if let progressBlock: ProgressHandler = self.progressBlock {
-                let progression = Progression(currentTaskIndex:currentTaskIndex,
-                                              totalTaskCount:totalTaskCount,
-                                              currentTaskProgress:currentTaskProgress,
-                                              message:message,data: data)
-                progressBlock(progression)
-            }
+            
             if completed{
                 self.completionBlock(Completion(success: success,message: message))
+            }else{
+                if let progressBlock: ProgressHandler = self.progressBlock {
+                    let progression = Progression(currentTaskIndex:currentTaskIndex,
+                                                  totalTaskCount:totalTaskCount,
+                                                  currentTaskProgress:currentTaskProgress,
+                                                  message:message,data: data)
+                    progressBlock(progression)
+                }
             }
         }
         return handler
