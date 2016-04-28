@@ -39,6 +39,12 @@ import ObjectMapper
 
     weak public var tableView: BXTableView?
 
+    public var enableKVO=false
+
+    convenience init(enableKVO:Bool){
+        self.init()
+        self.enableKVO=enableKVO
+    }
 
     public func generate() -> AnyGenerator<User> {
         var nextIndex = -1
@@ -283,7 +289,7 @@ import ObjectMapper
     private var KVOContext: Int = 0
 
     private func _startObserving(item: User) {
-        if _observedUIDS.indexOf(item.UID) == nil {
+        if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "spaceUID", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "verificationMethod", options: .Old, context: &KVOContext)
@@ -301,20 +307,22 @@ import ObjectMapper
     }
 
     private func _stopObserving(item: User) {
-        if let idx=_observedUIDS.indexOf(item.UID)  {
-            _observedUIDS.removeAtIndex(idx)
-			item.removeObserver(self, forKeyPath: "spaceUID", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "verificationMethod", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "firstname", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "lastname", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "email", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "phoneNumber", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "password", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "activationCode", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "status", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "tags", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "groups", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "notes", context: &KVOContext)
+        if self.enableKVO{
+            if let idx=_observedUIDS.indexOf(item.UID)  {
+                _observedUIDS.removeAtIndex(idx)
+				item.removeObserver(self, forKeyPath: "spaceUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "verificationMethod", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "firstname", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "lastname", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "email", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "phoneNumber", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "password", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "activationCode", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "status", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "tags", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "groups", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "notes", context: &KVOContext)
+            }
         }
     }
 

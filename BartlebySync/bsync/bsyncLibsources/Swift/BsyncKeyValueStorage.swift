@@ -29,7 +29,9 @@ extension String:Serializable {
         }
     }
     
-    public func updateData(data: NSData) -> Serializable {
+
+    public func updateData(data:NSData) ->Serializable {
+        // @BPDS -> support
         return self
     }
     

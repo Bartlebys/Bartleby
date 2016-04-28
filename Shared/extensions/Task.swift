@@ -44,8 +44,6 @@ public enum TaskError : ErrorType {
      */
     public func arguments<ArgumentType:Serializable>() throws -> ArgumentType{
         if let argumentsData = self.argumentsData {
-            
-            print(argumentsData);
             //@bpds(#MAJOR) exception on deserialization of CollectionControllers
             //The KVO stack produces EXCEPTION, and we cannot use a Proxy+Patch Approach
             let deserialized=JSerializer.deserialize(argumentsData)

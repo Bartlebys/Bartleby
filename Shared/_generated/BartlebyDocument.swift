@@ -30,15 +30,24 @@ import UIKit
 
     private var _KVOContext: Int = 0
 
-    // Collection Controllers
+    // Collection Controller
     // The initial instances are proxies
-	dynamic lazy public var tasksGroups=TasksGroupsCollectionController()
-	dynamic lazy public var users=UsersCollectionController()
-	dynamic lazy public var lockers=LockersCollectionController()
-	dynamic lazy public var groups=GroupsCollectionController()
-	dynamic lazy public var permissions=PermissionsCollectionController()
-	dynamic lazy public var operations=OperationsCollectionController()
-	dynamic lazy public var triggers=TriggersCollectionController()
+    // On document deserialization the collection are populated.
+
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var tasksGroups=TasksGroupsCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var users=UsersCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var lockers=LockersCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var groups=GroupsCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var permissions=PermissionsCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var operations=OperationsCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var triggers=TriggersCollectionController(enableKVO:true)
 
     // MARK: - OSX
  #if os(OSX) && !USE_EMBEDDED_MODULES
