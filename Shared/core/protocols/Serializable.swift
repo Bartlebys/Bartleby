@@ -32,14 +32,14 @@ public protocol Serializable  {
     // TODO: Should be splitted in a specific protocol
     
     /**
-     Patch an existant instance by deserializing the data from NSData
-     This approach is usefull for proxies.
+     Update an existant instance
+     This approach is used by proxies.
      
      - parameter data: the NSData
      
      - returns: the patched Object
      */
-    func patchWithSerializedData(data:NSData) ->Serializable
+    func updateData(data:NSData) ->Serializable
     
     /**
      Should return a dictionary composed of native members that can be serialized (!)

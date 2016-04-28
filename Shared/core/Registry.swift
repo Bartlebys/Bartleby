@@ -262,6 +262,7 @@ Documents can be shared between iOS, tvOS and OSX.
     private func _refreshIdentifier(inout collectionProxy:CollectibleCollection){
         collectionProxy.undoManager=self.undoManager
         collectionProxy.spaceUID=self.spaceUID
+        // @bpds Possibly a core issue Check carefully
         collectionProxy.observableByUID=self.spaceUID
     }
     
@@ -627,8 +628,7 @@ Documents can be shared between iOS, tvOS and OSX.
                                     if  pathExtension == Registry.CRYPTED_EXTENSION {
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
-                                    proxy.patchWithSerializedData(collectionData)
-                                    
+                                    proxy.updateData(collectionData)
                                 }
                             }else{
                                 throw RegistryError.AttemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)

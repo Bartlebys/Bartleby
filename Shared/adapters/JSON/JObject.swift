@@ -213,7 +213,7 @@ extension JObject:Serializable{
     
     
     
-    public func patchWithSerializedData(data: NSData) -> Serializable {
+    public func updateData(data: NSData) -> Serializable {
         do{
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                 let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
