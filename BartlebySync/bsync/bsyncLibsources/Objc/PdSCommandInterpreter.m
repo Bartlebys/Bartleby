@@ -34,7 +34,7 @@ NSString * const PdSSyncInterpreterHasFinalized = @"PdSSyncInterpreterHasFinaliz
 #define kUseRedirection 1
 
 typedef void(^ProgressBlock_type)(uint taskIndex,double progress);
-typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
+typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString*_Nonnull message);
 
 @interface PdSCommandInterpreter ()<NSURLSessionDownloadDelegate>{
     CompletionBlock_type             _completionBlock;
@@ -83,7 +83,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
 + (PdSCommandInterpreter*)interpreterWithBunchOfCommand:(NSArray*)bunchOfCommand
                                                 context:(BsyncContext*)context
                                           progressBlock:(void(^)(uint taskIndex,double progress))progressBlock
-                                     andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock{
+                                     andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode,NSString*_Nonnull message))completionBlock{
     
     return [[PdSCommandInterpreter alloc] initWithBunchOfCommand:bunchOfCommand
                                                          context:context
@@ -104,7 +104,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
 - (instancetype)initWithBunchOfCommand:(NSArray*)bunchOfCommand
                                context:(BsyncContext*)context
                          progressBlock:(void(^)(uint taskIndex,double progress))progressBlock
-                    andCompletionBlock:(void(^)(BOOL success,NSString*message))completionBlock;{
+                    andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode,NSString*message))completionBlock;{
     self=[super init];
     if(self){
         self->_bunchOfCommand=[bunchOfCommand copy];
@@ -142,7 +142,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
             
         }else{
             if(self->_completionBlock){
-                _completionBlock(NO,@"sourceUrl && destinationUrl && bunchOfCommand && finalHashMap are required");
+                _completionBlock(NO, PdsStatusErrorInvalidArgument,@"sourceUrl && destinationUrl && bunchOfCommand && finalHashMap are required");
             }
         }
     }
@@ -250,7 +250,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
             [self _sanitize:@""];
         }else{
         }
-        _completionBlock(YES,@"There was no command to execute");
+        _completionBlock(YES, PdsStatusErrorNoError, @"There was no command to execute");
     }
 }
 
@@ -923,7 +923,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
             //[self _interruptOnFault:[jsonHashMapError description]];
             //return;
         }else{
-            _completionBlock(YES,nil);
+            _completionBlock(YES, PdsStatusErrorNoError, @"");
             [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterHasFinalized
                                                                 object:self];
         }
@@ -1081,7 +1081,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
 #pragma mark -
 
 - (void)_successFullEnd{
-    _completionBlock(YES,nil);
+    _completionBlock(YES, PdsStatusErrorNoError,nil);
     [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterHasFinalized
                                                         object:self];
 }
@@ -1092,7 +1092,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
     [self _progressMessage:@"INTERUPT ON FAULT %@",faultMessage];
     [self->_queue cancelAllOperations];
     self->_hasBeenInterrupted=YES;
-    self->_completionBlock(NO,faultMessage);
+    self->_completionBlock(NO, PdsStatusErrorInterrupted,faultMessage);
 }
 
 

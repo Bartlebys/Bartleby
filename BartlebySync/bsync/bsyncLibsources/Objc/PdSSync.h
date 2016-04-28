@@ -7,6 +7,17 @@
 
 // VERSION 1.0 Of the ObjC & PHP version
 
+typedef NS_ENUM(NSInteger,
+                PdSStatusError) {
+    PdsStatusErrorNoError = 0,
+    PdSStatusErrorHashMapDeserializationTypeMissMatch=1000,
+    PdSStatusErrorHashMapDeserialization=1001,
+    PdSStatusErrorHashMapDecryptFailure=1002,
+    PdSStatusErrorHashMapFailure=1003,
+    PdsStatusErrorTooManyAttempts=1004,
+    PdsStatusErrorInvalidArgument=1005,
+    PdsStatusErrorInterrupted=1006
+} ;
 
 typedef NS_ENUM (NSUInteger,
                   BsyncCommand) {

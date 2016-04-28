@@ -15,14 +15,6 @@
 
 @protocol PdSSyncFinalizationDelegate;
 
-typedef NS_ENUM(NSInteger,
-                PdSSyncExtentedStatusError) {
-    PdSStatusErrorHashMapDeserializationTypeMissMatch=1000,
-    PdSStatusErrorHashMapDeserialization=1001,
-    PdSStatusErrorHashMapDecryptFailure=1002,
-    PdSStatusErrorHashMapFailure=1003
-} ;
-
 #pragma mark - Synchronization
 
 
@@ -53,8 +45,8 @@ typedef NS_ENUM(NSInteger,
  *  @param progressBlock   the progress block
  *  @param completionBlock the completionBlock
  */
--(void)synchronizeWithprogressBlock:(void(^_Nullable)(Progression*_Nonnull progression))progressBlock
-                 andCompletionBlock:(void(^_Nonnull)(Completion*_Nonnull completion))completionBlock;
+-(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nonnull message, NSData* _Nullable data))progressBlock
+                 andCompletionBlock:(void(^_Nonnull)(BOOL success, NSInteger statusCode,NSString*_Nonnull message))completionBlock;
 
 
 #pragma mark - Advanced
