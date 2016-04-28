@@ -629,6 +629,7 @@ Documents can be shared between iOS, tvOS and OSX.
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
                                     proxy.updateData(collectionData)
+
                                 }
                             }else{
                                 throw RegistryError.AttemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)

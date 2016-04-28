@@ -39,6 +39,12 @@ import ObjectMapper
 
     weak public var tableView: BXTableView?
 
+    public var enableKVO=false
+
+    convenience init(enableKVO:Bool){
+        self.init()
+        self.enableKVO=enableKVO
+    }
 
     public func generate() -> AnyGenerator<Permission> {
         var nextIndex = -1
@@ -283,7 +289,7 @@ import ObjectMapper
     private var KVOContext: Int = 0
 
     private func _startObserving(item: Permission) {
-        if _observedUIDS.indexOf(item.UID) == nil {
+        if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "callString", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "level", options: .Old, context: &KVOContext)
@@ -292,11 +298,13 @@ import ObjectMapper
     }
 
     private func _stopObserving(item: Permission) {
-        if let idx=_observedUIDS.indexOf(item.UID)  {
-            _observedUIDS.removeAtIndex(idx)
-			item.removeObserver(self, forKeyPath: "callString", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "level", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "rule", context: &KVOContext)
+        if self.enableKVO{
+            if let idx=_observedUIDS.indexOf(item.UID)  {
+                _observedUIDS.removeAtIndex(idx)
+				item.removeObserver(self, forKeyPath: "callString", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "level", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "rule", context: &KVOContext)
+            }
         }
     }
 

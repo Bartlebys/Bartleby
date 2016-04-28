@@ -39,6 +39,12 @@ import ObjectMapper
 
     weak public var tableView: BXTableView?
 
+    public var enableKVO=false
+
+    convenience init(enableKVO:Bool){
+        self.init()
+        self.enableKVO=enableKVO
+    }
 
     public func generate() -> AnyGenerator<Locker> {
         var nextIndex = -1
@@ -283,7 +289,7 @@ import ObjectMapper
     private var KVOContext: Int = 0
 
     private func _startObserving(item: Locker) {
-        if _observedUIDS.indexOf(item.UID) == nil {
+        if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "spaceUID", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "subjectUID", options: .Old, context: &KVOContext)
@@ -299,18 +305,20 @@ import ObjectMapper
     }
 
     private func _stopObserving(item: Locker) {
-        if let idx=_observedUIDS.indexOf(item.UID)  {
-            _observedUIDS.removeAtIndex(idx)
-			item.removeObserver(self, forKeyPath: "spaceUID", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "subjectUID", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "userUID", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "mode", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "verificationMethod", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "code", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "numberOfAttempt", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "startDate", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "endDate", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "cake", context: &KVOContext)
+        if self.enableKVO{
+            if let idx=_observedUIDS.indexOf(item.UID)  {
+                _observedUIDS.removeAtIndex(idx)
+				item.removeObserver(self, forKeyPath: "spaceUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "subjectUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "userUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "mode", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "verificationMethod", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "code", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "numberOfAttempt", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "startDate", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "endDate", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "cake", context: &KVOContext)
+            }
         }
     }
 

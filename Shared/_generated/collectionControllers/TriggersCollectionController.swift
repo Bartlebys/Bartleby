@@ -39,6 +39,12 @@ import ObjectMapper
 
     weak public var tableView: BXTableView?
 
+    public var enableKVO=false
+
+    convenience init(enableKVO:Bool){
+        self.init()
+        self.enableKVO=enableKVO
+    }
 
     public func generate() -> AnyGenerator<Trigger> {
         var nextIndex = -1
@@ -283,7 +289,7 @@ import ObjectMapper
     private var KVOContext: Int = 0
 
     private func _startObserving(item: Trigger) {
-        if _observedUIDS.indexOf(item.UID) == nil {
+        if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "associatedMessage", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "index", options: .Old, context: &KVOContext)
@@ -295,14 +301,16 @@ import ObjectMapper
     }
 
     private func _stopObserving(item: Trigger) {
-        if let idx=_observedUIDS.indexOf(item.UID)  {
-            _observedUIDS.removeAtIndex(idx)
-			item.removeObserver(self, forKeyPath: "associatedMessage", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "index", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "observableUID", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "created", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "updated", context: &KVOContext)
-			item.removeObserver(self, forKeyPath: "deleted", context: &KVOContext)
+        if self.enableKVO{
+            if let idx=_observedUIDS.indexOf(item.UID)  {
+                _observedUIDS.removeAtIndex(idx)
+				item.removeObserver(self, forKeyPath: "associatedMessage", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "index", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "observableUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "created", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "updated", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "deleted", context: &KVOContext)
+            }
         }
     }
 
