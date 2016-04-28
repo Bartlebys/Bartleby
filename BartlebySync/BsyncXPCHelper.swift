@@ -71,7 +71,7 @@ public class BsyncXPCHelperDMGHandler {
             // The card must be valid
             let validation = card.evaluate()
             if !validation.success {
-                // TODO: change callblock to adopt
+                // TODO: @md change callblock to adopt
                 completion.callBlock(Completion(success: validation.success, message: validation.message))
                 return
             }
@@ -359,7 +359,7 @@ public class BsyncXPCHelperDMGHandler {
         // to mask the constraint.
         // TODO: @md Check if we can use ProgressAndCompletionHandler.getComposedProgressAndCompletionHandler()
         // !!! Response to Mr @md i do consider that's not possible by design... 
-        // feel free to try or delete this TODO if you cannot doit
+        // feel free to try or delete this if you cannot doit
         let indirectHandler:ComposedProgressAndCompletionHandler = {
             (currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
             if let progressBlock = handlers.progressBlock {

@@ -104,7 +104,7 @@ public struct CommandsFacade {
         s += "\n"
         s += "\nvalid calls are S.V.O sentences like:\"bsync <verb> [options]\""
         s += "\n"
-        //TODO @md update the doc
+        //TODO @md update the doc @bpds what do you mean by 'control the signatures'?
         s += "\n... TODO bpds => control the signatures"
         s += "\n"
         s += "\nAvailable verbs:"

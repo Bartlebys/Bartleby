@@ -472,7 +472,7 @@ Documents can be shared between iOS, tvOS and OSX.
             if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand{
                 command.push(sucessHandler:success, failureHandler:failure)
             }else{
-                //TODO: what should be done
+                //TODO: @bpds what should be done
             }
         }
     }
@@ -494,7 +494,7 @@ Documents can be shared between iOS, tvOS and OSX.
         
         }*/
         
-        // TODO: Append a Trigger
+        // TODO: @bpds Append a Trigger
         
         return operations
     }
@@ -554,7 +554,7 @@ Documents can be shared between iOS, tvOS and OSX.
                             }
                             
                             // Remove the previous data
-                            // TODO: if collection data have changed only !
+                            // TODO: @bpds if collection data have changed only !
                             
                             if let wrapper=fileWrappers[collectionfileName] {
                                 fileWrapper.removeFileWrapper(wrapper)

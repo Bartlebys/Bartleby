@@ -124,7 +124,7 @@ class CreateDirectiveCommand: CommandBase {
                 directives.hashMapViewName=hashMapViewName.value!
             }
             
-            // TODO: Update with Bartleby helper
+            // TODO: @md Update with Bartleby helper
             let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
             let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
             let kvs = BsyncKeyValueStorage(url: kvsUrl)

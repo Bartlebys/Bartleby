@@ -21,7 +21,7 @@ import Foundation
     
     static public var cryptoDelegate:CryptoDelegate=NoCrypto()
     
-    // TODO: Check crypto key requirement
+    // TODO: @md Check crypto key requirement
     static public func isValidKey(key: String) -> Bool {
         return key.characters.count >= 32
     }

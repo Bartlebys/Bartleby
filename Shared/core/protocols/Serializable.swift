@@ -29,7 +29,7 @@ public protocol Serializable  {
 
     func deserialize(data:NSData) ->Serializable
     
-    // TODO: Should be splitted in a specific protocol
+    // TODO: @bpds Should be splitted in a specific protocol
     
     /**
      Update an existant instance

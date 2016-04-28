@@ -96,7 +96,6 @@
     Completion *completion = [Completion init];
     if(attempts > kRecursiveMaxNumberOfAttempts){
         // This occurs if the recursive call fails.
-        // TODO: Choose status code
         completion.success = NO;
         completion.message = [NSString stringWithFormat:@"Excessive number of attempts of synchronization %i", kRecursiveMaxNumberOfAttempts];
         completionBlock(completion);
@@ -185,11 +184,10 @@
             progression.message = cmdString;
             progressBlock(progression);
             
-            // TODO: use new progress and completion block in command interpreter
             _interpreter= [PdSCommandInterpreter interpreterWithBunchOfCommand:commands context:self->_syncContext
                                                                  progressBlock:^(uint taskIndex, double progress) {
                                                                      NSString*cmd=([commands count]>taskIndex)?[commands objectAtIndex:taskIndex]:@"POST CMD";
-                                                                     // TODO: check that we can use pre defined progression variable
+                                                                     // TODO: @md check that we can use pre defined progression variable
                                                                      assert(progression.totalTaskCount == cmdCounts);
                                                                      progression.currentTaskIndex = taskIndex;
                                                                      progression.message = cmd;

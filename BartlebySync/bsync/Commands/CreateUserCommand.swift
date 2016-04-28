@@ -40,8 +40,6 @@ class CreateUserCommand : CommandBase {
                                    helpMessage: "Print verbose messages.")
         
         
-        
-        // TODO: Add email and/or phone to implement verification
         cli.addOptions(api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
         
         do {

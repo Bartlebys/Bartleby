@@ -17,7 +17,7 @@ public enum BsyncSnapShooterError:ErrorType{
     case InvalidPath(explanations:String)
 }
 
-// TODO  implement a delta snapshot algo.
+// TODO: @bpds implement a delta snapshot algo.
 // We could use a local delta sync
 
 /**

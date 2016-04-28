@@ -87,7 +87,6 @@ protocol IdentifiableCardContext{
      
      - returns: a block
      */
-    // TODO: Maybe evaluate should return a Completion?
     public func evaluate() -> Completion{
         
         // Test the path

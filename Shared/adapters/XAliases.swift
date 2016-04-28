@@ -11,9 +11,7 @@
 // Those type Aliases are used to share signatures not implementation
 
 
-// MARK: X
-
-// TODO: X alias for watchOS & TvOS
+// TODO: @bpds X alias for watchOS & TvOS
 
 #if os(OSX)
     import AppKit

@@ -1088,7 +1088,7 @@ typedef void(^CompletionBlock_type)(BOOL success,NSString*message);
 
 
 - (void)_interruptOnFault:(NSString*)faultMessage{
-    // TODO: Verify if this method is never called on reachability issues ?
+    // TODO: @bpds Verify if this method is never called on reachability issues ?
     [self _progressMessage:@"INTERUPT ON FAULT %@",faultMessage];
     [self->_queue cancelAllOperations];
     self->_hasBeenInterrupted=YES;
