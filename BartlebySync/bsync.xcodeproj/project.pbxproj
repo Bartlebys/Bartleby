@@ -13,6 +13,8 @@
 		5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
+		5B66FABD1CD203E7000A2534 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
+		5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
 		5B8E5D531C8D7FCD002CFA03 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		5B8E5D541C8D7FCD002CFA03 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
@@ -650,8 +652,6 @@
 		E5B98EBF1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5C0CF201C36CD6E00F3B7B8 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
-		E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
-		E5D9B8B01CC7EC89004196C1 /* BsyncAdminUpDownSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
@@ -1916,6 +1916,7 @@
 				5B8E5D561C8D7FCD002CFA03 /* Manager.swift in Sources */,
 				E52519A91CD0BE3F00D873A3 /* OperationsCollectionController.swift in Sources */,
 				E5251A1B1CD0BE3F00D873A3 /* DeleteAliases.swift in Sources */,
+				5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */,
 				E5251B531CD0BE3F00D873A3 /* PString.swift in Sources */,
 				E552B7BA1C3D4E49001CD53B /* PdSLocalAnalyzer.m in Sources */,
 				E5251AC61CD0BE3F00D873A3 /* JCollectionMetadatum.swift in Sources */,
@@ -1983,6 +1984,7 @@
 				E5251AED1CD0BE3F00D873A3 /* Consignation.swift in Sources */,
 				E525199D1CD0BE3F00D873A3 /* BartlebyDocument.swift in Sources */,
 				E5251AC31CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */,
+				5B66FABD1CD203E7000A2534 /* LocalDMGSyncTests.swift in Sources */,
 				E52519A61CD0BE3F00D873A3 /* LockersCollectionController.swift in Sources */,
 				E52519E81CD0BE3F00D873A3 /* CreateAlias.swift in Sources */,
 				E5251A8D1CD0BE3F00D873A3 /* ReadUsersByQuery.swift in Sources */,
@@ -2095,9 +2097,7 @@
 				E5251AFC1CD0BE3F00D873A3 /* CollectibleCollection.swift in Sources */,
 				E52519C11CD0BE3F00D873A3 /* BaseObject.swift in Sources */,
 				E552B7B21C3D4E49001CD53B /* NSData+CRC.m in Sources */,
-				E5D9B8AF1CC7E7F9004196C1 /* LocalDMGSyncTests.swift in Sources */,
 				E5251A211CD0BE3F00D873A3 /* DeleteGroups.swift in Sources */,
-				E5D9B8B01CC7EC89004196C1 /* BsyncAdminUpDownSyncTests.swift in Sources */,
 				E52519B21CD0BE3F00D873A3 /* TriggersCollectionController.swift in Sources */,
 				E5251A601CD0BE3F00D873A3 /* ReadLockersByQuery.swift in Sources */,
 				E5251A481CD0BE3F00D873A3 /* ReadAliasById.swift in Sources */,

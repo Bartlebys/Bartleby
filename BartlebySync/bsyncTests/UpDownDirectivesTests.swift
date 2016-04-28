@@ -194,15 +194,15 @@ class UpDownDirectivesTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronization should complete")
         
         let runner = BsyncDirectivesRunner()
-        let handlers = ProgressAndCompletionHandler { (success, message) in
+        let handlers = ProgressAndCompletionHandler { (completion) in
             expectation.fulfill()
-            XCTAssertTrue(success, "\(message)")
+            XCTAssertTrue(completion.success, completion.message)
         }
-        handlers.addProgressBlock { (taskIndex, totalTaskCount, taskProgress, message, data) in
-            bprint("\(taskIndex)/\(totalTaskCount)/\(message)", file: #file, function: #function, line: #line)
+        handlers.addProgressBlock { (progression) in
+            bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
         }
         runner.runDirectives(UpDownDirectivesTests._upDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
@@ -213,15 +213,15 @@ class UpDownDirectivesTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronization should complete")
         
         let runner = BsyncDirectivesRunner()
-        let handlers = ProgressAndCompletionHandler { (success, message) in
+        let handlers = ProgressAndCompletionHandler { (completion) in
             expectation.fulfill()
-            XCTAssertTrue(success, "\(message)")
+            XCTAssertTrue(completion.success, completion.message)
         }
-        handlers.addProgressBlock { (taskIndex, totalTaskCount, taskProgress, message, data) in
-            bprint("\(taskIndex)/\(totalTaskCount)/\(message)", file: #file, function: #function, line: #line)
+        handlers.addProgressBlock { (progression) in
+            bprint("\(progression.currentTaskIndex)/\(progression.totalTaskCount)/\(progression.message)", file: #file, function: #function, line: #line)
         }
         runner.runDirectives(UpDownDirectivesTests._downDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
