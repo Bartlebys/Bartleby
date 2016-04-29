@@ -19,15 +19,8 @@ class BsyncDirectivesRunner {
      - parameter handlers:    verbose or not
      */
     
-
+    
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String, handlers: ProgressAndCompletionHandler){
-        // We configure Bartleby
-        Bartleby.configuration.API_BASE_URL=NSURL()
-        Bartleby.configuration.KEY=secretKey
-        Bartleby.configuration.SHARED_SALT=sharedSalt
-        Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=true
-        Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-        
         if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false{
             handlers.on(Completion(success: false, statusCode: Int(EX__BASE), message: "Unexisting path \(filePath)"))
             return
@@ -77,13 +70,13 @@ class BsyncDirectivesRunner {
                 let hashMapviewName:String?=(directives.hashMapViewName == BsyncDirectives.NO_HASHMAPVIEW) ? nil : directives.hashMapViewName
                 
                 self.synchronize( directives.sourceURL!,
-                                                destinationURL: directives.destinationURL!,
-                                                hashMapViewName: hashMapviewName,
-                                                user: directives.user,
-                                                password: directives.password,
-                                                sharedSalt: directives.salt,
-                                                autoCreateTrees: directives.automaticTreeCreation,
-                                                handlers: handlers)
+                                  destinationURL: directives.destinationURL!,
+                                  hashMapViewName: hashMapviewName,
+                                  user: directives.user,
+                                  password: directives.password,
+                                  sharedSalt: directives.salt,
+                                  autoCreateTrees: directives.automaticTreeCreation,
+                                  handlers: handlers)
             }
             
             
@@ -164,7 +157,7 @@ class BsyncDirectivesRunner {
                 runSynchronizationCommand()
             }
         }
-
+        
     }
     
     /**
@@ -239,16 +232,9 @@ class BsyncDirectivesRunner {
             
         }
         
-        if let user = user, let password = password, let sharedSalt = sharedSalt {
-            
-            if let apiBaseURL=url{
-                
-                // Bartleby should have be configured before.
-                // We setup the default base url.
-                
-                Bartleby.configuration.API_BASE_URL=apiBaseURL
-                Bartleby.configuration.SHARED_SALT=sharedSalt
-                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+        if (context.mode() == BsyncMode.SourceIsLocalDestinationIsDistant) || (context.mode() == BsyncMode.SourceIsDistantDestinationIsLocal) {
+            // We need to login before performing sync
+            if let user = user, let password = password {
                 
                 LoginUser.execute(user, withPassword: password, sucessHandler: {
                     print ("Successful login")
@@ -258,14 +244,11 @@ class BsyncDirectivesRunner {
                         handlers.on(Completion(success: false, message:"An error has occured during login: \(context.description)\n"))
                         return
                 })
-                
-            }else{
-                doSync()
             }
-            
-        }else{
+        } else {
             doSync()
         }
+        
     }
-
+    
 }

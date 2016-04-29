@@ -163,7 +163,12 @@ import Foundation
         let handlers=ProgressAndCompletionHandler.handlersFrom(handler)
         
         let runner = BsyncDirectivesRunner()
-        
+     
+        Bartleby.configuration.KEY=secretKey
+        Bartleby.configuration.SHARED_SALT=sharedSalt
+        Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
+        Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+
         runner.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, handlers: handlers)
     }
 }
