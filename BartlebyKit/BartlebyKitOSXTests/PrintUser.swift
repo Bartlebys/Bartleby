@@ -13,29 +13,28 @@ import BartlebyKit
 
 // MARK: - Using a Task (that s the best approach)
 
-public class PrintUser: Task {
-    
+public class PrintUser: Task,ConcreteTask{
+
     // Initializes with the arguments
-    // You MUST IMPLEMENT type safety
-    // and throw SerializableInvocationError.ArgumentsTypeMisMatch
-    public required convenience init<ArgumentType:Serializable>(arguments:ArgumentType)throws{
+    required convenience public init(arguments:Serializable){
         self.init()
-        // You should guarantee type safety on init
-        if arguments is User{
-            self.argumentsData=arguments.serialize()
-        }else{
-            throw SerializableInvocationError.ArgumentsTypeMisMatch
-        }
+        self.argumentsData=arguments.serialize()
     }
     
-    override public func invoke() {
-        if let user:User = try? self.arguments(){
-            if let email = user.email{
-                bprint("\(email)",file:#file,function:#function,line: #line)
-            }else{
-                bprint("\(user.UID)",file:#file,function:#function,line: #line)
+     public func invoke() {
+        do {
+            if let user:User = try self.arguments() as User{
+                if let email = user.email{
+                    bprint("\(email)",file:#file,function:#function,line: #line)
+                }else{
+                    bprint("\(user.UID)",file:#file,function:#function,line: #line)
+                }
+                
             }
-            
+        }catch let e{
+            bprint("\(e)",file:#file,function:#function,line:#line)
         }
+        
     }
+    
 }

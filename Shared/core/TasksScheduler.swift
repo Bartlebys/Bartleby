@@ -8,22 +8,6 @@
 
 import Foundation
 
-extension Task{
-    dynamic var linearTaskList:[Task]{
-        get{
-            // Return a linear task List
-            var tasks=[Task]()
-            func childrens(parent:Task, inout tasks:[Task]){
-                tasks.append(parent)
-                for child in parent.children{
-                    childrens(child, tasks: &tasks)
-                }
-            }
-            childrens(self, tasks: &tasks)
-            return tasks
-        }
-    }
-}
 
 public extension TasksGroup{
     
@@ -31,7 +15,9 @@ public extension TasksGroup{
         // We start all the tasks
         // TODO @bpds(#FEATURE) support tasks graphs
         for task in self.tasks{
-            task.invoke()
+            if let invocableTask = task as? Invocable{
+                invocableTask.invoke()
+            }
         }
 
     }

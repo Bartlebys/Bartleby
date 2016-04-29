@@ -90,6 +90,17 @@ Documents can be shared between iOS, tvOS and OSX.
         }
     }
     
+    public var rootUser:User{
+        get{
+            if let rootUser=self.registryMetadata.rootUser{
+                return rootUser
+            }else{
+                return User()
+            }
+        }
+    }
+    
+    
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded:Bool=false
     

@@ -583,6 +583,11 @@ import UIKit
     required public init() {
         super.init()
     }
+    #else
+
+    public required init(fileURL url: NSURL) {
+        super.init(fileURL: url)
+    }
 
     #endif
 

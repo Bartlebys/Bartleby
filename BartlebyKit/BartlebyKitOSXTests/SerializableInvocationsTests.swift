@@ -23,15 +23,13 @@ class SerializableInvocationsTests: XCTestCase {
     func test001_PrintUserTask(){
         let user=User()
         user.email="bpds@me.com"
-        if let printer =  try? PrintUser(arguments:user){
-            let serializedInvocation=printer.serialize()
-            if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser{
-                deserializedInvocation.invoke()
-                XCTAssert(true)
-            }else{
-                XCTFail("Deserialization as failed")
-            }
-
+        let printer =  PrintUser(arguments:user)
+        let serializedInvocation=printer.serialize()
+        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser{
+            deserializedInvocation.invoke()
+            XCTAssert(true)
+        }else{
+            XCTFail("Deserialization as failed")
         }
     }
     
@@ -39,15 +37,13 @@ class SerializableInvocationsTests: XCTestCase {
     func test002_PrintUserTask_Dynamic(){
         let user=User()
         user.email="benoit@pereira-da-silva.com"
-        if let printer =  try? PrintUser(arguments:user){
-            let serializedInvocation=printer.serialize()
-            if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? SerializableInvocation{
-                deserializedInvocation.invoke()
-                XCTAssert(true)
-            }else{
-                XCTFail("Deserialization as failed")
-            }
-            
+        let printer = PrintUser(arguments:user)
+        let serializedInvocation=printer.serialize()
+        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? ConcreteTask{
+            deserializedInvocation.invoke()
+            XCTAssert(true)
+        }else{
+            XCTFail("Deserialization as failed")
         }
     }
     
@@ -55,15 +51,15 @@ class SerializableInvocationsTests: XCTestCase {
         let user=User()
         user.email="benoit@chaosmose.com"
         do{
-            let invocation = try PrintUser(arguments:user)
+            let invocation = PrintUser(arguments:user)
             // Serialize to NSData
             let serializedInvocation:NSData=invocation.serialize()
             // Try to execute
-            try serializedInvocation.executeSerializedInvocation()
+            try serializedInvocation.executeSerializedTask()
             XCTAssert(true)
         }catch let exception{
             XCTFail("\(exception)")
         }
     }
-
+    
 }

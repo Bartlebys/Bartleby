@@ -68,7 +68,7 @@ import Foundation
     func attachVolume(identifiedBy card:BsyncDMGCard,
                                    callBack:(CompletionHandler))->(){
         let password=card.getPasswordForDMG()
-        self.attachVolume(from: card.path, withPassword: password, callBack:callBack)
+        self.attachVolume(from: card.imagePath, withPassword: password, callBack:callBack)
         
     }
     

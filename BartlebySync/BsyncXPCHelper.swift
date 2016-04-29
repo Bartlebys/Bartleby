@@ -85,7 +85,7 @@ public class BsyncXPCHelperDMGHandler {
             
             
             // The url is validated by card.evaluate()
-            let url=NSURL(fileURLWithPath:card.path)
+            let url=NSURL(fileURLWithPath:card.imagePath)
             let imageFolderPath:String!=url.URLByDeletingLastPathComponent?.path!
             
             if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -100,10 +100,10 @@ public class BsyncXPCHelperDMGHandler {
                         
                         if success {
                             // The destination has been Successfully created
-                            xpc.fileExistsAtPath(card.path, callBack: { (exists, isADirectory,success, message) -> () in
+                            xpc.fileExistsAtPath(card.imagePath, callBack: { (exists, isADirectory,success, message) -> () in
                                 if exists {
                                     // We preserve existing DMGs !
-                                    completion.callBlock(Completion(success: false,message: NSLocalizedString("The disk image already exists ",comment:"The disk image already exists ") + "\(card.path)"))
+                                    completion.callBlock(Completion(success: false,message: NSLocalizedString("The disk image already exists ",comment:"The disk image already exists ") + "\(card.imagePath)"))
                                     self.bsyncConnection.invalidate()
                                 }else{
                                     
@@ -113,7 +113,7 @@ public class BsyncXPCHelperDMGHandler {
                                     // *********************************
                                     
                                     xpc.createImageDisk(
-                                        card.path,
+                                        card.imagePath,
                                         volumeName:card.volumeName ,
                                         size:card.size,
                                         password:card.getPasswordForDMG(),
@@ -235,7 +235,7 @@ public class BsyncXPCHelperDMGHandler {
                 // This sub method can be called directly
                 // Or after detaching the volume (if there is volume with the name of this DMG)
                 func mountDMG(){
-                    xpc.attachVolume(from: card.path,
+                    xpc.attachVolume(from: card.imagePath,
                         withPassword: card.getPasswordForDMG(),
                         callBack: {
                             (mountCompletionRef) -> () in
@@ -324,7 +324,7 @@ public class BsyncXPCHelperDMGHandler {
         let card=BsyncDMGCard()
         card.contextUID=context.UID
         card.userUID=user.UID
-        card.path=imagePath
+        card.imagePath=imagePath
         card.volumeName=volumeName
         card.directivesRelativePath=BsyncDirectives.DEFAULT_FILE_NAME
         return card

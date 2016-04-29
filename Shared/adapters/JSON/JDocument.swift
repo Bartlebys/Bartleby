@@ -21,7 +21,7 @@ import ObjectMapper
     
     private var _fileURL: NSURL
     
-    public init(fileURL url: NSURL) {
+    public required init(fileURL url: NSURL) {
         self._fileURL = url
         super.init(fileUrl: url)
     }

@@ -18,11 +18,11 @@ import ObjectMapper
 @objc(TasksGroup) public class TasksGroup : BaseObject{
 
 
-	//AbstractTask.Status (TODO @BPDS find a better solution?)
-	public var status:String = "\(AbstractTask.Status.New)"
-	//AbstractTask.Priority(TODO @BPDS find a better solution?)
-	public var priority:String = "\(AbstractTask.Priority.Default)"
-	//A collection of Concrete Tasks
+	//Task.Status
+	public var status:String = "\(Task.Status.New)"
+	//Task.Priority
+	public var priority:String = "\(Task.Priority.Default)"
+	//A collection of Tasks
 	public var tasks:[Task] = [Task]()
 	//The progression state of the group
 	public var progressionState:Progression = Progression()

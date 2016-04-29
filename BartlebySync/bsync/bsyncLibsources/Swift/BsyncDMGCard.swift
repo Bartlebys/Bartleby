@@ -39,7 +39,7 @@ protocol IdentifiableCardContext{
     
     // The last kwnow path (if not correct the client should ask for a path)
     // The full path including the ".sparseimage" extension.
-    public var path:String=BsyncDMGCard.NOT_SET
+    public var imagePath:String=BsyncDMGCard.NOT_SET
     
     // The associated volumeName
     public var volumeName:String=BsyncDMGCard.NOT_SET
@@ -91,18 +91,18 @@ protocol IdentifiableCardContext{
         
         // TODO: @md refacor
         // Test the path
-        let url=NSURL(fileURLWithPath:path,isDirectory:false)
+        let url=NSURL(fileURLWithPath:imagePath,isDirectory:false)
         let ext=url.pathExtension
         if ext != BsyncDMGCard.DMG_EXTENSION {
-            return Completion(success: false, message: NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(path)")
+            return Completion(success: false, message: NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(imagePath)")
         }
         
         // Verify that everything has been set.
         if (userUID == BsyncDMGCard.NOT_SET ||
             contextUID == BsyncDMGCard.NOT_SET ||
-            path == BsyncDMGCard.NOT_SET ||
+            imagePath == BsyncDMGCard.NOT_SET ||
             volumeName == BsyncDMGCard.NOT_SET){
-            return Completion(success: false, message: NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(path),\n volumeName = \(volumeName)\n")
+            return Completion(success: false, message: NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n")
         }else{
             return Completion(success: true)
         }
@@ -112,7 +112,7 @@ protocol IdentifiableCardContext{
     public func mapping(map: Map) {
         userUID <- (map["userUID"],CryptedStringTransform())
         contextUID <- (map["contextUID"],CryptedStringTransform())
-        path <- (map["path"],CryptedStringTransform())
+        imagePath <- (map["path"],CryptedStringTransform())
         volumeName <- (map["volumeName"],CryptedStringTransform())
         directivesRelativePath <- (map["directivesRelativePath"],CryptedStringTransform())
     }
@@ -123,7 +123,7 @@ protocol IdentifiableCardContext{
     public func encodeWithCoder(coder: NSCoder){
         coder.encodeObject(userUID, forKey: "userUID")
         coder.encodeObject(contextUID, forKey: "contextUID")
-        coder.encodeObject(path, forKey: "path")
+        coder.encodeObject(imagePath, forKey: "path")
         coder.encodeObject(volumeName, forKey: "volumeName")
         coder.encodeObject(directivesRelativePath, forKey: "directivesRelativePath")
     }
@@ -131,7 +131,7 @@ protocol IdentifiableCardContext{
     public required init?(coder decoder: NSCoder){
         self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
         self.contextUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "contextUID")! as NSString)
-        self.path=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
+        self.imagePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
         self.volumeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "volumeName")! as NSString)
         self.directivesRelativePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "directivesRelativePath")! as NSString)
     }

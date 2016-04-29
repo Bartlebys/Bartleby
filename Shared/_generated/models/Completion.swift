@@ -24,7 +24,7 @@ import ObjectMapper
 	public var statusCode:Int = 0
 	//The Message
 	public var message:String = ""
-	//The associated data
+	//completion data
 	public var data:NSData?
 
 
