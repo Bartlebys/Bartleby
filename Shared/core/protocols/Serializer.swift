@@ -11,7 +11,16 @@
 import Foundation
 
 
+// NSDATA is an Opaque binary TYPE
+// A serializer should uses defines it own dialect.
+// Instance of Type X -> NSData
+// NSData -> Instance of Type X
+
+
+
 public protocol Serializer{
+    
+    // MARK : - Static
     
     /**
      Deserializes a fully typed object
@@ -24,9 +33,6 @@ public protocol Serializer{
     
     static func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
     
-    func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
-    
-    
     /**
      Serialize an instance
      
@@ -37,6 +43,8 @@ public protocol Serializer{
     static func serialize(instance:Serializable) -> NSData
     
     
+    // MARK : - Instance
+
     /**
      Deserializes a fully typed object
      
@@ -46,6 +54,7 @@ public protocol Serializer{
      */
     func deserialize(data:NSData) -> Serializable
     
+    func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
     
     /**
      Serialize an instance

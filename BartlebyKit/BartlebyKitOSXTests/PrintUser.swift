@@ -11,7 +11,7 @@ import ObjectMapper
 import BartlebyKit
 
 
-// MARK: - Using a Task (that s the best approach)
+// MARK: - Using a Task
 
 public class PrintUser: Task,ConcreteTask{
 
@@ -29,7 +29,6 @@ public class PrintUser: Task,ConcreteTask{
                 }else{
                     bprint("\(user.UID)",file:#file,function:#function,line: #line)
                 }
-                
             }
         }catch let e{
             bprint("\(e)",file:#file,function:#function,line:#line)

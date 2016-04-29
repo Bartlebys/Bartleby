@@ -607,7 +607,7 @@ Documents can be shared between iOS, tvOS and OSX.
                     if Registry.encryptedMetadata {
                         metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
                     }
-                    let r=JSerializer.deserialize(metadataNSData)
+                    let r=self.serializer.deserialize(metadataNSData)
                     if let registryMetadata=r as? JRegistryMetadata{
                         self.registryMetadata=registryMetadata
                     }else{

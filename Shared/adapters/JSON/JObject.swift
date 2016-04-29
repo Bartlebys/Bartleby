@@ -21,6 +21,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
 }
 
 
+// JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
+
 // Notice the @objc(Name)
 // http://stackoverflow.com/a/24196632/341994
 // MARK: - JObject Class
@@ -229,12 +231,13 @@ extension JObject:Serializable{
         return JSerializer.deserialize(data)
     }
     
-    
+}
+
+extension JObject:DictionaryRepresentation{
     
     public func dictionaryRepresentation()->[String:AnyObject]{
         return Mapper().toJSON(self)
     }
-    
 }
 
 

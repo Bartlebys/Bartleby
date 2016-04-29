@@ -11,7 +11,6 @@
 import Foundation
 
 
-
 /**
  *   Any object that is serializable can be serialized deserialized
  */
@@ -40,7 +39,11 @@ public protocol Serializable  {
      - returns: the patched Object
      */
     func updateData(data:NSData) ->Serializable
-    
+}
+
+
+
+public protocol DictionaryRepresentation{
     /**
      Should return a dictionary composed of native members that can be serialized (!)
      
@@ -49,7 +52,6 @@ public protocol Serializable  {
     func dictionaryRepresentation()->[String:AnyObject]
 
 }
-
 
 
 public enum SerializableError : ErrorType {
