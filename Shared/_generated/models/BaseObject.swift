@@ -39,11 +39,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		committed <- map["committed"]
-		distributed <- map["distributed"]
-		creatorUID <- map["creatorUID"]
-		groupUID <- map["groupUID"]
-		summary <- map["summary"]
+		self.committed <- map["committed"]
+		self.distributed <- map["distributed"]
+		self.creatorUID <- map["creatorUID"]
+		self.groupUID <- map["groupUID"]
+		self.summary <- map["summary"]
     }
 
 
@@ -51,20 +51,20 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		committed=decoder.decodeBoolForKey("committed") 
-		distributed=decoder.decodeBoolForKey("distributed") 
-		creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
-		groupUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "groupUID")! as NSString)
-		summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
+		self.committed=decoder.decodeBoolForKey("committed") 
+		self.distributed=decoder.decodeBoolForKey("distributed") 
+		self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
+		self.groupUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "groupUID")! as NSString)
+		self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeBool(committed,forKey:"committed")
-		coder.encodeBool(distributed,forKey:"distributed")
-		coder.encodeObject(creatorUID,forKey:"creatorUID")
-		coder.encodeObject(groupUID,forKey:"groupUID")
+		coder.encodeBool(self.committed,forKey:"committed")
+		coder.encodeBool(self.distributed,forKey:"distributed")
+		coder.encodeObject(self.creatorUID,forKey:"creatorUID")
+		coder.encodeObject(self.groupUID,forKey:"groupUID")
 		if let summary = self.summary {
 			coder.encodeObject(summary,forKey:"summary")
 		}

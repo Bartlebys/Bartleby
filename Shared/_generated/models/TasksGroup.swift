@@ -18,7 +18,7 @@ import ObjectMapper
 @objc(TasksGroup) public class TasksGroup : BaseObject{
 
 
-	//Task.Status
+	//A task status
 	public var status:String = "\(Task.Status.New)"
 	//Task.Priority
 	public var priority:String = "\(Task.Priority.Default)"
@@ -29,7 +29,7 @@ import ObjectMapper
 	//The completion state of the group
 	public var completionState:Completion = Completion()
 	//The group name
-	public var name:String?
+	public var name:String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -41,12 +41,12 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		status <- map["status"]
-		priority <- map["priority"]
-		tasks <- map["tasks"]
-		progressionState <- map["progressionState"]
-		completionState <- map["completionState"]
-		name <- map["name"]
+		self.status <- map["status"]
+		self.priority <- map["priority"]
+		self.tasks <- map["tasks"]
+		self.progressionState <- map["progressionState"]
+		self.completionState <- map["completionState"]
+		self.name <- map["name"]
     }
 
 
@@ -54,25 +54,23 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		status=String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString)
-		priority=String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString)
-		tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
-		name=String(decoder.decodeObjectOfClass(NSString.self, forKey:"name") as NSString?)
+		self.status=String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString)
+		self.priority=String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString)
+		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(status,forKey:"status")
-		coder.encodeObject(priority,forKey:"priority")
-		coder.encodeObject(tasks,forKey:"tasks")
-		coder.encodeObject(progressionState,forKey:"progressionState")
-		coder.encodeObject(completionState,forKey:"completionState")
-		if let name = self.name {
-			coder.encodeObject(name,forKey:"name")
-		}
+		coder.encodeObject(self.status,forKey:"status")
+		coder.encodeObject(self.priority,forKey:"priority")
+		coder.encodeObject(self.tasks,forKey:"tasks")
+		coder.encodeObject(self.progressionState,forKey:"progressionState")
+		coder.encodeObject(self.completionState,forKey:"completionState")
+		coder.encodeObject(self.name,forKey:"name")
     }
 
 

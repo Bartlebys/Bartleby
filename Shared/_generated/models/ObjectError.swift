@@ -31,7 +31,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		message <- map["message"]
+		self.message <- map["message"]
     }
 
 
@@ -39,7 +39,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		message=String(decoder.decodeObjectOfClass(NSString.self, forKey:"message") as NSString?)
+		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey:"message") as NSString?)
 
     }
 

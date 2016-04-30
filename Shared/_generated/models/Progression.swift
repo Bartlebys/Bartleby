@@ -39,11 +39,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		currentTaskIndex <- map["currentTaskIndex"]
-		totalTaskCount <- map["totalTaskCount"]
-		currentTaskProgress <- map["currentTaskProgress"]
-		message <- map["message"]
-		data <- (map["data"],Base64DataTransform())
+		self.currentTaskIndex <- map["currentTaskIndex"]
+		self.totalTaskCount <- map["totalTaskCount"]
+		self.currentTaskProgress <- map["currentTaskProgress"]
+		self.message <- map["message"]
+		self.data <- (map["data"],Base64DataTransform())
     }
 
 
@@ -51,20 +51,20 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		currentTaskIndex=decoder.decodeIntegerForKey("currentTaskIndex") 
-		totalTaskCount=decoder.decodeIntegerForKey("totalTaskCount") 
-		currentTaskProgress=decoder.decodeDoubleForKey("currentTaskProgress") 
-		message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
-		data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
+		self.currentTaskIndex=decoder.decodeIntegerForKey("currentTaskIndex") 
+		self.totalTaskCount=decoder.decodeIntegerForKey("totalTaskCount") 
+		self.currentTaskProgress=decoder.decodeDoubleForKey("currentTaskProgress") 
+		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
+		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeInteger(currentTaskIndex,forKey:"currentTaskIndex")
-		coder.encodeInteger(totalTaskCount,forKey:"totalTaskCount")
-		coder.encodeDouble(currentTaskProgress,forKey:"currentTaskProgress")
-		coder.encodeObject(message,forKey:"message")
+		coder.encodeInteger(self.currentTaskIndex,forKey:"currentTaskIndex")
+		coder.encodeInteger(self.totalTaskCount,forKey:"totalTaskCount")
+		coder.encodeDouble(self.currentTaskProgress,forKey:"currentTaskProgress")
+		coder.encodeObject(self.message,forKey:"message")
 		if let data = self.data {
 			coder.encodeObject(data,forKey:"data")
 		}

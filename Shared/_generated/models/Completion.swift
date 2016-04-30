@@ -37,10 +37,10 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		success <- map["success"]
-		statusCode <- map["statusCode"]
-		message <- map["message"]
-		data <- (map["data"],Base64DataTransform())
+		self.success <- map["success"]
+		self.statusCode <- map["statusCode"]
+		self.message <- map["message"]
+		self.data <- (map["data"],Base64DataTransform())
     }
 
 
@@ -48,18 +48,18 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		success=decoder.decodeBoolForKey("success") 
-		statusCode=decoder.decodeIntegerForKey("statusCode") 
-		message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
-		data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
+		self.success=decoder.decodeBoolForKey("success") 
+		self.statusCode=decoder.decodeIntegerForKey("statusCode") 
+		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
+		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeBool(success,forKey:"success")
-		coder.encodeInteger(statusCode,forKey:"statusCode")
-		coder.encodeObject(message,forKey:"message")
+		coder.encodeBool(self.success,forKey:"success")
+		coder.encodeInteger(self.statusCode,forKey:"statusCode")
+		coder.encodeObject(self.message,forKey:"message")
 		if let data = self.data {
 			coder.encodeObject(data,forKey:"data")
 		}

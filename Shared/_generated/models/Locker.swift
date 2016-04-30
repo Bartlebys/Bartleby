@@ -55,16 +55,16 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		spaceUID <- map["spaceUID"]
-		subjectUID <- map["subjectUID"]
-		userUID <- map["userUID"]
-		mode <- map["mode"]
-		verificationMethod <- map["verificationMethod"]
-		code <- map["code"]
-		numberOfAttempt <- map["numberOfAttempt"]
-		startDate <- (map["startDate"],ISO8601DateTransform())
-		endDate <- (map["endDate"],ISO8601DateTransform())
-		cake <- map["cake"]
+		self.spaceUID <- map["spaceUID"]
+		self.subjectUID <- map["subjectUID"]
+		self.userUID <- map["userUID"]
+		self.mode <- map["mode"]
+		self.verificationMethod <- map["verificationMethod"]
+		self.code <- map["code"]
+		self.numberOfAttempt <- map["numberOfAttempt"]
+		self.startDate <- (map["startDate"],ISO8601DateTransform())
+		self.endDate <- (map["endDate"],ISO8601DateTransform())
+		self.cake <- map["cake"]
     }
 
 
@@ -72,16 +72,16 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
-		subjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "subjectUID")! as NSString)
-		userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
-		mode=Locker.Mode(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "mode")! as NSString))! 
-		verificationMethod=Locker.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
-		code=String(decoder.decodeObjectOfClass(NSString.self, forKey: "code")! as NSString)
-		numberOfAttempt=decoder.decodeIntegerForKey("numberOfAttempt") 
-		startDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "startDate")! as NSDate
-		endDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "endDate")! as NSDate
-		cake=String(decoder.decodeObjectOfClass(NSString.self, forKey: "cake")! as NSString)
+		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
+		self.subjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "subjectUID")! as NSString)
+		self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
+		self.mode=Locker.Mode(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "mode")! as NSString))! 
+		self.verificationMethod=Locker.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
+		self.code=String(decoder.decodeObjectOfClass(NSString.self, forKey: "code")! as NSString)
+		self.numberOfAttempt=decoder.decodeIntegerForKey("numberOfAttempt") 
+		self.startDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "startDate")! as NSDate
+		self.endDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "endDate")! as NSDate
+		self.cake=String(decoder.decodeObjectOfClass(NSString.self, forKey: "cake")! as NSString)
 
     }
 
@@ -90,15 +90,15 @@ import ObjectMapper
 		if let spaceUID = self.spaceUID {
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
-		coder.encodeObject(subjectUID,forKey:"subjectUID")
-		coder.encodeObject(userUID,forKey:"userUID")
-		coder.encodeObject(mode.rawValue ,forKey:"mode")
-		coder.encodeObject(verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encodeObject(code,forKey:"code")
-		coder.encodeInteger(numberOfAttempt,forKey:"numberOfAttempt")
-		coder.encodeObject(startDate,forKey:"startDate")
-		coder.encodeObject(endDate,forKey:"endDate")
-		coder.encodeObject(cake,forKey:"cake")
+		coder.encodeObject(self.subjectUID,forKey:"subjectUID")
+		coder.encodeObject(self.userUID,forKey:"userUID")
+		coder.encodeObject(self.mode.rawValue ,forKey:"mode")
+		coder.encodeObject(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encodeObject(self.code,forKey:"code")
+		coder.encodeInteger(self.numberOfAttempt,forKey:"numberOfAttempt")
+		coder.encodeObject(self.startDate,forKey:"startDate")
+		coder.encodeObject(self.endDate,forKey:"endDate")
+		coder.encodeObject(self.cake,forKey:"cake")
     }
 
 

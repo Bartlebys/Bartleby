@@ -34,9 +34,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		callString <- map["callString"]
-		level <- map["level"]
-		rule <- map["rule"]
+		self.callString <- map["callString"]
+		self.level <- map["level"]
+		self.rule <- map["rule"]
     }
 
 
@@ -44,9 +44,9 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		callString=String(decoder.decodeObjectOfClass(NSString.self, forKey:"callString") as NSString?)
-		level=decoder.decodeIntegerForKey("level") 
-		rule=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "rule") as? [String]
+		self.callString=String(decoder.decodeObjectOfClass(NSString.self, forKey:"callString") as NSString?)
+		self.level=decoder.decodeIntegerForKey("level") 
+		self.rule=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "rule") as? [String]
 
     }
 

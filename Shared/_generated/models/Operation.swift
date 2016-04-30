@@ -51,14 +51,14 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		toDictionary <- map["toDictionary"]
-		responseDictionary <- map["responseDictionary"]
-		baseUrl <- (map["baseUrl"],URLTransform())
-		status <- map["status"]
-		spaceUID <- map["spaceUID"]
-		counter <- map["counter"]
-		creationDate <- (map["creationDate"],ISO8601DateTransform())
-		lastInvocationDate <- (map["lastInvocationDate"],ISO8601DateTransform())
+		self.toDictionary <- map["toDictionary"]
+		self.responseDictionary <- map["responseDictionary"]
+		self.baseUrl <- (map["baseUrl"],URLTransform())
+		self.status <- map["status"]
+		self.spaceUID <- map["spaceUID"]
+		self.counter <- map["counter"]
+		self.creationDate <- (map["creationDate"],ISO8601DateTransform())
+		self.lastInvocationDate <- (map["lastInvocationDate"],ISO8601DateTransform())
     }
 
 
@@ -66,14 +66,14 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? Dictionary<String, AnyObject>
-		responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? Dictionary<String, AnyObject>
-		baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
-		status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		counter=decoder.decodeIntegerForKey("counter") 
-		creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
-		lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
+		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? Dictionary<String, AnyObject>
+		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? Dictionary<String, AnyObject>
+		self.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
+		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
+		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.counter=decoder.decodeIntegerForKey("counter") 
+		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
+		self.lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
 
     }
 
@@ -88,8 +88,8 @@ import ObjectMapper
 		if let baseUrl = self.baseUrl {
 			coder.encodeObject(baseUrl,forKey:"baseUrl")
 		}
-		coder.encodeObject(status.rawValue ,forKey:"status")
-		coder.encodeObject(spaceUID,forKey:"spaceUID")
+		coder.encodeObject(self.status.rawValue ,forKey:"status")
+		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
 		if let counter = self.counter {
 			coder.encodeInteger(counter,forKey:"counter")
 		}

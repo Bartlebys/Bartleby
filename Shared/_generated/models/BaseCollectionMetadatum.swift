@@ -43,11 +43,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		storage <- map["storage"]
-		collectionName <- map["collectionName"]
-		allowDistantPersistency <- map["allowDistantPersistency"]
-		inMemory <- map["inMemory"]
-		observableViaUID <- map["observableViaUID"]
+		self.storage <- map["storage"]
+		self.collectionName <- map["collectionName"]
+		self.allowDistantPersistency <- map["allowDistantPersistency"]
+		self.inMemory <- map["inMemory"]
+		self.observableViaUID <- map["observableViaUID"]
     }
 
 
@@ -55,21 +55,21 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		storage=BaseCollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
-		collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
-		allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
-		inMemory=decoder.decodeBoolForKey("inMemory") 
-		observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
+		self.storage=BaseCollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
+		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
+		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
+		self.inMemory=decoder.decodeBoolForKey("inMemory") 
+		self.observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(storage.rawValue ,forKey:"storage")
-		coder.encodeObject(collectionName,forKey:"collectionName")
-		coder.encodeBool(allowDistantPersistency,forKey:"allowDistantPersistency")
-		coder.encodeBool(inMemory,forKey:"inMemory")
-		coder.encodeObject(observableViaUID,forKey:"observableViaUID")
+		coder.encodeObject(self.storage.rawValue ,forKey:"storage")
+		coder.encodeObject(self.collectionName,forKey:"collectionName")
+		coder.encodeBool(self.allowDistantPersistency,forKey:"allowDistantPersistency")
+		coder.encodeBool(self.inMemory,forKey:"inMemory")
+		coder.encodeObject(self.observableViaUID,forKey:"observableViaUID")
     }
 
 

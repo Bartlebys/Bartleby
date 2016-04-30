@@ -61,18 +61,18 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		spaceUID <- map["spaceUID"]
-		verificationMethod <- map["verificationMethod"]
-		firstname <- map["firstname"]
-		lastname <- map["lastname"]
-		email <- map["email"]
-		phoneNumber <- map["phoneNumber"]
-		password <- map["password"]
-		activationCode <- map["activationCode"]
-		status <- map["status"]
-		tags <- map["tags"]
-		groups <- map["groups"]
-		notes <- map["notes"]
+		self.spaceUID <- map["spaceUID"]
+		self.verificationMethod <- map["verificationMethod"]
+		self.firstname <- map["firstname"]
+		self.lastname <- map["lastname"]
+		self.email <- map["email"]
+		self.phoneNumber <- map["phoneNumber"]
+		self.password <- map["password"]
+		self.activationCode <- map["activationCode"]
+		self.status <- map["status"]
+		self.tags <- map["tags"]
+		self.groups <- map["groups"]
+		self.notes <- map["notes"]
     }
 
 
@@ -80,38 +80,38 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
-		firstname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "firstname")! as NSString)
-		lastname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "lastname")! as NSString)
-		email=String(decoder.decodeObjectOfClass(NSString.self, forKey:"email") as NSString?)
-		phoneNumber=String(decoder.decodeObjectOfClass(NSString.self, forKey:"phoneNumber") as NSString?)
-		password=String(decoder.decodeObjectOfClass(NSString.self, forKey: "password")! as NSString)
-		activationCode=String(decoder.decodeObjectOfClass(NSString.self, forKey: "activationCode")! as NSString)
-		status=User.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "tags")! as! [Alias]
-		groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "groups")! as! [Alias]
-		notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
+		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
+		self.firstname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "firstname")! as NSString)
+		self.lastname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "lastname")! as NSString)
+		self.email=String(decoder.decodeObjectOfClass(NSString.self, forKey:"email") as NSString?)
+		self.phoneNumber=String(decoder.decodeObjectOfClass(NSString.self, forKey:"phoneNumber") as NSString?)
+		self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey: "password")! as NSString)
+		self.activationCode=String(decoder.decodeObjectOfClass(NSString.self, forKey: "activationCode")! as NSString)
+		self.status=User.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
+		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "tags")! as! [Alias]
+		self.groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "groups")! as! [Alias]
+		self.notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(spaceUID,forKey:"spaceUID")
-		coder.encodeObject(verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encodeObject(firstname,forKey:"firstname")
-		coder.encodeObject(lastname,forKey:"lastname")
+		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
+		coder.encodeObject(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encodeObject(self.firstname,forKey:"firstname")
+		coder.encodeObject(self.lastname,forKey:"lastname")
 		if let email = self.email {
 			coder.encodeObject(email,forKey:"email")
 		}
 		if let phoneNumber = self.phoneNumber {
 			coder.encodeObject(phoneNumber,forKey:"phoneNumber")
 		}
-		coder.encodeObject(password,forKey:"password")
-		coder.encodeObject(activationCode,forKey:"activationCode")
-		coder.encodeObject(status.rawValue ,forKey:"status")
-		coder.encodeObject(tags,forKey:"tags")
-		coder.encodeObject(groups,forKey:"groups")
+		coder.encodeObject(self.password,forKey:"password")
+		coder.encodeObject(self.activationCode,forKey:"activationCode")
+		coder.encodeObject(self.status.rawValue ,forKey:"status")
+		coder.encodeObject(self.tags,forKey:"tags")
+		coder.encodeObject(self.groups,forKey:"groups")
 		if let notes = self.notes {
 			coder.encodeObject(notes,forKey:"notes")
 		}

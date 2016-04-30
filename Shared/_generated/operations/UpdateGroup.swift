@@ -37,15 +37,15 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		_group <- map["_group"]
-		_spaceUID <- map["_spaceUID"]
-		_observationUID <- map["_observationUID"]
-		_operation.spaceUID <- map["_operation.spaceUID"]
-		_operation.creatorUID <- map["_operation.creatorUID"]
-		_operation.status <- map["_operation.status"]
-		_operation.counter <- map["_operation.counter"]
-		_operation.creationDate <- (map["_operation.creationDate"],ISO8601DateTransform())
-		_operation.baseUrl <- (map["_operation.baseUrl"],URLTransform())
+		self._group <- map["_group"]
+		self._spaceUID <- map["_spaceUID"]
+		self._observationUID <- map["_observationUID"]
+		self._operation.spaceUID <- map["_operation.spaceUID"]
+		self._operation.creatorUID <- map["_operation.creatorUID"]
+		self._operation.status <- map["_operation.status"]
+		self._operation.counter <- map["_operation.counter"]
+		self._operation.creationDate <- (map["_operation.creationDate"],ISO8601DateTransform())
+		self._operation.baseUrl <- (map["_operation.baseUrl"],URLTransform())
     }
 
 
@@ -53,26 +53,26 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		_group=decoder.decodeObjectOfClass(Group.self, forKey: "_group")! 
-		_spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
-		_observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
-		_operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
-		_operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
-		_operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
-		_operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
-		_operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
-		_operation.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"_operation.baseUrl") as NSURL?
+		self._group=decoder.decodeObjectOfClass(Group.self, forKey: "_group")! 
+		self._spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
+		self._observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
+		self._operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
+		self._operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
+		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
+		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
+		self._operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
+		self._operation.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"_operation.baseUrl") as NSURL?
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(_group,forKey:"_group")
-		coder.encodeObject(_spaceUID,forKey:"_spaceUID")
-		coder.encodeObject(_observationUID,forKey:"_observationUID")
-		coder.encodeObject(_operation.spaceUID,forKey:"_operation.spaceUID")
-		coder.encodeObject(_operation.creatorUID,forKey:"_operation.creatorUID")
-		coder.encodeObject(_operation.status.rawValue ,forKey:"_operation.status")
+		coder.encodeObject(self._group,forKey:"_group")
+		coder.encodeObject(self._spaceUID,forKey:"_spaceUID")
+		coder.encodeObject(self._observationUID,forKey:"_observationUID")
+		coder.encodeObject(self._operation.spaceUID,forKey:"_operation.spaceUID")
+		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
+		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
 		if let _operation_counter = self._operation.counter {
 			coder.encodeInteger(_operation_counter,forKey:"_operation.counter")
 		}

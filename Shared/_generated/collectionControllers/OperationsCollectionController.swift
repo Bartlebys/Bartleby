@@ -112,7 +112,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		items <- map["items"]
+		self.items <- map["items"]
 		_startObservingAllItems()
     }
 
@@ -121,14 +121,14 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Operation.classForCoder()]), forKey: "items")! as! [Operation]
+		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Operation.classForCoder()]), forKey: "items")! as! [Operation]
 		_startObservingAllItems()
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(items,forKey:"items")
+		coder.encodeObject(self.items,forKey:"items")
     }
 
 

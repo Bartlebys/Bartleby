@@ -41,12 +41,12 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		associatedMessage <- map["associatedMessage"]
-		index <- map["index"]
-		observableUID <- map["observableUID"]
-		created <- map["created"]
-		updated <- map["updated"]
-		deleted <- map["deleted"]
+		self.associatedMessage <- map["associatedMessage"]
+		self.index <- map["index"]
+		self.observableUID <- map["observableUID"]
+		self.created <- map["created"]
+		self.updated <- map["updated"]
+		self.deleted <- map["deleted"]
     }
 
 
@@ -54,12 +54,12 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		associatedMessage=String(decoder.decodeObjectOfClass(NSString.self, forKey:"associatedMessage") as NSString?)
-		index=decoder.decodeIntegerForKey("index") 
-		observableUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observableUID") as NSString?)
-		created=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "created")! as! [Alias]
-		updated=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "updated")! as! [Alias]
-		deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "deleted")! as! [Alias]
+		self.associatedMessage=String(decoder.decodeObjectOfClass(NSString.self, forKey:"associatedMessage") as NSString?)
+		self.index=decoder.decodeIntegerForKey("index") 
+		self.observableUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observableUID") as NSString?)
+		self.created=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "created")! as! [Alias]
+		self.updated=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "updated")! as! [Alias]
+		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "deleted")! as! [Alias]
 
     }
 
@@ -74,9 +74,9 @@ import ObjectMapper
 		if let observableUID = self.observableUID {
 			coder.encodeObject(observableUID,forKey:"observableUID")
 		}
-		coder.encodeObject(created,forKey:"created")
-		coder.encodeObject(updated,forKey:"updated")
-		coder.encodeObject(deleted,forKey:"deleted")
+		coder.encodeObject(self.created,forKey:"created")
+		coder.encodeObject(self.updated,forKey:"updated")
+		coder.encodeObject(self.deleted,forKey:"deleted")
     }
 
 

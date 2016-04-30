@@ -31,7 +31,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		iUID <- map["iUID"]
+		self.iUID <- map["iUID"]
     }
 
 
@@ -39,7 +39,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"iUID") as NSString?)
+		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"iUID") as NSString?)
 
     }
 

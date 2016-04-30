@@ -64,17 +64,17 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		status <- map["status"]
-		priority <- map["priority"]
-		parent <- map["parent"]
-		onFailure <- map["onFailure"]
-		children <- map["children"]
-		progressionState <- map["progressionState"]
-		completionState <- map["completionState"]
-		argumentsData <- (map["argumentsData"],Base64DataTransform())
-		resultData <- (map["resultData"],Base64DataTransform())
-		taskClassName <- map["taskClassName"]
-		argumentClassName <- map["argumentClassName"]
+		self.status <- map["status"]
+		self.priority <- map["priority"]
+		self.parent <- map["parent"]
+		self.onFailure <- map["onFailure"]
+		self.children <- map["children"]
+		self.progressionState <- map["progressionState"]
+		self.completionState <- map["completionState"]
+		self.argumentsData <- (map["argumentsData"],Base64DataTransform())
+		self.resultData <- (map["resultData"],Base64DataTransform())
+		self.taskClassName <- map["taskClassName"]
+		self.argumentClassName <- map["argumentClassName"]
     }
 
 
@@ -82,33 +82,33 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		status=Task.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		priority=Task.Priority(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString))! 
-		parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
-		onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
-		children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "children")! as! [Task]
-		progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
-		argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
-		resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
-		taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"taskClassName") as NSString?)
-		argumentClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"argumentClassName") as NSString?)
+		self.status=Task.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
+		self.priority=Task.Priority(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString))! 
+		self.parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
+		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
+		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "children")! as! [Task]
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
+		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
+		self.taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"taskClassName") as NSString?)
+		self.argumentClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"argumentClassName") as NSString?)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(status.rawValue ,forKey:"status")
-		coder.encodeObject(priority.rawValue ,forKey:"priority")
+		coder.encodeObject(self.status.rawValue ,forKey:"status")
+		coder.encodeObject(self.priority.rawValue ,forKey:"priority")
 		if let parent = self.parent {
 			coder.encodeObject(parent,forKey:"parent")
 		}
 		if let onFailure = self.onFailure {
 			coder.encodeObject(onFailure,forKey:"onFailure")
 		}
-		coder.encodeObject(children,forKey:"children")
-		coder.encodeObject(progressionState,forKey:"progressionState")
-		coder.encodeObject(completionState,forKey:"completionState")
+		coder.encodeObject(self.children,forKey:"children")
+		coder.encodeObject(self.progressionState,forKey:"progressionState")
+		coder.encodeObject(self.completionState,forKey:"completionState")
 		if let argumentsData = self.argumentsData {
 			coder.encodeObject(argumentsData,forKey:"argumentsData")
 		}

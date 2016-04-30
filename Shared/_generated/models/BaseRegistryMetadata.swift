@@ -47,15 +47,15 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		spaceUID <- map["spaceUID"]
-		rootUser <- map["rootUser"]
-		rootObjectUID <- map["rootObjectUID"]
-		collaborationServerURL <- (map["collaborationServerURL"],URLTransform())
-		collectionsMetadata <- map["collectionsMetadata"]
-		stateDictionary <- map["stateDictionary"]
-		URLBookmarkData <- map["URLBookmarkData"]
-		saveThePassword <- map["saveThePassword"]
-		assetsFolderURL <- (map["assetsFolderURL"],URLTransform())
+		self.spaceUID <- map["spaceUID"]
+		self.rootUser <- map["rootUser"]
+		self.rootObjectUID <- map["rootObjectUID"]
+		self.collaborationServerURL <- (map["collaborationServerURL"],URLTransform())
+		self.collectionsMetadata <- map["collectionsMetadata"]
+		self.stateDictionary <- map["stateDictionary"]
+		self.URLBookmarkData <- map["URLBookmarkData"]
+		self.saveThePassword <- map["saveThePassword"]
+		self.assetsFolderURL <- (map["assetsFolderURL"],URLTransform())
     }
 
 
@@ -63,32 +63,32 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		rootUser=decoder.decodeObjectOfClass(User.self, forKey: "rootUser") 
-		rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
-		collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
-		collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),JCollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [JCollectionMetadatum]
-		stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! Dictionary<String, AnyObject>
-		URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! Dictionary<String, AnyObject>
-		saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
-		assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
+		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.rootUser=decoder.decodeObjectOfClass(User.self, forKey: "rootUser") 
+		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
+		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
+		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),JCollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [JCollectionMetadatum]
+		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! Dictionary<String, AnyObject>
+		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! Dictionary<String, AnyObject>
+		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
+		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(spaceUID,forKey:"spaceUID")
+		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
 		if let rootUser = self.rootUser {
 			coder.encodeObject(rootUser,forKey:"rootUser")
 		}
-		coder.encodeObject(rootObjectUID,forKey:"rootObjectUID")
+		coder.encodeObject(self.rootObjectUID,forKey:"rootObjectUID")
 		if let collaborationServerURL = self.collaborationServerURL {
 			coder.encodeObject(collaborationServerURL,forKey:"collaborationServerURL")
 		}
-		coder.encodeObject(collectionsMetadata,forKey:"collectionsMetadata")
-		coder.encodeObject(stateDictionary,forKey:"stateDictionary")
-		coder.encodeObject(URLBookmarkData,forKey:"URLBookmarkData")
-		coder.encodeBool(saveThePassword,forKey:"saveThePassword")
+		coder.encodeObject(self.collectionsMetadata,forKey:"collectionsMetadata")
+		coder.encodeObject(self.stateDictionary,forKey:"stateDictionary")
+		coder.encodeObject(self.URLBookmarkData,forKey:"URLBookmarkData")
+		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")
 		if let assetsFolderURL = self.assetsFolderURL {
 			coder.encodeObject(assetsFolderURL,forKey:"assetsFolderURL")
 		}
