@@ -37,8 +37,8 @@ enum TasksSchedulerError:ErrorType {
     public func provisionTasks(parentTask:Task,groupedBy groupName:String,inDataSpace spaceUID:String) throws -> TasksGroup{
         let group=try self.taskGroupByName(groupName,inDataSpace: spaceUID)
         group.tasks.append(parentTask)
-        group.priority=parentTask.priority
-        group.status=parentTask.status
+        group.priority=TasksGroup.Priority(rawValue:parentTask.priority.rawValue)!
+        group.status=TasksGroup.Status(rawValue:parentTask.status.rawValue)!
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
             document.tasksGroups.add(group)
         }else{
