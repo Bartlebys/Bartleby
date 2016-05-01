@@ -100,7 +100,7 @@ public enum BsyncAdminError:ErrorType{
             admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
                 handler.notify?(Progression(currentTaskIndex:taskIndex, totalTaskCount: totalTaskCount, currentTaskProgress: taskProgress, message: message, data: data))
                 }, andCompletionBlock:{(success, statusCode, message) in
-                    handler.on(Completion(success: success, statusCode: statusCode, message: message))
+                    handler.on(Completion(success: success, statusCode:completionStatusFromExitCodes(statusCode), message: message))
             })
         }else{
             throw BsyncAdminError.UnexistingPdSyncAdmin

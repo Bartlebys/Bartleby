@@ -20,8 +20,8 @@ import ObjectMapper
 
 	//Success if set to true
 	public var success:Bool = true
-	//Total number of tasks
-	public var statusCode:Int = 0
+	//The status
+	public var statusCode:Int = CompletionStatus.Undefined.rawValue
 	//The Message
 	public var message:String = ""
 	//completion data

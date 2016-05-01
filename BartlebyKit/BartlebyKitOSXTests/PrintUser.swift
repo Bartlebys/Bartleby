@@ -30,10 +30,11 @@ public class PrintUser: Task,ConcreteTask{
                     bprint("\(user.UID)",file:#file,function:#function,line: #line)
                 }
             }
+            self.forward(Completion(success:true, message:"", statusCode:.OK))
         }catch let e{
             bprint("\(e)",file:#file,function:#function,line:#line)
         }
-        
+       
     }
     
 }

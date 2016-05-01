@@ -39,6 +39,27 @@ extension Task:SerializableArguments{
 }
 
 
+extension Task{
+    
+    
+    /**
+     Final forwarding method.
+     
+     - parameter completionState: the completion state
+     */
+    final public func forward(completionState:Completion) {
+        self.completionState=completionState
+        self.status = .Completed
+        do{
+         try Bartleby.scheduler.onCompletion(self)
+        }catch let e{
+            bprint("Exception on task forwarding \(e)",file:#file,function:#function,line:#line)
+        }
+    }
+    
+}
+
+
 // MARK: - Linear list
 
 
@@ -66,12 +87,14 @@ public extension Task{
     
     func addChildren(task:Task){
         self.children.append(task)
+        task.group=self.group
         task.parent=self
     }
     
     func removeChildren(task:Task)->Bool{
         if let idx=self.children.indexOf(task){
             task.parent=nil
+            task.group=nil
             self.children.removeAtIndex(idx)
             return true
         }

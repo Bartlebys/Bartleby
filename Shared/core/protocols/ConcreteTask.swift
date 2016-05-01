@@ -16,9 +16,21 @@ public protocol SerializableArguments {
 }
 
 public protocol Invocable{
-    // Run the invocation
-    // All the logic is encapuslated.
+    
+    /**
+        Runs the invocation
+        All the logic is encapuslated.
+        You should call forward() on completion
+     */
     func invoke()
+    
+    /**
+     (!) This method is implemented as final in Task Extension to guarantee the task scheduler consistency
+     You must call this method when the task is completed.
+     - parameter completionState: the completion state
+     */
+    func forward(completionState:Completion)
+    
 }
 
 

@@ -18,6 +18,8 @@ import ObjectMapper
 @objc(Task) public class Task : BaseObject{
 
 
+	//The group of the task
+	public var group:TasksGroup?
 	//TasksGroup Status
 	public enum Status:Int{
 		case New
@@ -62,6 +64,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+		self.group <- map["group"]
 		self.status <- map["status"]
 		self.priority <- map["priority"]
 		self.parent <- map["parent"]
@@ -79,6 +82,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+		self.group=decoder.decodeObjectOfClass(TasksGroup.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
@@ -94,6 +98,9 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
+		if let group = self.group {
+			coder.encodeObject(group,forKey:"group")
+		}
 		coder.encodeInteger(self.status.rawValue ,forKey:"status")
 		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
 		if let parent = self.parent {

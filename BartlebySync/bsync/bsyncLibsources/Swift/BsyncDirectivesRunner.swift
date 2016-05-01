@@ -22,7 +22,7 @@ class BsyncDirectivesRunner {
     
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String, handlers: ProgressAndCompletionHandler){
         if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false{
-            handlers.on(Completion(success: false, statusCode: Int(EX__BASE), message: "Unexisting path \(filePath)"))
+            handlers.on(Completion(success: false, statusCode: completionStatusFromExitCodes(EX__BASE), message: "Unexisting path \(filePath)"))
             return
         }
         
@@ -35,20 +35,20 @@ class BsyncDirectivesRunner {
                 JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
             }
         }catch{
-            handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Deserialization of directives has failed \(filePath) \(JSONString)"))
+            handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Deserialization of directives has failed \(filePath) \(JSONString)"))
             return
         }
         
         if let directives:BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString){
             
             guard directives.sourceURL != nil else {
-                handlers.on(Completion(success: false, statusCode: Int(EX__BASE),message:"Source URL is void"))
+                handlers.on(Completion(success: false, statusCode: completionStatusFromExitCodes(EX__BASE),message:"Source URL is void"))
                 return
             }
             
             
             guard directives.destinationURL != nil else {
-                handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Destination URL is void"))
+                handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Destination URL is void"))
                 return
             }
             
@@ -56,10 +56,10 @@ class BsyncDirectivesRunner {
             let validity=directives.areValid()
             guard validity.valid else{
                 if let explanation=validity.message{
-                    handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Directives are not valid : \(explanation)"))
+                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Directives are not valid : \(explanation)"))
                     return
                 }else{
-                    handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Directives are not valid"))
+                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Directives are not valid"))
                     return
                 }
             }
@@ -127,27 +127,27 @@ class BsyncDirectivesRunner {
                                             runSynchronizationCommand()
                                     })
                                 }else{
-                                    handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"\(folderPath) is not a directory"))
+                                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"\(folderPath) is not a directory"))
                                     return
                                 }
                             }else{
-                                handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unexisting folder path: \(folderPath)"))
+                                handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unexisting folder path: \(folderPath)"))
                                 return
                             }
                             
                         }else{
-                            handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Url to filtered path error: \(url)"))
+                            handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Url to filtered path error: \(url)"))
                             return
                         }
                     }catch BsyncLocalAnalyzerError.InvalidURL(let explanations){
-                        handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:explanations))
+                        handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:explanations))
                         return
                     }catch{
-                        handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unexpected error \(error)"))
+                        handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unexpected error \(error)"))
                         return
                     }
                 }else{
-                    handlers.on(Completion(success: false, statusCode:  Int(EX__BASE),message:"Unsupported mode \(context.mode())"))
+                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unsupported mode \(context.mode())"))
                     return
                 }
                 

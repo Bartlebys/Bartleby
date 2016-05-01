@@ -15,9 +15,7 @@ enum TasksSchedulerError:ErrorType {
     case DataSpaceNotFound
     case TaskGroupNotFound
 }
-
-
-
+ 
 @objc(TasksScheduler) public class TasksScheduler:NSObject {
     
     //Storage
@@ -34,11 +32,12 @@ enum TasksSchedulerError:ErrorType {
      
      - returns: the Task group
      */
-    public func provisionTasks(parentTask:Task,groupedBy groupName:String,inDataSpace spaceUID:String) throws -> TasksGroup{
+    public func provisionTasks(rootTask:Task,groupedBy groupName:String,inDataSpace spaceUID:String) throws -> TasksGroup{
         let group=try self.taskGroupByName(groupName,inDataSpace: spaceUID)
-        group.tasks.append(parentTask)
-        group.priority=TasksGroup.Priority(rawValue:parentTask.priority.rawValue)!
-        group.status=TasksGroup.Status(rawValue:parentTask.status.rawValue)!
+        group.tasks.append(rootTask)
+        group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
+        group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
+        rootTask.group=group
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
             document.tasksGroups.add(group)
         }else{
@@ -82,79 +81,38 @@ enum TasksSchedulerError:ErrorType {
         }
          throw TasksSchedulerError.TaskGroupNotFound
     }
-        
-        /*
-         public func startTaskGroup(groupUID:String)throws{
-         if let group:TasksGroup=Bartleby.objectByUID(groupUID){
-         // We start all the tasks
-         for task in group.tasks{
-         task.invoke()
-         }
-         }else{
-         throw TasksSchedulerError.TaskGroupNotFound
-         }
-         }
-         public func pauseTaskGroup(groupUID:String, onPause:()->())throws{
-         
-         }
-         */
-        
-        
-        
-        
-        /*
-         public func pushChainedOperation(operations:[Operation],inout iterator:IndexingGenerator<[Operation]>){
-         if let currentOperation=iterator.next(){
-         self.pushOperation(currentOperation, sucessHandler: { (context) -> () in
-         if let operationDictionary=currentOperation.toDictionary{
-         if let referenceName=operationDictionary[Default.REFERENCE_NAME_KEY],
-         uid=operationDictionary[Default.UID_KEY]{
-         self.delete(currentOperation)
-         do{
-         let ic:OperationsCollectionController = try self.getCollection()
-         bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)",file: #file,function: #function,line: #line)
-         }catch{
-         bprint("OperationsCollectionController getCollection \(error)",file: #file,function: #function,line: #line)
-         }
-         }
-         }
-         Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: {
-         self.pushChainedOperation(operations, iterator: &iterator)
-         })
-         }, failureHandler: { (context) -> () in
-         // Stop the chain
-         })
-         }
-         }
-         
-         
-         
-         public func pushOperations(operations:[Operation]) {
-         var iterator=operations.generate()
-         self.pushChainedOperation(operations, iterator: &iterator)
-         }
-         
-         
-         
-         
-         public func pushOperation(operation:Operation){
-         self.pushOperation(operation, sucessHandler: { (context) -> () in
-         self.delete(operation)
-         }) { (context) -> () in
-         
-         }
-         }
-         
-         public func pushOperation(operation:Operation,sucessHandler success:(context:HTTPResponse)->(),failureHandler failure:(context:HTTPResponse)->()){
-         if let serialized=operation.toDictionary{
-         if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand{
-         command.push(sucessHandler:success, failureHandler:failure)
-         }else{
-         //TODO: @bpds what should be done
-         }
-         }
-         }
-         */
+    
+    
+    /**
+     Called by a task on its completion.
+     
+     - parameter completedTask: the reference to the task
+     */
+    func onCompletion(completedTask:Task) throws{
+        if let group=completedTask.group{
+            if completedTask.group?.status != .Paused{
+                for child in completedTask.children{
+                    if let task=child as? Invocable{
+                        task.invoke()
+                    }else{
+                        throw TasksGroupError.NonInvocableTask(task: completedTask)
+                    }
+                    child.status = .Running
+                }
+            }else{
+                // Paused
+            }
+            // Mark the group as completed if there is no more
+            // Runnable tasks
+            let runnableTasks = group.findRunnableTasks()
+            if runnableTasks.count==0{
+                group.status = .Completed
+            }
+
+        }
+    }
+
+    
 }
 
 
@@ -167,7 +125,6 @@ enum TasksGroupError:ErrorType {
 
 public extension TasksGroup{
     
-    
     /**
      Starts the task group
      
@@ -176,7 +133,7 @@ public extension TasksGroup{
      - returns: the number of entry tasks if >1 there is something to do.
      */
     public func start() throws -> Int{
-        let entryTasks=self.findEntryTasks()
+        let entryTasks=self.findRunnableTasks()
         for task in entryTasks{
             if let invocableTask = task as? Invocable{
                 invocableTask.invoke()
@@ -192,11 +149,19 @@ public extension TasksGroup{
      But not their children tasks.
      */
     public func pause(){
-        self.status = .Paused
+        // Mark the group as completed if there is no more
+        // Runnable tasks
+        let runnableTasks = self.findRunnableTasks()
+        if runnableTasks.count==0{
+            self.status = .Completed
+        }else{
+            self.status = .Paused
+        }
     }
     
+
     
-    // MARK: Find entry Tasks
+    // MARK: Find runnable Tasks
     
     /**
      Determines the bunch of task to use to start or resume a TaskGroup.
@@ -204,7 +169,7 @@ public extension TasksGroup{
      
      - returns: a collection of tasks
      */
-    public func findEntryTasks()->[Task]{
+    public func findRunnableTasks()->[Task]{
         //Top level of the graph.
         var topLevelTasks=[Task]()
         for task in self.tasks{
@@ -238,6 +203,14 @@ public extension TasksGroup{
     
     // MARK: Find tasks with status
     
+    
+    /**
+     Returns a filtered list of task.
+     
+     - parameter status: the status
+     
+     - returns: the list of tasks
+     */
     public func findTasksWithStatus(status:Task.Status)->[Task]{
         var matching=[Task]()
         let rootTasks=self.tasks.filter { (task) -> Bool in
@@ -259,5 +232,3 @@ public extension TasksGroup{
     }
     
 }
-
-

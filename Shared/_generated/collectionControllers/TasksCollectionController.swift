@@ -291,6 +291,7 @@ import ObjectMapper
     private func _startObserving(item: Task) {
         if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
+			item.addObserver(self, forKeyPath: "group", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "status", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "priority", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "parent", options: .Old, context: &KVOContext)
@@ -308,6 +309,7 @@ import ObjectMapper
         if self.enableKVO{
             if let idx=_observedUIDS.indexOf(item.UID)  {
                 _observedUIDS.removeAtIndex(idx)
+				item.removeObserver(self, forKeyPath: "group", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "status", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "priority", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "parent", context: &KVOContext)
