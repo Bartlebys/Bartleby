@@ -9,53 +9,36 @@
 import Foundation
 
 
-public extension TasksGroup{
-    
-    public func start() throws {
-        // We start all the tasks
-        // TODO @bpds(#FEATURE) support tasks graphs
-        for task in self.tasks{
-            if let invocableTask = task as? Invocable{
-                invocableTask.invoke()
-            }
-        }
-    }
-    
-    
-    public func findEntryTasks()->[Task]{
-        //Top level of the graph.
-        // @bpds todo
-        var topLevelTasks=[Task]()
-        for task in self.tasks{
-            if task.status != Task.Status.Completed{
-                topLevelTasks.append(task)
-            }
-        }
-        return topLevelTasks
-    }
-    
-    /*
-     public func pause(onPause:()->())throws {
-     try Bartleby.scheduler.pauseTaskGroup(self.groupUID, onPause: onPause)
-     }
-     */
-}
-
+// MARK: - TasksScheduler
 
 enum TasksSchedulerError:ErrorType {
     case DataSpaceNotFound
     case TaskGroupNotFound
 }
 
+
+
 @objc(TasksScheduler) public class TasksScheduler:NSObject {
     
+    //Storage
     private var _groups=Dictionary<String,TasksGroup>()
     
+    /**
+     Provision a task in a given Group.
+     
+     - parameter parentTask: the task to provision.
+     - parameter groupName:  its group name
+     - parameter spaceUID:   the relevent DataSpace
+     
+     - throws: DataSpace Not found
+     
+     - returns: the Task group
+     */
     public func provisionTasks(parentTask:Task,groupedBy groupName:String,inDataSpace spaceUID:String) throws -> TasksGroup{
         let group=try self.taskGroupByName(groupName,inDataSpace: spaceUID)
         group.tasks.append(parentTask)
-        group.priority=parentTask.priority.rawValue
-        group.status=parentTask.status.rawValue
+        group.priority=parentTask.priority
+        group.status=parentTask.status
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
             document.tasksGroups.add(group)
         }else{
@@ -173,3 +156,108 @@ enum TasksSchedulerError:ErrorType {
          }
          */
 }
+
+
+// MARK: - TasksGroup Extension
+
+enum TasksGroupError:ErrorType {
+    case NonInvocableTask(task:Task)
+}
+
+
+public extension TasksGroup{
+    
+    
+    /**
+     Starts the task group
+     
+     - throws: Error on Non Invocable task
+     
+     - returns: the number of entry tasks if >1 there is something to do.
+     */
+    public func start() throws -> Int{
+        let entryTasks=self.findEntryTasks()
+        for task in entryTasks{
+            if let invocableTask = task as? Invocable{
+                invocableTask.invoke()
+            }else{
+                throw TasksGroupError.NonInvocableTask(task: task)
+            }
+        }
+        return entryTasks.count
+    }
+    
+    /**
+     All the running tasks will be finished
+     But not their children tasks.
+     */
+    public func pause(){
+        self.status = .Paused
+    }
+    
+    
+    // MARK: Find entry Tasks
+    
+    /**
+     Determines the bunch of task to use to start or resume a TaskGroup.
+     The entry tasks may be deeply nested if the graph has already been partially running
+     
+     - returns: a collection of tasks
+     */
+    public func findEntryTasks()->[Task]{
+        //Top level of the graph.
+        var topLevelTasks=[Task]()
+        for task in self.tasks{
+            if task.status != Task.Status.Completed{
+                topLevelTasks.append(task)
+            }
+        }
+        if topLevelTasks.count==0{
+            for task in self.tasks{
+                self._findTasksUnCompletedSubTask(task, topLevelTasks: &topLevelTasks)
+            }
+        }
+        return topLevelTasks
+    }
+    
+    
+    private func _findTasksUnCompletedSubTask(task:Task,inout topLevelTasks:[Task]){
+        if topLevelTasks.count==0{
+            for childTask in task.children{
+                if childTask.status != Task.Status.Completed{
+                    topLevelTasks.append(childTask)
+                }
+            }
+            if topLevelTasks.count==0{
+                for task in task.children{
+                    self._findTasksUnCompletedSubTask(task, topLevelTasks: &topLevelTasks)
+                }
+            }
+        }
+    }
+    
+    // MARK: Find tasks with status
+    
+    public func findTasksWithStatus(status:Task.Status)->[Task]{
+        var matching=[Task]()
+        let rootTasks=self.tasks.filter { (task) -> Bool in
+            return task.status==status
+        }
+        matching.appendContentsOf(rootTasks)
+        for task in self.tasks{
+            self._findChildrenTasksWithStatus(task,status:status,tasks:&matching)
+        }
+        return matching
+    }
+    
+    
+    private func _findChildrenTasksWithStatus(task:Task,status:Task.Status,inout tasks:[Task]){
+        let matchingChildren=task.children.filter { (subTask) -> Bool in
+            return subTask.status==status
+        }
+        tasks.appendContentsOf(matchingChildren)
+    }
+    
+}
+
+

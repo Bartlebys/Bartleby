@@ -13,8 +13,9 @@ public enum TaskError : ErrorType {
     case NoArgument
 }
 
-extension Task:SerializableArguments{
+// MARK: - Serializable Arguments
 
+extension Task:SerializableArguments{
     
     /**
     - throws: Error on deserialization and type missmatch
@@ -38,7 +39,7 @@ extension Task:SerializableArguments{
 }
 
 
-// MARK : Linear list
+// MARK: - Linear list
 
 
 extension Task{
@@ -57,5 +58,28 @@ extension Task{
             return tasks
         }
     }
+}
+
+// MARK: - Children management
+
+public extension Task{
+    
+    func addChildren(task:Task){
+        self.children.append(task)
+        task.parent=self
+    }
+    
+    func removeChildren(task:Task)->Bool{
+        if let idx=self.children.indexOf(task){
+            task.parent=nil
+            self.children.removeAtIndex(idx)
+            return true
+        }
+        return false
+    }
     
 }
+
+
+
+

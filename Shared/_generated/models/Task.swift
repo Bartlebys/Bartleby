@@ -18,27 +18,25 @@ import ObjectMapper
 @objc(Task) public class Task : BaseObject{
 
 
-	//Task Status
-	public enum Status:String{
-		case New = "new"
-		case Pending = "pending"
-		case Running = "running"
-		case Suspended = "suspended"
-		case Completed = "completed"
+	//TasksGroup Status
+	public enum Status:Int{
+		case New
+		case Pending
+		case Running
+		case Paused
+		case Completed
 	}
 	public var status:Status = .New
 	//The priority is equal to the parent task.
-	public enum Priority:String{
-		case Background = "Background"
-		case Low = "Low"
-		case Default = "Default"
-		case High = "High"
+	public enum Priority:Int{
+		case Background
+		case Low
+		case Default
+		case High
 	}
 	public var priority:Priority = .Default
 	//The parent task
 	public var parent:Task?
-	//The failure task (can be used to cleanup or notify failure)
-	public var onFailure:Task?
 	//A collection of Concrete Tasks
 	public var children:[Task] = [Task]()
 	//The progression state of the task
@@ -67,7 +65,6 @@ import ObjectMapper
 		self.status <- map["status"]
 		self.priority <- map["priority"]
 		self.parent <- map["parent"]
-		self.onFailure <- map["onFailure"]
 		self.children <- map["children"]
 		self.progressionState <- map["progressionState"]
 		self.completionState <- map["completionState"]
@@ -82,10 +79,9 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.status=Task.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.priority=Task.Priority(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "priority")! as NSString))! 
+		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
+		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
-		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
 		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "children")! as! [Task]
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
@@ -98,13 +94,10 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(self.status.rawValue ,forKey:"status")
-		coder.encodeObject(self.priority.rawValue ,forKey:"priority")
+		coder.encodeInteger(self.status.rawValue ,forKey:"status")
+		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
 		if let parent = self.parent {
 			coder.encodeObject(parent,forKey:"parent")
-		}
-		if let onFailure = self.onFailure {
-			coder.encodeObject(onFailure,forKey:"onFailure")
 		}
 		coder.encodeObject(self.children,forKey:"children")
 		coder.encodeObject(self.progressionState,forKey:"progressionState")
