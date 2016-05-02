@@ -150,6 +150,10 @@ public func completionStatusFromExitCodes(value:Int)->CompletionStatus{
 
 
 public extension Completion {
+    
+    
+    // @TODO @md init -> private
+    
     /**
      Convenience initializer.
      
@@ -159,7 +163,7 @@ public extension Completion {
      
      - returns: a Completion state instance
      */
-    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
+    public convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
         self.init()
         self.success = success
         self.message = message
@@ -182,7 +186,7 @@ public extension Completion {
      
      - returns: return value description
      */
-    public static func success(statusCode:CompletionStatus = .OK)->Completion{
+    public static func successState(statusCode:CompletionStatus = .OK)->Completion{
         return Completion(success:false,message:"",statusCode:statusCode)
     }
     
@@ -193,7 +197,7 @@ public extension Completion {
      
      - returns: return value description
      */
-    public static func failure(message:String,statusCode:CompletionStatus)->Completion{
+    public static func failureState(message:String,statusCode:CompletionStatus)->Completion{
         return Completion(success:false,message:message,statusCode:statusCode)
     }
     
