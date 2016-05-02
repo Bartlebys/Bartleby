@@ -159,7 +159,7 @@ public extension Completion {
      
      - returns: a Completion state instance
      */
-    public convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
+    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
         self.init()
         self.success = success
         self.message = message
@@ -175,6 +175,28 @@ public extension Completion {
     public static func defaultState()->Completion{
         return Completion(success:false,message:"",statusCode:.Undefined)
     }
+    
+    
+    /**
+     The success state
+     
+     - returns: return value description
+     */
+    public static func success(statusCode:CompletionStatus = .OK)->Completion{
+        return Completion(success:false,message:"",statusCode:statusCode)
+    }
+    
+    
+    
+    /**
+     The Failure state
+     
+     - returns: return value description
+     */
+    public static func failure(message:String,statusCode:CompletionStatus)->Completion{
+        return Completion(success:false,message:message,statusCode:statusCode)
+    }
+    
     
     /**
      Returns self embedded in a progression Notification
