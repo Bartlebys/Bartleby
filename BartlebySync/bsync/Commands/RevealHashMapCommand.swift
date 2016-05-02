@@ -34,7 +34,7 @@ class RevealHashMapCommand: CommandBase {
                 if Bartleby.isValidKey(key) {
                     secretKey = key
                 } else {
-                    self.on(Completion(success: false, message: "Bad encryption key: \(key)"))
+                    self.on(Completion.failureState("Bad encryption key: \(key)", statusCode: .Bad_Request))
                     return
                 }
                 
@@ -57,20 +57,20 @@ class RevealHashMapCommand: CommandBase {
                                     do {
                                         let decryptedHashMapString = try Bartleby.cryptoDelegate.decryptString(encryptedHashMapString)
                                         print("# Hash map \(path) #\n\(decryptedHashMapString)\n# End of hash map #")
-                                        self.on(Completion(success: true))
+                                        self.on(Completion.successState())
                                     } catch {
-                                        self.on(Completion(success: false, message: "Error decrypting \"\(encryptedHashMapString)"))
+                                        self.on(Completion.failureState("Error decrypting \"\(encryptedHashMapString)", statusCode: .Precondition_Failed))
                                     }
                                 } else {
-                                    self.on(Completion(success: false, message: "Bad file"))
+                                    self.on(Completion.failureState("Bad file", statusCode: .Precondition_Failed))
                                 }
                             }else {
-                                self.on(Completion(success: false, message: "Unable to read: \(path)"))
+                                self.on(Completion.failureState("Unable to read: \(path)", statusCode: .Precondition_Failed))
                             }
                         })
                         
                     } else {
-                        self.on(Completion(success: false, message: "Unexisting path: \(path)"))
+                        self.on(Completion.failureState("Unexisting path: \(path)", statusCode: .Precondition_Failed))
                     }
                 })
             }
