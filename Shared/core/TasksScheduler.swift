@@ -90,7 +90,7 @@ enum TasksSchedulerError:ErrorType {
      */
     func onCompletion(completedTask:Task) throws{
         if let group=completedTask.group{
-            if completedTask.group?.status != .Paused{
+            if completedTask.group?.status != .Paused && completedTask.group?.status != .Completed {
                 for child in completedTask.children{
                     if let task=child as? Invocable{
                         task.invoke()
@@ -100,7 +100,7 @@ enum TasksSchedulerError:ErrorType {
                     child.status = .Running
                 }
             }else{
-                // Paused
+                // Paused or Completed
             }
             // Mark the group as completed if there is no more
             // Runnable tasks
