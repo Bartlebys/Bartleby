@@ -28,12 +28,14 @@ import Foundation
                          callBack:(CompletionHandler))->(){
         print("imageFilePath \(imageFilePath)")
         let dmgManager=BsyncImageDiskManager()
+        let completion = Completion.defaultState()
         do{
-            let result = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
-            callBack(Completion(success: result, message:""))
-        }catch {
-            callBack(Completion(success: false, message:"An error has occured"))
+            completion.success = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
+        } catch {
+            completion.message = "An error has occured"
         }
+        // TODO: @md Use progress and completion handler
+        callBack(completion)
     }
     
     /**
@@ -48,12 +50,14 @@ import Foundation
     func attachVolume(from path:String,withPassword:String?,
                            callBack:(CompletionHandler))->(){
         let dmgManager=BsyncImageDiskManager()
+        let completion = Completion.defaultState()
         do{
-            let result = try dmgManager.attachVolume(from: path, withPassword: withPassword)
-            callBack(Completion(success: result, message:""))
-        }catch {
-            callBack(Completion(success: false, message:"An error has occured"))
+            completion.success = try dmgManager.attachVolume(from: path, withPassword: withPassword)
+        } catch {
+            completion.message = "An error has occured"
         }
+        // TODO: @md Use progress and completion handler
+        callBack(completion)
     }
     
     /**
@@ -83,12 +87,14 @@ import Foundation
     func detachVolume(named:String,
                       callBack:(CompletionHandler))->(){
         let dmgManager=BsyncImageDiskManager()
+        let completion = Completion.defaultState()
         do{
-            let result = try dmgManager.detachVolume(named)
-            callBack(Completion(success: result, message:""))
+            completion.success = try dmgManager.detachVolume(named)
         }catch {
-            callBack(Completion(success: false, message:"An error has occured"))
+            completion.message = "An error has occured"
         }
+        // TODO: @md Use progress and completion handler
+        callBack(completion)
     }
     
     
@@ -118,7 +124,7 @@ import Foundation
             }else{
                 validityMessage="Directives are not valid"
             }
-            callBack(Completion(success: false, message: validityMessage))
+            callBack(Completion.failureState(validityMessage, statusCode: .Precondition_Failed))
             return;
         }
         
@@ -131,16 +137,16 @@ import Foundation
         if var JSONString:NSString = Mapper().toJSONString(directives){
             do{
                 JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
+                // TODO: @md Use self.writeToFile
                 try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
             }catch{
-                callBack(Completion(success: false, message: "\(error)"))
+                callBack(Completion.failureState("\(error)", statusCode: .Undefined))
                 return;
             }
-            callBack(Completion(success: true, message: "Directives have be saved to:\(filePath)"))
-        }else{
-            callBack(Completion(success: false, message: "Serialization failure"))
+            callBack(Completion.successState("Directives have be saved to:\(filePath)"))
+        } else {
+            callBack(Completion.failureState("Serialization failure", statusCode: .Undefined))
         }
-        
     }
     
     

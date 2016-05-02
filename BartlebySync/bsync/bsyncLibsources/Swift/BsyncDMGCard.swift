@@ -94,7 +94,7 @@ protocol IdentifiableCardContext{
         let url=NSURL(fileURLWithPath:imagePath,isDirectory:false)
         let ext=url.pathExtension
         if ext != BsyncDMGCard.DMG_EXTENSION {
-            return Completion(success: false, message: NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(imagePath)")
+            return Completion.failureState(NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(imagePath)", statusCode: .Bad_Request)
         }
         
         // Verify that everything has been set.
@@ -102,9 +102,9 @@ protocol IdentifiableCardContext{
             contextUID == BsyncDMGCard.NOT_SET ||
             imagePath == BsyncDMGCard.NOT_SET ||
             volumeName == BsyncDMGCard.NOT_SET){
-            return Completion(success: false, message: NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n")
+            return Completion.failureState(NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n", statusCode: .Bad_Request)
         }else{
-            return Completion(success: true)
+            return Completion.successState()
         }
     }
     

@@ -17,7 +17,6 @@ import Foundation
 
 public enum BsyncAdminError:ErrorType{
     case DirectivesAreNotValid(explanations:String)
-    case UnexistingPdSyncAdmin
     case HashMapViewError(explanations:String)
 }
 
@@ -95,15 +94,20 @@ public enum BsyncAdminError:ErrorType{
      - parameter completionBlock: its completion block
      */
     // TODO: @md (#refacto) pass just handler as parameter
-    public func synchronizeWithprogressBlock(handler: ProgressAndCompletionHandler) throws{
+    public func synchronizeWithprogressBlock(handler: ProgressAndCompletionHandler) {
         if let admin=self._admin{
             admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
                 handler.notify?(Progression(currentTaskIndex:taskIndex, totalTaskCount: totalTaskCount, currentTaskProgress: taskProgress, message: message, data: data))
                 }, andCompletionBlock:{(success, statusCode, message) in
-                    handler.on(Completion(success: success, statusCode:completionStatusFromExitCodes(statusCode), message: message))
+                    let c = Completion()
+                    c.success = success
+                    // TODO: @md Use CompletionStatus in PdsSync
+                    c.statusCode = statusCode
+                    c.message = message
+                    handler.on(c)
             })
         }else{
-            throw BsyncAdminError.UnexistingPdSyncAdmin
+            handler.on(Completion.failureState("Unexisting PdsSyncAdmin", statusCode: .Precondition_Failed))
         }
     }
     

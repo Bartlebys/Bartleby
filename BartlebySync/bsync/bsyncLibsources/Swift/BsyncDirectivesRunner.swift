@@ -21,8 +21,8 @@ class BsyncDirectivesRunner {
     
     
     func runDirectives(filePath:String,secretKey:String,sharedSalt:String, handlers: ProgressAndCompletionHandler){
-        if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false{
-            handlers.on(Completion(success: false, statusCode: completionStatusFromExitCodes(EX__BASE), message: "Unexisting path \(filePath)"))
+        if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false {
+            handlers.on(Completion.failureState("Bad directives path \(filePath)", statusCode: .Bad_Request))
             return
         }
         
@@ -35,20 +35,20 @@ class BsyncDirectivesRunner {
                 JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
             }
         }catch{
-            handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Deserialization of directives has failed \(filePath) \(JSONString)"))
+            handlers.on(Completion.failureState("Deserialization of directives has failed \(filePath) \(JSONString)", statusCode: .Bad_Request))
             return
         }
         
         if let directives:BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString){
             
             guard directives.sourceURL != nil else {
-                handlers.on(Completion(success: false, statusCode: completionStatusFromExitCodes(EX__BASE),message:"Source URL is void"))
+                handlers.on(Completion.failureState("Source URL is void", statusCode: .Bad_Request))
                 return
             }
             
             
             guard directives.destinationURL != nil else {
-                handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Destination URL is void"))
+                handlers.on(Completion.failureState("Destination URL is void", statusCode: .Bad_Request))
                 return
             }
             
@@ -56,10 +56,10 @@ class BsyncDirectivesRunner {
             let validity=directives.areValid()
             guard validity.valid else{
                 if let explanation=validity.message{
-                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Directives are not valid : \(explanation)"))
+                    handlers.on(Completion.failureState("Directives are not valid : \(explanation)", statusCode: .Bad_Request))
                     return
                 }else{
-                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Directives are not valid"))
+                    handlers.on(Completion.failureState("Directives are not valid", statusCode: .Bad_Request))
                     return
                 }
             }
@@ -127,27 +127,27 @@ class BsyncDirectivesRunner {
                                             runSynchronizationCommand()
                                     })
                                 }else{
-                                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"\(folderPath) is not a directory"))
+                                    handlers.on(Completion.failureState("\(folderPath) is not a directory", statusCode: .Bad_Request))
                                     return
                                 }
                             }else{
-                                handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unexisting folder path: \(folderPath)"))
+                                handlers.on(Completion.failureState("Unexisting folder path: \(folderPath)", statusCode: .Bad_Request))
                                 return
                             }
                             
                         }else{
-                            handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Url to filtered path error: \(url)"))
+                            handlers.on(Completion.failureState("Url to filtered path error: \(url)", statusCode: .Bad_Request))
                             return
                         }
                     }catch BsyncLocalAnalyzerError.InvalidURL(let explanations){
-                        handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:explanations))
+                        handlers.on(Completion.failureState(explanations, statusCode: .Bad_Request))
                         return
                     }catch{
-                        handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unexpected error \(error)"))
+                        handlers.on(Completion.failureState("Unexpected error \(error)", statusCode: .Bad_Request))
                         return
                     }
                 }else{
-                    handlers.on(Completion(success: false, statusCode:  completionStatusFromExitCodes(EX__BASE),message:"Unsupported mode \(context.mode())"))
+                    handlers.on(Completion.failureState("Unsupported mode \(context.mode())", statusCode: .Bad_Request))
                     return
                 }
                 
@@ -221,15 +221,8 @@ class BsyncDirectivesRunner {
         // Synchronization handler
         func doSync(){
             
-            do {
-                // TO CHANGE
-                let admin:BsyncAdmin=BsyncAdmin(context:context)
-                try admin.synchronizeWithprogressBlock(handlers)
-            }catch{
-                handlers.on(Completion(success: false, message:"An error has occured during synchronization: \(error)"))
-                return
-            }
-            
+            let admin:BsyncAdmin=BsyncAdmin(context:context)
+            admin.synchronizeWithprogressBlock(handlers)            
         }
         
         if (context.mode() == BsyncMode.SourceIsLocalDestinationIsDistant) || (context.mode() == BsyncMode.SourceIsDistantDestinationIsLocal) {
@@ -241,7 +234,7 @@ class BsyncDirectivesRunner {
                     doSync()
                     }, failureHandler: { (context) in
                         // Print a JSON failure description
-                        handlers.on(Completion(success: false, message:"An error has occured during login: \(context.description)\n"))
+                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
                         return
                 })
             }

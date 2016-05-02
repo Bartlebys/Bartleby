@@ -81,7 +81,7 @@ public enum CompletionStatus:Int{
  
  - returns: the status
  */
-public func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
+private func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
     /*
      public var EX_OK: Int32 { get } /* successful termination */
      public var EX__BASE: Int32 { get } /* base value for error messages */
@@ -146,16 +146,12 @@ public func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
     
 }
 
-public func completionStatusFromExitCodes(value:Int)->CompletionStatus{
+private func completionStatusFromExitCodes(value:Int)->CompletionStatus{
     return completionStatusFromExitCodes(Int32(value))
 }
 
 
 public extension Completion {
-    
-    
-    // @TODO @md init -> private
-    
     /**
      Convenience initializer.
      
@@ -165,7 +161,7 @@ public extension Completion {
      
      - returns: a Completion state instance
      */
-    public convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
+    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
         self.init()
         self.success = success
         self.message = message
@@ -188,8 +184,8 @@ public extension Completion {
      
      - returns: return value description
      */
-    public static func successState(statusCode:CompletionStatus = .OK)->Completion{
-        return Completion(success:false,message:"",statusCode:statusCode)
+    public static func successState(message:String = "", statusCode:CompletionStatus = .OK)->Completion{
+        return Completion(success:true, message: message,statusCode:statusCode)
     }
     
     
@@ -203,6 +199,102 @@ public extension Completion {
         return Completion(success:false,message:message,statusCode:statusCode)
     }
     
+    public static func failureStateFromNSError(error: NSError) -> Completion {
+        return Completion(success: false, message: error.localizedDescription, statusCode: CompletionStatus(rawValue: error.code) ?? .Undefined)
+    }
+    
+    public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
+        var message: String
+        switch context.httpStatusCode {
+        case 100:
+            message = "Continue"
+        case 101:
+            message = "Switching Protocols"
+        case 200:
+            message = "OK"
+        case 201:
+            message = "Created"
+        case 202:
+            message = "Accepted"
+        case 203:
+            message = "Non-Authoritative Information"
+        case 204:
+            message = "No Content"
+        case 205:
+            message = "Reset Content"
+        case 206:
+            message = "Partial Content"
+        case 300:
+            message = "Multiple Choices"
+        case 301:
+            message = "Moved Permanently"
+        case 302:
+            message = "Found"
+        case 303:
+            message = "See Other"
+        case 304:
+            message = "Not Modified"
+        case 305:
+            message = "Use Proxy"
+        case 306:
+            message = "(Unused)"
+        case 307:
+            message = "Temporary Redirect"
+        case 400:
+            message = "Bad Request"
+        case 401:
+            message = "Unauthorized"
+        case 402:
+            message = "Payment Required"
+        case 403:
+            message = "Forbidden"
+        case 404:
+            message = "Not Found"
+        case 405:
+            message = "Method Not Allowed"
+        case 406:
+            message = "Not Acceptable"
+        case 407:
+            message = "Proxy Authentication Required"
+        case 408:
+            message = "Request Timeout"
+        case 409:
+            message = "Conflict"
+        case 410:
+            message = "Gone"
+        case 411:
+            message = "Length Required"
+        case 412:
+            message = "Precondition Failed"
+        case 413:
+            message = "Request Entity Too Large"
+        case 414:
+            message = "Request-URI Too Long"
+        case 415:
+            message = "Unsupported Media Type"
+        case 416:
+            message = "Requested Range Not Satisfiable"
+        case 417:
+            message = "Expectation Failed"
+        case 423:
+            message = "Locked"
+        case 500:
+            message = "Internal Server Error"
+        case 501:
+            message = "Not Implemented"
+        case 502:
+            message = "Bad EndPointsGateway"
+        case 503:
+            message = "Service Unavailable"
+        case 504:
+            message = "EndPointsGateway Timeout"
+        case 505:
+            message = "HTTP Version Not Supported"
+        default:
+            message = "Undefined"
+        }
+        return Completion(success: false, message: message, statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
+    }
     
     /**
      Returns self embedded in a progression Notification
@@ -214,7 +306,6 @@ public extension Completion {
             return CompletionNotification(state:self,object:nil,userInfo: nil)
         }
     }
-    
 }
 
 

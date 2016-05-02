@@ -159,7 +159,7 @@ import Foundation
     // TODO: @bpds This is not doing anything ???
     public static func run(directivePath: String, pAndChandler: ProgressAndCompletionHandler) {
         pAndChandler.notify?(Progression(currentTaskIndex: 0, totalTaskCount: 10))
-        pAndChandler.on(Completion(success: true))
+        pAndChandler.on(Completion.successState())
     }
     
     
