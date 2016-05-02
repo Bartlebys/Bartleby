@@ -16,7 +16,7 @@ import BartlebyKit
 public class PrintUser: Task,ConcreteTask{
 
     // Initializes with the arguments
-    required convenience public init(arguments:Serializable){
+    convenience public init(arguments:Serializable){
         self.init()
         self.argumentsData=arguments.serialize()
     }
