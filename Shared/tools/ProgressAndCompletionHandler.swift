@@ -12,7 +12,9 @@ import Foundation
 
 //A composed Closure
 //with a progress and acompletion section
-public typealias ComposedProgressAndCompletionHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
+public typealias ComposedProgressAndCompletionHandler = (progressionState:Progression?,completionState:Completion?)->()
+
+ //public typealias ComposedProgressAndCompletionHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
 
 //ProgressHandler
 public typealias ProgressHandler = (_: Progression) -> ()
@@ -52,47 +54,26 @@ public typealias CompletionHandler = (_: Completion) -> ()
         // From the unique handler form
         // progress and completion handlers.
         
-        let handlers=ProgressAndCompletionHandler {(completion) -> () in
-            // This is the completion handler
-            // By convention we inject false progress information
-            composedHandler(currentTaskIndex: 0,   // Dummy Progress section
-                totalTaskCount: 0,              // Dummy
-                currentTaskProgress: 0,                // Dummy
-                message: completion.message,   // Dummy
-                data:nil,
-                completed: true,
-                success: true
-            )
+        let handlers=ProgressAndCompletionHandler {(onCompletion) -> () in
+            composedHandler(progressionState:nil,completionState:onCompletion)
         }
         
-        handlers.addProgressHandler { (progression) -> () in
-            composedHandler(currentTaskIndex: progression.currentTaskIndex,
-                totalTaskCount: progression.totalTaskCount,
-                currentTaskProgress: progression.currentTaskProgress,
-                message: progression.message,
-                data:progression.data,
-                completed: false,   // Dummy Completion section
-                success: false      // Dummy
-                )
+        handlers.addProgressHandler { (onProgression) -> () in
+            composedHandler(progressionState:onProgression,completionState:nil)
         }
         return handlers
-    
     }
     
     // We need to provide a unique handler to be compatible with the XPC context
     // So we use an handler adapter that relays to the progress and completion handlers
     // to mask the constraint.
     public func composedHandlers() -> ComposedProgressAndCompletionHandler {
-        let handler: ComposedProgressAndCompletionHandler = {(currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
-            
-            if completed {
-                self.on(Completion(success: success,message: message))
-            }else{
-                self.notify?(Progression(currentTaskIndex:currentTaskIndex,
-                                              totalTaskCount:totalTaskCount,
-                                              currentTaskProgress:currentTaskProgress,
-                                              message:message,
-                                              data: data))
+        let handler: ComposedProgressAndCompletionHandler = {(progressionState,completionState)-> Void in
+            if let progressionState=progressionState{
+                 self.notify?(progressionState)
+            }
+            if let completion=completionState{
+                 self.on(completion)
             }
         }
         return handler

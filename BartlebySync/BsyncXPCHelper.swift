@@ -356,26 +356,22 @@ public class BsyncXPCHelperDMGHandler {
         
         // We need to provide a unique block to be compatible with the XPC context
         // So we use an handler adapter that relays to the progress and completion handlers
-        // to mask the constraint.
-        // TODO: @md Check if we can use ProgressAndCompletionHandler.getComposedProgressAndCompletionHandler()
-        // !!! Response to Mr @md i do consider that's not possible by design... 
-        // feel free to try or delete this if you cannot doit
-        let indirectHandler:ComposedProgressAndCompletionHandler = {
-            (currentTaskIndex,totalTaskCount,currentTaskProgress,message,data,completed,success)-> Void in
-            handlers.notify?(Progression(currentTaskIndex:currentTaskIndex,
-                          totalTaskCount:totalTaskCount,
-                          currentTaskProgress:currentTaskProgress,
-                          message:message,
-                            data: data))
-            if completed{
-                handlers.on(Completion(success: success,message: message))
-                
-                self.bsyncConnection.invalidate()
+        // to mask the constraint
+        
+        let indirectHandlers:ComposedProgressAndCompletionHandler = {
+            (progressionState,completionState)-> Void in
+            if let progressionState = progressionState{
+                handlers.notify?(progressionState)
+            }
+            if let completionState = completionState{
+                handlers.on(completionState)
+                 self.bsyncConnection.invalidate()
             }
         }
         
+        
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandler)
+            xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandlers)
         }
         
     }
