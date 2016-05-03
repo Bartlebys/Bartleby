@@ -138,7 +138,7 @@ import Foundation
             do {
                 JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
                 // TODO: @md Use self.writeToFile
-                try JSONString.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+                try JSONString.writeToFile(filePath, atomically: true, encoding: Default.TEXT_ENCODING)
             } catch {
                 callBack(Completion.failureState("\(error)", statusCode: .Undefined))
                 return
