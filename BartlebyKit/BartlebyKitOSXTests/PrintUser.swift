@@ -16,7 +16,7 @@ import BartlebyKit
 public class PrintUser: Task, ConcreteTask {
 
     // Initializes with the arguments
-    convenience public init(arguments: Serializable) {
+    convenience public required init(arguments: Serializable) {
         self.init()
         self.argumentsData=arguments.serialize()
     }
@@ -30,7 +30,7 @@ public class PrintUser: Task, ConcreteTask {
                     bprint("\(user.UID)", file:#file, function:#function, line: #line)
                 }
             }
-            self.forward(Completion(success:true, message:"", statusCode:.OK))
+            self.forward(Completion.successState())
         } catch let e {
             bprint("\(e)", file:#file, function:#function, line:#line)
         }
