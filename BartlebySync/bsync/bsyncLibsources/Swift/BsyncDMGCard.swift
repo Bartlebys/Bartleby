@@ -25,7 +25,7 @@ protocol IdentifiableCardContext{
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-@objc(BsyncDMGCard) public class BsyncDMGCard : NSObject,Mappable,NSSecureCoding{
+@objc(BsyncDMGCard) public class BsyncDMGCard : JObject{
     
     public static let NO_PATH="none"
     public static let NOT_SET="not-set"
@@ -72,7 +72,7 @@ protocol IdentifiableCardContext{
     // MARK: Mappable
     
     
-    public override init() {
+    public required init() {
         super.init()
     }
     
@@ -109,7 +109,8 @@ protocol IdentifiableCardContext{
     }
     
     
-    public func mapping(map: Map) {
+    public override func mapping(map: Map) {
+        super.mapping(map)
         userUID <- (map["userUID"],CryptedStringTransform())
         contextUID <- (map["contextUID"],CryptedStringTransform())
         imagePath <- (map["path"],CryptedStringTransform())
@@ -120,7 +121,8 @@ protocol IdentifiableCardContext{
     // MARK: NSecureCoding
     
     
-    public func encodeWithCoder(coder: NSCoder){
+    public override func encodeWithCoder(coder: NSCoder){
+        super.encodeWithCoder(coder)
         coder.encodeObject(userUID, forKey: "userUID")
         coder.encodeObject(contextUID, forKey: "contextUID")
         coder.encodeObject(imagePath, forKey: "path")
@@ -129,6 +131,7 @@ protocol IdentifiableCardContext{
     }
     
     public required init?(coder decoder: NSCoder){
+        super.init(coder:decoder)
         self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
         self.contextUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "contextUID")! as NSString)
         self.imagePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
@@ -136,7 +139,7 @@ protocol IdentifiableCardContext{
         self.directivesRelativePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "directivesRelativePath")! as NSString)
     }
     
-    public static func supportsSecureCoding() -> Bool{
+    public override static func supportsSecureCoding() -> Bool{
         return true
     }
     
@@ -158,4 +161,23 @@ protocol IdentifiableCardContext{
     }
     
     
+    // MARK: Identifiable
+    
+    override public class var collectionName:String{
+        return "BsyncDMGCard"
+    }
+    
+    override public var d_collectionName:String{
+        return BsyncDMGCard.collectionName
+    }
+    
+    
+    // MARK: Persistent
+    
+    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+        var r=super.toPersistentRepresentation()
+        r.A=NSDate().timeIntervalSince1970
+        return r
+    }
+
 }

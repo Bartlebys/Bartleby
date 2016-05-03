@@ -15,7 +15,7 @@ import Foundation
 
 
 
-@objc(BsyncCredentials) public class BsyncCredentials : NSObject,Mappable,NSSecureCoding{
+@objc(BsyncCredentials) public class BsyncCredentials :JObject{
     
     
     /// Debug facility
@@ -27,20 +27,19 @@ import Foundation
     public var password:String?
     public var salt:String?
     
-    public required override init(){
+    public required init(){
         super.init()
     }
     
     // MARK: Mappable
-    
-
     
     required public init?(_ map: Map) {
         super.init()
         self.mapping(map)
     }
     
-    public func mapping(map: Map) {
+    override public func mapping(map: Map) {
+        super.mapping(map)
         if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
             user <- map["user"]
             password <- map ["password"]
@@ -55,20 +54,45 @@ import Foundation
     
     // MARK: NSecureCoding
     
-    public func encodeWithCoder(coder: NSCoder){
+    override public func encodeWithCoder(coder: NSCoder){
+        super.encodeWithCoder(coder)
         coder.encodeObject(user, forKey: "user")
         coder.encodeObject(password, forKey: "password")
         coder.encodeObject(salt, forKey: "salt")
     }
     
     public required init?(coder decoder: NSCoder){
+        super.init(coder: decoder)
         self.user=User(coder: decoder)
         self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey:"password") as NSString?)
         self.salt=String(decoder.decodeObjectOfClass(NSString.self, forKey:"salt") as NSString?)
     }
     
-    public static func supportsSecureCoding() -> Bool{
+    
+    override public class func supportsSecureCoding() -> Bool{
         return true
     }
+    
+
+    // MARK: Identifiable
+    
+    override public class var collectionName:String{
+        return "BsyncCredentials"
+    }
+    
+    override public var d_collectionName:String{
+        return BsyncCredentials.collectionName
+    }
+    
+    
+    // MARK: Persistent
+    
+    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+        var r=super.toPersistentRepresentation()
+        r.A=NSDate().timeIntervalSince1970
+        return r
+    }
+    
+    
     
 }

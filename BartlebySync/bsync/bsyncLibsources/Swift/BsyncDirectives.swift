@@ -156,11 +156,25 @@ import Foundation
         self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")
     }
     
-    // TODO: @bpds This is not doing anything ???
-    public static func run(directivePath: String, pAndChandler: ProgressAndCompletionHandler) {
-        pAndChandler.notify?(Progression(currentTaskIndex: 0, totalTaskCount: 10))
-        pAndChandler.on(Completion.successState())
+    // MARK: Identifiable
+    
+    override public class var collectionName:String{
+        return "BsyncDirectives"
     }
     
+    override public var d_collectionName:String{
+        return BsyncDirectives.collectionName
+    }
+    
+    
+    // MARK: Persistent
+    
+    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+        var r=super.toPersistentRepresentation()
+        r.A=NSDate().timeIntervalSince1970
+        return r
+    }
+    
+
     
 }
