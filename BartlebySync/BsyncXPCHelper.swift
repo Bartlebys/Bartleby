@@ -64,7 +64,9 @@ public class BsyncXPCHelperDMGHandler {
      - parameter thenDo: what do you want to do when the dmg will be mounted block.
      - parameter completionBlock:        the completionBlock
      */
-    func createDMG(card: BsyncDMGCard, thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(), completion: BsyncXPCHelperDMGHandler)->() {
+    func createDMG(card: BsyncDMGCard,
+                   thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(),
+                   completion: BsyncXPCHelperDMGHandler)->() {
 
             // The card must be valid
             let validation = card.evaluate()
