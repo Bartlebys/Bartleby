@@ -16,34 +16,34 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     private static let _email2="user@lylo.tv"
     private static let _password1=Bartleby.randomStringWithLength(6)// Different password
     private static let _password2=Bartleby.randomStringWithLength(6)
-    private static var _userID1:String="UNDEFINED"
-    private static var _userID2:String="UNDEFINED"
-    private static var _createdUser1:User?
-    private static var _createdUser2:User?
-    
+    private static var _userID1: String="UNDEFINED"
+    private static var _userID2: String="UNDEFINED"
+    private static var _createdUser1: User?
+    private static var _createdUser2: User?
+
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-        
-    func test000_purgeTheCookiesForTheDomain(){
+
+    func test000_purgeTheCookiesForTheDomain() {
         print("Using : \(TestsConfiguration.API_BASE_URL)")
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
-            for cookie in cookies{
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
     }
-    
-    
-    func test001_createUser1(){
+
+
+    func test001_createUser1() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        
+
         let user=User()
         user.verificationMethod = .ByEmail
         user.email=UserCreationWithTheSameMailInDifferentSpaceTests._email1
@@ -60,17 +60,17 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
-    
-    func test002_deleteUser2_shouldFail(){
+
+
+    func test002_deleteUser2_shouldFail() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
                            fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
@@ -79,19 +79,19 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
                             XCTFail("The user does not not exists its deletion should fail")
         }) { (context) -> () in
             expectation.fulfill()
-            
+
             XCTAssertEqual(context.httpStatusCode, 403, "The ACL should block this deletion")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
-    func test003_LoginUser1(){
-        
+
+    func test003_LoginUser1() {
+
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserCreationWithTheSameMailInDifferentSpaceTests._createdUser1 {
             // Space id is very important
@@ -104,22 +104,21 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
                 expectation.fulfill()
                 XCTFail("Status code \(context.httpStatusCode)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
-    
-    func test005_createUser2(){
+
+
+    func test005_createUser2() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        
+
         let user=User()
         user.verificationMethod = .ByEmail
         user.email=UserCreationWithTheSameMailInDifferentSpaceTests._email2
@@ -128,7 +127,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
         user.spaceUID=UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         UserCreationWithTheSameMailInDifferentSpaceTests._userID2=user.UID // We store the UID for future deletion
         UserCreationWithTheSameMailInDifferentSpaceTests._createdUser2=user
-        
+
         CreateUser.execute(user,
                            inDataSpace:UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
                            sucessHandler: { (context) -> () in
@@ -137,15 +136,15 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
-    func test006_deleteUser2_shouldFailAgain(){
+
+    func test006_deleteUser2_shouldFailAgain() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
                            fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
@@ -156,15 +155,15 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTAssertEqual(context.httpStatusCode, 403, "The ACL should block this deletion")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
-    func test007_LoginUser2(){
+
+    func test007_LoginUser2() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserCreationWithTheSameMailInDifferentSpaceTests._createdUser2 {
             // Space id is very important
@@ -177,8 +176,8 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
                 expectation.fulfill()
                 XCTFail("Status code \(context.httpStatusCode)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -187,10 +186,10 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTFail("Invalid user")
         }
     }
-    
-    func test008_DeleteUser1(){
+
+    func test008_DeleteUser1() {
         let expectation = expectationWithDescription("DeleteUser should respond")
-        
+
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID1,
                            fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1,
                            sucessHandler: { (context) -> () in
@@ -199,19 +198,19 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
-    
-    
-    
-    func test009_DeleteUser2(){
+
+
+
+
+    func test009_DeleteUser2() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
                            fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
@@ -221,21 +220,21 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
-    
+
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    
-    
+
+
+
 }

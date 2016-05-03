@@ -12,54 +12,54 @@ import BartlebyKit
 
 class UserStatusTests: XCTestCase {
     private static let _spaceUID = Bartleby.createUID()
-    
-    private static var _creatorUser:User?
-    private static var _creatorUserID:String="UNDEFINED"
+
+    private static var _creatorUser: User?
+    private static var _creatorUserID: String="UNDEFINED"
     private static let _creatorUserEmail="Creator@UserStatusTests"
     private static let _creatorUserPassword=Bartleby.randomStringWithLength(6)
-    
-    private static var _suspendedUser:User?
-    private static var _suspendedUserID:String="UNDEFINED"
+
+    private static var _suspendedUser: User?
+    private static var _suspendedUserID: String="UNDEFINED"
     private static let _suspendedUserEmail="SuspendedUser@UserStatusTests"
     private static let _suspendedUserPassword=Bartleby.randomStringWithLength(6)
-    
+
     override static func setUp() {
         super.setUp()
-        
+
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-    
+
     // MARK: 0 - Initialization
-    
-    func test000_purgeCookiesForTheDomain(){
+
+    func test000_purgeCookiesForTheDomain() {
         print("Using : \(TestsConfiguration.API_BASE_URL)")
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
-            for cookie in cookies{
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
     }
-    
+
     // MARK: 1 - Users Creation
-    
-    func test101_createUser_Creator(){
+
+    func test101_createUser_Creator() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        
+
         let user=User()
         user.spaceUID=UserStatusTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.email=UserStatusTests._creatorUserEmail
         user.password=UserStatusTests._creatorUserPassword
-        
+
         // Store the current user and ID
         UserStatusTests._creatorUser = user
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
-        
+
         CreateUser.execute(user,
                            inDataSpace:UserStatusTests._spaceUID,
                            sucessHandler: { (context) -> () in
@@ -68,27 +68,27 @@ class UserStatusTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context.response)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
-    func test102_createUser_UserThatWillBeSuspendedLater(){
+
+    func test102_createUser_UserThatWillBeSuspendedLater() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        
+
         let user = User()
         user.spaceUID = UserStatusTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         user.creatorUID = UserStatusTests._creatorUserID
         user.email = UserStatusTests._suspendedUserEmail
         user.password = UserStatusTests._suspendedUserPassword
-        
+
         // Store the current user and ID
         UserStatusTests._suspendedUser = user
         UserStatusTests._suspendedUserID = user.UID
-        
+
         CreateUser.execute(user,
                            inDataSpace:UserStatusTests._spaceUID,
                            sucessHandler: { (context) -> () in
@@ -97,17 +97,17 @@ class UserStatusTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context.response)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
+
     // User login/logout before suspension
-    
-    func test201_Login_UserNotSuspendedYet(){
+
+    func test201_Login_UserNotSuspendedYet() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.login(withPassword: UserStatusTests._suspendedUserPassword,
@@ -117,43 +117,41 @@ class UserStatusTests: XCTestCase {
                     expectation.fulfill()
                     XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
-    func test299_Logout_UserNotSuspendedYet(){
+
+    func test299_Logout_UserNotSuspendedYet() {
         let expectation = expectationWithDescription("LogoutUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.logout(sucessHandler: {
                 expectation.fulfill()
-                
+
                 }) { (context) ->() in
                     expectation.fulfill()
                     XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
-        
+
     }
-    
+
     // MARK: 3 - Creator login and update user status and logout
-    func test301_Login_Creator(){
+    func test301_Login_Creator() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
@@ -163,25 +161,24 @@ class UserStatusTests: XCTestCase {
                     expectation.fulfill()
                     XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
-    func test302_Update_StatusToSuspended(){
-        
+
+    func test302_Update_StatusToSuspended() {
+
         let expectation = expectationWithDescription("UpdateUser should respond")
-        
-        if let user=UserStatusTests._suspendedUser{
+
+        if let user=UserStatusTests._suspendedUser {
             user.status = .Suspended
-            
+
             UpdateUser.execute(user,
                                inDataSpace: UserStatusTests._spaceUID,
                                sucessHandler: { (context) -> () in
@@ -190,19 +187,18 @@ class UserStatusTests: XCTestCase {
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(200.0){ error -> Void in
+
+            waitForExpectationsWithTimeout(200.0) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
-    func test399_Logout_Creator(){
+
+    func test399_Logout_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(fromDataSpace: UserStatusTests._spaceUID,
                            sucessHandler: { () -> () in
@@ -211,16 +207,16 @@ class UserStatusTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
+
     // MARK: 4 - Try to login suspended user
-    func test401_Login_SuspendedUser_ShouldFail(){
+    func test401_Login_SuspendedUser_ShouldFail() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
@@ -231,20 +227,19 @@ class UserStatusTests: XCTestCase {
                     expectation.fulfill()
                     XCTAssertEqual(context.httpStatusCode, 401)
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
+
     // MARK: 5 - Cleanup
-    func test501_Login_Creator(){
+    func test501_Login_Creator() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
@@ -254,22 +249,21 @@ class UserStatusTests: XCTestCase {
                     expectation.fulfill()
                     XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
             }
-        }
-        else {
+        } else {
             XCTFail("Invalid user")
         }
     }
-    
-    func test502_Delete_SuspendedUser(){
-        
+
+    func test502_Delete_SuspendedUser() {
+
         let expectation = expectationWithDescription("DeleteUser should respond")
-        
+
         DeleteUser.execute(UserStatusTests._suspendedUserID,
                            fromDataSpace:UserStatusTests._spaceUID,
                            sucessHandler: { (context) -> () in
@@ -278,19 +272,19 @@ class UserStatusTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
-    func test503_Delete_Creator(){
-        
+
+    func test503_Delete_Creator() {
+
         let expectation = expectationWithDescription("DeleteUser should respond")
-        
+
         DeleteUser.execute(UserStatusTests._creatorUserID,
                            fromDataSpace:UserStatusTests._spaceUID,
                            sucessHandler: { (context) -> () in
@@ -299,16 +293,16 @@ class UserStatusTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
-    func test504_Logout_Creator(){
+
+    func test504_Logout_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.logout(sucessHandler: {
@@ -317,8 +311,8 @@ class UserStatusTests: XCTestCase {
                     expectation.fulfill()
                     XCTFail("\(context)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }

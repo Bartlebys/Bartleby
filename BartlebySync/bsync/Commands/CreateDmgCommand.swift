@@ -11,10 +11,10 @@ import Cocoa
 
 class CreateDmgCommand: CommandBase {
 
-    
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-        
+
         let path = StringOption(shortFlag: "f", longFlag: "folder", required: true,
             helpMessage: "Path to the folder in wich we will save the image disk.")
         let volumeName = StringOption(shortFlag: "n", longFlag: "name", required: true,
@@ -25,29 +25,29 @@ class CreateDmgCommand: CommandBase {
             helpMessage: "Prints a help message.")
         let password = StringOption(shortFlag: "p", longFlag: "password",
             helpMessage: "Set a password if you want to create a crypted disk image")
-        cli.addOptions(path, help,volumeName,size,password)
+        cli.addOptions(path, help, volumeName, size, password)
         do {
             try cli.parse()
                 let dmgManager=BsyncImageDiskManager()
-            do{
-                if try dmgManager.createImageDisk(path.value!+volumeName.value!,volumeName:volumeName.value!,size:size.value!,password:password.value){
+            do {
+                if try dmgManager.createImageDisk(path.value!+volumeName.value!, volumeName:volumeName.value!, size:size.value!, password:password.value) {
                     print("The disk image has been created")
                     exit(EX_OK)
-                }else{
+                } else {
                     exit(EX__BASE)
                 }
-            }catch{
+            } catch {
                 print("\(error)")
                 exit(EX__BASE)
             }
-            
-            
+
+
         } catch {
             cli.printUsage(error)
             exit(EX_USAGE)
         }
     }
-    
-    
-    
+
+
+
 }

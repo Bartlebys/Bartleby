@@ -15,4 +15,4 @@ facade.actOnArguments()
 
 var holdOn=true
 let runLoop=NSRunLoop.currentRunLoop()
-while (holdOn && runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture()) ){}
+while (holdOn && runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture()) ) {}

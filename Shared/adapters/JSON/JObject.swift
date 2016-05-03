@@ -16,7 +16,7 @@ import Foundation
 
 // MARK: - Equatable
 
-func ==(lhs: JObject, rhs: JObject) -> Bool{
+func ==(lhs: JObject, rhs: JObject) -> Bool {
     return lhs.UID==rhs.UID
 }
 
@@ -26,216 +26,216 @@ func ==(lhs: JObject, rhs: JObject) -> Bool{
 // Notice the @objc(Name)
 // http://stackoverflow.com/a/24196632/341994
 // MARK: - JObject Class
-@objc(JObject) public class JObject : NSObject,NSCopying,Mappable,Identifiable,Persistent,NSSecureCoding{
-    
+@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Identifiable, Persistent, NSSecureCoding {
+
     // MARK: - ReferenceName
-    
-    private var _referenceName:String=Default.NO_NAME
-    
+
+    private var _referenceName: String=Default.NO_NAME
+
     // The reference name is equivalent to the class name as a String
-    public var referenceName:String{
-        get{
-            if _referenceName == Default.NO_NAME{
-                let classNameString:NSString=NSStringFromClass(self.dynamicType)
-                _referenceName = classNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_",withString:"")
+    public var referenceName: String {
+        get {
+            if _referenceName == Default.NO_NAME {
+                let classNameString: NSString=NSStringFromClass(self.dynamicType)
+                _referenceName = classNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_", withString:"")
             }
             return _referenceName
         }
-        set{
+        set {
             _referenceName=referenceName
         }
     }
-    
-    
+
+
     // MARK: - Initializable
-    
+
     override required public init() {
         super.init()
     }
-    
-    
+
+
     // MARK: - Mappable
-    
+
     public required init?(_ map: Map) {
         super.init()
         mapping(map)
     }
-    
-    
+
+
     public func mapping(map: Map) {
         _id <- map[Default.UID_KEY]
         referenceName <- map[Default.REFERENCE_NAME_KEY]
     }
-    
+
     // MARK: - Identifiable
-    
+
     // This  id is always  created locally and used as primary index by MONGODB
-    
+
     private var _warningCounter=0
-    
-    private var _id:String=Default.NO_UID{
-        willSet (identifier){
+
+    private var _id: String=Default.NO_UID {
+        willSet (identifier) {
             if _id != Default.NO_UID {
                 self._warningCounter += 1
                 //bprint("¡WARNING(\(self._warningCounter))! multiple allocation of \(identifier) \(self.referenceName) \(self.hash)", file: #file, function: #function, line: #line)
                 Registry.unRegister(self)
             }
         }
-        didSet{
+        didSet {
             if self._id != Default.NO_UID {
                 Registry.register(self)
             }
         }
     }
-    
 
-    
+
+
     /**
      The creation of a Unique Identifier is ressource intensive.
      We create the UID only if necessary.
      */
-    public func defineUID(){
-        if self._id == Default.NO_UID{
+    public func defineUID() {
+        if self._id == Default.NO_UID {
             self._id=Bartleby.createUID()
         }
     }
-    
-    final public var UID:String{
-        get{
+
+    final public var UID: String {
+        get {
             self.defineUID()
             return _id
         }
     }
-    
-    
+
+
     // Needs to be overriden to determine in wich collection the instances will be 'stored
-    class public var collectionName:String{
+    class public var collectionName: String {
         return "JObjects"
     }
-    
-    public var d_collectionName:String{
+
+    public var d_collectionName: String {
         return JObject.collectionName
     }
-    
-    
+
+
     // MARK: - CustomStringConvertible
-    
+
     override public var description: String {
-        get{
-            if let j=Mapper().toJSONString(self,prettyPrint:true){
+        get {
+            if let j=Mapper().toJSONString(self, prettyPrint:true) {
                 return "\n\(j)"
-            }else{
+            } else {
                 return "Void JObject"
             }
         }
     }
-    
-    
+
+
     // MARK: - NSecureCoding
-    
-    
-    public func encodeWithCoder(aCoder: NSCoder){
+
+
+    public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(referenceName, forKey: Default.REFERENCE_NAME_KEY)
         aCoder.encodeObject(_id, forKey: Default.UID_KEY)
      }
-    
-    public required init?(coder decoder: NSCoder){
+
+    public required init?(coder decoder: NSCoder) {
         super.init()
         _id=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.UID_KEY)! as NSString? )
         referenceName=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.REFERENCE_NAME_KEY)! as NSString?)
     }
-    
-    public class func supportsSecureCoding() -> Bool{
+
+    public class func supportsSecureCoding() -> Bool {
         return true
     }
-    
-    
+
+
     // MARK: - NSCopying
-    
+
     /*
-     
+
      - parameter zone:
-     
+
      - returns:
      */
     public func copyWithZone(zone: NSZone) -> AnyObject {
-        let data:NSData=JSerializer.serialize(self)
+        let data: NSData=JSerializer.serialize(self)
         return JSerializer.deserialize(data) as! AnyObject
     }
-    
-    
+
+
     // MARK: - Persistent
-    
-    public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT){
-            return (self.UID,self.d_collectionName,data,0,0,0,0,0,"")
-        }else{
+
+    public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
+        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT) {
+            return (self.UID, self.d_collectionName, data, 0,0, 0,0, 0,"")
+        } else {
             let s="{\"Persitency Error - serialization failed\"}"
-            return (self.UID,self.d_collectionName,s,0,0,0,0,0,"")
+            return (self.UID, self.d_collectionName, s,0, 0,0, 0,0, "")
         }
     }
-    
-    
-    static public func fromSerializedUTF8String(serializedUTF8String:String)->Serializable{
+
+
+    static public func fromSerializedUTF8String(serializedUTF8String: String)->Serializable {
         // In our case the serializedUTF8String encapuslate all the required information
-        if let d = serializedUTF8String.dataUsingEncoding(NSUTF8StringEncoding){
+        if let d = serializedUTF8String.dataUsingEncoding(NSUTF8StringEncoding) {
             return JSerializer.deserialize(d)
-        }else{
+        } else {
             let error=ObjectError()
             error.message="Error on deserialization of \(serializedUTF8String)"
             return error
         }
-        
+
     }
 }
 
 
 // MARK: - Serializable
 
-extension JObject:Serializable{
-    
-    
+extension JObject:Serializable {
+
+
     public func serialize()->NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
-        do{
+        do {
             if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
                 return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
-            }else{
+            } else {
                 return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
             }
-        }catch{
+        } catch {
             return NSData()
         }
     }
-    
-    
-    public func deserialize(data:NSData)->Serializable{
+
+
+    public func deserialize(data: NSData)->Serializable {
         return JSerializer.deserialize(data)
     }
-    
-    
-    
+
+
+
     public func updateData(data: NSData) -> Serializable {
-        do{
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+        do {
+            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                 let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
                 self.mapping(map)
                 return self
             }
-        }catch{
+        } catch {
             //Silent catch
             bprint("deserialize ERROR \(error)")
         }
         // If there is an issue we relay to the serializer
-        
+
         return JSerializer.deserialize(data)
     }
-    
+
 }
 
-extension JObject:DictionaryRepresentation{
-    
-    public func dictionaryRepresentation()->[String:AnyObject]{
+extension JObject:DictionaryRepresentation {
+
+    public func dictionaryRepresentation()->[String:AnyObject] {
         return Mapper().toJSON(self)
     }
 }
@@ -244,4 +244,4 @@ extension JObject:DictionaryRepresentation{
 
 
 
- 
+

@@ -23,25 +23,25 @@ import Foundation
 
 // TODO: @md write the Unit test for OSX and IOS + integrate in all the targets
 public class PNGTransform: TransformType {
-    
+
     public typealias Object = BXImage
     public typealias JSON = String
-    
+
     public init() {
-        
+
     }
-    
-    public func transformFromJSON(value: AnyObject?) -> Object?{
-        if let string=value as? String{
+
+    public func transformFromJSON(value: AnyObject?) -> Object? {
+        if let string=value as? String {
             if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
                 return BXImage.init(data: data)
             }
         }
         return nil
     }
-    
-    public func transformToJSON(value: Object?) -> JSON?{
-        if let image=value{
+
+    public func transformToJSON(value: Object?) -> JSON? {
+        if let image=value {
             #if os(OSX)
                 // We use a tiff representation
                 let data=image.TIFFRepresentation
@@ -49,7 +49,7 @@ public class PNGTransform: TransformType {
                     return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
                 }
             #elseif os(iOS)
-                if let image=value{
+                if let image=value {
                     let data = UIImagePNGRepresentation(image)
                     if let d=data {
                         return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
@@ -62,4 +62,4 @@ public class PNGTransform: TransformType {
          return nil
     }
 }
- 
+

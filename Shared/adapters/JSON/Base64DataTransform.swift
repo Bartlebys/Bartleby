@@ -15,19 +15,19 @@ import Foundation
 public class Base64DataTransform: TransformType {
     public typealias Object = NSData
     public typealias JSON = String
-    
+
     public init() {
-        
+
     }
-    
-    public func transformFromJSON(value: AnyObject?) -> Object?{
-        if let string=value as? String{
+
+    public func transformFromJSON(value: AnyObject?) -> Object? {
+        if let string=value as? String {
             return NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters])
         }
         return nil
     }
-    
-    public func transformToJSON(value: Object?) -> JSON?{
+
+    public func transformToJSON(value: Object?) -> JSON? {
         if let d=value as NSData? {
             return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
         }

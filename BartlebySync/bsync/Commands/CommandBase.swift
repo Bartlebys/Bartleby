@@ -11,15 +11,15 @@ import Foundation
 
 public class CommandBase: ProgressAndCompletionHandler {
 
-    
+
     public var isVerbose=true
-    
+
     let cli = CommandLine()
 
-    public required init(completionHandler:((completion: Completion)->())){
+    public required init(completionHandler:((completion: Completion)->())) {
         super.init(completionHandler: completionHandler)
     }
-    
+
 //    public convenience init() {
 //        self.init(completionHandler:{ (completion) in
 //            if completion.success {
@@ -30,19 +30,19 @@ public class CommandBase: ProgressAndCompletionHandler {
 //            }
 //        })
 //    }
-    
+
     func printVerbose(string: String) {
         if isVerbose {
             self.printVersatile(string)
         }
     }
-    
+
     /**
      Versatile print method.
-     
+
      - parameter string: the message
      */
-    func printVersatile(string:String){
+    func printVersatile(string: String) {
         print(string)
     }
 }

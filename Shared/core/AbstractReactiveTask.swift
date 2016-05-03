@@ -9,46 +9,46 @@
 import Foundation
 
 public class  AbstractReactiveTask: Task {
-    
+
     /**
      The convenience intializer that must be overriden.
      You should always serialize the argument during initialization phasse!
-     
+
      - parameter arguments: the arguments to be serialized
-    
+
      - returns: the task instance.
      */
-    convenience required public init (arguments:Serializable) {
+    convenience required public init (arguments: Serializable) {
         self.init()
         self.argumentsData=arguments.serialize()
     }
-    
+
     // MARK: Sequential Tasks
-    
-    internal lazy var lastSequentialTask:Task=self
-    
+
+    internal lazy var lastSequentialTask: Task=self
+
     /**
      Appends a task to the last sequential task
-     
+
      - parameter task: the task to be sequentially added
      */
-    public func appendSequentialTask(task:Task){
+    public func appendSequentialTask(task: Task) {
         lastSequentialTask.addChildren(task)
         lastSequentialTask=task
     }
-    
-    
+
+
     // MARK: Reactive Handlers
-    
-    private var _reactiveHandlers:ProgressAndCompletionHandler?
-    
+
+    private var _reactiveHandlers: ProgressAndCompletionHandler?
+
     // The reactive Handlers
-    public var reactiveHandlers:ProgressAndCompletionHandler{
-        get{
+    public var reactiveHandlers: ProgressAndCompletionHandler {
+        get {
             if let _ = _reactiveHandlers {
                 return self._reactiveHandlers!
             }
-            let onCompletion:CompletionHandler={ (completionState) in
+            let onCompletion: CompletionHandler= { (completionState) in
                 // We forward the completion to the scheduler.
                 self.forward(completionState)
                 NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)
@@ -60,5 +60,5 @@ public class  AbstractReactiveTask: Task {
             return self._reactiveHandlers!
         }
     }
-    
+
 }

@@ -13,53 +13,53 @@ import BartlebyKit
 
 
 class SerializableInvocationsTests: XCTestCase {
-    
+
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-    
-    
-    func test001_PrintUserTask(){
+
+
+    func test001_PrintUserTask() {
         let user=User()
         user.email="bpds@me.com"
         let printer =  PrintUser(arguments:user)
         let serializedInvocation=printer.serialize()
-        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser{
+        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser {
             deserializedInvocation.invoke()
             XCTAssert(true)
-        }else{
+        } else {
             XCTFail("Deserialization as failed")
         }
     }
-    
-    
-    func test002_PrintUserTask_Dynamic(){
+
+
+    func test002_PrintUserTask_Dynamic() {
         let user=User()
         user.email="benoit@pereira-da-silva.com"
         let printer = PrintUser(arguments:user)
         let serializedInvocation=printer.serialize()
-        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? ConcreteTask{
+        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
             deserializedInvocation.invoke()
             XCTAssert(true)
-        }else{
+        } else {
             XCTFail("Deserialization as failed")
         }
     }
-    
+
     func test002__PrintUserTask_Via_NSData_Performer() {
         let user=User()
         user.email="benoit@chaosmose.com"
-        do{
+        do {
             let invocation = PrintUser(arguments:user)
             // Serialize to NSData
-            let serializedInvocation:NSData=invocation.serialize()
+            let serializedInvocation: NSData=invocation.serialize()
             // Try to execute
             try serializedInvocation.executeSerializedTask()
             XCTAssert(true)
-        }catch let exception{
+        } catch let exception {
             XCTFail("\(exception)")
         }
     }
-    
+
 }

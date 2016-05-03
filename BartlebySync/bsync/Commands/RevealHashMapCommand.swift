@@ -11,25 +11,25 @@ import Foundation
 class RevealHashMapCommand: CommandBase {
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-       
+
         var secretKey: String = ""
 
         let env = NSProcessInfo.processInfo().environment
         if let key = env["BARTLEBY_SECRET_KEY"] {
             secretKey = key
         }
-        
+
         let hashMapPathOption = StringOption(shortFlag: "f", longFlag: "file", required: true,
                                        helpMessage: "Path to the hashmap file.")
-        
+
         // secret key is required only if no environment variable is defined and valid
-        let secretKeyOption = StringOption(shortFlag: "i", longFlag: "secretKey",required: !Bartleby.isValidKey(secretKey),
+        let secretKeyOption = StringOption(shortFlag: "i", longFlag: "secretKey", required: !Bartleby.isValidKey(secretKey),
                                      helpMessage: "The secret key to encryp the data")
-        
-        cli.addOptions(hashMapPathOption,secretKeyOption)
+
+        cli.addOptions(hashMapPathOption, secretKeyOption)
         do {
             try cli.parse()
-            
+
             if let key = secretKeyOption.value {
                 if Bartleby.isValidKey(key) {
                     secretKey = key
@@ -37,17 +37,17 @@ class RevealHashMapCommand: CommandBase {
                     self.on(Completion.failureState("Bad encryption key: \(key)", statusCode: .Bad_Request))
                     return
                 }
-                
+
             }
-            
+
             if let path = hashMapPathOption.value {
-                
+
                 // Configure Bartleby without a specific URL
                 Bartleby.configuration.KEY = secretKey
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                
+
                 let fm = BFileManager()
-                
+
                 fm.fileExistsAtPath(path, callBack: { (exists, isADirectory, success, message) in
                     if success && exists {
                         // Load the hashmap
@@ -64,11 +64,11 @@ class RevealHashMapCommand: CommandBase {
                                 } else {
                                     self.on(Completion.failureState("Bad file", statusCode: .Precondition_Failed))
                                 }
-                            }else {
+                            } else {
                                 self.on(Completion.failureState("Unable to read: \(path)", statusCode: .Precondition_Failed))
                             }
                         })
-                        
+
                     } else {
                         self.on(Completion.failureState("Unexisting path: \(path)", statusCode: .Precondition_Failed))
                     }

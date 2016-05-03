@@ -9,27 +9,27 @@
 import XCTest
 
 class LocalDMGSyncTests: XCTestCase {
-    
-    
+
+
     private static let _diskManager = BsyncImageDiskManager()
     private static let _fileManager = NSFileManager()
-    
+
     private static let _dmgSize = "2g"
-    
+
     private static let _masterDMGName = Bartleby.randomStringWithLength(6)
-    private static let _masterDMGPath = NSTemporaryDirectory() + _masterDMGName;
-    private static let _masterDMGFullPath = _masterDMGPath + ".sparseimage";
+    private static let _masterDMGPath = NSTemporaryDirectory() + _masterDMGName
+    private static let _masterDMGFullPath = _masterDMGPath + ".sparseimage"
     private static let _masterDMGPassword = Bartleby.randomStringWithLength(6)
     private static let _masterVolumePath = "/Volumes/" + _masterDMGName + "/"
     private static let _masterVolumeURL = NSURL(fileURLWithPath: _masterVolumePath)
-    
+
     private static let _slaveDMGName = Bartleby.randomStringWithLength(6)
-    private static let _slaveDMGPath = NSTemporaryDirectory() + _slaveDMGName;
-    private static let _slaveDMGFullPath = _slaveDMGPath + ".sparseimage";
+    private static let _slaveDMGPath = NSTemporaryDirectory() + _slaveDMGName
+    private static let _slaveDMGFullPath = _slaveDMGPath + ".sparseimage"
     private static let _slaveDMGPassword = Bartleby.randomStringWithLength(6)
     private static let _slaveVolumePath = "/Volumes/" + _slaveDMGName + "/"
     private static let _slaveVolumeURL = NSURL(fileURLWithPath: _slaveVolumePath)
-    
+
     private static let _filePath = _masterVolumePath + "test.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
 
@@ -47,14 +47,14 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Bad created dmg")
         }
     }
-    
-    
+
+
     func test002_AttachMasterDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.attachVolume(from: LocalDMGSyncTests._masterDMGFullPath, withPassword: LocalDMGSyncTests._masterDMGPassword))
     }
-    
-    
-   
+
+
+
 
     func test003_CreateFileInDMG() {
         do {
@@ -66,9 +66,9 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("File I/O error with \(LocalDMGSyncTests._filePath)")
         }
     }
-    
-     
-     
+
+
+
     // MARK: Slave DMG creation, attach and directives creation
     func test101_CreateSlaveDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.createImageDisk(LocalDMGSyncTests._slaveDMGPath,
@@ -83,7 +83,7 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Bad created dmg")
         }
     }
-    
+
     func test102_AttachSlaveDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.attachVolume(from: LocalDMGSyncTests._slaveDMGFullPath, withPassword: LocalDMGSyncTests._slaveDMGPassword))
     }
@@ -92,7 +92,7 @@ class LocalDMGSyncTests: XCTestCase {
         let directives = BsyncDirectives()
         directives.sourceURL = LocalDMGSyncTests._masterVolumeURL
         directives.destinationURL = LocalDMGSyncTests._slaveVolumeURL
-        
+
         let directivesURL = LocalDMGSyncTests._masterVolumeURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
         BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
         if let path = directivesURL.path {
@@ -101,7 +101,7 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Bad directive URL: \(directivesURL)")
         }
     }
-    
+
 
     // MARK: Run synchronization
     func test201_RunDirectives() {
@@ -121,20 +121,20 @@ class LocalDMGSyncTests: XCTestCase {
         } catch {
             XCTFail("Synchronize failed")
         }
-        
+
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint(error.localizedDescription)
             }
         }
     }
-    
-    
+
+
     // MARK: Cleanup
     func test901_DetachSlaveDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.detachVolume(LocalDMGSyncTests._slaveDMGName))
     }
-    
+
     func test902_RemoveSlaveDMG() {
         do {
             try NSFileManager.defaultManager().removeItemAtPath(LocalDMGSyncTests._slaveDMGFullPath)
@@ -142,11 +142,11 @@ class LocalDMGSyncTests: XCTestCase {
             XCTFail("Error deleting slave DMG")
         }
     }
-    
+
     func test903_DetachMasterDMG() {
         XCTAssertTrue(try LocalDMGSyncTests._diskManager.detachVolume(LocalDMGSyncTests._masterDMGName))
     }
-    
+
     func test904_RemoveMasterDMG() {
         do {
             try NSFileManager.defaultManager().removeItemAtPath(LocalDMGSyncTests._masterDMGFullPath)

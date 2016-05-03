@@ -9,11 +9,11 @@
 
 import Foundation
 
-class CleanupCommand:CommandBase {
-    
+class CleanupCommand: CommandBase {
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-        
+
         let folderPath = StringOption(shortFlag: "p", longFlag: "path", required: true,
             helpMessage: "Path to the folder to be clean.")
         let help = BoolOption(shortFlag: "h", longFlag: "help",
@@ -26,11 +26,11 @@ class CleanupCommand:CommandBase {
             self.isVerbose=verbosity.value
                 do {
                     let messages=try BsyncAdmin.cleanupFolder(folderPath.value!)
-                    for message in messages{
+                    for message in messages {
                         self.printVerbose(message)
                     }
                     exit(EX_OK)
-                }catch{
+                } catch {
                     print("\(error)")
                     exit(EX__BASE)
                 }

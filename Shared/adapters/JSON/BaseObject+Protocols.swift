@@ -10,7 +10,6 @@ import Foundation
 
 // BaseObject conforms to Collectible
 // Let's adopt formally this protocol
-extension BaseObject : Collectible{
+extension BaseObject : Collectible {
 
 }
-

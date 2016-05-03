@@ -12,12 +12,12 @@ import BartlebyKit
 
 class CryptoHelperTests: XCTestCase {
     private static let _cryptoHelper = CryptoHelper(key:TestsConfiguration.KEY, salt:TestsConfiguration.SHARED_SALT)
-    
+
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-    
+
     func testEncryptDataDecryptData() {
         // Given a buffer defined by a base64 string
         let base64dString = "SGkh"
@@ -39,7 +39,7 @@ class CryptoHelperTests: XCTestCase {
             XCTFail("Error during base 64 encoding")
         }
     }
-    
+
     func testEncryptStringDecryptString() {
         // Given a string
         let string = "martin"
@@ -56,7 +56,7 @@ class CryptoHelperTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testEncryptStringDecryptData() {
         // Given a string
         let string = "martin"
@@ -80,7 +80,7 @@ class CryptoHelperTests: XCTestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testEncryptDataDecrypString() {
         let string = "martin"
         if let data = string.dataUsingEncoding(NSUTF8StringEncoding) {
@@ -89,7 +89,7 @@ class CryptoHelperTests: XCTestCase {
                 let encryptedBase64Data = encryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
                 let decryptedString = try CryptoHelperTests._cryptoHelper.decryptString(encryptedBase64Data)
                 XCTAssertEqual(decryptedString, "martin")
-                
+
             } catch {
                 XCTFail("\(error)")
             }

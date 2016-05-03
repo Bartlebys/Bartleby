@@ -8,14 +8,14 @@
 
 import Foundation
 
-@objc public protocol CryptoDelegate{
-    
-    func encryptString(string:String)throws->String
-    func decryptString(string:String)throws->String
-    
-    func encryptData(data:NSData)throws ->NSData
-    func decryptData(data:NSData)throws ->NSData
-    
+@objc public protocol CryptoDelegate {
+
+    func encryptString(string: String)throws->String
+    func decryptString(string: String)throws->String
+
+    func encryptData(data: NSData)throws ->NSData
+    func decryptData(data: NSData)throws ->NSData
+
     static func hash(string: String) -> String
-    
+
 }

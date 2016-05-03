@@ -10,32 +10,32 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:Identifiable,Serializable{
+public protocol Collectible: Identifiable, Serializable {
 
     // This flag is set to true on first commit.
-    var committed:Bool { get set }
-    
-    // This flag should be set to true 
+    var committed: Bool { get set }
+
+    // This flag should be set to true
     // When the collaborative server has acknowledged the object creation
-    var distributed:Bool { get set }
-    
+    var distributed: Bool { get set }
+
     // The creator UID
-    var creatorUID:String { get set }
-    
+    var creatorUID: String { get set }
+
     // The group UID
-    var groupUID:String { get set }
-    
+    var groupUID: String { get set }
+
     // A summary that describes the instance (used by aliases)
-    var summary:String? { get set }
-    
+    var summary: String? { get set }
+
     // The name of its holding collection e.g: projects for the class Project
     // This name will be used to identify the collection in the Registry
-    static var collectionName:String { get }
-    
+    static var collectionName: String { get }
+
     // An accessor to the static collectionName
-    var d_collectionName:String { get }
-    
+    var d_collectionName: String { get }
+
     // The class or struct name
-    var referenceName:String { get }
+    var referenceName: String { get }
 
 }

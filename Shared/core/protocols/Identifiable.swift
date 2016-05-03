@@ -12,13 +12,13 @@ import Foundation
 
 // MARK: - Equatable
 
-func ==(lhs: Identifiable, rhs: Identifiable) -> Bool{
+func ==(lhs: Identifiable, rhs: Identifiable) -> Bool {
     return lhs.UID==rhs.UID
 }
 
-public protocol Identifiable{
-    
+public protocol Identifiable {
+
     // The unique identifier
-    var UID:String { get }
+    var UID: String { get }
 
 }

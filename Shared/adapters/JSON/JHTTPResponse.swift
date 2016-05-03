@@ -11,26 +11,26 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc (JHTTPResponse) public class JHTTPResponse: BaseObject,HTTPResponse {
-    
-    // A developer set code to provide filtering 
-    public var code:UInt=UInt.max
-    
+@objc (JHTTPResponse) public class JHTTPResponse: BaseObject, HTTPResponse {
+
+    // A developer set code to provide filtering
+    public var code: UInt=UInt.max
+
     // A descriptive string for developper to identify the calling context
-    public var caller:String=Default.NO_NAME
-    
+    public var caller: String=Default.NO_NAME
+
     // The related url
-    public var relatedURL:NSURL!
-    
+    public var relatedURL: NSURL!
+
     // The http status code
-    public var httpStatusCode:Int!
-    
+    public var httpStatusCode: Int!
+
     // The response
-    public var response:AnyObject?
-    
-    public var result:AnyObject?
-    
-    public init(code:UInt!,caller:String!,relatedURL:NSURL!,httpStatusCode:Int!,response:AnyObject?,result:AnyObject?=""){
+    public var response: AnyObject?
+
+    public var result: AnyObject?
+
+    public init(code: UInt!, caller: String!, relatedURL: NSURL!, httpStatusCode: Int!, response: AnyObject?, result: AnyObject?="") {
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
@@ -41,9 +41,9 @@ import Foundation
     }
 
     required public convenience  init() {
-        self.init(code: 0,caller: "",relatedURL: NSURL(),httpStatusCode: Int.max,response: nil,result:"")
+        self.init(code: 0, caller: "", relatedURL: NSURL(), httpStatusCode: Int.max, response: nil, result:"")
     }
-    
+
     // MARK: Mappable
 
     required public init?(_ map: Map) {
@@ -61,11 +61,11 @@ import Foundation
         result <- map["result"]
     }
 
-    
+
     //TODO: @bpds NSSecureCoding
     required public init?(coder decoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
+
 }

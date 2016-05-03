@@ -8,27 +8,27 @@
 
 import Foundation
 
-class CreateHashMapCommand:CommandBase {
-    
+class CreateHashMapCommand: CommandBase {
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-        
-        
+
+
         let folderPath = StringOption(shortFlag: "f", longFlag: "folder", required: true,
             helpMessage: "Path to the folder to hash.")
-       
+
         let help = BoolOption(shortFlag: "h", longFlag: "help",
             helpMessage: "Prints a help message.")
-        
+
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
-        
+
         cli.addOptions(folderPath, help, verbosity)
-        
+
         do {
             try cli.parse()
             self.isVerbose=verbosity.value
-            if let path=folderPath.value{
+            if let path=folderPath.value {
                 var analyzer=BsyncLocalAnalyzer()
                 do {
                     try analyzer.createHashMapFromLocalPath(path,
@@ -38,14 +38,14 @@ class CreateHashMapCommand:CommandBase {
                            self.printVerbose("End of hash map computation")
                             exit(EX_OK)
                     })
-                }catch BsyncLocalAnalyzerError.InvalidURL(let explanations){
+                } catch BsyncLocalAnalyzerError.InvalidURL(let explanations) {
                     print(explanations)
                     exit(EX__BASE)
-                }catch{
+                } catch {
                     print("Unexpected error \(error)")
                     exit(EX__BASE)
                 }
-            }else{
+            } else {
                 print("Invalid folder path \(folderPath.value)")
                 exit(EX__BASE)
             }

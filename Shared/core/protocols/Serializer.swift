@@ -18,55 +18,54 @@ import Foundation
 
 
 
-public protocol Serializer{
-    
+public protocol Serializer {
+
     // MARK : - Static
-    
+
     /**
      Deserializes a fully typed object
-     
+
      - parameter data: the NSData
-     
+
      - returns: the serizalizable Object
      */
-    static func deserialize(data:NSData) -> Serializable
-    
-    static func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
-    
+    static func deserialize(data: NSData) -> Serializable
+
+    static func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable
+
     /**
      Serialize an instance
-     
+
      - parameter instance: the Serializable instance
-     
+
      - returns: the NSData
      */
-    static func serialize(instance:Serializable) -> NSData
-    
-    
+    static func serialize(instance: Serializable) -> NSData
+
+
     // MARK : - Instance
 
     /**
      Deserializes a fully typed object
-     
+
      - parameter data: the NSData
-     
+
      - returns: the serizalizable Object
      */
-    func deserialize(data:NSData) -> Serializable
-    
-    func deserializeFromDictionary(dictionary:[String:AnyObject])->Serializable
-    
+    func deserialize(data: NSData) -> Serializable
+
+    func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable
+
     /**
      Serialize an instance
-     
+
      - parameter instance: the Serializable instance
-     
+
      - returns: the NSData
      */
-    func serialize(instance:Serializable) -> NSData
-    
-    /// The file extension for file based serializers. eg: "json" for JSerializer
-    var fileExtension:String { get }
-    
-}
+    func serialize(instance: Serializable) -> NSData
 
+    /// The file extension for file based serializers. eg: "json" for JSerializer
+    var fileExtension: String { get }
+
+}

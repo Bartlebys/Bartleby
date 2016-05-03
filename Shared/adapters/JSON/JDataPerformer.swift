@@ -9,18 +9,18 @@
 import Foundation
 
 
-public enum InvocationPerformanceError : ErrorType {
+public enum InvocationPerformanceError: ErrorType {
     case ConcreteTaskRequired
 }
 
-extension NSData{
-    
-    public func executeSerializedTask()throws ->(){
-        if let dsi:ConcreteTask = JSerializer.deserialize(self) as? ConcreteTask {
+extension NSData {
+
+    public func executeSerializedTask()throws ->() {
+        if let dsi: ConcreteTask = JSerializer.deserialize(self) as? ConcreteTask {
             dsi.invoke()
-        }else{
+        } else {
            throw InvocationPerformanceError.ConcreteTaskRequired
         }
     }
-    
+
 }

@@ -10,14 +10,14 @@ import Cocoa
 
 
 public struct CommandsFacade {
-    
+
     static let args = Process.arguments
-    
+
     let executableName = NSString(string: args.first!).pathComponents.last!
     let firstArgumentAfterExecutablePath: String? = (args.count >= 2) ? args[1] : nil
-    
-    public func actOnArguments(){
-        
+
+    public func actOnArguments() {
+
         let completionHandler: CompletionHandler = { (completion) in
             if completion.success {
                 exit(EX_OK)
@@ -26,12 +26,12 @@ public struct CommandsFacade {
                 exit(Int32(completion.statusCode))
             }
         }
-        
-        switch firstArgumentAfterExecutablePath{
+
+        switch firstArgumentAfterExecutablePath {
         case nil:
             print(self._noArgMessage())
             exit(EX_NOINPUT)
-        case "-h"?,"-help"?,"h"?,"help"?:
+        case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
         case "create-uid"?:
@@ -42,7 +42,7 @@ public struct CommandsFacade {
             let _ = LoginCommand(completionHandler: completionHandler)
         case "logout"?:
             let _ = LogoutCommand(completionHandler: completionHandler)
-        case "verify"?,"verify-credentials"?:
+        case "verify"?, "verify-credentials"?:
             let _ = VerifyCredentialsCommand(completionHandler: completionHandler)
         case "synchronize"?:
             // Proceed to authentication if necessary
@@ -50,53 +50,53 @@ public struct CommandsFacade {
             // Starts a new session or resumes the current session
             // Uses a snapshot most of the time
             let _ = SynchronizeCommand(completionHandler: completionHandler).executeCMD()
-        case "cd"?,"create-directives"?:
+        case "cd"?, "create-directives"?:
             // Runs the synchronization directives
             let _ = CreateDirectiveCommand(completionHandler: completionHandler)
-            
-        case "rd"?,"reveal-directives"?:
+
+        case "rd"?, "reveal-directives"?:
             let _ = RevealDirectivesCommand(completionHandler: completionHandler)
-        case "run"?,"run-directives"?:
+        case "run"?, "run-directives"?:
             // Runs the synchronization directives
             let _ = RunDirectivesCommand(completionHandler: completionHandler).executeCMD()
-        case "create-hashmap"?,"create-hashMap"?:
+        case "create-hashmap"?, "create-hashMap"?:
             // Creates a hash map for given folder
             let _ = CreateHashMapCommand(completionHandler: completionHandler)
         case "reveal-hashmap"?:
             let _ = RevealHashMapCommand(completionHandler: completionHandler)
-        case "kvs"?,"key-value-storage"?,"keystore"?:
+        case "kvs"?, "key-value-storage"?, "keystore"?:
             // Runs the synchronization directives
             let _ = KeyValueStorageCommand(completionHandler: completionHandler)
         case "cleanup"?:
             // Deletes the snapshots and hashmaps from the .bsync folder
             // Even if locked.
             let _ = CleanupCommand(completionHandler: completionHandler)
-        case "create-dmg"?,"create-disk-image"?:
+        case "create-dmg"?, "create-disk-image"?:
             // Creates and mount a dmg
             let _ = CreateDmgCommand(completionHandler: completionHandler)
         case "snapshot"?:
             // Creates a crypted chunked snapshot with its own hashmap for each chunk
             let _ = SnapshotCommand(completionHandler: completionHandler)
-        case "recover"?,"recover-from-snapshot"?:
+        case "recover"?, "recover-from-snapshot"?:
             // Recovers a tree from crypted snapshot
             let _ = RecoverCommand(completionHandler: completionHandler)
         default:
             // We want to propose the best verb candidate
             let reference=[
-                "h","help",
+                "h", "help",
                 "login",
                 "logout",
-                "verify","verify-credentials",
+                "verify", "verify-credentials",
                 "create-hashmap",
                 "synchronize",
-                "cd","create-directives",
-                "run","run-directives",
-                "rd","reveal-directives",
-                "kvs","key-value-storage","keystore",
+                "cd", "create-directives",
+                "run", "run-directives",
+                "rd", "reveal-directives",
+                "kvs", "key-value-storage", "keystore",
                 "cleanup",
-                "create-dmg","create-disk-image",
+                "create-dmg", "create-disk-image",
                 "snapshoot",
-                "recover","recover-from-snapshot"
+                "recover", "recover-from-snapshot"
             ]
             let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
@@ -104,7 +104,7 @@ public struct CommandsFacade {
             exit(EX__BASE)
         }
     }
-    
+
     private func _noArgMessage()->String {
         var s=""
         s += "Bartleby's Sync client aka \"bsync\" is a delta synchronizer v1.0 R3"
@@ -157,38 +157,38 @@ public struct CommandsFacade {
         s += "\n"
         return s
     }
-    
+
     // MARK: levenshtein distance
     // https://en.wikipedia.org/wiki/Levenshtein_distance
-    
-    private func bestCandidate(string:String,reference:[String])->String{
+
+    private func bestCandidate(string: String, reference: [String])->String {
         var selectedCandidate=string
-        var minDistance:Int=Int.max
-        for candidate in reference{
-            let distance=self.levenshtein(string,candidate)
-            if distance<minDistance{
+        var minDistance: Int=Int.max
+        for candidate in reference {
+            let distance=self.levenshtein(string, candidate)
+            if distance<minDistance {
                 minDistance=distance
                 selectedCandidate=candidate
             }
         }
         return selectedCandidate
     }
-    
+
     private func min(numbers: Int...) -> Int {
         return numbers.reduce(numbers[0], combine: {$0 < $1 ? $0 : $1})
     }
-    
+
     private class Array2D {
-        var cols:Int, rows:Int
+        var cols: Int, rows: Int
         var matrix: [Int]
-        
-        init(cols:Int, rows:Int) {
+
+        init(cols: Int, rows: Int) {
             self.cols = cols
             self.rows = rows
             matrix = Array(count:cols*rows, repeatedValue:0)
         }
-        
-        subscript(col:Int, row:Int) -> Int {
+
+        subscript(col: Int, row: Int) -> Int {
             get {
                 return matrix[cols * row + col]
             }
@@ -196,29 +196,29 @@ public struct CommandsFacade {
                 matrix[cols*row+col] = newValue
             }
         }
-        
+
         func colCount() -> Int {
             return self.cols
         }
-        
+
         func rowCount() -> Int {
             return self.rows
         }
     }
-    
-    private func levenshtein(aStr: String,_ bStr: String) -> Int {
+
+    private func levenshtein(aStr: String, _ bStr: String) -> Int {
         let a = Array(aStr.utf16)
         let b = Array(bStr.utf16)
-        
+
         let dist = Array2D(cols: a.count + 1, rows: b.count + 1)
         for i in 1...a.count {
             dist[i, 0] = i
         }
-        
+
         for j in 1...b.count {
             dist[0, j] = j
         }
-        
+
         for i in 1...a.count {
             for j in 1...b.count {
                 if a[i-1] == b[j-1] {

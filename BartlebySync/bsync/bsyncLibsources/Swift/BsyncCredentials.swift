@@ -15,84 +15,84 @@ import Foundation
 
 
 
-@objc(BsyncCredentials) public class BsyncCredentials :JObject{
-    
-    
+@objc(BsyncCredentials) public class BsyncCredentials: JObject {
+
+
     /// Debug facility
     public static let DEBUG_DISABLE_ENCRYPTION=true // Should always be set to false in production (!)
-    
-    
+
+
     // CRYPTED
-    public var user:User?
-    public var password:String?
-    public var salt:String?
-    
-    public required init(){
+    public var user: User?
+    public var password: String?
+    public var salt: String?
+
+    public required init() {
         super.init()
     }
-    
+
     // MARK: Mappable
-    
+
     required public init?(_ map: Map) {
         super.init()
         self.mapping(map)
     }
-    
+
     override public func mapping(map: Map) {
         super.mapping(map)
         if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
             user <- map["user"]
             password <- map ["password"]
             salt <- map ["salt"]
-        }else{
-            user <- (map["user"],CryptedSerializableTransform())
-            password <- (map ["password"],CryptedStringTransform())
-            salt <- (map ["salt"],CryptedStringTransform())
+        } else {
+            user <- (map["user"], CryptedSerializableTransform())
+            password <- (map ["password"], CryptedStringTransform())
+            salt <- (map ["salt"], CryptedStringTransform())
         }
     }
-    
-    
+
+
     // MARK: NSecureCoding
-    
-    override public func encodeWithCoder(coder: NSCoder){
+
+    override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
         coder.encodeObject(user, forKey: "user")
         coder.encodeObject(password, forKey: "password")
         coder.encodeObject(salt, forKey: "salt")
     }
-    
-    public required init?(coder decoder: NSCoder){
+
+    public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.user=User(coder: decoder)
         self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey:"password") as NSString?)
         self.salt=String(decoder.decodeObjectOfClass(NSString.self, forKey:"salt") as NSString?)
     }
-    
-    
-    override public class func supportsSecureCoding() -> Bool{
+
+
+    override public class func supportsSecureCoding() -> Bool {
         return true
     }
-    
+
 
     // MARK: Identifiable
-    
-    override public class var collectionName:String{
+
+    override public class var collectionName: String {
         return "BsyncCredentials"
     }
-    
-    override public var d_collectionName:String{
+
+    override public var d_collectionName: String {
         return BsyncCredentials.collectionName
     }
-    
-    
+
+
     // MARK: Persistent
-    
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+
+    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
         var r=super.toPersistentRepresentation()
         r.A=NSDate().timeIntervalSince1970
         return r
     }
-    
-    
-    
+
+
+
 }

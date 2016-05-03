@@ -10,17 +10,17 @@ import Foundation
 
 
 extension String:Serializable {
-    
+
     public func serialize() -> NSData {
-        if let data=self.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
+        if let data=self.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
             return data
         } else {
             return NSData()
         }
     }
-    
-    public func deserialize(data:NSData) ->Serializable {
-        if let string=String(data: data,encoding:NSUTF8StringEncoding){
+
+    public func deserialize(data: NSData) ->Serializable {
+        if let string=String(data: data, encoding:NSUTF8StringEncoding) {
             return string
         } else {
             let e = ObjectError()
@@ -28,39 +28,39 @@ extension String:Serializable {
             return e
         }
     }
-    
 
-    public func updateData(data:NSData) ->Serializable {
+
+    public func updateData(data: NSData) ->Serializable {
         // @BPDS -> support
         return self
     }
-    
+
     public func dictionaryRepresentation()->[String:AnyObject] {
         return [String: AnyObject]()
     }
-    
+
 }
 
-enum BsyncKeyValueStorageError : ErrorType {
+enum BsyncKeyValueStorageError: ErrorType {
     case CorruptedData
     case OtherDataProblem
 }
 
 class BsyncKeyValueStorage {
-    
+
     private var _kvs = [String : String]()
     private var _url: NSURL
     private var _shouldSave = false
-    
+
     init(url: NSURL) {
         self._url = url
     }
-    
+
     func open() throws {
         let fm = NSFileManager.defaultManager()
         if let path = _url.path {
-            if fm.fileExistsAtPath(path){
-                if let data=NSData(contentsOfFile: path){
+            if fm.fileExistsAtPath(path) {
+                if let data=NSData(contentsOfFile: path) {
                     if let kvs = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as? [String: String] {
                         _kvs = kvs
                     }
@@ -68,11 +68,11 @@ class BsyncKeyValueStorage {
             }
         }
     }
-    
+
     func save() throws {
         if(_shouldSave) {
             let json = try NSJSONSerialization.dataWithJSONObject(_kvs, options: NSJSONWritingOptions.PrettyPrinted)
-            
+
             let fm = NSFileManager.defaultManager()
             if let folderUrl = _url.URLByDeletingLastPathComponent {
                 if let folderPath = folderUrl.path {
@@ -82,10 +82,10 @@ class BsyncKeyValueStorage {
                 }
                 try json.writeToURL(_url, options: NSDataWritingOptions.AtomicWrite)
             }
-            
+
         }
     }
-    
+
     subscript (key: String) -> Serializable? {
         get {
             if let base64CryptedValueString = _kvs[key] {
@@ -94,9 +94,9 @@ class BsyncKeyValueStorage {
                         let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
                         // TODO: Generalize to any serializer
                         return JSerializer.deserialize(decryptedValueData)
-                        
+
                     } catch {
-                        
+
                     }
                 }
             }
@@ -111,17 +111,17 @@ class BsyncKeyValueStorage {
                     _kvs[key] = newValueBase64CryptedString
                     _shouldSave = true
                 } catch {
-                    
+
                 }
             }
         }
     }
-    
+
     func delete(key: String) {
         _kvs.removeValueForKey(key)
         _shouldSave = true
     }
-    
+
     func enumerate() -> [(String, String)] {
         var result = [(String, String)]()
         for (k, v) in _kvs {
@@ -129,7 +129,7 @@ class BsyncKeyValueStorage {
         }
         return result
     }
-    
+
     // Maybe we should
     func removeAll() throws {
         let fm = NSFileManager()

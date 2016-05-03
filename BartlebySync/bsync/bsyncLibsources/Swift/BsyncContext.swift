@@ -16,38 +16,38 @@ import Foundation
 // de-encaspulation of read only properties was necessary to allow mapping from swift.
 // (!)  when all the code base will be ported we should reencapsulate
 // sourceTreeId, destinationTreeId, sourceBaseUrln destinationBaseUrl, hashMapViewName, syncID
-@objc(BsyncContext) public class BsyncContext:PdSSyncContext,Mappable{
-    
+@objc(BsyncContext) public class BsyncContext: PdSSyncContext, Mappable {
+
     // Can be used during long operation to relog
     // and to give to the ACL layer contextual information like defining the spaceUID
-    var credentials:BsyncCredentials?
-    
+    var credentials: BsyncCredentials?
+
     // MARK: Mappable
-    
-    var hashmapAsADictionary:Dictionary<String,[String:String]>{
-        get{
-            if let f=self.finalHashMap{
-                return f.dictionaryRepresentation() as! Dictionary<String,[String:String]>
+
+    var hashmapAsADictionary: Dictionary<String, [String:String]> {
+        get {
+            if let f=self.finalHashMap {
+                return f.dictionaryRepresentation() as! Dictionary<String, [String:String]>
             }
-            return Dictionary<String,[String:String]>()
+            return Dictionary<String, [String:String]>()
         }
-        set{
+        set {
             self.finalHashMap=HashMap.fromDictionary(hashmapAsADictionary)
         }
     }
-    
+
     override init() {
         super.init()
     }
-    
-    init(sourceURL: NSURL, andDestinationUrl: NSURL, restrictedTo hashMapViewName:String?,autoCreateTrees:Bool=false){
+
+    init(sourceURL: NSURL, andDestinationUrl: NSURL, restrictedTo hashMapViewName: String?, autoCreateTrees: Bool=false) {
         super.init(sourceURL: sourceURL, andDestinationUrl: andDestinationUrl, restrictedTo: hashMapViewName)
         self.autoCreateTrees=autoCreateTrees
     }
-    
+
 
     // MARK: Mappable
-    
+
     required public init?(_ map: Map) {
         super.init()
         self.mapping(map)
@@ -59,8 +59,8 @@ import Foundation
         self.repositoryPath <- map["repositoryPath"]
         self.sourceTreeId <- map["sourceTreeId"]
         self.destinationTreeId <- map["destinationTreeId"]
-        self.sourceBaseUrl <- (map["sourceBaseUrl"],URLTransform())
-        self.destinationBaseUrl <- (map["destinationBaseUrl"],URLTransform())
+        self.sourceBaseUrl <- (map["sourceBaseUrl"], URLTransform())
+        self.destinationBaseUrl <- (map["destinationBaseUrl"], URLTransform())
         self.hashMapViewName <- map["hashMapViewName"]
         self.numberOfCompletedCommands <- map["numberOfCompletedCommands"]
         self.numberOfCommands <- map["numberOfCommands"]

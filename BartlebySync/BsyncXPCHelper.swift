@@ -14,26 +14,26 @@ import Foundation
 
 
 public class BsyncXPCHelperDMGHandler {
-    
-    public var detachImageOnCompletion:Bool
-    
-    public var callBlock:CompletionHandler
-    
-    init(onCompletion:CompletionHandler, detach:Bool){
+
+    public var detachImageOnCompletion: Bool
+
+    public var callBlock: CompletionHandler
+
+    init(onCompletion: CompletionHandler, detach: Bool) {
         callBlock=onCompletion
         detachImageOnCompletion=detach
     }
-    
+
 }
 
 // MARK: -
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-@objc(BsyncXPCHelper) public class BsyncXPCHelper:NSObject,BartlebyFileIO{
-    
+@objc(BsyncXPCHelper) public class BsyncXPCHelper: NSObject, BartlebyFileIO {
+
     static var masterFileName="Master"
-    
+
     /// The BsyncXPC connection
     lazy var bsyncConnection: NSXPCConnection = {
         let connection = NSXPCConnection(serviceName: "fr.chaosmos.BsyncXPC")
@@ -41,33 +41,31 @@ public class BsyncXPCHelperDMGHandler {
         connection.resume()
         return connection
     }()
-    
+
     // MARK: - DMG Creation
-  
-    
+
+
     /**
-    
+
     IMPORTANT NOTES:
-    
+
         - Any file system action while in the "thenDo block" should be done by calling FS method of remoteObjectProxy
         - Within the "thenDo Block" to conclude call whenDone.callBlock(success: succes,message: message)
         it will call the conclusiveHandler in wich you can put the next thing to do on completion.
-     
+
     Sequence:
-     
+
      1 Creates A DMG from a Card
      2 Creates the destination folder
      3 Creates DMG
      4 Invoke the attachFromCard SEQUENCE (5 more steps)
-     
+
      - parameter card:                   the card
      - parameter thenDo: what do you want to do when the dmg will be mounted block.
      - parameter completionBlock:        the completionBlock
      */
-    func createDMG(card:BsyncDMGCard
-        ,thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperDMGHandler)->()
-        ,completion:BsyncXPCHelperDMGHandler)->(){
-            
+    func createDMG(card: BsyncDMGCard, thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(), completion: BsyncXPCHelperDMGHandler)->() {
+
             // The card must be valid
             let validation = card.evaluate()
             if !validation.success {
@@ -75,80 +73,79 @@ public class BsyncXPCHelperDMGHandler {
                 completion.callBlock(validation)
                 return
             }
-            
-            
+
+
             let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
                 completion.callBlock(Completion.failureStateFromNSError(error))
-                return;
+                return
             }
-            
-            
-            
+
+
+
             // The url is validated by card.evaluate()
             let url=NSURL(fileURLWithPath:card.imagePath)
-            let imageFolderPath:String!=url.URLByDeletingLastPathComponent?.path!
-            
+            let imageFolderPath: String!=url.URLByDeletingLastPathComponent?.path!
+
             if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-                
-                
+
+
                 // *********************************
                 // 0# Create the destination folder
                 // *********************************
-                
+
                 xpc.createDirectoryAtPath(imageFolderPath!, withIntermediateDirectories: true, attributes: nil,
                     callBack: { (success, message) -> () in
-                        
+
                         if success {
                             // The destination has been Successfully created
-                            xpc.fileExistsAtPath(card.imagePath, callBack: { (exists, isADirectory,success, message) -> () in
+                            xpc.fileExistsAtPath(card.imagePath, callBack: { (exists, isADirectory, success, message) -> () in
                                 if exists {
                                     // We preserve existing DMGs !
-                                    completion.callBlock(Completion.failureState(NSLocalizedString("The disk image already exists ",comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
+                                    completion.callBlock(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
                                     self.bsyncConnection.invalidate()
-                                }else{
-                                    
-                                    
+                                } else {
+
+
                                     // *********************************
                                     // 1# Create DMG
                                     // *********************************
-                                    
+
                                     xpc.createImageDisk(
                                         card.imagePath,
                                         volumeName:card.volumeName ,
                                         size:card.size,
                                         password:card.getPasswordForDMG(),
-                                        callBack:{ (completionRef) -> () in
+                                        callBack: { (completionRef) -> () in
                                             if completionRef.success {
-                                                
+
                                                 // If a volume with this name is already mounted
                                                 // We detach the volume
-                                                
+
                                                 xpc.fileExistsAtPath(card.volumePath,
-                                                    callBack: { (exists, isADirectory,success, message) -> () in
-                                                        if exists{
+                                                    callBack: { (exists, isADirectory, success, message) -> () in
+                                                        if exists {
                                                             xpc.detachVolume(card.volumeName,
-                                                                callBack:{ (detachCompletionRef) -> () in
+                                                                callBack: { (detachCompletionRef) -> () in
                                                                     self.mountDMG(card, thenDo: thenDo, completion: completion)
                                                             })
-                                                        }else{
+                                                        } else {
                                                             self.mountDMG(card, thenDo: thenDo, completion: completion)
                                                         }
                                                 })
-                                                
-                                            }else{
+
+                                            } else {
                                                 // Failure on DMG Creation
                                                 completion.callBlock(completionRef)
 
                                                 self.bsyncConnection.invalidate()
                                                 return
                                             }
-                                            
-                                        }
-                                    )
+
+                                        })
                                 }
                             })
-                            
-                        }else{
+
+                        } else {
                             completion.callBlock(Completion.failureState(NSLocalizedString("Destination folder creation Failure. Path=",
                                 comment:"Destination folder creation Failure. Path=") + imageFolderPath, statusCode: .Precondition_Failed))
                             self.bsyncConnection.invalidate()
@@ -158,46 +155,46 @@ public class BsyncXPCHelperDMGHandler {
             }
     }
 
-    
+
     // MARK: Attach and do...
-    
+
     /**
      Sequence||Sub sequence of createFromCard:
-     
+
     IMPORTANT NOTES:
-    
+
     - Any file system action while in the "thenDo block" should be done by calling FS method of remoteObjectProxy
     - Within the "thenDo Block" to conclude call whenDone.callBlock(success: succes,message: message)
     it will call the conclusiveHandler in wich you can put the next thing to do on completion.
-    
+
      1||5 Unmount if there is a volume with the current card volumeName
      2||6 Mounts the DMG
      3||7 Execute thenDo (the caller should invoke whenDone when it has done the job)
      4||8 Unmount the DMG
       ||9 Call The completionBlock on any error or on successfull completion
-     
+
      - parameter card:             the card
      - parameter thenDo:           what do you want to do when the dmg will be mounted block.
      - parameter completionBlock:  the completion block
      */
-    func mountDMG(card:BsyncDMGCard,
-                  thenDo:(remoteObjectProxy:BsyncXPCProtocol,volumePath:String,whenDone:BsyncXPCHelperDMGHandler)->(),
-                  completion:BsyncXPCHelperDMGHandler)->() {
-            
+    func mountDMG(card: BsyncDMGCard,
+                  thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(),
+                  completion: BsyncXPCHelperDMGHandler)->() {
+
             // The car must be valid
             let validation=card.evaluate()
             if validation.success == false {
                 completion.callBlock(validation)
                 return
             }
-            
+
             let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
                 completion.callBlock(Completion.failureStateFromNSError(error))
-                return;
+                return
             }
-            
+
             if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-                
+
                 // For better readability we alias completion to finalCompletion
                 let finalCompletion = completion
                 // Then Create an encapsulated internal "completion" object
@@ -210,65 +207,65 @@ public class BsyncXPCHelperDMGHandler {
                                     finalCompletion.callBlock(detachCompletionRef)
                                      self.bsyncConnection.invalidate()
                             })
-                            
-                        }else{
+
+                        } else {
                              finalCompletion.callBlock(completionRef)
                         }
                     }, detach: finalCompletion.detachImageOnCompletion)
-                
-                
+
+
                 // This sub method can be called directly
                 // Or after detaching the volume (if there is volume with the name of this DMG)
-                func mountDMG(){
+                func mountDMG() {
                     xpc.attachVolume(from: card.imagePath,
                         withPassword: card.getPasswordForDMG(),
                         callBack: {
                             (mountCompletionRef) -> () in
                             if mountCompletionRef.success {
-                                
+
                                 // Invoke the doWhen block
                                 // And wait for its result.
-                                
-                                thenDo(remoteObjectProxy:xpc, volumePath:card.volumePath,whenDone: internalCompletion)
-                    
-                            }else{
+
+                                thenDo(remoteObjectProxy:xpc, volumePath:card.volumePath, whenDone: internalCompletion)
+
+                            } else {
                                 // It is a failure.
                                 internalCompletion.callBlock(mountCompletionRef)
                             }
                     })
-                    
+
                 }
-                
+
                 // If a volume with this name is already mounted
                 // We detach the volume
-                
+
                 xpc.fileExistsAtPath(card.volumeName,
-                    callBack: { (exists, isADirectory,success, message) -> () in
-                        if exists{
+                    callBack: { (exists, isADirectory, success, message) -> () in
+                        if exists {
                             xpc.detachVolume(card.volumeName,
-                                callBack:{ (fileExitsCompltionRef) -> () in
+                                callBack: { (fileExitsCompltionRef) -> () in
                                     mountDMG()
                             })
-                        }else{
+                        } else {
                             mountDMG()
                         }
                 })
             }
     }
-    
+
     // MARK: DMG unmout
-    
+
     /**
      Unmount the DMG using BsyncXPC
-     
+
      - parameter volumeName: the volume name
      - parameter completion: the completion handler
      */
-    func unMountDMG(volumeName:String, completion:(success:Bool, message:String?, volumeName:String)->()) {
+    func unMountDMG(volumeName: String, completion:(success: Bool, message: String?, volumeName: String)->()) {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             completion(success: false, message: message, volumeName: volumeName)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.detachVolume(volumeName, callBack: { (detachVolumeCompletionRef) in
@@ -276,35 +273,35 @@ public class BsyncXPCHelperDMGHandler {
             })
         }
     }
-    
+
     // MARK: - Card and Directives
-    
-    
+
+
     /**
-     Creates a card 
-     
+     Creates a card
+
     the default card is accessible via project.dmgCard
-     
+
      - parameter user:          the user
      - parameter context:       the IdentifiableCardContext
      - parameter folderPath: the imagePath
      - parameter isMaster:      is it a master?
-     
+
      - returns: the card
      */
-    func cardFor(   user:User,
-                    context:IdentifiableCardContext,
-                    folderPath:String,
-                    isMaster:Bool)->BsyncDMGCard {
-        
+    func cardFor(   user: User,
+                    context: IdentifiableCardContext,
+                    folderPath: String,
+                    isMaster: Bool)->BsyncDMGCard {
+
         let destination=folderPath
-        
+
         let hashName=CryptoHelper.hash(user.UID+context.UID)
         let imageFolderPath = (isMaster ? "\(destination)\(hashName)" : "\(destination)\(hashName)")
-        
+
         let imagePath =  "\(imageFolderPath).sparseimage"
         let volumeName = (isMaster ? "Master_"+context.name : hashName)
-        
+
         let card=BsyncDMGCard()
         card.contextUID=context.UID
         card.userUID=user.UID
@@ -314,311 +311,310 @@ public class BsyncXPCHelperDMGHandler {
         return card
     }
 
-    
-    
+
+
     /**
      Simplifies the run directives for card call by using hanlders indirections
-     
+
      - parameter card:     the card
      - parameter handlers: the handlers
      */
-    func runDirectivesFromCard(card:BsyncDMGCard
-        ,handlers: ProgressAndCompletionHandler)->(){
-        
+    func runDirectivesFromCard(card: BsyncDMGCard, handlers: ProgressAndCompletionHandler)->() {
+
         // The card must be valid
         let validation=card.evaluate()
         if validation.success == false {
             handlers.on(validation)
             return
         }
-        
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromNSError(error))
             // TODO: !!! @bpds Check if the code after is run upon error
             return
         }
-        
-        
+
+
         // We need to provide a unique block to be compatible with the XPC context
         // So we use an handler adapter that relays to the progress and completion handlers
         // to mask the constraint
-        
-        let indirectHandlers:ComposedProgressAndCompletionHandler = {
-            (progressionState,completionState)-> Void in
-            if let progressionState = progressionState{
+
+        let indirectHandlers: ComposedProgressAndCompletionHandler = {
+            (progressionState, completionState)-> Void in
+            if let progressionState = progressionState {
                 handlers.notify?(progressionState)
             }
-            if let completionState = completionState{
+            if let completionState = completionState {
                 handlers.on(completionState)
                  self.bsyncConnection.invalidate()
             }
         }
-        
-        
+
+
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: indirectHandlers)
         }
-        
+
     }
-    
-    
-    
+
+
+
     // MARK: - Local File System BartlebyFileIO implementation
-    
+
 
     /**
      Creates a directory
-     
+
      - parameter path:                the path
      - parameter createIntermediates: create intermediates paths ?
      - parameter attributes:          attributes
      - parameter callBack:            the call back
-     
+
      - returns: N/A
      */
     public func createDirectoryAtPath(path: String,
                                withIntermediateDirectories createIntermediates: Bool,
                                                            attributes: [String : AnyObject]?,
-                                                           callBack:(success:Bool,message:String?)->())->(){
-        
+                                                           callBack:(success: Bool, message: String?)->())->() {
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.createDirectoryAtPath(path, withIntermediateDirectories: createIntermediates, attributes:attributes, callBack: callBack)
         }
     }
-    
-    
-    
+
+
+
     /**
      Reads the data
-     
+
      - parameter path:            from file path
      - parameter readOptionsMask: readOptionsMask
      - parameter callBack:        the callBack
-     
+
      - returns: NSData
      */
     public func readData( contentsOfFile path: String,
                                   options readOptionsMask: NSDataReadingOptions,
-                                          callBack:(data:NSData?, success:Bool,message:String?)->())->(){
+                                          callBack:(data: NSData?, success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(data:nil, success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.readData(contentsOfFile: path, options: readOptionsMask, callBack: callBack)
         }
     }
-    
-    
+
+
     /**
      Reads the data
-     
+
      - parameter path:     the data file path
      - parameter callBack: the call back
-     
+
      - returns: NSData
      */
     public func readData( contentsOfFile path: String,
-                                  callBack:(data:NSData?)->())->(){
+                                  callBack:(data: NSData?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             callBack(data:nil)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.readData(contentsOfFile: path, callBack: callBack)
         }
     }
-    
-    
+
+
     /**
      Writes data to the given path
-     
+
      - parameter data:             the data
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
      - parameter callBack:          the call back
-     
+
      - returns: N/A
      */
-    public func writeData( data:NSData,
+    public func writeData( data: NSData,
                     path: String,
                     atomically useAuxiliaryFile: Bool,
-                               callBack:(success:Bool,message:String?)->())->(){
+                               callBack:(success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.writeData(data, path:path, atomically: useAuxiliaryFile, callBack: callBack)
         }
     }
-    
+
     /**
      Reads a string from a file
-     
+
      - parameter path:     the file path
      - parameter enc:      the encoding
      - parameter callBack: the callBack
-     
+
      - returns : N/A
      */
     public func readString(contentsOfFile path: String,
                                    encoding enc: NSStringEncoding,
-                                            callBack:(string:String?,success:Bool,message:String?)->())->(){
+                                            callBack:(string: String?, success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(string:nil, success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.readString(contentsOfFile: path, encoding: enc, callBack: callBack)
         }
     }
-    
-    
+
+
     /**
      Writes String to the given path
-     
+
      - parameter string:            the string
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
      - parameter enc:              encoding
      - parameter callBack:          the call back
-     
+
      - returns: N/A
      */
-    public func writeString( string:String,
+    public func writeString( string: String,
                       path: String,
                       atomically useAuxiliaryFile: Bool,
                                  encoding enc: NSStringEncoding,
-                                          callBack:(success:Bool,message:String?)->())->(){
+                                          callBack:(success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.writeString(string, path: path, atomically: useAuxiliaryFile, encoding: enc, callBack: callBack)
         }
     }
-    
-    
+
+
     /**
      Determines if a file exists and is a directory.
-     
+
      - parameter path:     the path
      - parameter callBack: the call back
-     
+
      - returns:  N/A
      */
     public func fileExistsAtPath(path: String,
-                          callBack:(exists:Bool,isADirectory:Bool,success:Bool,message:String?)->())->(){
-        
+                          callBack:(exists: Bool, isADirectory: Bool, success: Bool, message: String?)->())->() {
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
-            callBack(exists:false, isADirectory:false,success:false, message: message)
-            return;
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
+            callBack(exists:false, isADirectory:false, success:false, message: message)
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.fileExistsAtPath(path, callBack: callBack)
         }
-        
+
     }
-    
-    
-    
+
+
+
     /**
      Removes the item at a given path
      Use with caution !
-     
+
      - parameter path:     path
      - parameter callBack: the call back
      */
     public func removeItemAtPath(path: String,
-                          callBack:(success:Bool,message:String?)->())->(){
+                          callBack:(success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success:false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.removeItemAtPath(path, callBack: callBack)
         }
     }
 
-    
+
     /**
      Copies the file
-     
+
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
      - parameter callBack: callBack
-     
+
      - returns: N/A
      */
     public func copyItemAtPath(srcPath: String,
                         toPath dstPath: String,
-                               callBack:(success:Bool,message:String?)->())->(){
+                               callBack:(success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.copyItemAtPath(srcPath, toPath:dstPath, callBack: callBack)
         }
     }
-    
+
     /**
      Moves the file
-     
+
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
      - parameter callBack: callBack
-     
+
      - returns: N/A
      */
     public func moveItemAtPath(srcPath: String,
                         toPath dstPath: String,
-                               callBack:(success:Bool,message:String?)->())->(){
+                               callBack:(success: Bool, message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
             callBack(success: false, message: message)
-            return;
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.moveItemAtPath(srcPath, toPath: dstPath, callBack: callBack)
         }
     }
-    
-    
+
+
     /**
      Lists the content of the directory
-     
+
      - parameter path:     the path
      - parameter callBack: the callBack
-     
+
      - returns: N/A
      */
     public func contentsOfDirectoryAtPath(path: String,
-                                   callBack:(success:Bool,content:[String],message:String?)->())->(){
+                                   callBack:(success: Bool, content: [String], message: String?)->())->() {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ",comment:"XPC connection error ")+"\(error.localizedDescription)"
-            callBack(success: false,content:[String](),message: message)
-            return;
+            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
+            callBack(success: false, content:[String](), message: message)
+            return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.contentsOfDirectoryAtPath(path, callBack: callBack)
         }
     }
 
-    
-    
+
+
 }

@@ -12,22 +12,22 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class CryptedSerializableTransform<T: Serializable>: TransformType{
+public class CryptedSerializableTransform<T: Serializable>: TransformType {
     public init() {
-        
+
     }
-    
+
     public typealias Object = T
     public typealias JSON = String
-    
+
     private let _CRYPTED_OBJECT_KEY = "o"
-    
-    public func transformFromJSON(value: AnyObject?) -> Object?{
-        
-        if let JSONSTRING=value as? String{
+
+    public func transformFromJSON(value: AnyObject?) -> Object? {
+
+        if let JSONSTRING=value as? String {
             do {
-                if let dataString = JSONSTRING.dataUsingEncoding(NSUTF8StringEncoding){
-                    if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(dataString,options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                if let dataString = JSONSTRING.dataUsingEncoding(NSUTF8StringEncoding) {
+                    if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(dataString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                         if let value = jsonDictionary[self._CRYPTED_OBJECT_KEY] {
                             if let base64EncodedString = value as? String {
                                 if let encryptedData = NSData(base64EncodedString: base64EncodedString, options: .IgnoreUnknownCharacters) {
@@ -38,14 +38,14 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType{
                         }
                     }
                 }
-            } catch  {
+            } catch {
                 bprint("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil
     }
-    
-    public func transformToJSON(value: Object?) -> JSON?{
+
+    public func transformToJSON(value: Object?) -> JSON? {
         if let object=value {
             do {
                 let data=JSerializer.serialize(object)
@@ -53,11 +53,10 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType{
                 let base64EncodedString = cryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
                 let JSONSTRING="{\"\(self._CRYPTED_OBJECT_KEY)\":\"\(base64EncodedString)\"}"
                 return JSONSTRING
-            } catch  {
+            } catch {
                 bprint("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil
     }
 }
-

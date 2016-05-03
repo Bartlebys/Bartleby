@@ -11,14 +11,14 @@
 import Foundation
 
 
-public protocol HTTPCommand{
-    
+public protocol HTTPCommand {
+
     /**
      An http command implements a push method with success and failure contextual responses
-     
+
      - parameter success: the successful HTTPRreponse
      - parameter failure: the unsucessful HTTPRreponse
      */
-    func push(sucessHandler success:(context:HTTPResponse)->(),failureHandler failure:(context:HTTPResponse)->())
-    
+    func push(sucessHandler success:(context: HTTPResponse)->(), failureHandler failure:(context: HTTPResponse)->())
+
 }

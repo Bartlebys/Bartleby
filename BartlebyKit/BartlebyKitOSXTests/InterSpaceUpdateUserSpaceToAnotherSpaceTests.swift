@@ -15,35 +15,35 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
     private static let _spaceB = Bartleby.createUID()
     private static let _emailA="\(Bartleby.randomStringWithLength(5))@lylo.tv"
     private static let _passwordA=Bartleby.randomStringWithLength(6)
-    private static var _userIDA:String="UNDEFINED"
-    private static var _userA:User?
-    
+    private static var _userIDA: String="UNDEFINED"
+    private static var _userA: User?
+
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-    
+
     // MARK: 0 - Initialization
-    
-    func test000_purgeTheCookiesForTheDomain(){
+
+    func test000_purgeTheCookiesForTheDomain() {
         print("Using : \(TestsConfiguration.API_BASE_URL)")
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
-            for cookie in cookies{
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL){
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
     }
-    
+
     // MARK: 1 - User creation
-    
-    func test101_createUserA(){
+
+    func test101_createUserA() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        
+
         let user=User()
         user.email=InterSpaceUpdateUserSpaceToAnotherSpaceTests._emailA
         user.verificationMethod = .ByEmail
@@ -60,18 +60,18 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("\(context)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-        
+
     }
-    
+
     // MARK: 2 - Login, update user space and logout
-    func test201_LoginUserA_intoSpaceA(){
-        
+    func test201_LoginUserA_intoSpaceA() {
+
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = InterSpaceUpdateUserSpaceToAnotherSpaceTests._userA {
             // Space id is very important
@@ -85,8 +85,8 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                 expectation.fulfill()
                 XCTFail("Status code \(context.httpStatusCode)")
             }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
                     bprint("Error: \(error.localizedDescription)")
                 }
@@ -95,10 +95,10 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Invalid user")
         }
     }
-    
-    func test202_UpdateUser_SpaceA_toSpaceB_ShouldFail(){
+
+    func test202_UpdateUser_SpaceA_toSpaceB_ShouldFail() {
         let expectation = expectationWithDescription("UpdateUser should respond")
-        
+
         if let user = InterSpaceUpdateUserSpaceToAnotherSpaceTests._userA {
             if let clonedUser = JSerializer.volatileDeepCopy(user) {
                 // Updating userA space
@@ -112,8 +112,8 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                     expectation.fulfill()
                     XCTAssert(context.httpStatusCode >= 400 )
                 }
-                
-                waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+                waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                     if let error = error {
                         bprint("Error: \(error.localizedDescription)")
                     }
@@ -125,11 +125,11 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Invalid user")
         }
     }
-    
-    
+
+
     // MARK: 3 - Deletion and log out
-    
-    func test301_DeleteUserA(){
+
+    func test301_DeleteUserA() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(InterSpaceUpdateUserSpaceToAnotherSpaceTests._userIDA,
                            fromDataSpace: InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceA,
@@ -139,15 +139,15 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
     }
-    
-    func test302_LogoutUserA(){
+
+    func test302_LogoutUserA() {
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(fromDataSpace: InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceA,
                            sucessHandler: { (context) -> () in
@@ -156,8 +156,8 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             expectation.fulfill()
             XCTFail("Status code \(context.httpStatusCode)")
         }
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION){ error -> Void in
+
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }

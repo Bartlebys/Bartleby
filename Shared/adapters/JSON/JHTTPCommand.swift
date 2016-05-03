@@ -14,6 +14,6 @@ import Foundation
 /**
  *  A JSON Flavoured HTTPCommand
  */
-public protocol JHTTPCommand: Mappable,Collectible,Persistent,HTTPCommand{
-    
+public protocol JHTTPCommand: Mappable, Collectible, Persistent, HTTPCommand {
+
 }

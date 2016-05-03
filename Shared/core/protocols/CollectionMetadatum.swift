@@ -10,18 +10,18 @@ import Foundation
 
 
 
-public protocol CollectionMetadatum:Serializable{
-  
-    // The collection name 
-    var collectionName:String { get }
-    
+public protocol CollectionMetadatum: Serializable {
+
+    // The collection name
+    var collectionName: String { get }
+
     // Allow Bartleby server to insure persistency
-    var allowDistantPersistency:Bool { get set }
-    
+    var allowDistantPersistency: Bool { get set }
+
     // Should the collection be volatile ? == persist in memory only
-    var inMemory:Bool { get set }
-    
+    var inMemory: Bool { get set }
+
     //The collection observation UID
-    var observableViaUID:String { get set }
-    
+    var observableViaUID: String { get set }
+
 }

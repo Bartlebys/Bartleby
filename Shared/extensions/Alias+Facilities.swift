@@ -8,11 +8,11 @@
 
 import Foundation
 
-public extension Alias{
-    
-    public convenience init(withInstanceUID iUID:String){
+public extension Alias {
+
+    public convenience init(withInstanceUID iUID: String) {
         self.init()
         self.iUID=iUID
     }
-   
+
 }

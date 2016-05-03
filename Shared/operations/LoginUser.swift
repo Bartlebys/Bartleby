@@ -17,19 +17,19 @@ import Foundation
 #endif
 
 
-@objc(LoginUser) public class LoginUser : BaseObject{
+@objc(LoginUser) public class LoginUser: BaseObject {
 
-    static public func execute(  user:User,
-                                 withPassword password:String,
+    static public func execute(  user: User,
+                                 withPassword password: String,
                                  sucessHandler success:()->(),
-                                 failureHandler failure:(context:JHTTPResponse)->()){
+                                 failureHandler failure:(context: JHTTPResponse)->()) {
 
         let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("user/login")
-        let dictionary:Dictionary<String, AnyObject>?=["userUID":user.UID,"password":password]
-        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:user.spaceUID,withActionName:"LoginUser" ,forMethod:"POST", and: pathURL)
-        let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
-        r.responseString{ response in
+        let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID, "password":password]
+        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:user.spaceUID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
+        let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
+        r.responseString { response in
 
             let request=response.request
             let result=response.result
@@ -56,15 +56,15 @@ import Foundation
                     title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                         comment: "Unsuccessfull attempt"),
                     body:"\(m) httpStatus code = \(response?.statusCode ?? 0 )" ,
-                    trigger:{ (selectedIndex) -> () in
+                    trigger: { (selectedIndex) -> () in
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
-            }else{
+            } else {
                 if let statusCode=response?.statusCode {
                     if 200...299 ~= statusCode {
                         success()
-                    }else{
+                    } else {
                         // Bartlby does not currenlty discriminate status codes 100 & 101
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
@@ -75,7 +75,7 @@ import Foundation
                             title: NSLocalizedString("Unsuccessfull attempt",
                                 comment: "Unsuccessfull attempt"),
                             body:"\(m) httpStatus code = \(statusCode)" ,
-                            trigger:{ (selectedIndex) -> () in
+                            trigger: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)

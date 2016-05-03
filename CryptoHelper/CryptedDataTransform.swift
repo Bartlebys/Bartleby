@@ -13,27 +13,27 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class CryptedDataTransform:TransformType{
-    
+public class CryptedDataTransform: TransformType {
+
     public typealias Object = NSData
     public typealias JSON = String
-    
-    
-    public func transformFromJSON(value: AnyObject?) -> Object?{
-        if let s=value as? String{
-            do{
-                if let data=s.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
+
+
+    public func transformFromJSON(value: AnyObject?) -> Object? {
+        if let s=value as? String {
+            do {
+                if let data=s.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
                     return try Bartleby.cryptoDelegate.decryptData(data)
                 }
-                
-            }catch{
+
+            } catch {
                 // SILENT CATCH
             }
         }
         return nil
     }
-    
-    public func transformToJSON(value: Object?) -> JSON?{
+
+    public func transformToJSON(value: Object?) -> JSON? {
         if let d=value as NSData? {
             return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
         }

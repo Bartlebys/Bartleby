@@ -10,20 +10,20 @@
     import ObjectMapper
 #endif
 
-public class CryptedKeyValueStorage:Mappable{
-    
-    
-    var storage:[String:String]=[String:String]()
+public class CryptedKeyValueStorage: Mappable {
 
-    
+
+    var storage: [String:String]=[String:String]()
+
+
     // MARK: Mappable
-    
+
     public required init?(_ map: Map) {
         self.mapping(map)
     }
-    
+
     public func mapping(map: Map) {
-        storage <- (map["storage"],CryptedStringKeyValueTransform())
+        storage <- (map["storage"], CryptedStringKeyValueTransform())
     }
-    
+
 }

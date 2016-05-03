@@ -7,23 +7,23 @@
 //  All rights reserved you can ask for a license
 
 #if USE_EMBEDDED_MODULES
-    
+
 import Foundation
-    
-class Configuration{
-    
-    static var KEY:String{
-        get{
+
+class Configuration {
+
+    static var KEY: String {
+        get {
             return "bsync-is-a-nice-tool-please-keep-its-key-private-2016-01-05-bpds"
         }
     }
-    
-    static var SALT:String{
-        get{
+
+    static var SALT: String {
+        get {
             return CryptoHelper.hash(Configuration.KEY+"in-the-soup")
         }
     }
 
 }
-    
+
 #endif

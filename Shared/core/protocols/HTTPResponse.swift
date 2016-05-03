@@ -10,6 +10,6 @@
 import Foundation
 
 
-public protocol HTTPResponse:Collectible,Persistent,Consignable,ConsignableHTTPContext{
-    
+public protocol HTTPResponse: Collectible, Persistent, Consignable, ConsignableHTTPContext {
+
 }

@@ -8,39 +8,39 @@
 
 import Foundation
 
-@objc public class NoCrypto:NSObject,CryptoDelegate{
-    
-    
-    public override init(){
+@objc public class NoCrypto: NSObject, CryptoDelegate {
+
+
+    public override init() {
         super.init()
     }
-    
-    
-    public func encryptString(string:String)throws->String{
+
+
+    public func encryptString(string: String)throws->String {
         return string
     }
-    
-    
-    
-    public func decryptString(string:String)throws->String{
+
+
+
+    public func decryptString(string: String)throws->String {
         return string
     }
-    
-    
-    public func encryptData(data:NSData)throws ->NSData{
+
+
+    public func encryptData(data: NSData)throws ->NSData {
         return data
     }
-    
-    
-    public func decryptData(data:NSData)throws ->NSData{
+
+
+    public func decryptData(data: NSData)throws ->NSData {
         return data
     }
-    
-    
+
+
 
     public static func hash(string: String) -> String {
         return string
     }
-    
-    
+
+
 }

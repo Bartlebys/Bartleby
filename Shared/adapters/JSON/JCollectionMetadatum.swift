@@ -15,46 +15,46 @@ import Foundation
 
 
 // The underlining model has been implemented by flexions in BaseCollectionMetadatum
-@objc(JCollectionMetadatum) public class JCollectionMetadatum:BaseCollectionMetadatum,CollectionMetadatum{
-    
-    public var proxy:BaseObject? {
-        didSet{
-            if let proxy=proxy as? Collectible{
+@objc(JCollectionMetadatum) public class JCollectionMetadatum: BaseCollectionMetadatum, CollectionMetadatum {
+
+    public var proxy: BaseObject? {
+        didSet {
+            if let proxy=proxy as? Collectible {
                 self.collectionName=proxy.d_collectionName
             }
         }
     }
-    
-    
+
+
     required public init() {
         super.init()
     }
 
     // MARK: Mappable
-    
+
     required public init?(_ map: Map) {
         super.init(map)
     }
-    
-    
+
+
     // MARK: NSecureCoding
-    
-    
-    public override func encodeWithCoder(coder: NSCoder){
+
+
+    public override func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
     }
-    
-    public required init?(coder decoder: NSCoder){
+
+    public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        
+
     }
 
 
-    
-    override public class func supportsSecureCoding() -> Bool{
+
+    override public class func supportsSecureCoding() -> Bool {
         return true
     }
-    
-    
-    
+
+
+
 }

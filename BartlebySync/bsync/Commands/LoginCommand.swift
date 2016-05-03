@@ -9,8 +9,8 @@
 import Cocoa
 
 class LoginCommand: CommandBase {
-    
-    
+
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
 
@@ -18,23 +18,23 @@ class LoginCommand: CommandBase {
                                helpMessage: "API url e.g http://yd.local/api/v1")
         let userUID = StringOption(shortFlag: "u", longFlag: "user", required: true,
                                    helpMessage: "A user UID for the authentication.")
-        let password = StringOption(shortFlag: "p", longFlag: "password",required: true,
+        let password = StringOption(shortFlag: "p", longFlag: "password", required: true,
                                     helpMessage: "A password is  required for authentication.")
-        let secretKey = StringOption(shortFlag: "y", longFlag: "secretKey",required: true,
+        let secretKey = StringOption(shortFlag: "y", longFlag: "secretKey", required: true,
                                      helpMessage: "The secret key to encryp the data (if not set we use bsync's default)")
-        let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt",required: true,
+        let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.")
-        
-        
+
+
         cli.addOptions(api, userUID, password, secretKey, sharedSalt)
-        
+
         do {
             try cli.parse()
-            
-            
+
+
             if let api = api.value, let userUID = userUID.value, let password = password.value,
                 let secretKey = secretKey.value, let sharedSalt = sharedSalt.value {
-                
+
                 if let apiUrl = NSURL(string: api) {
                     // We prefer to configure completly Bartleby
                     // When using it's api.
@@ -44,15 +44,15 @@ class LoginCommand: CommandBase {
                     Bartleby.configuration.SHARED_SALT=sharedSalt
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                    
+
                     let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
                     let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
                     let kvs = BsyncKeyValueStorage(url: kvsUrl)
-                    
+
                     try kvs.open()
-                    
+
                     if let user = kvs[userUID] as? User {
-                        
+
                         LoginUser.execute(user, withPassword: password, sucessHandler: {
                             print ("Successful login")
                             exit(EX_OK)
@@ -70,11 +70,11 @@ class LoginCommand: CommandBase {
                     exit(EX__BASE)
                 }
             }
-            
+
         } catch {
             cli.printUsage(error)
             exit(EX_USAGE)
         }
     }
-    
+
 }

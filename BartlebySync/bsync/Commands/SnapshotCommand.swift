@@ -8,33 +8,33 @@
 
 import Foundation
 
-class SnapshotCommand:CommandBase {
-    
+class SnapshotCommand: CommandBase {
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-        
-        
+
+
         let sourcePath = StringOption(shortFlag: "f", longFlag: "folder", required: true,
             helpMessage: "Path to the folder you want to snapshoot.")
-        
+
         let secretKey = StringOption(shortFlag: "k", longFlag: "secret-key",
             helpMessage: "The secret key")
-        
+
         let help = BoolOption(shortFlag: "h", longFlag: "help",
             helpMessage: "Prints a help message.")
-        
+
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
-        
+
         cli.addOptions( sourcePath,
                         secretKey,
                         help,
                         verbosity )
-        
+
         do {
             try cli.parse()
             self.isVerbose=verbosity.value
-            guard let path=sourcePath.value else{
+            guard let path=sourcePath.value else {
                 print("Nil source path")
                 exit(EX__BASE)
             }
@@ -42,18 +42,18 @@ class SnapshotCommand:CommandBase {
             let shooter=BsyncSnapShooter()
             do {
                 try shooter.createSnapshotFromPath(path, secretKey: secretKey, progressBlock: { (taskIndex, progress, filePath, chunkPath, message) -> Void in
-                    if progress>=100{
+                    if progress>=100 {
                        self.printVerbose("End of snapshot creation")
                         exit(EX_OK)
-                    }else{
+                    } else {
                        self.printVerbose("#\(taskIndex) progress \(progress)% creating \(chunkPath)")
                        self.printVerbose("\(message)")
                     }
                 })
-            }catch BsyncSnapShooterError.InvalidPath(let explanations){
+            } catch BsyncSnapShooterError.InvalidPath(let explanations) {
                 print(explanations)
                 exit(EX__BASE)
-            }catch{
+            } catch {
                 print("Unexpected error \(error)")
                 exit(EX__BASE)
             }
@@ -63,6 +63,5 @@ class SnapshotCommand:CommandBase {
         }
     }
 
-    
-}
 
+}

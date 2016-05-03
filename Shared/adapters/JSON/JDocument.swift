@@ -18,26 +18,25 @@ import ObjectMapper
         super.init()
     }
     #else
-    
+
     private var _fileURL: NSURL
-    
+
     public required init(fileURL url: NSURL) {
         self._fileURL = url
         super.init(fileUrl: url)
     }
-    
+
     #endif
 
-    override public func configureSchema(){
+    override public func configureSchema() {
         super.configureSchema()
     }
-        
-    override public func registryDidLoad(){
-        super.registryDidLoad() 
+
+    override public func registryDidLoad() {
+        super.registryDidLoad()
     }
-    
+
     override public func registryWillSave() {
         super.registryWillSave()
     }
 }
-

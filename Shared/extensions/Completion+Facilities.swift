@@ -13,18 +13,18 @@ import Foundation
 
 // Completions status.
 // Based on HTTP status Codes
-public enum CompletionStatus:Int{
+public enum CompletionStatus: Int {
 
     // Error
     case Error = -1
-    
+
     // Not Defined
     case Undefined = 0
-    
+
     // Relay
     case Continue = 100
     case Switching_Protocols = 101
-    
+
     // Explicit Success
     case OK = 200
     case Created = 201
@@ -33,7 +33,7 @@ public enum CompletionStatus:Int{
     case No_Content = 204
     case Reset_Content = 205
     case Partial_Content = 206
-    
+
     // 3XX - redirections & ...
     case Multiple_Choices = 300
     case Moved_Permanently = 301
@@ -43,7 +43,7 @@ public enum CompletionStatus:Int{
     case Use_Proxy = 305
     case Unused = 306
     case Temporary_Redirect = 307
-    
+
     // 4XX
     case Bad_Request = 400
     case Unauthorized = 401
@@ -76,12 +76,12 @@ public enum CompletionStatus:Int{
 
 /**
  Maps Exit code to CompletionStatus , HTTP codes
- 
+
  - parameter value: the value
- 
+
  - returns: the status
  */
-private func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
+private func completionStatusFromExitCodes(value: Int32)->CompletionStatus {
     /*
      public var EX_OK: Int32 { get } /* successful termination */
      public var EX__BASE: Int32 { get } /* base value for error messages */
@@ -102,7 +102,7 @@ private func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
      public var EX_CONFIG: Int32 { get } /* configuration error */
      public var EX__MAX: Int32 { get } /* maximum listed value */
      */
-    
+
     switch value {
     case EX_OK:
         return CompletionStatus.OK
@@ -143,10 +143,10 @@ private func completionStatusFromExitCodes(value:Int32)->CompletionStatus{
     default:
         return CompletionStatus.Error
     }
-    
+
 }
 
-private func completionStatusFromExitCodes(value:Int)->CompletionStatus{
+private func completionStatusFromExitCodes(value: Int)->CompletionStatus {
     return completionStatusFromExitCodes(Int32(value))
 }
 
@@ -154,55 +154,55 @@ private func completionStatusFromExitCodes(value:Int)->CompletionStatus{
 public extension Completion {
     /**
      Convenience initializer.
-     
+
      - parameter success:    is it a success?
      - parameter message:    an optionnal message
      - parameter statusCode: the status conde
-     
+
      - returns: a Completion state instance
      */
-    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined){
+    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined) {
         self.init()
         self.success = success
         self.message = message
         self.statusCode = statusCode.rawValue
     }
-    
-    
+
+
     /**
      The default state
-     
+
      - returns: return value description
      */
-    public static func defaultState()->Completion{
-        return Completion(success:false,message:"",statusCode:.Undefined)
+    public static func defaultState()->Completion {
+        return Completion(success:false, message:"", statusCode:.Undefined)
     }
-    
-    
+
+
     /**
      The success state
-     
+
      - returns: return value description
      */
-    public static func successState(message:String = "", statusCode:CompletionStatus = .OK)->Completion{
-        return Completion(success:true, message: message,statusCode:statusCode)
+    public static func successState(message: String = "", statusCode: CompletionStatus = .OK)->Completion {
+        return Completion(success:true, message: message, statusCode:statusCode)
     }
-    
-    
-    
+
+
+
     /**
      The Failure state
-     
+
      - returns: return value description
      */
-    public static func failureState(message:String,statusCode:CompletionStatus)->Completion{
-        return Completion(success:false,message:message,statusCode:statusCode)
+    public static func failureState(message: String, statusCode: CompletionStatus)->Completion {
+        return Completion(success:false, message:message, statusCode:statusCode)
     }
-    
+
     public static func failureStateFromNSError(error: NSError) -> Completion {
         return Completion(success: false, message: error.localizedDescription, statusCode: CompletionStatus(rawValue: error.code) ?? .Undefined)
     }
-    
+
     public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
         var message: String
         switch context.httpStatusCode {
@@ -295,15 +295,15 @@ public extension Completion {
         }
         return Completion(success: false, message: message, statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
     }
-    
+
     /**
      Returns self embedded in a progression Notification
-     
+
      - returns: a Progression notification
      */
-    public var completionNotification:CompletionNotification{
-        get{
-            return CompletionNotification(state:self,object:nil,userInfo: nil)
+    public var completionNotification: CompletionNotification {
+        get {
+            return CompletionNotification(state:self, object:nil, userInfo: nil)
         }
     }
 }
@@ -313,51 +313,51 @@ public extension Completion {
 // MARK: - ProgressionNotification
 
 /// A Progress notification
-public class CompletionNotification:NSNotification,NSSecureCoding{
-    
+public class CompletionNotification: NSNotification, NSSecureCoding {
+
     static public let NAME="COMPLETION_NOTIFICATION_NAME"
-    
-    var completionState:Completion
-    
-    public convenience init(state:Completion,object: AnyObject?, userInfo: [NSObject : AnyObject]?){
+
+    var completionState: Completion
+
+    public convenience init(state: Completion, object: AnyObject?, userInfo: [NSObject : AnyObject]?) {
         self.init(name: CompletionNotification.NAME, object: object, userInfo: userInfo)
         self.completionState=state
     }
-    
-    public convenience init(){
+
+    public convenience init() {
         self.init(name: CompletionNotification.NAME, object:nil, userInfo: nil)
     }
-    
+
     override init(name: String, object: AnyObject?, userInfo: [NSObject : AnyObject]?) {
         self.completionState=Completion.defaultState()
         super.init(name: CompletionNotification.NAME, object: object, userInfo: userInfo)
     }
-    
+
     // MARK: Mappable
-    
+
     required public convenience init?(_ map: Map) {
         self.init()
         mapping(map)
     }
-    
+
     public func mapping(map: Map) {
         self.completionState <- map["completionState"]
     }
-    
+
     // MARK: NSSecureCoding
-    
+
     required public init?(coder decoder: NSCoder) {
         self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")!
         super.init(coder: decoder)
     }
-    
+
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
     }
-    
-    
-    public class func supportsSecureCoding() -> Bool{
+
+
+    public class func supportsSecureCoding() -> Bool {
         return true
     }
-    
+
 }

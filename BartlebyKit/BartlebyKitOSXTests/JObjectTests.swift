@@ -17,10 +17,10 @@ class JObjectTests: XCTestCase {
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.ByEmail
         // Test NSCopying on JObject
-        if let copiedUser=user.copy() as? User{
+        if let copiedUser=user.copy() as? User {
             XCTAssert(user.email == copiedUser.email, "users should be equivalent")
             XCTAssertFalse(user === copiedUser, "users should be distinct instances")
-        }else{
+        } else {
             XCTFail("Failure on copy")
         }
     }
@@ -31,10 +31,10 @@ class JObjectTests: XCTestCase {
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.ByEmail
         // Test NSCopying on JObject
-        if let copiedUser = JSerializer.volatileDeepCopy(user){
+        if let copiedUser = JSerializer.volatileDeepCopy(user) {
             XCTAssert(user.email == copiedUser.email, "users should be equivalent")
             XCTAssertFalse(user === copiedUser, "users should be distinct instances")
-        }else{
+        } else {
             XCTFail("Failure on copy")
         }
     }

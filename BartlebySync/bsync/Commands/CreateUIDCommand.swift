@@ -8,17 +8,17 @@
 
 import Foundation
 
-class CreateUIDCommand : CommandBase {
-    
-    
+class CreateUIDCommand: CommandBase {
+
+
     required init(completionHandler: ((completion: Completion) -> ())) {
         super.init(completionHandler: completionHandler)
-        
+
         do {
             try cli.parse()
-            
+
             print(Bartleby.createUID())
-            
+
             exit(EX_OK)
         } catch {
             cli.printUsage(error)
@@ -26,4 +26,3 @@ class CreateUIDCommand : CommandBase {
         }
     }
 }
-
