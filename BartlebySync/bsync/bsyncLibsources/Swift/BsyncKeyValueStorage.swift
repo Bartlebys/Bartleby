@@ -9,38 +9,6 @@
 import Foundation
 
 
-extension String:Serializable {
-
-    public func serialize() -> NSData {
-        if let data=self.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
-            return data
-        } else {
-            return NSData()
-        }
-    }
-
-    public func deserialize(data: NSData) ->Serializable {
-        if let string=String(data: data, encoding:Default.TEXT_ENCODING) {
-            return string
-        } else {
-            let e = ObjectError()
-            e.message = "UTF8 string encoding error"
-            return e
-        }
-    }
-
-
-    public func updateData(data: NSData) ->Serializable {
-        // @BPDS -> support
-        return self
-    }
-
-    public func dictionaryRepresentation()->[String:AnyObject] {
-        return [String: AnyObject]()
-    }
-
-}
-
 enum BsyncKeyValueStorageError: ErrorType {
     case CorruptedData
     case OtherDataProblem

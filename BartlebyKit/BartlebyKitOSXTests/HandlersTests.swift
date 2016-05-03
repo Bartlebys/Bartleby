@@ -11,7 +11,8 @@ import BartlebyKit
 
 class CompletionWithResultTests: XCTestCase {
 
-    func  test001_generic_Result_mapping() {
+    // MARK: Generic result
+    func  test101_generic_Result_mapping() {
         let handlers=Handlers(completionHandler: { (completion) in
             if let user: User = completion.getResult() {
                  XCTAssertEqual(user.email, "bpds@me.com")
@@ -23,7 +24,7 @@ class CompletionWithResultTests: XCTestCase {
     }
 
 
-    func  test002_generic_Result_mapping_explicit_serializer() {
+    func  test102_generic_Result_mapping_explicit_serializer() {
         let handlers=Handlers(completionHandler: { (completion) in
             if let user: User = completion.getResultFromSerializer(JSerializer.sharedInstance) {
                 XCTAssertEqual(user.email, "bpds@me.com")
@@ -49,5 +50,22 @@ class CompletionWithResultTests: XCTestCase {
         handlers.on(completion)
     }
 
+    // MARK: String result
+    func test201_string_Result_mapping() {
+        let completion = Completion.successState()
+        let s1 = "A poor lonesome string"
+        completion.setStringResult(s1)
+        let s2: String? = completion.getStringResult()
+        XCTAssertEqual(s1, s2)
+    }
+    
+    // MARK: String array result
+    func test301_string_array_result_mapping() {
+        let completion = Completion.successState()
+        let array1 = ["A", "poor", "lonesome", "string"]
+        completion.setStringArrayResult(array1)
+        let array2: [String] = completion.getStringArrayResult()
+        XCTAssertEqual(array1, array2)
+    }
 
 }

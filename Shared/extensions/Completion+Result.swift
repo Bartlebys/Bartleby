@@ -10,6 +10,7 @@ import Foundation
 
 public extension Completion {
 
+    // MARK: Generic result
     /**
      Stores the result by serialization
 
@@ -47,6 +48,44 @@ public extension Completion {
         }
         return nil
     }
-
-
+    
+    // MARK: String result
+    func setStringResult(s: String) {
+        self.data = s.dataUsingEncoding(Default.TEXT_ENCODING)?.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
+    }
+    
+    func getStringResult() -> String? {
+        if let b64data = self.data {
+            if let plainData = NSData(base64EncodedData: b64data, options: .IgnoreUnknownCharacters) {
+                if let s = String(data: plainData, encoding: Default.TEXT_ENCODING) {
+                    return s
+                }
+            }
+        }
+        // TODO: @bpds Maybe we should turn the success to false and add an error message here? Same remark for other adapter
+        return nil
+    }
+    
+    // MARK: String array result
+    func setStringArrayResult(stringArray: [String]) {
+        do {
+            self.data = try NSJSONSerialization.dataWithJSONObject(stringArray, options: .PrettyPrinted)
+        } catch {
+            self.data = nil
+        }
+    }
+    
+    func getStringArrayResult() -> [String] {
+        if let data = self.data {
+            do {
+                if let stringArray = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String] {
+                    return stringArray
+                }
+            } catch {
+                
+            }
+        }
+        return []
+    }
+    
 }
