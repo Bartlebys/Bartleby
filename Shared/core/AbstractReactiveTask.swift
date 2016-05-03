@@ -48,7 +48,7 @@ public class  AbstractReactiveTask: Task {
             if let _ = _reactiveHandlers {
                 return self._reactiveHandlers!
             }
-            let onCompletion: CompletionHandler= { (completionState) in
+            let onCompletion: CompletionHandler = { (completionState) in
                 // We forward the completion to the scheduler.
                 self.forward(completionState)
                 NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)

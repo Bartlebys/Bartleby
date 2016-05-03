@@ -168,10 +168,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
         if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT) {
-            return (self.UID, self.d_collectionName, data, 0,0, 0,0, 0,"")
+            return (self.UID, self.d_collectionName, data, 0, 0, 0, 0, 0, "")
         } else {
             let s="{\"Persitency Error - serialization failed\"}"
-            return (self.UID, self.d_collectionName, s,0, 0,0, 0,0, "")
+            return (self.UID, self.d_collectionName, s, 0, 0, 0, 0, 0, "")
         }
     }
 
@@ -239,9 +239,3 @@ extension JObject:DictionaryRepresentation {
         return Mapper().toJSON(self)
     }
 }
-
-
-
-
-
-
