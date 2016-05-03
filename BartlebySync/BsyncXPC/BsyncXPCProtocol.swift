@@ -100,7 +100,7 @@
 
      - returns: N/A
      */
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedProgressAndCompletionHandler)->()
+    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)->()
 
 
 }

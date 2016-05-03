@@ -155,7 +155,7 @@
 		E57F17FE1CD3B2E0005D8A46 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F17FD1CD3B2E0005D8A46 /* Task.swift */; };
 		E57F18101CD3B651005D8A46 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F180F1CD3B651005D8A46 /* Task+Arguments.swift */; };
 		E5A3DD961CD889860077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD941CD889860077A0BC /* AbstractReactiveTask.swift */; };
-		E5A3DD971CD889860077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD951CD889860077A0BC /* ProgressAndCompletionHandler.swift */; };
+		E5A3DD971CD889860077A0BC /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD951CD889860077A0BC /* Handlers.swift */; };
 		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
 		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
 		E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E131CC0E63400A7ECD1 /* Mappable.swift */; };
@@ -362,7 +362,7 @@
 		E57F17FD1CD3B2E0005D8A46 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		E57F180F1CD3B651005D8A46 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
 		E5A3DD941CD889860077A0BC /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
-		E5A3DD951CD889860077A0BC /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
+		E5A3DD951CD889860077A0BC /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
 		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -658,7 +658,7 @@
 			isa = PBXGroup;
 			children = (
 				E5A3DD941CD889860077A0BC /* AbstractReactiveTask.swift */,
-				E5A3DD951CD889860077A0BC /* ProgressAndCompletionHandler.swift */,
+				E5A3DD951CD889860077A0BC /* Handlers.swift */,
 				E5251BCF1CD0BE6400D873A3 /* Bartleby.swift */,
 				E5251BD01CD0BE6400D873A3 /* Consignation.swift */,
 				E5251BD11CD0BE6400D873A3 /* Consignee.swift */,
@@ -989,7 +989,7 @@
 				E5251C161CD0BE6400D873A3 /* CreatePermission.swift in Sources */,
 				E5B98E1B1CC0E63400A7ECD1 /* Operators.swift in Sources */,
 				E5251C671CD0BE6400D873A3 /* Consignation.swift in Sources */,
-				E5A3DD971CD889860077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
+				E5A3DD971CD889860077A0BC /* Handlers.swift in Sources */,
 				E5251C621CD0BE6400D873A3 /* PNGTransform.swift in Sources */,
 				E5251C861CD0BE6400D873A3 /* HTTPManager.swift in Sources */,
 				E5251C2C1CD0BE6400D873A3 /* DeleteTrigger.swift in Sources */,

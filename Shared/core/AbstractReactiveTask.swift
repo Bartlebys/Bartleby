@@ -40,10 +40,10 @@ public class  AbstractReactiveTask: Task {
 
     // MARK: Reactive Handlers
 
-    private var _reactiveHandlers: ProgressAndCompletionHandler?
+    private var _reactiveHandlers: Handlers?
 
     // The reactive Handlers
-    public var reactiveHandlers: ProgressAndCompletionHandler {
+    public var reactiveHandlers: Handlers {
         get {
             if let _ = _reactiveHandlers {
                 return self._reactiveHandlers!
@@ -53,7 +53,7 @@ public class  AbstractReactiveTask: Task {
                 self.forward(completionState)
                 NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)
             }
-            self._reactiveHandlers=ProgressAndCompletionHandler(completionHandler: onCompletion)
+            self._reactiveHandlers=Handlers(completionHandler: onCompletion)
             self._reactiveHandlers!.addProgressHandler({ (progressionState) in
                 NSNotificationCenter.defaultCenter().postNotification(progressionState.progressionNotification)
             })

@@ -78,7 +78,7 @@ class LocalSyncTests: XCTestCase {
 
         let admin = BsyncAdmin(context: context)
         do {
-            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionHandler: { (c) in
+            try admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
                 // TODO: @md Reactivate test check wich currently fais
                 //                XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()

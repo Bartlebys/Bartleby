@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class CommandBase: ProgressAndCompletionHandler {
+public class CommandBase: Handlers {
 
 
     public var isVerbose=true

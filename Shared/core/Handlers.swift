@@ -1,5 +1,5 @@
 //
-//  ProgressAndCompletionHandler.swift
+//  Handlers.swift
 //
 //  Created by Benoit Pereira da silva on 22/01/2016.
 //  Copyright © 2016 Benoit Pereira da silva. All rights reserved.
@@ -12,9 +12,9 @@ import Foundation
 
 //A composed Closure
 //with a progress and acompletion section
-public typealias ComposedProgressAndCompletionHandler = (progressionState: Progression?, completionState: Completion?)->()
+public typealias ComposedHandler = (progressionState: Progression?, completionState: Completion?)->()
 
- //public typealias ComposedProgressAndCompletionHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
+ //public typealias ComposedHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
 
 //ProgressHandler
 public typealias ProgressHandler = (_: Progression) -> ()
@@ -25,50 +25,54 @@ public typealias CompletionHandler = (_: Completion) -> ()
 // MARK: -
 
 //  Generally Used in XPC facades because we can pass only one handler per XPC call
-//  So we split the ComposedProgressAndCompletionHandler by calling ProgressAndCompletionHandler.handlersFrom(composed)
-@objc(ProgressAndCompletionHandler) public class ProgressAndCompletionHandler: NSObject {
+//  So we split the ComposedHandler by calling Handlers.handlersFrom(composed)
+@objc(Handlers) public class Handlers: NSObject {
 
-    /// The progress handler
-    public var notify: ProgressHandler?
+    // MARK: Progression handlers
+    private var progressionHandlers:[ProgressHandler] = []
 
     public func addProgressHandler(progressHandler: ProgressHandler) {
-        self.notify = progressHandler
+        self.progressionHandlers.append(progressHandler)
     }
-    
-    private var completionHooks:[CompletionHandler] = []
-    
-    public func addCompletionHook(hook: CompletionHandler) {
-        completionHooks.append(hook)
-    }
-    
-    /// The completion handler
-    public var completionHandler: (CompletionHandler)
-    
-    // Call the completion hooks, then the main completion handler
-    public func on(completionState:Completion) {
-        for hook in completionHooks {
-            hook(completionState)
+
+    // Call all the progression handlers
+    public func notify(progressionState: Progression) {
+        for handler in self.progressionHandlers {
+            handler(progressionState)
         }
-        completionHandler(completionState)
+    }
+
+    // MARK: Completion handlers
+    private var completionHandlers:[CompletionHandler] = []
+    
+    public func addCompletionHandler(handler: CompletionHandler) {
+        self.completionHandlers.append(handler)
+    }
+    
+    // Call all the completion handlers
+    public func on(completionState:Completion) {
+        for handler in self.completionHandlers {
+            handler(completionState)
+        }
     }
 
     public required init(completionHandler: CompletionHandler) {
-        self.completionHandler = completionHandler
+        self.completionHandlers.append(completionHandler)
     }
 
     /**
      XPC adapter used to split closure in two parts
 
      - parameter composedHandler: the composed handler
-     - returns: an instance of ProgressAndCompletionHandler
+     - returns: an instance of Handlers
      */
-    public static func handlersFrom(composedHandler: ComposedProgressAndCompletionHandler)->ProgressAndCompletionHandler {
+    public static func handlersFrom(composedHandler: ComposedHandler)->Handlers {
 
         // Those handlers produce an adaptation
         // From the unique handler form
         // progress and completion handlers.
 
-        let handlers=ProgressAndCompletionHandler {(onCompletion) -> () in
+        let handlers=Handlers {(onCompletion) -> () in
             composedHandler(progressionState:nil, completionState:onCompletion)
         }
 
@@ -81,10 +85,10 @@ public typealias CompletionHandler = (_: Completion) -> ()
     // We need to provide a unique handler to be compatible with the XPC context
     // So we use an handler adapter that relays to the progress and completion handlers
     // to mask the constraint.
-    public func composedHandlers() -> ComposedProgressAndCompletionHandler {
-        let handler: ComposedProgressAndCompletionHandler = {(progressionState, completionState)-> Void in
+    public func composedHandlers() -> ComposedHandler {
+        let handler: ComposedHandler = {(progressionState, completionState)-> Void in
             if let progressionState=progressionState {
-                 self.notify?(progressionState)
+                 self.notify(progressionState)
             }
             if let completion=completionState {
                  self.on(completion)

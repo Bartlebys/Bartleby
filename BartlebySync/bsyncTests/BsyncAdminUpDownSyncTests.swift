@@ -209,7 +209,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
 
         do {
-            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionHandler: { (c) in
+            try admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
                 XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
             }))
@@ -241,7 +241,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let admin = BsyncAdmin(context: context)
 
         do {
-            try admin.synchronizeWithprogressBlock(ProgressAndCompletionHandler(completionHandler: { (c) in
+            try admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
                 XCTAssertTrue(c.success, c.message)
                 expectation.fulfill()
             }))

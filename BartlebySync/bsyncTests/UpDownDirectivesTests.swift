@@ -194,7 +194,7 @@ class UpDownDirectivesTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronization should complete")
 
         let runner = BsyncDirectivesRunner()
-        let handlers = ProgressAndCompletionHandler { (completion) in
+        let handlers = Handlers { (completion) in
             expectation.fulfill()
             XCTAssertTrue(completion.success, completion.message)
         }
@@ -210,7 +210,7 @@ class UpDownDirectivesTests: XCTestCase {
         let expectation = expectationWithDescription("Synchronization should complete")
 
         let runner = BsyncDirectivesRunner()
-        let handlers = ProgressAndCompletionHandler { (completion) in
+        let handlers = Handlers { (completion) in
             expectation.fulfill()
             XCTAssertTrue(completion.success, completion.message)
         }

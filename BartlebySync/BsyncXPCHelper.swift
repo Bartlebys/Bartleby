@@ -321,7 +321,7 @@ public class BsyncXPCHelperDMGHandler {
      - parameter card:     the card
      - parameter handlers: the handlers
      */
-    func runDirectivesFromCard(card: BsyncDMGCard, handlers: ProgressAndCompletionHandler)->() {
+    func runDirectivesFromCard(card: BsyncDMGCard, handlers: Handlers)->() {
 
         // The card must be valid
         let validation=card.evaluate()
@@ -341,10 +341,10 @@ public class BsyncXPCHelperDMGHandler {
         // So we use an handler adapter that relays to the progress and completion handlers
         // to mask the constraint
 
-        let indirectHandlers: ComposedProgressAndCompletionHandler = {
+        let indirectHandlers: ComposedHandler = {
             (progressionState, completionState)-> Void in
             if let progressionState = progressionState {
-                handlers.notify?(progressionState)
+                handlers.notify(progressionState)
             }
             if let completionState = completionState {
                 handlers.on(completionState)

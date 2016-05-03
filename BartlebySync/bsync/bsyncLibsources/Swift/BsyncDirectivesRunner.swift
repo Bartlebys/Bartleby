@@ -20,7 +20,7 @@ class BsyncDirectivesRunner {
      */
 
 
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handlers: ProgressAndCompletionHandler) {
+    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handlers: Handlers) {
         if NSFileManager.defaultManager().fileExistsAtPath(filePath)==false {
             handlers.on(Completion.failureState("Bad directives path \(filePath)", statusCode: .Bad_Request))
             return
@@ -181,7 +181,7 @@ class BsyncDirectivesRunner {
                       password: String?,
                       sharedSalt: String?,
                       autoCreateTrees: Bool=false,
-                      handlers: ProgressAndCompletionHandler
+                      handlers: Handlers
         ) {
 
         // Syncronization context

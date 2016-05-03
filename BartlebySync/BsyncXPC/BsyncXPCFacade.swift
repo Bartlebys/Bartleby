@@ -160,12 +160,12 @@ import Foundation
 
      - returns: N/A
      */
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedProgressAndCompletionHandler)->() {
+    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)->() {
 
         // Those handlers produce an adaptation
         // From the unique handler form
         // progress and completion handlers.
-        let handlers=ProgressAndCompletionHandler.handlersFrom(handler)
+        let handlers=Handlers.handlersFrom(handler)
 
         let runner = BsyncDirectivesRunner()
 
