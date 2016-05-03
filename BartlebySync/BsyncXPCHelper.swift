@@ -287,17 +287,17 @@ public class BsyncXPCHelperDMGHandler {
      
      - parameter user:          the user
      - parameter context:       the IdentifiableCardContext
-     - parameter withImagePath: the imagePath
+     - parameter folderPath: the imagePath
      - parameter isMaster:      is it a master?
      
      - returns: the card
      */
     func cardFor(   user:User,
                     context:IdentifiableCardContext,
-                    withImagePath:String,
+                    folderPath:String,
                     isMaster:Bool)->BsyncDMGCard {
         
-        let destination=withImagePath
+        let destination=folderPath
         
         let hashName=CryptoHelper.hash(user.UID+context.UID)
         let imageFolderPath = (isMaster ? "\(destination)\(hashName)" : "\(destination)\(hashName)")

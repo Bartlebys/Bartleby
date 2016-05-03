@@ -483,9 +483,6 @@
 		E5251B4C1CD0BE3F00D873A3 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519991CD0BE3F00D873A3 /* Pluralization.swift */; };
 		E5251B4D1CD0BE3F00D873A3 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519991CD0BE3F00D873A3 /* Pluralization.swift */; };
 		E5251B4E1CD0BE3F00D873A3 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519991CD0BE3F00D873A3 /* Pluralization.swift */; };
-		E5251B4F1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199A1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift */; };
-		E5251B501CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199A1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift */; };
-		E5251B511CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199A1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift */; };
 		E5251B521CD0BE3F00D873A3 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199B1CD0BE3F00D873A3 /* PString.swift */; };
 		E5251B531CD0BE3F00D873A3 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199B1CD0BE3F00D873A3 /* PString.swift */; };
 		E5251B541CD0BE3F00D873A3 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525199B1CD0BE3F00D873A3 /* PString.swift */; };
@@ -607,6 +604,12 @@
 		E57F18021CD3B320005D8A46 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F17F91CD3B2B7005D8A46 /* Task.swift */; };
 		E57F18031CD3B341005D8A46 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F17F51CD3B289005D8A46 /* Task+Arguments.swift */; };
 		E57F18041CD3B341005D8A46 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F17F51CD3B289005D8A46 /* Task+Arguments.swift */; };
+		E5A3DD8E1CD889360077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8C1CD889360077A0BC /* AbstractReactiveTask.swift */; };
+		E5A3DD8F1CD889360077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8C1CD889360077A0BC /* AbstractReactiveTask.swift */; };
+		E5A3DD901CD889360077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8C1CD889360077A0BC /* AbstractReactiveTask.swift */; };
+		E5A3DD911CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8D1CD889360077A0BC /* ProgressAndCompletionHandler.swift */; };
+		E5A3DD921CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8D1CD889360077A0BC /* ProgressAndCompletionHandler.swift */; };
+		E5A3DD931CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD8D1CD889360077A0BC /* ProgressAndCompletionHandler.swift */; };
 		E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */; };
 		E5A557CA1C8EC84D009A9A63 /* bsyncMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */; };
 		E5B98E961CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
@@ -841,7 +844,6 @@
 		E52519971CD0BE3F00D873A3 /* BFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManager.swift; sourceTree = "<group>"; };
 		E52519981CD0BE3F00D873A3 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E52519991CD0BE3F00D873A3 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
-		E525199A1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E525199B1CD0BE3F00D873A3 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
 		E54594061C3E627A000576AD /* SnapshotCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotCommand.swift; sourceTree = "<group>"; };
@@ -903,6 +905,8 @@
 		E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutCommand.swift; sourceTree = "<group>"; };
 		E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCredentialsCommand.swift; sourceTree = "<group>"; };
 		E59A14191C3BB43F009AC461 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
+		E5A3DD8C1CD889360077A0BC /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
+		E5A3DD8D1CD889360077A0BC /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5A557CB1C8EC9DF009A9A63 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E881CC0E6CD00A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
@@ -1205,6 +1209,8 @@
 		E52519731CD0BE3F00D873A3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E5A3DD8C1CD889360077A0BC /* AbstractReactiveTask.swift */,
+				E5A3DD8D1CD889360077A0BC /* ProgressAndCompletionHandler.swift */,
 				E52519741CD0BE3F00D873A3 /* Bartleby.swift */,
 				E52519751CD0BE3F00D873A3 /* Consignation.swift */,
 				E52519761CD0BE3F00D873A3 /* Consignee.swift */,
@@ -1267,7 +1273,6 @@
 				E52519971CD0BE3F00D873A3 /* BFileManager.swift */,
 				E52519981CD0BE3F00D873A3 /* HTTPManager.swift */,
 				E52519991CD0BE3F00D873A3 /* Pluralization.swift */,
-				E525199A1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift */,
 				E525199B1CD0BE3F00D873A3 /* PString.swift */,
 			);
 			path = tools;
@@ -1725,6 +1730,7 @@
 				E5251A171CD0BE3F00D873A3 /* DeleteAlias.swift in Sources */,
 				E53E28DF1CA572E20079ED23 /* BsyncCredentials.swift in Sources */,
 				E5251A4D1CD0BE3F00D873A3 /* ReadAliasesByQuery.swift in Sources */,
+				E5A3DD8E1CD889360077A0BC /* AbstractReactiveTask.swift in Sources */,
 				E53E28F01CA572E80079ED23 /* LoginCommand.swift in Sources */,
 				E57F17F61CD3B289005D8A46 /* Task+Arguments.swift in Sources */,
 				E52519E71CD0BE3F00D873A3 /* CreateAlias.swift in Sources */,
@@ -1745,7 +1751,6 @@
 				E5251A9E1CD0BE3F00D873A3 /* UpdateLockers.swift in Sources */,
 				E5B98EA81CC0E6CD00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
 				5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */,
-				E5251B4F1CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */,
 				E5251A741CD0BE3F00D873A3 /* ReadTasksGroupById.swift in Sources */,
 				E52519EA1CD0BE3F00D873A3 /* CreateAliases.swift in Sources */,
 				E53E27521CA572940079ED23 /* Alamofire.swift in Sources */,
@@ -1799,6 +1804,7 @@
 				E53E28E71CA572E80079ED23 /* RecoverCommand.swift in Sources */,
 				E5251A831CD0BE3F00D873A3 /* ReadTriggersByQuery.swift in Sources */,
 				E53E27621CA572940079ED23 /* Validation.swift in Sources */,
+				E5A3DD911CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
 				E57F17F81CD3B2A5005D8A46 /* ConcreteTask.swift in Sources */,
 				E52519ED1CD0BE3F00D873A3 /* CreateGroup.swift in Sources */,
 				E53E28EE1CA572E80079ED23 /* CreateDmgCommand.swift in Sources */,
@@ -2007,7 +2013,6 @@
 				E52519CD1CD0BE3F00D873A3 /* Locker.swift in Sources */,
 				E5251ABD1CD0BE3F00D873A3 /* UpdateUsers.swift in Sources */,
 				E5251A3C1CD0BE3F00D873A3 /* DeleteTrigger.swift in Sources */,
-				E5251B501CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */,
 				5B8E5D5B1C8D7FCD002CFA03 /* Request.swift in Sources */,
 				E5251B3B1CD0BE3F00D873A3 /* LoginUser.swift in Sources */,
 				E5251A901CD0BE3F00D873A3 /* UpdateAlias.swift in Sources */,
@@ -2088,6 +2093,7 @@
 				E5251AA21CD0BE3F00D873A3 /* UpdatePermission.swift in Sources */,
 				E5251B051CD0BE3F00D873A3 /* HTTPCommand.swift in Sources */,
 				E5251B111CD0BE3F00D873A3 /* RegistryMetadata.swift in Sources */,
+				E5A3DD8F1CD889360077A0BC /* AbstractReactiveTask.swift in Sources */,
 				E5251B1D1CD0BE3F00D873A3 /* UserProtocol.swift in Sources */,
 				E5251AD51CD0BE3F00D873A3 /* JObject.swift in Sources */,
 				E5251B4A1CD0BE3F00D873A3 /* HTTPManager.swift in Sources */,
@@ -2121,6 +2127,7 @@
 				E52519BE1CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift in Sources */,
 				5B8E5D5C1C8D7FCD002CFA03 /* Response.swift in Sources */,
 				E5251A6C1CD0BE3F00D873A3 /* ReadTaskById.swift in Sources */,
+				E5A3DD921CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
 				5B8E5D591C8D7FCD002CFA03 /* Notifications.swift in Sources */,
 				E52519D01CD0BE3F00D873A3 /* ObjectError.swift in Sources */,
 				E5251B1A1CD0BE3F00D873A3 /* Serializer.swift in Sources */,
@@ -2161,7 +2168,6 @@
 				E55C92771CBF854D008163F6 /* NSData+CRC.m in Sources */,
 				E55C92791CBF854D008163F6 /* PdSLocalAnalyzer.m in Sources */,
 				E55C92751CBF854D008163F6 /* DeltaPathMap.m in Sources */,
-				E5251B511CD0BE3F00D873A3 /* ProgressAndCompletionHandler.swift in Sources */,
 				E5251A1C1CD0BE3F00D873A3 /* DeleteAliases.swift in Sources */,
 				E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */,
 				E5251AF11CD0BE3F00D873A3 /* Consignee.swift in Sources */,
@@ -2271,6 +2277,7 @@
 				E5B98EAD1CC0E6CD00A7ECD1 /* DateFormatterTransform.swift in Sources */,
 				E5251A131CD0BE3F00D873A3 /* CreateUser.swift in Sources */,
 				E5251B241CD0BE3F00D873A3 /* TasksScheduler.swift in Sources */,
+				E5A3DD901CD889360077A0BC /* AbstractReactiveTask.swift in Sources */,
 				E5251A8B1CD0BE3F00D873A3 /* ReadUsersByIds.swift in Sources */,
 				E5251A3D1CD0BE3F00D873A3 /* DeleteTrigger.swift in Sources */,
 				E55C92501CBF84ED008163F6 /* ParameterEncoding.swift in Sources */,
@@ -2319,6 +2326,7 @@
 				E5251A161CD0BE3F00D873A3 /* CreateUsers.swift in Sources */,
 				E5251A461CD0BE3F00D873A3 /* DeleteUsers.swift in Sources */,
 				E52519AA1CD0BE3F00D873A3 /* OperationsCollectionController.swift in Sources */,
+				E5A3DD931CD889360077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
 				E52519A41CD0BE3F00D873A3 /* GroupsCollectionController.swift in Sources */,
 				E5251A371CD0BE3F00D873A3 /* DeleteTasksGroup.swift in Sources */,
 				E55C92571CBF84ED008163F6 /* Timeline.swift in Sources */,

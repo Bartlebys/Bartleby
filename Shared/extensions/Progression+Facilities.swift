@@ -51,7 +51,7 @@ public extension Progression {
      
      - returns: a Progression notification
      */
-    public var notifiable:ProgressionNotification{
+    public var progressionNotification:ProgressionNotification{
         get{
             return ProgressionNotification(state:self,object:nil,userInfo: nil)
         }

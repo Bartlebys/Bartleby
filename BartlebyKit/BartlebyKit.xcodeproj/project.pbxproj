@@ -327,9 +327,11 @@
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
 		E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00571C8ED51D00BB6B19 /* PrintUser.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
+		E5A3DD871CD888040077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */; };
+		E5A3DD891CD888430077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD881CD888430077A0BC /* ProgressAndCompletionHandler.swift */; };
+		E5A3DD8A1CD888660077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */; };
+		E5A3DD8B1CD888690077A0BC /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD881CD888430077A0BC /* ProgressAndCompletionHandler.swift */; };
 		E5CC50421CC65F97000EA88C /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC50411CC65F97000EA88C /* TasksScheduler.swift */; };
-		E5D940F81CC7B63100956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940F71CC7B63100956C99 /* ProgressAndCompletionHandler.swift */; };
-		E5D940F91CC7B63100956C99 /* ProgressAndCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D940F71CC7B63100956C99 /* ProgressAndCompletionHandler.swift */; };
 		E5D9BCE61CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 		E5D9BCE71CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 /* End PBXBuildFile section */
@@ -532,9 +534,10 @@
 		E57F17F01CD3AA0B005D8A46 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
 		E58939601CD085FF00825069 /* PNGTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PNGTransform.swift; sourceTree = "<group>"; };
 		E58939631CD0880800825069 /* XAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XAliases.swift; sourceTree = "<group>"; };
+		E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
+		E5A3DD881CD888430077A0BC /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5CC50411CC65F97000EA88C /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5D940F71CC7B63100956C99 /* ProgressAndCompletionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressAndCompletionHandler.swift; sourceTree = "<group>"; };
 		E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alias+Facilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -843,6 +846,8 @@
 			children = (
 				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
+				E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */,
+				E5A3DD881CD888430077A0BC /* ProgressAndCompletionHandler.swift */,
 				E5CC50411CC65F97000EA88C /* TasksScheduler.swift */,
 				E53E2AC41CA57DBA0079ED23 /* Consignation.swift */,
 				E53E2AC51CA57DBA0079ED23 /* Consignee.swift */,
@@ -900,7 +905,6 @@
 		E53E2ADF1CA57DBA0079ED23 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				E5D940F71CC7B63100956C99 /* ProgressAndCompletionHandler.swift */,
 				E53E2AE01CA57DBA0079ED23 /* BFileManager.swift */,
 				E53E2AE11CA57DBA0079ED23 /* HTTPManager.swift */,
 				E53E2AE21CA57DBA0079ED23 /* Pluralization.swift */,
@@ -1109,6 +1113,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5A3DD871CD888040077A0BC /* AbstractReactiveTask.swift in Sources */,
 				E525175B1CD0B68800D873A3 /* DeleteGroups.swift in Sources */,
 				E52517B31CD0B68800D873A3 /* UpdatePermissions.swift in Sources */,
 				5B16A3581CCE7E4E003E02BA /* Base64DataTransform.swift in Sources */,
@@ -1137,6 +1142,7 @@
 				E53E2C0F1CA57DBA0079ED23 /* Serializable.swift in Sources */,
 				E52517051CD0B68800D873A3 /* AliasesCollectionController.swift in Sources */,
 				E53E2C1E1CA57DBA0079ED23 /* NSURL+Parameters.swift in Sources */,
+				E5A3DD891CD888430077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
 				E525178B1CD0B68800D873A3 /* ReadPermissionsByQuery.swift in Sources */,
 				E58939641CD0880800825069 /* XAliases.swift in Sources */,
 				E52517591CD0B68800D873A3 /* DeleteGroup.swift in Sources */,
@@ -1203,7 +1209,6 @@
 				E525173F1CD0B68800D873A3 /* CreateLockers.swift in Sources */,
 				E52517871CD0B68800D873A3 /* ReadPermissionById.swift in Sources */,
 				E53E2BEB1CA57DBA0079ED23 /* Consignee.swift in Sources */,
-				E5D940F81CC7B63100956C99 /* ProgressAndCompletionHandler.swift in Sources */,
 				E53E2BC41CA57DBA0079ED23 /* BaseObject+Protocols.swift in Sources */,
 				E53E2BCA1CA57DBA0079ED23 /* JDataPerformer.swift in Sources */,
 				E52517B91CD0B68800D873A3 /* UpdateTasksGroup.swift in Sources */,
@@ -1297,6 +1302,7 @@
 				E53E2BDD1CA57DBA0079ED23 /* JSerializer.swift in Sources */,
 				E52517A61CD0B68800D873A3 /* UpdateAlias.swift in Sources */,
 				E525177C1CD0B68800D873A3 /* ReadGroupById.swift in Sources */,
+				E5A3DD8B1CD888690077A0BC /* ProgressAndCompletionHandler.swift in Sources */,
 				E56A3E8A1CD0DE4F006B1F71 /* TasksScheduler.swift in Sources */,
 				E525174A1CD0B68800D873A3 /* CreateTasksGroup.swift in Sources */,
 				E525170E1CD0B68800D873A3 /* PermissionsCollectionController.swift in Sources */,
@@ -1347,6 +1353,7 @@
 				E52517281CD0B68800D873A3 /* Operation.swift in Sources */,
 				E52517061CD0B68800D873A3 /* AliasesCollectionController.swift in Sources */,
 				E52517461CD0B68800D873A3 /* CreateTask.swift in Sources */,
+				E5A3DD8A1CD888660077A0BC /* AbstractReactiveTask.swift in Sources */,
 				E525172E1CD0B68800D873A3 /* Tag.swift in Sources */,
 				E52517881CD0B68800D873A3 /* ReadPermissionById.swift in Sources */,
 				E525170A1CD0B68800D873A3 /* LockersCollectionController.swift in Sources */,
@@ -1406,7 +1413,6 @@
 				E52517981CD0B68800D873A3 /* ReadTasksGroupsByQuery.swift in Sources */,
 				E52517401CD0B68800D873A3 /* CreateLockers.swift in Sources */,
 				E52517441CD0B68800D873A3 /* CreatePermissions.swift in Sources */,
-				E5D940F91CC7B63100956C99 /* ProgressAndCompletionHandler.swift in Sources */,
 				E51718B11CAEE43900A0CD1A /* User+Auth.swift in Sources */,
 				E52517701CD0B68800D873A3 /* DeleteTriggers.swift in Sources */,
 				E52517C21CD0B68800D873A3 /* UpdateUser.swift in Sources */,

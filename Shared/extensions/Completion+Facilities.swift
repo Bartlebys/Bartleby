@@ -301,7 +301,7 @@ public extension Completion {
      
      - returns: a Progression notification
      */
-    public var notifiable:CompletionNotification{
+    public var completionNotification:CompletionNotification{
         get{
             return CompletionNotification(state:self,object:nil,userInfo: nil)
         }
