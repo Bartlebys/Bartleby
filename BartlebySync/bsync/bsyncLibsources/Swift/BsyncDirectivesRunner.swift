@@ -30,7 +30,7 @@ class BsyncDirectivesRunner {
         var JSONString="{}"
         do {
             // If the file is named .json the file is deleted.
-            JSONString = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding) as String
+            JSONString = try NSString(contentsOfFile: filePath, encoding: Default.TEXT_ENCODING) as String
             if !BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
                 JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
             }

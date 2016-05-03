@@ -26,7 +26,7 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType {
 
         if let JSONSTRING=value as? String {
             do {
-                if let dataString = JSONSTRING.dataUsingEncoding(NSUTF8StringEncoding) {
+                if let dataString = JSONSTRING.dataUsingEncoding(Default.TEXT_ENCODING) {
                     if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(dataString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                         if let value = jsonDictionary[self._CRYPTED_OBJECT_KEY] {
                             if let base64EncodedString = value as? String {

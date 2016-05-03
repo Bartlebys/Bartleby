@@ -114,14 +114,14 @@ class UpDownDirectivesTests: XCTestCase {
                 XCTAssertTrue(success, "\(message)")
                 if success {
                     // Create file
-                    UpDownDirectivesTests._fm.writeString(UpDownDirectivesTests._fileContent, path: UpDownDirectivesTests._upFilePath, atomically: true, encoding: NSUTF8StringEncoding, callBack: { (success, message) in
+                    UpDownDirectivesTests._fm.writeString(UpDownDirectivesTests._fileContent, path: UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.TEXT_ENCODING, callBack: { (success, message) in
                         XCTAssertTrue(success, "\(message)")
                         // Check file existence
                         UpDownDirectivesTests._fm.fileExistsAtPath(UpDownDirectivesTests._upFilePath, callBack: { (exists, isADirectory, success, message) in
                             XCTAssertTrue(exists, "\(message)")
                             XCTAssertFalse(isADirectory, "\(message)")
                             // Check file content
-                            UpDownDirectivesTests._fm.readString(contentsOfFile: UpDownDirectivesTests._upFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                            UpDownDirectivesTests._fm.readString(contentsOfFile: UpDownDirectivesTests._upFilePath, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                                 XCTAssertTrue(success, "\(message)")
                                 XCTAssertEqual(string, UpDownDirectivesTests._fileContent, "\(message)")
                                 expectation.fulfill()
@@ -228,7 +228,7 @@ class UpDownDirectivesTests: XCTestCase {
         UpDownDirectivesTests._fm.fileExistsAtPath(UpDownDirectivesTests._downFilePath) { (exists, isADirectory, success, message) in
             XCTAssertTrue(success, "\(message)")
             XCTAssertTrue(exists)
-            UpDownDirectivesTests._fm.readString(contentsOfFile: UpDownDirectivesTests._downFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+            UpDownDirectivesTests._fm.readString(contentsOfFile: UpDownDirectivesTests._downFilePath, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                 XCTAssertTrue(success, "\(message)")
                 XCTAssertEqual(string, UpDownDirectivesTests._fileContent)
                 expectation.fulfill()

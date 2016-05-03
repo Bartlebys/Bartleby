@@ -151,7 +151,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 //MARK: Helpers
 
     private func extractEventsFromBuffer() -> [String] {
-        let delimiter = "\n\n".dataUsingEncoding(NSUTF8StringEncoding)!
+        let delimiter = "\n\n".dataUsingEncoding(Default.TEXT_ENCODING)!
         var events = [String]()
 
         // Find first occurrence of delimiter
@@ -163,7 +163,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
                 let dataChunk = receivedDataBuffer.subdataWithRange(
                     NSMakeRange(searchRange.location, foundRange.location - searchRange.location)
                 )
-                events.append(NSString(data: dataChunk, encoding: NSUTF8StringEncoding) as! String)
+                events.append(NSString(data: dataChunk, encoding: Default.TEXT_ENCODING) as! String)
             }
             // Search for next occurrence of delimiter
             searchRange.location = foundRange.location + foundRange.length
@@ -282,7 +282,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
     class public func basicAuth(username: String, password: String) -> String {
         let authString = "\(username):\(password)"
-        let authData = authString.dataUsingEncoding(NSUTF8StringEncoding)
+        let authData = authString.dataUsingEncoding(Default.TEXT_ENCODING)
         let base64String = authData!.base64EncodedStringWithOptions([])
 
         return "Basic \(base64String)"

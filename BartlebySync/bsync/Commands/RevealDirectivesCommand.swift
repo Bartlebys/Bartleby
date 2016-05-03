@@ -72,7 +72,7 @@ class RevealDirectivesCommand: CommandBase {
         var JSONString="{}"
         do {
             // If the file is named .json the file is deleted.
-            JSONString = try NSString(contentsOfFile: fp, encoding: NSUTF8StringEncoding) as String
+            JSONString = try NSString(contentsOfFile: fp, encoding: Default.TEXT_ENCODING) as String
             JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString) // Decrypt
         } catch {
             print("Deserialization of directives has failed \(fp) \(JSONString)")

@@ -33,14 +33,14 @@ class LocalSyncTests: XCTestCase {
                 XCTAssertTrue(success, "\(message)")
                 if success {
                     // Create file
-                    Bartleby.fileManager.writeString(LocalSyncTests._fileContent, path: LocalSyncTests._sourceFilePath, atomically: true, encoding: NSUTF8StringEncoding, callBack: { (success, message) in
+                    Bartleby.fileManager.writeString(LocalSyncTests._fileContent, path: LocalSyncTests._sourceFilePath, atomically: true, encoding: Default.TEXT_ENCODING, callBack: { (success, message) in
                         XCTAssertTrue(success, "\(message)")
                         // Check file existence
                         Bartleby.fileManager.fileExistsAtPath(LocalSyncTests._sourceFilePath, callBack: { (exists, isADirectory, success, message) in
                             XCTAssertTrue(exists, "\(message)")
                             XCTAssertFalse(isADirectory, "\(message)")
                             // Check file content
-                            Bartleby.fileManager.readString(contentsOfFile: LocalSyncTests._sourceFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                            Bartleby.fileManager.readString(contentsOfFile: LocalSyncTests._sourceFilePath, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                                 XCTAssertTrue(success, "\(message)")
                                 XCTAssertEqual(string, LocalSyncTests._fileContent, "\(message)")
                                 expectation.fulfill()

@@ -122,7 +122,7 @@ public enum BsyncSessionError: ErrorType {
             if let json=Mapper<BsyncSession>().toJSONString(self) {
                 if let syncID=_syncContext.syncID {
                     let fileURL=localURL.URLByAppendingPathComponent(BsyncSession.fileName(syncID))
-                    try json.writeToURL(fileURL, atomically: true, encoding:NSUTF8StringEncoding)
+                    try json.writeToURL(fileURL, atomically: true, encoding:Default.TEXT_ENCODING)
                 } else {
                     throw BsyncSessionError.MissingSyncID
                 }
@@ -148,7 +148,7 @@ public enum BsyncSessionError: ErrorType {
     static public func sessionFrom(localURL: NSURL, syncID: String) throws ->BsyncSession {
         let fileURL=localURL.URLByAppendingPathComponent(BsyncSession.fileName(syncID))
         if NSFileManager.defaultManager().fileExistsAtPath(fileURL.path!) {
-            let json = try String(contentsOfURL: fileURL, encoding: NSUTF8StringEncoding)
+            let json = try String(contentsOfURL: fileURL, encoding: Default.TEXT_ENCODING)
             if let session=Mapper<BsyncSession>().map(json) {
                 if session.todo.count==0 {
                     throw BsyncSessionError.NothingTodo

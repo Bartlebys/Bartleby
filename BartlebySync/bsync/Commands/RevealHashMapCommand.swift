@@ -51,7 +51,7 @@ class RevealHashMapCommand: CommandBase {
                 fm.fileExistsAtPath(path, callBack: { (exists, isADirectory, success, message) in
                     if success && exists {
                         // Load the hashmap
-                        fm.readString(contentsOfFile: path, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                        fm.readString(contentsOfFile: path, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                             if success {
                                 if let encryptedHashMapString = string {
                                     do {

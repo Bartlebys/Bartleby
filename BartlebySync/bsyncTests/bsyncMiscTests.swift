@@ -92,7 +92,7 @@ class bsyncMiscTests: XCTestCase {
                 let surl=(i>10 ? url.URLByAppendingPathComponent("subfolder/\(i).data") : url.URLByAppendingPathComponent("\(i).data"))
                 do {
                     try s.writeToURL(surl,
-                        atomically: false, encoding: NSUTF8StringEncoding)
+                        atomically: false, encoding: Default.TEXT_ENCODING)
                 } catch {
                     XCTFail("Creation of \(surl.path) failure \(error)")
                 }

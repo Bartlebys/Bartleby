@@ -24,7 +24,7 @@ import Foundation
     }
 
     // We use a hash of the _salt+key as initialization vector
-    lazy var initializationVector: NSData?=CryptoHelper.hash(self.salt.stringByAppendingString(self.key)).dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false)
+    lazy var initializationVector: NSData?=CryptoHelper.hash(self.salt.stringByAppendingString(self.key)).dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false)
 
 
     // MARK: - Cryptography
@@ -51,7 +51,7 @@ import Foundation
      - returns: A base 64 string representing a crypted buffer
      */
     public func encryptString(string: String) throws ->String {
-        if let data=string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
+        if let data=string.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
             let crypted=try encryptData(data)
             return crypted.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
         } else {
@@ -72,7 +72,7 @@ import Foundation
     public func decryptString(string: String) throws ->String {
        if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
             let decrypted=try decryptData(data)
-            if let decryptedString=String(data: decrypted, encoding:NSUTF8StringEncoding) {
+            if let decryptedString=String(data: decrypted, encoding:Default.TEXT_ENCODING) {
                 return decryptedString
             } else {
                 throw CryptoError.CodingError(message: "UTF8 string encoding error")
@@ -120,7 +120,7 @@ import Foundation
     // MARK: Crypt operation
 
     private func _encryptOperation(operation: CCOperation, on data: NSData) throws ->NSData {
-        if let d=self.key.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
+        if let d=self.key.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
         } else {
@@ -162,7 +162,7 @@ import Foundation
 
     public static func hash(string: String) -> String {
         var digest = [UInt8](count: Int(CC_MD5_DIGEST_LENGTH), repeatedValue: 0)
-        if let data = string.dataUsingEncoding(NSUTF8StringEncoding) {
+        if let data = string.dataUsingEncoding(Default.TEXT_ENCODING) {
             CC_MD5(data.bytes, CC_LONG(data.length), &digest)
         }
         var digestHex = ""

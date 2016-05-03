@@ -111,6 +111,8 @@ public struct Default {
     static public let NO_PATH: String="NO_PATH"
     static public let NO_CAKE: String="NO_CAKE"
     static public let NO_INT_INDEX=Int.max
+    // TODO: @bpds Replace NSUTF8StringEncoding by Default.TEXT_ENCODING in your scope
+    static public let TEXT_ENCODING = NSUTF8StringEncoding
 
     // A bunch of char in wich to pick to compose a random password
     static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"

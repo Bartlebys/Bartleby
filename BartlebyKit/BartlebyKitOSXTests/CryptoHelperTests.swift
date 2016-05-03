@@ -70,7 +70,7 @@ class CryptoHelperTests: XCTestCase {
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)
                 // And convert its content to a string
-                let decryptedString = String(data: decryptedData, encoding: NSUTF8StringEncoding)
+                let decryptedString = String(data: decryptedData, encoding: Default.TEXT_ENCODING)
                 // Let's transform it to a string
                 XCTAssertEqual(decryptedString, "martin")
             } else {
@@ -83,7 +83,7 @@ class CryptoHelperTests: XCTestCase {
 
     func testEncryptDataDecrypString() {
         let string = "martin"
-        if let data = string.dataUsingEncoding(NSUTF8StringEncoding) {
+        if let data = string.dataUsingEncoding(Default.TEXT_ENCODING) {
             do {
                 let encryptedData = try CryptoHelperTests._cryptoHelper.encryptData(data)
                 let encryptedBase64Data = encryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)

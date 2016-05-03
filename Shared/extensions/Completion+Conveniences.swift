@@ -21,11 +21,12 @@ public extension Completion {
 
      - returns: a Completion state instance
      */
-    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined) {
+    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined, data: NSData? = nil) {
         self.init()
         self.success = success
         self.message = message
         self.statusCode = statusCode.rawValue
+        self.data = data
     }
 
 
@@ -44,8 +45,8 @@ public extension Completion {
 
      - returns: return value description
      */
-    public static func successState(message: String = "", statusCode: CompletionStatus = .OK) -> Completion {
-        return Completion(success:true, message: message, statusCode:statusCode)
+    public static func successState(message: String = "", statusCode: CompletionStatus = .OK, data: NSData? = nil) -> Completion {
+        return Completion(success:true, message: message, statusCode:statusCode, data: data)
     }
 
 

@@ -178,7 +178,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     static public func fromSerializedUTF8String(serializedUTF8String: String)->Serializable {
         // In our case the serializedUTF8String encapuslate all the required information
-        if let d = serializedUTF8String.dataUsingEncoding(NSUTF8StringEncoding) {
+        if let d = serializedUTF8String.dataUsingEncoding(Default.TEXT_ENCODING) {
             return JSerializer.deserialize(d)
         } else {
             let error=ObjectError()

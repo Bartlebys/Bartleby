@@ -63,9 +63,6 @@ Documents can be shared between iOS, tvOS and OSX.
     // Should always be true
     public var collectionsDataShouldBeCrypted: Bool=true
 
-    // The standard text encoding
-    private let _textEncoding=NSUTF8StringEncoding
-
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
 
@@ -789,7 +786,7 @@ Documents can be shared between iOS, tvOS and OSX.
             var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped, documentfileURL:documentfileURL)
             // Encode the bookmark data as a Base64 string.
             shareData=shareData.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
-            let stringifyedData=String(data: shareData, encoding:NSUTF8StringEncoding)
+            let stringifyedData=String(data: shareData, encoding: Default.TEXT_ENCODING)
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             self.registryMetadata.URLBookmarkData[key]=stringifyedData
 
@@ -827,7 +824,7 @@ Documents can be shared between iOS, tvOS and OSX.
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             if let stringifyedData=self.registryMetadata.URLBookmarkData[key] as? String {
-                if let base64EncodedData=stringifyedData.dataUsingEncoding(NSUTF8StringEncoding) {
+                if let base64EncodedData=stringifyedData.dataUsingEncoding(Default.TEXT_ENCODING) {
                     if let data=NSData(base64EncodedData: base64EncodedData, options: [.IgnoreUnknownCharacters]) {
                         var bookmarkIsStale: ObjCBool = false
                         do {

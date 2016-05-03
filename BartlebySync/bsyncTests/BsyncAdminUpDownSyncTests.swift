@@ -108,14 +108,14 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
                 XCTAssertTrue(success, "\(message)")
                 if success {
                     // Create file
-                    BsyncAdminUpDownSyncTests._fm.writeString(BsyncAdminUpDownSyncTests._fileContent, path: BsyncAdminUpDownSyncTests._upFilePath, atomically: true, encoding: NSUTF8StringEncoding, callBack: { (success, message) in
+                    BsyncAdminUpDownSyncTests._fm.writeString(BsyncAdminUpDownSyncTests._fileContent, path: BsyncAdminUpDownSyncTests._upFilePath, atomically: true, encoding: Default.TEXT_ENCODING, callBack: { (success, message) in
                         XCTAssertTrue(success, "\(message)")
                         // Check file existence
                         BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._upFilePath, callBack: { (exists, isADirectory, success, message) in
                             XCTAssertTrue(exists, "\(message)")
                             XCTAssertFalse(isADirectory, "\(message)")
                             // Check file content
-                            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._upFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+                            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._upFilePath, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                                 XCTAssertTrue(success, "\(message)")
                                 XCTAssertEqual(string, BsyncAdminUpDownSyncTests._fileContent, "\(message)")
                                 expectation.fulfill()
@@ -262,7 +262,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         BsyncAdminUpDownSyncTests._fm.fileExistsAtPath(BsyncAdminUpDownSyncTests._downFilePath) { (exists, isADirectory, success, message) in
             XCTAssertTrue(success, "\(message)")
             XCTAssertTrue(exists)
-            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._downFilePath, encoding: NSUTF8StringEncoding, callBack: { (string, success, message) in
+            BsyncAdminUpDownSyncTests._fm.readString(contentsOfFile: BsyncAdminUpDownSyncTests._downFilePath, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
                 XCTAssertTrue(success, "\(message)")
                 XCTAssertEqual(string, BsyncAdminUpDownSyncTests._fileContent)
                 expectation.fulfill()

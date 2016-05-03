@@ -58,9 +58,9 @@ class LocalDMGSyncTests: XCTestCase {
 
     func test003_CreateFileInDMG() {
         do {
-            try LocalDMGSyncTests._fileContent.writeToFile(LocalDMGSyncTests._filePath, atomically: false, encoding: NSUTF8StringEncoding)
+            try LocalDMGSyncTests._fileContent.writeToFile(LocalDMGSyncTests._filePath, atomically: false, encoding: Default.TEXT_ENCODING)
             XCTAssertTrue(LocalDMGSyncTests._fileManager.fileExistsAtPath(LocalDMGSyncTests._filePath))
-            let fileContent = try String(contentsOfFile: LocalDMGSyncTests._filePath, encoding: NSUTF8StringEncoding)
+            let fileContent = try String(contentsOfFile: LocalDMGSyncTests._filePath, encoding: Default.TEXT_ENCODING)
             XCTAssertEqual(LocalDMGSyncTests._fileContent, fileContent)
         } catch {
             XCTFail("File I/O error with \(LocalDMGSyncTests._filePath)")

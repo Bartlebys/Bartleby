@@ -12,7 +12,7 @@ import Foundation
 extension String:Serializable {
 
     public func serialize() -> NSData {
-        if let data=self.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
+        if let data=self.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
             return data
         } else {
             return NSData()
@@ -20,7 +20,7 @@ extension String:Serializable {
     }
 
     public func deserialize(data: NSData) ->Serializable {
-        if let string=String(data: data, encoding:NSUTF8StringEncoding) {
+        if let string=String(data: data, encoding:Default.TEXT_ENCODING) {
             return string
         } else {
             let e = ObjectError()
