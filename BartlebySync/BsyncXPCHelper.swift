@@ -322,7 +322,7 @@ public class BsyncXPCHelperDMGHandler {
      - parameter card:     the card
      - parameter handlers: the handlers
      */
-    func runDirectiveForCard(card:BsyncDMGCard
+    func runDirectivesFromCard(card:BsyncDMGCard
         ,handlers: ProgressAndCompletionHandler)->(){
         
         // The card must be valid
