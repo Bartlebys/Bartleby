@@ -29,7 +29,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
 @objc(Handlers) public class Handlers: NSObject {
 
     // MARK: Progression handlers
-    private var progressionHandlers:[ProgressHandler] = []
+    private var progressionHandlers: [ProgressHandler] = []
 
     public func addProgressHandler(progressHandler: ProgressHandler) {
         self.progressionHandlers.append(progressHandler)
@@ -43,14 +43,14 @@ public typealias CompletionHandler = (_: Completion) -> ()
     }
 
     // MARK: Completion handlers
-    private var completionHandlers:[CompletionHandler] = []
-    
+    private var completionHandlers: [CompletionHandler] = []
+
     public func addCompletionHandler(handler: CompletionHandler) {
         self.completionHandlers.append(handler)
     }
-    
+
     // Call all the completion handlers
-    public func on(completionState:Completion) {
+    public func on(completionState: Completion) {
         for handler in self.completionHandlers {
             handler(completionState)
         }
