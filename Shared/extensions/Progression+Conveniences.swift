@@ -42,7 +42,7 @@ public extension Progression {
 
      - returns: return value description
      */
-    public static func defaultState()->Progression {
+    public static func defaultState() -> Progression {
          return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentTaskProgress: 0, message: "", data: nil)
     }
 
@@ -55,59 +55,6 @@ public extension Progression {
         get {
             return ProgressionNotification(state:self, object:nil, userInfo: nil)
         }
-    }
-
-}
-
-
-// MARK: - ProgressionNotification
-
-/// A Progress notification
-public class ProgressionNotification: NSNotification, NSSecureCoding {
-
-    static public let NAME="PROGRESSION_NOTIFICATION_NAME"
-
-    var progressionState: Progression
-
-    public convenience init(state: Progression, object: AnyObject?, userInfo: [NSObject : AnyObject]?) {
-        self.init(name: ProgressionNotification.NAME, object: object, userInfo: userInfo)
-        self.progressionState=state
-    }
-
-    public convenience init() {
-        self.init(name: ProgressionNotification.NAME, object:nil, userInfo: nil)
-    }
-
-    override init(name: String, object: AnyObject?, userInfo: [NSObject : AnyObject]?) {
-        self.progressionState=Progression.defaultState()
-        super.init(name: ProgressionNotification.NAME, object: object, userInfo: userInfo)
-    }
-
-    // MARK: Mappable
-
-    required public convenience init?(_ map: Map) {
-        self.init()
-        mapping(map)
-    }
-
-    public func mapping(map: Map) {
-        self.progressionState <- map["progressionState"]
-    }
-
-    // MARK: NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")!
-        super.init(coder: decoder)
-    }
-
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-    }
-
-
-    public class func supportsSecureCoding() -> Bool {
-        return true
     }
 
 }

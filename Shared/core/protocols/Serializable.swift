@@ -26,7 +26,7 @@ public protocol Serializable {
      */
     func serialize() -> NSData
 
-    func deserialize(data: NSData) ->Serializable
+    func deserialize(data: NSData) -> Serializable
 
     // TODO: @bpds Should be splitted in a specific protocol
 
@@ -38,7 +38,8 @@ public protocol Serializable {
 
      - returns: the patched Object
      */
-    func updateData(data: NSData) ->Serializable
+    func updateData(data: NSData) -> Serializable
+
 }
 
 

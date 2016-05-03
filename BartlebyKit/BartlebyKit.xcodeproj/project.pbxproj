@@ -11,8 +11,8 @@
 		5B16A3591CCE7E87003E02BA /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3571CCE7E4E003E02BA /* Base64DataTransform.swift */; };
 		5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */; };
 		5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
-		5B743F091CCFD4D700147C44 /* Completion+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */; };
-		5B743F0A1CCFD4D700147C44 /* Progression+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */; };
+		5B743F091CCFD4D700147C44 /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F071CCFD4D700147C44 /* Completion+Conveniences.swift */; };
+		5B743F0A1CCFD4D700147C44 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F081CCFD4D700147C44 /* Progression+Conveniences.swift */; };
 		5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */; };
 		5BFDA6FB1CC279AB002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */; };
@@ -304,8 +304,8 @@
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E56A3E8A1CD0DE4F006B1F71 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC50411CC65F97000EA88C /* TasksScheduler.swift */; };
-		E56A3E8B1CD0E181006B1F71 /* Completion+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */; };
-		E56A3E8C1CD0E181006B1F71 /* Progression+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */; };
+		E56A3E8B1CD0E181006B1F71 /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F071CCFD4D700147C44 /* Completion+Conveniences.swift */; };
+		E56A3E8C1CD0E181006B1F71 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B743F081CCFD4D700147C44 /* Progression+Conveniences.swift */; };
 		E570BFA51CBE48BB00F6814B /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E57BE0F31CBC05E50038454C /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57BE0F21CBC05E50038454C /* UserProtocol.swift */; };
@@ -327,6 +327,14 @@
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
 		E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00571C8ED51D00BB6B19 /* PrintUser.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
+		E597AAAD1CD8CF7800208033 /* Completion+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAAC1CD8CF7800208033 /* Completion+Result.swift */; };
+		E597AAAE1CD8CF7800208033 /* Completion+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAAC1CD8CF7800208033 /* Completion+Result.swift */; };
+		E597AAB01CD8CF9600208033 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAAF1CD8CF9600208033 /* CompletionStatus.swift */; };
+		E597AAB11CD8CF9600208033 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAAF1CD8CF9600208033 /* CompletionStatus.swift */; };
+		E597AAB31CD8D24200208033 /* ProgressionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAB21CD8D24200208033 /* ProgressionNotification.swift */; };
+		E597AAB41CD8D24200208033 /* ProgressionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAB21CD8D24200208033 /* ProgressionNotification.swift */; };
+		E597AAB71CD8D2AC00208033 /* CompletionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAB61CD8D2AC00208033 /* CompletionNotification.swift */; };
+		E597AAB81CD8D2AC00208033 /* CompletionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597AAB61CD8D2AC00208033 /* CompletionNotification.swift */; };
 		E5A3DD871CD888040077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */; };
 		E5A3DD891CD888430077A0BC /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD881CD888430077A0BC /* Handlers.swift */; };
 		E5A3DD8A1CD888660077A0BC /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */; };
@@ -362,8 +370,8 @@
 		5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelperTests.swift; sourceTree = "<group>"; };
 		5B5096901CA5824500B8D36E /* LockerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerTests.swift; sourceTree = "<group>"; };
 		5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusTests.swift; sourceTree = "<group>"; };
-		5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Facilities.swift"; sourceTree = "<group>"; };
-		5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Facilities.swift"; sourceTree = "<group>"; };
+		5B743F071CCFD4D700147C44 /* Completion+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Conveniences.swift"; sourceTree = "<group>"; };
+		5B743F081CCFD4D700147C44 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
 		5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpacetTests.swift; sourceTree = "<group>"; };
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
 		5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift; sourceTree = "<group>"; };
@@ -534,6 +542,10 @@
 		E57F17F01CD3AA0B005D8A46 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
 		E58939601CD085FF00825069 /* PNGTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PNGTransform.swift; sourceTree = "<group>"; };
 		E58939631CD0880800825069 /* XAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XAliases.swift; sourceTree = "<group>"; };
+		E597AAAC1CD8CF7800208033 /* Completion+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Result.swift"; sourceTree = "<group>"; };
+		E597AAAF1CD8CF9600208033 /* CompletionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionStatus.swift; sourceTree = "<group>"; };
+		E597AAB21CD8D24200208033 /* ProgressionNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressionNotification.swift; sourceTree = "<group>"; };
+		E597AAB61CD8D2AC00208033 /* CompletionNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionNotification.swift; sourceTree = "<group>"; };
 		E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
 		E5A3DD881CD888430077A0BC /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
 		E5CC50411CC65F97000EA88C /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
@@ -846,13 +858,15 @@
 			children = (
 				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
-				E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */,
-				E5A3DD881CD888430077A0BC /* Handlers.swift */,
-				E5CC50411CC65F97000EA88C /* TasksScheduler.swift */,
 				E53E2AC41CA57DBA0079ED23 /* Consignation.swift */,
 				E53E2AC51CA57DBA0079ED23 /* Consignee.swift */,
 				E53E2AC61CA57DBA0079ED23 /* Default.swift */,
 				E53E2AD51CA57DBA0079ED23 /* Registry.swift */,
+				E5A3DD881CD888430077A0BC /* Handlers.swift */,
+				E5CC50411CC65F97000EA88C /* TasksScheduler.swift */,
+				E5A3DD861CD888040077A0BC /* AbstractReactiveTask.swift */,
+				E597AAB21CD8D24200208033 /* ProgressionNotification.swift */,
+				E597AAB61CD8D2AC00208033 /* CompletionNotification.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -881,13 +895,15 @@
 		E53E2AD61CA57DBA0079ED23 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				5B743F071CCFD4D700147C44 /* Completion+Facilities.swift */,
-				5B743F081CCFD4D700147C44 /* Progression+Facilities.swift */,
 				E53E2AD71CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift */,
 				E53E2AD81CA57DBA0079ED23 /* NSURL+Parameters.swift */,
 				E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */,
 				E51718AF1CAEE43900A0CD1A /* User+Auth.swift */,
 				E57F17F01CD3AA0B005D8A46 /* Task+Arguments.swift */,
+				5B743F081CCFD4D700147C44 /* Progression+Conveniences.swift */,
+				5B743F071CCFD4D700147C44 /* Completion+Conveniences.swift */,
+				E597AAAC1CD8CF7800208033 /* Completion+Result.swift */,
+				E597AAAF1CD8CF9600208033 /* CompletionStatus.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1161,16 +1177,17 @@
 				E52517AB1CD0B68800D873A3 /* UpdateGroups.swift in Sources */,
 				E525178D1CD0B68800D873A3 /* ReadTaskById.swift in Sources */,
 				E525175F1CD0B68800D873A3 /* DeleteLockers.swift in Sources */,
-				5B743F091CCFD4D700147C44 /* Completion+Facilities.swift in Sources */,
+				5B743F091CCFD4D700147C44 /* Completion+Conveniences.swift in Sources */,
 				E53E2C181CA57DBA0079ED23 /* Registry.swift in Sources */,
 				E53E2C151CA57DBA0079ED23 /* Serializer.swift in Sources */,
-				5B743F0A1CCFD4D700147C44 /* Progression+Facilities.swift in Sources */,
+				5B743F0A1CCFD4D700147C44 /* Progression+Conveniences.swift in Sources */,
 				E525173D1CD0B68800D873A3 /* CreateLocker.swift in Sources */,
 				E57F17F11CD3AA0B005D8A46 /* Task+Arguments.swift in Sources */,
 				E52517031CD0B68800D873A3 /* BartlebyDocument.swift in Sources */,
 				E53E2BDF1CA57DBA0079ED23 /* NoCrypto.swift in Sources */,
 				E52517791CD0B68800D873A3 /* ReadAliasesByQuery.swift in Sources */,
 				E525175D1CD0B68800D873A3 /* DeleteLocker.swift in Sources */,
+				E597AAB31CD8D24200208033 /* ProgressionNotification.swift in Sources */,
 				E53E2BF71CA57DBA0079ED23 /* CollectibleCollection.swift in Sources */,
 				E52517291CD0B68800D873A3 /* Permission.swift in Sources */,
 				E53E2C2D1CA57DBA0079ED23 /* BFileManager.swift in Sources */,
@@ -1179,6 +1196,7 @@
 				E52517751CD0B68800D873A3 /* ReadAliasById.swift in Sources */,
 				E53E2C331CA57DBA0079ED23 /* Pluralization.swift in Sources */,
 				E52517B71CD0B68800D873A3 /* UpdateTasks.swift in Sources */,
+				E597AAAD1CD8CF7800208033 /* Completion+Result.swift in Sources */,
 				E57F17EF1CD39673005D8A46 /* Task.swift in Sources */,
 				E52517191CD0B68800D873A3 /* BaseCollectionMetadatum.swift in Sources */,
 				E53E2C301CA57DBA0079ED23 /* HTTPManager.swift in Sources */,
@@ -1234,6 +1252,7 @@
 				E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
 				E53E2BE51CA57DBA0079ED23 /* Bartleby.swift in Sources */,
 				E58939611CD085FF00825069 /* PNGTransform.swift in Sources */,
+				E597AAB71CD8D2AC00208033 /* CompletionNotification.swift in Sources */,
 				E52517651CD0B68800D873A3 /* DeleteTask.swift in Sources */,
 				E525171D1CD0B68800D873A3 /* BaseRegistryMetadata.swift in Sources */,
 				E52517B51CD0B68800D873A3 /* UpdateTask.swift in Sources */,
@@ -1263,6 +1282,7 @@
 				E53E2BEE1CA57DBA0079ED23 /* Default.swift in Sources */,
 				E53E2C1B1CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E53E2BCD1CA57DBA0079ED23 /* JDocument.swift in Sources */,
+				E597AAB01CD8CF9600208033 /* CompletionStatus.swift in Sources */,
 				E52517A91CD0B68800D873A3 /* UpdateGroup.swift in Sources */,
 				E525172B1CD0B68800D873A3 /* Progression.swift in Sources */,
 				E52517571CD0B68800D873A3 /* DeleteAliases.swift in Sources */,
@@ -1323,14 +1343,15 @@
 				E53E2C161CA57DBA0079ED23 /* Serializer.swift in Sources */,
 				E52517521CD0B68800D873A3 /* CreateUser.swift in Sources */,
 				E525179A1CD0B68800D873A3 /* ReadTriggerById.swift in Sources */,
-				E56A3E8C1CD0E181006B1F71 /* Progression+Facilities.swift in Sources */,
+				E56A3E8C1CD0E181006B1F71 /* Progression+Conveniences.swift in Sources */,
 				E52517AA1CD0B68800D873A3 /* UpdateGroup.swift in Sources */,
 				E57F17F41CD3B201005D8A46 /* Task+Arguments.swift in Sources */,
 				E53E2BE01CA57DBA0079ED23 /* NoCrypto.swift in Sources */,
 				E525178E1CD0B68800D873A3 /* ReadTaskById.swift in Sources */,
 				E53E2BF81CA57DBA0079ED23 /* CollectibleCollection.swift in Sources */,
 				E52517BE1CD0B68800D873A3 /* UpdateTrigger.swift in Sources */,
-				E56A3E8B1CD0E181006B1F71 /* Completion+Facilities.swift in Sources */,
+				E56A3E8B1CD0E181006B1F71 /* Completion+Conveniences.swift in Sources */,
+				E597AAB41CD8D24200208033 /* ProgressionNotification.swift in Sources */,
 				E525176A1CD0B68800D873A3 /* DeleteTasksGroup.swift in Sources */,
 				E525173A1CD0B68800D873A3 /* CreateGroup.swift in Sources */,
 				E52517561CD0B68800D873A3 /* DeleteAlias.swift in Sources */,
@@ -1339,6 +1360,7 @@
 				E53E2C341CA57DBA0079ED23 /* Pluralization.swift in Sources */,
 				E53E2C311CA57DBA0079ED23 /* HTTPManager.swift in Sources */,
 				E53E2BE91CA57DBA0079ED23 /* Consignation.swift in Sources */,
+				E597AAAE1CD8CF7800208033 /* Completion+Result.swift in Sources */,
 				E525178A1CD0B68800D873A3 /* ReadPermissionsByIds.swift in Sources */,
 				E52517681CD0B68800D873A3 /* DeleteTasks.swift in Sources */,
 				E51834CA1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
@@ -1394,6 +1416,7 @@
 				E53E2BD41CA57DBA0079ED23 /* JHTTPResponse.swift in Sources */,
 				E53E2BD11CA57DBA0079ED23 /* JHTTPCommand.swift in Sources */,
 				E52517B21CD0B68800D873A3 /* UpdatePermission.swift in Sources */,
+				E597AAB81CD8D2AC00208033 /* CompletionNotification.swift in Sources */,
 				E53E2C371CA57DBA0079ED23 /* PString.swift in Sources */,
 				E52517321CD0B68800D873A3 /* Trigger.swift in Sources */,
 				E57F17F21CD3ACAC005D8A46 /* ConcreteTask.swift in Sources */,
@@ -1423,6 +1446,7 @@
 				E52517301CD0B68800D873A3 /* TasksGroup.swift in Sources */,
 				E525172A1CD0B68800D873A3 /* Permission.swift in Sources */,
 				E53E2C1C1CA57DBA0079ED23 /* NSUndomanager+RegisterUndo.swift in Sources */,
+				E597AAB11CD8CF9600208033 /* CompletionStatus.swift in Sources */,
 				E53E2BCE1CA57DBA0079ED23 /* JDocument.swift in Sources */,
 				E52517081CD0B68800D873A3 /* GroupsCollectionController.swift in Sources */,
 				E52517341CD0B68800D873A3 /* User.swift in Sources */,
