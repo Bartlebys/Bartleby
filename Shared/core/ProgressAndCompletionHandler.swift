@@ -22,7 +22,6 @@ public typealias ProgressHandler = (_: Progression) -> ()
 //CompletionHandler
 public typealias CompletionHandler = (_: Completion) -> ()
 
-
 // MARK: -
 
 //  Generally Used in XPC facades because we can pass only one handler per XPC call
@@ -35,11 +34,26 @@ public typealias CompletionHandler = (_: Completion) -> ()
     public func addProgressHandler(progressHandler: ProgressHandler) {
         self.notify = progressHandler
     }
+    
+    private var completionHooks:[CompletionHandler] = []
+    
+    public func addCompletionHook(hook: CompletionHandler) {
+        completionHooks.append(hook)
+    }
+    
     /// The completion handler
-    public var on: (CompletionHandler)
+    public var completionHandler: (CompletionHandler)
+    
+    // Call the completion hooks, then the main completion handler
+    public func on(completionState:Completion) {
+        for hook in completionHooks {
+            hook(completionState)
+        }
+        completionHandler(completionState)
+    }
 
     public required init(completionHandler: CompletionHandler) {
-        self.on = completionHandler
+        self.completionHandler = completionHandler
     }
 
     /**
