@@ -107,8 +107,8 @@ enum TasksSchedulerError:ErrorType {
             let runnableTasks = group.findRunnableTasks()
             if runnableTasks.count==0{
                 group.status = .Completed
+                NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
             }
-
         }
     }
 
@@ -124,6 +124,15 @@ enum TasksGroupError:ErrorType {
 
 
 public extension TasksGroup{
+    
+    // The completion Notification osbervable
+    // NSNotificationCenter.defaultCenter()
+    public var completionNotificationName:String{
+        get{
+            return self.name+"_NOTIFICATION"
+        }
+    }
+    
     
     /**
      Starts the task group
