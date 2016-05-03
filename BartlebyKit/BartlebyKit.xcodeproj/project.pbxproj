@@ -226,6 +226,7 @@
 		E52517C21CD0B68800D873A3 /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517011CD0B68800D873A3 /* UpdateUser.swift */; };
 		E52517C31CD0B68800D873A3 /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517021CD0B68800D873A3 /* UpdateUsers.swift */; };
 		E52517C41CD0B68800D873A3 /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517021CD0B68800D873A3 /* UpdateUsers.swift */; };
+		E5361CFD1CD8DD9E005855DC /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
 		E53E2BC41CA57DBA0079ED23 /* BaseObject+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AB21CA57DBA0079ED23 /* BaseObject+Protocols.swift */; };
 		E53E2BC51CA57DBA0079ED23 /* BaseObject+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AB21CA57DBA0079ED23 /* BaseObject+Protocols.swift */; };
 		E53E2BC71CA57DBA0079ED23 /* JCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2AB31CA57DBA0079ED23 /* JCollectionMetadatum.swift */; };
@@ -343,6 +344,16 @@
 		E5D9BCE61CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 		E5D9BCE71CABC896008BEEC3 /* Alias+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BCE51CABC896008BEEC3 /* Alias+Facilities.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E5361CFF1CD8DF03005855DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E576E0A91C3A67BD00F1ED6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E54999571C3A7D0100C52A9D;
+			remoteInfo = "Bartleby OSX";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		E53E873D1C860D2D00CC6465 /* CopyFiles */ = {
@@ -484,6 +495,7 @@
 		E52517001CD0B68800D873A3 /* UpdateTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTriggers.swift; sourceTree = "<group>"; };
 		E52517011CD0B68800D873A3 /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		E52517021CD0B68800D873A3 /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
+		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E2AB21CA57DBA0079ED23 /* BaseObject+Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseObject+Protocols.swift"; sourceTree = "<group>"; };
 		E53E2AB31CA57DBA0079ED23 /* JCollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCollectionMetadatum.swift; sourceTree = "<group>"; };
 		E53E2AB41CA57DBA0079ED23 /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
@@ -955,6 +967,7 @@
 			isa = PBXGroup;
 			children = (
 				5BBF7D441CC8E4E400F2237B /* TransformTests.swift */,
+				E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */,
 				5BBF7D431CC8E4AF00F2237B /* Crypto */,
 				5BC8F1671CB2BB2400B00866 /* InterSpace */,
 				5BC8F1661CB27B1600B00866 /* Business */,
@@ -1062,6 +1075,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E5361D001CD8DF03005855DC /* PBXTargetDependency */,
 			);
 			name = BartlebyKitOSXTests;
 			productName = BartlebyKitOSXTests;
@@ -1458,6 +1472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */,
+				E5361CFD1CD8DD9E005855DC /* HandlersTests.swift in Sources */,
 				E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */,
 				E5959C071CA6702200557BDB /* LockerTests.swift in Sources */,
 				5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */,
@@ -1475,6 +1490,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E5361D001CD8DF03005855DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E54999571C3A7D0100C52A9D /* Bartleby OSX */;
+			targetProxy = E5361CFF1CD8DF03005855DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E549995E1C3A7D0200C52A9D /* Debug */ = {

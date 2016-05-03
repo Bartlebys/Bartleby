@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Completion {
+public extension Completion {
 
     /**
      Stores the result by serialization
@@ -26,11 +26,27 @@ extension Completion {
 
      - returns: the deserialized result
      */
-    func getResult<T: Serializable, S: Serializer>(usingSerializer serializer: S) -> T? {
+    func getResult<T: Serializable>() -> T? {
+        if let data=self.data {
+            return JSerializer.deserialize(data) as? T
+        }
+        return nil
+    }
+
+
+    /**
+     Get result
+
+     - parameter serializer: what serializer should we use?
+
+     - returns: the deserialized result
+     */
+    func getResultFromSerializer<T: Serializable>(serializer: Serializer) -> T? {
         if let data=self.data {
             return serializer.deserialize(data) as? T
         }
         return nil
     }
+
 
 }

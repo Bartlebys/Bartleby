@@ -14,6 +14,17 @@ import Foundation
 
 public class JSerializer: Serializer {
 
+
+    /// The standard singleton shared instance
+    public static let sharedInstance: JSerializer = {
+        let instance = JSerializer()
+        return instance
+    }()
+
+
+    public init() {
+    }
+
     /**
      Deserializes from NSData
 
@@ -21,7 +32,7 @@ public class JSerializer: Serializer {
 
      - returns: an instance (or an ObjectError)
      */
-    static public func deserialize(data: NSData) ->Serializable {
+    static public func deserialize(data: NSData) -> Serializable {
         do {
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                 return JSerializer.deserializeFromDictionary(JSONDictionary)
@@ -44,7 +55,7 @@ public class JSerializer: Serializer {
 
      - returns: an instance (or an ObjectError)
      */
-    static public func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable {
+    static public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
         if let referenceName: String = dictionary[Default.REFERENCE_NAME_KEY] as? String {
             if let Reference: Collectible.Type = NSClassFromString(referenceName) as? Collectible.Type {
                 if  var mappable = Reference.init() as? Mappable {
@@ -69,7 +80,7 @@ public class JSerializer: Serializer {
 
      - returns: a volatile deep copy.
      */
-    static public func volatileDeepCopy<T>(instance: T)->T? {
+    static public func volatileDeepCopy<T>(instance: T) -> T? {
         if let instance=instance as? JObject {
             let data: NSData=JSerializer.serialize(instance)
             return JSerializer.deserialize(data) as? T
@@ -79,7 +90,7 @@ public class JSerializer: Serializer {
 
 
 
-    public func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable {
+    public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
        return JSerializer.deserializeFromDictionary(dictionary)
     }
 
@@ -89,7 +100,7 @@ public class JSerializer: Serializer {
     }
 
 
-    public func deserialize(data: NSData) ->Serializable {
+    public func deserialize(data: NSData) -> Serializable {
         return JSerializer.deserialize(data)
     }
 
