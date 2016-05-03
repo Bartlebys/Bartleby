@@ -105,7 +105,7 @@ Documents can be shared between iOS, tvOS and OSX.
     public var hasBeenLoaded: Bool=false
 
     // Default Serializer
-    internal var serializer=JSerializer()
+    internal var serializer=JSerializer.sharedInstance
 
     /// The underlining storage hashed by collection name
     private var _collections=Array<Collectible>()
@@ -149,7 +149,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - returns: the instance
      */
-    public static func registredObjectByUID<T: Collectible>(UID: String)->T? {
+    public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
         return _objectByUID[UID] as? T
     }
 
@@ -158,7 +158,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - returns: the string
      */
-    public static func dumpObjectByUID()->String {
+    public static func dumpObjectByUID() -> String {
         var result=""
         for (UID, instance) in _objectByUID {
             if let JO=instance as? JObject {
@@ -176,7 +176,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - parameter block:           the enumeration block
      */
-    public static func enumerateMembersFromRegistries<T>(block:((instance: T)->())?)->[T] {
+    public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?)->[T] {
         var instances=[T]()
         for (_, instance) in _objectByUID {
             if let o=instance as? T {
@@ -300,7 +300,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
 
     // Any call should always be casted to a CollectibleCollection
-    func _collectionByName(name: String)->Collectible? {
+    func _collectionByName(name: String) -> Collectible? {
         if let i=_indexes.indexOf(name) {
             return _collections[i]
         }
@@ -311,7 +311,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
     // MARK: upsert
 
-    public func upsert(instance: Collectible)->Bool {
+    public func upsert(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.add(instance)
             return true
@@ -319,7 +319,7 @@ Documents can be shared between iOS, tvOS and OSX.
         return false
     }
 
-    public func upsert(instances: [Collectible])->Bool {
+    public func upsert(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
             result=result&&self.upsert(instance)
@@ -342,7 +342,7 @@ Documents can be shared between iOS, tvOS and OSX.
     return nil
     }
     */
-    public func readById<C: SequenceType>(instanceUID: String, fromCollection collection: C)->Collectible? {
+    public func readById<C: SequenceType>(instanceUID: String, fromCollection collection: C) -> Collectible? {
         for instance in collection {
             if let collectible = instance as? Collectible {
                 if collectible.UID==instanceUID {
@@ -370,7 +370,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
     // MARK: delete
 
-    public func delete(instance: Collectible)->Bool {
+    public func delete(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             return collection.removeObject(instance)
         }
@@ -378,14 +378,14 @@ Documents can be shared between iOS, tvOS and OSX.
     }
 
 
-    public func deleteById(instanceUID: String, fromCollectionWithName: String)->Bool {
+    public func deleteById(instanceUID: String, fromCollectionWithName: String) -> Bool {
         if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
             return collection.removeObjectWithID(instanceUID)
         }
         return false
     }
 
-    public func delete(instances: [Collectible])->Bool {
+    public func delete(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
             result=result&&self.delete(instance)
@@ -393,7 +393,7 @@ Documents can be shared between iOS, tvOS and OSX.
         return result
     }
 
-    public func deleteByIds(instancesUIDs: [String], fromCollectionWithName: String)->Bool {
+    public func deleteByIds(instancesUIDs: [String], fromCollectionWithName: String) -> Bool {
         var result=true
         for instanceUID in instancesUIDs {
             result=result&&self.deleteById(instanceUID, fromCollectionWithName: fromCollectionWithName)
@@ -497,7 +497,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - returns: the reduced operations + a trigger
      */
-    public func optimizeOperations(operations: [Operation])->[Operation] {
+    public func optimizeOperations(operations: [Operation]) -> [Operation] {
         /*
         var toBeDeleted=[Operation]()
         var groups=[String:[Operation]]()
@@ -803,7 +803,7 @@ Documents can be shared between iOS, tvOS and OSX.
         throw SecurityScopedBookMarkError.BookMarkFailed(message: "Invalid path Error for \(url)")
     }
 
-    private func _getBookMarkKeyFor(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil)->String {
+    private func _getBookMarkKeyFor(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) -> String {
         if let path=url.path {
             return "\(path)-\((appScoped ? "YES" : "NO" ))-\(documentfileURL?.path ?? Default.NO_PATH ))"
         } else {
@@ -864,7 +864,7 @@ Documents can be shared between iOS, tvOS and OSX.
     }
 
 
-    public func securityScopedBookmarkExits(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil)->Bool {
+    public func securityScopedBookmarkExits(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) -> Bool {
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             let result=self.registryMetadata.URLBookmarkData.keys.contains(key)
