@@ -10,11 +10,10 @@ import Foundation
 
 // MARK: - TypeAliases
 
-//A composed Closure
-//with a progress and acompletion section
+//  A composed Closure with a progress and acompletion section
+//  Generally Used in XPC facades because we can pass only one handler per XPC call
+//  To consume and manipulate we generally split the ComposedHandler by calling Handlers.handlersFrom(composed)
 public typealias ComposedHandler = (progressionState: Progression?, completionState: Completion?)->()
-
- //public typealias ComposedHandler = (currentTaskIndex:Int,totalTaskCount:Int,currentTaskProgress:Double,message:String,data:NSData?,completed:Bool,success:Bool)->()
 
 //ProgressHandler
 public typealias ProgressHandler = (_: Progression) -> ()
@@ -24,49 +23,58 @@ public typealias CompletionHandler = (_: Completion) -> ()
 
 // MARK: -
 
-//  Generally Used in XPC facades because we can pass only one handler per XPC call
-//  So we split the ComposedHandler by calling Handlers.handlersFrom(composed)
+/**
+ * Composable handlers with at least one Completion Handler
+ * You can compose multiple completion and progression
+ */
 @objc(Handlers) public class Handlers: NSObject {
 
     // MARK: Progression handlers
-    private var progressionHandlers: [ProgressHandler] = []
+    private var _progressionHandlers: [ProgressHandler] = []
 
     public func addProgressHandler(progressHandler: ProgressHandler) {
-        self.progressionHandlers.append(progressHandler)
+        self._progressionHandlers.append(progressHandler)
     }
 
     // Call all the progression handlers
     public func notify(progressionState: Progression) {
-        for handler in self.progressionHandlers {
+        for handler in self._progressionHandlers {
             handler(progressionState)
         }
     }
 
     // MARK: Completion handlers
-    private var completionHandlers: [CompletionHandler] = []
+    private var _completionHandlers: [CompletionHandler] = []
 
     public func addCompletionHandler(handler: CompletionHandler) {
-        self.completionHandlers.append(handler)
+        self._completionHandlers.append(handler)
     }
 
     // Call all the completion handlers
     public func on(completionState: Completion) {
-        for handler in self.completionHandlers {
+        for handler in self._completionHandlers {
             handler(completionState)
         }
     }
 
+    /**
+     Designated initializer
+     You must pass a completion Handler.
+     - parameter completionHandler: the completion Handler
+
+     - returns: the instance.
+     */
     public required init(completionHandler: CompletionHandler) {
-        self.completionHandlers.append(completionHandler)
+        self._completionHandlers.append(completionHandler)
     }
 
     /**
      XPC adapter used to split closure in two parts
-
      - parameter composedHandler: the composed handler
+
      - returns: an instance of Handlers
      */
-    public static func handlersFrom(composedHandler: ComposedHandler)->Handlers {
+    public static func handlersFrom(composedHandler: ComposedHandler) -> Handlers {
 
         // Those handlers produce an adaptation
         // From the unique handler form
@@ -82,11 +90,16 @@ public typealias CompletionHandler = (_: Completion) -> ()
         return handlers
     }
 
-    // We need to provide a unique handler to be compatible with the XPC context
-    // So we use an handler adapter that relays to the progress and completion handlers
-    // to mask the constraint.
+    /**
+
+     We need to provide a unique handler to be compatible with the XPC context
+     So we use an handler adapter that relays to the progress and completion handlers
+     to mask the constraint.
+
+     - returns: the composed Handler
+     */
     public func composedHandlers() -> ComposedHandler {
-        let handler: ComposedHandler = {(progressionState, completionState)-> Void in
+        let handler: ComposedHandler = {(progressionState, completionState) -> Void in
             if let progressionState=progressionState {
                  self.notify(progressionState)
             }
