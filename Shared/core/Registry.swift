@@ -115,13 +115,21 @@ Documents can be shared between iOS, tvOS and OSX.
 
     private static var _objectByUID=Dictionary<String, Any>()
 
+
+    // The number of registred object
+    public static var numberOfRegistredObject: Int {
+        get {
+            return _objectByUID.count
+        }
+    }
+
     /**
      Registers an instance
 
      - parameter instance: the Identifiable instance
      */
     public static func register<T: Identifiable>(instance: T) {
-        _objectByUID[instance.UID]=instance
+        self._objectByUID[instance.UID]=instance
     }
 
     /**
@@ -130,7 +138,7 @@ Documents can be shared between iOS, tvOS and OSX.
      - parameter instance: the collectible instance
      */
     public static func unRegister<T: Identifiable>(instance: T) {
-        _objectByUID.removeValueForKey(instance.UID)
+        self._objectByUID.removeValueForKey(instance.UID)
     }
 
     /**
@@ -141,9 +149,7 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the instance
      */
     public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
-        let instance=_objectByUID[UID]
-        let casted=instance as? T
-        return casted
+        return self._objectByUID[UID] as? T
     }
 
     /**
@@ -153,7 +159,7 @@ Documents can be shared between iOS, tvOS and OSX.
      */
     public static func dumpObjectByUID() -> String {
         var result=""
-        for (UID, instance) in _objectByUID {
+        for (UID, instance) in self._objectByUID {
             if let JO=instance as? JObject {
                 result += "\(JO.referenceName)->\(UID)\n"
             }
@@ -171,7 +177,7 @@ Documents can be shared between iOS, tvOS and OSX.
      */
     public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?) -> [T] {
         var instances=[T]()
-        for (_, instance) in _objectByUID {
+        for (_, instance) in self._objectByUID {
             if let o=instance as? T {
                 if let block=block {
                     block(instance:o)
