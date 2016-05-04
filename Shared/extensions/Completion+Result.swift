@@ -8,11 +8,17 @@
 
 import Foundation
 
+// MARK: - Result Extensions
+
+// We expose pairs of Setter and Getter to cast the Result.
+// The result is serialized in the opaque NSdata data property.
+
 public extension Completion {
 
-    // MARK: Generic result
+    // MARK: Generic Serializable result
+
     /**
-     Stores the result by serialization
+     Stores the serializabale result
 
      - parameter result: the serializable result
      */
@@ -21,10 +27,7 @@ public extension Completion {
     }
 
     /**
-     Get result
-
-     - parameter serializer: what serializer should we use?
-
+     Gets the deserialized result
      - returns: the deserialized result
      */
     func getResult<T: Serializable>() -> T? {
@@ -36,7 +39,7 @@ public extension Completion {
 
 
     /**
-     Get result
+     Gets the deserialized result
 
      - parameter serializer: what serializer should we use?
 
@@ -48,12 +51,14 @@ public extension Completion {
         }
         return nil
     }
-    
-    // MARK: String result
+
+    // MARK: - String result
+
+
     func setStringResult(s: String) {
         self.data = s.dataUsingEncoding(Default.TEXT_ENCODING)?.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
     }
-    
+
     func getStringResult() -> String? {
         if let b64data = self.data {
             if let plainData = NSData(base64EncodedData: b64data, options: .IgnoreUnknownCharacters) {
@@ -62,11 +67,11 @@ public extension Completion {
                 }
             }
         }
-        // TODO: @bpds Maybe we should turn the success to false and add an error message here? Same remark for other adapter
         return nil
     }
-    
-    // MARK: String array result
+
+    // MARK: - Array of String result
+
     func setStringArrayResult(stringArray: [String]) {
         do {
             self.data = try NSJSONSerialization.dataWithJSONObject(stringArray, options: .PrettyPrinted)
@@ -74,18 +79,18 @@ public extension Completion {
             self.data = nil
         }
     }
-    
-    func getStringArrayResult() -> [String] {
+
+    func getStringArrayResult() -> [String]? {
         if let data = self.data {
             do {
                 if let stringArray = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String] {
                     return stringArray
                 }
             } catch {
-                
+
             }
         }
-        return []
+        return  nil
     }
-    
+
 }
