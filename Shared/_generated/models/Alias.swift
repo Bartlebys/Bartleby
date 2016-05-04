@@ -19,7 +19,7 @@ import ObjectMapper
 
 
 	//The UID of the instance
-	public var iUID:String?
+	public var iUID:String = "\(Default.NO_UID)"
 
 
     // MARK: Mappable
@@ -39,15 +39,13 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"iUID") as NSString?)
+		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iUID")! as NSString)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		if let iUID = self.iUID {
-			coder.encodeObject(iUID,forKey:"iUID")
-		}
+		coder.encodeObject(self.iUID,forKey:"iUID")
     }
 
 
