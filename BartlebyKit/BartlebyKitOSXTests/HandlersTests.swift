@@ -64,8 +64,11 @@ class CompletionWithResultTests: XCTestCase {
         let completion = Completion.successState()
         let array1 = ["A", "poor", "lonesome", "string"]
         completion.setStringArrayResult(array1)
-        let array2: [String] = completion.getStringArrayResult()
+        if let array2: [String] = completion.getStringArrayResult() {
         XCTAssertEqual(array1, array2)
+        } else {
+            XCTFail("Error getting the string array result")
+        }
     }
 
 }
