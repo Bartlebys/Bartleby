@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+#endif
+
 
 // MARK: - TasksScheduler
 
@@ -37,7 +41,7 @@ enum TasksSchedulerError: ErrorType {
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
-        rootTask.group=group
+        rootTask.group=Bartleby.instanceToAlias(group)
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -89,27 +93,31 @@ enum TasksSchedulerError: ErrorType {
      - parameter completedTask: the reference to the task
      */
     func onCompletion(completedTask: Task) throws {
-        if let group=completedTask.group {
-            if completedTask.group?.status != .Paused && completedTask.group?.status != .Completed {
-                for child in completedTask.children {
-                    if let task=child as? Invocable {
-                        task.invoke()
-                    } else {
-                        throw TasksGroupError.NonInvocableTask(task: completedTask)
+        if let aliasOfGroup=completedTask.group {
+            if let group: TasksGroup=Bartleby.aliasToLocalInstance(aliasOfGroup) {
+                if group.status != .Paused && group.status != .Completed {
+                    for child in completedTask.children {
+                        if let task = group.invocableTaskFrom(child) {
+                            task.invoke()
+                        } else {
+                            throw TasksGroupError.NonInvocableTask(task: completedTask)
+                        }
+                        child.status = .Running
                     }
-                    child.status = .Running
+                } else {
+                    // Paused or Completed
                 }
-            } else {
-                // Paused or Completed
+                // Mark the group as completed if there is no more
+                // Runnable tasks
+                let runnableTasks = group.findRunnableTasks()
+                if runnableTasks.count==0 {
+                    group.status = .Completed
+                    NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                }
             }
-            // Mark the group as completed if there is no more
-            // Runnable tasks
-            let runnableTasks = group.findRunnableTasks()
-            if runnableTasks.count==0 {
-                group.status = .Completed
-                NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-            }
+
         }
+
     }
 
 
@@ -144,7 +152,7 @@ public extension TasksGroup {
     public func start() throws -> Int {
         let entryTasks=self.findRunnableTasks()
         for task in entryTasks {
-            if let invocableTask = task as? Invocable {
+            if let invocableTask = self.invocableTaskFrom(task) {
                 invocableTask.invoke()
             } else {
                 throw TasksGroupError.NonInvocableTask(task: task)
@@ -152,6 +160,34 @@ public extension TasksGroup {
         }
         return entryTasks.count
     }
+
+    // TODO @bpds securize in Tasks => (!) Used to force the transitionnal casting
+
+    /**
+     Extract a fully typed concrete task from a
+
+     - parameter task: the transitionnal task
+
+     - returns: an invocable task or nil
+     */
+    public func invocableTaskFrom(task: Task) -> Invocable? {
+        if task.taskClassName != Default.NO_NAME {
+            // serialize the current transitionnal task.
+            let dictionary=task.dictionaryRepresentation()
+            if let Reference: Collectible.Type = NSClassFromString(task.taskClassName) as? Collectible.Type {
+                // deserialize using its concrete type
+                if  var mappable = Reference.init() as? Mappable {
+                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
+                    mappable.mapping(map)
+                    if let invocable = mappable as? Invocable {
+                        return invocable
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
 
     /**
      All the running tasks will be finished
@@ -178,12 +214,18 @@ public extension TasksGroup {
 
      - returns: a collection of tasks
      */
-    public func findRunnableTasks()->[Task] {
+    public func findRunnableTasks() -> [Task] {
         //Top level of the graph.
         var topLevelTasks=[Task]()
         for task in self.tasks {
             if task.status != Task.Status.Completed {
-                topLevelTasks.append(task)
+                if task.taskClassName==Default.NO_NAME {
+                    //TODO @bpds
+                    bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
+                } else {
+                   topLevelTasks.append(task)
+                }
+
             }
         }
         if topLevelTasks.count==0 {
@@ -199,7 +241,11 @@ public extension TasksGroup {
         if topLevelTasks.count==0 {
             for childTask in task.children {
                 if childTask.status != Task.Status.Completed {
-                    topLevelTasks.append(childTask)
+                    if childTask.taskClassName==Default.NO_NAME {
+                        bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
+                    } else {
+                        topLevelTasks.append(childTask)
+                    }
                 }
             }
             if topLevelTasks.count==0 {
@@ -220,7 +266,7 @@ public extension TasksGroup {
 
      - returns: the list of tasks
      */
-    public func findTasksWithStatus(status: Task.Status)->[Task] {
+    public func findTasksWithStatus(status: Task.Status) -> [Task] {
         var matching=[Task]()
         let rootTasks=self.tasks.filter { (task) -> Bool in
             return task.status==status
@@ -234,10 +280,11 @@ public extension TasksGroup {
 
 
     private func _findChildrenTasksWithStatus(task: Task, status: Task.Status, inout tasks: [Task]) {
+        var matching=[Task]()
         let matchingChildren=task.children.filter { (subTask) -> Bool in
             return subTask.status==status
         }
-        tasks.appendContentsOf(matchingChildren)
+        matching.appendContentsOf(matchingChildren)
     }
 
 }

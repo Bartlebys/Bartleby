@@ -68,15 +68,15 @@ extension Task {
     dynamic var linearTaskList: [Task] {
         get {
             // Return a linear task List
-            var tasks=[Task]()
+            var list=[Task]()
             func childrens(parent: Task, inout tasks: [Task]) {
                 tasks.append(parent)
                 for child in parent.children {
                     childrens(child, tasks: &tasks)
                 }
             }
-            childrens(self, tasks: &tasks)
-            return tasks
+            childrens(self, tasks: &list)
+            return list
         }
     }
 }
@@ -91,7 +91,7 @@ public extension Task {
         task.parent=self
     }
 
-    func removeChildren(task: Task)->Bool {
+    func removeChildren(task: Task) -> Bool {
         if let idx=self.children.indexOf(task) {
             task.parent=nil
             task.group=nil

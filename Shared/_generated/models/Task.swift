@@ -18,8 +18,8 @@ import ObjectMapper
 @objc(Task) public class Task : BaseObject{
 
 
-	//The group of the task
-	public var group:TasksGroup?
+	//The aliased group of the task
+	public var group:Alias?
 	//TasksGroup Status
 	public enum Status:Int{
 		case New
@@ -50,9 +50,7 @@ import ObjectMapper
 	//The serialized result
 	public var resultData:NSData?
 	//The task class name
-	public var taskClassName:String?
-	//The argument class name
-	public var argumentClassName:String?
+	public var taskClassName:String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -74,7 +72,6 @@ import ObjectMapper
 		self.argumentsData <- (map["argumentsData"],Base64DataTransform())
 		self.resultData <- (map["resultData"],Base64DataTransform())
 		self.taskClassName <- map["taskClassName"]
-		self.argumentClassName <- map["argumentClassName"]
     }
 
 
@@ -82,7 +79,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.group=decoder.decodeObjectOfClass(TasksGroup.self, forKey: "group") 
+		self.group=decoder.decodeObjectOfClass(Alias.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
@@ -91,8 +88,7 @@ import ObjectMapper
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
 		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
-		self.taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"taskClassName") as NSString?)
-		self.argumentClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"argumentClassName") as NSString?)
+		self.taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "taskClassName")! as NSString)
 
     }
 
@@ -115,12 +111,7 @@ import ObjectMapper
 		if let resultData = self.resultData {
 			coder.encodeObject(resultData,forKey:"resultData")
 		}
-		if let taskClassName = self.taskClassName {
-			coder.encodeObject(taskClassName,forKey:"taskClassName")
-		}
-		if let argumentClassName = self.argumentClassName {
-			coder.encodeObject(argumentClassName,forKey:"argumentClassName")
-		}
+		coder.encodeObject(self.taskClassName,forKey:"taskClassName")
     }
 
 

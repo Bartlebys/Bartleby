@@ -301,7 +301,6 @@ import ObjectMapper
 			item.addObserver(self, forKeyPath: "argumentsData", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "resultData", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "taskClassName", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "argumentClassName", options: .Old, context: &KVOContext)
         }
     }
 
@@ -319,7 +318,6 @@ import ObjectMapper
 				item.removeObserver(self, forKeyPath: "argumentsData", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "resultData", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "taskClassName", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "argumentClassName", context: &KVOContext)
             }
         }
     }
