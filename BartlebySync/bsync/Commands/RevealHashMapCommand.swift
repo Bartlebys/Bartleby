@@ -48,29 +48,17 @@ class RevealHashMapCommand: CommandBase {
 
                 let fm = BFileManager()
 
-                fm.fileExistsAtPath(path, callBack: { (exists, isADirectory, success, message) in
-                    if success && exists {
-                        // Load the hashmap
-                        fm.readString(contentsOfFile: path, encoding: Default.TEXT_ENCODING, callBack: { (string, success, message) in
-                            if success {
-                                if let encryptedHashMapString = string {
-                                    do {
-                                        let decryptedHashMapString = try Bartleby.cryptoDelegate.decryptString(encryptedHashMapString)
-                                        print("# Hash map \(path) #\n\(decryptedHashMapString)\n# End of hash map #")
-                                        self.on(Completion.successState())
-                                    } catch {
-                                        self.on(Completion.failureState("Error decrypting \"\(encryptedHashMapString)", statusCode: .Precondition_Failed))
-                                    }
-                                } else {
-                                    self.on(Completion.failureState("Bad file", statusCode: .Precondition_Failed))
-                                }
-                            } else {
-                                self.on(Completion.failureState("Unable to read: \(path)", statusCode: .Precondition_Failed))
-                            }
-                        })
-
+                fm.readString(contentsOfFile: path, handlers: Handlers { (read) in
+                    if let encryptedHashMapString = read.getStringResult() where read.success {
+                        do {
+                            let decryptedHashMapString = try Bartleby.cryptoDelegate.decryptString(encryptedHashMapString)
+                            print("# Hash map \(path) #\n\(decryptedHashMapString)\n# End of hash map #")
+                            self.on(Completion.successState())
+                        } catch {
+                            self.on(Completion.failureState("Error decrypting \"\(encryptedHashMapString)", statusCode: .Precondition_Failed))
+                        }
                     } else {
-                        self.on(Completion.failureState("Unexisting path: \(path)", statusCode: .Precondition_Failed))
+                        self.on(read)
                     }
                 })
             }

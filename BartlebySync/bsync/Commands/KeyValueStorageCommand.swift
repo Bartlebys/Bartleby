@@ -100,62 +100,63 @@ class KeyValueStorageCommand: CommandBase {
 
                 try kvs.open()
 
-                switch op.value {
-                case .Upsert?:
-                    if let k=keyArg.value, v=value.value {
-                        kvs[k] = v
-                    } else {
-                        print("We creating or updating a (key,value) pair")
-                        print("key and value must be defined!")
-                        let k = (keyArg.value ?? "is void" )
-                        let v = (value.value ?? "is void" )
-                        print("Key: \(k)")
-                        print("Value: \(v)")
-                        exit(EX__BASE)
-                    }
-                case .Read?:
-                    if let k=keyArg.value {
-                        if let v = kvs[k] {
-                            print("The value of \(k) is: ")
-                            print("")
-                            print(v)
-                            print("")
-                        } else {
-                            print("Error retrieving key")
-                        }
-                    } else {
-                        print("Undefined key")
-                        exit(EX__BASE)
-                    }
-                case .Delete?:
-                    if let k=keyArg.value {
-                        kvs.delete(k)
-                    } else {
-                        print("Undefined key")
-                        exit(EX__BASE)
-                    }
-                case .Enumerate?:
-                    for (k, v) in kvs.enumerate() {
-                        print("\(k)=\(v)")
-                    }
-                case .RemoveAll?:
-                    if notInteractive.value==true {
-                        try kvs.removeAll()
-                    } else {
-                        print("This deletion is irreversible - Do you want to delete all the data Y/N?")
-                        if let s=input() {
-                            if s.lowercaseString == "y" {
-                                try kvs.removeAll()
-                            }
-                        } else {
-                            print("Infinite loop?")
-                            exit(EX__BASE)
-                        }
-                    }
-                case nil:
-                    break
-                }
-
+                // TODO: @md Restore behavior
+//                switch op.value {
+//                case .Upsert?:
+//                    if let k=keyArg.value, v=value.value {
+//                        kvs[k] = v
+//                    } else {
+//                        print("We creating or updating a (key,value) pair")
+//                        print("key and value must be defined!")
+//                        let k = (keyArg.value ?? "is void" )
+//                        let v = (value.value ?? "is void" )
+//                        print("Key: \(k)")
+//                        print("Value: \(v)")
+//                        exit(EX__BASE)
+//                    }
+//                case .Read?:
+//                    if let k=keyArg.value {
+//                        if let v = kvs[k] {
+//                            print("The value of \(k) is: ")
+//                            print("")
+//                            print(v)
+//                            print("")
+//                        } else {
+//                            print("Error retrieving key")
+//                        }
+//                    } else {
+//                        print("Undefined key")
+//                        exit(EX__BASE)
+//                    }
+//                case .Delete?:
+//                    if let k=keyArg.value {
+//                        kvs.delete(k)
+//                    } else {
+//                        print("Undefined key")
+//                        exit(EX__BASE)
+//                    }
+//                case .Enumerate?:
+//                    for (k, v) in kvs.enumerate() {
+//                        print("\(k)=\(v)")
+//                    }
+//                case .RemoveAll?:
+//                    if notInteractive.value==true {
+//                        try kvs.removeAll()
+//                    } else {
+//                        print("This deletion is irreversible - Do you want to delete all the data Y/N?")
+//                        if let s=input() {
+//                            if s.lowercaseString == "y" {
+//                                try kvs.removeAll()
+//                            }
+//                        } else {
+//                            print("Infinite loop?")
+//                            exit(EX__BASE)
+//                        }
+//                    }
+//                case nil:
+//                    break
+//                }
+//
                 try kvs.save()
 
                 exit(EX_OK)

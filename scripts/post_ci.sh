@@ -1,3 +1,5 @@
+#!/bin/sh
+
 CHANNEL="bartlebys"
 REPOSITORY="Bartleby"
 MESSAGE=$(git log --oneline -1)

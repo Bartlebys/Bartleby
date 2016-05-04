@@ -62,9 +62,7 @@ public extension Completion {
     func getStringResult() -> String? {
         if let b64data = self.data {
             if let plainData = NSData(base64EncodedData: b64data, options: .IgnoreUnknownCharacters) {
-                if let s = String(data: plainData, encoding: Default.TEXT_ENCODING) {
-                    return s
-                }
+                return String(data: plainData, encoding: Default.TEXT_ENCODING)
             }
         }
         return nil

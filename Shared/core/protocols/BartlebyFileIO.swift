@@ -20,43 +20,25 @@ import Foundation
 
     - parameter path:                the path
     - parameter createIntermediates: create intermediates paths ?
-    - parameter attributes:          attributes
-    - parameter callBack:            the call back
+    - parameter handlers:            the handlers
 
     - returns: N/A
     */
     // TODO
     func createDirectoryAtPath(path: String,
-        withIntermediateDirectories createIntermediates: Bool,
-        attributes: [String : AnyObject]?,
-        callBack:(success: Bool, message: String?)->())->()
-
+        handlers: Handlers) -> ()
 
     /**
      Reads the data with options
 
      - parameter path:            from file path
      - parameter readOptionsMask: readOptionsMask
-     - parameter callBack:        the callBack
+     - parameter handlers:        the handlers
 
      - returns: N/A
      */
-    func readData( contentsOfFile path: String,
-        options readOptionsMask: NSDataReadingOptions,
-        callBack:(data: NSData?, success: Bool, message: String?)->())->()
-
-
-    /**
-     Reads the data
-
-     - parameter path:     the data file path
-     - parameter callBack: the call back
-
-     - returns: N/A
-     */
-    func readData( contentsOfFile path: String,
-        callBack:(data: NSData?)->())->()
-
+    func readData(contentsOfFile path: String,
+        handlers: Handlers) -> ()
 
     /**
      Writes data to the given path
@@ -64,109 +46,131 @@ import Foundation
      - parameter data:             the data
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
-     - parameter callBack:          the call back
+     - parameter handlers:          the handlers
 
      - returns: N/A
      */
     func writeData(data: NSData,
         path: String,
-        atomically useAuxiliaryFile: Bool,
-        callBack:(success: Bool, message: String?)->())->()
-
-
-
+        handlers: Handlers) -> ()
+    
     /**
-     Reads a string from a file
-
-     - parameter path:     the file path
-     - parameter enc:      the encoding
-     - parameter callBack: the callBack
-
-     - returns : N/A
+     Reads the data with options
+     
+     - parameter path:            from file path
+     - parameter handlers:        the handlers
+     
+     Here is an example showing how to extract the string 
+     in the completion handler:
+     
+         { (read) in
+             if let s = read.getStringResult() where read.success {
+                 // Handle success
+                 ...
+             } else {
+                 // Handle error
+                 ...
+             }
+         }
      */
     func readString(contentsOfFile path: String,
-        encoding enc: NSStringEncoding,
-        callBack:(string: String?, success: Bool, message: String?)->())->()
-
+                                         handlers: Handlers) -> ()
 
     /**
-     Writes String to the given path
+     Writes String to the given path using utf8 encoding
 
      - parameter string:            the string
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
      - parameter enc:              encoding
-     - parameter callBack:          the call back
+     - parameter handlers:          the handlers
 
      - returns: N/A
      */
     func writeString(string: String,
         path: String,
-        atomically useAuxiliaryFile: Bool,
-        encoding enc: NSStringEncoding,
-        callBack:(success: Bool, message: String?)->())->()
-
-
+        handlers: Handlers) -> ()
 
 
     /**
-     Determines if a file exists and is a directory.
-
+     Determines if a file or directory exists.
+     
      - parameter path:     the path
-     - parameter callBack: the call back
-
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func itemExistsAtPath(path: String,
+                          handlers: Handlers) -> ()
+    
+    /**
+     Determines if a file exists and is a directory.
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     
      - returns: N/A
      */
     func fileExistsAtPath(path: String,
-                          callBack:(exists: Bool, isADirectory: Bool, success: Bool, message: String?)->())->()
+                          handlers: Handlers) -> ()
+    
+    /**
+     Determines if a directory exists.
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func directoryExistsAtPath(path: String,
+                               handlers: Handlers) -> ()
 
     /**
      Removes the item at a given path
      Use with caution !
 
      - parameter path:     path
-     - parameter callBack: the call back
+     - parameter handlers: The progress and completion handler
      */
     func removeItemAtPath(path: String,
-                          callBack:(success: Bool, message: String?)->())->()
+                          handlers: Handlers) -> ()
 
     /**
      Copies the file
 
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
-     - parameter callBack: callBack
+     - parameter handlers: The progress and completion handler
 
      - returns: N/A
      */
     func copyItemAtPath(srcPath: String,
         toPath dstPath: String,
-        callBack:(success: Bool, message: String?)->())->()
+               handlers: Handlers) -> ()
 
     /**
      Moves the file
 
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
-     - parameter callBack: callBack
+     - parameter handlers: The progress and completion handler
 
      - returns: N/A
      */
     func moveItemAtPath(srcPath: String,
         toPath dstPath: String,
-        callBack:(success: Bool, message: String?)->())->()
+               handlers: Handlers) -> ()
 
 
     /**
      Lists the content of the directory
 
      - parameter path:     the path
-     - parameter callBack: the callBack
-
-     - returns: N/A
+     - parameter handlers: The progress and completion handler
      */
+    // TODO @md Explain how to extract result
     func contentsOfDirectoryAtPath(path: String,
-        callBack:(success: Bool, content: [String], message: String?)->())->()
+                                   handlers: Handlers) -> ()
 
 
 }

@@ -112,15 +112,11 @@ class LocalDMGSyncTests: XCTestCase {
                                    andDestinationUrl: LocalDMGSyncTests._slaveVolumeURL,
                                    restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
         let admin = BsyncAdmin(context: context)
-        do {
-            try admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
-                // TODO: @md Reactivate test check wich currently fais
-//                XCTAssertTrue(c.success, c.message)
-                expectation.fulfill()
-            }))
-        } catch {
-            XCTFail("Synchronize failed")
-        }
+        admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
+            // TODO: @md Reactivate test check wich currently fais
+            //XCTAssertTrue(c.success, c.message)
+            expectation.fulfill()
+        }))
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {

@@ -50,14 +50,14 @@ class BsyncKeyValueStorageTests: XCTestCase {
         _kvs["user1"] = user
     }
 
-    func test102_Upsert2() {
-        XCTAssertTrue(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
-        _kvs["key2"] = "value2"
-    }
-
-    func test103_Upsert3() {
-        _kvs["key3"] = "value3"
-    }
+//    func test102_Upsert2() {
+//        XCTAssertTrue(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+//        _kvs["key2"] = "value2"
+//    }
+//
+//    func test103_Upsert3() {
+//        _kvs["key3"] = "value3"
+//    }
 
     func test104_ReadUser() {
         if let user = _kvs["user1"] as? User {
@@ -86,10 +86,10 @@ class BsyncKeyValueStorageTests: XCTestCase {
         }
     }
 
-    func test107_Enumerate() {
-        let all = _kvs.enumerate()
-        XCTAssertEqual(all.count, 2)
-    }
+//    func test107_Enumerate() {
+//        let all = _kvs.enumerate()
+//        XCTAssertEqual(all.count, 2)
+//    }
 
     func test108_RemoveAll() {
         do {

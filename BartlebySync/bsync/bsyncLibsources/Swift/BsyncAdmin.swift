@@ -93,7 +93,6 @@ public enum BsyncAdminError: ErrorType {
      - parameter progressBlock:   its progress block
      - parameter completionBlock: its completion block
      */
-    // TODO: @md (#refacto) pass just handler as parameter
     public func synchronizeWithprogressBlock(handler: Handlers) {
         if let admin=self._admin {
             admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
