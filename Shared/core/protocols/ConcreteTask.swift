@@ -35,7 +35,24 @@ public protocol Invocable {
 
 
 public protocol ConcreteTask: SerializableArguments, Invocable {
-    // Initializes with the arguments
-    // You serialize the arguments in this method
+
+    /**
+     This initializer **MUST:**
+     - Store the Serialized Argument into argumentsData
+     - Set the explicit concrete task class name
+
+     E.g :
+     ```swift
+     convenience required public init (arguments: Serializable) {
+        self.init()
+        self.argumentsData=arguments.serialize()
+        self.taskClassName=self.referenceName // (!) Used to force the transitionnal casting
+     }
+     ```
+
+     - parameter arguments: the arguments
+
+     - returns: a well initialized task.
+     */
     init(arguments: Serializable)
 }

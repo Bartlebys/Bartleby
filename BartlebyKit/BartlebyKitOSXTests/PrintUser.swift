@@ -15,10 +15,23 @@ import BartlebyKit
 
 public class PrintUser: Task, ConcreteTask {
 
-    // Initializes with the arguments
+
+
+    /**
+     IMPORTANT (!)
+
+     This initializer MUST:
+     - Store the Serialized Argument into argumentsData
+     - Set the explicit concrete task class name
+     - parameter arguments: the arguments
+
+     - returns: a well initialized task.
+     */
     convenience public required init(arguments: Serializable) {
         self.init()
-        self.argumentsData=arguments.serialize()
+        self.argumentsData=arguments.serialize()//(!)
+        self.taskClassName=self.referenceName // (!) Used to force the transitionnal casting
+
     }
 
      public func invoke() {
