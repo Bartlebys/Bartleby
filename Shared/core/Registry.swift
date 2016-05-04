@@ -57,20 +57,14 @@ Documents can be shared between iOS, tvOS and OSX.
 */
 @objc public class Registry: BXDocument {
 
-    // Should always be true
-    static public var encryptedMetadata: Bool=true
-
-    // Should always be true
-    public var collectionsDataShouldBeCrypted: Bool=true
-
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
 
     // The file extension for crypted data
-    static let CRYPTED_EXTENSION: String=".data"
+    static let DATA_EXTENSION: String=".data"
 
     // The metadata file name
-    private let _metadataFileName="metadata".stringByAppendingString(Registry.encryptedMetadata ? Registry.CRYPTED_EXTENSION : ".json" )
+    private let _metadataFileName="metadata".stringByAppendingString(Registry.DATA_EXTENSION)
 
     // By default the registry uses Json based implementations
     // JRegistryMetadata and JSerializer
@@ -147,7 +141,9 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the instance
      */
     public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
-        return _objectByUID[UID] as? T
+        let instance=_objectByUID[UID]
+        let casted=instance as? T
+        return casted
     }
 
     /**
@@ -173,7 +169,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - parameter block:           the enumeration block
      */
-    public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?)->[T] {
+    public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?) -> [T] {
         var instances=[T]()
         for (_, instance) in _objectByUID {
             if let o=instance as? T {
@@ -524,9 +520,8 @@ Documents can be shared between iOS, tvOS and OSX.
             // #1 Metadata
 
             var metadataNSData=self.registryMetadata.serialize()
-            if Registry.encryptedMetadata {
-                metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
-            }
+            metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
+
             // Remove the previous metadata
             if let wrapper=fileWrappers[_metadataFileName] {
                 fileWrapper.removeFileWrapper(wrapper)
@@ -542,13 +537,7 @@ Documents can be shared between iOS, tvOS and OSX.
             for metadatum: JCollectionMetadatum in self.registryMetadata.collectionsMetadata {
 
                 if !metadatum.inMemory {
-                    var collectionfileName: String=""
-                    if self.collectionsDataShouldBeCrypted {
-                        collectionfileName=self._collectionFileNames(metadatum).crypted
-                    } else {
-                        collectionfileName=self._collectionFileNames(metadatum).notCrypted
-                    }
-
+                    let collectionfileName=self._collectionFileNames(metadatum).crypted
                     // MONOLITHIC STORAGE
                     if metadatum.storage == BaseCollectionMetadatum.Storage.MonolithicFileStorage {
 
@@ -557,9 +546,8 @@ Documents can be shared between iOS, tvOS and OSX.
                             // We use multiple files
 
                             var collectionData = collection.serialize()
-                            if collectionsDataShouldBeCrypted {
-                                collectionData = try Bartleby.cryptoDelegate.encryptData(collectionData)
-                            }
+                            collectionData = try Bartleby.cryptoDelegate.encryptData(collectionData)
+
 
                             // Remove the previous data
                             // TODO: @bpds if collection data have changed only !
@@ -579,7 +567,6 @@ Documents can be shared between iOS, tvOS and OSX.
                     }
 
                 }
-
             }
         }
         return fileWrapper
@@ -601,9 +588,7 @@ Documents can be shared between iOS, tvOS and OSX.
             if let wrapper=fileWrappers[_metadataFileName] {
                 if var metadataNSData=wrapper.regularFileContents {
                     // We use a JSerializer not self.serializer that can be different.
-                    if Registry.encryptedMetadata {
-                        metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
-                    }
+                    metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
                     let r=self.serializer.deserialize(metadataNSData)
                     if let registryMetadata=r as? JRegistryMetadata {
                         self.registryMetadata=registryMetadata
@@ -633,7 +618,7 @@ Documents can be shared between iOS, tvOS and OSX.
                             if let proxy=self._collectionByName(metadatum.collectionName) {
                                 if let path: NSString=filename {
                                     let pathExtension="."+path.pathExtension
-                                    if  pathExtension == Registry.CRYPTED_EXTENSION {
+                                    if  pathExtension == Registry.DATA_EXTENSION {
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
                                     proxy.updateData(collectionData)
@@ -909,7 +894,7 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the crypted and the non crypted file name in a tupple.
      */
     private func _collectionFileNames(metadatum: JCollectionMetadatum) -> (notCrypted: String, crypted: String) {
-        let cryptedExtension=Registry.CRYPTED_EXTENSION
+        let cryptedExtension=Registry.DATA_EXTENSION
         let nonCryptedExtension=".\(self.serializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName.stringByAppendingString(cryptedExtension)
         let nonCryptedFileName=metadatum.collectionName.stringByAppendingString(nonCryptedExtension)
