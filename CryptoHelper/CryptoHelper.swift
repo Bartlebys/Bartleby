@@ -10,13 +10,15 @@ import Foundation
 
 @objc public class CryptoHelper: NSObject, CryptoDelegate {
     // (!Should always be set to false (debug only)
-    private static let DISABLE_CRYPTO = false
+    private static let DISABLE_CRYPTO = true
 
     let salt: String
 
     let key: String
 
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
+
+
 
     public init(key: String, salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz") {
         self.key=key
