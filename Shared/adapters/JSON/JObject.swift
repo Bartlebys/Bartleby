@@ -73,7 +73,13 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     private var _warningCounter=0
 
+    // @bpds to be revised
     private var _id: String=Default.NO_UID {
+        didSet {
+            Registry.register(self)
+        }
+
+        /*
         willSet (identifier) {
             if _id != Default.NO_UID {
                 self._warningCounter += 1
@@ -86,8 +92,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
                 Registry.register(self)
             }
         }
+        */
     }
-
 
 
     /**
@@ -141,8 +147,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public required init?(coder decoder: NSCoder) {
         super.init()
-        _id=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.UID_KEY)! as NSString? )
-        referenceName=String(decoder.decodeObjectOfClass( NSString.self, forKey:Default.REFERENCE_NAME_KEY)! as NSString?)
+        _id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
+        referenceName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.REFERENCE_NAME_KEY)! as NSString)
     }
 
     public class func supportsSecureCoding() -> Bool {
@@ -176,7 +182,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    static public func fromSerializedUTF8String(serializedUTF8String: String)->Serializable {
+    static public func fromSerializedUTF8String(serializedUTF8String: String) -> Serializable {
         // In our case the serializedUTF8String encapuslate all the required information
         if let d = serializedUTF8String.dataUsingEncoding(Default.TEXT_ENCODING) {
             return JSerializer.deserialize(d)
@@ -195,7 +201,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 extension JObject:Serializable {
 
 
-    public func serialize()->NSData {
+    public func serialize() -> NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
         do {
             if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
@@ -209,7 +215,7 @@ extension JObject:Serializable {
     }
 
 
-    public func deserialize(data: NSData)->Serializable {
+    public func deserialize(data: NSData) -> Serializable {
         return JSerializer.deserialize(data)
     }
 
