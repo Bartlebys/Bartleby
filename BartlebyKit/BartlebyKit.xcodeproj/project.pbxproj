@@ -353,6 +353,8 @@
 		E5E750121CDB538100520AB3 /* Registry+URD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750011CDB538100520AB3 /* Registry+URD.swift */; };
 		E5E750131CDB538100520AB3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750021CDB538100520AB3 /* Task+Arguments.swift */; };
 		E5E750141CDB538100520AB3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750021CDB538100520AB3 /* Task+Arguments.swift */; };
+		E5E751461CDB809900520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751451CDB809900520AB3 /* PushOperationTask.swift */; };
+		E5E751471CDB809900520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751451CDB809900520AB3 /* PushOperationTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -578,6 +580,7 @@
 		E5E750001CDB538100520AB3 /* Registry+Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+Triggers.swift"; sourceTree = "<group>"; };
 		E5E750011CDB538100520AB3 /* Registry+URD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+URD.swift"; sourceTree = "<group>"; };
 		E5E750021CDB538100520AB3 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
+		E5E751451CDB809900520AB3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -883,6 +886,7 @@
 		E53E2AC21CA57DBA0079ED23 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E5E751411CDB7CBF00520AB3 /* tasks */,
 				E5E74FF91CDB538100520AB3 /* extensions */,
 				E53E2AC71CA57DBA0079ED23 /* protocols */,
 				E53E2AC31CA57DBA0079ED23 /* Bartleby.swift */,
@@ -1031,6 +1035,14 @@
 				E5E750021CDB538100520AB3 /* Task+Arguments.swift */,
 			);
 			path = extensions;
+			sourceTree = "<group>";
+		};
+		E5E751411CDB7CBF00520AB3 /* tasks */ = {
+			isa = PBXGroup;
+			children = (
+				E5E751451CDB809900520AB3 /* PushOperationTask.swift */,
+			);
+			path = tasks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1229,6 +1241,7 @@
 				E53E2BDF1CA57DBA0079ED23 /* NoCrypto.swift in Sources */,
 				E52517791CD0B68800D873A3 /* ReadAliasesByQuery.swift in Sources */,
 				E525175D1CD0B68800D873A3 /* DeleteLocker.swift in Sources */,
+				E5E751461CDB809900520AB3 /* PushOperationTask.swift in Sources */,
 				E597AAB31CD8D24200208033 /* ProgressionNotification.swift in Sources */,
 				E53E2BF71CA57DBA0079ED23 /* CollectibleCollection.swift in Sources */,
 				E52517291CD0B68800D873A3 /* Permission.swift in Sources */,
@@ -1398,6 +1411,7 @@
 				E53E2BE01CA57DBA0079ED23 /* NoCrypto.swift in Sources */,
 				E525178E1CD0B68800D873A3 /* ReadTaskById.swift in Sources */,
 				E53E2BF81CA57DBA0079ED23 /* CollectibleCollection.swift in Sources */,
+				E5E751471CDB809900520AB3 /* PushOperationTask.swift in Sources */,
 				E52517BE1CD0B68800D873A3 /* UpdateTrigger.swift in Sources */,
 				E525176A1CD0B68800D873A3 /* DeleteTasksGroup.swift in Sources */,
 				E525173A1CD0B68800D873A3 /* CreateGroup.swift in Sources */,

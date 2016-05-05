@@ -36,7 +36,7 @@ enum TasksSchedulerError: ErrorType {
 
      - returns: the Task group
      */
-    public func provisionTasks(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
+    public func provision(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
         let group=try self.taskGroupByName(groupName, inDataSpace: spaceUID)
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!

@@ -683,6 +683,9 @@
 		E5E7513E1CDB572A00520AB3 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750481CDB53D000520AB3 /* Serializable.swift */; };
 		E5E7513F1CDB572A00520AB3 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750491CDB53D000520AB3 /* Serializer.swift */; };
 		E5E751401CDB572A00520AB3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7504A1CDB53D000520AB3 /* UserProtocol.swift */; };
+		E5E7514A1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751491CDB8B7E00520AB3 /* PushOperationTask.swift */; };
+		E5E7514B1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751491CDB8B7E00520AB3 /* PushOperationTask.swift */; };
+		E5E7514C1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751491CDB8B7E00520AB3 /* PushOperationTask.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
@@ -988,6 +991,7 @@
 		E5E7504A1CDB53D000520AB3 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5E7504B1CDB53D000520AB3 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E5E7504C1CDB53D000520AB3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
+		E5E751491CDB8B7E00520AB3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPC.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5C61CBF5E5E006AFA2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5FEE5E61CBF5FA2006AFA2E /* BsyncXPC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BsyncXPC-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1535,6 +1539,7 @@
 		E5E750281CDB53D000520AB3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E5E751481CDB8B7E00520AB3 /* tasks */,
 				E5E7503C1CDB53D000520AB3 /* protocols */,
 				E5E750301CDB53D000520AB3 /* extensions */,
 				E5E750291CDB53D000520AB3 /* AbstractReactiveTask.swift */,
@@ -1587,6 +1592,14 @@
 				E5E7504A1CDB53D000520AB3 /* UserProtocol.swift */,
 			);
 			path = protocols;
+			sourceTree = "<group>";
+		};
+		E5E751481CDB8B7E00520AB3 /* tasks */ = {
+			isa = PBXGroup;
+			children = (
+				E5E751491CDB8B7E00520AB3 /* PushOperationTask.swift */,
+			);
+			path = tasks;
 			sourceTree = "<group>";
 		};
 		E5FEE5BF1CBF5E5E006AFA2E /* BsyncXPC */ = {
@@ -1972,6 +1985,7 @@
 				E5E750551CDB53D000520AB3 /* Completion+Result.swift in Sources */,
 				E5251A981CD0BE3F00D873A3 /* UpdateGroups.swift in Sources */,
 				5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */,
+				E5E7514A1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */,
 				E53E275F1CA572940079ED23 /* Stream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1980,6 +1994,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5E7514B1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */,
 				E5251B3E1CD0BE3F00D873A3 /* LogoutUser.swift in Sources */,
 				E52519F41CD0BE3F00D873A3 /* CreateLocker.swift in Sources */,
 				E5251AA51CD0BE3F00D873A3 /* UpdatePermissions.swift in Sources */,
@@ -2382,6 +2397,7 @@
 				E5251A641CD0BE3F00D873A3 /* ReadPermissionById.swift in Sources */,
 				E52519D11CD0BE3F00D873A3 /* ObjectError.swift in Sources */,
 				E5251A281CD0BE3F00D873A3 /* DeleteLockers.swift in Sources */,
+				E5E7514C1CDB8B7E00520AB3 /* PushOperationTask.swift in Sources */,
 				E55C92541CBF84ED008163F6 /* Result.swift in Sources */,
 				E5251A2E1CD0BE3F00D873A3 /* DeletePermissions.swift in Sources */,
 				E5E750961CDB53F400520AB3 /* Task+Arguments.swift in Sources */,

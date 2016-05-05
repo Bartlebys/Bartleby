@@ -205,6 +205,7 @@
 		E5E750DB1CDB543700520AB3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750B91CDB543700520AB3 /* UserProtocol.swift */; };
 		E5E750DC1CDB543700520AB3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750BA1CDB543700520AB3 /* Registry.swift */; };
 		E5E750DD1CDB543700520AB3 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750BB1CDB543700520AB3 /* TasksScheduler.swift */; };
+		E5E7514F1CDB8B8D00520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7514E1CDB8B8D00520AB3 /* PushOperationTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -422,6 +423,7 @@
 		E5E750B91CDB543700520AB3 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5E750BA1CDB543700520AB3 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E5E750BB1CDB543700520AB3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
+		E5E7514E1CDB8B8D00520AB3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -812,6 +814,7 @@
 		E5E750971CDB543700520AB3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E5E7514D1CDB8B8D00520AB3 /* tasks */,
 				E5E750981CDB543700520AB3 /* AbstractReactiveTask.swift */,
 				E5E750991CDB543700520AB3 /* Bartleby.swift */,
 				E5E7509A1CDB543700520AB3 /* CompletionNotification.swift */,
@@ -864,6 +867,14 @@
 				E5E750B91CDB543700520AB3 /* UserProtocol.swift */,
 			);
 			path = protocols;
+			sourceTree = "<group>";
+		};
+		E5E7514D1CDB8B8D00520AB3 /* tasks */ = {
+			isa = PBXGroup;
+			children = (
+				E5E7514E1CDB8B8D00520AB3 /* PushOperationTask.swift */,
+			);
+			path = tasks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -950,6 +961,7 @@
 				E5251C371CD0BE6400D873A3 /* ReadLockersByIds.swift in Sources */,
 				E5251C581CD0BE6400D873A3 /* Base64DataTransform.swift in Sources */,
 				E5251C611CD0BE6400D873A3 /* JSerializer.swift in Sources */,
+				E5E7514F1CDB8B8D00520AB3 /* PushOperationTask.swift in Sources */,
 				E5251C521CD0BE6400D873A3 /* UpdateTasksGroup.swift in Sources */,
 				E5B98E2C1CC0E63C00A7ECD1 /* TransformType.swift in Sources */,
 				E5251C211CD0BE6400D873A3 /* DeleteAliases.swift in Sources */,
