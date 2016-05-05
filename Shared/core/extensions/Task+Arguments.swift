@@ -18,10 +18,10 @@ public enum TaskError: ErrorType {
 extension Task:SerializableArguments {
 
     /**
-    - throws: Error on deserialization and type missmatch
+     - throws: Error on deserialization and type missmatch
 
-    - returns: A collectible object
-    */
+     - returns: A collectible object
+     */
     public final func arguments<ArgumentType: Serializable>() throws -> ArgumentType {
         if let argumentsData = self.argumentsData {
             //@bpds(#MAJOR) exception on deserialization of CollectionControllers
@@ -51,7 +51,7 @@ extension Task {
         self.completionState=completionState
         self.status = .Completed
         do {
-         try Bartleby.scheduler.onCompletion(self)
+            try Bartleby.scheduler.onCompletion(self)
         } catch let e {
             bprint("Exception on task forwarding \(e)", file:#file, function:#function, line:#line)
         }

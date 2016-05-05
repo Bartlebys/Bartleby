@@ -51,11 +51,17 @@ public class  AbstractReactiveTask: Task {
             let onCompletion: CompletionHandler = { (completionState) in
                 // We forward the completion to the scheduler.
                 self.forward(completionState)
-                NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)
+                // We use the main queue to dispatch the completion state
+                dispatch_async(dispatch_get_main_queue(), {
+                    NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)
+                })
             }
             self._reactiveHandlers=Handlers(completionHandler: onCompletion)
             self._reactiveHandlers!.addProgressHandler({ (progressionState) in
-                NSNotificationCenter.defaultCenter().postNotification(progressionState.progressionNotification)
+                 // We use the main queue to dispatch the progression state
+                 dispatch_async(dispatch_get_main_queue(), {
+                    NSNotificationCenter.defaultCenter().postNotification(progressionState.progressionNotification)
+                })
             })
             return self._reactiveHandlers!
         }
