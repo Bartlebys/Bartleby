@@ -79,7 +79,7 @@ public enum CompletionStatus: Int {
 
  - returns: the status
  */
-private func completionStatusFromExitCodes(value: Int32) -> CompletionStatus {
+public func completionStatusFromExitCodes(value: Int32) -> CompletionStatus {
     /*
      public var EX_OK: Int32 { get } /* successful termination */
      public var EX__BASE: Int32 { get } /* base value for error messages */
@@ -144,7 +144,7 @@ private func completionStatusFromExitCodes(value: Int32) -> CompletionStatus {
 
 }
 
-private func completionStatusFromExitCodes(value: Int) -> CompletionStatus {
+public func completionStatusFromExitCodes(value: Int) -> CompletionStatus {
     return completionStatusFromExitCodes(Int32(value))
 }
 
