@@ -15,112 +15,112 @@ import Foundation
 // Bartleby 2.0 will implement storage layers for larger data set, and distant aliases
 
 @objc(Bartleby) public class  Bartleby: Consignee {
-    
-    
+
+
     static public var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
-    
+
     static public var cryptoDelegate: CryptoDelegate=NoCrypto()
-    
+
     // TODO: @md Check crypto key requirement
     static public func isValidKey(key: String) -> Bool {
         return key.characters.count >= 32
     }
-    
+
     static public var fileManager: BartlebyFileIO=BFileManager()
-    
+
     static public var scheduler: TasksScheduler=TasksScheduler()
-    
-    
+
+
     /// The standard singleton shared instance
     public static let sharedInstance: Bartleby = {
         let instance = Bartleby()
         return instance
     }()
-    
+
     static let b_version = "1.0"
     static let b_release = "beta1"
     private static var _enableBPrint: Bool=false
-    
+
     /// The version string of Bartleby framework
     public static var versionString: String {
         get {
             return "\(self.b_version).\(self.b_release)"
         }
     }
-    
+
     /**
      Should be called on Init of the Document.
      */
     public func configureWith(configuration: BartlebyConfiguration.Type) {
-        
+
         //Initialize the crypto delegate with the valid KEY & SALT
         Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT)
-        
+
         // Store the configuration
         Bartleby.configuration=configuration
-        
+
         // Enable Bprint?
         Bartleby._enableBPrint=configuration.ENABLE_BPRINT
         self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
         self.bprintTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
-        
+
         bprint("Bartleby Start time : \(Bartleby._startTime)", file:#file, function:#function, line:#line)
-        
+
         // Configure the HTTP Manager
         HTTPManager.configure()
     }
-    
-    
+
+
     override init() {
         super.init()
     }
-    
-    
-    
+
+
+
     // MARK: - Registries
-    
+
     // Each document is a stored in it own registry
     // Multiple documents can be openned at the same time
     // and synchronized to different Servers.
     // Bartleby supports multi-authentication and multi documents
-    
-    
+
+
     /// Memory storage
     private var _registries: [String:Registry]! = [String:Registry]()
-    
+
     /**
      Returns the registry if found
-     
+
      - parameter UID: the registry UID
-     
+
      - returns: the registry or Nil
      */
     public func getRegistryByUID(UID: String) -> Registry? {
         return _registries[UID]
     }
-    
-    
+
+
     /**
      Register a registry (each document has its own registry)
-     
+
      - parameter registry: the registry
      */
     public func declare(registry: Registry) {
         _registries[registry.spaceUID]=registry
     }
-    
+
     /**
      Unload the collections
-     
+
      - parameter registryUID: the target registry UID
      */
     public func forget(registryUID: String) {
         _registries.removeValueForKey(registryUID)
     }
-    
+
     /**
      Replace the UID of a proxy Registry
-     
+
      - parameter registryProxyUID: the proxy UID
      - parameter registryUID:      the final UID
      */
@@ -132,29 +132,28 @@ import Foundation
             }
         }
     }
-    
+
     // MARK: - Instances aliasing
-    
-    
+
+
     /**
      Transform an instance to an Alias
-     
+
      - parameter instance: the instance
-     
+
      - returns: the alias
      */
     static public func instanceToAlias(instance: Collectible) -> Alias {
         let alias=Alias(withInstanceUID: instance.UID)
-        alias.summary=instance.summary
         return alias
     }
-    
-    
+
+
     /**
      Transform an array of instance to aliases
-     
+
      - parameter instances: the instance
-     
+
      - returns: the aliases
      */
     static public func instanceToAliases(instances: [Collectible]) -> [Alias] {
@@ -164,37 +163,37 @@ import Foundation
         }
         return aliases
     }
-    
-    
+
+
     /**
      Returns the local instance if found
-     
+
      - parameter alias: the alias
-     
+
      - returns: the local instance
      */
     static public func aliasToLocalInstance<T: Collectible>(alias: Alias) -> T? {
         return Registry.registredObjectByUID(alias.iUID)
     }
-    
-    
+
+
     /**
      Returns the instance by its UID
-     
+
      - parameter UID: needle
-     
+
      - returns: the instance
      */
     static public func objectByUID<T: Collectible>(UID: String) -> T? {
         return  Registry.registredObjectByUID(UID) as T?
     }
-    
-    
+
+
     /**
      Returns the instances from a collection of aliases
-     
+
      - parameter aliases: the collection of aliases
-     
+
      - returns: the collection of instances.
      */
     static public func aliasesToLocalInstances<T: Collectible>(aliases: [Alias]) -> [T]? {
@@ -206,20 +205,20 @@ import Foundation
         }
         return instances
     }
-    
+
     /**
      A function that can be used by generative handlers.
-     
+
      - returns: an array of aliases
      */
     static public func arrayOfAliases() -> [Alias] {
         return [Alias]()
     }
-    
-    
+
+
     /**
      Removes the alias(es) from a collection of Alias
-     
+
      - parameter instanceUID: the instance UID
      - parameter aliases:     the collection
      */
@@ -230,12 +229,12 @@ import Foundation
             }
         }
     }
-    
-    
-    
+
+
+
     /**
      DeReference an instance(es) from a collection without deleting the instance
-     
+
      - parameter instanceUID: the instance UID
      - parameter aliases:     the collection
      */
@@ -246,12 +245,12 @@ import Foundation
             }
         }
     }
-    
-    
-    
+
+
+
     /**
      Defers a closure execution on main queue
-     
+
      - parameter seconds: the delay in fraction of seconds
      - parameter closure: the closure
      */
@@ -260,13 +259,13 @@ import Foundation
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInNanoSeconds))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             closure()
-            
+
         }
     }
-    
+
     /**
      An UID generator compliant with MONGODB primary IDS constraints
-     
+
      - returns: the UID
      */
     public static func createUID() -> String {
@@ -276,16 +275,16 @@ import Foundation
         let utf8str = uid.dataUsingEncoding(Default.TEXT_ENCODING)
         return utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue:0))
     }
-    
-    
+
+
     private static var _printCounter: Int=0
     private static let _startTime=CFAbsoluteTimeGetCurrent()
-    
+
     /**
      Print indirection with guided contextual info
      Usage : bprint("<Message>",file:#file,function:#function,line:#line")
      You can create code snippet
-     
+
      - parameter items: the items to print
      - parameter file:  the file
      - parameter line:  the line
@@ -321,20 +320,20 @@ import Foundation
             }
         }
     }
-    
-    
+
+
     public static func todo(title: String, message: String) {
         Bartleby.sharedInstance.presentVolatileMessage(title, body:message)
     }
-    
-    
-    
+
+
+
     /**
      Returns a random string of a given size.
-     
+
      - parameter len: the length
      - parameter signs: the possible signs By default We exclude possibily confusing signs "oOiI01" to make random strings less ambiguous
-     
+
      - returns: the string
      */
     public static func randomStringWithLength (len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
@@ -348,17 +347,17 @@ import Foundation
         }
         return randomString
     }
-    
-    
-    
+
+
+
     // MARK: - Paths & URL
-    
-    
+
+
     /**
      Call
-     
+
      - parameter spaceUID: the spaceUID
-     
+
      - returns: the
      */
     public func getCollaborationURLForSpaceUID(spaceUID: String) -> NSURL {
@@ -369,25 +368,25 @@ import Foundation
         }
         return Bartleby.configuration.API_BASE_URL
     }
-    
+
     /**
      Returns a storage
-     
+
      - parameter spaceUID: the spaceUID
-     
+
      - returns: the Application folder URL
      */
     public func getApplicationDataFolderPath(spaceUID: String) -> String {
         let folder=Bartleby.getSearchPath(.ApplicationSupportDirectory)!
         return folder + "Bartleby/\(spaceUID)/"
     }
-    
-    
+
+
     /**
      Returns the search path directory
-     
+
      - parameter searchPath: the search Path
-     
+
      - returns: the path string
      */
     public static func getSearchPath(searchPath: NSSearchPathDirectory) -> String? {
@@ -399,7 +398,7 @@ import Foundation
         }
         return nil
     }
-    
+
 }
 
 
@@ -409,7 +408,7 @@ import Foundation
  Print indirection with guided contextual info
  Usage : bprint("<Message>",file:#file,function:#function,line:#line")
  You can create code snippet
- 
+
  - parameter items: the items to print
  - parameter file:  the file
  - parameter line:  the line

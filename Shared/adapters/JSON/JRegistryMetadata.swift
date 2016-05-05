@@ -52,7 +52,6 @@ import Foundation
 
     // MARK: NSecureCoding
 
-
     public override func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
     }
@@ -60,10 +59,6 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
-
-
-
-
 
     override public class func supportsSecureCoding() -> Bool {
         return true

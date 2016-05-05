@@ -22,12 +22,6 @@ public protocol Collectible: Identifiable, Serializable {
     // The creator UID
     var creatorUID: String { get set }
 
-    // The group UID
-    var groupUID: String { get set }
-
-    // A summary that describes the instance (used by aliases)
-    var summary: String? { get set }
-
     // The name of its holding collection e.g: projects for the class Project
     // This name will be used to identify the collection in the Registry
     static var collectionName: String { get }

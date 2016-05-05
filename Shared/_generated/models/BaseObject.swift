@@ -24,10 +24,6 @@ import ObjectMapper
 	public var distributed:Bool = false
 	//Collectible protocol: The Creator UID
 	public var creatorUID:String = "\(Default.NO_UID)"
-	//Collectible protocol: The Group UID
-	public var groupUID:String = "\(Default.NO_UID)"
-	//The class name of the reference
-	public var summary:String?
 
 
     // MARK: Mappable
@@ -42,8 +38,6 @@ import ObjectMapper
 		self.committed <- map["committed"]
 		self.distributed <- map["distributed"]
 		self.creatorUID <- map["creatorUID"]
-		self.groupUID <- map["groupUID"]
-		self.summary <- map["summary"]
     }
 
 
@@ -54,8 +48,6 @@ import ObjectMapper
 		self.committed=decoder.decodeBoolForKey("committed") 
 		self.distributed=decoder.decodeBoolForKey("distributed") 
 		self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
-		self.groupUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "groupUID")! as NSString)
-		self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
 
     }
 
@@ -64,10 +56,6 @@ import ObjectMapper
 		coder.encodeBool(self.committed,forKey:"committed")
 		coder.encodeBool(self.distributed,forKey:"distributed")
 		coder.encodeObject(self.creatorUID,forKey:"creatorUID")
-		coder.encodeObject(self.groupUID,forKey:"groupUID")
-		if let summary = self.summary {
-			coder.encodeObject(summary,forKey:"summary")
-		}
     }
 
 
