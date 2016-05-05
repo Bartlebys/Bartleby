@@ -25,11 +25,11 @@ import ObjectMapper
 	//A UID characterizing the observable
 	public var observableUID:String?
 	//The alias to the created entities
-	public var created:[Alias] = Bartleby.arrayOfAliases()
+	public var created:[Alias] = Registry.arrayOfAliases()
 	//The alias to the updated entities
-	public var updated:[Alias] = Bartleby.arrayOfAliases()
+	public var updated:[Alias] = Registry.arrayOfAliases()
 	//The alias to the deleted entities
-	public var deleted:[Alias] = Bartleby.arrayOfAliases()
+	public var deleted:[Alias] = Registry.arrayOfAliases()
 
 
     // MARK: Mappable

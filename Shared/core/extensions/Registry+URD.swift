@@ -32,6 +32,18 @@ public extension Registry {
 
     // MARK: read
 
+
+    /**
+     Returns the instance by its UID
+
+     - parameter UID: needle
+
+     - returns: the instance
+     */
+    static public func objectByUID<T: Collectible>(UID: String) -> T? {
+        return  Registry.registredObjectByUID(UID) as T?
+    }
+
     // MARK: delete
 
     public func delete(instance: Collectible) -> Bool {

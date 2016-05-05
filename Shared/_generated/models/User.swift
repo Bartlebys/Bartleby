@@ -45,9 +45,9 @@ import ObjectMapper
 	}
 	public var status:Status = .New
 	//The tags of the user
-	public var tags:[Alias] = Bartleby.arrayOfAliases()
+	public var tags:[Alias] = Registry.arrayOfAliases()
 	//The groups of the user
-	public var groups:[Alias] = Bartleby.arrayOfAliases()
+	public var groups:[Alias] = Registry.arrayOfAliases()
 	//Notes
 	public var notes:String?
 

@@ -16,18 +16,16 @@ import Foundation
 
 @objc(Bartleby) public class  Bartleby: Consignee {
 
-
+    // The configuration
     static public var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
 
+    // The crypto delegate
     static public var cryptoDelegate: CryptoDelegate=NoCrypto()
 
-    // TODO: @md Check crypto key requirement
-    static public func isValidKey(key: String) -> Bool {
-        return key.characters.count >= 32
-    }
-
+    // The File manager
     static public var fileManager: BartlebyFileIO=BFileManager()
 
+    // The task Scheduler
     static public var scheduler: TasksScheduler=TasksScheduler()
 
 
@@ -76,6 +74,11 @@ import Foundation
     }
 
 
+    // MARK: -
+    // TODO: @md Check crypto key requirement
+    static public func isValidKey(key: String) -> Bool {
+        return key.characters.count >= 32
+    }
 
     // MARK: - Registries
 
@@ -124,7 +127,7 @@ import Foundation
      - parameter registryProxyUID: the proxy UID
      - parameter registryUID:      the final UID
      */
-    public func  replace(registryProxyUID: String, by registryUID: String) {
+    public func replace(registryProxyUID: String, by registryUID: String) {
         if( registryProxyUID != registryUID) {
             if let registry=_registries[registryProxyUID] {
                 _registries[registryUID]=registry
@@ -132,121 +135,6 @@ import Foundation
             }
         }
     }
-
-    // MARK: - Instances aliasing
-
-
-    /**
-     Transform an instance to an Alias
-
-     - parameter instance: the instance
-
-     - returns: the alias
-     */
-    static public func instanceToAlias(instance: Collectible) -> Alias {
-        let alias=Alias(withInstanceUID: instance.UID)
-        return alias
-    }
-
-
-    /**
-     Transform an array of instance to aliases
-
-     - parameter instances: the instance
-
-     - returns: the aliases
-     */
-    static public func instanceToAliases(instances: [Collectible]) -> [Alias] {
-        var aliases=[Alias]()
-        for instance in instances {
-            aliases.append(self.instanceToAlias(instance))
-        }
-        return aliases
-    }
-
-
-    /**
-     Returns the local instance if found
-
-     - parameter alias: the alias
-
-     - returns: the local instance
-     */
-    static public func aliasToLocalInstance<T: Collectible>(alias: Alias) -> T? {
-        return Registry.registredObjectByUID(alias.iUID)
-    }
-
-
-    /**
-     Returns the instance by its UID
-
-     - parameter UID: needle
-
-     - returns: the instance
-     */
-    static public func objectByUID<T: Collectible>(UID: String) -> T? {
-        return  Registry.registredObjectByUID(UID) as T?
-    }
-
-
-    /**
-     Returns the instances from a collection of aliases
-
-     - parameter aliases: the collection of aliases
-
-     - returns: the collection of instances.
-     */
-    static public func aliasesToLocalInstances<T: Collectible>(aliases: [Alias]) -> [T]? {
-        var instances = [T]()
-        for alias in aliases {
-            if let instance=Registry.registredObjectByUID(alias.iUID) as T? {
-                instances.append(instance)
-            }
-        }
-        return instances
-    }
-
-    /**
-     A function that can be used by generative handlers.
-
-     - returns: an array of aliases
-     */
-    static public func arrayOfAliases() -> [Alias] {
-        return [Alias]()
-    }
-
-
-    /**
-     Removes the alias(es) from a collection of Alias
-
-     - parameter instanceUID: the instance UID
-     - parameter aliases:     the collection
-     */
-    static public func removeAliasWith(instanceUID: String, inout from aliases: [Alias]) {
-        for (index, alias) in aliases.enumerate().reverse() {
-            if alias.iUID==instanceUID {
-                aliases.removeAtIndex(index)
-            }
-        }
-    }
-
-
-
-    /**
-     DeReference an instance(es) from a collection without deleting the instance
-
-     - parameter instanceUID: the instance UID
-     - parameter aliases:     the collection
-     */
-    static public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inout from collection: [T]) {
-        for (index, instance) in collection.enumerate().reverse() {
-            if instance.UID==instanceUID {
-                collection.removeAtIndex(index)
-            }
-        }
-    }
-
-
 
     /**
      Defers a closure execution on main queue
@@ -321,7 +209,12 @@ import Foundation
         }
     }
 
+    /**
+     Reacts to a todo
 
+     - parameter title:   the title of the todo
+     - parameter message: its message
+     */
     public static func todo(title: String, message: String) {
         Bartleby.sharedInstance.presentVolatileMessage(title, body:message)
     }

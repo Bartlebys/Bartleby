@@ -41,7 +41,7 @@ enum TasksSchedulerError: ErrorType {
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
-        rootTask.group=Bartleby.instanceToAlias(group)
+        rootTask.group=Registry.instanceToAlias(group)
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -94,7 +94,7 @@ enum TasksSchedulerError: ErrorType {
      */
     func onCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
-            if let group: TasksGroup=Bartleby.aliasToLocalInstance(aliasOfGroup) {
+            if let group: TasksGroup=Registry.aliasToLocalInstance(aliasOfGroup) {
                 if group.status != .Paused && group.status != .Completed {
                     for child in completedTask.children {
                         if let task = group.invocableTaskFrom(child) {
