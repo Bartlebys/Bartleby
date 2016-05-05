@@ -73,9 +73,9 @@ public extension Completion {
 
      - returns: a Progression notification
      */
-    public var completionNotification: CompletionNotification {
+    public var completionNotification: NSNotification {
         get {
-            return CompletionNotification(state:self, object:nil, userInfo: nil)
+            return NSNotification(completionState:self, object:nil)
         }
     }
 }

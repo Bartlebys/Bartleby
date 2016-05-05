@@ -112,7 +112,10 @@ enum TasksSchedulerError: ErrorType {
                 let runnableTasks = group.findRunnableTasks()
                 if runnableTasks.count==0 {
                     group.status = .Completed
-                    NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                    dispatch_async(dispatch_get_main_queue(), {
+                         NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                    })
+
                 }
             }
 

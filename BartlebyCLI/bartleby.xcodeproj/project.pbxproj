@@ -173,7 +173,6 @@
 		E5D086CF1C550E7500F0090E /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D086CC1C550E7500F0090E /* StringExtensions.swift */; };
 		E5E750BC1CDB543700520AB3 /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750981CDB543700520AB3 /* AbstractReactiveTask.swift */; };
 		E5E750BD1CDB543700520AB3 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750991CDB543700520AB3 /* Bartleby.swift */; };
-		E5E750BE1CDB543700520AB3 /* CompletionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7509A1CDB543700520AB3 /* CompletionNotification.swift */; };
 		E5E750BF1CDB543700520AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7509B1CDB543700520AB3 /* CompletionStatus.swift */; };
 		E5E750C01CDB543700520AB3 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7509C1CDB543700520AB3 /* Consignation.swift */; };
 		E5E750C11CDB543700520AB3 /* Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7509D1CDB543700520AB3 /* Consignee.swift */; };
@@ -188,7 +187,6 @@
 		E5E750CA1CDB543700520AB3 /* Registry+URD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750A71CDB543700520AB3 /* Registry+URD.swift */; };
 		E5E750CB1CDB543700520AB3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750A81CDB543700520AB3 /* Task+Arguments.swift */; };
 		E5E750CC1CDB543700520AB3 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750A91CDB543700520AB3 /* Handlers.swift */; };
-		E5E750CD1CDB543700520AB3 /* ProgressionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750AA1CDB543700520AB3 /* ProgressionNotification.swift */; };
 		E5E750CE1CDB543700520AB3 /* BartlebyFileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750AC1CDB543700520AB3 /* BartlebyFileIO.swift */; };
 		E5E750CF1CDB543700520AB3 /* Collectible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750AD1CDB543700520AB3 /* Collectible.swift */; };
 		E5E750D01CDB543700520AB3 /* CollectibleCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750AE1CDB543700520AB3 /* CollectibleCollection.swift */; };
@@ -206,6 +204,8 @@
 		E5E750DC1CDB543700520AB3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750BA1CDB543700520AB3 /* Registry.swift */; };
 		E5E750DD1CDB543700520AB3 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E750BB1CDB543700520AB3 /* TasksScheduler.swift */; };
 		E5E7514F1CDB8B8D00520AB3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E7514E1CDB8B8D00520AB3 /* PushOperationTask.swift */; };
+		E5E751631CDBA43100520AB3 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751611CDBA43100520AB3 /* NSNotification+Completion.swift */; };
+		E5E751641CDBA43100520AB3 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E751621CDBA43100520AB3 /* NSNotification+Progression.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -391,7 +391,6 @@
 		E5D086D01C550EFD00F0090E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5E750981CDB543700520AB3 /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
 		E5E750991CDB543700520AB3 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E5E7509A1CDB543700520AB3 /* CompletionNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionNotification.swift; sourceTree = "<group>"; };
 		E5E7509B1CDB543700520AB3 /* CompletionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionStatus.swift; sourceTree = "<group>"; };
 		E5E7509C1CDB543700520AB3 /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E5E7509D1CDB543700520AB3 /* Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignee.swift; sourceTree = "<group>"; };
@@ -406,7 +405,6 @@
 		E5E750A71CDB543700520AB3 /* Registry+URD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+URD.swift"; sourceTree = "<group>"; };
 		E5E750A81CDB543700520AB3 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
 		E5E750A91CDB543700520AB3 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
-		E5E750AA1CDB543700520AB3 /* ProgressionNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressionNotification.swift; sourceTree = "<group>"; };
 		E5E750AC1CDB543700520AB3 /* BartlebyFileIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyFileIO.swift; sourceTree = "<group>"; };
 		E5E750AD1CDB543700520AB3 /* Collectible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collectible.swift; sourceTree = "<group>"; };
 		E5E750AE1CDB543700520AB3 /* CollectibleCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectibleCollection.swift; sourceTree = "<group>"; };
@@ -424,6 +422,8 @@
 		E5E750BA1CDB543700520AB3 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E5E750BB1CDB543700520AB3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E5E7514E1CDB8B8D00520AB3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
+		E5E751611CDBA43100520AB3 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
+		E5E751621CDBA43100520AB3 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -817,14 +817,12 @@
 				E5E7514D1CDB8B8D00520AB3 /* tasks */,
 				E5E750981CDB543700520AB3 /* AbstractReactiveTask.swift */,
 				E5E750991CDB543700520AB3 /* Bartleby.swift */,
-				E5E7509A1CDB543700520AB3 /* CompletionNotification.swift */,
 				E5E7509B1CDB543700520AB3 /* CompletionStatus.swift */,
 				E5E7509C1CDB543700520AB3 /* Consignation.swift */,
 				E5E7509D1CDB543700520AB3 /* Consignee.swift */,
 				E5E7509E1CDB543700520AB3 /* Default.swift */,
 				E5E7509F1CDB543700520AB3 /* extensions */,
 				E5E750A91CDB543700520AB3 /* Handlers.swift */,
-				E5E750AA1CDB543700520AB3 /* ProgressionNotification.swift */,
 				E5E750AB1CDB543700520AB3 /* protocols */,
 				E5E750BA1CDB543700520AB3 /* Registry.swift */,
 				E5E750BB1CDB543700520AB3 /* TasksScheduler.swift */,
@@ -835,6 +833,8 @@
 		E5E7509F1CDB543700520AB3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5E751611CDBA43100520AB3 /* NSNotification+Completion.swift */,
+				E5E751621CDBA43100520AB3 /* NSNotification+Progression.swift */,
 				E5E750A01CDB543700520AB3 /* Completion+Conveniences.swift */,
 				E5E750A11CDB543700520AB3 /* Completion+Result.swift */,
 				E5E750A21CDB543700520AB3 /* Progression+Conveniences.swift */,
@@ -991,7 +991,7 @@
 				E5E750CB1CDB543700520AB3 /* Task+Arguments.swift in Sources */,
 				E5E750C51CDB543700520AB3 /* Progression+Conveniences.swift in Sources */,
 				E5B98E261CC0E63C00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
-				E5E750BE1CDB543700520AB3 /* CompletionNotification.swift in Sources */,
+				E5E751631CDBA43100520AB3 /* NSNotification+Completion.swift in Sources */,
 				E5251C5B1CD0BE6400D873A3 /* JDataPerformer.swift in Sources */,
 				E5E750D31CDB543700520AB3 /* CryptoDelegate.swift in Sources */,
 				E5E750C11CDB543700520AB3 /* Consignee.swift in Sources */,
@@ -1000,7 +1000,6 @@
 				E5251C341CD0BE6400D873A3 /* ReadGroupsByIds.swift in Sources */,
 				E5D0869E1C550E1900F0090E /* CryptoHelper.swift in Sources */,
 				E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */,
-				E5E750CD1CDB543700520AB3 /* ProgressionNotification.swift in Sources */,
 				E5251C451CD0BE6400D873A3 /* ReadUserById.swift in Sources */,
 				E5E750CA1CDB543700520AB3 /* Registry+URD.swift in Sources */,
 				E5251C0D1CD0BE6400D873A3 /* TasksGroup.swift in Sources */,
@@ -1051,6 +1050,7 @@
 				E5251C2C1CD0BE6400D873A3 /* DeleteTrigger.swift in Sources */,
 				E5E750D81CDB543700520AB3 /* RegistryMetadata.swift in Sources */,
 				E5CD99ED1C86D96E00C64569 /* Manager.swift in Sources */,
+				E5E751641CDBA43100520AB3 /* NSNotification+Progression.swift in Sources */,
 				E5CD99F01C86D96E00C64569 /* Notifications.swift in Sources */,
 				E5251C541CD0BE6400D873A3 /* UpdateTrigger.swift in Sources */,
 				E5251C3B1CD0BE6400D873A3 /* ReadPermissionsByQuery.swift in Sources */,

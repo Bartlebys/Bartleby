@@ -14,80 +14,7 @@ extension Registry {
     // MARK: - Operations
 
     /**
-     Pushes the operation
-
-     - parameter operations: the provionned operations
-     - parameter iterator:   the iteraror reference for recursive calls.
-     */
-    private func _pushChainedOperation(operations: [Operation], inout iterator: IndexingGenerator<[Operation]>) {
-        if let currentOperation=iterator.next() {
-            self.pushOperation(currentOperation, sucessHandler: { (context) -> () in
-                if let operationDictionary=currentOperation.toDictionary {
-                    if let referenceName=operationDictionary[Default.REFERENCE_NAME_KEY],
-                        uid=operationDictionary[Default.UID_KEY] {
-                        self.delete(currentOperation)
-                        do {
-                            let ic: OperationsCollectionController = try self.getCollection()
-                            bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)", file: #file, function: #function, line: #line)
-                        } catch {
-                            bprint("OperationsCollectionController getCollection \(error)", file: #file, function: #function, line: #line)
-                        }
-                    }
-                }
-                Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: {
-                    self._pushChainedOperation(operations, iterator: &iterator)
-                })
-                }, failureHandler: { (context) -> () in
-                    // Stop the chain
-            })
-        }
-    }
-
-    /**
-     Pushes the operations
-     Is a wrapper that pushes chained operations
-     - parameter operations: the operations
-     */
-    public func pushOperations(operations: [Operation]) {
-        var iterator=operations.generate()
-        self._pushChainedOperation(operations, iterator: &iterator)
-    }
-
-
-
-    /**
-     Pushes a unique operation
-     On success the operation is deleted.
-     - parameter operation: the operation
-     */
-    public func pushOperation(operation: Operation) {
-        self.pushOperation(operation, sucessHandler: { (context) -> () in
-            self.delete(operation)
-        }) { (context) -> () in
-
-        }
-    }
-
-    /**
-     Pushes an operation with success and failure handlers
-
-     - parameter operation: the operation
-     - parameter success:   the success handler
-     - parameter failure:   the failure handler
-     */
-    public func pushOperation(operation: Operation, sucessHandler success:(context: HTTPResponse)->(), failureHandler failure:(context: HTTPResponse)->()) {
-        if let serialized=operation.toDictionary {
-            if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand {
-                command.push(sucessHandler:success, failureHandler:failure)
-            } else {
-                //TODO: @bpds what should be done
-            }
-        }
-    }
-
-
-    /**
-     Pushes the operation using PushOperationTask.
+     Push the operation using PushOperationTask.
 
      - parameter operations: operations description
      - parameter handlers:   the handlers to hooks the completion / Progression
@@ -103,10 +30,12 @@ extension Registry {
             // Hook the task reactive handlers
             firstOperationTask.reactiveHandlers.addCompletionHandler(handlers.on)
             firstOperationTask.reactiveHandlers.addProgressHandler(handlers.notify)
-            // We iterate on the next task.
-            for i in 1...operations.count {
-                // And append the operation task sequentially
-                firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
+            if operations.count>1{
+                // We iterate on the next task.
+                for i in 1...operations.count-1 {
+                    // And append the operation task sequentially
+                    firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
+                }
             }
             // We provision the task
             let group=try Bartleby.scheduler.provision(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)

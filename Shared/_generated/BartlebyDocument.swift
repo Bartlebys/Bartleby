@@ -555,23 +555,24 @@ import UIKit
 
     // MARK: - Actions
 
-
-     public func pushOperations() {
-        self.pushOperations(self.operations.items)
+     public func pushOperations(handlers: Handlers)throws{
+        try self.pushOperations(self.operations.items, handlers:handlers)
     }
 
 
-     public func synchronize(){
-
+     public func synchronize(handlers: Handlers){
         if let currentUser=self.registryMetadata.currentUser{
-                currentUser.login(withPassword: currentUser.password, sucessHandler: {
+            currentUser.login(withPassword: currentUser.password, sucessHandler: {
                 self.optimizeOperations()
-                self.pushOperations()
-            }, failureHandler: { (context) in
-            //
+                do {
+                    try self.pushOperations(handlers)
+                } catch {
+                    handlers.on(Completion.failureState("Push operations has failed", statusCode: CompletionStatus.Expectation_Failed))
+                }
+                }, failureHandler: { (context) in
+                handlers.on(Completion.failureStateFromJHTTPResponse(context))
             })
         }
-
     }
 
      public func optimizeOperations() {
