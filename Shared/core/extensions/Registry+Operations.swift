@@ -19,7 +19,7 @@ extension Registry {
      - parameter operations: the provionned operations
      - parameter iterator:   the iteraror reference for recursive calls.
      */
-    public func pushChainedOperation(operations: [Operation], inout iterator: IndexingGenerator<[Operation]>) {
+    private func _pushChainedOperation(operations: [Operation], inout iterator: IndexingGenerator<[Operation]>) {
         if let currentOperation=iterator.next() {
             self.pushOperation(currentOperation, sucessHandler: { (context) -> () in
                 if let operationDictionary=currentOperation.toDictionary {
@@ -35,7 +35,7 @@ extension Registry {
                     }
                 }
                 Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: {
-                    self.pushChainedOperation(operations, iterator: &iterator)
+                    self._pushChainedOperation(operations, iterator: &iterator)
                 })
                 }, failureHandler: { (context) -> () in
                     // Stop the chain
@@ -50,7 +50,7 @@ extension Registry {
      */
     public func pushOperations(operations: [Operation]) {
         var iterator=operations.generate()
-        self.pushChainedOperation(operations, iterator: &iterator)
+        self._pushChainedOperation(operations, iterator: &iterator)
     }
 
 
@@ -110,10 +110,20 @@ extension Registry {
 
     // MARK: markAsDistributed
 
+    /**
+     Marks the instance as distributed (on Push).
+
+     - parameter instances: the collectible instances
+     */
     public func markAsDistributed<T: Collectible>(inout instance: T) {
         instance.distributed=true
     }
 
+    /**
+     Marks the instances as distributed  (on Push).
+
+     - parameter instances: the collectible instances
+     */
     public func markAsDistributed<T: Collectible>(inout instances: [T]) {
         for var instance in instances {
             instance.distributed=true

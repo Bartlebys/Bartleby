@@ -8,12 +8,19 @@
 
 import Foundation
 
+// MARK:- Local Instance(s) URD(s)
 public extension Registry {
-
-    // MARK:- Local Instance(s) URD(s) +
 
     // MARK: Upsert
 
+    /**
+     Inserrt or updates a Collectible instance.
+     Upsert : insert + update
+
+     - parameter instance: the instance
+
+     - returns: success or failure flag
+     */
     public func upsert(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.add(instance)
@@ -22,6 +29,14 @@ public extension Registry {
         return false
     }
 
+    /**
+     Create or update a collection of Collectible instances.
+     Upsert : insert + update
+
+     - parameter instances: the instances
+
+     - returns: success or failure flag
+     */
     public func upsert(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
@@ -46,6 +61,13 @@ public extension Registry {
 
     // MARK: delete
 
+    /**
+     Deletes the Collectible instance.
+
+     - parameter instance: the instance
+
+     - returns: success or failure flag
+     */
     public func delete(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             return collection.removeObject(instance)
@@ -53,7 +75,13 @@ public extension Registry {
         return false
     }
 
+    /**
+     Deletes a bunch of Collectible instance.
 
+     - parameter instances: the instances
+
+     - returns: success or failure flag
+     */
     public func delete(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
@@ -63,6 +91,14 @@ public extension Registry {
     }
 
 
+    /**
+     Deletes a Collectible instance by its UID
+
+     - parameter instanceUID: the instance UID
+     - parameter fromCollectionWithName : the collection name
+
+     - returns: success or failure flag
+     */
     public func deleteById(instanceUID: String, fromCollectionWithName: String) -> Bool {
         if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
             return collection.removeObjectWithID(instanceUID)
@@ -70,6 +106,14 @@ public extension Registry {
         return false
     }
 
+    /**
+     Deletes a Collectible instance by its UID
+
+     - parameter instancesUIDs: an array of instances' UID
+     - parameter fromCollectionWithName : the collection name
+
+     - returns: success or failure flag
+     */
     public func deleteByIds(instancesUIDs: [String], fromCollectionWithName: String) -> Bool {
         var result=true
         for instanceUID in instancesUIDs {
