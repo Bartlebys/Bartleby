@@ -10,8 +10,8 @@ import Foundation
 
 
 extension Registry {
-    // MARK: - Operations
 
+    // MARK: - Operations
 
     /**
      Pushes the operation
@@ -84,6 +84,36 @@ extension Registry {
             }
         }
     }
+
+
+    /**
+     Pushes the operation using PushOperationTask.
+
+     - parameter operations: operations description
+     - parameter handlers:   the handlers to hooks the completion / Progression
+     */
+    public func pushOperations(operations: [Operation], handlers: Handlers) throws->() {
+        if operations.count==0 {
+            handlers.on(Completion.successState())
+        } else {
+            // We use the encapsulated SpaceUID
+            let spaceUID=operations.first!.spaceUID
+            // Create the root Task.
+            let firstOperationTask=PushOperationTask(arguments: operations.first!)
+            // Hook the task reactive handlers
+            firstOperationTask.reactiveHandlers.addCompletionHandler(handlers.on)
+            firstOperationTask.reactiveHandlers.addProgressHandler(handlers.notify)
+            // We iterate on the next task.
+            for i in 1...operations.count {
+                // And append the operation task sequentially
+                firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
+            }
+            // We provision the task
+            let group=try Bartleby.scheduler.provision(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
+            try group.start()
+        }
+    }
+
 
 
     /**
