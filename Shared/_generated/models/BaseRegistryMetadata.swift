@@ -20,8 +20,8 @@ import ObjectMapper
 
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
-	//The root user of the registry is the user currently associated to the local instance of the registry
-	public var rootUser:User?
+	//The user currently associated to the local instance of the registry
+	public var currentUser:User?
 	//The rootObject UID
 	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
@@ -48,7 +48,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
 		self.spaceUID <- map["spaceUID"]
-		self.rootUser <- map["rootUser"]
+		self.currentUser <- map["currentUser"]
 		self.rootObjectUID <- map["rootObjectUID"]
 		self.collaborationServerURL <- (map["collaborationServerURL"],URLTransform())
 		self.collectionsMetadata <- map["collectionsMetadata"]
@@ -64,7 +64,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		self.rootUser=decoder.decodeObjectOfClass(User.self, forKey: "rootUser") 
+		self.currentUser=decoder.decodeObjectOfClass(User.self, forKey: "currentUser") 
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),JCollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [JCollectionMetadatum]
@@ -78,8 +78,8 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
-		if let rootUser = self.rootUser {
-			coder.encodeObject(rootUser,forKey:"rootUser")
+		if let currentUser = self.currentUser {
+			coder.encodeObject(currentUser,forKey:"currentUser")
 		}
 		coder.encodeObject(self.rootObjectUID,forKey:"rootObjectUID")
 		if let collaborationServerURL = self.collaborationServerURL {

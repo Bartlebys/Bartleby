@@ -45,7 +45,7 @@ class LockerTests: XCTestCase {
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = User()
         if let user =  LockerTests._creatorUser {
-            document.registryMetadata.rootUser = user
+            document.registryMetadata.currentUser = user
             document.registryMetadata.creatorUID = user.UID
             document.registryMetadata.rootObjectUID = Bartleby.createUID()
         }
@@ -240,7 +240,7 @@ class LockerTests: XCTestCase {
         if let consumerUser = LockerTests._consumerUser {
 
             // (!) TO BECOME THE MAIN USER
-            LockerTests._document.registryMetadata.rootUser=consumerUser
+            LockerTests._document.registryMetadata.currentUser=consumerUser
 
             consumerUser.login(withPassword: LockerTests._consumerUserPassword,
                        sucessHandler: { () -> () in

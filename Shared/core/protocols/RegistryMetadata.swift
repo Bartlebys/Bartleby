@@ -28,7 +28,7 @@ public protocol RegistryMetadata: Identifiable, Serializable {
     //The root user of the registry is the user currently associated to the local instance of the registry
     // The full user instance.
     // We donnot want to store this user in the user collection ( to prevent its deletion and to mark its singularity)
-    var rootUser: User? { get set }
+    var currentUser: User? { get set }
 
     // Root Object UID defines the
     var rootObjectUID: String { get set }

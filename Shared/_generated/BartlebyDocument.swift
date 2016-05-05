@@ -563,8 +563,8 @@ import UIKit
 
      public func synchronize(){
 
-        if let rootUser=self.registryMetadata.rootUser{
-                rootUser.login(withPassword: rootUser.password, sucessHandler: {
+        if let currentUser=self.registryMetadata.currentUser{
+                currentUser.login(withPassword: currentUser.password, sucessHandler: {
                 self.optimizeOperations()
                 self.pushOperations()
             }, failureHandler: { (context) in

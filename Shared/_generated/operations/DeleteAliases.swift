@@ -131,9 +131,9 @@ import ObjectMapper
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
-                if let rootUser=registry.registryMetadata.rootUser{
-                    self._operation.creatorUID=rootUser.UID
-                    self.creatorUID=rootUser.UID
+                if let currentUser=registry.registryMetadata.currentUser{
+                    self._operation.creatorUID=currentUser.UID
+                    self.creatorUID=currentUser.UID
                 }
 
                 // Provision the operation.

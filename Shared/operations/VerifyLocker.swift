@@ -196,7 +196,7 @@ import Foundation
                 // 1. Verify the data space consistency
                 if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
                     // 2. Verify the current user iUD
-                    if let user=registry.registryMetadata.rootUser {
+                    if let user=registry.registryMetadata.currentUser {
                         if user.UID == locker.userUID {
                              // 3. Verify the date
                             let referenceDate=NSDate()

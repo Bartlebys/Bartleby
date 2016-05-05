@@ -30,8 +30,8 @@ import Foundation
     dynamic public var storedPassword: String {
         get {
             if (saveThePassword) {
-                if let rootUser=rootUser {
-                    return rootUser.password
+                if let currentUser=currentUser {
+                    return currentUser.password
                 }
             }
             return ""

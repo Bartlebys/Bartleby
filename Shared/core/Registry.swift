@@ -71,22 +71,27 @@ Documents can be shared between iOS, tvOS and OSX.
         }
     }
 
-    public var rootUser: User {
+    public var currentUser: User {
         get {
-            if let rootUser=self.registryMetadata.rootUser {
-                return rootUser
+            if let currentUser=self.registryMetadata.currentUser {
+                return currentUser
             } else {
                 return User()
             }
         }
     }
 
-
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
 
     // Default Serializer
-    internal var serializer=JSerializer.sharedInstance
+    internal var _serializer=JSerializer.sharedInstance
+
+    // Read Only public accessor
+    public var serializer: Serializer {
+        return _serializer
+    }
+
 
     /// The underlining storage hashed by collection name
     private var _collections=Array<Collectible>()
@@ -140,21 +145,6 @@ Documents can be shared between iOS, tvOS and OSX.
      */
     public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
         return self._objectByUID[UID] as? T
-    }
-
-    /**
-     Returns a descriptive string.
-
-     - returns: the string
-     */
-    public static func dumpObjectByUID() -> String {
-        var result=""
-        for (UID, instance) in self._objectByUID {
-            if let JO=instance as? JObject {
-                result += "\(JO.referenceName)->\(UID)\n"
-            }
-        }
-        return result
     }
 
 
@@ -323,9 +313,7 @@ Documents can be shared between iOS, tvOS and OSX.
             metadataFileWrapper.preferredFilename=_metadataFileName
             fileWrapper.addFileWrapper(metadataFileWrapper)
 
-
             // 2# Collections
-
 
             for metadatum: JCollectionMetadatum in self.registryMetadata.collectionsMetadata {
 
@@ -369,7 +357,6 @@ Documents can be shared between iOS, tvOS and OSX.
     override public func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
 
-
             // #1 Metadata
 
             let registryProxyUID=self.spaceUID // May be a proxy
@@ -394,9 +381,8 @@ Documents can be shared between iOS, tvOS and OSX.
                 // ERROR
             }
 
+            // #2 Collections
 
-
-            // #2 Collection.
             for metadatum in self.registryMetadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
                 if metadatum.storage == BaseCollectionMetadatum.Storage.MonolithicFileStorage {
