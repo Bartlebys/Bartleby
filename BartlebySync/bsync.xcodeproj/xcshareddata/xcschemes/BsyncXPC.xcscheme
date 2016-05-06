@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5B5D08FB1CDC8D91001FB281"
+               BuildableName = "BsyncXPCTests.xctest"
+               BlueprintName = "BsyncXPCTests"
+               ReferencedContainer = "container:bsync.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E5FEE5BD1CBF5E5E006AFA2E"
+            BuildableName = "BsyncXPC.xpc"
+            BlueprintName = "BsyncXPC"
+            ReferencedContainer = "container:bsync.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

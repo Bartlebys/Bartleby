@@ -8,17 +8,7 @@
 #import "PdSCommandInterpreter.h"
 #include <stdarg.h>
 
-#ifdef USE_BSYNC_XPC_OBJC
-#import "BsyncXPC-Swift.h"
-#else
-#ifdef USE_CLIENT_BSYNC_XPC_OBJC
-#import "ClientBsyncXPC-Swift.h"
-#else
-#ifdef USE_EMBEDDED_MODULES
 #import "bsync-Swift.h"
-#endif
-#endif
-#endif
 
 
 NSString * const PdSSyncInterpreterWillFinalize = @"PdSSyncInterpreterWillFinalize";
