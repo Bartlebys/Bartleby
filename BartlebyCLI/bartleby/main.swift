@@ -9,6 +9,26 @@
 import Foundation
 
 
+    Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
+
+    let user=User()
+    user.defineUID()
+    user.email="bpds@me.com"
+
+
+    let UID=user.UID
+    let concreteAlias=ConcreteAlias<User>(withInstanceUID:UID, rn: user.referenceName)
+
+    print("# Concretion #")
+    let _=concreteAlias.toConcrete { (instance) in
+        if let user=instance {
+            print(user)
+        } else {
+            print("**NO USER!**")
+        }
+    }
+
+
 // Instanciate the facade
 let facade=BartlebysCommandFacade()
 facade.actOnArguments()
