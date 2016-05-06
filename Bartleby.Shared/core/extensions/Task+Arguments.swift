@@ -50,7 +50,11 @@ extension Task {
     final public func forward(completionState: Completion) {
         self.completionState=completionState
         self.status = .Completed
-        try? Bartleby.scheduler.onCompletion(self)
+        if let _=try? Bartleby.scheduler.onCompletion(self){
+            
+        }else{
+            
+        }
     }
 
 }

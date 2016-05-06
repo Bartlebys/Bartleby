@@ -15,36 +15,38 @@ import ObjectMapper
 #endif
 
 // MARK: Model TasksGroup
-@objc(TasksGroup) public class TasksGroup : JObject{
+@objc(TasksGroup) public class TasksGroup: JObject {
 
 
 	//Task Status
-	public enum Status:Int{
+	public enum Status: Int {
 		case New
 		case Pending
 		case Running
 		case Paused
 		case Completed
 	}
-	public var status:Status = .New
+	public var status: Status = .New
 	//The priority is equal to the parent task.
-	public enum Priority:Int{
+	public enum Priority: Int {
 		case Background
 		case Low
 		case Default
 		case High
 	}
-	public var priority:Priority = .Default
+	public var priority: Priority = .Default
+	//The group dataspace
+	public var spaceUID: String = "\(Default.NO_UID)"
 	//A collection of Tasks
-	public var tasks:[Task] = [Task]()
+	public var tasks: [Task] = [Task]()
 	//The failure task (can be used to cleanup or notify failure)
-	public var onFailure:Task?
+	public var onFailure: Task?
 	//The progression state of the group
-	public var progressionState:Progression = Progression()
+	public var progressionState: Progression = Progression()
 	//The completion state of the group
-	public var completionState:Completion = Completion()
+	public var completionState: Completion = Completion()
 	//The group name
-	public var name:String = "\(Default.NO_NAME)"
+	public var name: String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -58,6 +60,7 @@ import ObjectMapper
         super.mapping(map)
 		self.status <- map["status"]
 		self.priority <- map["priority"]
+		self.spaceUID <- map["spaceUID"]
 		self.tasks <- map["tasks"]
 		self.onFailure <- map["onFailure"]
 		self.progressionState <- map["progressionState"]
@@ -70,31 +73,33 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.status=TasksGroup.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
-		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
-		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
-		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.status=TasksGroup.Status(rawValue:decoder.decodeIntegerForKey("status") )!
+		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )!
+		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(), Task.classForCoder()]), forKey: "tasks")! as! [Task]
+		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure")
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")!
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")!
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeInteger(self.status.rawValue ,forKey:"status")
-		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
-		coder.encodeObject(self.tasks,forKey:"tasks")
+		coder.encodeInteger(self.status.rawValue, forKey:"status")
+		coder.encodeInteger(self.priority.rawValue, forKey:"priority")
+		coder.encodeObject(self.spaceUID, forKey:"spaceUID")
+		coder.encodeObject(self.tasks, forKey:"tasks")
 		if let onFailure = self.onFailure {
-			coder.encodeObject(onFailure,forKey:"onFailure")
+			coder.encodeObject(onFailure, forKey:"onFailure")
 		}
-		coder.encodeObject(self.progressionState,forKey:"progressionState")
-		coder.encodeObject(self.completionState,forKey:"completionState")
-		coder.encodeObject(self.name,forKey:"name")
+		coder.encodeObject(self.progressionState, forKey:"progressionState")
+		coder.encodeObject(self.completionState, forKey:"completionState")
+		coder.encodeObject(self.name, forKey:"name")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override public class func supportsSecureCoding() -> Bool {
         return true
     }
 
@@ -105,22 +110,21 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override public class var collectionName: String {
         return "tasksGroups"
     }
 
-    override public var d_collectionName:String{
+    override public var d_collectionName: String {
         return TasksGroup.collectionName
     }
 
 
     // MARK: Persistent
 
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
         var r=super.toPersistentRepresentation()
         r.A=NSDate().timeIntervalSince1970
         return r
     }
 
 }
-
