@@ -15,6 +15,10 @@ import Foundation
 
 // MARK: - TasksScheduler
 
+// The Task Scheduler performs locally
+// That's why we use local dealiasing "taskAlias.toLocalInstance()"
+// If you need to provision distant task you should grab the distant task (eg: ReadTaskById...)
+
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
     case TaskGroupNotFound
@@ -92,49 +96,12 @@ enum TasksSchedulerError: ErrorType {
 
      - parameter completedTask: the reference to the task
      */
-    func onCompletion(completedTask: Task) { //throws {
+    func onCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
-            aliasOfGroup.fetchInstance { (group) in
-                if let group=group {
-                    if group.status != .Paused && group.status != .Completed {
-                        for childTaskAlias in completedTask.children {
-                            childTaskAlias.fetchInstance { (childTask) in
-                                if let task=childTask {
-                                    if let invocableTask = group.invocableTaskFrom(task) {
-                                        invocableTask.invoke()
-                                        task.status = .Running
-                                    } else {
-                                        //throw TasksGroupError.NonInvocableTask(task: completedTask)
-                                    }
-                                } else {
-                                      //throw TasksGroupError.TaskNotFound
-                                }
-                            }
-                        }
-                    } else {
-                        // Paused or Completed
-                    }
-                    // Mark the group as completed if there is no more
-                    // Runnable tasks
-                    let runnableTasks = group.findRunnableTasks()
-                    if runnableTasks.count==0 {
-                        group.status = .Completed
-                        dispatch_async(dispatch_get_main_queue(), {
-                            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-                        })
-
-                    }
-
-                } else {
-                    // ???
-                }
-            }
-            /*
-
-            if let group: TasksGroup = aliasOfGroup<TasksGroup>.toInstance() {
+            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
                 if group.status != .Paused && group.status != .Completed {
                     for child in completedTask.children {
-                        if let task: Task=child.toInstance() {
+                        if let task: Task=child.toLocalInstance() {
                             if let invocableTask = group.invocableTaskFrom(task) {
                                 invocableTask.invoke()
                                 task.status = .Running
@@ -160,8 +127,6 @@ enum TasksSchedulerError: ErrorType {
 
                 }
             }
- */
-
         }
 
     }
@@ -287,29 +252,20 @@ public extension TasksGroup {
     private func _findTasksUnCompletedSubTask(task: Task, inout topLevelTasks: [Task]) {
         if topLevelTasks.count==0 {
             for childTaskAlias in task.children {
-                childTaskAlias.fetchInstance { (task) in
-                    if let childTask: Task=task {
-                        if childTask.status != Task.Status.Completed {
-                            if childTask.taskClassName==Default.NO_NAME {
-                                bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
-                            } else {
-                                topLevelTasks.append(childTask)
-                            }
+                if let childTask: Task=childTaskAlias.toLocalInstance() {
+                    if childTask.status != Task.Status.Completed {
+                        if childTask.taskClassName==Default.NO_NAME {
+                            bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
+                        } else {
+                            topLevelTasks.append(childTask)
                         }
-                    } else {
-                        // ???
                     }
                 }
-
             }
             if topLevelTasks.count==0 {
                 for childTaskAlias in task.children {
-                    childTaskAlias.fetchInstance { (task) in
-                        if let childTask: Task=task {
-                             self._findTasksUnCompletedSubTask(childTask, topLevelTasks: &topLevelTasks)
-                        } else {
-                            // ??
-                        }
+                    if let childTask: Task=childTaskAlias.toLocalInstance() {
+                        self._findTasksUnCompletedSubTask(childTask, topLevelTasks: &topLevelTasks)
                     }
                 }
             }
@@ -318,7 +274,7 @@ public extension TasksGroup {
 
     // MARK: Find tasks with status
 
-    /*
+
 
     /**
      Returns a filtered list of task.
@@ -342,38 +298,20 @@ public extension TasksGroup {
 
     private func _findChildrenTasksWithStatus(task: Task, status: Task.Status, inout tasks: [Task]) {
         var matching=[Task]()
-
-        var matchingChildrenAlias=[Alias<Task>]()
-        for subTaskAlias in self.children {
-
-        }
-
-        /*
         let matchingChildrenAlias=task.children.filter { (subTaskAlias) -> Bool in
-
-            var returnValue: Bool=false
-            // !!! EST CE QUE ça Marche ?
-            subTaskAlias.to { (instance) in
-                if let subTask: Task=instance {
-                    returnValue=subTask.status==status // ICI ???
-                } else {
-                    returnValue=false
-                }
+            if let subTask: Task=subTaskAlias.toLocalInstance() {
+                return subTask.status==status
+            } else {
+                return false
             }
         }
- */
         for alias in matchingChildrenAlias {
-
-            alias.to {(instance) {
-                if let task=instance {
-                    matching.append(task)
-                } else {
-                    // ???
-                }
+            if let subTask: Task=alias.toLocalInstance() {
+                matching.append(task)
             }
         }
 
     }
- */
+
 
 }

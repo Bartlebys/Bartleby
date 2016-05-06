@@ -7,17 +7,17 @@
 //
 
 import Foundation
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+    import ObjectMapper
+#endif
 
+
+// IMPORTANT
+// Generic Aliases are Not visible from Objc.
+// You cannot add  @objc(Alias)
 public class Alias<T:Collectible>:AbstractAlias {
 
-    // MARK:  Aliases
-
-    /*
-     Those resolutions are asynchronous to permit asynchronous fetching
-     We have deprecated the previous synchronous approach.
-     For explicitly synchronous situations
-     And added facilities toLocalInstance() and toLocalCollectibleInstance()
-     */
 
     public required init() {
         super.init()
@@ -29,7 +29,47 @@ public class Alias<T:Collectible>:AbstractAlias {
         self.iReferenceName=iReferenceName
     }
 
-    // MARK: - ASynchronous
+    // MARK: Mappable
+
+    required public init?(_ map: Map) {
+        super.init(map)
+        mapping(map)
+    }
+
+    override public func mapping(map: Map) {
+        super.mapping(map)
+    }
+
+
+    // MARK: NSSecureCoding
+
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+    }
+
+    override public func encodeWithCoder(coder: NSCoder) {
+        super.encodeWithCoder(coder)
+    }
+
+
+    override public class func supportsSecureCoding() -> Bool {
+        return true
+    }
+
+
+    // MARK: Identifiable
+
+    override public class var collectionName: String {
+        return "aliases"
+    }
+
+    override public var d_collectionName: String {
+        return Alias.collectionName
+    }
+
+
+
+    // MARK: - ASynchronous Fetching
 
     /**
      Asynchronous resolution of the instance
@@ -55,7 +95,7 @@ public class Alias<T:Collectible>:AbstractAlias {
     }
 
 
-    // MARK: - Synchronous
+    // MARK: - Synchronous Dealiasing
 
 
     /**

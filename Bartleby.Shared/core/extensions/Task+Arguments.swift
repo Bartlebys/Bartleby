@@ -50,7 +50,7 @@ extension Task {
     final public func forward(completionState: Completion) {
         self.completionState=completionState
         self.status = .Completed
-        Bartleby.scheduler.onCompletion(self)
+        try? Bartleby.scheduler.onCompletion(self)
     }
 
 }
@@ -68,12 +68,8 @@ extension Task {
             func childrens(parent: Task, inout tasks: [Task]) {
                 tasks.append(parent)
                 for taskAlias in parent.children {
-                    taskAlias.fetchInstance{ (instance) in
-                        if let task=instance {
-                            childrens(task, tasks: &tasks)
-                        }else{
-                            // ???
-                        }
+                    if let task=taskAlias.toLocalInstance() {
+                        childrens(task, tasks: &tasks)
                     }
                 }
             }
