@@ -68,6 +68,9 @@ import Foundation
         HTTPManager.configure()
     }
 
+    public static func please(message: String) -> String {
+        return "I would prefer not to!"
+    }
 
     override init() {
         super.init()

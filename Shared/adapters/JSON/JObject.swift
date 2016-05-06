@@ -69,7 +69,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         return Alias(withInstanceUID: self.UID, referenceName: self.referenceName)
     }
 
-
     // MARK: - Serializable
 
     public func serialize() -> NSData {

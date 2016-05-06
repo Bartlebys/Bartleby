@@ -75,7 +75,6 @@ extension Task {
                     if let childTask: Task=child.toInstance() {
                          childrens(childTask, tasks: &tasks)
                     }
-
                 }
             }
             childrens(self, tasks: &list)

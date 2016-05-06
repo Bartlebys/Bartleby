@@ -34,8 +34,6 @@ public func arrayOfAliases() -> [Alias] {
     return [Alias]()
 }
 
-// @TODO @BPDS should we use a closure to support asynchronous fetching?
-
 
 public func removeAliasWith(instanceUID: String, inout from aliases: [Alias]) {
     for (index, alias) in aliases.enumerate().reverse() {
@@ -52,7 +50,6 @@ public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inou
         }
     }
 }
-
 
 public func instancesToAliases(instances: [Collectible]) -> [Alias] {
     var aliases=[Alias]()
