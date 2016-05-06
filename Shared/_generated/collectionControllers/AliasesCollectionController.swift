@@ -292,6 +292,7 @@ import ObjectMapper
         if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "iUID", options: .Old, context: &KVOContext)
+			item.addObserver(self, forKeyPath: "iReferenceName", options: .Old, context: &KVOContext)
         }
     }
 
@@ -300,6 +301,7 @@ import ObjectMapper
             if let idx=_observedUIDS.indexOf(item.UID)  {
                 _observedUIDS.removeAtIndex(idx)
 				item.removeObserver(self, forKeyPath: "iUID", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "iReferenceName", context: &KVOContext)
             }
         }
     }

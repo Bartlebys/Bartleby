@@ -30,7 +30,7 @@ extension Registry {
             // Hook the task reactive handlers
             firstOperationTask.reactiveHandlers.addCompletionHandler(handlers.on)
             firstOperationTask.reactiveHandlers.addProgressHandler(handlers.notify)
-            if operations.count>1{
+            if operations.count>1 {
                 // We iterate on the next task.
                 for i in 1...operations.count-1 {
                     // And append the operation task sequentially

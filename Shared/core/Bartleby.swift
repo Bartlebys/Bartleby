@@ -293,21 +293,3 @@ import Foundation
     }
 
 }
-
-
-// MARK: - Global functions
-
-/**
- Print indirection with guided contextual info
- Usage : bprint("<Message>",file:#file,function:#function,line:#line")
- You can create code snippet
-
- - parameter items: the items to print
- - parameter file:  the file
- - parameter line:  the line
- - parameter function : the function name
- - parameter context: a contextual string
- */
-public func bprint(message: AnyObject?, file: String = "", function: String = "", line: Int = -1) {
-    Bartleby.bprint(message, file: file, function: function, line: line)
-}

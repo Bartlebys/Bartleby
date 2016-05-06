@@ -32,4 +32,11 @@ public protocol Collectible: Identifiable, Serializable {
     // The class or struct name
     var referenceName: String { get }
 
+    /**
+     Aliasing
+
+     - returns: an Alias from an instance.
+     */
+    func toAlias() -> Alias
+
 }

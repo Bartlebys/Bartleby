@@ -149,6 +149,19 @@ Documents can be shared between iOS, tvOS and OSX.
 
 
     /**
+     Returns the instance by its UID
+
+     - parameter UID: needle
+
+     - returns: the instance
+     */
+    static public func objectByUID(UID: String) -> Collectible? {
+        let o=self._objectByUID[UID]
+        return o as? Collectible
+    }
+
+
+    /**
 
      This method enumerates all the object of a given type.
      The members can come from different Registries if you have multiple document opened simultaneously

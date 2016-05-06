@@ -67,6 +67,13 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         referenceName <- map[Default.REFERENCE_NAME_KEY]
     }
 
+    // MARK: - Collectible = Identifiable + Serializable
+
+    public func toAlias() -> Alias {
+        return Alias(withInstanceUID: self.UID, referenceName: self.referenceName)
+    }
+
+
     // MARK: - Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
@@ -238,6 +245,9 @@ extension JObject:Serializable {
     }
 
 }
+
+// MARK: - DictionaryRepresentation
+
 
 extension JObject:DictionaryRepresentation {
 

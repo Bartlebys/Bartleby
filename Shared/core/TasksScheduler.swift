@@ -41,7 +41,7 @@ enum TasksSchedulerError: ErrorType {
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
-        rootTask.group=Registry.instanceToAlias(group)
+        rootTask.group=group.toAlias()
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -93,16 +93,21 @@ enum TasksSchedulerError: ErrorType {
      - parameter completedTask: the reference to the task
      */
     func onCompletion(completedTask: Task) throws {
-        if let aliasOfGroup=completedTask.group {
-            if let group: TasksGroup=Registry.aliasToLocalInstance(aliasOfGroup) {
+        if let aliasOfGroup: Alias=completedTask.group {
+            if let group: TasksGroup = aliasOfGroup.toInstance() {
                 if group.status != .Paused && group.status != .Completed {
                     for child in completedTask.children {
-                        if let task = group.invocableTaskFrom(child) {
-                            task.invoke()
+                        if let task: Task=child.toInstance() {
+                            if let invocableTask = group.invocableTaskFrom(task) {
+                                invocableTask.invoke()
+                                task.status = .Running
+                            } else {
+                                throw TasksGroupError.NonInvocableTask(task: completedTask)
+                            }
                         } else {
-                            throw TasksGroupError.NonInvocableTask(task: completedTask)
+                             throw TasksGroupError.TaskNotFound
                         }
-                        child.status = .Running
+
                     }
                 } else {
                     // Paused or Completed
@@ -131,6 +136,7 @@ enum TasksSchedulerError: ErrorType {
 
 enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
+    case TaskNotFound
 }
 
 
@@ -242,18 +248,23 @@ public extension TasksGroup {
 
     private func _findTasksUnCompletedSubTask(task: Task, inout topLevelTasks: [Task]) {
         if topLevelTasks.count==0 {
-            for childTask in task.children {
-                if childTask.status != Task.Status.Completed {
-                    if childTask.taskClassName==Default.NO_NAME {
-                        bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
-                    } else {
-                        topLevelTasks.append(childTask)
+            for childTaskAlias in task.children {
+                if let childTask: Task=childTaskAlias.toInstance() {
+                    if childTask.status != Task.Status.Completed {
+                        if childTask.taskClassName==Default.NO_NAME {
+                            bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
+                        } else {
+                            topLevelTasks.append(childTask)
+                        }
                     }
                 }
-            }
+
+                           }
             if topLevelTasks.count==0 {
-                for task in task.children {
-                    self._findTasksUnCompletedSubTask(task, topLevelTasks: &topLevelTasks)
+                for taskAlias in task.children {
+                    if let task: Task=taskAlias.toInstance() {
+                        self._findTasksUnCompletedSubTask(task, topLevelTasks: &topLevelTasks)
+                    }
                 }
             }
         }
@@ -284,10 +295,21 @@ public extension TasksGroup {
 
     private func _findChildrenTasksWithStatus(task: Task, status: Task.Status, inout tasks: [Task]) {
         var matching=[Task]()
-        let matchingChildren=task.children.filter { (subTask) -> Bool in
-            return subTask.status==status
+        let matchingChildrenAlias=task.children.filter { (subTaskAlias) -> Bool in
+            if let subTask: Task=subTaskAlias.toInstance() {
+                return subTask.status==status
+
+            } else {
+                return false
+            }
+
         }
-        matching.appendContentsOf(matchingChildren)
+        for alias in matchingChildrenAlias {
+            if let task: Task=alias.toInstance() {
+                matching.append(task)
+            }
+        }
+
     }
 
 }

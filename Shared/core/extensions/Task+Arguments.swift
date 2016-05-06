@@ -72,7 +72,10 @@ extension Task {
             func childrens(parent: Task, inout tasks: [Task]) {
                 tasks.append(parent)
                 for child in parent.children {
-                    childrens(child, tasks: &tasks)
+                    if let childTask: Task=child.toInstance() {
+                         childrens(childTask, tasks: &tasks)
+                    }
+
                 }
             }
             childrens(self, tasks: &list)
@@ -86,19 +89,9 @@ extension Task {
 public extension Task {
 
     func addChildren(task: Task) {
-        self.children.append(task)
+        self.children.append(task.toAlias())
         task.group=self.group
-        task.parent=self
-    }
-
-    func removeChildren(task: Task) -> Bool {
-        if let idx=self.children.indexOf(task) {
-            task.parent=nil
-            task.group=nil
-            self.children.removeAtIndex(idx)
-            return true
-        }
-        return false
+        task.parent=self.toAlias()
     }
 
 }

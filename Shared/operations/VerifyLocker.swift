@@ -34,9 +34,9 @@ import Foundation
                             accessGranted success:(locker: Locker)->(),
                            accessRefused failure:(context: JHTTPResponse)->()) {
         // Let's determine if we should verify locally or not.
-        let lockerAlias=Alias(withInstanceUID:lockerUID)
+        let lockerAlias=Alias(withInstanceUID:lockerUID, referenceName:"Locker")
         let verifyer=VerifyLocker()
-        if let _:Locker=Registry.aliasToLocalInstance(lockerAlias) {
+        if let _:Locker=lockerAlias.toInstance() {
             verifyer._proceedToLocalVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
         } else {
             verifyer._proceedToDistantVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
@@ -64,8 +64,8 @@ import Foundation
                                      httpStatusCode: 0,
                                      response: nil,
                                      result:nil)
-        let lockerAlias=Alias(withInstanceUID:lockerUID)
-        if let locker: Locker=Registry.aliasToLocalInstance(lockerAlias) {
+        let lockerAlias=Alias(withInstanceUID:lockerUID, referenceName:"Locker")
+        if let locker: Locker=lockerAlias.toInstance() {
             locker.verificationMethod=Locker.VerificationMethod.Offline
             if locker.code==code {
                 self._verifyLockerBusinessLogic(locker, accessGranted: success, accessRefused: failure)

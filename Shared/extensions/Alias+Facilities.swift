@@ -10,9 +10,19 @@ import Foundation
 
 public extension Alias {
 
-    public convenience init(withInstanceUID iUID: String) {
+    // TODO @bpds how to secure ReferenceName?
+
+    public convenience init(withInstanceUID iUID: String, referenceName: String) {
         self.init()
         self.iUID=iUID
+        self.iReferenceName=referenceName
     }
 
+    func toInstance<T: Collectible>() -> T? {
+        return Registry.registredObjectByUID(self.iUID) as T?
+    }
+
+    func toCollectibleInstance() -> Collectible? {
+        return Registry.objectByUID(self.iUID)
+    }
 }

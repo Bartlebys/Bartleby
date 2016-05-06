@@ -37,10 +37,10 @@ import ObjectMapper
 		case High
 	}
 	public var priority:Priority = .Default
-	//The parent task
-	public var parent:Task?
-	//A collection of Concrete Tasks
-	public var children:[Task] = [Task]()
+	//The alias of the parent task
+	public var parent:Alias?
+	//A collection of Concrete Tasks Aliases
+	public var children:[Alias] = [Alias]()
 	//The progression state of the task
 	public var progressionState:Progression = Progression()
 	//The completion state of the task
@@ -82,8 +82,8 @@ import ObjectMapper
 		self.group=decoder.decodeObjectOfClass(Alias.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
-		self.parent=decoder.decodeObjectOfClass(Task.self, forKey: "parent") 
-		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "children")! as! [Task]
+		self.parent=decoder.decodeObjectOfClass(Alias.self, forKey: "parent") 
+		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias.classForCoder()]), forKey: "children")! as! [Alias]
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?

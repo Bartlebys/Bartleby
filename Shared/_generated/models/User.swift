@@ -45,9 +45,9 @@ import ObjectMapper
 	}
 	public var status:Status = .New
 	//The tags of the user
-	public var tags:[Alias] = Registry.arrayOfAliases()
+	public var tags:[Alias] = arrayOfAliases()
 	//The groups of the user
-	public var groups:[Alias] = Registry.arrayOfAliases()
+	public var groups:[Alias] = arrayOfAliases()
 	//Notes
 	public var notes:String?
 

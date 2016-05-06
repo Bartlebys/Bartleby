@@ -4,6 +4,8 @@
 //
 //  Created by Benoit Pereira da silva on 05/05/2016.
 
+import Foundation
+
 #if os(OSX)
     import AppKit
     import CoreMedia
@@ -12,9 +14,6 @@
 #elseif os(tvOS)
 #endif
 
-#if !USE_EMBEDDED_MODULES
-    import BartlebyKit
-#endif
 
 #if !DUSE_EMBEDDED_MODULES
 @objc(PushOperationTask) public class  PushOperationTask: AbstractReactiveTask, ConcreteTask {
