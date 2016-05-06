@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateGroups) public class UpdateGroups : BaseObject,JHTTPCommand{
+@objc(UpdateGroups) public class UpdateGroups : JObject,JHTTPCommand{
 
     private var _groups:[Group] = [Group]()
 

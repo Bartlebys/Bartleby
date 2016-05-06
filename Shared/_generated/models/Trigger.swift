@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Trigger
-@objc(Trigger) public class Trigger : BaseObject{
+@objc(Trigger) public class Trigger : JObject{
 
 
 	//A message that can be injected for monitoring or external observation

@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadTasksByIdsParameters) public class ReadTasksByIdsParameters : BaseObject {
+@objc(ReadTasksByIdsParameters) public class ReadTasksByIdsParameters : JObject {
 	// 
 	public var ids:[String]?
 	// 
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTasksByIds) public class ReadTasksByIds : BaseObject{
+@objc(ReadTasksByIds) public class ReadTasksByIds : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTasksByIdsParameters,

@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadAliasesByQueryParameters) public class ReadAliasesByQueryParameters : BaseObject {
+@objc(ReadAliasesByQueryParameters) public class ReadAliasesByQueryParameters : JObject {
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadAliasesByQuery) public class ReadAliasesByQuery : BaseObject{
+@objc(ReadAliasesByQuery) public class ReadAliasesByQuery : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadAliasesByQueryParameters,

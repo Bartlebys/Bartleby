@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeletePermission) public class DeletePermission : BaseObject,JHTTPCommand{
+@objc(DeletePermission) public class DeletePermission : JObject,JHTTPCommand{
 
     private var _permissionId:String = String()
 

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Task
-@objc(Task) public class Task : BaseObject{
+@objc(Task) public class Task : JObject{
 
 
 	//The aliased group of the task

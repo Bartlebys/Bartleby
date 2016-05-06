@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseRegistryMetadata
-@objc(BaseRegistryMetadata) public class BaseRegistryMetadata : BaseObject{
+@objc(BaseRegistryMetadata) public class BaseRegistryMetadata : JObject{
 
 
 	//The data space UID can be shared between multiple registries.

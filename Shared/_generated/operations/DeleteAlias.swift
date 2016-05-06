@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteAlias) public class DeleteAlias : BaseObject,JHTTPCommand{
+@objc(DeleteAlias) public class DeleteAlias : JObject,JHTTPCommand{
 
     private var _aliasId:String = String()
 

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Alias
-@objc(Alias) public class Alias : BaseObject{
+@objc(Alias) public class Alias : JObject{
 
 
 	//The UID of the instance

@@ -108,13 +108,13 @@ Documents can be shared between iOS, tvOS and OSX.
     // to resolve aliases, cross reference, it simplify instance mobility from a registry to another, etc..
     // future implementation may include extension for lazy Storage
 
-    private static var _objectByUID=Dictionary<String, Any>()
+    private static var _instancesByUID=Dictionary<String, Collectible>()
 
 
     // The number of registred object
     public static var numberOfRegistredObject: Int {
         get {
-            return _objectByUID.count
+            return _instancesByUID.count
         }
     }
 
@@ -123,8 +123,8 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - parameter instance: the Identifiable instance
      */
-    public static func register<T: Identifiable>(instance: T) {
-        self._objectByUID[instance.UID]=instance
+    public static func register<T: Collectible>(instance: T) {
+        self._instancesByUID[instance.UID]=instance
     }
 
     /**
@@ -132,8 +132,8 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - parameter instance: the collectible instance
      */
-    public static func unRegister<T: Identifiable>(instance: T) {
-        self._objectByUID.removeValueForKey(instance.UID)
+    public static func unRegister<T: Collectible>(instance: T) {
+        self._instancesByUID.removeValueForKey(instance.UID)
     }
 
     /**
@@ -144,7 +144,7 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the instance
      */
     public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
-        return self._objectByUID[UID] as? T
+        return self._instancesByUID[UID] as? T
     }
 
 
@@ -155,9 +155,8 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - returns: the instance
      */
-    static public func objectByUID(UID: String) -> Collectible? {
-        let o=self._objectByUID[UID]
-        return o as? Collectible
+    static public func collectibleInstanceByUID(UID: String) -> Collectible? {
+        return self._instancesByUID[UID]
     }
 
 
@@ -170,7 +169,7 @@ Documents can be shared between iOS, tvOS and OSX.
      */
     public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?) -> [T] {
         var instances=[T]()
-        for (_, instance) in self._objectByUID {
+        for (_, instance) in self._instancesByUID {
             if let o=instance as? T {
                 if let block=block {
                     block(instance:o)

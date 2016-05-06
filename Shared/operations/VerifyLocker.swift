@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 
-@objc(VerifyLocker) public class VerifyLocker: BaseObject {
+@objc(VerifyLocker) public class VerifyLocker: JObject {
 
     /**
      Proceed to verification

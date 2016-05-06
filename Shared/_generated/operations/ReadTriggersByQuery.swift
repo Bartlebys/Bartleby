@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadTriggersByQueryParameters) public class ReadTriggersByQueryParameters : BaseObject {
+@objc(ReadTriggersByQueryParameters) public class ReadTriggersByQueryParameters : JObject {
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTriggersByQuery) public class ReadTriggersByQuery : BaseObject{
+@objc(ReadTriggersByQuery) public class ReadTriggersByQuery : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTriggersByQueryParameters,

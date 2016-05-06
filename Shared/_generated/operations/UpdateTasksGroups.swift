@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateTasksGroups) public class UpdateTasksGroups : BaseObject,JHTTPCommand{
+@objc(UpdateTasksGroups) public class UpdateTasksGroups : JObject,JHTTPCommand{
 
     private var _tasksGroups:[TasksGroup] = [TasksGroup]()
 

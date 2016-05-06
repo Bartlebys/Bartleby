@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateUsers) public class CreateUsers : BaseObject,JHTTPCommand{
+@objc(CreateUsers) public class CreateUsers : JObject,JHTTPCommand{
 
     private var _users:[User] = [User]()
 

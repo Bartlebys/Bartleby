@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Progression
-@objc(Progression) public class Progression : BaseObject{
+@objc(Progression) public class Progression : JObject{
 
 
 	//Index of the task

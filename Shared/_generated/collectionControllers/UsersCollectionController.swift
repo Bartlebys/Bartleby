@@ -23,7 +23,7 @@ import ObjectMapper
 // it uses KVO , KVC , dynamic invocation, oS X cocoa bindings,...
 // It should be used on documents and not very large collections as it is computationnally intensive
 
-@objc(UsersCollectionController) public class UsersCollectionController : BaseObject,IterableCollectibleCollection{
+@objc(UsersCollectionController) public class UsersCollectionController : JObject,IterableCollectibleCollection{
 
     weak public var undoManager:NSUndoManager?
 

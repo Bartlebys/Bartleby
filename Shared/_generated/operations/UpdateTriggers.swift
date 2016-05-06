@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateTriggers) public class UpdateTriggers : BaseObject,JHTTPCommand{
+@objc(UpdateTriggers) public class UpdateTriggers : JObject,JHTTPCommand{
 
     private var _triggers:[Trigger] = [Trigger]()
 

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Tag
-@objc(Tag) public class Tag : BaseObject{
+@objc(Tag) public class Tag : JObject{
 
 
 	public var creationDate:String?

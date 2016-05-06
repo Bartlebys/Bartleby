@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadAliasesByIdsParameters) public class ReadAliasesByIdsParameters : BaseObject {
+@objc(ReadAliasesByIdsParameters) public class ReadAliasesByIdsParameters : JObject {
 	// 
 	public var ids:[String]?
 	// 
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadAliasesByIds) public class ReadAliasesByIds : BaseObject{
+@objc(ReadAliasesByIds) public class ReadAliasesByIds : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadAliasesByIdsParameters,

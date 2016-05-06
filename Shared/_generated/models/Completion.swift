@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Completion
-@objc(Completion) public class Completion : BaseObject{
+@objc(Completion) public class Completion : JObject{
 
 
 	//Success if set to true

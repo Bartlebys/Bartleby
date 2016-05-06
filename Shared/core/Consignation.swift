@@ -40,13 +40,6 @@ public struct Context: Consignable {
     public init(context: String!) {
         self.caller=context
     }
-
-    /*
-    public var description: String {
-        get{
-            return "#(\(code)) \(caller)\n"
-        }
-    }*/
 }
 
 public protocol ConsignableHTTPContext: Consignable {
@@ -96,17 +89,6 @@ public struct HTTPContext: ConsignableHTTPContext {
         self.response=response
         self.result=result
     }
-
-    /*
-  public var description: String {
-        get{
-            let secureCode = (code ?? 0)
-            let secureCaller = (caller ?? "Caller-Undefined")
-            let secureResponse = (response ?? "No-Response")
-
-            return "#(\(secureCode) \(secureCaller)\nURL:\(relatedURL)\nHTTP Status Code:\(httpStatusCode)\n Response:\(secureResponse)"
-        }
-    }*/
 }
 
 

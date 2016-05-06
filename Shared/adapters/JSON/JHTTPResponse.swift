@@ -11,7 +11,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc (JHTTPResponse) public class JHTTPResponse: BaseObject, HTTPResponse {
+@objc (JHTTPResponse) public class JHTTPResponse: JObject, HTTPResponse {
 
     // A developer set code to provide filtering
     public var code: UInt=UInt.max

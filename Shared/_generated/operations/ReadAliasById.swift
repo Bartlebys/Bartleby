@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadAliasById) public class ReadAliasById : BaseObject{
+@objc(ReadAliasById) public class ReadAliasById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						aliasId:String,

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseCollectionMetadatum
-@objc(BaseCollectionMetadatum) public class BaseCollectionMetadatum : BaseObject{
+@objc(BaseCollectionMetadatum) public class BaseCollectionMetadatum : JObject{
 
 
 	//the used file storage

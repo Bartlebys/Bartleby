@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTasksGroupById) public class ReadTasksGroupById : BaseObject{
+@objc(ReadTasksGroupById) public class ReadTasksGroupById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						tasksGroupId:String,

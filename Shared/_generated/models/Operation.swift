@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Operation
-@objc(Operation) public class Operation : BaseObject{
+@objc(Operation) public class Operation : JObject{
 
 
 	//The dictionary representation of a serialized action call

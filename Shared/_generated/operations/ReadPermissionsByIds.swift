@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadPermissionsByIdsParameters) public class ReadPermissionsByIdsParameters : BaseObject {
+@objc(ReadPermissionsByIdsParameters) public class ReadPermissionsByIdsParameters : JObject {
 	// 
 	public var ids:[String]?
 	// 
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadPermissionsByIds) public class ReadPermissionsByIds : BaseObject{
+@objc(ReadPermissionsByIds) public class ReadPermissionsByIds : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadPermissionsByIdsParameters,

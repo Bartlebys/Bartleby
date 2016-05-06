@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteTasksGroups) public class DeleteTasksGroups : BaseObject,JHTTPCommand{
+@objc(DeleteTasksGroups) public class DeleteTasksGroups : JObject,JHTTPCommand{
 
     private var _ids:[String] = [String]()
 

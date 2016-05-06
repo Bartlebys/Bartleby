@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model ObjectError
-@objc(ObjectError) public class ObjectError : BaseObject{
+@objc(ObjectError) public class ObjectError : JObject{
 
 
 	//The Error Message

@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteLockers) public class DeleteLockers : BaseObject,JHTTPCommand{
+@objc(DeleteLockers) public class DeleteLockers : JObject,JHTTPCommand{
 
     private var _ids:[String] = [String]()
 

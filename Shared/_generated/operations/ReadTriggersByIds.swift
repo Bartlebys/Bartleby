@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadTriggersByIdsParameters) public class ReadTriggersByIdsParameters : BaseObject {
+@objc(ReadTriggersByIdsParameters) public class ReadTriggersByIdsParameters : JObject {
 	// 
 	public var ids:[String]?
 	// 
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTriggersByIds) public class ReadTriggersByIds : BaseObject{
+@objc(ReadTriggersByIds) public class ReadTriggersByIds : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTriggersByIdsParameters,

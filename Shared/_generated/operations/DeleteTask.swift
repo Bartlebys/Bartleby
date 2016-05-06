@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteTask) public class DeleteTask : BaseObject,JHTTPCommand{
+@objc(DeleteTask) public class DeleteTask : JObject,JHTTPCommand{
 
     private var _taskId:String = String()
 

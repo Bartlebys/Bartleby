@@ -26,7 +26,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 // Notice the @objc(Name)
 // http://stackoverflow.com/a/24196632/341994
 // MARK: - JObject Class
-@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Identifiable, Persistent, NSSecureCoding {
+@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NSSecureCoding {
 
     // MARK: - ReferenceName
 
@@ -54,52 +54,68 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    // MARK: - Mappable
-
-    public required init?(_ map: Map) {
-        super.init()
-        mapping(map)
-    }
-
-
-    public func mapping(map: Map) {
-        _id <- map[Default.UID_KEY]
-        referenceName <- map[Default.REFERENCE_NAME_KEY]
-    }
-
     // MARK: - Collectible = Identifiable + Serializable
+
+
+    //Collectible protocol: committed
+    public var committed: Bool = false
+    //Collectible protocol: distributed
+    public var distributed: Bool = false
+    //Collectible protocol: The Creator UID
+    public var creatorUID: String = "\(Default.NO_UID)"
+
 
     public func toAlias() -> Alias {
         return Alias(withInstanceUID: self.UID, referenceName: self.referenceName)
     }
 
 
+    // MARK: - Serializable
+
+    public func serialize() -> NSData {
+        let dictionaryRepresentation = self.dictionaryRepresentation()
+        do {
+            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
+                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
+            } else {
+                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
+            }
+        } catch {
+            return NSData()
+        }
+    }
+
+
+    public func deserialize(data: NSData) -> Serializable {
+        return JSerializer.deserialize(data)
+    }
+
+
+    public func updateData(data: NSData) -> Serializable {
+        do {
+            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
+                self.mapping(map)
+                return self
+            }
+        } catch {
+            //Silent catch
+            bprint("deserialize ERROR \(error)")
+        }
+        // If there is an issue we relay to the serializer
+
+        return JSerializer.deserialize(data)
+    }
+
     // MARK: - Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
-
-    private var _warningCounter=0
 
     // @bpds to be revised
     private var _id: String=Default.NO_UID {
         didSet {
             Registry.register(self)
         }
-
-        /*
-        willSet (identifier) {
-            if _id != Default.NO_UID {
-                self._warningCounter += 1
-                //bprint("¡WARNING(\(self._warningCounter))! multiple allocation of \(identifier) \(self.referenceName) \(self.hash)", file: #file, function: #function, line: #line)
-                Registry.unRegister(self)
-            }
-        }
-        didSet {
-            if self._id != Default.NO_UID {
-                Registry.register(self)
-            }
-        }
-        */
     }
 
 
@@ -143,20 +159,45 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
+    // MARK: - Mappable
+
+    public required init?(_ map: Map) {
+        super.init()
+        mapping(map)
+    }
+
+
+    public func mapping(map: Map) {
+        self._id <- map[Default.UID_KEY]
+        self.referenceName <- map[Default.REFERENCE_NAME_KEY]
+        self.committed <- map["committed"]
+        self.distributed <- map["distributed"]
+        self.creatorUID <- map["creatorUID"]
+
+    }
+
 
     // MARK: - NSecureCoding
 
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(referenceName, forKey: Default.REFERENCE_NAME_KEY)
-        aCoder.encodeObject(_id, forKey: Default.UID_KEY)
-     }
-
     public required init?(coder decoder: NSCoder) {
         super.init()
-        _id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
-        referenceName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.REFERENCE_NAME_KEY)! as NSString)
+        self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
+        self.referenceName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.REFERENCE_NAME_KEY)! as NSString)
+        self.committed=decoder.decodeBoolForKey("committed")
+        self.distributed=decoder.decodeBoolForKey("distributed")
+        self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
     }
+
+    public func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.referenceName, forKey: Default.REFERENCE_NAME_KEY)
+        coder.encodeObject(self._id, forKey: Default.UID_KEY)
+        coder.encodeBool(self.committed, forKey:"committed")
+        coder.encodeBool(self.distributed, forKey:"distributed")
+        coder.encodeObject(self.creatorUID, forKey:"creatorUID")
+     }
+
+
 
     public class func supportsSecureCoding() -> Bool {
         return true
@@ -165,12 +206,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: - NSCopying
 
-    /*
 
-     - parameter zone:
-
-     - returns:
-     */
     public func copyWithZone(zone: NSZone) -> AnyObject {
         let data: NSData=JSerializer.serialize(self)
         return JSerializer.deserialize(data) as! AnyObject
@@ -203,48 +239,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 }
 
 
-// MARK: - Serializable
-
-extension JObject:Serializable {
 
 
-    public func serialize() -> NSData {
-        let dictionaryRepresentation = self.dictionaryRepresentation()
-        do {
-            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
-            } else {
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
-            }
-        } catch {
-            return NSData()
-        }
-    }
-
-
-    public func deserialize(data: NSData) -> Serializable {
-        return JSerializer.deserialize(data)
-    }
-
-
-
-    public func updateData(data: NSData) -> Serializable {
-        do {
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
-                self.mapping(map)
-                return self
-            }
-        } catch {
-            //Silent catch
-            bprint("deserialize ERROR \(error)")
-        }
-        // If there is an issue we relay to the serializer
-
-        return JSerializer.deserialize(data)
-    }
-
-}
 
 // MARK: - DictionaryRepresentation
 

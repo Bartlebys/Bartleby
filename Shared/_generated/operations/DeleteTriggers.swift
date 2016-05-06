@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteTriggers) public class DeleteTriggers : BaseObject,JHTTPCommand{
+@objc(DeleteTriggers) public class DeleteTriggers : JObject,JHTTPCommand{
 
     private var _ids:[String] = [String]()
 

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Group
-@objc(Group) public class Group : BaseObject{
+@objc(Group) public class Group : JObject{
 
 
 	public var creationDate:String?

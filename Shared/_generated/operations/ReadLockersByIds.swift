@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : BaseObject {
+@objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : JObject {
 	// 
 	public var ids:[String]?
 	// 
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadLockersByIds) public class ReadLockersByIds : BaseObject{
+@objc(ReadLockersByIds) public class ReadLockersByIds : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadLockersByIdsParameters,

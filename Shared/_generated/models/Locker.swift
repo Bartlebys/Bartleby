@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Locker
-@objc(Locker) public class Locker : BaseObject{
+@objc(Locker) public class Locker : JObject{
 
 
 	//The spaceUID is the data space UID.

@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : BaseObject {
+@objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : JObject {
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadLockersByQuery) public class ReadLockersByQuery : BaseObject{
+@objc(ReadLockersByQuery) public class ReadLockersByQuery : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadLockersByQueryParameters,

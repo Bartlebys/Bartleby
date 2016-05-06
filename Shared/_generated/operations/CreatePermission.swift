@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreatePermission) public class CreatePermission : BaseObject,JHTTPCommand{
+@objc(CreatePermission) public class CreatePermission : JObject,JHTTPCommand{
 
     private var _permission:Permission = Permission()
 

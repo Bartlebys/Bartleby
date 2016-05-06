@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadTasksByQueryParameters) public class ReadTasksByQueryParameters : BaseObject {
+@objc(ReadTasksByQueryParameters) public class ReadTasksByQueryParameters : JObject {
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTasksByQuery) public class ReadTasksByQuery : BaseObject{
+@objc(ReadTasksByQuery) public class ReadTasksByQuery : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTasksByQueryParameters,

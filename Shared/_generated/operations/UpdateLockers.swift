@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateLockers) public class UpdateLockers : BaseObject,JHTTPCommand{
+@objc(UpdateLockers) public class UpdateLockers : JObject,JHTTPCommand{
 
     private var _lockers:[Locker] = [Locker]()
 

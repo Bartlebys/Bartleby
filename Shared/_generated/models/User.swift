@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model User
-@objc(User) public class User : BaseObject{
+@objc(User) public class User : JObject{
 
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.

@@ -23,6 +23,6 @@ public extension Alias {
     }
 
     func toCollectibleInstance() -> Collectible? {
-        return Registry.objectByUID(self.iUID)
+        return Registry.collectibleInstanceByUID(self.iUID)
     }
 }

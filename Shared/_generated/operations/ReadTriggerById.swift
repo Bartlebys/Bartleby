@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadTriggerById) public class ReadTriggerById : BaseObject{
+@objc(ReadTriggerById) public class ReadTriggerById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						triggerId:String,

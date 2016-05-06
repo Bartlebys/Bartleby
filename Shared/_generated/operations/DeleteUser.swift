@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteUser) public class DeleteUser : BaseObject,JHTTPCommand{
+@objc(DeleteUser) public class DeleteUser : JObject,JHTTPCommand{
 
     private var _userId:String = String()
 

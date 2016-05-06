@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadPermissionById) public class ReadPermissionById : BaseObject{
+@objc(ReadPermissionById) public class ReadPermissionById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						permissionId:String,

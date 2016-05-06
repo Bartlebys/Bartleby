@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model TasksGroup
-@objc(TasksGroup) public class TasksGroup : BaseObject{
+@objc(TasksGroup) public class TasksGroup : JObject{
 
 
 	//Task Status

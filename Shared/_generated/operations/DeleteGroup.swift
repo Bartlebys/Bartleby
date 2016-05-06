@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteGroup) public class DeleteGroup : BaseObject,JHTTPCommand{
+@objc(DeleteGroup) public class DeleteGroup : JObject,JHTTPCommand{
 
     private var _groupId:String = String()
 

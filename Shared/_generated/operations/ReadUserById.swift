@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadUserById) public class ReadUserById : BaseObject{
+@objc(ReadUserById) public class ReadUserById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						userId:String,

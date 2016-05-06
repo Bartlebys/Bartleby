@@ -93,9 +93,6 @@
 		E52519BD1CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519081CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift */; };
 		E52519BE1CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519081CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift */; };
 		E52519BF1CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519081CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift */; };
-		E52519C01CD0BE3F00D873A3 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519091CD0BE3F00D873A3 /* BaseObject.swift */; };
-		E52519C11CD0BE3F00D873A3 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519091CD0BE3F00D873A3 /* BaseObject.swift */; };
-		E52519C21CD0BE3F00D873A3 /* BaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519091CD0BE3F00D873A3 /* BaseObject.swift */; };
 		E52519C31CD0BE3F00D873A3 /* BaseRegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525190A1CD0BE3F00D873A3 /* BaseRegistryMetadata.swift */; };
 		E52519C41CD0BE3F00D873A3 /* BaseRegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525190A1CD0BE3F00D873A3 /* BaseRegistryMetadata.swift */; };
 		E52519C51CD0BE3F00D873A3 /* BaseRegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525190A1CD0BE3F00D873A3 /* BaseRegistryMetadata.swift */; };
@@ -351,9 +348,6 @@
 		E5251ABF1CD0BE3F00D873A3 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519611CD0BE3F00D873A3 /* Base64DataTransform.swift */; };
 		E5251AC01CD0BE3F00D873A3 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519611CD0BE3F00D873A3 /* Base64DataTransform.swift */; };
 		E5251AC11CD0BE3F00D873A3 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519611CD0BE3F00D873A3 /* Base64DataTransform.swift */; };
-		E5251AC21CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519621CD0BE3F00D873A3 /* BaseObject+Protocols.swift */; };
-		E5251AC31CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519621CD0BE3F00D873A3 /* BaseObject+Protocols.swift */; };
-		E5251AC41CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519621CD0BE3F00D873A3 /* BaseObject+Protocols.swift */; };
 		E5251AC51CD0BE3F00D873A3 /* JCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519631CD0BE3F00D873A3 /* JCollectionMetadatum.swift */; };
 		E5251AC61CD0BE3F00D873A3 /* JCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519631CD0BE3F00D873A3 /* JCollectionMetadatum.swift */; };
 		E5251AC71CD0BE3F00D873A3 /* JCollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52519631CD0BE3F00D873A3 /* JCollectionMetadatum.swift */; };
@@ -743,7 +737,6 @@
 		E52519041CD0BE3F00D873A3 /* UsersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCollectionController.swift; sourceTree = "<group>"; };
 		E52519071CD0BE3F00D873A3 /* Alias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
 		E52519081CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCollectionMetadatum.swift; sourceTree = "<group>"; };
-		E52519091CD0BE3F00D873A3 /* BaseObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObject.swift; sourceTree = "<group>"; };
 		E525190A1CD0BE3F00D873A3 /* BaseRegistryMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseRegistryMetadata.swift; sourceTree = "<group>"; };
 		E525190B1CD0BE3F00D873A3 /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E525190C1CD0BE3F00D873A3 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
@@ -829,7 +822,6 @@
 		E525195D1CD0BE3F00D873A3 /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		E525195E1CD0BE3F00D873A3 /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
 		E52519611CD0BE3F00D873A3 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
-		E52519621CD0BE3F00D873A3 /* BaseObject+Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BaseObject+Protocols.swift"; sourceTree = "<group>"; };
 		E52519631CD0BE3F00D873A3 /* JCollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JCollectionMetadatum.swift; sourceTree = "<group>"; };
 		E52519641CD0BE3F00D873A3 /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
 		E52519651CD0BE3F00D873A3 /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
@@ -1090,7 +1082,6 @@
 				E57F17F91CD3B2B7005D8A46 /* Task.swift */,
 				E52519071CD0BE3F00D873A3 /* Alias.swift */,
 				E52519081CD0BE3F00D873A3 /* BaseCollectionMetadatum.swift */,
-				E52519091CD0BE3F00D873A3 /* BaseObject.swift */,
 				E525190A1CD0BE3F00D873A3 /* BaseRegistryMetadata.swift */,
 				E525190B1CD0BE3F00D873A3 /* Completion.swift */,
 				E525190C1CD0BE3F00D873A3 /* Group.swift */,
@@ -1199,7 +1190,6 @@
 			isa = PBXGroup;
 			children = (
 				E52519611CD0BE3F00D873A3 /* Base64DataTransform.swift */,
-				E52519621CD0BE3F00D873A3 /* BaseObject+Protocols.swift */,
 				E52519631CD0BE3F00D873A3 /* JCollectionMetadatum.swift */,
 				E52519641CD0BE3F00D873A3 /* JDataPerformer.swift */,
 				E52519651CD0BE3F00D873A3 /* JDocument.swift */,
@@ -1798,7 +1788,6 @@
 				E53E28F01CA572E80079ED23 /* LoginCommand.swift in Sources */,
 				E52519E71CD0BE3F00D873A3 /* CreateAlias.swift in Sources */,
 				E53E275A1CA572940079ED23 /* Request.swift in Sources */,
-				E5251AC21CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */,
 				E5251A291CD0BE3F00D873A3 /* DeletePermission.swift in Sources */,
 				E5251A921CD0BE3F00D873A3 /* UpdateAliases.swift in Sources */,
 				E53E275E1CA572940079ED23 /* ServerTrustPolicy.swift in Sources */,
@@ -1848,7 +1837,6 @@
 				E52519B41CD0BE3F00D873A3 /* UsersCollectionController.swift in Sources */,
 				E5B98EBA1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
 				E5B98EB11CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
-				E52519C01CD0BE3F00D873A3 /* BaseObject.swift in Sources */,
 				E52519D21CD0BE3F00D873A3 /* Operation.swift in Sources */,
 				E53E28F31CA572E80079ED23 /* CommandBase.swift in Sources */,
 				E5251B3A1CD0BE3F00D873A3 /* LoginUser.swift in Sources */,
@@ -2071,7 +2059,6 @@
 				E5251ACC1CD0BE3F00D873A3 /* JDocument.swift in Sources */,
 				E5251B411CD0BE3F00D873A3 /* VerifyLocker.swift in Sources */,
 				E525199D1CD0BE3F00D873A3 /* BartlebyDocument.swift in Sources */,
-				E5251AC31CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */,
 				5B66FABD1CD203E7000A2534 /* LocalDMGSyncTests.swift in Sources */,
 				E52519A61CD0BE3F00D873A3 /* LockersCollectionController.swift in Sources */,
 				E52519E81CD0BE3F00D873A3 /* CreateAlias.swift in Sources */,
@@ -2190,7 +2177,6 @@
 				5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
 				5B8E5D551C8D7FCD002CFA03 /* Error.swift in Sources */,
 				5BB60F4E1CBFE4E200D23B4F /* CryptedDataTransform.swift in Sources */,
-				E52519C11CD0BE3F00D873A3 /* BaseObject.swift in Sources */,
 				E552B7B21C3D4E49001CD53B /* NSData+CRC.m in Sources */,
 				E5251A211CD0BE3F00D873A3 /* DeleteGroups.swift in Sources */,
 				E5E750721CDB53EC00520AB3 /* CompletionStatus.swift in Sources */,
@@ -2377,7 +2363,6 @@
 				E55C92501CBF84ED008163F6 /* ParameterEncoding.swift in Sources */,
 				E55C92511CBF84ED008163F6 /* Request.swift in Sources */,
 				E5251A4F1CD0BE3F00D873A3 /* ReadAliasesByQuery.swift in Sources */,
-				E5251AC41CD0BE3F00D873A3 /* BaseObject+Protocols.swift in Sources */,
 				E55C92521CBF84ED008163F6 /* Response.swift in Sources */,
 				E52519A71CD0BE3F00D873A3 /* LockersCollectionController.swift in Sources */,
 				E5251A2B1CD0BE3F00D873A3 /* DeletePermission.swift in Sources */,
@@ -2404,7 +2389,6 @@
 				E5E750961CDB53F400520AB3 /* Task+Arguments.swift in Sources */,
 				E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E5251A401CD0BE3F00D873A3 /* DeleteTriggers.swift in Sources */,
-				E52519C21CD0BE3F00D873A3 /* BaseObject.swift in Sources */,
 				E5251ABB1CD0BE3F00D873A3 /* UpdateUser.swift in Sources */,
 				E5251A041CD0BE3F00D873A3 /* CreateTasks.swift in Sources */,
 				E52519F81CD0BE3F00D873A3 /* CreateLockers.swift in Sources */,

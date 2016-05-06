@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadGroupById) public class ReadGroupById : BaseObject{
+@objc(ReadGroupById) public class ReadGroupById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						groupId:String,

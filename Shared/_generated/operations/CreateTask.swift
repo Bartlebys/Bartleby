@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateTask) public class CreateTask : BaseObject,JHTTPCommand{
+@objc(CreateTask) public class CreateTask : JObject,JHTTPCommand{
 
     private var _task:Task = Task()
 

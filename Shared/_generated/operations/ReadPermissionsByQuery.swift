@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadPermissionsByQueryParameters) public class ReadPermissionsByQueryParameters : BaseObject {
+@objc(ReadPermissionsByQueryParameters) public class ReadPermissionsByQueryParameters : JObject {
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -74,7 +74,7 @@ import ObjectMapper
 
 
 
-@objc(ReadPermissionsByQuery) public class ReadPermissionsByQuery : BaseObject{
+@objc(ReadPermissionsByQuery) public class ReadPermissionsByQuery : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadPermissionsByQueryParameters,

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Permission
-@objc(Permission) public class Permission : BaseObject{
+@objc(Permission) public class Permission : JObject{
 
 
 	//The call string e.g : DeleteOperation->call

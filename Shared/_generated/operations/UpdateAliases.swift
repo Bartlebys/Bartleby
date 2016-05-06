@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateAliases) public class UpdateAliases : BaseObject,JHTTPCommand{
+@objc(UpdateAliases) public class UpdateAliases : JObject,JHTTPCommand{
 
     private var _aliases:[Alias] = [Alias]()
 

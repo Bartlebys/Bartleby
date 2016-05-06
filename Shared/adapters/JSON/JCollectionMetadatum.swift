@@ -17,7 +17,7 @@ import Foundation
 // The underlining model has been implemented by flexions in BaseCollectionMetadatum
 @objc(JCollectionMetadatum) public class JCollectionMetadatum: BaseCollectionMetadatum, CollectionMetadatum {
 
-    public var proxy: BaseObject? {
+    public var proxy: JObject? {
         didSet {
             if let proxy=proxy as? Collectible {
                 self.collectionName=proxy.d_collectionName

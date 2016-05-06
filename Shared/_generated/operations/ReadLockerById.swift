@@ -17,7 +17,7 @@ import ObjectMapper
 
 
 
-@objc(ReadLockerById) public class ReadLockerById : BaseObject{
+@objc(ReadLockerById) public class ReadLockerById : JObject{
 
     public static func execute(fromDataSpace spaceUID:String,
 						lockerId:String,
