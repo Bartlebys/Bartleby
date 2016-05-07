@@ -16,13 +16,27 @@ class TestContext: IdentifiableCardContext {
 }
 class BsyncXPCHelperTests: XCTestCase {
     
-    func test101_BasicTest() {
-        let user = User()
-        user.creatorUID = user.UID
-        let context = TestContext()
-        let folderPath = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncHelperTests/" + context.name + "/"
-        let helper = BsyncXPCHelper()
-        let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        //helper.
-    }
+//    func test101_BasicTest() {
+//        let expectation = expectationWithDescription("DMG creation")
+//        let user = User()
+//        user.creatorUID = user.UID
+//        let context = TestContext()
+//        let folderPath = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncHelperTests/" + context.name + "/"
+//        let helper = BsyncXPCHelper()
+//        let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
+//        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+//            expectation.fulfill()
+//            XCTAssert(work.success)
+//            }, detach: true)
+//        
+//        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
+//            // use remoteObjectProxy
+//            print(volumePath)
+//            whenDone.callBlock(Completion.successState())
+//            }, completion: handler)
+//        
+//        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+//            bprint(error?.localizedDescription)
+//        }
+//    }
 }
