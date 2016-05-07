@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */; };
+		5B5D0A081CDE1F48001FB281 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
 		5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */; };
@@ -371,6 +372,7 @@
 /* Begin PBXFileReference section */
 		5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelperTests.swift; sourceTree = "<group>"; };
 		5B5096901CA5824500B8D36E /* LockerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerTests.swift; sourceTree = "<group>"; };
+		5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManagerTests.swift; sourceTree = "<group>"; };
 		5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusTests.swift; sourceTree = "<group>"; };
 		5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpacetTests.swift; sourceTree = "<group>"; };
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
@@ -666,6 +668,7 @@
 		E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
 			isa = PBXGroup;
 			children = (
+				5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */,
 				5BBF7D441CC8E4E400F2237B /* TransformTests.swift */,
 				E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */,
 				5BBF7D431CC8E4AF00F2237B /* Crypto */,
@@ -1457,6 +1460,7 @@
 			files = (
 				E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */,
 				E5361CFD1CD8DD9E005855DC /* HandlersTests.swift in Sources */,
+				5B5D0A081CDE1F48001FB281 /* BFileManagerTests.swift in Sources */,
 				E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */,
 				E5959C071CA6702200557BDB /* LockerTests.swift in Sources */,
 				5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */,
