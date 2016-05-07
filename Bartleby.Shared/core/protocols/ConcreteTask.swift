@@ -46,7 +46,7 @@ public protocol ConcreteTask: SerializableArguments, Invocable {
      convenience required public init (arguments: Serializable) {
         self.init()
         self.argumentsData=arguments.serialize()
-        self.taskClassName=self.referenceName // (!) Used to force the transitionnal casting
+        self.taskClassName=self.typeName // (!) Used to force the transitionnal casting
      }
      ```
 

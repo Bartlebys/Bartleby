@@ -11,10 +11,15 @@ import Foundation
 
 //MARK: - Bartleby
 
+
+public enum BartlebyError: ErrorType {
+    case UniversalSerializationTypMissmatch
+}
+
+
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
 // Bartleby 2.0 will implement storage layers for larger data set, and distant aliases
-
-@objc(Bartleby) public class  Bartleby: Consignee {
+public class  Bartleby: Consignee {
 
     // The configuration
     static public var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
@@ -36,7 +41,7 @@ import Foundation
     }()
 
     static let b_version = "1.0"
-    static let b_release = "beta1"
+    static let b_release = "beta2"
     private static var _enableBPrint: Bool=false
 
     /// The version string of Bartleby framework
@@ -45,6 +50,8 @@ import Foundation
             return "\(self.b_version).\(self.b_release)"
         }
     }
+
+
 
     /**
      Should be called on Init of the Document.
@@ -68,13 +75,15 @@ import Foundation
         HTTPManager.configure()
     }
 
+    override init() {
+        super.init()
+    }
+
+    // Bartleby's favourite
     public static func please(message: String) -> String {
         return "I would prefer not to!"
     }
 
-    override init() {
-        super.init()
-    }
 
 
     // MARK: -

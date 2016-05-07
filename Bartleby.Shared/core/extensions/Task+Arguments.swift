@@ -50,10 +50,10 @@ extension Task {
     final public func forward(completionState: Completion) {
         self.completionState=completionState
         self.status = .Completed
-        if let _=try? Bartleby.scheduler.onCompletion(self){
-            
-        }else{
-            
+        if let _=try? Bartleby.scheduler.onCompletion(self) {
+
+        } else {
+
         }
     }
 
@@ -88,9 +88,9 @@ extension Task {
 public extension Task {
 
     func addChildren(task: Task) {
-        self.children.append(task.toAlias())
+        self.children.append(Alias(from:task))
         task.group=self.group
-        task.parent=self.toAlias()
+        task.parent=Alias(from:self)
     }
 
 }

@@ -86,6 +86,8 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
 
+
+
 }
 
 // MARK: - Default values
@@ -100,7 +102,7 @@ public struct Default {
     //Misc constants
 
     static public let UID_KEY = "_id"
-    static public let REFERENCE_NAME_KEY = "referenceName"
+    static public let TYPE_NAME_KEY = "typeName"
 
     static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
     static public let NO_UID: String="NO_UID"

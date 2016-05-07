@@ -28,6 +28,25 @@ import UIKit
 
 @objc(BartlebyDocument) public class BartlebyDocument : JDocument {
 
+    // MARK - Aliases Universal Type Support
+
+     public class func addUniversalTypesForAliases() {
+		Registry.addUniversalTypeForAlias(Alias<BaseCollectionMetadatum>())
+		Registry.addUniversalTypeForAlias(Alias<Task>())
+		Registry.addUniversalTypeForAlias(Alias<TasksGroup>())
+		Registry.addUniversalTypeForAlias(Alias<Progression>())
+		Registry.addUniversalTypeForAlias(Alias<Completion>())
+		Registry.addUniversalTypeForAlias(Alias<BaseRegistryMetadata>())
+		Registry.addUniversalTypeForAlias(Alias<ObjectError>())
+		Registry.addUniversalTypeForAlias(Alias<User>())
+		Registry.addUniversalTypeForAlias(Alias<Locker>())
+		Registry.addUniversalTypeForAlias(Alias<Group>())
+		Registry.addUniversalTypeForAlias(Alias<Permission>())
+		Registry.addUniversalTypeForAlias(Alias<Operation>())
+		Registry.addUniversalTypeForAlias(Alias<Trigger>())
+		Registry.addUniversalTypeForAlias(Alias<Tag>())
+    }
+
     private var _KVOContext: Int = 0
 
     // Collection Controller
@@ -301,7 +320,6 @@ import UIKit
         }
     }
         
-
 
 
 
@@ -583,12 +601,12 @@ import UIKit
 
     required public init() {
         super.init()
-    }
+        BartlebyDocument.addUniversalTypesForAliases()    }
     #else
 
     public required init(fileURL url: NSURL) {
         super.init(fileURL: url)
-    }
+        BartlebyDocument.addUniversalTypesForAliases()    }
 
     #endif
 

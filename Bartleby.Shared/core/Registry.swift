@@ -102,6 +102,43 @@ Documents can be shared between iOS, tvOS and OSX.
     internal var _activeSecurityBookmarks=[NSURL]()
 
 
+    // MARK : - Universal Type Name management.
+
+    private static var _associatedTypesMap=[String:String]()
+
+    public static func addUniversalTypeForAlias<T:Collectible>(prototype: Alias<T>) {
+        let name = prototype.universalTypeName()
+        Registry._associatedTypesMap[name]=NSStringFromClass(prototype.dynamicType)
+    }
+
+    /**
+     Bartleby associate the types to allow serializable translitterations.
+     Multiple Apps can interchange and consume Bartleby's Dynamic / Distributed Object
+
+     - parameter universalTypeName: the universal type (e.g Alias<Tag> for _<XX>AliasCS_3Tag_)
+
+     - throws: UniversalSerializationTypMissmatch if the Type is not correctly associated
+
+     - returns: the adapted type name
+     */
+    public static func resolveTypeName(from universalTypeName: String) throws -> String {
+        if universalTypeName.contains("Alias"){
+            if let name = Registry._associatedTypesMap[universalTypeName] {
+                return name
+            } else {
+                throw BartlebyError.UniversalSerializationTypMissmatch
+            }
+        }else{
+            return universalTypeName
+        }
+       
+    }
+
+
+
+
+
+
     //MARK: - Centralized ObjectList By UID
 
     // this centralized dictionary allows to access to any referenced object by its UID

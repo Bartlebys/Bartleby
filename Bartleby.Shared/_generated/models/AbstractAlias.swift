@@ -20,8 +20,8 @@ import ObjectMapper
 
 	//The UID of the instance
 	public var iUID:String = "\(Default.NO_UID)"
-	//The ReferenceName of the instance
-	public var iReferenceName:String = "\(Default.NO_NAME)"
+	//The Type name of the aliased instance
+	public var iTypeName:String = "\(Default.NO_NAME)"
 	//The alias summary
 	public var summary:String?
 
@@ -36,7 +36,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
 		self.iUID <- map["iUID"]
-		self.iReferenceName <- map["iReferenceName"]
+		self.iTypeName <- map["iTypeName"]
 		self.summary <- map["summary"]
     }
 
@@ -46,7 +46,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iUID")! as NSString)
-		self.iReferenceName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iReferenceName")! as NSString)
+		self.iTypeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iTypeName")! as NSString)
 		self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
 
     }
@@ -54,7 +54,7 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeObject(self.iUID,forKey:"iUID")
-		coder.encodeObject(self.iReferenceName,forKey:"iReferenceName")
+		coder.encodeObject(self.iTypeName,forKey:"iTypeName")
 		if let summary = self.summary {
 			coder.encodeObject(summary,forKey:"summary")
 		}

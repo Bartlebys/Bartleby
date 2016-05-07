@@ -30,7 +30,7 @@ public class PrintUser: Task, ConcreteTask {
     convenience public required init(arguments: Serializable) {
         self.init()
         self.argumentsData=arguments.serialize()//(!)
-        self.taskClassName=self.referenceName // (!) Used to force the transitionnal casting
+        self.taskClassName=self.typeName() // (!) Used to force the transitionnal casting
 
     }
 

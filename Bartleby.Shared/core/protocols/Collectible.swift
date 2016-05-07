@@ -30,13 +30,6 @@ public protocol Collectible: Identifiable, Serializable {
     var d_collectionName: String { get }
 
     // The class or struct name
-    var referenceName: String { get }
-
-    /**
-     Aliasing
-
-     - returns: an Alias from an instance.
-     */
-    func toAlias<T:Collectible>() -> Alias<T>
+    func typeName() -> String
 
 }

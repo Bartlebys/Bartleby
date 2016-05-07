@@ -10,7 +10,7 @@ import Foundation
 
 @objc public class CryptoHelper: NSObject, CryptoDelegate {
     // (!Should always be set to false (debug only)
-    private static let DISABLE_CRYPTO = false
+    private static let DISABLE_CRYPTO = true
 
     let salt: String
 

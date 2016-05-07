@@ -34,9 +34,9 @@ import Foundation
                             accessGranted success:(locker: Locker)->(),
                            accessRefused failure:(context: JHTTPResponse)->()) {
         // Let's determine if we should verify locally or not.
-        let lockerAlias=Alias<Locker>(iUID:lockerUID, iReferenceName:"Locker")
+        let lockerAlias=Alias<Locker>(iUID:lockerUID)
         let verifyer=VerifyLocker()
-        lockerAlias.fetchInstance{ (instance) in
+        lockerAlias.fetchInstance { (instance) in
             if let _=instance {
                 verifyer._proceedToLocalVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
             } else {
@@ -67,9 +67,9 @@ import Foundation
                                      httpStatusCode: 0,
                                      response: nil,
                                      result:nil)
-        let lockerAlias=Alias<Locker>(iUID:lockerUID, iReferenceName:"Locker")
-        
-        lockerAlias.fetchInstance{ (instance) in
+        let lockerAlias=Alias<Locker>(iUID:lockerUID)
+
+        lockerAlias.fetchInstance { (instance) in
             if let locker=instance {
                 locker.verificationMethod=Locker.VerificationMethod.Offline
                 if locker.code==code {
@@ -80,7 +80,7 @@ import Foundation
                     failure(context:context)
                 }
 
-            }else{
+            } else {
                 context.code = 2
                 context.result="The locker do not exists locally"
                 failure(context:context)

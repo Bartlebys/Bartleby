@@ -46,7 +46,7 @@ enum TasksSchedulerError: ErrorType {
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
         group.spaceUID=spaceUID
-        rootTask.group=group.toAlias()
+        rootTask.group=Alias(from:group)
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -54,7 +54,6 @@ enum TasksSchedulerError: ErrorType {
         }
         return group
     }
-
 
     /**
      Returns a TaskGroup by its name.
@@ -64,7 +63,7 @@ enum TasksSchedulerError: ErrorType {
 
      - returns: a task group
      */
-    public func taskGroupByName(groupName: String, inDataSpace spaceUID: String) throws ->TasksGroup {
+    private func taskGroupByName(groupName: String, inDataSpace spaceUID: String) throws ->TasksGroup {
         if let group=_groups[groupName] {
             return group
         } else {
@@ -99,10 +98,6 @@ enum TasksSchedulerError: ErrorType {
      */
     func onCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
-
-            // The task should be deleted?
-
-
             if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
                 if group.status != .Paused && group.status != .Completed {
                     for child in completedTask.children {
@@ -118,8 +113,18 @@ enum TasksSchedulerError: ErrorType {
                         }
 
                     }
+                    // Let's delete the task.
+                    if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
+                        registry.delete(completedTask)
+                    }
                 } else {
                     // Paused or Completed
+                    if group.status == .Completed {
+                        // Let's delete the task.
+                        if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
+                            registry.delete(completedTask)
+                        }
+                    }
                 }
                 // Mark the group as completed if there is no more
                 // Runnable tasks
@@ -133,10 +138,7 @@ enum TasksSchedulerError: ErrorType {
                 }
             }
         }
-
     }
-
-
 }
 
 
@@ -279,8 +281,6 @@ public extension TasksGroup {
 
     // MARK: Find tasks with status
 
-
-
     /**
      Returns a filtered list of task.
 
@@ -288,7 +288,7 @@ public extension TasksGroup {
 
      - returns: the list of tasks
      */
-    public func findTasksWithStatus(status: Task.Status) -> [Task] {
+    private func _findTasksWithStatus(status: Task.Status) -> [Task] {
         var matching=[Task]()
         let rootTasks=self.tasks.filter { (task) -> Bool in
             return task.status==status

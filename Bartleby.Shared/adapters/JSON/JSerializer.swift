@@ -56,20 +56,34 @@ public class JSerializer: Serializer {
      - returns: an instance (or an ObjectError)
      */
     static public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
-        if let referenceName: String = dictionary[Default.REFERENCE_NAME_KEY] as? String {
-            if let Reference: Collectible.Type = NSClassFromString(referenceName) as? Collectible.Type {
-                if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
-                    mappable.mapping(map)
-                    if let serializable = mappable as? Serializable {
-                        return serializable
+        if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
+            do {
+                typeName = try Registry.resolveTypeName(from: typeName)
+                    if let Reference: Collectible.Type = NSClassFromString(typeName) as? Collectible.Type {
+                        if  var mappable = Reference.init() as? Mappable {
+                            let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
+                            mappable.mapping(map)
+                            if let serializable = mappable as? Serializable {
+                                return serializable
+                            }
+                        }
                     }
-                }
+
+            } catch BartlebyError.UniversalSerializationTypMissmatch {
+                let e=ObjectError()
+                e.message="JSerializer failure the type \(typeName) is not valid for Bartleby"
+                return e
+            } catch {
+                let e=ObjectError()
+                e.message="JSerializer Unkwnow exeception\(error) \(dictionary)"
+                return e
             }
+
         }
         let e=ObjectError()
         e.message="JSerializer failure \(dictionary)"
         return e
+
     }
 
     /**

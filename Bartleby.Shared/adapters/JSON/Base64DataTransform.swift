@@ -17,7 +17,6 @@ public class Base64DataTransform: TransformType {
     public typealias JSON = String
 
     public init() {
-
     }
 
     public func transformFromJSON(value: AnyObject?) -> Object? {
@@ -28,7 +27,7 @@ public class Base64DataTransform: TransformType {
     }
 
     public func transformToJSON(value: Object?) -> JSON? {
-        if let d=value as NSData? {
+        if let d=value {
             return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
         }
         return nil

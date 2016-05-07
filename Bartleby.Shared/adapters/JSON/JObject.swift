@@ -30,27 +30,28 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: - ReferenceName
 
-    private var _referenceName: String=Default.NO_NAME
+    internal var _typeName: String=Default.NO_NAME
 
     // The reference name is equivalent to the class name as a String
-    public var referenceName: String {
-        get {
-            if _referenceName == Default.NO_NAME {
-                let classNameString: NSString=NSStringFromClass(self.dynamicType)
-                _referenceName = classNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_", withString:"")
-            }
-            return _referenceName
-        }
-        set {
-            _referenceName=referenceName
-        }
+    public func typeName() -> String {
+        return _typeName
     }
 
+
+    public func defineTypeName() {
+        if _typeName == Default.NO_NAME {
+            let typeNameString: NSString=NSStringFromClass(self.dynamicType)
+            _typeName = typeNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_", withString:"")
+        }
+    }
 
     // MARK: - Initializable
 
     override required public init() {
         super.init()
+        // We need to define the type name
+        // To support universal aliasing
+        self.defineTypeName()
     }
 
 
@@ -64,9 +65,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)"
 
-    public func toAlias<T: Collectible>() -> Alias<T> {
-        return Alias(iUID: self.UID, iReferenceName: self.referenceName)
-    }
 
     // MARK: - Serializable
 
@@ -167,7 +165,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public func mapping(map: Map) {
         self._id <- map[Default.UID_KEY]
-        self.referenceName <- map[Default.REFERENCE_NAME_KEY]
+        self._typeName <- map[Default.TYPE_NAME_KEY]
         self.committed <- map["committed"]
         self.distributed <- map["distributed"]
         self.creatorUID <- map["creatorUID"]
@@ -181,14 +179,15 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public required init?(coder decoder: NSCoder) {
         super.init()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
-        self.referenceName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.REFERENCE_NAME_KEY)! as NSString)
+        self._typeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.TYPE_NAME_KEY)! as NSString)
         self.committed=decoder.decodeBoolForKey("committed")
         self.distributed=decoder.decodeBoolForKey("distributed")
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
     }
 
     public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.referenceName, forKey: Default.REFERENCE_NAME_KEY)
+        self._typeName=self.typeName()
+        coder.encodeObject(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encodeObject(self._id, forKey: Default.UID_KEY)
         coder.encodeBool(self.committed, forKey:"committed")
         coder.encodeBool(self.distributed, forKey:"distributed")
@@ -235,8 +234,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     }
 }
-
-
 
 
 

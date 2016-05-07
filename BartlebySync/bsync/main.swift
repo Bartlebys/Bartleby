@@ -18,6 +18,13 @@
 
 import Cocoa
 
+Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
+// Important
+BartlebyDocument.addUniversalTypesForAliases()
+
+
+let metadata=JRegistryMetadata()
+metadata.serialize()
 
 // Instanciate the facade
 let facade=CommandsFacade()
