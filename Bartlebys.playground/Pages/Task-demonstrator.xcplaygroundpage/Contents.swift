@@ -20,8 +20,11 @@ var message="Definition of the ShowSummary Task"
 
 var counter=0
 
+SEPARATOR
+message="Creation of the root Object & Task"
+
 // You Must Implement ConcreteTask to be invocable
-@objc(ShowSummary) public class ShowSummary: AbstractReactiveTask, ConcreteTask {
+public class ShowSummary: AbstractReactiveTask, ConcreteTask {
     
     /**
      This initializer **MUST:** call configureWithArguments
@@ -37,13 +40,16 @@ var counter=0
         }
     }
     
+    public static var counter: Int=0
     
     public func invoke() {
+        var message=""
         do {
             if let object: JObject = try self.arguments() as JObject {
+                
                 if let summary = object.summary {
-                    counter += 1
-                    message="\(counter)# \(summary)"
+                    ShowSummary.counter += 1
+                    message="\(ShowSummary.counter)# \(summary)"
                     print(message)
                 } else {
                     message="NO SUMMARY \(object.UID)"
@@ -56,11 +62,9 @@ var counter=0
             print(message)
         }
     }
-    
 }
 
-SEPARATOR
-message="Creation of the root Object & Task"
+
 
 let rootObject=JObject()
 rootObject.summary="ROOT OBJECT"
