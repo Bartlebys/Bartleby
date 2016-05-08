@@ -8,7 +8,11 @@
 
 import Foundation
 
-public class  AbstractReactiveTask: Task {
+enum AbstractReactiveTaskError: ErrorType {
+    case MissingTaskGroup
+}
+
+@objc(AbstractReactiveTask) public class  AbstractReactiveTask: Task {
 
     /**
      The convenience intializer that must be overriden.
@@ -18,23 +22,26 @@ public class  AbstractReactiveTask: Task {
 
      - returns: the task instance.
      */
-    convenience required public init (arguments: Serializable) {
+    convenience required public init (arguments: Collectible) {
         self.init()
-        self.argumentsData=arguments.serialize()
+        self.configureWithArguments(arguments)
     }
 
     // MARK: Sequential Tasks
 
-    internal lazy var lastSequentialTask: Task=self
+    private lazy var _lastSequentialTask: Task = self
 
     /**
      Appends a task to the last sequential task
 
      - parameter task: the task to be sequentially added
      */
-    public func appendSequentialTask(task: Task) {
-        lastSequentialTask.addChildren(task)
-        lastSequentialTask=task
+    public func appendSequentialTask(task: Task) throws {
+        if self._lastSequentialTask.group==nil {
+            throw AbstractReactiveTaskError.MissingTaskGroup
+        }
+        self._lastSequentialTask.addChildren(task)
+        self._lastSequentialTask=task
     }
 
 

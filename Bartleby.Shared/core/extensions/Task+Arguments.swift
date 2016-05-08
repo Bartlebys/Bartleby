@@ -8,12 +8,20 @@
 
 import Foundation
 
+/**
+ The tasks errors
+
+ - ArgumentsTypeMisMatch: There is a problem with the Arguments casting
+ - NoArgument:            There is no argument.
+ */
 public enum TaskError: ErrorType {
     case ArgumentsTypeMisMatch
     case NoArgument
 }
 
+
 // MARK: - Serializable Arguments
+
 
 extension Task:SerializableArguments {
 
@@ -22,7 +30,7 @@ extension Task:SerializableArguments {
 
      - returns: A collectible object
      */
-    public final func arguments<ArgumentType: Serializable>() throws -> ArgumentType {
+    public final func arguments<ArgumentType: Collectible>() throws -> ArgumentType {
         if let argumentsData = self.argumentsData {
             //@bpds(#MAJOR) exception on deserialization of CollectionControllers
             //The KVO stack produces EXCEPTION, and we cannot use a Proxy+Patch Approach
@@ -41,7 +49,6 @@ extension Task:SerializableArguments {
 
 extension Task {
 
-
     /**
      Final forwarding method.
 
@@ -49,23 +56,32 @@ extension Task {
      */
     final public func forward(completionState: Completion) {
         self.completionState=completionState
-        self.status = .Completed
-        if let _=try? Bartleby.scheduler.onCompletion(self) {
-
-        } else {
-
+        do {
+            self.status = .Completed
+            if TasksScheduler.DEBUG_TASKS {
+                bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+            }
+            try Bartleby.scheduler.onTaskCompletion(self)
+        } catch {
+            if TasksScheduler.DEBUG_TASKS {
+                let t = self.summary ?? self.UID
+                bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+            }
         }
     }
 
-}
+    /**
+    The public final implementation of configureWithArguments
 
+     - parameter arguments: the collectible arguments.
+     */
+    public final func configureWithArguments(arguments: Collectible) {
+        self.argumentsData=arguments.serialize()
+        self.taskClassName=self.typeName()
+    }
 
-// MARK: - Linear list
-
-
-extension Task {
-
-    dynamic var linearTaskList: [Task] {
+    // A linearized list from the tasks graph
+    public dynamic var linearTaskList: [Task] {
         get {
             // Return a linear task List
             var list=[Task]()
@@ -81,16 +97,30 @@ extension Task {
             return list
         }
     }
-}
 
-// MARK: - Children management
+    /**
+     Adds a children task to a task and setup its parent and group aliases
 
-public extension Task {
+     - parameter task: the children to be added.
+     */
+    public func addChildren(task: Task) {
+        let taskAlias: Alias<Task>=Alias(from: task)
+        self.children.append(taskAlias)
+        if let g=self.group {
+             task.group=g
+        } else {
+            if TasksScheduler.DEBUG_TASKS {
+                bprint("Adding \(self.summary ?? self.UID) has no tasks group alias", file: #file, function: #function, line: #line)
 
-    func addChildren(task: Task) {
-        self.children.append(Alias(from:task))
-        task.group=self.group
+            }
+        }
         task.parent=Alias(from:self)
+        if TasksScheduler.DEBUG_TASKS {
+            let s = task.summary ?? task.UID
+            let t = self.summary ?? self.UID
+            let g = task.group?.UID ?? Default.NO_GROUP
+            bprint("Adding \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
+        }
     }
 
 }

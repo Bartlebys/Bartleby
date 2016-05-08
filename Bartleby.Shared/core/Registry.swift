@@ -25,7 +25,6 @@ public enum RegistryError: ErrorType {
 }
 
 
-
 // MARK: - Equatable
 
 func ==(lhs: Registry, rhs: Registry) -> Bool {
@@ -46,6 +45,12 @@ Documents can be shared between iOS, tvOS and OSX.
 
 */
 @objc public class Registry: BXDocument {
+
+
+    // To insure **cross product deserialization** of Aliases you should set up to true.
+    // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
+    // Default is True
+    static public var USE_UNIVERSAL_TYPES=true
 
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
@@ -106,7 +111,7 @@ Documents can be shared between iOS, tvOS and OSX.
 
     private static var _associatedTypesMap=[String:String]()
 
-    public static func addUniversalTypeForAlias<T:Collectible>(prototype: Alias<T>) {
+    public static func addUniversalTypeForAlias<T: Collectible>(prototype: Alias<T>) {
         let name = prototype.universalTypeName()
         Registry._associatedTypesMap[name]=NSStringFromClass(prototype.dynamicType)
     }
@@ -122,16 +127,16 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the adapted type name
      */
     public static func resolveTypeName(from universalTypeName: String) throws -> String {
-        if universalTypeName.contains("Alias"){
+        if universalTypeName.contains("Alias") && Registry.USE_UNIVERSAL_TYPES {
             if let name = Registry._associatedTypesMap[universalTypeName] {
                 return name
             } else {
                 throw BartlebyError.UniversalSerializationTypMissmatch
             }
-        }else{
+        } else {
+            // We use the standard type name
             return universalTypeName
         }
-       
     }
 
 

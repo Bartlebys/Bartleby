@@ -145,6 +145,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
+    public func autoAlias<T: Collectible>()->Alias<T> {
+        return Alias<T>(from: self)
+    }
+
     // MARK: - CustomStringConvertible
 
     override public var description: String {
@@ -244,7 +248,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 // MARK: - DictionaryRepresentation
-
 
 extension JObject:DictionaryRepresentation {
 

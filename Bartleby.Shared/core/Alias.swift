@@ -52,7 +52,11 @@ public class Alias<T:Collectible>:AbstractAlias {
     // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
 
     override public func typeName() -> String {
-        return self.universalTypeName()
+        if Registry.USE_UNIVERSAL_TYPES {
+            return self.universalTypeName()
+        } else {
+           return super.typeName()
+        }
     }
 
     public func universalTypeName() -> String {

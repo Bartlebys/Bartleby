@@ -13,12 +13,29 @@ import Foundation
 #endif
 
 
+
 // MARK: - TasksScheduler
 
-// The Task Scheduler performs locally
-// That's why we use local dealiasing "taskAlias.toLocalInstance()"
-// If you need to provision distant task you should grab the distant task (eg: ReadTaskById...)
+/*
 
+    The tasks Scheduler runs graph of task that can be
+
+        - paused
+        - serialized
+        - and if the underlining logic permits, moved from a physical device to another
+
+    Any child task is reputed concurential.
+    When its parent is completed the scheduler run all its direct children.
+
+    TasksGroup can be paused.
+    When you pause a group the running tasks are completed but the graph execution is interupted.
+
+    The Task Scheduler performs locally
+    That's why we use local dealiasing "taskAlias.toLocalInstance()"
+    If you need to createTaskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
+
+
+*/
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
     case TaskGroupNotFound
@@ -26,13 +43,19 @@ enum TasksSchedulerError: ErrorType {
 
 @objc(TasksScheduler) public class TasksScheduler: NSObject {
 
+    // Task may be difficult to debug
+    // So we expose a debug setting
+    static public var DEBUG_TASKS=false
+
     //Storage
     private var _groups=Dictionary<String, TasksGroup>()
 
-    /**
-     Provision a task in a given Group.
+    // MARK: - Tasks Groups
 
-     - parameter parentTask: the task to provision.
+    /**
+     Create a task Group, if the group already exists the root Task is appended to the other children.
+
+     - parameter rootTask: the task to createTaskGroupFor.
      - parameter groupName:  its group name
      - parameter spaceUID:   the relevent DataSpace
 
@@ -40,13 +63,14 @@ enum TasksSchedulerError: ErrorType {
 
      - returns: the Task group
      */
-    public func provision(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
+    public func createTaskGroupFor(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
         let group=try self.taskGroupByName(groupName, inDataSpace: spaceUID)
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
         group.spaceUID=spaceUID
-        rootTask.group=Alias(from:group)
+        let groupAlias: Alias<TasksGroup>=Alias(from:group)
+        rootTask.group=groupAlias
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -68,15 +92,11 @@ enum TasksSchedulerError: ErrorType {
             return group
         } else {
             if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
-
-                if let groups: [TasksGroup]=document.tasksGroups.filter({ (group) -> Bool in
-                    return group.name==groupName}) {
-
+                if let groups: [TasksGroup]=document.tasksGroups.filter({(group) -> Bool in return group.name==groupName}) {
                     if groups.count>0 {
                         _groups[groups.first!.name]=groups.first!
                         return groups.first!
                     }
-
                     let group=TasksGroup()
                     group.name=groupName
                     _groups[groupName]=group
@@ -90,232 +110,82 @@ enum TasksSchedulerError: ErrorType {
          throw TasksSchedulerError.TaskGroupNotFound
     }
 
+    // MARK: - Task completion and Execution graph
 
     /**
      Called by a task on its completion.
 
      - parameter completedTask: the reference to the task
      */
-    func onCompletion(completedTask: Task) throws {
+    func onTaskCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
             if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
-                if group.status != .Paused && group.status != .Completed {
+                if group.status != .Paused {
+                    // Group is Runnable
+                    // We gonna start all the children of the task.
                     for child in completedTask.children {
                         if let task: Task=child.toLocalInstance() {
                             if let invocableTask = group.invocableTaskFrom(task) {
-                                invocableTask.invoke()
+                                if TasksScheduler.DEBUG_TASKS {
+                                    bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
+                                }
                                 task.status = .Running
+                                invocableTask.invoke()
                             } else {
+                                if TasksScheduler.DEBUG_TASKS {
+                                    bprint("NonInvocableTask", file: #file, function: #function, line: #line)
+                                }
                                 throw TasksGroupError.NonInvocableTask(task: completedTask)
                             }
                         } else {
-                             throw TasksGroupError.TaskNotFound
+                            if TasksScheduler.DEBUG_TASKS {
+                                bprint("TaskNotFound", file: #file, function: #function, line: #line)
+                            }
+                            throw TasksGroupError.TaskNotFound
                         }
-
-                    }
-                    // Let's delete the task.
-                    if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
-                        registry.delete(completedTask)
                     }
                 } else {
-                    // Paused or Completed
-                    if group.status == .Completed {
-                        // Let's delete the task.
-                        if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
-                            registry.delete(completedTask)
-                        }
-                    }
+                    // Group is not Runnable
                 }
-                // Mark the group as completed if there is no more
-                // Runnable tasks
+
                 let runnableTasks = group.findRunnableTasks()
                 if runnableTasks.count==0 {
-                    group.status = .Completed
-                    dispatch_async(dispatch_get_main_queue(), {
-                         NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-                    })
-
-                }
-            }
-        }
-    }
-}
-
-
-// MARK: - TasksGroup Extension
-
-enum TasksGroupError: ErrorType {
-    case NonInvocableTask(task:Task)
-    case TaskNotFound
-}
-
-
-public extension TasksGroup {
-
-    // The completion Notification osbervable
-    // NSNotificationCenter.defaultCenter()
-    public var completionNotificationName: String {
-        get {
-            return self.name+"_NOTIFICATION"
-        }
-    }
-
-
-    /**
-     Starts the task group
-
-     - throws: Error on Non Invocable task
-
-     - returns: the number of entry tasks if >1 there is something to do.
-     */
-    public func start() throws -> Int {
-        let entryTasks=self.findRunnableTasks()
-        for task in entryTasks {
-            if let invocableTask = self.invocableTaskFrom(task) {
-                invocableTask.invoke()
-            } else {
-                throw TasksGroupError.NonInvocableTask(task: task)
-            }
-        }
-        return entryTasks.count
-    }
-
-    // TODO @bpds securize in Tasks => (!) Used to force the transitionnal casting
-
-    /**
-     Extract a fully typed concrete task from a
-
-     - parameter task: the transitionnal task
-
-     - returns: an invocable task or nil
-     */
-    public func invocableTaskFrom(task: Task) -> Invocable? {
-        if task.taskClassName != Default.NO_NAME {
-            // serialize the current transitionnal task.
-            let dictionary=task.dictionaryRepresentation()
-            if let Reference: Collectible.Type = NSClassFromString(task.taskClassName) as? Collectible.Type {
-                // deserialize using its concrete type
-                if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
-                    mappable.mapping(map)
-                    if let invocable = mappable as? Invocable {
-                        return invocable
-                    }
-                }
-            }
-        }
-        return nil
-    }
-
-
-    /**
-     All the running tasks will be finished
-     But not their children tasks.
-     */
-    public func pause() {
-        // Mark the group as completed if there is no more
-        // Runnable tasks
-        let runnableTasks = self.findRunnableTasks()
-        if runnableTasks.count==0 {
-            self.status = .Completed
-        } else {
-            self.status = .Paused
-        }
-    }
-
-
-
-    // MARK: Find runnable Tasks
-
-    /**
-     Determines the bunch of task to use to start or resume a TaskGroup.
-     The entry tasks may be deeply nested if the graph has already been partially running
-
-     - returns: a collection of tasks
-     */
-    public func findRunnableTasks() -> [Task] {
-        //Top level of the graph.
-        var topLevelTasks=[Task]()
-        for task in self.tasks {
-            if task.status != Task.Status.Completed {
-                if task.taskClassName==Default.NO_NAME {
-                    //TODO @bpds
-                    bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
-                } else {
-                   topLevelTasks.append(task)
-                }
-
-            }
-        }
-        if topLevelTasks.count==0 {
-            for task in self.tasks {
-                self._findTasksUnCompletedSubTask(task, topLevelTasks: &topLevelTasks)
-            }
-        }
-        return topLevelTasks
-    }
-
-
-    private func _findTasksUnCompletedSubTask(task: Task, inout topLevelTasks: [Task]) {
-        if topLevelTasks.count==0 {
-            for childTaskAlias in task.children {
-                if let childTask: Task=childTaskAlias.toLocalInstance() {
-                    if childTask.status != Task.Status.Completed {
-                        if childTask.taskClassName==Default.NO_NAME {
-                            bprint("ERROR to be fixed in next implementation", file: #file, function: #function, line: #line)
-                        } else {
-                            topLevelTasks.append(childTask)
+                    // # Cleanup the task #
+                    if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
+                        for task in group.tasks.reverse() {
+                            let linearListOfSubTasks=task.linearTaskList.reverse()
+                            for subtask in linearListOfSubTasks {
+                                if TasksScheduler.DEBUG_TASKS {
+                                    bprint("Deleting \(subtask.summary ?? subtask.UID )", file: #file, function: #function, line: #line)
+                                }
+                                registry.delete(subtask)
+                            }
+                            group.tasks.removeLast()
                         }
                     }
-                }
-            }
-            if topLevelTasks.count==0 {
-                for childTaskAlias in task.children {
-                    if let childTask: Task=childTaskAlias.toLocalInstance() {
-                        self._findTasksUnCompletedSubTask(childTask, topLevelTasks: &topLevelTasks)
+
+                     // # Notify the group completion #
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Dispatching \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+                        }
+                        NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                    })
+                } else {
+                    if TasksScheduler.DEBUG_TASKS {
+                        bprint("Still \(runnableTasks.count) task(s) to run", file: #file, function: #function, line: #line)
                     }
                 }
-            }
-        }
-    }
 
-    // MARK: Find tasks with status
-
-    /**
-     Returns a filtered list of task.
-
-     - parameter status: the status
-
-     - returns: the list of tasks
-     */
-    private func _findTasksWithStatus(status: Task.Status) -> [Task] {
-        var matching=[Task]()
-        let rootTasks=self.tasks.filter { (task) -> Bool in
-            return task.status==status
-        }
-        matching.appendContentsOf(rootTasks)
-        for task in self.tasks {
-            self._findChildrenTasksWithStatus(task, status:status, tasks:&matching)
-        }
-        return matching
-    }
-
-
-    private func _findChildrenTasksWithStatus(task: Task, status: Task.Status, inout tasks: [Task]) {
-        var matching=[Task]()
-        let matchingChildrenAlias=task.children.filter { (subTaskAlias) -> Bool in
-            if let subTask: Task=subTaskAlias.toLocalInstance() {
-                return subTask.status==status
             } else {
-                return false
+                if TasksScheduler.DEBUG_TASKS {
+                    bprint("ERROR: local task group instance not found \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
+                }
             }
-        }
-        for alias in matchingChildrenAlias {
-            if let _: Task=alias.toLocalInstance() {
-                matching.append(task)
+        } else {
+            if TasksScheduler.DEBUG_TASKS {
+                bprint("ERROR: no alias group found in \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
             }
         }
     }
-
-
 }

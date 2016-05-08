@@ -18,15 +18,12 @@ import ObjectMapper
 @objc(TasksGroup) public class TasksGroup : JObject{
 
 
-	//Task Status
+	//TasksGroup Status
 	public enum Status:Int{
-		case New
-		case Pending
-		case Running
+		case Runnable
 		case Paused
-		case Completed
 	}
-	public var status:Status = .New
+	public var status:Status = .Runnable
 	//The priority is equal to the parent task.
 	public enum Priority:Int{
 		case Background

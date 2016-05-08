@@ -171,6 +171,9 @@
 		E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A90A11C8DFF2C0043F90E /* bsyncBasicTests.swift */; };
 		E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */; };
 		E5A557CA1C8EC84D009A9A63 /* bsyncMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */; };
+		E5ACFD5A1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */; };
+		E5ACFD5B1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */; };
+		E5ACFD5C1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */; };
 		E5B777741CDCDE04007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D11CDCDE04007261E1 /* BartlebyDocument.swift */; };
 		E5B777751CDCDE04007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D11CDCDE04007261E1 /* BartlebyDocument.swift */; };
 		E5B777761CDCDE04007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D11CDCDE04007261E1 /* BartlebyDocument.swift */; };
@@ -757,6 +760,7 @@
 		E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCredentialsCommand.swift; sourceTree = "<group>"; };
 		E59A14191C3BB43F009AC461 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
 		E5A557CB1C8EC9DF009A9A63 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B776D11CDCDE04007261E1 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5B776D31CDCDE04007261E1 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
 		E5B776D41CDCDE04007261E1 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
@@ -1322,6 +1326,7 @@
 		E5B777461CDCDE04007261E1 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */,
 				E5B777471CDCDE04007261E1 /* Completion+Conveniences.swift */,
 				E5B777481CDCDE04007261E1 /* Completion+Result.swift */,
 				E5B777491CDCDE04007261E1 /* NSNotification+Completion.swift */,
@@ -1813,6 +1818,7 @@
 				E5B98EBA1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
 				E5B98EB11CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
 				E53E28F31CA572E80079ED23 /* CommandBase.swift in Sources */,
+				E5ACFD5A1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B7777D1CDCDE04007261E1 /* OperationsCollectionController.swift in Sources */,
 				E5B777F51CDCDE04007261E1 /* DeletePermissions.swift in Sources */,
 				E5B778341CDCDE04007261E1 /* ReadTasksGroupById.swift in Sources */,
@@ -2071,6 +2077,7 @@
 				E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */,
 				E5B777DB1CDCDE04007261E1 /* CreateTrigger.swift in Sources */,
 				5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */,
+				E5ACFD5B1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B778441CDCDE04007261E1 /* ReadTriggersByQuery.swift in Sources */,
 				E5B98EBB1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
 				5B8E5D631C8D7FCD002CFA03 /* Validation.swift in Sources */,
@@ -2329,6 +2336,7 @@
 				E5B778361CDCDE04007261E1 /* ReadTasksGroupById.swift in Sources */,
 				E55C92571CBF84ED008163F6 /* Timeline.swift in Sources */,
 				E55C92581CBF84ED008163F6 /* Upload.swift in Sources */,
+				E5ACFD5C1CDF7704006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B779291CDCDE05007261E1 /* Pluralization.swift in Sources */,
 				E5B778B71CDCDE04007261E1 /* Completion+Conveniences.swift in Sources */,
 				E55C92591CBF84ED008163F6 /* Validation.swift in Sources */,

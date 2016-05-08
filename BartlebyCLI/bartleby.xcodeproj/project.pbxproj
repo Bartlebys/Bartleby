@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
+		E5ACFD5E1CDF7719006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */; };
 		E5B77B0A1CDCDE38007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77A671CDCDE38007261E1 /* BartlebyDocument.swift */; };
 		E5B77B0B1CDCDE38007261E1 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77A691CDCDE38007261E1 /* GroupsCollectionController.swift */; };
 		E5B77B0C1CDCDE38007261E1 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77A6A1CDCDE38007261E1 /* LockersCollectionController.swift */; };
@@ -214,6 +215,7 @@
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
 		E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
+		E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B77A671CDCDE38007261E1 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5B77A691CDCDE38007261E1 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
 		E5B77A6A1CDCDE38007261E1 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 		E5B77ADC1CDCDE38007261E1 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */,
 				E5B77ADD1CDCDE38007261E1 /* Completion+Conveniences.swift */,
 				E5B77ADE1CDCDE38007261E1 /* Completion+Result.swift */,
 				E5B77ADF1CDCDE38007261E1 /* NSNotification+Completion.swift */,
@@ -1017,6 +1020,7 @@
 				E5B77B571CDCDE38007261E1 /* UpdatePermission.swift in Sources */,
 				E5CD99F91C86D96E00C64569 /* Upload.swift in Sources */,
 				E5B77B651CDCDE38007261E1 /* JHTTPCommand.swift in Sources */,
+				E5ACFD5E1CDF7719006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B77B361CDCDE38007261E1 /* DeleteTask.swift in Sources */,
 				E5B77B541CDCDE38007261E1 /* UpdateGroups.swift in Sources */,
 				E5B77B911CDCDE38007261E1 /* TasksScheduler.swift in Sources */,

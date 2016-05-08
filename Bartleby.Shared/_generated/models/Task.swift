@@ -20,12 +20,10 @@ import ObjectMapper
 
 	//The alias of the TasksGroup
 	public var group:Alias<TasksGroup>?
-	//TasksGroup Status
+	//Task Status
 	public enum Status:Int{
 		case New
-		case Pending
 		case Running
-		case Paused
 		case Completed
 	}
 	public var status:Status = .New

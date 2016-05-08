@@ -12,10 +12,10 @@ import Foundation
 public protocol SerializableArguments {
     // (!) This method is implemented as final in a Task extension to force Type Matching Safety
     // it throws Task.ArgumentsTypeMisMatch
-    func arguments<ExpectedType: Serializable>() throws -> ExpectedType
+    func arguments<ExpectedType: Collectible>() throws -> ExpectedType
 }
 
-public protocol Invocable {
+public protocol Invocable: Collectible {
 
     /**
         Runs the invocation
@@ -54,5 +54,5 @@ public protocol ConcreteTask: SerializableArguments, Invocable {
 
      - returns: a well initialized task.
      */
-    init(arguments: Serializable)
+    init(arguments: Collectible)
 }

@@ -14,22 +14,18 @@ import Foundation
 #elseif os(tvOS)
 #endif
 
-
 #if !DUSE_EMBEDDED_MODULES
 @objc(PushOperationTask) public class  PushOperationTask: AbstractReactiveTask, ConcreteTask {
 
     /**
-     This initializer **MUST:**
-     - Store the Serialized Argument into argumentsData
-     - Set the explicit concrete task class name
+     This initializer **MUST:** call configureWithArguments
      - parameter arguments: the arguments
 
      - returns: a well initialized task.
      */
-    convenience required public init (arguments: Serializable) {
+    convenience required public init (arguments: Collectible) {
         self.init()
-        self.argumentsData=arguments.serialize()
-        self.taskClassName=self.typeName() // (!) Used to force the transitionnal casting
+        self.configureWithArguments(arguments)
     }
 
     /**

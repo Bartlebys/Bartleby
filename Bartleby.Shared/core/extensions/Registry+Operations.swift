@@ -34,11 +34,11 @@ extension Registry {
                 // We iterate on the next task.
                 for i in 1...operations.count-1 {
                     // And append the operation task sequentially
-                    firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
+                    try firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
                 }
             }
-            // We provision the task
-            let group=try Bartleby.scheduler.provision(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
+            // We createTaskGroupFor the task
+            let group=try Bartleby.scheduler.createTaskGroupFor(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
             try group.start()
         }
     }

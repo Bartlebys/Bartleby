@@ -104,6 +104,8 @@ public struct Default {
     static public let UID_KEY = "_id"
     static public let TYPE_NAME_KEY = "typeName"
 
+    static public let VOID_STRING=""
+
     static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
     static public let NO_UID: String="NO_UID"
     static public let NO_NAME: String="NO_NAME"
@@ -112,6 +114,7 @@ public struct Default {
     static public let NO_KEY: String="NO_KEY"
     static public let NO_PATH: String="NO_PATH"
     static public let NO_CAKE: String="NO_CAKE"
+    static public let NO_GROUP: String="NO_GROUP"
     static public let NO_INT_INDEX=Int.max
     static public let TEXT_ENCODING = NSUTF8StringEncoding
 

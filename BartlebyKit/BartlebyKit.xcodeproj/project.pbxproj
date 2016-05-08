@@ -41,6 +41,8 @@
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
 		E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00571C8ED51D00BB6B19 /* PrintUser.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
+		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
+		E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
 		E5B775A91CDCDDF2007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775061CDCDDF2007261E1 /* BartlebyDocument.swift */; };
 		E5B775AA1CDCDDF2007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775061CDCDDF2007261E1 /* BartlebyDocument.swift */; };
 		E5B775AB1CDCDDF2007261E1 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775081CDCDDF2007261E1 /* GroupsCollectionController.swift */; };
@@ -400,6 +402,7 @@
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B775061CDCDDF2007261E1 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5B775081CDCDDF2007261E1 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
 		E5B775091CDCDDF2007261E1 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
@@ -929,6 +932,7 @@
 				E5B775831CDCDDF2007261E1 /* Registry+Triggers.swift */,
 				E5B775841CDCDDF2007261E1 /* Registry+URD.swift */,
 				E5B775851CDCDDF2007261E1 /* Task+Arguments.swift */,
+				E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1220,6 +1224,7 @@
 				E5B775BD1CDCDDF2007261E1 /* BaseCollectionMetadatum.swift in Sources */,
 				E5B776CD1CDCDDF3007261E1 /* PString.swift in Sources */,
 				E5B776631CDCDDF2007261E1 /* JObject.swift in Sources */,
+				E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B7765D1CDCDDF2007261E1 /* JDocument.swift in Sources */,
 				E5B776511CDCDDF2007261E1 /* UpdateTriggers.swift in Sources */,
 				E5B7767D1CDCDDF2007261E1 /* Default.swift in Sources */,
@@ -1379,6 +1384,7 @@
 				E5B775BE1CDCDDF2007261E1 /* BaseCollectionMetadatum.swift in Sources */,
 				E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */,
 				E5B776641CDCDDF2007261E1 /* JObject.swift in Sources */,
+				E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B7765E1CDCDDF2007261E1 /* JDocument.swift in Sources */,
 				E5B776521CDCDDF2007261E1 /* UpdateTriggers.swift in Sources */,
 				E5B7767E1CDCDDF2007261E1 /* Default.swift in Sources */,
