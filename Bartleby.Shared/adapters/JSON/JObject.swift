@@ -64,6 +64,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var distributed: Bool = false
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)"
+    //The object summary can be used for example by aliases to describe the JObject instance.
+    public var summary: String?
 
 
     // MARK: - Serializable
@@ -169,7 +171,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.committed <- map["committed"]
         self.distributed <- map["distributed"]
         self.creatorUID <- map["creatorUID"]
-
+        self.summary <- map["summary"]
     }
 
 
@@ -183,6 +185,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.committed=decoder.decodeBoolForKey("committed")
         self.distributed=decoder.decodeBoolForKey("distributed")
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
+        self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
     }
 
     public func encodeWithCoder(coder: NSCoder) {
@@ -192,6 +195,9 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         coder.encodeBool(self.committed, forKey:"committed")
         coder.encodeBool(self.distributed, forKey:"distributed")
         coder.encodeObject(self.creatorUID, forKey:"creatorUID")
+        if let summary = self.summary {
+            coder.encodeObject(summary, forKey:"summary")
+        }
      }
 
 

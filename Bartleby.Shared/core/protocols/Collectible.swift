@@ -22,6 +22,9 @@ public protocol Collectible: Identifiable, Serializable {
     // The creator UID
     var creatorUID: String { get set }
 
+    // A summary that can be used for example by Aliases to describe the instance
+    var summary: String? { get set }
+
     // The name of its holding collection e.g: projects for the class Project
     // This name will be used to identify the collection in the Registry
     static var collectionName: String { get }

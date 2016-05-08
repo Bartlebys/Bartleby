@@ -20,12 +20,10 @@ import Foundation
 // You cannot add  @objc(Alias)
 public class Alias<T:Collectible>:AbstractAlias {
 
-
     public required init() {
         super.init()
         self.iTypeName=NSStringFromClass(T.self as! AnyClass)
     }
-
 
     public convenience init(iUID: String) {
         self.init()
@@ -38,6 +36,7 @@ public class Alias<T:Collectible>:AbstractAlias {
         self.init()
         self.iUID=from.UID
         self.iTypeName=from.typeName()
+        self.summary=from.summary
         self.defineUID()
         if !(from is T) {
             bprint("Type Missmatch \(T.self) <- \(from.typeName)", file:#file, function:#function, line:#line)
