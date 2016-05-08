@@ -375,6 +375,7 @@
 		5B5D0AD81CDE2556001FB281 /* LogoutUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7776C1CDCDE04007261E1 /* LogoutUser.swift */; };
 		5B5D0AD91CDE2556001FB281 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7776D1CDCDE04007261E1 /* VerifyLocker.swift */; };
 		5B5D0ADA1CDE2592001FB281 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */; };
+		5B5D0B5B1CDF8F79001FB281 /* BsyncXPC.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5B66FABD1CD203E7000A2534 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
 		5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
@@ -1041,6 +1042,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5B5D0B5A1CDF8F64001FB281 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
+			dstSubfolderSpec = 16;
+			files = (
+				5B5D0B5B1CDF8F79001FB281 /* BsyncXPC.xpc in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5C0CEC21C36CC2900F3B7B8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1966,6 +1977,7 @@
 				5B5D08F81CDC8D91001FB281 /* Sources */,
 				5B5D08F91CDC8D91001FB281 /* Frameworks */,
 				5B5D08FA1CDC8D91001FB281 /* Resources */,
+				5B5D0B5A1CDF8F64001FB281 /* CopyFiles */,
 			);
 			buildRules = (
 			);
