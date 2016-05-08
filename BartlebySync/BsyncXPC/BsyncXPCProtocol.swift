@@ -14,7 +14,7 @@
  * (IMPORTANT) Keep in mind that each call may setup the XPC Bartleby shared instance.
  *  So be careful with secret and shared salt.
  */
-@objc(BsyncXPCProtocol) protocol BsyncXPCProtocol: BartlebyFileIO {
+@objc(BsyncXPCProtocol) protocol BsyncXPCProtocol {
 
 
     // MARK:- Disk Image Management
@@ -102,5 +102,162 @@
      */
     func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)->()
 
-
+    // MARK: File IO
+    
+    /**
+     Creates a directory
+     
+     - parameter path:                the path
+     - parameter createIntermediates: create intermediates paths ?
+     - parameter handlers:            the handlers
+     
+     - returns: N/A
+     */
+    // TODO
+    func createDirectoryAtPath(path: String,
+                               handler: ComposedHandler)->()
+    
+    /**
+     Reads the data with options
+     
+     - parameter path:            from file path
+     - parameter readOptionsMask: readOptionsMask
+     - parameter handlers:        the handlers
+     
+     - returns: N/A
+     */
+    func readData(contentsOfFile path: String,
+                                 handler: ComposedHandler)->()
+    
+    /**
+     Writes data to the given path
+     
+     - parameter data:             the data
+     - parameter path:             the path
+     - parameter useAuxiliaryFile: useAuxiliaryFile
+     - parameter handlers:          the handlers
+     
+     - returns: N/A
+     */
+    func writeData(data: NSData,
+                   path: String,
+                   handler: ComposedHandler)->()
+    
+    /**
+     Reads the data with options
+     
+     - parameter path:            from file path
+     - parameter handlers:        the handlers
+     
+     Here is an example showing how to extract the string
+     in the completion handler:
+     
+     { (read) in
+     if let s = read.getStringResult() where read.success {
+     // Handle success
+     ...
+     } else {
+     // Handle error
+     ...
+     }
+     }
+     */
+    func readString(contentsOfFile path: String,
+                                   handler: ComposedHandler)->()
+    
+    /**
+     Writes String to the given path using utf8 encoding
+     
+     - parameter string:            the string
+     - parameter path:             the path
+     - parameter useAuxiliaryFile: useAuxiliaryFile
+     - parameter enc:              encoding
+     - parameter handlers:          the handlers
+     
+     - returns: N/A
+     */
+    func writeString(string: String,
+                     path: String,
+                     handler: ComposedHandler)->()
+    
+    
+    /**
+     Determines if a file or directory exists.
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func itemExistsAtPath(path: String,
+                          handler: ComposedHandler)->()
+    
+    /**
+     Determines if a file exists and is a directory.
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func fileExistsAtPath(path: String,
+                          handler: ComposedHandler)->()
+    
+    /**
+     Determines if a directory exists.
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func directoryExistsAtPath(path: String,
+                               handler: ComposedHandler)->()
+    
+    /**
+     Removes the item at a given path
+     Use with caution !
+     
+     - parameter path:     path
+     - parameter handlers: The progress and completion handler
+     */
+    func removeItemAtPath(path: String,
+                          handler: ComposedHandler)->()
+    
+    /**
+     Copies the file
+     
+     - parameter srcPath:  srcPath
+     - parameter dstPath:  dstPath
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func copyItemAtPath(srcPath: String,
+                        toPath dstPath: String,
+                               handler: ComposedHandler)->()
+    
+    /**
+     Moves the file
+     
+     - parameter srcPath:  srcPath
+     - parameter dstPath:  dstPath
+     - parameter handlers: The progress and completion handler
+     
+     - returns: N/A
+     */
+    func moveItemAtPath(srcPath: String,
+                        toPath dstPath: String,
+                               handler: ComposedHandler)->()
+    
+    
+    /**
+     Lists the content of the directory
+     
+     - parameter path:     the path
+     - parameter handlers: The progress and completion handler
+     */
+    // TODO @md Explain how to extract result
+    func contentsOfDirectoryAtPath(path: String,
+                                   handler: ComposedHandler)->()
 }

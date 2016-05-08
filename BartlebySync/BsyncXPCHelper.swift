@@ -96,11 +96,11 @@ public class BsyncXPCHelperDMGHandler {
                 // *********************************
 
                 xpc.createDirectoryAtPath(imageFolderPath!,
-                    handlers: Handlers { (creation) -> () in
+                    handler: Handlers{ (creation) -> () in
 
                         if creation.success {
                             // The destination has been Successfully created
-                            xpc.itemExistsAtPath(card.imagePath, handlers: Handlers { (existence) -> () in
+                            xpc.itemExistsAtPath(card.imagePath, handler: Handlers { (existence) -> () in
                                 if existence.success {
                                     // We preserve existing DMGs !
                                     completion.callBlock(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
@@ -124,7 +124,7 @@ public class BsyncXPCHelperDMGHandler {
                                                 // We detach the volume
 
                                                 xpc.directoryExistsAtPath(card.volumePath,
-                                                    handlers: Handlers { (existence) -> () in
+                                                    handler: Handlers { (existence) -> () in
                                                         if existence.success {
                                                             xpc.detachVolume(card.volumeName,
                                                                 callBack: { (detachCompletionRef) -> () in
@@ -133,7 +133,7 @@ public class BsyncXPCHelperDMGHandler {
                                                         } else {
                                                             self.mountDMG(card, thenDo: thenDo, completion: completion)
                                                         }
-                                                })
+                                                }.composedHandlers())
 
                                             } else {
                                                 // Failure on DMG Creation
@@ -145,7 +145,7 @@ public class BsyncXPCHelperDMGHandler {
 
                                         })
                                 }
-                            })
+                            }.composedHandlers())
 
                         } else {
                             completion.callBlock(Completion.failureState(NSLocalizedString("Destination folder creation Failure. Path=",
@@ -153,7 +153,7 @@ public class BsyncXPCHelperDMGHandler {
                             self.bsyncConnection.invalidate()
 
                         }
-                })
+                }.composedHandlers())
             }
     }
 
@@ -242,7 +242,7 @@ public class BsyncXPCHelperDMGHandler {
                 // We detach the volume
 
                 xpc.directoryExistsAtPath(card.volumeName,
-                    handlers: Handlers{ (existence) -> () in
+                                          handler: Handlers(completionHandler: { (existence) -> () in
                         if existence.success {
                             xpc.detachVolume(card.volumeName,
                                 callBack: { (fileExitsCompltionRef) -> () in
@@ -251,7 +251,7 @@ public class BsyncXPCHelperDMGHandler {
                         } else {
                             mountDMG()
                         }
-                })
+                }).composedHandlers())
             }
     }
 
@@ -374,15 +374,14 @@ public class BsyncXPCHelperDMGHandler {
 
      - returns: N/A
      */
-    public func createDirectoryAtPath(path: String,
-                                                           handlers: Handlers) -> () {
+    public func createDirectoryAtPath(path: String, handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromNSError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.createDirectoryAtPath(path, handlers: handlers)
+            xpc.createDirectoryAtPath(path, handler: handlers.composedHandlers())
         }
     }
 
@@ -401,7 +400,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.readData(contentsOfFile: path, handlers: handlers)
+            xpc.readData(contentsOfFile: path, handler: handlers.composedHandlers())
         }
     }
 
@@ -424,7 +423,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.writeData(data, path:path, handlers: handlers)
+            xpc.writeData(data, path:path, handler: handlers.composedHandlers())
         }
     }
 
@@ -444,7 +443,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.readString(contentsOfFile: path, handlers: handlers)
+            xpc.readString(contentsOfFile: path, handler: handlers.composedHandlers())
         }
     }
 
@@ -468,7 +467,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.writeString(string, path: path, handlers: handlers)
+            xpc.writeString(string, path: path, handler: handlers.composedHandlers())
         }
     }
 
@@ -488,7 +487,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.itemExistsAtPath(path, handlers: handlers)
+            xpc.itemExistsAtPath(path, handler: handlers.composedHandlers())
         }
     }
 
@@ -508,7 +507,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.fileExistsAtPath(path, handlers: handlers)
+            xpc.fileExistsAtPath(path, handler: handlers.composedHandlers())
         }
         
     }
@@ -529,7 +528,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.directoryExistsAtPath(path, handlers: handlers)
+            xpc.directoryExistsAtPath(path, handler: handlers.composedHandlers())
         }
         
     }
@@ -549,7 +548,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.removeItemAtPath(path, handlers: handlers)
+            xpc.removeItemAtPath(path, handler: handlers.composedHandlers())
         }
     }
 
@@ -571,7 +570,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.copyItemAtPath(srcPath, toPath:dstPath, handlers: handlers)
+            xpc.copyItemAtPath(srcPath, toPath:dstPath, handler: handlers.composedHandlers())
         }
     }
 
@@ -592,7 +591,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.moveItemAtPath(srcPath, toPath: dstPath, handlers: handlers)
+            xpc.moveItemAtPath(srcPath, toPath: dstPath, handler: handlers.composedHandlers())
         }
     }
 
@@ -612,7 +611,7 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.contentsOfDirectoryAtPath(path, handlers: handlers)
+            xpc.contentsOfDirectoryAtPath(path, handler: handlers.composedHandlers())
         }
     }
 
