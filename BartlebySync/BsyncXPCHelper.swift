@@ -51,7 +51,7 @@ import Foundation
      - parameter completionBlock:        the completionBlock
      */
     func createDMG(card: BsyncDMGCard,
-                   thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: Handlers)->(),
+                   thenDo:(whenDone: Handlers)->(),
                    detachImageOnCompletion: Bool,
                    handlers: Handlers) {
 
@@ -62,7 +62,6 @@ import Foundation
                 return
             }
 
-
             let remoteObjectProxy=bsyncConnection.remoteObjectProxy
 
             // The url is validated by card.evaluate()
@@ -70,7 +69,6 @@ import Foundation
             let imageFolderPath: String!=url.URLByDeletingLastPathComponent?.path!
 
             if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-
 
                 // *********************************
                 // 0# Create the destination folder
@@ -160,7 +158,7 @@ import Foundation
      - parameter completionBlock:  the completion block
      */
     func mountDMG(card: BsyncDMGCard,
-                  thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: Handlers)->(),
+                  thenDo:(whenDone: Handlers)->(),
                   detachImageOnCompletion: Bool,
                   finalHandlers: Handlers) {
 
@@ -207,7 +205,7 @@ import Foundation
                                 // Invoke the doWhen block
                                 // And wait for its result.
 
-                                thenDo(remoteObjectProxy:xpc, volumePath:card.volumePath, whenDone: internalHandler)
+                                thenDo(whenDone: internalHandler)
 
                             } else {
                                 // It is a failure.
@@ -242,16 +240,10 @@ import Foundation
      - parameter volumeName: the volume name
      - parameter completion: the completion handler
      */
-    func unMountDMG(volumeName: String, completion:(success: Bool, message: String?, volumeName: String)->()) {
-        let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            let message=NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)"
-            completion(success: false, message: message, volumeName: volumeName)
-            return
-        }
+    func unMountDMG(volumeName: String, handlers: Handlers) {
+        let remoteObjectProxy=bsyncConnection.remoteObjectProxy
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.detachVolume(volumeName, handler: Handlers { (detachVolumeCompletionRef) in
-                completion(success: detachVolumeCompletionRef.success, message: detachVolumeCompletionRef.message, volumeName: volumeName)
-            }.composedHandlers())
+            xpc.detachVolume(volumeName, handler: handlers.composedHandlers())
         }
     }
 

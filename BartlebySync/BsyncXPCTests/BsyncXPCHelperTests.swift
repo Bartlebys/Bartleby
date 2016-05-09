@@ -16,13 +16,7 @@ class TestContext: IdentifiableCardContext {
 }
 class BsyncXPCHelperTests: XCTestCase {
     let fm = BFileManager()
-    var volumePath: String?
-    var xpc: BsyncXPCProtocol?
     
-    override func setUp() {
-        self.volumePath = nil
-        self.xpc = nil
-    }
     func test101_master_detach() {
         let expectation = expectationWithDescription("detach")
         let user = User()
@@ -35,21 +29,16 @@ class BsyncXPCHelperTests: XCTestCase {
         let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume has been detach
-            if let volumePath = self.volumePath {
-                self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
-                    XCTAssertFalse(existence.success)
-                    expectation.fulfill()
-                    })
-            } else {
-                XCTFail("Volume path has not been set")
-            }
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                XCTAssertFalse(existence.success)
+                expectation.fulfill()
+                })
         }
         
-        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
-            // use remoteObjectProxy
-            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+        helper.createDMG(card, thenDo: { (whenDone) in
+            // check volume path exists
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
-                self.volumePath = volumePath
                 whenDone.on(existence)
                 })
             }, detachImageOnCompletion: true, handlers: handlers)
@@ -68,31 +57,23 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        self.volumePath = nil
-        self.xpc = nil
         let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume isn't detached yet
-            if let volumePath = self.volumePath, let xpc = self.xpc {
-                self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
-                    XCTAssertTrue(existence.success)
-                    // Detach the volume for cleaning purpose
-                    xpc.detachVolume(card.volumeName, handler: Handlers { (detach) in
-                        expectation.fulfill()
-                        XCTAssert(detach.success, detach.message)
-                        }.composedHandlers())
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                XCTAssertTrue(existence.success)
+                // Detach the volume for cleaning purpose
+                helper.unMountDMG(card.volumeName, handlers: Handlers { (unmount) in
+                    expectation.fulfill()
+                    XCTAssert(unmount.success, unmount.message)
                     })
-            } else {
-                XCTFail("Volume path has not been set")
-            }
+                })
         }
         
-        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
-            // use remoteObjectProxy
-            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+        helper.createDMG(card, thenDo: { (whenDone) in
+            // Check volume path exists
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
-                self.volumePath = volumePath
-                self.xpc = remoteObjectProxy
                 whenDone.on(existence)
                 })
             }, detachImageOnCompletion: false, handlers: handlers)
@@ -109,27 +90,21 @@ class BsyncXPCHelperTests: XCTestCase {
         let context = TestContext()
         print(context.name)
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
-        self.volumePath = nil
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
         let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume has been detach
-            if let volumePath = self.volumePath {
-                self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
-                    XCTAssertFalse(existence.success)
-                    expectation.fulfill()
-                    })
-            } else {
-                XCTFail("Volume path has not been set")
-            }
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                XCTAssertFalse(existence.success)
+                expectation.fulfill()
+                })
         }
         
-        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
+        helper.createDMG(card, thenDo: { (whenDone) in
             // use remoteObjectProxy
-            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
-                self.volumePath = volumePath
                 whenDone.on(existence)
                 })
             }, detachImageOnCompletion: true, handlers: handlers)
@@ -146,33 +121,25 @@ class BsyncXPCHelperTests: XCTestCase {
         let context = TestContext()
         print(context.name)
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
-        self.volumePath = nil
-        self.xpc = nil
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
         let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume isn't detached yet
-            if let volumePath = self.volumePath, let xpc = self.xpc {
-                self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
-                    XCTAssertTrue(existence.success)
-                    // Detach the volume for cleaning purpose
-                    xpc.detachVolume(card.volumeName, handler: Handlers { (detach) in
-                        expectation.fulfill()
-                        XCTAssert(detach.success, detach.message)
-                        }.composedHandlers())
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                XCTAssertTrue(existence.success)
+                // Detach the volume for cleaning purpose
+                helper.unMountDMG(card.volumeName, handlers: Handlers { (detach) in
+                    expectation.fulfill()
+                    XCTAssert(detach.success, detach.message)
                     })
-            } else {
-                XCTFail("Volume path has not been set")
-            }
+                })
         }
         
-        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
+        helper.createDMG(card, thenDo: { (whenDone) in
             // use remoteObjectProxy
-            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
-                self.volumePath = volumePath
-                self.xpc = remoteObjectProxy
                 whenDone.on(existence)
                 })
             }, detachImageOnCompletion: false, handlers: handlers)
