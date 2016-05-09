@@ -24,6 +24,13 @@ enum TasksGroupError: ErrorType {
 
 public extension TasksGroup {
 
+    
+    public var dispatchQueue: dispatch_queue_t {
+        get {
+            return Bartleby.scheduler.getQueueFor(self)
+        }
+    }
+
     // The completion Notification osbervable
     // NSNotificationCenter.defaultCenter()
     public var completionNotificationName: String {
@@ -42,16 +49,19 @@ public extension TasksGroup {
      */
     public func start() throws -> Int {
         self.status = .Runnable
-
         // The graph may be partially executed.
         // We search the entry tasks.
         let entryTasks=self.findRunnableTasks()
         for task in entryTasks {
+            task.status = .Running // There was no trans serialization we can set directly the status.
             if let invocableTask = self.invocableTaskFrom(task) {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
-                invocableTask.invoke()
+                dispatch_async(self.dispatchQueue, {
+                    invocableTask.invoke()
+                })
+
             } else {
                 throw TasksGroupError.NonInvocableTask(task: task)
             }
@@ -60,7 +70,8 @@ public extension TasksGroup {
     }
 
     /**
-     Extract a fully typed concrete task from a
+     Extract a fully typed concrete task from an abstract task
+     (!) Very important the Invocable task is a concrete Clone of the abstract Class.
 
      - parameter task: the transitionnal task
 
@@ -68,7 +79,7 @@ public extension TasksGroup {
      */
     public func invocableTaskFrom(task: Task) -> ConcreteTask? {
         if task.taskClassName != Default.NO_NAME {
-            // serialize the current transitionnal task.
+            // Serialize the current transitionnal task.
             let dictionary=task.dictionaryRepresentation()
             if let Reference: Collectible.Type = NSClassFromString(task.taskClassName) as? Collectible.Type {
                 // deserialize using its concrete type
@@ -80,6 +91,21 @@ public extension TasksGroup {
             }
         }
         return nil
+    }
+
+
+    /**
+     Tasks are trans-serialized before invocation.
+     This grabs the original task instance.
+     Should be used to set the state or the status.
+
+     - parameter taskInstance: the task Instance
+
+     - returns: the original task
+     */
+    public func originalTaskFrom(taskInstance: Task) -> Task {
+        let original: Task?=Registry.registredObjectByUID(taskInstance.UID)
+        return original ?? taskInstance // Falls back on the current instance if nothing was found
     }
 
 
@@ -102,25 +128,30 @@ public extension TasksGroup {
     public func findRunnableTasks() -> [Task] {
         var tasks=[Task]()
         for task in self.tasks {
-            self._findRunnableTasks(task, tasks:&tasks)
+            self._findRunnableTasksFrom(task, tasks:&tasks)
         }
         return tasks
     }
 
 
-    private func _findRunnableTasks(task: Task, inout tasks: [Task]) {
+    private func _findRunnableTasksFrom(task: Task, inout tasks: [Task]) {
+        if ( task.status != .Completed ) && (task.status != .Running) {
+            tasks.append(task)
+            return
+        }
         for alias in task.children {
-            if let task: Task=alias.toLocalInstance() {
-                if ( task.status != .Completed ) && (task.status != .Running) {
-                    tasks.append(task)
+            if let child: Task=alias.toLocalInstance() {
+                if ( child.status != .Completed ) && (child.status != .Running) {
+                    tasks.append(child)
                 } else {
                     // We search recursively tasks
                     // Only if there are not runnable task at previous levels
-                    self._findRunnableTasks(task, tasks:&tasks)
+                    self._findRunnableTasksFrom(child, tasks:&tasks)
                 }
             }
         }
     }
+
 
     // MARK: Find tasks with status
 
@@ -134,18 +165,21 @@ public extension TasksGroup {
     public func findTasksWithStatus(status: Task.Status) -> [Task] {
         var tasks=[Task]()
         for task in self.tasks {
-            self._findTasksWithStatus(task, status:status, tasks:&tasks)
+            self._findTasksWithStatusFrom(task, status:status, tasks:&tasks)
         }
         return tasks
     }
 
-    private func _findTasksWithStatus(task: Task, status: Task.Status, inout tasks: [Task]) {
+    private func _findTasksWithStatusFrom(task: Task, status: Task.Status, inout tasks: [Task]) {
+        if ( task.status != .Completed ) && (task.status != .Running) {
+            tasks.append(task)
+        }
         for alias in task.children {
-            if let task: Task=alias.toLocalInstance() {
-                if task.status == status {
-                    tasks.append(task)
+            if let child: Task=alias.toLocalInstance() {
+                if child.status == status {
+                    tasks.append(child)
                 }
-                self._findTasksWithStatus(task, status:status, tasks:&tasks)
+                self._findTasksWithStatusFrom(child, status:status, tasks:&tasks)
             }
         }
     }

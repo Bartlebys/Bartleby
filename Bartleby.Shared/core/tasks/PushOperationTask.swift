@@ -15,7 +15,7 @@ import Foundation
 #endif
 
 #if !DUSE_EMBEDDED_MODULES
-@objc(PushOperationTask) public class  PushOperationTask: AbstractReactiveTask, ConcreteTask {
+@objc(PushOperationTask) public class  PushOperationTask: ReactiveTask, ConcreteTask {
 
     /**
      This initializer **MUST:** call configureWithArguments

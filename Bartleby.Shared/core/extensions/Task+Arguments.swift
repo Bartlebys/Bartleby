@@ -55,9 +55,25 @@ extension Task {
      - parameter completionState: the completion state
      */
     final public func forward(completionState: Completion) {
-        self.completionState=completionState
+        // IMPORTANT(!) the task is trans-serialized
+        // So we must store the status and completion state in its "Original"
+        // And forget the Live instance.
+        if let aliasOfGroup=self.group {
+            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+                let originalTask = group.originalTaskFrom(self)
+                originalTask.status = .Completed
+                originalTask.completionState = completionState
+            } else {
+                if TasksScheduler.DEBUG_TASKS {
+                    bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
+                }
+            }
+        } else {
+            if TasksScheduler.DEBUG_TASKS {
+                bprint("ERROR No TaskGroup Alias on \(self)", file: #file, function: #function, line: #line)
+            }
+        }
         do {
-            self.status = .Completed
             if TasksScheduler.DEBUG_TASKS {
                 bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
             }

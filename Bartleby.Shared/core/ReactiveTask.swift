@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum AbstractReactiveTaskError: ErrorType {
+enum ReactiveTaskError: ErrorType {
     case MissingTaskGroup
 }
 
-@objc(AbstractReactiveTask) public class  AbstractReactiveTask: Task {
+@objc(ReactiveTask) public class  ReactiveTask: Task {
 
     /**
      The convenience intializer that must be overriden.
@@ -38,7 +38,7 @@ enum AbstractReactiveTaskError: ErrorType {
      */
     public func appendSequentialTask(task: Task) throws {
         if self._lastSequentialTask.group==nil {
-            throw AbstractReactiveTaskError.MissingTaskGroup
+            throw ReactiveTaskError.MissingTaskGroup
         }
         self._lastSequentialTask.addChildren(task)
         self._lastSequentialTask=task

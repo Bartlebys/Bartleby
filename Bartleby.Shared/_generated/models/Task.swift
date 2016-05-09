@@ -15,40 +15,40 @@ import ObjectMapper
 #endif
 
 // MARK: Model Task
-@objc(Task) public class Task : JObject{
+@objc(Task) public class Task: JObject {
 
 
 	//The alias of the TasksGroup
-	public var group:Alias<TasksGroup>?
+	public var group: Alias<TasksGroup>?
 	//Task Status
-	public enum Status:Int{
+	public enum Status: Int {
 		case New
 		case Running
 		case Completed
 	}
-	public var status:Status = .New
+	public var status: Status = .New
 	//The priority is equal to the parent task.
-	public enum Priority:Int{
+	public enum Priority: Int {
 		case Background
 		case Low
 		case Default
 		case High
 	}
-	public var priority:Priority = .Default
+	public var priority: Priority = .Default
 	//The alias of the parent task
-	public var parent:Alias<Task>?
+	public var parent: Alias<Task>?
 	//A collection of Concrete Tasks Aliases
-	public var children:[Alias<Task>] = [Alias<Task>]()
+	public var children: [Alias<Task>] = [Alias<Task>]()
 	//The progression state of the task
-	public var progressionState:Progression = Progression()
+	public var progressionState: Progression = Progression()
 	//The completion state of the task
-	public var completionState:Completion = Completion()
+	public var completionState: Completion = Completion()
 	//The serialized arguments
-	public var argumentsData:NSData?
+	public var argumentsData: NSData?
 	//The serialized result
-	public var resultData:NSData?
+	public var resultData: NSData?
 	//The task class name
-	public var taskClassName:String = "\(Default.NO_NAME)"
+	public var taskClassName: String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -67,8 +67,8 @@ import ObjectMapper
 		self.children <- map["children"]
 		self.progressionState <- map["progressionState"]
 		self.completionState <- map["completionState"]
-		self.argumentsData <- (map["argumentsData"],Base64DataTransform())
-		self.resultData <- (map["resultData"],Base64DataTransform())
+		self.argumentsData <- (map["argumentsData"], Base64DataTransform())
+		self.resultData <- (map["resultData"], Base64DataTransform())
 		self.taskClassName <- map["taskClassName"]
     }
 
@@ -77,13 +77,13 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.group=decoder.decodeObjectOfClass(Alias<TasksGroup>.self, forKey: "group") 
-		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
-		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
-		self.parent=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "parent") 
-		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias<Task>.classForCoder()]), forKey: "children")! as! [Alias<Task>]
-		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.group=decoder.decodeObjectOfClass(Alias<TasksGroup>.self, forKey: "group")
+		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )!
+		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )!
+		self.parent=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "parent")
+		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(), Alias<Task>.classForCoder()]), forKey: "children")! as! [Alias<Task>]
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")!
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")!
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
 		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
 		self.taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "taskClassName")! as NSString)
@@ -93,27 +93,27 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		if let group = self.group {
-			coder.encodeObject(group,forKey:"group")
+			coder.encodeObject(group, forKey:"group")
 		}
-		coder.encodeInteger(self.status.rawValue ,forKey:"status")
-		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
+		coder.encodeInteger(self.status.rawValue, forKey:"status")
+		coder.encodeInteger(self.priority.rawValue, forKey:"priority")
 		if let parent = self.parent {
-			coder.encodeObject(parent,forKey:"parent")
+			coder.encodeObject(parent, forKey:"parent")
 		}
-		coder.encodeObject(self.children,forKey:"children")
-		coder.encodeObject(self.progressionState,forKey:"progressionState")
-		coder.encodeObject(self.completionState,forKey:"completionState")
+		coder.encodeObject(self.children, forKey:"children")
+		coder.encodeObject(self.progressionState, forKey:"progressionState")
+		coder.encodeObject(self.completionState, forKey:"completionState")
 		if let argumentsData = self.argumentsData {
-			coder.encodeObject(argumentsData,forKey:"argumentsData")
+			coder.encodeObject(argumentsData, forKey:"argumentsData")
 		}
 		if let resultData = self.resultData {
-			coder.encodeObject(resultData,forKey:"resultData")
+			coder.encodeObject(resultData, forKey:"resultData")
 		}
-		coder.encodeObject(self.taskClassName,forKey:"taskClassName")
+		coder.encodeObject(self.taskClassName, forKey:"taskClassName")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override public class func supportsSecureCoding() -> Bool {
         return true
     }
 
@@ -124,22 +124,21 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override public class var collectionName: String {
         return "tasks"
     }
 
-    override public var d_collectionName:String{
+    override public var d_collectionName: String {
         return Task.collectionName
     }
 
 
     // MARK: Persistent
 
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
+    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
         var r=super.toPersistentRepresentation()
         r.A=NSDate().timeIntervalSince1970
         return r
     }
 
 }
-

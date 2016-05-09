@@ -243,8 +243,8 @@
 		E5B7766E1CDCDDF2007261E1 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756F1CDCDDF2007261E1 /* NoCrypto.swift */; };
 		E5B7766F1CDCDDF2007261E1 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775721CDCDDF2007261E1 /* EventSource.swift */; };
 		E5B776701CDCDDF2007261E1 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775721CDCDDF2007261E1 /* EventSource.swift */; };
-		E5B776711CDCDDF2007261E1 /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775741CDCDDF2007261E1 /* AbstractReactiveTask.swift */; };
-		E5B776721CDCDDF2007261E1 /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775741CDCDDF2007261E1 /* AbstractReactiveTask.swift */; };
+		E5B776711CDCDDF2007261E1 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775741CDCDDF2007261E1 /* ReactiveTask.swift */; };
+		E5B776721CDCDDF2007261E1 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775741CDCDDF2007261E1 /* ReactiveTask.swift */; };
 		E5B776731CDCDDF2007261E1 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775751CDCDDF2007261E1 /* Alias.swift */; };
 		E5B776741CDCDDF2007261E1 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775751CDCDDF2007261E1 /* Alias.swift */; };
 		E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775761CDCDDF2007261E1 /* Bartleby.swift */; };
@@ -503,7 +503,7 @@
 		E5B7756C1CDCDDF2007261E1 /* XTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XTypeAliases.swift; sourceTree = "<group>"; };
 		E5B7756F1CDCDDF2007261E1 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E5B775721CDCDDF2007261E1 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
-		E5B775741CDCDDF2007261E1 /* AbstractReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractReactiveTask.swift; sourceTree = "<group>"; };
+		E5B775741CDCDDF2007261E1 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E5B775751CDCDDF2007261E1 /* Alias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
 		E5B775761CDCDDF2007261E1 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
 		E5B775771CDCDDF2007261E1 /* CompletionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionStatus.swift; sourceTree = "<group>"; };
@@ -901,7 +901,7 @@
 		E5B775731CDCDDF2007261E1 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				E5B775741CDCDDF2007261E1 /* AbstractReactiveTask.swift */,
+				E5B775741CDCDDF2007261E1 /* ReactiveTask.swift */,
 				E5B775751CDCDDF2007261E1 /* Alias.swift */,
 				E5B775761CDCDDF2007261E1 /* Bartleby.swift */,
 				E5B775771CDCDDF2007261E1 /* CompletionStatus.swift */,
@@ -1277,7 +1277,7 @@
 				E5B7760B1CDCDDF2007261E1 /* DeleteTriggers.swift in Sources */,
 				E5B776971CDCDDF2007261E1 /* BartlebyFileIO.swift in Sources */,
 				E5B776051CDCDDF2007261E1 /* DeleteTasksGroup.swift in Sources */,
-				E5B776711CDCDDF2007261E1 /* AbstractReactiveTask.swift in Sources */,
+				E5B776711CDCDDF2007261E1 /* ReactiveTask.swift in Sources */,
 				E5B775F91CDCDDF2007261E1 /* DeleteLocker.swift in Sources */,
 				E5B776931CDCDDF2007261E1 /* Global.swift in Sources */,
 				E5B775AB1CDCDDF2007261E1 /* GroupsCollectionController.swift in Sources */,
@@ -1437,7 +1437,7 @@
 				E5B7760C1CDCDDF2007261E1 /* DeleteTriggers.swift in Sources */,
 				E5B776981CDCDDF2007261E1 /* BartlebyFileIO.swift in Sources */,
 				E5B776061CDCDDF2007261E1 /* DeleteTasksGroup.swift in Sources */,
-				E5B776721CDCDDF2007261E1 /* AbstractReactiveTask.swift in Sources */,
+				E5B776721CDCDDF2007261E1 /* ReactiveTask.swift in Sources */,
 				E5B775FA1CDCDDF2007261E1 /* DeleteLocker.swift in Sources */,
 				E5B776941CDCDDF2007261E1 /* Global.swift in Sources */,
 				E5B775AC1CDCDDF2007261E1 /* GroupsCollectionController.swift in Sources */,

@@ -1,5 +1,4 @@
 //: [Previous](@previous)
-
 import Foundation
 import Alamofire
 import ObjectMapper
@@ -24,7 +23,7 @@ SEPARATOR
 message="Creation of the root Object & Task"
 
 // You Must Implement ConcreteTask to be invocable
-public class ShowSummary: AbstractReactiveTask, ConcreteTask {
+public class ShowSummary: ReactiveTask, ConcreteTask {
     
     /**
      This initializer **MUST:** call configureWithArguments
@@ -94,7 +93,6 @@ do {
     SEPARATOR
     message="Check the console result"
     SEPARATOR
-    print(SEPARATOR)
     message="Number of first level tasks = \(group.tasks.count)"
     print(message)
     
@@ -102,6 +100,8 @@ do {
     message="ERROR \(error)"
     print(message)
 }
+SEPARATOR
+message="Check the console result"
 SEPARATOR
 message="Check the console result"
 

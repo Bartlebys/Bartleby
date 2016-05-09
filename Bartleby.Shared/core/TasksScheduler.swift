@@ -35,6 +35,16 @@ import Foundation
     If you need to createTaskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
 
 
+    IMPORTANT : Tasks are trans-serialized before invocation.
+    Check : ```public func invocableTaskFrom(task: Task) -> ConcreteTask?```
+    During the execution a specialized task clone is used.
+    So you cannot modify the state on the running task but should use its "original".
+
+    NOT IMPLEMENTED :
+    - 1. group.onfailure support
+    - 2. group priority and queues.
+
+
 */
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
@@ -49,6 +59,9 @@ enum TasksSchedulerError: ErrorType {
 
     //Storage
     private var _groups=Dictionary<String, TasksGroup>()
+
+    // Dispatch Queues
+    private var _queues=Dictionary<String, dispatch_queue_t>()
 
     // MARK: - Tasks Groups
 
@@ -120,6 +133,43 @@ enum TasksSchedulerError: ErrorType {
     func onTaskCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
             if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+                if completedTask.completionState.success==false {
+                    // TODO @bpds implement group.onfailure support?
+                }
+
+                // Post invocation handler
+                func __postInvocation() {
+                    let runnableTasks = group.findRunnableTasks()
+                    if runnableTasks.count==0 {
+                        // # Cleanup the task #
+                        if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
+                            for task in group.tasks.reverse() {
+                                let linearListOfSubTasks=task.linearTaskList.reverse()
+                                for subtask in linearListOfSubTasks {
+                                    if TasksScheduler.DEBUG_TASKS {
+                                        bprint("Deleting \(subtask.summary ?? subtask.UID )", file: #file, function: #function, line: #line)
+                                    }
+                                    registry.delete(subtask)
+                                }
+                                group.tasks.removeLast()
+                            }
+                        }
+
+                        // # Notify the group completion #
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if TasksScheduler.DEBUG_TASKS {
+                                bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+                            }
+                            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                        })
+                    } else {
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Still \(runnableTasks.count) task(s) to run", file: #file, function: #function, line: #line)
+                        }
+                    }
+                }
+
+
                 if group.status != .Paused {
                     // Group is Runnable
                     // We gonna start all the children of the task.
@@ -129,15 +179,25 @@ enum TasksSchedulerError: ErrorType {
                                 if TasksScheduler.DEBUG_TASKS {
                                     bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
                                 }
-                                task.status = .Running
-                                invocableTask.invoke()
+                                // IMPORTANT(!) the task is trans-serialized
+                                // So we must mark the status on its "Original"
+                                group.originalTaskFrom(task).status = .Running
+
+                                dispatch_async(group.dispatchQueue, {
+                                    // Then invoke its invocable instance.
+                                    invocableTask.invoke()
+                                    __postInvocation()
+                                })
+
                             } else {
+                                __postInvocation()
                                 if TasksScheduler.DEBUG_TASKS {
                                     bprint("NonInvocableTask", file: #file, function: #function, line: #line)
                                 }
                                 throw TasksGroupError.NonInvocableTask(task: completedTask)
                             }
                         } else {
+                            __postInvocation()
                             if TasksScheduler.DEBUG_TASKS {
                                 bprint("TaskNotFound", file: #file, function: #function, line: #line)
                             }
@@ -147,36 +207,6 @@ enum TasksSchedulerError: ErrorType {
                 } else {
                     // Group is not Runnable
                 }
-
-                let runnableTasks = group.findRunnableTasks()
-                if runnableTasks.count==0 {
-                    // # Cleanup the task #
-                    if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
-                        for task in group.tasks.reverse() {
-                            let linearListOfSubTasks=task.linearTaskList.reverse()
-                            for subtask in linearListOfSubTasks {
-                                if TasksScheduler.DEBUG_TASKS {
-                                    bprint("Deleting \(subtask.summary ?? subtask.UID )", file: #file, function: #function, line: #line)
-                                }
-                                registry.delete(subtask)
-                            }
-                            group.tasks.removeLast()
-                        }
-                    }
-
-                     // # Notify the group completion #
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if TasksScheduler.DEBUG_TASKS {
-                            bprint("Dispatching \(group.completionNotificationName)", file: #file, function: #function, line: #line)
-                        }
-                        NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-                    })
-                } else {
-                    if TasksScheduler.DEBUG_TASKS {
-                        bprint("Still \(runnableTasks.count) task(s) to run", file: #file, function: #function, line: #line)
-                    }
-                }
-
             } else {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("ERROR: local task group instance not found \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
@@ -188,4 +218,57 @@ enum TasksSchedulerError: ErrorType {
             }
         }
     }
+
+
+    /**
+     Returns the queue for the group.
+
+     - parameter group: the tasks group
+
+     - returns: the queue
+     */
+    func getQueueFor(group: TasksGroup) -> dispatch_queue_t {
+
+        let groupName=group.name
+        let priority=group.priority
+
+       /**
+        *  - DISPATCH_QUEUE_PRIORITY_HIGH:         QOS_CLASS_USER_INITIATED
+        *  - DISPATCH_QUEUE_PRIORITY_DEFAULT:      QOS_CLASS_DEFAULT
+        *  - DISPATCH_QUEUE_PRIORITY_LOW:          QOS_CLASS_UTILITY
+        *  - DISPATCH_QUEUE_PRIORITY_BACKGROUND:   QOS_CLASS_BACKGROUND
+        */
+        let queueName="org.bartlebys.\(groupName)_\(priority)"
+        if let queue: dispatch_queue_t=_queues[queueName] {
+            return queue
+        }
+
+        // Create the queue if necessary
+        if #available(OSX 10.10, *) {
+            var qos: qos_class_t=QOS_CLASS_DEFAULT
+            switch group.priority {
+            case .Background:
+                qos=QOS_CLASS_BACKGROUND
+            case .Low:
+                qos=QOS_CLASS_UTILITY
+            case .Default:
+                qos=QOS_CLASS_DEFAULT
+            case .High:
+                qos=QOS_CLASS_USER_INITIATED
+            }
+
+            let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, qos, 0)
+            let queue: dispatch_queue_t = dispatch_queue_create(queueName, attr)
+            _queues[queueName]=queue
+            return queue
+        } else {
+            // Fallback on earlier versions
+            // TODO @bpds older approach ? + IOS?
+            return dispatch_get_main_queue()
+        }
+
+    }
+
+
+
 }
