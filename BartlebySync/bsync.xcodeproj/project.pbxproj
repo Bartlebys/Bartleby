@@ -226,8 +226,8 @@
 		5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B5D09FA1CDC961E001FB281 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		5B5D09FB1CDC977E001FB281 /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
-		5B5D0A051CDDE4DF001FB281 /* BsyncXPCFacadeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A041CDDE4DF001FB281 /* BsyncXPCFacadeTests.swift */; };
-		5B5D0A061CDDE56D001FB281 /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
+		5B5D0A051CDDE4DF001FB281 /* BsyncXPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A041CDDE4DF001FB281 /* BsyncXPCTests.swift */; };
+		5B5D0A061CDDE56D001FB281 /* BsyncXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */; };
 		5B5D0A091CDE23A5001FB281 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D11CDCDE04007261E1 /* BartlebyDocument.swift */; };
 		5B5D0A0A1CDE23AD001FB281 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D31CDCDE04007261E1 /* GroupsCollectionController.swift */; };
 		5B5D0A0B1CDE23AD001FB281 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776D41CDCDE04007261E1 /* LockersCollectionController.swift */; };
@@ -1021,7 +1021,7 @@
 		E5F81A371CE0C2460053AD74 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F81A361CE0C2460053AD74 /* ReactiveTask.swift */; };
 		E5F81A381CE0C24C0053AD74 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F81A361CE0C2460053AD74 /* ReactiveTask.swift */; };
 		E5F81A391CE0C24C0053AD74 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F81A361CE0C2460053AD74 /* ReactiveTask.swift */; };
-		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */; };
+		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
 /* End PBXBuildFile section */
@@ -1072,7 +1072,7 @@
 		5B5D08FE1CDC8D92001FB281 /* BsyncXPCHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BsyncXPCHelperTests.swift; sourceTree = "<group>"; };
 		5B5D09001CDC8D92001FB281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B5D09FF1CDC9EA5001FB281 /* bsync-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "bsync-Bridging-Header.h"; sourceTree = "<group>"; };
-		5B5D0A041CDDE4DF001FB281 /* BsyncXPCFacadeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCFacadeTests.swift; sourceTree = "<group>"; };
+		5B5D0A041CDDE4DF001FB281 /* BsyncXPCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCTests.swift; sourceTree = "<group>"; };
 		5B5D0B5C1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCProtocolTests.swift; sourceTree = "<group>"; };
 		5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalDMGSyncTests.swift; sourceTree = "<group>"; };
 		5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncHashMapTests.swift; sourceTree = "<group>"; };
@@ -1341,7 +1341,7 @@
 		E5F81A361CE0C2460053AD74 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPC.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5C61CBF5E5E006AFA2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCFacade.swift; sourceTree = "<group>"; };
+		E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPC.swift; sourceTree = "<group>"; };
 		E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCProtocol.swift; sourceTree = "<group>"; };
 		E5FEE5EA1CBF5FA2006AFA2E /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E5FEE6081CBF61C4006AFA2E /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/Alamofire.framework"; sourceTree = "<group>"; };
@@ -1387,7 +1387,7 @@
 				5B5D0B5C1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift */,
 				5B5D08FE1CDC8D92001FB281 /* BsyncXPCHelperTests.swift */,
 				5B5D09001CDC8D92001FB281 /* Info.plist */,
-				5B5D0A041CDDE4DF001FB281 /* BsyncXPCFacadeTests.swift */,
+				5B5D0A041CDDE4DF001FB281 /* BsyncXPCTests.swift */,
 			);
 			path = BsyncXPCTests;
 			sourceTree = "<group>";
@@ -1963,7 +1963,7 @@
 			children = (
 				E55C92851CBF8E9B008163F6 /* Documentation */,
 				E55C92881CBF8E9B008163F6 /* README.md */,
-				E5FEE5E81CBF5FA2006AFA2E /* BsyncXPCFacade.swift */,
+				E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */,
 				E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */,
 				E5FEE5EA1CBF5FA2006AFA2E /* main.swift */,
 				E5FEE5C61CBF5E5E006AFA2E /* Info.plist */,
@@ -2254,7 +2254,7 @@
 				5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */,
 				5B5D0A141CDE23FC001FB281 /* BaseRegistryMetadata.swift in Sources */,
 				5B5D0A481CDE245E001FB281 /* JDocument.swift in Sources */,
-				5B5D0A061CDDE56D001FB281 /* BsyncXPCFacade.swift in Sources */,
+				5B5D0A061CDDE56D001FB281 /* BsyncXPC.swift in Sources */,
 				5B5D0B5D1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift in Sources */,
 				5B5D09EF1CDC9256001FB281 /* BsyncAdmin.swift in Sources */,
 				5B5D0A2F1CDE2426001FB281 /* Registry+Triggers.swift in Sources */,
@@ -2308,7 +2308,7 @@
 				5B5D0AD31CDE24F2001FB281 /* PString.swift in Sources */,
 				5B5D095A1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D0AAE1CDE24B2001FB281 /* ReadGroupsByIds.swift in Sources */,
-				5B5D0A051CDDE4DF001FB281 /* BsyncXPCFacadeTests.swift in Sources */,
+				5B5D0A051CDDE4DF001FB281 /* BsyncXPCTests.swift in Sources */,
 				5B5D09E71CDC924E001FB281 /* PdSSyncAdmin.m in Sources */,
 				5B5D09271CDC91B4001FB281 /* TransformOf.swift in Sources */,
 				5B5D09721CDC91E3001FB281 /* (null) in Sources */,
@@ -2967,7 +2967,7 @@
 				E5B777E81CDCDE04007261E1 /* DeleteGroup.swift in Sources */,
 				E5B7779D1CDCDE04007261E1 /* Group.swift in Sources */,
 				E5B778451CDCDE04007261E1 /* ReadTriggersByQuery.swift in Sources */,
-				E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPCFacade.swift in Sources */,
+				E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPC.swift in Sources */,
 				E5B778511CDCDE04007261E1 /* UpdateGroup.swift in Sources */,
 				E5B779021CDCDE04007261E1 /* UserProtocol.swift in Sources */,
 				E5B778E41CDCDE04007261E1 /* CollectionMetadatum.swift in Sources */,

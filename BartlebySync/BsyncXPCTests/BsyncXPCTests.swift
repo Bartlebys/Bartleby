@@ -1,5 +1,5 @@
 //
-//  BsyncXPCFacadeTests.swift
+//  BsyncXPCTests.swift
 //  bsync
 //
 //  Created by Martin Delille on 07/05/2016.
@@ -8,13 +8,13 @@
 
 import XCTest
 
-class BsyncXPCFacadeTests: XCTestCase {
-    let fm = BsyncXPCFacade()
+class BsyncXPCTests: XCTestCase {
+    let fm = BsyncXPC()
     let contextName = Bartleby.randomStringWithLength(6) + "/"
-    
+
     func test101_exist_create_write_read_list() {
         let folder = TestsConfiguration.ASSET_PATH + contextName
-        
+
         // Checking no items (directory or file) exists
         let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")
         self.fm.directoryExistsAtPath(folder,
@@ -37,13 +37,13 @@ class BsyncXPCFacadeTests: XCTestCase {
                                     XCTAssertFalse(existence.success)
                                     XCTAssertEqual(404, existence.statusCode)
             })
-        
+
         // Create directory
         let directoryShouldBeCreated = self.expectationWithDescription("Directory should be created")
         self.fm.createDirectoryAtPath(folder, handlers: Handlers { (creation) in
             directoryShouldBeCreated.fulfill()
             XCTAssert(creation.success, creation.message)
-            
+
             // Check the new directory exists
             let directoryShouldExist = self.expectationWithDescription("Directory should exist")
             self.fm.directoryExistsAtPath(folder,
@@ -66,7 +66,7 @@ class BsyncXPCFacadeTests: XCTestCase {
                     XCTAssertFalse(existence.success)
                     XCTAssertEqual(415, existence.statusCode)
                 })
-            
+
             // Create file
             let aaa = Bartleby.randomStringWithLength(6)
             let filePath = folder + "test.txt"
@@ -74,7 +74,7 @@ class BsyncXPCFacadeTests: XCTestCase {
             self.fm.writeString(aaa, path: filePath, handlers: Handlers { (write) in
                 writeExpectation.fulfill()
                 XCTAssert(write.success, write.message)
-                
+
                 // Check the new file exists
                 let directoryShouldNotExist2 = self.expectationWithDescription("Directory should not exist")
                 self.fm.directoryExistsAtPath(filePath,
@@ -97,7 +97,7 @@ class BsyncXPCFacadeTests: XCTestCase {
                         XCTAssertTrue(existence.success)
                         XCTAssertEqual(200, existence.statusCode)
                     })
-                
+
                 // Check the file content
                 let readExpectation = self.expectationWithDescription("A string shoudl be read")
                 self.fm.readString(contentsOfFile: filePath, handlers: Handlers { (read) in
@@ -108,7 +108,7 @@ class BsyncXPCFacadeTests: XCTestCase {
                         XCTFail(read.message)
                     }
                     })
-                
+
                 // Retrieve the folder content
                 let listExpectation = self.expectationWithDescription("A list should be returned")
                 self.fm.contentsOfDirectoryAtPath(folder, handlers: Handlers { (content) in
@@ -120,12 +120,12 @@ class BsyncXPCFacadeTests: XCTestCase {
                         XCTFail(content.message)
                     }
                     })
-                
+
                 })
-            
-            
+
+
             })
-        
+
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
         }

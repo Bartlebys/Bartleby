@@ -19,6 +19,10 @@ class BsyncXPCHelperTests: XCTestCase {
     var volumePath: String?
     var xpc: BsyncXPCProtocol?
     
+    override func setUp() {
+        self.volumePath = nil
+        self.xpc = nil
+    }
     func test101_master_detach() {
         let expectation = expectationWithDescription("detach")
         let user = User()
@@ -28,8 +32,6 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        self.volumePath = nil
-        self.xpc = nil
         let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
             XCTAssert(work.success, work.message)
             // Check volume has been detach

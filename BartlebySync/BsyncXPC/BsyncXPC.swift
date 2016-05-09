@@ -1,5 +1,5 @@
 //
-//  BsyncXPCFacade.swift
+//  BsyncXPC.swift
 //  BsyncXPC
 //
 //  Created by Benoit Pereira da silva on 20/01/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-@objc(BsyncXPCFacade) class BsyncXPCFacade: BFileManager, BsyncXPCProtocol {
+@objc(BsyncXPC) class BsyncXPC: BFileManager, BsyncXPCProtocol {
 
 
     // MARK:- Disk Image Management
