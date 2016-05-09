@@ -252,7 +252,7 @@
 		5B5D0A1E1CDE23FC001FB281 /* TasksGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776E81CDCDE04007261E1 /* TasksGroup.swift */; };
 		5B5D0A1F1CDE23FC001FB281 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776E91CDCDE04007261E1 /* Trigger.swift */; };
 		5B5D0A201CDE23FC001FB281 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B776EA1CDCDE04007261E1 /* User.swift */; };
-		5B5D0A211CDE241E001FB281 /* AbstractReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7773F1CDCDE04007261E1 /* AbstractReactiveTask.swift */; };
+		5B5D0A211CDE241E001FB281 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		5B5D0A221CDE241E001FB281 /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B777401CDCDE04007261E1 /* Alias.swift */; };
 		5B5D0A231CDE241E001FB281 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B777411CDCDE04007261E1 /* Bartleby.swift */; };
 		5B5D0A241CDE241E001FB281 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B777421CDCDE04007261E1 /* CompletionStatus.swift */; };
@@ -419,6 +419,7 @@
 		5BB60F521CBFE4E200D23B4F /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB60F3E1CBFE3C500D23B4F /* CryptoHelper.swift */; };
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
+		5BE4E4851CE0EBFA00FC369D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F81A361CE0C2460053AD74 /* ReactiveTask.swift */; };
 		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		5BFD56EC1CD20C140081FB64 /* LocalSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */; };
 		E50A6EFE1CC8DE4D00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
@@ -2157,7 +2158,7 @@
 				5B5D0A991CDE24B2001FB281 /* CreateTasksGroup.swift in Sources */,
 				5B5D094D1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D095D1CDC91E3001FB281 /* (null) in Sources */,
-				5B5D0A211CDE241E001FB281 /* AbstractReactiveTask.swift in Sources */,
+				5B5D0A211CDE241E001FB281 /* (null) in Sources */,
 				5B5D09571CDC91E3001FB281 /* (null) in Sources */,
 				5B5D0A251CDE241E001FB281 /* Consignation.swift in Sources */,
 				5B5D09421CDC91E3001FB281 /* (null) in Sources */,
@@ -2441,6 +2442,7 @@
 				5B5D0A441CDE2437001FB281 /* TasksScheduler.swift in Sources */,
 				5B5D09F61CDC9256001FB281 /* BsyncLocalAnalyzer.swift in Sources */,
 				5B5D097C1CDC91E3001FB281 /* (null) in Sources */,
+				5BE4E4851CE0EBFA00FC369D /* ReactiveTask.swift in Sources */,
 				5B5D09D11CDC921E001FB281 /* (null) in Sources */,
 				5B5D09981CDC91E4001FB281 /* (null) in Sources */,
 				5B5D0AD71CDE2556001FB281 /* LoginUser.swift in Sources */,
