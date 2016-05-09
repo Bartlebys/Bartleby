@@ -117,7 +117,7 @@ public class BsyncXPCHelperDMGHandler {
                                         volumeName:card.volumeName ,
                                         size:card.size,
                                         password:card.getPasswordForDMG(),
-                                        callBack: { (completionRef) -> () in
+                                        handler: Handlers { (completionRef) -> () in
                                             if completionRef.success {
 
                                                 // If a volume with this name is already mounted
@@ -127,9 +127,9 @@ public class BsyncXPCHelperDMGHandler {
                                                     handler: Handlers { (existence) -> () in
                                                         if existence.success {
                                                             xpc.detachVolume(card.volumeName,
-                                                                callBack: { (detachCompletionRef) -> () in
+                                                                handler: Handlers { (detachCompletionRef) -> () in
                                                                     self.mountDMG(card, thenDo: thenDo, completion: completion)
-                                                            })
+                                                            }.composedHandlers())
                                                         } else {
                                                             self.mountDMG(card, thenDo: thenDo, completion: completion)
                                                         }
@@ -142,8 +142,7 @@ public class BsyncXPCHelperDMGHandler {
                                                 self.bsyncConnection.invalidate()
                                                 return
                                             }
-
-                                        })
+                                        }.composedHandlers())
                                 }
                             }.composedHandlers())
 
@@ -205,10 +204,10 @@ public class BsyncXPCHelperDMGHandler {
                     if completionRef.success && completion.detachImageOnCompletion {
                         // We must detach
                             xpc.detachVolume(card.volumeName,
-                                callBack: { (detachCompletionRef) -> () in
+                                handler: Handlers { (detachCompletionRef) -> () in
                                     finalCompletion.callBlock(detachCompletionRef)
                                      self.bsyncConnection.invalidate()
-                            })
+                            }.composedHandlers())
 
                         } else {
                              finalCompletion.callBlock(completionRef)
@@ -221,7 +220,7 @@ public class BsyncXPCHelperDMGHandler {
                 func mountDMG() {
                     xpc.attachVolume(from: card.imagePath,
                         withPassword: card.getPasswordForDMG(),
-                        callBack: {
+                        handler: Handlers {
                             (mountCompletionRef) -> () in
                             if mountCompletionRef.success {
 
@@ -234,7 +233,7 @@ public class BsyncXPCHelperDMGHandler {
                                 // It is a failure.
                                 internalCompletion.callBlock(mountCompletionRef)
                             }
-                    })
+                    }.composedHandlers())
 
                 }
 
@@ -245,9 +244,9 @@ public class BsyncXPCHelperDMGHandler {
                                           handler: Handlers(completionHandler: { (existence) -> () in
                         if existence.success {
                             xpc.detachVolume(card.volumeName,
-                                callBack: { (fileExitsCompltionRef) -> () in
+                                handler: Handlers { (fileExitsCompltionRef) -> () in
                                     mountDMG()
-                            })
+                            }.composedHandlers())
                         } else {
                             mountDMG()
                         }
@@ -270,9 +269,9 @@ public class BsyncXPCHelperDMGHandler {
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
-            xpc.detachVolume(volumeName, callBack: { (detachVolumeCompletionRef) in
+            xpc.detachVolume(volumeName, handler: Handlers { (detachVolumeCompletionRef) in
                 completion(success: detachVolumeCompletionRef.success, message: detachVolumeCompletionRef.message, volumeName: volumeName)
-            })
+            }.composedHandlers())
         }
     }
 

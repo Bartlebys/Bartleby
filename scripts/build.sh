@@ -3,8 +3,8 @@
 # Make the script to on error
 set -e
 
-xcodebuild -workspace Bartleby.xcworkspace -scheme "BsyncXPC" clean build test
-xcodebuild -workspace Bartleby.xcworkspace -scheme "bsync" clean build test
-xcodebuild -workspace Bartleby.xcworkspace -scheme "Bartleby OSX" clean build test
-xcodebuild -workspace Bartleby.xcworkspace -scheme "Bartleby iOS" clean build test
-xcodebuild -workspace Bartleby.xcworkspace -scheme "bartleby" clean build
+xcodebuild -workspace Bartleby.xcworkspace -scheme "BsyncXPC" $1 build test
+xcodebuild -workspace Bartleby.xcworkspace -scheme "bsync" $1 build test
+xcodebuild -workspace Bartleby.xcworkspace -scheme "Bartleby OSX" $1 build test
+xcodebuild -workspace Bartleby.xcworkspace -scheme "Bartleby iOS" $1 build test
+xcodebuild -workspace Bartleby.xcworkspace -scheme "bartleby" $1 build

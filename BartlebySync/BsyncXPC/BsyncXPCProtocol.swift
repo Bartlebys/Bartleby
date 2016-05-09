@@ -32,8 +32,7 @@
 
     - returns: N/A
      */
-    func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?,
-        callBack: (CompletionHandler))->()
+    func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?, handler: ComposedHandler)
 
 
     /**
@@ -46,9 +45,7 @@
 
      - returns: N/A
      */
-    func attachVolume(from path: String, withPassword: String?,
-        callBack: (CompletionHandler))->()
-
+    func attachVolume(from path: String, withPassword: String?, handler: ComposedHandler)
 
     /**
      Attaches a Volume identified by its card
@@ -59,9 +56,7 @@
 
      - returns: N/A
      */
-    func attachVolume(identifiedBy card: BsyncDMGCard,
-        callBack: (CompletionHandler))->()
-
+    func attachVolume(identifiedBy card: BsyncDMGCard, handler: ComposedHandler)
 
     /**
      Detaches the volume
@@ -70,8 +65,7 @@
      - parameter callBack: the XPC Call back
 
      */
-    func detachVolume(named: String,
-        callBack: (CompletionHandler))->()
+    func detachVolume(named: String, handler: ComposedHandler)
 
 
     // MARK: - Directives
@@ -87,7 +81,7 @@
     - returns: N/A
     */
     func createDirectives(directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
-        callBack: (CompletionHandler))->()
+        handler: (ComposedHandler))
 
     /**
      Runs the directives.
@@ -100,7 +94,7 @@
 
      - returns: N/A
      */
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)->()
+    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)
 
     // MARK: File IO
     
@@ -114,8 +108,7 @@
      - returns: N/A
      */
     // TODO
-    func createDirectoryAtPath(path: String,
-                               handler: ComposedHandler)->()
+    func createDirectoryAtPath(path: String, handler: ComposedHandler)
     
     /**
      Reads the data with options
@@ -126,8 +119,7 @@
      
      - returns: N/A
      */
-    func readData(contentsOfFile path: String,
-                                 handler: ComposedHandler)->()
+    func readData(contentsOfFile path: String, handler: ComposedHandler)
     
     /**
      Writes data to the given path
@@ -139,9 +131,7 @@
      
      - returns: N/A
      */
-    func writeData(data: NSData,
-                   path: String,
-                   handler: ComposedHandler)->()
+    func writeData(data: NSData, path: String, handler: ComposedHandler)
     
     /**
      Reads the data with options
@@ -162,8 +152,7 @@
      }
      }
      */
-    func readString(contentsOfFile path: String,
-                                   handler: ComposedHandler)->()
+    func readString(contentsOfFile path: String, handler: ComposedHandler)
     
     /**
      Writes String to the given path using utf8 encoding
@@ -176,9 +165,7 @@
      
      - returns: N/A
      */
-    func writeString(string: String,
-                     path: String,
-                     handler: ComposedHandler)->()
+    func writeString(string: String, path: String, handler: ComposedHandler)
     
     
     /**
@@ -189,8 +176,7 @@
      
      - returns: N/A
      */
-    func itemExistsAtPath(path: String,
-                          handler: ComposedHandler)->()
+    func itemExistsAtPath(path: String, handler: ComposedHandler)
     
     /**
      Determines if a file exists and is a directory.
@@ -200,8 +186,7 @@
      
      - returns: N/A
      */
-    func fileExistsAtPath(path: String,
-                          handler: ComposedHandler)->()
+    func fileExistsAtPath(path: String, handler: ComposedHandler)
     
     /**
      Determines if a directory exists.
@@ -211,8 +196,7 @@
      
      - returns: N/A
      */
-    func directoryExistsAtPath(path: String,
-                               handler: ComposedHandler)->()
+    func directoryExistsAtPath(path: String, handler: ComposedHandler)
     
     /**
      Removes the item at a given path
@@ -221,8 +205,7 @@
      - parameter path:     path
      - parameter handlers: The progress and completion handler
      */
-    func removeItemAtPath(path: String,
-                          handler: ComposedHandler)->()
+    func removeItemAtPath(path: String, handler: ComposedHandler)
     
     /**
      Copies the file
@@ -233,9 +216,7 @@
      
      - returns: N/A
      */
-    func copyItemAtPath(srcPath: String,
-                        toPath dstPath: String,
-                               handler: ComposedHandler)->()
+    func copyItemAtPath(srcPath: String, toPath dstPath: String, handler: ComposedHandler)
     
     /**
      Moves the file
@@ -246,9 +227,7 @@
      
      - returns: N/A
      */
-    func moveItemAtPath(srcPath: String,
-                        toPath dstPath: String,
-                               handler: ComposedHandler)->()
+    func moveItemAtPath(srcPath: String, toPath dstPath: String, handler: ComposedHandler)
     
     
     /**
@@ -258,6 +237,5 @@
      - parameter handlers: The progress and completion handler
      */
     // TODO @md Explain how to extract result
-    func contentsOfDirectoryAtPath(path: String,
-                                   handler: ComposedHandler)->()
+    func contentsOfDirectoryAtPath(path: String, handler: ComposedHandler)
 }

@@ -27,17 +27,17 @@ import Foundation
      - returns: nothing
      */
     func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?,
-                         callBack: (CompletionHandler))->() {
+                         handler: ComposedHandler) {
         print("imageFilePath \(imageFilePath)")
         let dmgManager=BsyncImageDiskManager()
         let completion = Completion.defaultState()
         do {
             completion.success = try dmgManager.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password)
         } catch {
-            completion.message = "An error has occured"
+            completion.message = "An error has occured: \(error)"
         }
-        // TODO: @md Use progress and completion handler
-        callBack(completion)
+        let handlers = Handlers.handlersFrom(handler)
+        handlers.on(completion)
     }
 
     /**
@@ -50,16 +50,16 @@ import Foundation
      - returns: return value description
      */
     func attachVolume(from path: String, withPassword: String?,
-                           callBack: (CompletionHandler))->() {
+                           handler: ComposedHandler) {
         let dmgManager=BsyncImageDiskManager()
         let completion = Completion.defaultState()
         do {
             completion.success = try dmgManager.attachVolume(from: path, withPassword: withPassword)
         } catch {
-            completion.message = "An error has occured"
+            completion.message = "An error has occured: \(error)"
         }
-        // TODO: @md Use progress and completion handler
-        callBack(completion)
+        let handlers = Handlers.handlersFrom(handler)
+        handlers.on(completion)
     }
 
     /**
@@ -72,9 +72,9 @@ import Foundation
      - returns: N/A
      */
     func attachVolume(identifiedBy card: BsyncDMGCard,
-                                   callBack: (CompletionHandler))->() {
+                                   handler: ComposedHandler) {
         let password=card.getPasswordForDMG()
-        self.attachVolume(from: card.imagePath, withPassword: password, callBack:callBack)
+        attachVolume(from: card.imagePath, withPassword: password, handler: handler)
 
     }
 
@@ -87,7 +87,7 @@ import Foundation
 
      */
     func detachVolume(named: String,
-                      callBack: (CompletionHandler))->() {
+                      handler: ComposedHandler) {
         let dmgManager=BsyncImageDiskManager()
         let completion = Completion.defaultState()
         do {
@@ -95,8 +95,8 @@ import Foundation
         } catch {
             completion.message = "An error has occured"
         }
-        // TODO: @md Use progress and completion handler
-        callBack(completion)
+        let handlers = Handlers.handlersFrom(handler)
+        handlers.on(completion)
     }
 
 
@@ -114,8 +114,9 @@ import Foundation
      - returns: N/A
      */
     func createDirectives(directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
-                          callBack: (CompletionHandler))->() {
+                          handler: (ComposedHandler)) {
 
+        let handlers = Handlers.handlersFrom(handler)
         // Check the validity
 
         let validity=directives.areValid()
@@ -126,7 +127,7 @@ import Foundation
             } else {
                 validityMessage="Directives are not valid"
             }
-            callBack(Completion.failureState(validityMessage, statusCode: .Precondition_Failed))
+            handlers.on(Completion.failureState(validityMessage, statusCode: .Precondition_Failed))
             return
         }
 
@@ -142,12 +143,12 @@ import Foundation
                 // TODO: @md Use self.writeToFile
                 try JSONString.writeToFile(filePath, atomically: true, encoding: Default.TEXT_ENCODING)
             } catch {
-                callBack(Completion.failureState("\(error)", statusCode: .Undefined))
+                handlers.on(Completion.failureState("\(error)", statusCode: .Undefined))
                 return
             }
-            callBack(Completion.successState("Directives have be saved to:\(filePath)"))
+            handlers.on(Completion.successState("Directives have be saved to:\(filePath)"))
         } else {
-            callBack(Completion.failureState("Serialization failure", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Serialization failure", statusCode: .Undefined))
         }
     }
 
@@ -162,7 +163,7 @@ import Foundation
 
      - returns: N/A
      */
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)->() {
+    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler) {
 
         // Those handlers produce an adaptation
         // From the unique handler form

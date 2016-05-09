@@ -377,6 +377,7 @@
 		5B5D0ADA1CDE2592001FB281 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */; };
 		5B5D0B5B1CDF8F79001FB281 /* BsyncXPC.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5B5D0B5D1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0B5C1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift */; };
+		5B5D0B5E1CE09275001FB281 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD591CDF7704006A1692 /* TasksGroup+Execution.swift */; };
 		5B66FABD1CD203E7000A2534 /* LocalDMGSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B65FE6B1CAAC157000D5BB9 /* LocalDMGSyncTests.swift */; };
 		5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */; };
 		5B85169F1C91B51300127A81 /* bsyncHashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B85169E1C91B51300127A81 /* bsyncHashMapTests.swift */; };
@@ -2258,6 +2259,7 @@
 				5B5D09EF1CDC9256001FB281 /* BsyncAdmin.swift in Sources */,
 				5B5D0A2F1CDE2426001FB281 /* Registry+Triggers.swift in Sources */,
 				5B5D09E51CDC9233001FB281 /* CryptedStringTransform.swift in Sources */,
+				5B5D0B5E1CE09275001FB281 /* TasksGroup+Execution.swift in Sources */,
 				5B5D09E81CDC924E001FB281 /* PdSCommandInterpreter.m in Sources */,
 				5B5D096F1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09201CDC91B4001FB281 /* Operators.swift in Sources */,
@@ -3199,7 +3201,7 @@
 				INFOPLIST_FILE = BsyncXPCTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3217,7 +3219,7 @@
 				INFOPLIST_FILE = BsyncXPCTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3322,7 +3324,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				LD_RUNPATH_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
@@ -3336,7 +3338,7 @@
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				LD_RUNPATH_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
@@ -3352,7 +3354,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.bsyncTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3369,7 +3371,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.bsyncTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3386,7 +3388,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3405,7 +3407,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPC;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -17,26 +17,56 @@ class TestContext: IdentifiableCardContext {
 class BsyncXPCHelperTests: XCTestCase {
     let fm = BFileManager()
     
-    func test101_BasicTest() {
+    func test101_master() {
         let expectation = expectationWithDescription("DMG creation")
         let user = User()
         user.creatorUID = user.UID
         let context = TestContext()
+        print(context.name)
         let folderPath = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
         let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
             expectation.fulfill()
-            XCTAssert(work.success)
+            XCTAssert(work.success, work.message)
             }, detach: true)
         
         helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
             // use remoteObjectProxy
-            print(volumePath)
-            whenDone.callBlock(Completion.successState())
+            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+                XCTAssert(existence.success, existence.message)
+                whenDone.callBlock(existence)
+            })
             }, completion: handler)
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+        waitForExpectationsWithTimeout(200) { (error) in
+            bprint(error?.localizedDescription)
+        }
+    }
+
+    func test101_slave() {
+        let expectation = expectationWithDescription("DMG creation")
+        let user = User()
+        user.creatorUID = user.UID
+        let context = TestContext()
+        print(context.name)
+        let folderPath = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncHelperTests/" + context.name + "/"
+        let helper = BsyncXPCHelper()
+        let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
+        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+            expectation.fulfill()
+            XCTAssert(work.success, work.message)
+            }, detach: true)
+        
+        helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
+            // use remoteObjectProxy
+            self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
+                XCTAssert(existence.success, existence.message)
+                whenDone.callBlock(existence)
+                })
+            }, completion: handler)
+        
+        waitForExpectationsWithTimeout(200) { (error) in
             bprint(error?.localizedDescription)
         }
     }

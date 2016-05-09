@@ -8,18 +8,9 @@
 
 #import "HashMap.h"
 
-#ifdef USE_BSYNC_XPC_OBJC
-#import "BsyncXPC-Swift.h"
-#else
-#ifdef USE_CLIENT_BSYNC_XPC_OBJC
-#import "ClientBsyncXPC-Swift.h"
-#else
-#ifdef USE_EMBEDDED_MODULES
+#ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
 #endif
-#endif
-#endif
-
 
 NSString*const pathToHashKey=@"pthToH";
 NSString*const hashToPathsKey=@"hToPths";
