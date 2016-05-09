@@ -71,7 +71,7 @@ rootObject.summary="ROOT OBJECT"
 let firstTask=ShowSummary(arguments: rootObject)
 
 do {
-    message="Tasks createTaskGroupForning"
+    message="Tasks create task Group"
     print(message)
     let group = try Bartleby.scheduler.createTaskGroupFor(firstTask, groupedBy:"MyPlayGroundTasks", inDataSpace: document.spaceUID)
     message="Adding Child tasks"
