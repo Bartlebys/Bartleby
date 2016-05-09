@@ -12,20 +12,6 @@ import Foundation
     import BartlebyKit
 #endif
 
-
-public class BsyncXPCHelperDMGHandler {
-
-    public var detachImageOnCompletion: Bool
-
-    public var callBlock: CompletionHandler
-
-    init(onCompletion: CompletionHandler, detach: Bool) {
-        callBlock=onCompletion
-        detachImageOnCompletion=detach
-    }
-
-}
-
 // MARK: -
 
 // Simplifies the complex XPC workflow.
@@ -65,24 +51,19 @@ public class BsyncXPCHelperDMGHandler {
      - parameter completionBlock:        the completionBlock
      */
     func createDMG(card: BsyncDMGCard,
-                   thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(),
-                   completion: BsyncXPCHelperDMGHandler)->() {
+                   thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: Handlers)->(),
+                   detachImageOnCompletion: Bool,
+                   handlers: Handlers) {
 
             // The card must be valid
             let validation = card.evaluate()
             if !validation.success {
-                // TODO: @md change callblock to adopt
-                completion.callBlock(validation)
+                handlers.on(validation)
                 return
             }
 
 
-            let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-                completion.callBlock(Completion.failureStateFromNSError(error))
-                return
-            }
-
-
+            let remoteObjectProxy=bsyncConnection.remoteObjectProxy
 
             // The url is validated by card.evaluate()
             let url=NSURL(fileURLWithPath:card.imagePath)
@@ -103,7 +84,7 @@ public class BsyncXPCHelperDMGHandler {
                             xpc.itemExistsAtPath(card.imagePath, handler: Handlers { (existence) -> () in
                                 if existence.success {
                                     // We preserve existing DMGs !
-                                    completion.callBlock(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
+                                    handlers.on(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
                                     self.bsyncConnection.invalidate()
                                 } else {
 
@@ -128,16 +109,16 @@ public class BsyncXPCHelperDMGHandler {
                                                         if existence.success {
                                                             xpc.detachVolume(card.volumeName,
                                                                 handler: Handlers { (detachCompletionRef) -> () in
-                                                                    self.mountDMG(card, thenDo: thenDo, completion: completion)
+                                                                    self.mountDMG(card, thenDo: thenDo, detachImageOnCompletion: detachImageOnCompletion, finalHandlers: handlers)
                                                             }.composedHandlers())
                                                         } else {
-                                                            self.mountDMG(card, thenDo: thenDo, completion: completion)
+                                                            self.mountDMG(card, thenDo: thenDo, detachImageOnCompletion: detachImageOnCompletion, finalHandlers: handlers)
                                                         }
                                                 }.composedHandlers())
 
                                             } else {
                                                 // Failure on DMG Creation
-                                                completion.callBlock(completionRef)
+                                                handlers.on(completionRef)
 
                                                 self.bsyncConnection.invalidate()
                                                 return
@@ -147,7 +128,7 @@ public class BsyncXPCHelperDMGHandler {
                             }.composedHandlers())
 
                         } else {
-                            completion.callBlock(Completion.failureState(NSLocalizedString("Destination folder creation Failure. Path=",
+                            handlers.on(Completion.failureState(NSLocalizedString("Destination folder creation Failure. Path=",
                                 comment:"Destination folder creation Failure. Path=") + imageFolderPath, statusCode: .Precondition_Failed))
                             self.bsyncConnection.invalidate()
 
@@ -179,40 +160,39 @@ public class BsyncXPCHelperDMGHandler {
      - parameter completionBlock:  the completion block
      */
     func mountDMG(card: BsyncDMGCard,
-                  thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: BsyncXPCHelperDMGHandler)->(),
-                  completion: BsyncXPCHelperDMGHandler)->() {
+                  thenDo:(remoteObjectProxy: BsyncXPCProtocol, volumePath: String, whenDone: Handlers)->(),
+                  detachImageOnCompletion: Bool,
+                  finalHandlers: Handlers) {
 
             // The car must be valid
             let validation=card.evaluate()
             if validation.success == false {
-                completion.callBlock(validation)
+                finalHandlers.on(validation)
                 return
             }
 
             let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-                completion.callBlock(Completion.failureStateFromNSError(error))
+                finalHandlers.on(Completion.failureStateFromNSError(error))
                 return
             }
 
             if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
 
-                // For better readability we alias completion to finalCompletion
-                let finalCompletion = completion
                 // Then Create an encapsulated internal "completion" object
                 // That will be called before to call the externalCompletion
-                let internalCompletion = BsyncXPCHelperDMGHandler(onCompletion: { (completionRef) -> () in
-                    if completionRef.success && completion.detachImageOnCompletion {
+                let internalHandler = Handlers { (completionRef) in
+                    if completionRef.success && detachImageOnCompletion {
                         // We must detach
                             xpc.detachVolume(card.volumeName,
                                 handler: Handlers { (detachCompletionRef) -> () in
-                                    finalCompletion.callBlock(detachCompletionRef)
+                                    finalHandlers.on(detachCompletionRef)
                                      self.bsyncConnection.invalidate()
                             }.composedHandlers())
 
                         } else {
-                             finalCompletion.callBlock(completionRef)
+                             finalHandlers.on(completionRef)
                         }
-                    }, detach: finalCompletion.detachImageOnCompletion)
+                    }
 
 
                 // This sub method can be called directly
@@ -227,11 +207,11 @@ public class BsyncXPCHelperDMGHandler {
                                 // Invoke the doWhen block
                                 // And wait for its result.
 
-                                thenDo(remoteObjectProxy:xpc, volumePath:card.volumePath, whenDone: internalCompletion)
+                                thenDo(remoteObjectProxy:xpc, volumePath:card.volumePath, whenDone: internalHandler)
 
                             } else {
                                 // It is a failure.
-                                internalCompletion.callBlock(mountCompletionRef)
+                                internalHandler.on(mountCompletionRef)
                             }
                     }.composedHandlers())
 

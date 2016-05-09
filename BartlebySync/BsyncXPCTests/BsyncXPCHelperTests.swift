@@ -32,7 +32,7 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+        let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume has been detach
             if let volumePath = self.volumePath {
@@ -43,16 +43,16 @@ class BsyncXPCHelperTests: XCTestCase {
             } else {
                 XCTFail("Volume path has not been set")
             }
-            }, detach: true)
+        }
         
         helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
             // use remoteObjectProxy
             self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
                 self.volumePath = volumePath
-                whenDone.callBlock(existence)
+                whenDone.on(existence)
                 })
-            }, completion: handler)
+            }, detachImageOnCompletion: true, handlers: handlers)
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
@@ -70,7 +70,7 @@ class BsyncXPCHelperTests: XCTestCase {
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
         self.volumePath = nil
         self.xpc = nil
-        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+        let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume isn't detached yet
             if let volumePath = self.volumePath, let xpc = self.xpc {
@@ -85,7 +85,7 @@ class BsyncXPCHelperTests: XCTestCase {
             } else {
                 XCTFail("Volume path has not been set")
             }
-            }, detach: false)
+        }
         
         helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
             // use remoteObjectProxy
@@ -93,15 +93,15 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 self.volumePath = volumePath
                 self.xpc = remoteObjectProxy
-                whenDone.callBlock(existence)
+                whenDone.on(existence)
                 })
-            }, completion: handler)
+            }, detachImageOnCompletion: false, handlers: handlers)
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
         }
     }
-
+    
     func test101_slave_detach() {
         let expectation = expectationWithDescription("detach")
         let user = User()
@@ -112,7 +112,7 @@ class BsyncXPCHelperTests: XCTestCase {
         self.volumePath = nil
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
-        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+        let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume has been detach
             if let volumePath = self.volumePath {
@@ -123,16 +123,16 @@ class BsyncXPCHelperTests: XCTestCase {
             } else {
                 XCTFail("Volume path has not been set")
             }
-            }, detach: true)
+        }
         
         helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
             // use remoteObjectProxy
             self.fm.directoryExistsAtPath(volumePath, handlers: Handlers { (existence) in
                 XCTAssert(existence.success, existence.message)
                 self.volumePath = volumePath
-                whenDone.callBlock(existence)
+                whenDone.on(existence)
                 })
-            }, completion: handler)
+            }, detachImageOnCompletion: true, handlers: handlers)
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
@@ -150,7 +150,7 @@ class BsyncXPCHelperTests: XCTestCase {
         self.xpc = nil
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
-        let handler = BsyncXPCHelperDMGHandler(onCompletion: { (work) in
+        let handlers = Handlers { (work) in
             XCTAssert(work.success, work.message)
             // Check volume isn't detached yet
             if let volumePath = self.volumePath, let xpc = self.xpc {
@@ -165,7 +165,7 @@ class BsyncXPCHelperTests: XCTestCase {
             } else {
                 XCTFail("Volume path has not been set")
             }
-            }, detach: false)
+        }
         
         helper.createDMG(card, thenDo: { (remoteObjectProxy, volumePath, whenDone) in
             // use remoteObjectProxy
@@ -173,9 +173,9 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 self.volumePath = volumePath
                 self.xpc = remoteObjectProxy
-                whenDone.callBlock(existence)
+                whenDone.on(existence)
                 })
-            }, completion: handler)
+            }, detachImageOnCompletion: false, handlers: handlers)
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
