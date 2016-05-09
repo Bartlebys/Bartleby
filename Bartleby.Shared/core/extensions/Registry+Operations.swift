@@ -28,8 +28,8 @@ extension Registry {
             // Create the root Task.
             let firstOperationTask=PushOperationTask(arguments: operations.first!)
             // Hook the task reactive handlers
-            firstOperationTask.reactiveHandlers.addCompletionHandler(handlers.on)
-            firstOperationTask.reactiveHandlers.addProgressHandler(handlers.notify)
+            firstOperationTask.reactiveHandlers.appendCompletionHandler(handlers.on)
+            firstOperationTask.reactiveHandlers.appendProgressHandler(handlers.notify)
             if operations.count>1 {
                 // We iterate on the next task.
                 for i in 1...operations.count-1 {

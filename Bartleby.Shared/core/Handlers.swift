@@ -32,7 +32,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
     // MARK: Progression handlers
     private var _progressionHandlers: [ProgressHandler] = []
 
-    public func addProgressHandler(progressHandler: ProgressHandler) {
+    public func appendProgressHandler(progressHandler: ProgressHandler) {
         self._progressionHandlers.append(progressHandler)
     }
 
@@ -46,7 +46,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
     // MARK: Completion handlers
     private var _completionHandlers: [CompletionHandler] = []
 
-    public func addCompletionHandler(handler: CompletionHandler) {
+    public func appendCompletionHandler(handler: CompletionHandler) {
         self._completionHandlers.append(handler)
     }
 
@@ -84,7 +84,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
             composedHandler(progressionState:nil, completionState:onCompletion)
         }
 
-        handlers.addProgressHandler { (onProgression) -> () in
+        handlers.appendProgressHandler { (onProgression) -> () in
             composedHandler(progressionState:onProgression, completionState:nil)
         }
         return handlers

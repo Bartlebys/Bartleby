@@ -64,7 +64,7 @@ enum ReactiveTaskError: ErrorType {
                 })
             }
             self._reactiveHandlers=Handlers(completionHandler: onCompletion)
-            self._reactiveHandlers!.addProgressHandler({ (progressionState) in
+            self._reactiveHandlers!.appendProgressHandler({ (progressionState) in
                  // We use the main queue to dispatch the progression state
                  dispatch_async(dispatch_get_main_queue(), {
                     NSNotificationCenter.defaultCenter().postNotification(progressionState.progressionNotification)
