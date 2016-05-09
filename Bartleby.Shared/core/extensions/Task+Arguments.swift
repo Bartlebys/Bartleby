@@ -63,6 +63,19 @@ extension Task {
                 let originalTask = group.originalTaskFrom(self)
                 originalTask.status = .Completed
                 originalTask.completionState = completionState
+                do {
+                    if TasksScheduler.DEBUG_TASKS {
+                        bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+                    }
+                    try Bartleby.scheduler.onTaskCompletion(originalTask)
+                } catch {
+                    if TasksScheduler.DEBUG_TASKS {
+                        let t = self.summary ?? self.UID
+                        bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+                    }
+                }
+
+                
             } else {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
@@ -71,17 +84,6 @@ extension Task {
         } else {
             if TasksScheduler.DEBUG_TASKS {
                 bprint("ERROR No TaskGroup Alias on \(self)", file: #file, function: #function, line: #line)
-            }
-        }
-        do {
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
-            }
-            try Bartleby.scheduler.onTaskCompletion(self)
-        } catch {
-            if TasksScheduler.DEBUG_TASKS {
-                let t = self.summary ?? self.UID
-                bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
             }
         }
     }
