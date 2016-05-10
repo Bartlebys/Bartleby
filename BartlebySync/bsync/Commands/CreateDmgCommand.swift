@@ -28,23 +28,22 @@ class CreateDmgCommand: CommandBase {
         cli.addOptions(path, help, volumeName, size, password)
         do {
             try cli.parse()
-                let dmgManager=BsyncImageDiskManager()
-            do {
-                if try dmgManager.createImageDisk(path.value!+volumeName.value!, volumeName:volumeName.value!, size:size.value!, password:password.value) {
-                    print("The disk image has been created")
-                    exit(EX_OK)
-                } else {
-                    exit(EX__BASE)
-                }
-            } catch {
-                print("\(error)")
-                exit(EX__BASE)
+            let dmgManager=BsyncImageDiskManager()
+            
+            if let path = path.value, let name = volumeName.value, let size = size.value {
+                self.appendCompletionHandler({ (createDisk) in
+                    if createDisk.success {
+                        print("The disk image has been created")
+                    }
+                })
+                dmgManager.createImageDisk(path + name, volumeName:name, size:size, password:password.value, handlers: self)
+            } else {
+                self.on(Completion.failureState("Error unwrapping option", statusCode: .Undefined))
             }
 
 
         } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
+            self.on(Completion.failureState("\(error)", statusCode: .Bad_Request))
         }
     }
 

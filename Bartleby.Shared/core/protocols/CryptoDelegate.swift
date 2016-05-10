@@ -10,6 +10,7 @@ import Foundation
 
 @objc public protocol CryptoDelegate {
 
+    // TODO: @md Remove throw for encryption
     func encryptString(string: String)throws->String
     func decryptString(string: String)throws->String
 
