@@ -56,7 +56,6 @@ public class JSerializer: Serializer {
      - returns: an instance (or an ObjectError)
      */
     static public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
-        print(dictionary)
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             do {
                 typeName = try Registry.resolveTypeName(from: typeName)
@@ -69,7 +68,6 @@ public class JSerializer: Serializer {
                             }
                         }
                     }
-
             } catch BartlebyError.UniversalSerializationTypMissmatch {
                 let e=ObjectError()
                 e.message="JSerializer failure the type \(typeName) is not valid for Bartleby"
@@ -84,7 +82,6 @@ public class JSerializer: Serializer {
         let e=ObjectError()
         e.message="JSerializer failure \(dictionary)"
         return e
-
     }
 
     /**

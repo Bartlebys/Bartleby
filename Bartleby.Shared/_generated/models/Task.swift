@@ -51,8 +51,6 @@ public class Task : JObject{
 	public var argumentsData:NSData?
 	//The serialized result
 	public var resultData:NSData?
-	//The task class name
-	public var taskClassName:String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -73,7 +71,6 @@ public class Task : JObject{
 		self.completionState <- map["completionState"]
 		self.argumentsData <- (map["argumentsData"],Base64DataTransform())
 		self.resultData <- (map["resultData"],Base64DataTransform())
-		self.taskClassName <- map["taskClassName"]
     }
 
 
@@ -90,7 +87,6 @@ public class Task : JObject{
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
 		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
-		self.taskClassName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "taskClassName")! as NSString)
 
     }
 
@@ -113,7 +109,6 @@ public class Task : JObject{
 		if let resultData = self.resultData {
 			coder.encodeObject(resultData,forKey:"resultData")
 		}
-		coder.encodeObject(self.taskClassName,forKey:"taskClassName")
     }
 
 

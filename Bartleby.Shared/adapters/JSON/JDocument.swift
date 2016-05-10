@@ -30,6 +30,8 @@ public class JDocument: Registry {
         Registry.declareCollectibleType(Alias<VerifyLocker>)
         Registry.declareCollectibleType(PushOperationTask)
         Registry.declareCollectibleType(Alias<PushOperationTask>)
+        Registry.declareCollectibleType(ReactiveTask)
+        Registry.declareCollectibleType(Alias<ReactiveTask>)
     }
 
     #if os(OSX)

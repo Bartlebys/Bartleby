@@ -70,6 +70,7 @@ public extension TasksGroup {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
                 dispatch_async(self.dispatchQueue, {
+                    print (invocableTask.runTimeTypeName())
                     invocableTask.invoke()
                 })
 
@@ -80,6 +81,8 @@ public extension TasksGroup {
         return entryTasks.count
     }
 
+
+
     /**
      Extract a fully typed concrete task from an abstract task
      (!) Very important the Invocable task is a concrete Clone of the abstract Class.
@@ -89,6 +92,8 @@ public extension TasksGroup {
      - returns: an invocable task or nil
      */
     public func invocableTaskFrom(task: Task) -> ConcreteTask? {
+        return task as? ConcreteTask
+        /*
         if task.taskClassName != Default.NO_NAME {
             // Serialize the current transitionnal task.
             let dictionary=task.dictionaryRepresentation()
@@ -102,6 +107,7 @@ public extension TasksGroup {
             }
         }
         return nil
+ */
     }
 
 

@@ -305,7 +305,6 @@ public class TasksCollectionController : JObject,IterableCollectibleCollection{
 			item.addObserver(self, forKeyPath: "completionState", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "argumentsData", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "resultData", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "taskClassName", options: .Old, context: &KVOContext)
         }
     }
 
@@ -322,7 +321,6 @@ public class TasksCollectionController : JObject,IterableCollectibleCollection{
 				item.removeObserver(self, forKeyPath: "completionState", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "argumentsData", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "resultData", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "taskClassName", context: &KVOContext)
             }
         }
     }

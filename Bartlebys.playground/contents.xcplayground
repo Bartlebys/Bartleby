@@ -4,6 +4,5 @@
         <page name='Hello World?'/>
         <page name='Aliases-experiments'/>
         <page name='Task-demonstrator'/>
-        <page name='UnversalTypesAndSerialization'/>
     </pages>
 </playground>

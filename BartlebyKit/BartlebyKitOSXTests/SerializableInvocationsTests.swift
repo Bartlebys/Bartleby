@@ -17,19 +17,30 @@ class SerializableInvocationsTests: XCTestCase {
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Registry.declareCollectibleType(PrintUser)// REQUIRED !!!
+        Registry.declareCollectibleType(Alias<PrintUser>)
     }
 
+    /**
+      DIRECT INVOCATION BASIC TESTS
+     */
 
     func test001_PrintUserTask() {
         let user=User()
         user.email="bartleby@barltebys.org"
         let printer =  PrintUser(arguments:user)
         let serializedInvocation=printer.serialize()
-        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser {
+        let o=JSerializer.deserialize(serializedInvocation)
+        if let deserializedInvocation=o as? PrintUser {
             deserializedInvocation.invoke()
             XCTAssert(true)
         } else {
-            XCTFail("Deserialization as failed")
+            if let error = o as? ObjectError {
+                 XCTFail("Deserialization as failed \(error.message)")
+            } else {
+                 XCTFail("Deserialization as failed")
+            }
+
         }
     }
 

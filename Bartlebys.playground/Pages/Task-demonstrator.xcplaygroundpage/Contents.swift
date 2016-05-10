@@ -4,9 +4,6 @@ import Alamofire
 import ObjectMapper
 import BartlebyKit
 
-// THIS PLAYGROUND IS CURRENTLY FAILING.
-// BUT THE SAME CODE PASTED IN Bsync's main works perfectly.
-// INVESTIGATION NEEDED
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
 let document=BartlebyDocument()
@@ -43,7 +40,6 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
     public func invoke() {
         do {
             if let object: JObject = try self.arguments() as JObject {
-                
                 if let summary = object.summary {
                     ShowSummary.counter += 1
                     print("\(ShowSummary.counter)# \(summary)")
@@ -56,18 +52,27 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
             print("ERROR \(e)")
         }
     }
+    
 }
+
+
+Registry.declareCollectibleType(ShowSummary)
+Registry.declareCollectibleType(Alias<ShowSummary>)
+
+
+
 
 
 let rootObject=JObject()
 rootObject.summary="ROOT OBJECT"
 let firstTask=ShowSummary(arguments: rootObject)
 
+
 do {
     print("Tasks create task Group")
     let group = try Bartleby.scheduler.taskGroupFor(firstTask, groupedBy:"MyPlayGroundTasks", inDataSpace: document.spaceUID)
     print("Adding Child tasks")
-    for i in 1...10 {
+    for i in 1...5 {
         let o=JObject()
         o.summary="Object \(i)"
         let task=ShowSummary(arguments: o)
@@ -84,6 +89,14 @@ do {
     print("ERROR \(error)")
 }
 print(SEPARATOR)
+
+
 print("Check the console result")
+import XCPlayground
+
+XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+Bartleby.executeAfter(5) { 
+    XCPlaygroundPage.currentPage.finishExecution()
+}
 
 //: [Next page](@next)

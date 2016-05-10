@@ -32,9 +32,12 @@ extension Task:SerializableArguments {
      */
     public final func arguments<ArgumentType: Collectible>() throws -> ArgumentType {
         if let argumentsData = self.argumentsData {
-            //@bpds(#MAJOR) exception on deserialization of CollectionControllers
-            //The KVO stack produces EXCEPTION, and we cannot use a Proxy+Patch Approach
             let deserialized=JSerializer.deserialize(argumentsData)
+            if let objectError = deserialized as? ObjectError {
+                if TasksScheduler.DEBUG_TASKS {
+                    bprint("Argument Type deserialization error \(objectError.message)", file: #file, function: #function, line: #line)
+                }
+            }
             if let arguments = deserialized as? ArgumentType {
                 return arguments
             } else {
@@ -51,39 +54,30 @@ extension Task {
 
     /**
      Final forwarding method.
+     If the task is not in group we do nothing on forward.
 
      - parameter completionState: the completion state
      */
     final public func forward(completionState: Completion) {
-        // IMPORTANT(!) the task is trans-serialized
-        // So we must store the status and completion state in its "Original"
-        // And forget the Live instance.
         if let aliasOfGroup=self.group {
-            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
-                let originalTask = group.originalTaskFrom(self)
-                originalTask.status = .Completed
-                originalTask.completionState = completionState
+            if let _ : TasksGroup = aliasOfGroup.toLocalInstance() {
+                self.status = .Completed
+                self.completionState = completionState
                 do {
                     if TasksScheduler.DEBUG_TASKS {
                         bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
                     }
-                    try Bartleby.scheduler.onTaskCompletion(originalTask)
+                    try Bartleby.scheduler.onTaskCompletion(self)
                 } catch {
                     if TasksScheduler.DEBUG_TASKS {
                         let t = self.summary ?? self.UID
                         bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
                     }
                 }
-
-                
             } else {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
                 }
-            }
-        } else {
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("ERROR No TaskGroup Alias on \(self)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -95,7 +89,6 @@ extension Task {
      */
     public final func configureWithArguments(arguments: Collectible) {
         self.argumentsData=arguments.serialize()
-        self.taskClassName=arguments.dynamicType.typeName()
     }
 
     // A linearized list from the tasks graph
