@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdatePermissions) public class UpdatePermissions : JObject,JHTTPCommand{
+
+
+public class UpdatePermissions : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "UpdatePermissions"
+    }
 
     private var _permissions:[Permission] = [Permission]()
 

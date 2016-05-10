@@ -25,7 +25,11 @@ protocol IdentifiableCardContext {
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-@objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
+public class BsyncDMGCard: JObject {
+
+    override public class func typeName() -> String {
+        return "BsyncDMGCard"
+    }
 
     public static let NO_PATH="none"
     public static let NOT_SET="not-set"
@@ -148,7 +152,7 @@ protocol IdentifiableCardContext {
 
      - returns: the password
      */
-    public func getPasswordForDMG()->String {
+    public func getPasswordForDMG() -> String {
         // This method will not return a correct password if Bartleby is not correctly initialized.
         do {
             return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))

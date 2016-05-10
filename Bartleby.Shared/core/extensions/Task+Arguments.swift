@@ -95,7 +95,7 @@ extension Task {
      */
     public final func configureWithArguments(arguments: Collectible) {
         self.argumentsData=arguments.serialize()
-        self.taskClassName=self.typeName()
+        self.taskClassName=arguments.dynamicType.typeName()
     }
 
     // A linearized list from the tasks graph

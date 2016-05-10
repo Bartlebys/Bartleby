@@ -24,7 +24,7 @@ enum TasksGroupError: ErrorType {
 
 public extension TasksGroup {
 
-    
+
     public var dispatchQueue: dispatch_queue_t {
         get {
             return Bartleby.scheduler.getQueueFor(self)
@@ -35,9 +35,20 @@ public extension TasksGroup {
     // NSNotificationCenter.defaultCenter()
     public var completionNotificationName: String {
         get {
-            return self.name+"_NOTIFICATION"
+            return self.name+"_COMPLETION_NOTIFICATION"
         }
     }
+
+
+    // The completion Notification osbervable
+    // NSNotificationCenter.defaultCenter()
+    public var progressionNotificationName: String {
+        get {
+            return self.name+"_PROGRESSION_NOTIFICATION"
+        }
+    }
+
+
 
 
     /**

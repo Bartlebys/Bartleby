@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Permission
-@objc(Permission) public class Permission : JObject{
+public class Permission : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Permission"
+    }
 
 	//The call string e.g : DeleteOperation->call
 	public var callString:String?

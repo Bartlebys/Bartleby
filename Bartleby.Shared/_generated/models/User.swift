@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model User
-@objc(User) public class User : JObject{
+public class User : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "User"
+    }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	public var spaceUID:String = "\(Bartleby.createUID())"

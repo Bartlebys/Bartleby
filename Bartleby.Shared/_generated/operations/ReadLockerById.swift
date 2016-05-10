@@ -16,8 +16,13 @@ import ObjectMapper
 
 
 
+public class ReadLockerById : JObject{
 
-@objc(ReadLockerById) public class ReadLockerById : JObject{
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadLockerById"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						lockerId:String,

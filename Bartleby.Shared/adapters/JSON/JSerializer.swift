@@ -56,6 +56,7 @@ public class JSerializer: Serializer {
      - returns: an instance (or an ObjectError)
      */
     static public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
+        print(dictionary)
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             do {
                 typeName = try Registry.resolveTypeName(from: typeName)
@@ -101,8 +102,6 @@ public class JSerializer: Serializer {
         }
         return nil
     }
-
-
 
     public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
        return JSerializer.deserializeFromDictionary(dictionary)

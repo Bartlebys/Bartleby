@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Completion
-@objc(Completion) public class Completion : JObject{
+public class Completion : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Completion"
+    }
 
 	//Success if set to true
 	public var success:Bool = true

@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Progression
-@objc(Progression) public class Progression : JObject{
+public class Progression : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Progression"
+    }
 
 	//Index of the task
 	public var currentTaskIndex:Int = 0

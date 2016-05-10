@@ -32,7 +32,7 @@ import Foundation
 
     The Task Scheduler performs locally
     That's why we use local dealiasing "taskAlias.toLocalInstance()"
-    If you need to createTaskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
+    If you need to taskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
 
 
     IMPORTANT : Tasks are trans-serialized before invocation.
@@ -42,7 +42,7 @@ import Foundation
 
     NOT IMPLEMENTED :
     - 1. group.onfailure support
-    - 2. group priority and queues.
+    - 2. group priority and queues validation
 
 
 */
@@ -68,7 +68,7 @@ enum TasksSchedulerError: ErrorType {
     /**
      Create a task Group, if the group already exists the root Task is appended to the other children.
 
-     - parameter rootTask: the task to createTaskGroupFor.
+     - parameter rootTask: the task to taskGroupFor.
      - parameter groupName:  its group name
      - parameter spaceUID:   the relevent DataSpace
 
@@ -76,8 +76,8 @@ enum TasksSchedulerError: ErrorType {
 
      - returns: the Task group
      */
-    public func createTaskGroupFor(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
-        let group=try self.taskGroupByName(groupName, inDataSpace: spaceUID)
+    public func taskGroupFor(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
+        let group=try self._taskGroupByName(groupName, inDataSpace: spaceUID)
         group.tasks.append(rootTask)
         group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
         group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
@@ -100,7 +100,7 @@ enum TasksSchedulerError: ErrorType {
 
      - returns: a task group
      */
-    private func taskGroupByName(groupName: String, inDataSpace spaceUID: String) throws ->TasksGroup {
+    private func _taskGroupByName(groupName: String, inDataSpace spaceUID: String) throws ->TasksGroup {
         if let group=_groups[groupName] {
             return group
         } else {

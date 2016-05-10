@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateGroup) public class UpdateGroup : JObject,JHTTPCommand{
+
+
+public class UpdateGroup : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "UpdateGroup"
+    }
 
     private var _group:Group = Group()
 

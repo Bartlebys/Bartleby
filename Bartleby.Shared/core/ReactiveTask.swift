@@ -14,6 +14,11 @@ enum ReactiveTaskError: ErrorType {
 
 @objc(ReactiveTask) public class  ReactiveTask: Task {
 
+    // Universal type support
+    override public class func typeName() -> String {
+       return "ReactiveTask"
+    }
+
     /**
      The convenience intializer that must be overriden.
      You should always serialize the argument during initialization phasse!

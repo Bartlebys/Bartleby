@@ -1,27 +1,86 @@
-//
-//  main.swift
-//  Bartleby's Sync client aka "bsync"
-//
-//  "bsync" is a command line tool and a client library for BartlebySync 1.0
-//  It allows to synchronizes local and distant grouped sets of files.
-//  The standard synchronization topology relies on a client software and a light blind Restfull service, but it can work locally and using P2P.
-//
-//  BartlebySync 1.0 is not anymore retro-compatible with [PdSSync 1.0](https://github.com/benoit-pereira-da-silva/PdSSync)
-//  But includes extended features like hashMapViews, synchronization directives, better interruptibility...
-//
-//  Full Port to swift 2.0 is in progress
-//  so we often bridge the calls using swift wrappers.
-//
-//  Created by Benoit Pereira da Silva on 29/12/2015.
-//  Copyright © 2015 https://pereira-da-silva.com for Chaosmos SAS
-//  All rights reserved you can ask for a license
+import Foundation
+import Alamofire
+import ObjectMapper
+import BartlebyKit
 
-import Cocoa
+// THIS PLAYGROUND IS CURRENTLY FAILING.
+// BUT THE SAME CODE PASTED IN Bsync's main works perfectly.
+// INVESTIGATION NEEDED
 
-// Instanciate the facade
-let facade=CommandsFacade()
-facade.actOnArguments()
+Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
+let document=BartlebyDocument()
+TasksScheduler.DEBUG_TASKS=true
 
-var holdOn=true
-let runLoop=NSRunLoop.currentRunLoop()
-while (holdOn && runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture()) ) {}
+let SEPARATOR="----------------------"
+print(SEPARATOR)
+print("Definition of the ShowSummary Task")
+
+var counter=0
+
+print(SEPARATOR)
+print("Creation of the root Object & Task")
+
+// You Must Implement ConcreteTask to be invocable
+public class ShowSummary: ReactiveTask, ConcreteTask {
+    
+    /**
+     This initializer **MUST:** call configureWithArguments
+     - parameter arguments: the arguments
+     
+     - returns: a well initialized task.
+     */
+    convenience required public init (arguments: Collectible) {
+        self.init()
+        self.configureWithArguments(arguments)
+        if let s=arguments.summary {
+            self.summary="ShowSummary \(s)" // For test purposes
+        }
+    }
+    
+    public static var counter: Int=0
+    
+    public func invoke() {
+        do {
+            if let object: JObject = try self.arguments() as JObject {
+                
+                if let summary = object.summary {
+                    ShowSummary.counter += 1
+                    print("\(ShowSummary.counter)# \(summary)")
+                } else {
+                    print("NO SUMMARY \(object.UID)")
+                }
+            }
+            self.forward(Completion.successState())
+        } catch let e {
+            print("ERROR \(e)")
+        }
+    }
+}
+
+
+let rootObject=JObject()
+rootObject.summary="ROOT OBJECT"
+let firstTask=ShowSummary(arguments: rootObject)
+
+do {
+    print("Tasks create task Group")
+    let group = try Bartleby.scheduler.taskGroupFor(firstTask, groupedBy:"MyPlayGroundTasks", inDataSpace: document.spaceUID)
+    print("Adding Child tasks")
+    for i in 1...10 {
+        let o=JObject()
+        o.summary="Object \(i)"
+        let task=ShowSummary(arguments: o)
+        try firstTask.appendSequentialTask(task)
+    }
+    
+    let rootTaskCounter=group.tasks.count
+    print("Number of first level tasks = \(rootTaskCounter)")
+    print(SEPARATOR)
+    try group.start()
+    print("Number of first level tasks = \(group.tasks.count)")
+    
+} catch {
+    print("ERROR \(error)")
+}
+print(SEPARATOR)
+print("Check the console result")

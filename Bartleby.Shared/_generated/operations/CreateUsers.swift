@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateUsers) public class CreateUsers : JObject,JHTTPCommand{
+
+
+public class CreateUsers : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "CreateUsers"
+    }
 
     private var _users:[User] = [User]()
 

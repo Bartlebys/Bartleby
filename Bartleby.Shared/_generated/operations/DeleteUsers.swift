@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteUsers) public class DeleteUsers : JObject,JHTTPCommand{
+
+
+public class DeleteUsers : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "DeleteUsers"
+    }
 
     private var _ids:[String] = [String]()
 

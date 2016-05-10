@@ -21,9 +21,12 @@ import Foundation
  *  and we use its parent folder as tree root
  *  It suppports NSSecureCoding as it can be to perform XPC calls.
  */
-@objc(BsyncDirectives) public class  BsyncDirectives: BsyncCredentials {
+public class  BsyncDirectives: BsyncCredentials {
 
-    // @bpds I didn't used this in the tests but nil, shall we remove it???
+    override public class func typeName() -> String {
+        return "BsyncDirectives"
+    }
+
     public static let NO_HASHMAPVIEW="NO_HASHMAPVIEW"
 
     public static let distantSchemes: [String]=["http", "https", "ftp", "ftps"]
@@ -74,7 +77,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func upStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String)->BsyncDirectives {
+    public static func upStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = NSURL(fileURLWithPath: localPath)
         directives.destinationURL = distantURL
@@ -89,7 +92,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func downStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String)->BsyncDirectives {
+    public static func downStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = distantURL
         directives.destinationURL = NSURL(fileURLWithPath: localPath)
@@ -104,7 +107,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func localDirectivesWithPath(sourcePath: String, destinationPath: String)->BsyncDirectives {
+    public static func localDirectivesWithPath(sourcePath: String, destinationPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = NSURL(fileURLWithPath: sourcePath)
         directives.destinationURL = NSURL(fileURLWithPath: destinationPath)

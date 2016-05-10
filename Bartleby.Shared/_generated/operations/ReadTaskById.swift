@@ -16,8 +16,13 @@ import ObjectMapper
 
 
 
+public class ReadTaskById : JObject{
 
-@objc(ReadTaskById) public class ReadTaskById : JObject{
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadTaskById"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						taskId:String,

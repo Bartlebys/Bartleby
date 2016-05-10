@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Group
-@objc(Group) public class Group : JObject{
+public class Group : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Group"
+    }
 
 	public var creationDate:String?
 	//The relative paths to its parent tag e.g : registryUID/collectionName/instanceUID

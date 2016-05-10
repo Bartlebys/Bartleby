@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Trigger
-@objc(Trigger) public class Trigger : JObject{
+public class Trigger : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Trigger"
+    }
 
 	//A message that can be injected for monitoring or external observation
 	public var associatedMessage:String?

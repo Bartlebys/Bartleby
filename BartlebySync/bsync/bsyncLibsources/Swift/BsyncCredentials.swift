@@ -14,9 +14,11 @@ import Foundation
 #endif
 
 
+public class BsyncCredentials: JObject {
 
-@objc(BsyncCredentials) public class BsyncCredentials: JObject {
-
+    override public class func typeName() -> String {
+        return "BsyncCredentials"
+    }
 
     /// Debug facility
     public static let DEBUG_DISABLE_ENCRYPTION=true // Should always be set to false in production (!)

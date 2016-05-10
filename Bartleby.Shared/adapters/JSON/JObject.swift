@@ -22,41 +22,35 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
+public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NSSecureCoding {
 
-// Notice the @objc(Name)
-// http://stackoverflow.com/a/24196632/341994
-// MARK: - JObject Class
-@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NSSecureCoding {
-
-    // MARK: - ReferenceName
-
-    internal var _typeName: String=Default.NO_NAME
-
-    // The reference name is equivalent to the class name as a String
-    public func typeName() -> String {
-        return _typeName
-    }
-
-
-    public func defineTypeName() {
-        if _typeName == Default.NO_NAME {
-            let typeNameString: NSString=NSStringFromClass(self.dynamicType)
-            _typeName = typeNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_", withString:"")
-        }
-    }
 
     // MARK: - Initializable
 
     override required public init() {
         super.init()
-        // We need to define the type name
-        // To support universal aliasing
-        self.defineTypeName()
     }
 
+    // MARK: - Collectible = Identifiable + Serializable + type and status management
 
-    // MARK: - Collectible = Identifiable + Serializable
+    // Used to store the type name on serialization
+    private var _typeName: String?
 
+    // The type name is Universal and used when serializing the instance
+    public class func typeName() -> String {
+        return "JObject"
+    }
+
+    internal var _runTimeTypeName: String?
+
+    // The runTypeName is used when deserializing the instance.
+    public func runTimeTypeName() -> String {
+        guard let _ = self._runTimeTypeName  else {
+            self._runTimeTypeName = NSStringFromClass(self.dynamicType)
+            return self._runTimeTypeName!
+        }
+        return self._runTimeTypeName!
+    }
 
     //Collectible protocol: committed
     public var committed: Bool = false
@@ -68,7 +62,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var summary: String?
 
 
-    // MARK: - Serializable
+    // MARK: Serializable
 
     public func serialize() -> NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
@@ -105,7 +99,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         return JSerializer.deserialize(data)
     }
 
-    // MARK: - Identifiable
+    // MARK: -Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
 
@@ -145,10 +139,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public func autoAlias<T: Collectible>()->Alias<T> {
-        return Alias<T>(from: self)
-    }
-
     // MARK: - CustomStringConvertible
 
     override public var description: String {
@@ -170,6 +160,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     public func mapping(map: Map) {
+        if map.mappingType == .ToJSON {
+            // Store the universal type Name
+            self._typeName=self.dynamicType.typeName()
+        }
         self._id <- map[Default.UID_KEY]
         self._typeName <- map[Default.TYPE_NAME_KEY]
         self.committed <- map["committed"]
@@ -193,7 +187,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
     public func encodeWithCoder(coder: NSCoder) {
-        self._typeName=self.typeName()
+        self._typeName=self.dynamicType.typeName()// Store the universal type name on serialization
         coder.encodeObject(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encodeObject(self._id, forKey: Default.UID_KEY)
         coder.encodeBool(self.committed, forKey:"committed")
@@ -252,6 +246,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 extension JObject:DictionaryRepresentation {
 
     public func dictionaryRepresentation()->[String:AnyObject] {
+        self.defineUID()
         return Mapper().toJSON(self)
     }
 }

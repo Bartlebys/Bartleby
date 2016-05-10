@@ -13,7 +13,12 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadTriggersByIdsParameters) public class ReadTriggersByIdsParameters : JObject {
+public class ReadTriggersByIdsParameters : JObject {
+	
+	// Universal type support
+	override public class func typeName() -> String {
+		 return "ReadTriggersByIdsParameters"
+	}
 	// 
 	public var ids:[String]?
 	// 
@@ -73,8 +78,13 @@ import ObjectMapper
 
 
 
+public class ReadTriggersByIds : JObject{
 
-@objc(ReadTriggersByIds) public class ReadTriggersByIds : JObject{
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadTriggersByIds"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTriggersByIdsParameters,

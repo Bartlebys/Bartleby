@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateTasksGroups) public class CreateTasksGroups : JObject,JHTTPCommand{
+
+
+public class CreateTasksGroups : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "CreateTasksGroups"
+    }
 
     private var _tasksGroups:[TasksGroup] = [TasksGroup]()
 

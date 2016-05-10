@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseCollectionMetadatum
-@objc(BaseCollectionMetadatum) public class BaseCollectionMetadatum : JObject{
+public class BaseCollectionMetadatum : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "BaseCollectionMetadatum"
+    }
 
 	//the used file storage
 	public enum Storage:String{

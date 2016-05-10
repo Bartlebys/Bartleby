@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseRegistryMetadata
-@objc(BaseRegistryMetadata) public class BaseRegistryMetadata : JObject{
+public class BaseRegistryMetadata : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "BaseRegistryMetadata"
+    }
 
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"

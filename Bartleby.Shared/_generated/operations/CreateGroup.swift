@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateGroup) public class CreateGroup : JObject,JHTTPCommand{
+
+
+public class CreateGroup : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "CreateGroup"
+    }
 
     private var _group:Group = Group()
 

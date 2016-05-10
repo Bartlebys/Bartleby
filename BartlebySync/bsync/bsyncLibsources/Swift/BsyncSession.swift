@@ -29,6 +29,13 @@ public enum BsyncSessionError: ErrorType {
 // It is hold by an interpreter.
 @objc public class BsyncSession: NSObject, Mappable {
 
+    //  SHOULD WE USE JObject?
+    /*
+    override public func typeName() -> String {
+        return "BsyncDMGCard"
+    }
+    */
+
     static public let filePrefix="._"
     static public let fileExtension=".bsync_session"
 
@@ -71,7 +78,7 @@ public enum BsyncSessionError: ErrorType {
         }
     }
 
-    static public func fileName(syncID: String)->String {
+    static public func fileName(syncID: String) -> String {
         return "\(BsyncSession.filePrefix)\(syncID).\(BsyncSession.fileExtension)"
     }
 

@@ -13,7 +13,7 @@ class JObjectTests: XCTestCase {
 
     func test_001Copy_using_NSCopying() {
         let user=User()
-        user.email="bpds@me.com"
+        user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.ByEmail
         // Test NSCopying on JObject
@@ -27,7 +27,7 @@ class JObjectTests: XCTestCase {
 
     func test_002Cloning_via_jserializer() {
         let user=User()
-        user.email="bpds@me.com"
+        user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.ByEmail
         // Test NSCopying on JObject

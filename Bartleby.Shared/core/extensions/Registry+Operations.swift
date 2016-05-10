@@ -20,25 +20,41 @@ extension Registry {
      - parameter handlers:   the handlers to hooks the completion / Progression
      */
     public func pushOperations(operations: [Operation], handlers: Handlers) throws->() {
+        TasksScheduler.DEBUG_TASKS=true
         if operations.count==0 {
             handlers.on(Completion.successState())
         } else {
             // We use the encapsulated SpaceUID
             let spaceUID=operations.first!.spaceUID
+
+            // ??? L'ORDRE D'AJOUT EST INCIDENT
+            // BPDS Implementer une Progression cohérente.
+            // le task Group devrait connaitre son nombre total de tâche + le nb completé couramment.
+            // A chaque completion de task il devrait mettre à jour
+
             // Create the root Task.
             let firstOperationTask=PushOperationTask(arguments: operations.first!)
-            // Hook the task reactive handlers
-            firstOperationTask.reactiveHandlers.appendCompletionHandler(handlers.on)
-            firstOperationTask.reactiveHandlers.appendProgressHandler(handlers.notify)
-            if operations.count>1 {
-                // We iterate on the next task.
-                for i in 1...operations.count-1 {
-                    // And append the operation task sequentially
-                    try firstOperationTask.appendSequentialTask(PushOperationTask(arguments: operations[i]))
-                }
+
+            // We taskGroupFor the task
+            let group=try Bartleby.scheduler.taskGroupFor(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
+
+            // Observe the task Group completion
+            NSNotificationCenter.defaultCenter().addObserverForName(group.completionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+                // Relay the group completion handler
+                handlers.on(group.completionState)
+            })
+
+            // Observe the task Group completion
+            NSNotificationCenter.defaultCenter().addObserverForName(group.progressionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+                // Relay the group completion handler
+                handlers.notify(group.progressionState)
+            })
+
+
+            for operation in operations {
+                let task=PushOperationTask(arguments:operation)
+                try firstOperationTask.appendSequentialTask(task)
             }
-            // We createTaskGroupFor the task
-            let group=try Bartleby.scheduler.createTaskGroupFor(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
             try group.start()
         }
     }

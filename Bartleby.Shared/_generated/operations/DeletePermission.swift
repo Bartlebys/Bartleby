@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeletePermission) public class DeletePermission : JObject,JHTTPCommand{
+
+
+public class DeletePermission : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "DeletePermission"
+    }
 
     private var _permissionId:String = String()
 

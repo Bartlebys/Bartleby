@@ -15,7 +15,10 @@ import BartlebyKit
 
 public class PrintUser: Task, ConcreteTask {
 
-
+    // Universal type support
+    override public class func typeName() -> String {
+        return "PrintUser"
+    }
 
     /**
      This initializer **MUST:** call configureWithArguments

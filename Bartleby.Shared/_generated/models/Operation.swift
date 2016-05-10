@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Operation
-@objc(Operation) public class Operation : JObject{
+public class Operation : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Operation"
+    }
 
 	//The dictionary representation of a serialized action call
 	public var toDictionary:Dictionary<String, AnyObject>?

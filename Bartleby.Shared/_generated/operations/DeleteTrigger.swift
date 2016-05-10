@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(DeleteTrigger) public class DeleteTrigger : JObject,JHTTPCommand{
+
+
+public class DeleteTrigger : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "DeleteTrigger"
+    }
 
     private var _triggerId:String = String()
 

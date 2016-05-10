@@ -22,7 +22,7 @@ class SerializableInvocationsTests: XCTestCase {
 
     func test001_PrintUserTask() {
         let user=User()
-        user.email="bpds@me.com"
+        user.email="bartleby@barltebys.org"
         let printer =  PrintUser(arguments:user)
         let serializedInvocation=printer.serialize()
         if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser {

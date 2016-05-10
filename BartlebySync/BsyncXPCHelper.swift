@@ -30,7 +30,7 @@ public class BsyncXPCHelperDMGHandler {
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-@objc(BsyncXPCHelper) public class BsyncXPCHelper: NSObject, BartlebyFileIO {
+public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
     static var masterFileName="Master"
 
@@ -96,7 +96,7 @@ public class BsyncXPCHelperDMGHandler {
                 // *********************************
 
                 xpc.createDirectoryAtPath(imageFolderPath!,
-                    handler: Handlers{ (creation) -> () in
+                    handler: Handlers { (creation) -> () in
 
                         if creation.success {
                             // The destination has been Successfully created
@@ -293,7 +293,7 @@ public class BsyncXPCHelperDMGHandler {
     func cardFor(   user: User,
                     context: IdentifiableCardContext,
                     folderPath: String,
-                    isMaster: Bool)->BsyncDMGCard {
+                    isMaster: Bool) -> BsyncDMGCard {
 
         let destination=folderPath
 
@@ -341,7 +341,7 @@ public class BsyncXPCHelperDMGHandler {
         // to mask the constraint
 
         let indirectHandlers: ComposedHandler = {
-            (progressionState, completionState)-> Void in
+            (progressionState, completionState) -> Void in
             if let progressionState = progressionState {
                 handlers.notify(progressionState)
             }
@@ -472,15 +472,15 @@ public class BsyncXPCHelperDMGHandler {
 
     /**
      Determines if a file or a directory exists.
-     
+
      - parameter path:     the path
      - parameter handlers: the handlers
-     
+
      - returns:  N/A
      */
     public func itemExistsAtPath(path: String,
                                  handlers: Handlers) -> () {
-        
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromNSError(error))
             return
@@ -492,15 +492,15 @@ public class BsyncXPCHelperDMGHandler {
 
     /**
      Determines if a file exists.
-     
+
      - parameter path:     the path
      - parameter callBack: the call back
-     
+
      - returns:  N/A
      */
     public func fileExistsAtPath(path: String,
                                  handlers: Handlers) -> () {
-        
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromNSError(error))
             return
@@ -508,20 +508,20 @@ public class BsyncXPCHelperDMGHandler {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.fileExistsAtPath(path, handler: handlers.composedHandlers())
         }
-        
+
     }
-    
+
     /**
      Determines if a directory exists.
-     
+
      - parameter path:     the path
      - parameter callBack: the call back
-     
+
      - returns:  N/A
      */
     public func directoryExistsAtPath(path: String,
                                  handlers: Handlers) -> () {
-        
+
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromNSError(error))
             return
@@ -529,9 +529,9 @@ public class BsyncXPCHelperDMGHandler {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.directoryExistsAtPath(path, handler: handlers.composedHandlers())
         }
-        
+
     }
-    
+
 
     /**
      Removes the item at a given path

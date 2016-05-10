@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Locker
-@objc(Locker) public class Locker : JObject{
+public class Locker : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Locker"
+    }
 
 	//The spaceUID is the data space UID.
 	public var spaceUID:String?

@@ -15,7 +15,13 @@ import Foundation
 
 
 // The underlining model has been implemented by flexions in BaseCollectionMetadatum
-@objc(JCollectionMetadatum) public class JCollectionMetadatum: BaseCollectionMetadatum, CollectionMetadatum {
+public class JCollectionMetadatum: BaseCollectionMetadatum, CollectionMetadatum {
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "JCollectionMetadatum"
+    }
+
 
     public var proxy: JObject? {
         didSet {

@@ -23,7 +23,12 @@ import ObjectMapper
 // it uses KVO , KVC , dynamic invocation, oS X cocoa bindings,...
 // It should be used on documents and not very large collections as it is computationnally intensive
 
-@objc(TasksGroupsCollectionController) public class TasksGroupsCollectionController : JObject,IterableCollectibleCollection{
+public class TasksGroupsCollectionController : JObject,IterableCollectibleCollection{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "TasksGroupsCollectionController"
+    }
 
     weak public var undoManager:NSUndoManager?
 

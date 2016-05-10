@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(UpdateTriggers) public class UpdateTriggers : JObject,JHTTPCommand{
+
+
+public class UpdateTriggers : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "UpdateTriggers"
+    }
 
     private var _triggers:[Trigger] = [Trigger]()
 

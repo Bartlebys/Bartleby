@@ -15,7 +15,13 @@ import Foundation
 
 // The standard RegistryMetadata implementation
 // The underlining model has been implemented by flexions in BaseRegistryMetadata
-@objc(JRegistryMetadata) public class JRegistryMetadata: BaseRegistryMetadata, RegistryMetadata {
+public class JRegistryMetadata: BaseRegistryMetadata, RegistryMetadata {
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "JRegistryMetadata"
+    }
+
 
 
     public func configureSchema(metadatum: JCollectionMetadatum) throws ->() {

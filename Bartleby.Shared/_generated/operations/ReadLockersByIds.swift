@@ -13,7 +13,12 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : JObject {
+public class ReadLockersByIdsParameters : JObject {
+	
+	// Universal type support
+	override public class func typeName() -> String {
+		 return "ReadLockersByIdsParameters"
+	}
 	// 
 	public var ids:[String]?
 	// 
@@ -73,8 +78,13 @@ import ObjectMapper
 
 
 
+public class ReadLockersByIds : JObject{
 
-@objc(ReadLockersByIds) public class ReadLockersByIds : JObject{
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadLockersByIds"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadLockersByIdsParameters,

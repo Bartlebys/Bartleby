@@ -17,76 +17,37 @@ import Foundation
 // IMPORTANT This class is very special.
 // It adds a generic behaviour to an Objc AbstractAlias
 // Generic Aliases are "Not visible" from Objc.
-// You cannot add  @objc(Alias)
 public class Alias<T:Collectible>:AbstractAlias {
+
+
+    // Universal type support
+    // To insure **cross product deserialization** of Aliases
+    // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
+    override public class func typeName() -> String {
+        return "Alias_\(T.typeName())"
+    }
 
     public required init() {
         super.init()
-        self.iTypeName=NSStringFromClass(T.self as! AnyClass)
     }
 
     public convenience init(iUID: String) {
         self.init()
         self.iUID=iUID
-        self.defineUID()
     }
 
 
     public convenience init(from: Collectible) {
         self.init()
         self.iUID=from.UID
-        self.iTypeName=from.typeName()
         self.summary=from.summary
-        self.defineUID()
         if !(from is T) {
-            bprint("Type Missmatch \(T.self) <- \(from.typeName)", file:#file, function:#function, line:#line)
+            bprint("Type Missmatch \(T.self) <- \(from.dynamicType.typeName())", file:#file, function:#function, line:#line)
             ("Type Missmatch")
         }
     }
 
     // MARK: Serialization
-
-
-    // Reference name transformations
-    // To insure **cross product deserialization** of Aliases
-    // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
-
-    override public func typeName() -> String {
-        if Registry.USE_UNIVERSAL_TYPES {
-            return self.universalTypeName()
-        } else {
-           return super.typeName()
-        }
-    }
-
-    public func universalTypeName() -> String {
-        return "Alias<\(self.iTypeName)>"
-    }
-
-    public static func realTypeName(from universalTypeName: String) -> String {
-        if let match = universalTypeName.rangeOfString("(?<=<)[^>]+", options: .RegularExpressionSearch) {
-            let aliasedTypeName=universalTypeName.substringWithRange(match)
-            return _realTypeString(aliasedTypeName)
-        }
-        return "AdaptedReferenceError"
-    }
-
-    private static func _realTypeString(aliasedTypeName: String) -> String {
-        return "\(Alias._serializablePrefix())\(aliasedTypeName)\(Alias._serializableSuffix())"
-    }
-
-    private static func _serializablePrefix() -> String {
-        let alias=Alias()
-        let s: String=NSStringFromClass(alias.dynamicType)
-        return s.substringToIndex(s.rangeOfString("Alias")!.startIndex)
-    }
-
-    private static func _serializableSuffix() -> String {
-        let alias=Alias()
-        let s: String=NSStringFromClass(alias.dynamicType)
-        return s.substringFromIndex(s.rangeOfString("Alias")!.endIndex)
-    }
-
 
     // MARK: Mappable
 
@@ -98,12 +59,6 @@ public class Alias<T:Collectible>:AbstractAlias {
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        if map.mappingType == .ToJSON {
-            // We inject the universal type name
-            self._typeName=self.typeName()
-        }
-        self._typeName <- map[Default.TYPE_NAME_KEY]
-
     }
 
 

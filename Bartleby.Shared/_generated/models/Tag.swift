@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model Tag
-@objc(Tag) public class Tag : JObject{
+public class Tag : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Tag"
+    }
 
 	public var creationDate:String?
 	//The relative paths to its parent tag e.g : registryUID/collectionName/instanceUID

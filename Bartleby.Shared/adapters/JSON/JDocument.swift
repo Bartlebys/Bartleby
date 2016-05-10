@@ -11,11 +11,29 @@ import Foundation
 import ObjectMapper
 #endif
 
-@objc(JDocument) public class JDocument: Registry {
+public class JDocument: Registry {
+
+    public class func declareCollectibleTypes() {
+        Registry.declareCollectibleType(JObject())
+        Registry.declareCollectibleType(Alias<JObject>())
+        Registry.declareCollectibleType(JCollectionMetadatum())
+        Registry.declareCollectibleType(Alias<JCollectionMetadatum>())
+        Registry.declareCollectibleType(JRegistryMetadata())
+        Registry.declareCollectibleType(Alias<JRegistryMetadata>())
+        Registry.declareCollectibleType(JHTTPResponse())
+        Registry.declareCollectibleType(Alias<JHTTPResponse>())
+        Registry.declareCollectibleType(LoginUser())
+        Registry.declareCollectibleType(Alias<LoginUser>())
+        Registry.declareCollectibleType(LogoutUser())
+        Registry.declareCollectibleType(Alias<LogoutUser>())
+        Registry.declareCollectibleType(VerifyLocker())
+        Registry.declareCollectibleType(Alias<VerifyLocker>())
+    }
 
     #if os(OSX)
     required public init() {
         super.init()
+        JDocument.declareCollectibleTypes()
     }
     #else
 
@@ -24,6 +42,7 @@ import ObjectMapper
     public required init(fileURL url: NSURL) {
         self._fileURL = url
         super.init(fileUrl: url)
+        JDocument.declareCollectibleTypes()
     }
 
     #endif

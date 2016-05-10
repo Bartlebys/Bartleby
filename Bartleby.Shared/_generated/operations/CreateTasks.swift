@@ -13,7 +13,14 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(CreateTasks) public class CreateTasks : JObject,JHTTPCommand{
+
+
+public class CreateTasks : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "CreateTasks"
+    }
 
     private var _tasks:[Task] = [Task]()
 

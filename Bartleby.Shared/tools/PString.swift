@@ -18,15 +18,15 @@ import Foundation
 
 struct PString {
 
-    static func strtoupper(string: String)->String {
+    static func strtoupper(string: String) -> String {
         return string.uppercaseString
     }
 
-    static func strtolower(string: String)->String {
+    static func strtolower(string: String) -> String {
         return string.lowercaseString
     }
 
-    static func substr(string: String, _ start: Int)->String? {
+    static func substr(string: String, _ start: Int) -> String? {
         if(start>0) {
             return substr(string, start, string.characters.count)
         } else {
@@ -43,7 +43,7 @@ struct PString {
 
      - returns: the sub string
      */
-    static func substr(string: String, _ start: Int, _ length: Int)->String? {
+    static func substr(string: String, _ start: Int, _ length: Int) -> String? {
         let startIndex: String.Index?
         if start<0 {
             let l=strlen(string)
@@ -62,18 +62,18 @@ struct PString {
         return string.substringWithRange(startIndex! ..< endIndex)
     }
 
-    static func strlen(string: String)->Int {
+    static func strlen(string: String) -> Int {
         return string.characters.count
     }
 
-    static func lcfirst(string: String)->String {
+    static func lcfirst(string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
         tstring.replaceRange(first, with:tstring.substringWithRange(first).lowercaseString)
         return tstring
     }
 
-    static func ucfirst(string: String)->String {
+    static func ucfirst(string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
         tstring.replaceRange(first, with:tstring.substringWithRange(first).uppercaseString)
@@ -84,7 +84,7 @@ struct PString {
 
     static let PREG_OFFSET_CAPTURE=1
 
-    static func preg_match(pattern: String, _ subject: String, inout _ matches: [String], _ flags: Int = 0, _ offset: Int = 0) ->Int {
+    static func preg_match(pattern: String, _ subject: String, inout _ matches: [String], _ flags: Int = 0, _ offset: Int = 0) -> Int {
         if let subjectWithOffset=substr(subject, offset, strlen(subject)) {
             if subjectWithOffset.isMatching(pattern) {
                 return 1
@@ -93,7 +93,7 @@ struct PString {
         return 0
     }
 
-    static func preg_replace (pattern: String, _ replacement: String, _ subject: String, _ limit: Int = -1)->String {
+    static func preg_replace (pattern: String, _ replacement: String, _ subject: String, _ limit: Int = -1) -> String {
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: [.CaseInsensitive])
             return regex.stringByReplacingMatchesInString(subject, options: [], range: NSMakeRange(0, strlen(subject)), withTemplate:replacement)
@@ -104,7 +104,7 @@ struct PString {
     }
 
 
-    static func preg_replace (pattern: String, _ replacement: String, _ subject: [String], _ limit: Int = -1)->[String] {
+    static func preg_replace (pattern: String, _ replacement: String, _ subject: [String], _ limit: Int = -1) -> [String] {
         var r=[String]()
         for subSubject in subject {
             r.append(preg_replace(pattern, replacement, subSubject, limit))

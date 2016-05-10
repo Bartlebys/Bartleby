@@ -15,8 +15,12 @@ import ObjectMapper
 #endif
 
 // MARK: Model TasksGroup
-@objc(TasksGroup) public class TasksGroup : JObject{
+public class TasksGroup : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "TasksGroup"
+    }
 
 	//TasksGroup Status
 	public enum Status:Int{
@@ -34,10 +38,10 @@ import ObjectMapper
 	public var priority:Priority = .Default
 	//The group dataspace
 	public var spaceUID:String = "\(Default.NO_UID)"
-	//A collection of Tasks
+	//A collection of Concrete Tasks Aliases
 	public var tasks:[Task] = [Task]()
-	//The failure task (can be used to cleanup or notify failure)
-	public var onFailure:Task?
+	//The alias of he failure task (can be used to cleanup or notify failure)
+	public var onFailure:Alias<Task>?
 	//The progression state of the group
 	public var progressionState:Progression = Progression()
 	//The completion state of the group
@@ -74,7 +78,7 @@ import ObjectMapper
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
+		self.onFailure=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "onFailure") 
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)

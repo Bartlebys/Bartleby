@@ -16,8 +16,13 @@ import ObjectMapper
 
 
 
+public class ReadPermissionById : JObject{
 
-@objc(ReadPermissionById) public class ReadPermissionById : JObject{
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadPermissionById"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						permissionId:String,

@@ -12,6 +12,11 @@ import Foundation
 
 @objc(LoginUser) public class LoginUser: JObject {
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "LoginUser"
+    }
+
     static public func execute(  user: User,
                                  withPassword password: String,
                                  sucessHandler success:()->(),

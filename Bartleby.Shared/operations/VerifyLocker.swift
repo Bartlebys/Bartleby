@@ -14,6 +14,12 @@ import Foundation
 
 
 @objc(VerifyLocker) public class VerifyLocker: JObject {
+    
+    // Universal type support
+    override public class func typeName() -> String {
+        return "VerifyLocker"
+    }
+
 
     /**
      Proceed to verification

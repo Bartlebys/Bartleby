@@ -46,12 +46,6 @@ Documents can be shared between iOS, tvOS and OSX.
 */
 @objc public class Registry: BXDocument {
 
-
-    // To insure **cross product deserialization** of Aliases you should set up to true.
-    // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
-    // Default is True
-    static public var USE_UNIVERSAL_TYPES=true
-
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
 
@@ -107,14 +101,22 @@ Documents can be shared between iOS, tvOS and OSX.
     internal var _activeSecurityBookmarks=[NSURL]()
 
 
-    // MARK : - Universal Type Name management.
+    // MARK : - Universal Type management.
 
     private static var _associatedTypesMap=[String:String]()
 
-    public static func addUniversalTypeForAlias<T: Collectible>(prototype: Alias<T>) {
-        let name = prototype.universalTypeName()
-        Registry._associatedTypesMap[name]=NSStringFromClass(prototype.dynamicType)
+    public static func declareCollectibleType(prototype: Collectible) {
+        let name = prototype.runTimeTypeName()
+        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
     }
+
+
+    public static var universalMapping: [String:String] {
+        get {
+            return _associatedTypesMap
+        }
+    }
+
 
     /**
      Bartleby associate the types to allow serializable translitterations.
@@ -127,21 +129,12 @@ Documents can be shared between iOS, tvOS and OSX.
      - returns: the adapted type name
      */
     public static func resolveTypeName(from universalTypeName: String) throws -> String {
-        if universalTypeName.contains("Alias") && Registry.USE_UNIVERSAL_TYPES {
-            if let name = Registry._associatedTypesMap[universalTypeName] {
-                return name
-            } else {
-                throw BartlebyError.UniversalSerializationTypMissmatch
-            }
+        if let name = Registry._associatedTypesMap[universalTypeName] {
+            return name
         } else {
-            // We use the standard type name
-            return universalTypeName
+            throw BartlebyError.UniversalSerializationTypMissmatch
         }
     }
-
-
-
-
 
 
     //MARK: - Centralized ObjectList By UID

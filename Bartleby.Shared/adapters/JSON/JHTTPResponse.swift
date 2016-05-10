@@ -11,7 +11,14 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc (JHTTPResponse) public class JHTTPResponse: JObject, HTTPResponse {
+public class JHTTPResponse: JObject, HTTPResponse {
+
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "JHTTPResponse"
+    }
+
 
     // A developer set code to provide filtering
     public var code: UInt=UInt.max
