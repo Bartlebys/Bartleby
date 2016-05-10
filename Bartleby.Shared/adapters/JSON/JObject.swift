@@ -78,11 +78,6 @@ public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NS
     }
 
 
-    public func deserialize(data: NSData) -> Serializable {
-        return JSerializer.deserialize(data)
-    }
-
-
     public func updateData(data: NSData) -> Serializable {
         do {
             if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {

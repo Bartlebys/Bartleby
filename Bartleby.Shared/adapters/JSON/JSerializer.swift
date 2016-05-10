@@ -92,12 +92,9 @@ public class JSerializer: Serializer {
 
      - returns: a volatile deep copy.
      */
-    static public func volatileDeepCopy<T>(instance: T) -> T? {
-        if let instance=instance as? JObject {
-            let data: NSData=JSerializer.serialize(instance)
-            return JSerializer.deserialize(data) as? T
-        }
-        return nil
+    static public func volatileDeepCopy<T: Collectible>(instance: T) -> T? {
+        let data: NSData=JSerializer.serialize(instance)
+        return JSerializer.deserialize(data) as? T
     }
 
     public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {

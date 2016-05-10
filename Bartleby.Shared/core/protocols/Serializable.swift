@@ -26,9 +26,6 @@ public protocol Serializable {
      */
     func serialize() -> NSData
 
-    func deserialize(data: NSData) -> Serializable
-
-    // TODO: @bpds Should be splitted in a specific protocol
 
     /**
      Update an existant instance
