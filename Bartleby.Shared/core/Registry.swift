@@ -117,6 +117,12 @@ public class Registry: BXDocument {
         Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
     }
 
+    /**
+     Used for unit tests only.
+     */
+    public static func purgeCollectibleType() {
+        Registry._associatedTypesMap=[String:String]()
+    }
 
 
     public static var universalMapping: [String:String] {

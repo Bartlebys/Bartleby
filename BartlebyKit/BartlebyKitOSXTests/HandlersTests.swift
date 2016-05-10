@@ -37,11 +37,7 @@ class CompletionWithResultTests: XCTestCase {
             }
         })
         self.completionWitResult(handlers)
-
     }
-
-
-
 
     func completionWitResult(handlers: Handlers) {
         let user=User()

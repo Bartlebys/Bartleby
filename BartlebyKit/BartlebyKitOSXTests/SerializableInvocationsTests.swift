@@ -17,8 +17,15 @@ class SerializableInvocationsTests: XCTestCase {
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        BartlebyDocument.declareCollectibleTypes()
         Registry.declareCollectibleType(PrintUser)// REQUIRED !!!
         Registry.declareCollectibleType(Alias<PrintUser>)
+    }
+
+
+    override static func tearDown() {
+        super.tearDown()
+        Registry.purgeCollectibleType()
     }
 
     /**
