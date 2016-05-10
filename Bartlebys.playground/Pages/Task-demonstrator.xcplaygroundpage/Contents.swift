@@ -3,6 +3,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 import BartlebyKit
+import XCPlayground
 
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
@@ -92,7 +93,7 @@ print(SEPARATOR)
 
 
 print("Check the console result")
-import XCPlayground
+
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 Bartleby.executeAfter(5) { 

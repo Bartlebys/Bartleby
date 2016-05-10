@@ -175,14 +175,12 @@ public class TasksScheduler: NSObject {
                     // We gonna start all the children of the task.
                     for child in completedTask.children {
                         if let task: Task=child.toLocalInstance() {
-                            if let invocableTask = group.invocableTaskFrom(task) {
+                            if let invocableTask = task as? Invocable {
                                 if TasksScheduler.DEBUG_TASKS {
                                     bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
                                 }
-                                // IMPORTANT(!) the task is trans-serialized
-                                // So we must mark the status on its "Original"
-                                group.originalTaskFrom(task).status = .Running
 
+                                task.status = .Running
                                 dispatch_async(group.dispatchQueue, {
                                     // Then invoke its invocable instance.
                                     invocableTask.invoke()

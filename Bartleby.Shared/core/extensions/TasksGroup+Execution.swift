@@ -65,7 +65,7 @@ public extension TasksGroup {
         let entryTasks=self.findRunnableTasks()
         for task in entryTasks {
             task.status = .Running // There was no trans serialization we can set directly the status.
-            if let invocableTask = self.invocableTaskFrom(task) {
+            if let invocableTask = task as? Invocable {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
@@ -79,50 +79,6 @@ public extension TasksGroup {
             }
         }
         return entryTasks.count
-    }
-
-
-
-    /**
-     Extract a fully typed concrete task from an abstract task
-     (!) Very important the Invocable task is a concrete Clone of the abstract Class.
-
-     - parameter task: the transitionnal task
-
-     - returns: an invocable task or nil
-     */
-    public func invocableTaskFrom(task: Task) -> ConcreteTask? {
-        return task as? ConcreteTask
-        /*
-        if task.taskClassName != Default.NO_NAME {
-            // Serialize the current transitionnal task.
-            let dictionary=task.dictionaryRepresentation()
-            if let Reference: Collectible.Type = NSClassFromString(task.taskClassName) as? Collectible.Type {
-                // deserialize using its concrete type
-                if  var invocableTask = Reference.init() as? protocol<Mappable, ConcreteTask> {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
-                    invocableTask.mapping(map)
-                    return invocableTask
-                }
-            }
-        }
-        return nil
- */
-    }
-
-
-    /**
-     Tasks are trans-serialized before invocation.
-     This grabs the original task instance.
-     Should be used to set the state or the status.
-
-     - parameter taskInstance: the task Instance
-
-     - returns: the original task
-     */
-    public func originalTaskFrom(taskInstance: Task) -> Task {
-        let original: Task?=Registry.registredObjectByUID(taskInstance.UID)
-        return original ?? taskInstance // Falls back on the current instance if nothing was found
     }
 
 
