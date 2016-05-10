@@ -11,13 +11,17 @@ import BartlebyKit
 
 class CompletionWithResultTests: XCTestCase {
 
+    static override func setUp() {
+        BartlebyDocument.declareCollectibleTypes()
+    }
+    
     // MARK: Generic result
     func  test101_generic_Result_mapping() {
         let handlers=Handlers(completionHandler: { (completion) in
             if let user: User = completion.getResult() {
                  XCTAssertEqual(user.email, "bartleby@barltebys.org")
             } else {
-                XCTFail()
+                XCTFail(completion.message)
             }
         })
         self.completionWitResult(handlers)
@@ -29,7 +33,7 @@ class CompletionWithResultTests: XCTestCase {
             if let user: User = completion.getResultFromSerializer(JSerializer.sharedInstance) {
                 XCTAssertEqual(user.email, "bartleby@barltebys.org")
             } else {
-                XCTFail()
+                XCTFail(completion.message)
             }
         })
         self.completionWitResult(handlers)
