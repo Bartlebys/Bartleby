@@ -15,7 +15,8 @@ import Foundation
 #endif
 
 #if !DUSE_EMBEDDED_MODULES
-@objc(PushOperationTask) public class  PushOperationTask: ReactiveTask, ConcreteTask {
+
+public class  PushOperationTask: ReactiveTask, ConcreteTask {
 
     // Universal type support
     override public class func typeName() -> String {

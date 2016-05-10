@@ -44,7 +44,7 @@ In a Document based app Each document have its own Registry.
 Documents can be shared between iOS, tvOS and OSX.
 
 */
-@objc public class Registry: BXDocument {
+public class Registry: BXDocument {
 
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"

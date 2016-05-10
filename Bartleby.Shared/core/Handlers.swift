@@ -27,7 +27,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
  * Composable handlers with at least one Completion Handler
  * You can compose multiple completion and progression
  */
-@objc(Handlers) public class Handlers: NSObject {
+public class Handlers: NSObject {
 
     // MARK: Progression handlers
     private var _progressionHandlers: [ProgressHandler] = []

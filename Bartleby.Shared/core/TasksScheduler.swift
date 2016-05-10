@@ -51,7 +51,7 @@ enum TasksSchedulerError: ErrorType {
     case TaskGroupNotFound
 }
 
-@objc(TasksScheduler) public class TasksScheduler: NSObject {
+public class TasksScheduler: NSObject {
 
     // Task may be difficult to debug
     // So we expose a debug setting

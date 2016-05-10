@@ -12,7 +12,7 @@ import Foundation
     import Alamofire
 #endif
 
-@objc public class HTTPManager: NSObject {
+public class HTTPManager: NSObject {
 
     static public let SPACE_UID_KEY="spaceUID"
 

@@ -9,7 +9,7 @@
 import Foundation
 
 
-@objc(BsyncXPC) class BsyncXPC: BFileManager, BsyncXPCProtocol {
+@objc class BsyncXPC: BFileManager, BsyncXPCProtocol {
 
 
     // MARK:- Disk Image Management
@@ -179,32 +179,32 @@ import Foundation
 
         runner.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, handlers: handlers)
     }
-    
+
     // MARK: File IO
     func createDirectoryAtPath(path: String, handler: ComposedHandler) {
         self.createDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func readData(contentsOfFile path: String, handler: ComposedHandler) {
         self.readData(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func writeData(data: NSData, path: String, handler: ComposedHandler) {
         self.writeData(data, path: path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func readString(contentsOfFile path: String, handler: ComposedHandler) {
         self.readString(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func writeString(string: String, path: String, handler: ComposedHandler) {
         self.writeString(string, path: path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func itemExistsAtPath(path: String, handler: ComposedHandler) {
         self.itemExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func directoryExistsAtPath(path: String, handler: ComposedHandler) {
         self.directoryExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
@@ -212,21 +212,21 @@ import Foundation
     func fileExistsAtPath(path: String, handler: ComposedHandler) {
         self.fileExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func removeItemAtPath(path: String, handler: ComposedHandler) {
         self.removeItemAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func copyItemAtPath(path: String, toPath: String, handler: ComposedHandler) {
         self.copyItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func moveItemAtPath(path: String, toPath: String, handler: ComposedHandler) {
         self.moveItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
-    
+
     func contentsOfDirectoryAtPath(path: String, handler: ComposedHandler) {
         self.contentsOfDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
-    
+
 }

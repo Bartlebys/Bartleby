@@ -27,7 +27,7 @@ public enum BsyncSessionError: ErrorType {
 
 // The sync session insure the persistency of synchronization commands.
 // It is hold by an interpreter.
-@objc public class BsyncSession: NSObject, Mappable {
+public class BsyncSession: NSObject, Mappable {
 
     //  SHOULD WE USE JObject?
     /*
