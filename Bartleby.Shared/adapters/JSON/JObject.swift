@@ -22,7 +22,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
-public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NSSecureCoding {
+public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding {
 
 
     // MARK: - Initializable
@@ -78,20 +78,12 @@ public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NS
     }
 
 
-    public func updateData(data: NSData) -> Serializable {
-        do {
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
-                self.mapping(map)
-                return self
-            }
-        } catch {
-            //Silent catch
-            bprint("deserialize ERROR \(error)")
+    public func updateData(data: NSData) throws -> Serializable {
+        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+            let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
+            self.mapping(map)
         }
-        // If there is an issue we relay to the serializer
-
-        return JSerializer.deserialize(data)
+        return self
     }
 
     // MARK: -Identifiable
@@ -205,33 +197,14 @@ public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NS
 
     public func copyWithZone(zone: NSZone) -> AnyObject {
         let data: NSData=JSerializer.serialize(self)
-        return JSerializer.deserialize(data) as! AnyObject
-    }
-
-
-    // MARK: - Persistent
-
-    public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
-        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT) {
-            return (self.UID, self.d_collectionName, data, 0, 0, 0, 0, 0, "")
-        } else {
-            let s="{\"Persitency Error - serialization failed\"}"
-            return (self.UID, self.d_collectionName, s, 0, 0, 0, 0, 0, "")
+        if let copied = try? JSerializer.deserialize(data) {
+            return copied as! AnyObject
         }
+        bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) ", file:#file, function:#function, line:#line)
+        return self as AnyObject
     }
 
 
-    static public func fromSerializedUTF8String(serializedUTF8String: String) -> Serializable {
-        // In our case the serializedUTF8String encapuslate all the required information
-        if let d = serializedUTF8String.dataUsingEncoding(Default.TEXT_ENCODING) {
-            return JSerializer.deserialize(d)
-        } else {
-            let error=ObjectError()
-            error.message="Error on deserialization of \(serializedUTF8String)"
-            return error
-        }
-
-    }
 }
 
 

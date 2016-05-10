@@ -15,9 +15,6 @@ import Foundation
 // A serializer should uses defines it own dialect.
 // Instance of Type X -> NSData
 // NSData -> Instance of Type X
-
-
-
 public protocol Serializer {
 
     // MARK : - Static
@@ -29,9 +26,9 @@ public protocol Serializer {
 
      - returns: the serizalizable Object
      */
-    static func deserialize(data: NSData) -> Serializable
+    static func deserialize(data: NSData) throws -> Serializable
 
-    static func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable
+    static func deserializeFromDictionary(dictionary: [String:AnyObject])throws ->Serializable
 
     /**
      Serialize an instance
@@ -43,29 +40,9 @@ public protocol Serializer {
     static func serialize(instance: Serializable) -> NSData
 
 
-    // MARK : - Instance
-
-    /**
-     Deserializes a fully typed object
-
-     - parameter data: the NSData
-
-     - returns: the serizalizable Object
-     */
-    func deserialize(data: NSData) -> Serializable
-
-    func deserializeFromDictionary(dictionary: [String:AnyObject])->Serializable
-
-    /**
-     Serialize an instance
-
-     - parameter instance: the Serializable instance
-
-     - returns: the NSData
-     */
-    func serialize(instance: Serializable) -> NSData
-
     /// The file extension for file based serializers. eg: "json" for JSerializer
-    var fileExtension: String { get }
+    static var fileExtension: String { get }
+
+
 
 }

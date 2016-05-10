@@ -32,7 +32,7 @@ extension Task:SerializableArguments {
      */
     public final func arguments<ArgumentType: Collectible>() throws -> ArgumentType {
         if let argumentsData = self.argumentsData {
-            let deserialized=JSerializer.deserialize(argumentsData)
+            let deserialized=try JSerializer.deserialize(argumentsData)
             if let objectError = deserialized as? ObjectError {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("Argument Type deserialization error \(objectError.message)", file: #file, function: #function, line: #line)

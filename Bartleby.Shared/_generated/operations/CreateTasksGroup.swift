@@ -15,23 +15,23 @@ import ObjectMapper
 #endif
 
 
-public class CreateTasksGroup: JObject, JHTTPCommand {
+public class CreateTasksGroup : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {
         return "CreateTasksGroup"
     }
 
-    private var _tasksGroup: TasksGroup = TasksGroup()
+    private var _tasksGroup:TasksGroup = TasksGroup()
 
-    private var _spaceUID: String=Default.NO_UID
+    private var _spaceUID:String=Default.NO_UID
 
-    private var _observationUID: String=Default.NOT_OBSERVABLE
+    private var _observationUID:String=Default.NOT_OBSERVABLE
 
-    private var _operation: Operation=Operation()
+    private var _operation:Operation=Operation()
 
-    required public convenience init() {
-        self.init(TasksGroup(), inDataSpace:Default.NO_UID, observableBy:Default.NOT_OBSERVABLE)
+    required public convenience init(){
+        self.init(TasksGroup(), inDataSpace:Default.NO_UID,observableBy:Default.NOT_OBSERVABLE)
     }
 
 
@@ -51,8 +51,8 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
 		self._operation.creatorUID <- map["_operation.creatorUID"]
 		self._operation.status <- map["_operation.status"]
 		self._operation.counter <- map["_operation.counter"]
-		self._operation.creationDate <- (map["_operation.creationDate"], ISO8601DateTransform())
-		self._operation.baseUrl <- (map["_operation.baseUrl"], URLTransform())
+		self._operation.creationDate <- (map["_operation.creationDate"],ISO8601DateTransform())
+		self._operation.baseUrl <- (map["_operation.baseUrl"],URLTransform())
     }
 
 
@@ -60,13 +60,13 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self._tasksGroup=decoder.decodeObjectOfClass(TasksGroup.self, forKey: "_tasksGroup")!
+		self._tasksGroup=decoder.decodeObjectOfClass(TasksGroup.self, forKey: "_tasksGroup")! 
 		self._spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
 		self._observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
 		self._operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
 		self._operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
-		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))!
-		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter")
+		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
+		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
 		self._operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
 		self._operation.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"_operation.baseUrl") as NSURL?
 
@@ -74,25 +74,25 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		coder.encodeObject(self._tasksGroup, forKey:"_tasksGroup")
-		coder.encodeObject(self._spaceUID, forKey:"_spaceUID")
-		coder.encodeObject(self._observationUID, forKey:"_observationUID")
-		coder.encodeObject(self._operation.spaceUID, forKey:"_operation.spaceUID")
-		coder.encodeObject(self._operation.creatorUID, forKey:"_operation.creatorUID")
-		coder.encodeObject(self._operation.status.rawValue, forKey:"_operation.status")
+		coder.encodeObject(self._tasksGroup,forKey:"_tasksGroup")
+		coder.encodeObject(self._spaceUID,forKey:"_spaceUID")
+		coder.encodeObject(self._observationUID,forKey:"_observationUID")
+		coder.encodeObject(self._operation.spaceUID,forKey:"_operation.spaceUID")
+		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
+		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
 		if let _operation_counter = self._operation.counter {
-			coder.encodeInteger(_operation_counter, forKey:"_operation.counter")
+			coder.encodeInteger(_operation_counter,forKey:"_operation.counter")
 		}
 		if let _operation_creationDate = self._operation.creationDate {
-			coder.encodeObject(_operation_creationDate, forKey:"_operation.creationDate")
+			coder.encodeObject(_operation_creationDate,forKey:"_operation.creationDate")
 		}
 		if let _operation_baseUrl = self._operation.baseUrl {
-			coder.encodeObject(_operation_baseUrl, forKey:"_operation.baseUrl")
+			coder.encodeObject(_operation_baseUrl,forKey:"_operation.baseUrl")
 		}
     }
 
 
-    override public class func supportsSecureCoding() -> Bool {
+    override public class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -106,7 +106,7 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
     - parameter oID: If you want to support distributed execution this action will be propagated to subscribers by this UID
 
     */
-    init (_ tasksGroup: TasksGroup=TasksGroup(), inDataSpace spaceUID: String, observableBy observationUID: String=Default.NOT_OBSERVABLE) {
+    init (_ tasksGroup:TasksGroup=TasksGroup(), inDataSpace spaceUID:String,observableBy observationUID:String=Default.NOT_OBSERVABLE) {
         self._tasksGroup=tasksGroup
         self._spaceUID=spaceUID
         self._observationUID=observationUID
@@ -120,13 +120,13 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
     - parameter spaceUID:     the space UID
     - parameter oID:     the observable UID
     */
-    static func commit(tasksGroup: TasksGroup, inDataSpace spaceUID: String, observableBy observationUID: String) {
-        let operationInstance=CreateTasksGroup(tasksGroup, inDataSpace:spaceUID, observableBy:observationUID)
+    static func commit(tasksGroup:TasksGroup, inDataSpace spaceUID:String,observableBy observationUID:String){
+        let operationInstance=CreateTasksGroup(tasksGroup,inDataSpace:spaceUID,observableBy:observationUID)
         operationInstance.commit()
     }
 
 
-    func commit() {
+    func commit(){
         let context=Context(code:996340934, caller: "CreateTasksGroup.commit")
         if let registry = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
 
@@ -138,16 +138,16 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
-                if let currentUser=registry.registryMetadata.currentUser {
+                if let currentUser=registry.registryMetadata.currentUser{
                     self._operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
 
                 // Provision the operation.
-                do {
-                    let ic: OperationsCollectionController = try registry.getCollection()
+                do{
+                    let ic:OperationsCollectionController = try registry.getCollection()
                     ic.add(self._operation)
-                } catch {
+                }catch{
                     Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
                     body: "Operation collection is missing",
@@ -155,8 +155,9 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
                     })
                 }
                 self._operation.toDictionary=self.dictionaryRepresentation()
+        
                 self._tasksGroup.committed=true
-        } else {
+        }else{
             // This registry is not available there is nothing to do.
             let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
@@ -168,8 +169,8 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
         }
     }
 
-    public func push(sucessHandler success:(context: HTTPResponse)->(),
-        failureHandler failure:(context: HTTPResponse)->()) {
+    public func push(sucessHandler success:(context:HTTPResponse)->(),
+        failureHandler failure:(context:HTTPResponse)->()){
         if let registry = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
             // The unitary operation are not always idempotent
             // so we do not want to push multiple times unintensionnaly.
@@ -195,29 +196,29 @@ public class CreateTasksGroup: JObject, JHTTPCommand {
                         failure(context:context)
                     }
                 )
-            } else {
+            }else{
                 // This registry is not available there is nothing to do.
                 let context=Context(code:4039121738, caller: "CreateTasksGroup.push")
                 Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Push error", comment: "Push error"),
-                    body: "\(NSLocalizedString("Attempt to push an operation with status ==", comment:"Attempt to push an operation with status =="))\(self._operation.status))",
+                    body: "\(NSLocalizedString("Attempt to push an operation with status ==",comment:"Attempt to push an operation with status =="))\(self._operation.status))",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
         }
     }
 
-    static public func execute(tasksGroup: TasksGroup,
-inDataSpace spaceUID: String,
-            sucessHandler success:(context: JHTTPResponse)->(),
-            failureHandler failure:(context: JHTTPResponse)->()) {
+    static public func execute(tasksGroup:TasksGroup,
+inDataSpace spaceUID:String,
+            sucessHandler success:(context:JHTTPResponse)->(),
+            failureHandler failure:(context:JHTTPResponse)->()){
                 let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
                 let pathURL=baseURL.URLByAppendingPathComponent("tasksGroup")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["tasksGroup"]=Mapper<TasksGroup>().toJSON(tasksGroup)
-                let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID, withActionName:"CreateTasksGroup", forMethod:"POST", and: pathURL)
-                let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
-                r.responseString { response in
+                let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreateTasksGroup" ,forMethod:"POST", and: pathURL)
+                let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
+                r.responseString{ response in
 
                     // Store the response
                     let request=response.request
@@ -244,15 +245,15 @@ inDataSpace spaceUID: String,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
                             body:"\(m) \n \(response)" ,
-                            trigger: { (selectedIndex) -> () in
+                            trigger:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)
-                    } else {
+                    }else{
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
                                 success(context:context)
-                            } else {
+                            }else{
                                 // Bartlby does not currenlty discriminate status codes 100 & 101
                                 // and treats any status code >= 300 the same way
                                 // because we consider that failures differentiations could be done by the caller.
@@ -264,7 +265,7 @@ inDataSpace spaceUID: String,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
                                     body: "\(m) \n \(response)",
-                                    trigger: { (selectedIndex) -> () in
+                                    trigger:{ (selectedIndex) -> () in
                                     })
                                 reactions.append(failureReaction)
                                 failure(context:context)

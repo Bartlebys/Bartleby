@@ -32,19 +32,11 @@ public class JSerializer: Serializer {
 
      - returns: an instance (or an ObjectError)
      */
-    static public func deserialize(data: NSData) -> Serializable {
-        do {
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                return JSerializer.deserializeFromDictionary(JSONDictionary)
-            }
-        } catch {
-            let e=ObjectError()
-            e.message="JSerializer has encountered ad JSON deserialization Error \(error) \n \(data) "
-            return e
+    static public func deserialize(data: NSData) throws -> Serializable {
+        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                return try JSerializer.deserializeFromDictionary(JSONDictionary)
         }
-        let e=ObjectError()
-        e.message="JSerializer has encountered an unqualified JSON deserialization Error"
-        return e
+        throw SerializableError.EnableToTransformDataToDictionary
     }
 
 
@@ -55,34 +47,30 @@ public class JSerializer: Serializer {
 
      - returns: an instance (or an ObjectError)
      */
-    static public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
+    static public func deserializeFromDictionary(dictionary: [String:AnyObject]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
-            do {
-                typeName = try Registry.resolveTypeName(from: typeName)
-                    if let Reference: Collectible.Type = NSClassFromString(typeName) as? Collectible.Type {
-                        if  var mappable = Reference.init() as? Mappable {
-                            let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
-                            mappable.mapping(map)
-                            if let serializable = mappable as? Serializable {
-                                return serializable
-                            }
-                        }
+            typeName = try Registry.resolveTypeName(from: typeName)
+            if let Reference: Collectible.Type = NSClassFromString(typeName) as? Collectible.Type {
+                if  var mappable = Reference.init() as? Mappable {
+                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
+                    mappable.mapping(map)
+                    if let serializable = mappable as? Serializable {
+                        return serializable
+                    } else {
+                        throw SerializableError.TypeMissmatch
                     }
-            } catch BartlebyError.UniversalSerializationTypMissmatch {
-                let e=ObjectError()
-                e.message="JSerializer failure the type \(typeName) is not valid for Bartleby"
-                return e
-            } catch {
-                let e=ObjectError()
-                e.message="JSerializer Unkwnow exeception\(error) \(dictionary)"
-                return e
+                } else {
+                    throw SerializableError.TypeMissmatch
+                }
+            } else {
+                throw SerializableError.TypeMissmatch
             }
-
+        } else {
+            throw SerializableError.TypeNameUndefined
         }
-        let e=ObjectError()
-        e.message="JSerializer failure \(dictionary)"
-        return e
     }
+
+
 
     /**
      Creates a separate instance in memory that is not registred.
@@ -92,13 +80,9 @@ public class JSerializer: Serializer {
 
      - returns: a volatile deep copy.
      */
-    static public func volatileDeepCopy<T: Collectible>(instance: T) -> T? {
+    static public func volatileDeepCopy<T: Collectible>(instance: T) throws -> T? {
         let data: NSData=JSerializer.serialize(instance)
-        return JSerializer.deserialize(data) as? T
-    }
-
-    public func deserializeFromDictionary(dictionary: [String:AnyObject]) -> Serializable {
-       return JSerializer.deserializeFromDictionary(dictionary)
+        return try JSerializer.deserialize(data) as? T
     }
 
 
@@ -107,15 +91,7 @@ public class JSerializer: Serializer {
     }
 
 
-    public func deserialize(data: NSData) -> Serializable {
-        return JSerializer.deserialize(data)
-    }
-
-    public func serialize(instance: Serializable) -> NSData {
-        return instance.serialize()
-    }
-
-    public var fileExtension: String {
+    public static var fileExtension: String {
         get {
             return "json"
         }

@@ -83,15 +83,6 @@ public class Registry: BXDocument {
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
 
-    // Default Serializer
-    internal var _serializer=JSerializer.sharedInstance
-
-    // Read Only public accessor
-    public var serializer: Serializer {
-        return _serializer
-    }
-
-
     /// The underlining storage hashed by collection name
     private var _collections=Array<Collectible>()
     // The indexes
@@ -138,7 +129,7 @@ public class Registry: BXDocument {
 
      - parameter universalTypeName: the universal type (e.g Alias<Tag> for _<XX>AliasCS_3Tag_)
 
-     - throws: UniversalSerializationTypMissmatch if the Type is not correctly associated
+     - throws:  SerializableError.UnknownTypeName  if the Type is not correctly associated
 
      - returns: the adapted type name
      */
@@ -146,7 +137,7 @@ public class Registry: BXDocument {
         if let name = Registry._associatedTypesMap[universalTypeName] {
             return name
         } else {
-            throw BartlebyError.UniversalSerializationTypMissmatch
+            throw SerializableError.UnknownTypeName(typeName: universalTypeName)
         }
     }
 
@@ -426,7 +417,7 @@ public class Registry: BXDocument {
                 if var metadataNSData=wrapper.regularFileContents {
                     // We use a JSerializer not self.serializer that can be different.
                     metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
-                    let r=self.serializer.deserialize(metadataNSData)
+                    let r = try Bartleby.defaultSerializer.deserialize(metadataNSData)
                     if let registryMetadata=r as? JRegistryMetadata {
                         self.registryMetadata=registryMetadata
                     } else {
@@ -457,8 +448,7 @@ public class Registry: BXDocument {
                                     if  pathExtension == Registry.DATA_EXTENSION {
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
-                                    proxy.updateData(collectionData)
-
+                                    try proxy.updateData(collectionData)
                                 }
                             } else {
                                 throw RegistryError.AttemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
@@ -508,7 +498,7 @@ public class Registry: BXDocument {
      */
     private func _collectionFileNames(metadatum: JCollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=Registry.DATA_EXTENSION
-        let nonCryptedExtension=".\(self.serializer.fileExtension)"
+        let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName.stringByAppendingString(cryptedExtension)
         let nonCryptedFileName=metadatum.collectionName.stringByAppendingString(nonCryptedExtension)
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)

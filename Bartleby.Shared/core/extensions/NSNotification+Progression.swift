@@ -19,7 +19,8 @@ extension NSNotification {
 
     public func getProgressionState() -> Progression? {
         if let dictionary=self.userInfo as? [String:AnyObject] {
-            return JSerializer.sharedInstance.deserializeFromDictionary(dictionary) as? Progression
+            let progression = try? JSerializer.deserializeFromDictionary(dictionary)
+            return  progression as? Progression
         }
         return nil
     }

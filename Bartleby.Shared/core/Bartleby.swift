@@ -11,12 +11,6 @@ import Foundation
 
 //MARK: - Bartleby
 
-
-public enum BartlebyError: ErrorType {
-    case UniversalSerializationTypMissmatch
-}
-
-
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
 // Bartleby 2.0 will implement storage layers for larger data set, and distant aliases
 public class  Bartleby: Consignee {
@@ -32,6 +26,9 @@ public class  Bartleby: Consignee {
 
     // The task Scheduler
     static public var scheduler: TasksScheduler=TasksScheduler()
+
+    //
+    static public var defaultSerializer: Serializer.Type=JSerializer.self
 
 
     /// The standard singleton shared instance

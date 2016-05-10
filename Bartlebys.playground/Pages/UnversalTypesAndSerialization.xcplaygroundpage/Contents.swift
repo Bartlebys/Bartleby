@@ -17,10 +17,12 @@ let data=user.serialize()
 user.dynamicType.typeName()
 user.runTimeTypeName()
 
+do{
+    let deserializedObject=try JSerializer.deserialize(data)
+}catch{
+    print(error)
+}
 
-let deserializedObject=JSerializer.deserialize(data)
-
-//print (deserializedObject.email)
 
 let userAlias:Alias<User>=Alias(from:user)
 let aliasDictionary=userAlias.dictionaryRepresentation()
@@ -38,13 +40,16 @@ if userReference?.UID==user.UID{
 }else{
     print("Not Matching UID")
 }
-
-// Alias serialization
-let serializedAlias=userAlias.serialize()
-if let deserializedAlias=JSerializer.deserialize(serializedAlias) as? Alias<User>{
-    print("OK!")
-}else{
-    print("NOT OK!")
+do {
+    // Alias serialization
+    let serializedAlias=userAlias.serialize()
+    if let deserializedAlias = try JSerializer.deserialize(serializedAlias) as? Alias<User>{
+        print("OK!")
+    }else{
+        print("NOT OK!")
+    }
+}catch {
+    print(error)
 }
 
 /*

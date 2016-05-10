@@ -61,8 +61,7 @@ class BsyncKeyValueStorage {
                     do {
                         let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
                         // TODO: Generalize to any serializer
-                        return JSerializer.deserialize(decryptedValueData)
-
+                        return try JSerializer.deserialize(decryptedValueData)
                     } catch {
 
                     }

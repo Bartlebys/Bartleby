@@ -16,7 +16,7 @@ public enum InvocationPerformanceError: ErrorType {
 extension NSData {
 
     public func executeSerializedTask()throws ->() {
-        if let dsi: ConcreteTask = JSerializer.deserialize(self) as? ConcreteTask {
+        if let dsi: ConcreteTask = try JSerializer.deserialize(self) as? ConcreteTask {
             dsi.invoke()
         } else {
            throw InvocationPerformanceError.ConcreteTaskRequired

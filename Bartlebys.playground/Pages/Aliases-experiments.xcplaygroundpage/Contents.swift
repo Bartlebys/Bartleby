@@ -80,17 +80,22 @@ print("Serialization of an Alias")
 
 let data=tagAlias.serialize()
 
-let a=JSerializer.sharedInstance.deserialize(data)
-print(a.dynamicType)
+do{
+    let a = try JSerializer.deserialize(data)
+    print(a.dynamicType)
 
-if let deserializedAlias=JSerializer.sharedInstance.deserialize(data) as? Alias<Tag>{
-    print("OK! DESERIALIZED")
-    if let deserializedTag=deserializedAlias.toLocalInstance() {
-        print("OK! The color of the tag is \(deserializedTag.color!)")
+    if let deserializedAlias = try JSerializer.deserialize(data) as? Alias<Tag>{
+        print("OK! DESERIALIZED")
+        if let deserializedTag=deserializedAlias.toLocalInstance() {
+            print("OK! The color of the tag is \(deserializedTag.color!)")
+        }
+    }else{
+        print("NOT DESERIALIZED")
     }
-}else{
-    print("NOT DESERIALIZED")
+}catch{
+    print(error)
 }
+
 
 
 //: [Next page](@next)

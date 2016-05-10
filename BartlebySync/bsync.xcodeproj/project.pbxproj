@@ -280,7 +280,6 @@
 		5B5D0A3A1CDE242F001FB281 /* HTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775A1CDCDE04007261E1 /* HTTPCommand.swift */; };
 		5B5D0A3B1CDE242F001FB281 /* HTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775B1CDCDE04007261E1 /* HTTPResponse.swift */; };
 		5B5D0A3C1CDE242F001FB281 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775C1CDCDE04007261E1 /* Identifiable.swift */; };
-		5B5D0A3D1CDE242F001FB281 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775D1CDCDE04007261E1 /* Persistent.swift */; };
 		5B5D0A3E1CDE242F001FB281 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */; };
 		5B5D0A3F1CDE242F001FB281 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775F1CDCDE04007261E1 /* Serializable.swift */; };
 		5B5D0A401CDE242F001FB281 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B777601CDCDE04007261E1 /* Serializer.swift */; };
@@ -921,9 +920,6 @@
 		E5B778F11CDCDE04007261E1 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775C1CDCDE04007261E1 /* Identifiable.swift */; };
 		E5B778F21CDCDE04007261E1 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775C1CDCDE04007261E1 /* Identifiable.swift */; };
 		E5B778F31CDCDE04007261E1 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775C1CDCDE04007261E1 /* Identifiable.swift */; };
-		E5B778F41CDCDE04007261E1 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775D1CDCDE04007261E1 /* Persistent.swift */; };
-		E5B778F51CDCDE04007261E1 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775D1CDCDE04007261E1 /* Persistent.swift */; };
-		E5B778F61CDCDE04007261E1 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775D1CDCDE04007261E1 /* Persistent.swift */; };
 		E5B778F71CDCDE04007261E1 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */; };
 		E5B778F81CDCDE04007261E1 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */; };
 		E5B778F91CDCDE04007261E1 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */; };
@@ -1277,7 +1273,6 @@
 		E5B7775A1CDCDE04007261E1 /* HTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPCommand.swift; sourceTree = "<group>"; };
 		E5B7775B1CDCDE04007261E1 /* HTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPResponse.swift; sourceTree = "<group>"; };
 		E5B7775C1CDCDE04007261E1 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
-		E5B7775D1CDCDE04007261E1 /* Persistent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
 		E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryMetadata.swift; sourceTree = "<group>"; };
 		E5B7775F1CDCDE04007261E1 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		E5B777601CDCDE04007261E1 /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
@@ -1758,7 +1753,6 @@
 				E5B7775A1CDCDE04007261E1 /* HTTPCommand.swift */,
 				E5B7775B1CDCDE04007261E1 /* HTTPResponse.swift */,
 				E5B7775C1CDCDE04007261E1 /* Identifiable.swift */,
-				E5B7775D1CDCDE04007261E1 /* Persistent.swift */,
 				E5B7775E1CDCDE04007261E1 /* RegistryMetadata.swift */,
 				E5B7775F1CDCDE04007261E1 /* Serializable.swift */,
 				E5B777601CDCDE04007261E1 /* Serializer.swift */,
@@ -2423,7 +2417,6 @@
 				5B5D0AB21CDE24B2001FB281 /* ReadLockersByQuery.swift in Sources */,
 				5B5D09311CDC91C4001FB281 /* ParameterEncoding.swift in Sources */,
 				5B5D09A71CDC91F9001FB281 /* (null) in Sources */,
-				5B5D0A3D1CDE242F001FB281 /* Persistent.swift in Sources */,
 				5B5D09601CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09DC1CDC921E001FB281 /* (null) in Sources */,
 				5B5D09971CDC91E4001FB281 /* (null) in Sources */,
@@ -2575,7 +2568,6 @@
 				E5B777861CDCDE04007261E1 /* TasksGroupsCollectionController.swift in Sources */,
 				E5B777E91CDCDE04007261E1 /* DeleteGroups.swift in Sources */,
 				E5B778551CDCDE04007261E1 /* UpdateLocker.swift in Sources */,
-				E5B778F41CDCDE04007261E1 /* Persistent.swift in Sources */,
 				E5B778D91CDCDE04007261E1 /* BartlebyFileIO.swift in Sources */,
 				E5B777771CDCDE04007261E1 /* GroupsCollectionController.swift in Sources */,
 				E5B778A31CDCDE04007261E1 /* Alias.swift in Sources */,
@@ -2748,7 +2740,6 @@
 				5B8E5D561C8D7FCD002CFA03 /* Manager.swift in Sources */,
 				E5B7783B1CDCDE04007261E1 /* ReadTasksGroupsByQuery.swift in Sources */,
 				E5B777C31CDCDE04007261E1 /* CreateLocker.swift in Sources */,
-				E5B778F51CDCDE04007261E1 /* Persistent.swift in Sources */,
 				E5B778D71CDCDE04007261E1 /* Handlers.swift in Sources */,
 				5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */,
 				E5B778B61CDCDE04007261E1 /* Completion+Conveniences.swift in Sources */,
@@ -3134,7 +3125,6 @@
 				E5B7777F1CDCDE04007261E1 /* OperationsCollectionController.swift in Sources */,
 				E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E5B777941CDCDE04007261E1 /* BaseCollectionMetadatum.swift in Sources */,
-				E5B778F61CDCDE04007261E1 /* Persistent.swift in Sources */,
 				E5B778D51CDCDE04007261E1 /* Global.swift in Sources */,
 				E55C92551CBF84ED008163F6 /* ServerTrustPolicy.swift in Sources */,
 				E55C92561CBF84ED008163F6 /* Stream.swift in Sources */,

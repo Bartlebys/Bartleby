@@ -35,7 +35,7 @@ public protocol Serializable {
 
      - returns: the patched Object
      */
-    func updateData(data: NSData) -> Serializable
+    func updateData(data: NSData) throws -> Serializable
 
 }
 
@@ -53,4 +53,8 @@ public protocol DictionaryRepresentation {
 
 
 public enum SerializableError: ErrorType {
+    case TypeMissmatch
+    case TypeNameUndefined
+    case UnknownTypeName(typeName:String)
+    case EnableToTransformDataToDictionary
 }

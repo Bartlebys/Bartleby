@@ -126,13 +126,5 @@ public class Operation : JObject{
     }
 
 
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
-
 }
 

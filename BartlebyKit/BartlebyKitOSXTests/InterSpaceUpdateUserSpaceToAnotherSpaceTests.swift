@@ -98,31 +98,34 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
     func test202_UpdateUser_SpaceA_toSpaceB_ShouldFail() {
         let expectation = expectationWithDescription("UpdateUser should respond")
-
-        if let user = InterSpaceUpdateUserSpaceToAnotherSpaceTests._userA {
-            if let clonedUser = JSerializer.volatileDeepCopy(user) {
-                // Updating userA space
-                clonedUser.spaceUID = InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceB
-                UpdateUser.execute(clonedUser,
-                                   inDataSpace: InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceA,
-                                   sucessHandler: { (context) in
-                                    expectation.fulfill()
-                                    XCTFail("User can not update its spaceId")
-                }) { (context) -> () in
-                    expectation.fulfill()
-                    XCTAssert(context.httpStatusCode >= 400 )
-                }
-
-                waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                    if let error = error {
-                        bprint("Error: \(error.localizedDescription)")
+        do {
+            if let user = InterSpaceUpdateUserSpaceToAnotherSpaceTests._userA {
+                if let clonedUser = try JSerializer.volatileDeepCopy(user) {
+                    // Updating userA space
+                    clonedUser.spaceUID = InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceB
+                    UpdateUser.execute(clonedUser,
+                                       inDataSpace: InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceA,
+                                       sucessHandler: { (context) in
+                                        expectation.fulfill()
+                                        XCTFail("User can not update its spaceId")
+                    }) { (context) -> () in
+                        expectation.fulfill()
+                        XCTAssert(context.httpStatusCode >= 400 )
                     }
+
+                    waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
+                        if let error = error {
+                            bprint("Error: \(error.localizedDescription)")
+                        }
+                    }
+                } else {
+                    XCTFail("Invalid user")
                 }
             } else {
                 XCTFail("Invalid user")
             }
-        } else {
-            XCTFail("Invalid user")
+        } catch {
+             XCTFail("\(error)")
         }
     }
 

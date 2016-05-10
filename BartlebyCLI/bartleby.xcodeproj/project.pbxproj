@@ -137,7 +137,6 @@
 		E5B77B871CDCDE38007261E1 /* HTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF01CDCDE38007261E1 /* HTTPCommand.swift */; };
 		E5B77B881CDCDE38007261E1 /* HTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF11CDCDE38007261E1 /* HTTPResponse.swift */; };
 		E5B77B891CDCDE38007261E1 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF21CDCDE38007261E1 /* Identifiable.swift */; };
-		E5B77B8A1CDCDE38007261E1 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF31CDCDE38007261E1 /* Persistent.swift */; };
 		E5B77B8B1CDCDE38007261E1 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF41CDCDE38007261E1 /* RegistryMetadata.swift */; };
 		E5B77B8C1CDCDE38007261E1 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF51CDCDE38007261E1 /* Serializable.swift */; };
 		E5B77B8D1CDCDE38007261E1 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77AF61CDCDE38007261E1 /* Serializer.swift */; };
@@ -343,7 +342,6 @@
 		E5B77AF01CDCDE38007261E1 /* HTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPCommand.swift; sourceTree = "<group>"; };
 		E5B77AF11CDCDE38007261E1 /* HTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPResponse.swift; sourceTree = "<group>"; };
 		E5B77AF21CDCDE38007261E1 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
-		E5B77AF31CDCDE38007261E1 /* Persistent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
 		E5B77AF41CDCDE38007261E1 /* RegistryMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryMetadata.swift; sourceTree = "<group>"; };
 		E5B77AF51CDCDE38007261E1 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		E5B77AF61CDCDE38007261E1 /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
@@ -710,7 +708,6 @@
 				E5B77AF01CDCDE38007261E1 /* HTTPCommand.swift */,
 				E5B77AF11CDCDE38007261E1 /* HTTPResponse.swift */,
 				E5B77AF21CDCDE38007261E1 /* Identifiable.swift */,
-				E5B77AF31CDCDE38007261E1 /* Persistent.swift */,
 				E5B77AF41CDCDE38007261E1 /* RegistryMetadata.swift */,
 				E5B77AF51CDCDE38007261E1 /* Serializable.swift */,
 				E5B77AF61CDCDE38007261E1 /* Serializer.swift */,
@@ -1050,7 +1047,6 @@
 				E5B98E1A1CC0E63400A7ECD1 /* Mapper.swift in Sources */,
 				E5B77B221CDCDE38007261E1 /* CreateGroup.swift in Sources */,
 				E5B98E2A1CC0E63C00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
-				E5B77B8A1CDCDE38007261E1 /* Persistent.swift in Sources */,
 				E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */,
 				E5B77B291CDCDE38007261E1 /* CreateTasks.swift in Sources */,
 				E5B77B2B1CDCDE38007261E1 /* CreateTasksGroups.swift in Sources */,

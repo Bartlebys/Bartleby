@@ -198,8 +198,9 @@ class InterSpaceTests: XCTestCase {
 
     func test402_LoginUser_withModifiedSpaceID_ShoudFail() {
         let expectation = expectationWithDescription("LoginUser should respond")
-        if let user: User = JSerializer.volatileDeepCopy(InterSpaceTests._user1!) {
-       
+        do {
+            if let user: User = try JSerializer.volatileDeepCopy(InterSpaceTests._user1!) {
+
                 user.spaceUID = InterSpaceTests._spaceUID2
 
                 user.login(withPassword: InterSpaceTests._password1,
@@ -217,6 +218,10 @@ class InterSpaceTests: XCTestCase {
                     }
                 }
             }
+        } catch {
+            XCTFail("\(error)")
+        }
+
     }
 
     // TODO: @md Delete test

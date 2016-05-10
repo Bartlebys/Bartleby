@@ -42,23 +42,29 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
         if let arguments: Operation = try? self.arguments() {
             let operation=arguments
             if let serialized=operation.toDictionary {
-                //dispatch_async(dispatch_get_main_queue(), {
-                    if let command=JSerializer.deserializeFromDictionary(serialized) as? JHTTPCommand {
-                        command.push(sucessHandler: { (context) in
+                if let command = try? JSerializer.deserializeFromDictionary(serialized) {
+                    if let jcommand=command as? JHTTPCommand {
+
+                        // Push the command.
+                        jcommand.push(sucessHandler: { (context) in
                             let completion=Completion.successState()
                             completion.setResult(context as! JHTTPResponse)
                             self.reactiveHandlers.on(completion)
-
                             }, failureHandler: { (context) in
                                 let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))
                                 completion.setResult(context as! JHTTPResponse)
                                 self.reactiveHandlers.on(completion)
                         })
                     } else {
-                        self.reactiveHandlers.on(Completion.failureState("Deserialization error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
-                    }
+                        self.reactiveHandlers.on(Completion.failureState("Casting error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
 
-               // })
+                    }
+                } else {
+                    self.reactiveHandlers.on(Completion.failureState("Deserialization error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
+
+                }
+            } else {
+                self.reactiveHandlers.on(Completion.failureState("To dictionnary \(#file)", statusCode: CompletionStatus.Precondition_Failed))
             }
 
         } else {
