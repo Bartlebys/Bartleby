@@ -24,7 +24,7 @@ public class Alias<T:Collectible>:AbstractAlias {
     // To insure **cross product deserialization** of Aliases
     // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
     override public class func typeName() -> String {
-        return "Alias_\(T.typeName())"
+        return "Alias<\(T.typeName())>"
     }
 
     public required init() {
