@@ -105,10 +105,18 @@ Documents can be shared between iOS, tvOS and OSX.
 
     private static var _associatedTypesMap=[String:String]()
 
+    /*
     public static func declareCollectibleType(prototype: Collectible) {
         let name = prototype.runTimeTypeName()
         Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
+    }*/
+
+    public static func declareCollectibleType(type: Collectible.Type) {
+        let prototype=type.init()
+        let name = prototype.runTimeTypeName()
+        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
     }
+
 
 
     public static var universalMapping: [String:String] {
