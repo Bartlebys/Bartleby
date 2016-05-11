@@ -9,7 +9,7 @@
 import Foundation
 
 class RevealHashMapCommand: CommandBase {
-    required init(completionHandler: ((completion: Completion) -> ())) {
+    required init(completionHandler: CompletionHandler?)  {
         super.init(completionHandler: completionHandler)
 
         var secretKey: String = ""

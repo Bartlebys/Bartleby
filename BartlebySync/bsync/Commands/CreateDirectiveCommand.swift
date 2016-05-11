@@ -10,7 +10,7 @@ import Cocoa
 
 class CreateDirectiveCommand: CommandBase {
 
-    required init(completionHandler: ((completion: Completion) -> ())) {
+    required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
 
         let sourceURLString = StringOption(shortFlag: "s", longFlag: "source", required: true,

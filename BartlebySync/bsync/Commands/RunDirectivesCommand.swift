@@ -13,7 +13,7 @@ import Foundation
 */
 class RunDirectivesCommand: CommandBase {
 
-    required init(completionHandler: ((completion: Completion) -> ())) {
+    required init(completionHandler: CompletionHandler?){
         super.init(completionHandler: completionHandler)
     }
 
