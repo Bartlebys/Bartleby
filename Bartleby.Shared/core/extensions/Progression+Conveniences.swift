@@ -13,6 +13,9 @@ import Foundation
 
 // MARK: - Progression
 
+extension Progression:ForwardableStates {
+
+}
 public extension Progression {
 
 

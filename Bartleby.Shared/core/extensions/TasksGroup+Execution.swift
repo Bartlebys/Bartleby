@@ -19,9 +19,36 @@ import Foundation
 enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
     case TaskNotFound
+    case AttemptToAddTaskInMultipleGroups
 }
 
+/*
 
+ TaskGroup ?
+
+
+ How to monitor the taskGroup ?
+
+ 1. You can add the handlers
+ ```
+ group.handlers.appendCompletionHandler(handlers.on)
+ group.handlers.appendProgressHandler(handlers.notify)
+ ```
+ 2. or with with one expression
+ ```
+ group.handlers.appendChainedHandlers(handlers)
+ ```
+ 3. Observe the task Group completion and Progression by NSNotification.
+ ```
+ NSNotificationCenter.defaultCenter().addObserverForName(group.completionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+ //
+ })
+ // Observe the task Group completion
+ NSNotificationCenter.defaultCenter().addObserverForName(group.progressionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+ //
+ })
+ ```
+ */
 public extension TasksGroup {
 
 
@@ -47,9 +74,6 @@ public extension TasksGroup {
             return self.name+"_PROGRESSION_NOTIFICATION"
         }
     }
-
-
-
 
     /**
      Starts the task group
@@ -90,6 +114,29 @@ public extension TasksGroup {
         self.status = .Paused
     }
 
+    
+    
+    
+    /**
+     Add a top level concurrent task to the group.
+     And registers the group alias
+     
+     - parameter task:  the top level task to be added
+     - parameter group: the group
+     */
+    public func addConcurrentTask(task: Task) throws {
+        if let _ = task.group{
+            throw TasksGroupError.AttemptToAddTaskInMultipleGroups
+        }
+        task.group=Alias(from:self)
+        self.tasks.append(task)
+    }
+    
+    
+
+    
+
+    
     // MARK: Find runnable Tasks
 
     /**

@@ -54,26 +54,39 @@ extension Task {
 
     /**
      Final forwarding method.
+     Supports currently Completion and Progression states.
+
      If the task is not in group we do nothing on forward.
 
      - parameter completionState: the completion state
      */
-    final public func forward(completionState: Completion) {
+    final public func forward<T: ForwardableStates>(state: T) {
         if let aliasOfGroup=self.group {
-            if let _ : TasksGroup = aliasOfGroup.toLocalInstance() {
-                self.status = .Completed
-                self.completionState = completionState
-                do {
-                    if TasksScheduler.DEBUG_TASKS {
-                        bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+                if state is Completion {
+                    self.completionState  = state as! Completion
+                    self.status = .Completed
+                    group.handlers.on(self.completionState)
+                    do {
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+                        }
+                        try Bartleby.scheduler.onTaskCompletion(self)
+                    } catch {
+                        if TasksScheduler.DEBUG_TASKS {
+                            let t = self.summary ?? self.UID
+                            bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+                        }
                     }
-                    try Bartleby.scheduler.onTaskCompletion(self)
-                } catch {
+                } else if state is Progression {
+                    self.progressionState = state as! Progression
+                    group.handlers.notify(self.progressionState)
+                } else {
                     if TasksScheduler.DEBUG_TASKS {
-                        let t = self.summary ?? self.UID
-                        bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+                        bprint("ERROR unsupported ForwardableStates", file: #file, function: #function, line: #line)
                     }
                 }
+
             } else {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
@@ -81,6 +94,9 @@ extension Task {
             }
         }
     }
+
+
+
 
     /**
     The public final implementation of configureWithArguments

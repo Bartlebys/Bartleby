@@ -29,8 +29,12 @@ public protocol Invocable: Collectible {
      You must call this method when the task is completed.
      - parameter completionState: the completion state
      */
-    func forward(completionState: Completion)
+    func forward<T:ForwardableStates>(state: T)
 
+}
+
+
+public protocol ForwardableStates {
 }
 
 

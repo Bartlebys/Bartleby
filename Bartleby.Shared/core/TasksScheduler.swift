@@ -51,7 +51,7 @@ enum TasksSchedulerError: ErrorType {
     case TaskGroupNotFound
 }
 
-public class TasksScheduler: NSObject {
+public class TasksScheduler {
 
     // Task may be difficult to debug
     // So we expose a debug setting
@@ -66,9 +66,8 @@ public class TasksScheduler: NSObject {
     // MARK: - Tasks Groups
 
     /**
-     Create a task Group, if the group already exists the root Task is appended to the other children.
+    Return a group
 
-     - parameter rootTask: the task to taskGroupFor.
      - parameter groupName:  its group name
      - parameter spaceUID:   the relevent DataSpace
 
@@ -76,14 +75,9 @@ public class TasksScheduler: NSObject {
 
      - returns: the Task group
      */
-    public func taskGroupFor(rootTask: Task, groupedBy groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
+    public func getTaskGroupWithName(groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
         let group=try self._taskGroupByName(groupName, inDataSpace: spaceUID)
-        group.tasks.append(rootTask)
-        group.priority=TasksGroup.Priority(rawValue:rootTask.priority.rawValue)!
-        group.status=TasksGroup.Status(rawValue:rootTask.status.rawValue)!
         group.spaceUID=spaceUID
-        let groupAlias: Alias<TasksGroup>=Alias(from:group)
-        rootTask.group=groupAlias
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
             document.tasksGroups.add(group)
         } else {
@@ -136,12 +130,11 @@ public class TasksScheduler: NSObject {
                 if completedTask.completionState.success==false {
                     // TODO @bpds implement group.onfailure support?
                 }
-
                 // Post invocation handler
                 func __postInvocation() {
                     let runnableTasks = group.findRunnableTasks()
                     if runnableTasks.count==0 {
-                        // # Cleanup the task #
+                        // # Cleanup the tasks #
                         if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
                             for task in group.tasks.reverse() {
                                 let linearListOfSubTasks=task.linearTaskList.reverse()
@@ -151,9 +144,10 @@ public class TasksScheduler: NSObject {
                                     }
                                     registry.delete(subtask)
                                 }
-                                group.tasks.removeLast()
+                                registry.delete(task)
                             }
                         }
+                        group.tasks.removeAll()
 
                         // # Notify the group completion #
                         dispatch_async(dispatch_get_main_queue(), {
@@ -168,8 +162,6 @@ public class TasksScheduler: NSObject {
                         }
                     }
                 }
-
-
                 if group.status != .Paused {
                     // Group is Runnable
                     // We gonna start all the children of the task.
@@ -179,7 +171,6 @@ public class TasksScheduler: NSObject {
                                 if TasksScheduler.DEBUG_TASKS {
                                     bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
                                 }
-
                                 task.status = .Running
                                 dispatch_async(group.dispatchQueue, {
                                     // Then invoke its invocable instance.
@@ -255,7 +246,7 @@ public class TasksScheduler: NSObject {
                 qos=QOS_CLASS_USER_INITIATED
             }
 
-            let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, qos, 0)
+            let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, qos, 0)
             let queue: dispatch_queue_t = dispatch_queue_create(queueName, attr)
             _queues[queueName]=queue
             return queue

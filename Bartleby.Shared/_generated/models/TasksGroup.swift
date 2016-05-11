@@ -48,6 +48,8 @@ public class TasksGroup : JObject{
 	public var completionState:Completion = Completion()
 	//The group name
 	public var name:String = "\(Default.NO_NAME)"
+	//A void handler to allow subscribers to register their own handlers
+	public var handlers:Handlers = Handlers.withoutCompletion()
 
 
     // MARK: Mappable
@@ -97,6 +99,7 @@ public class TasksGroup : JObject{
 		coder.encodeObject(self.progressionState,forKey:"progressionState")
 		coder.encodeObject(self.completionState,forKey:"completionState")
 		coder.encodeObject(self.name,forKey:"name")
+		coder.encodeObject(self.handlers,forKey:"handlers")
     }
 
 

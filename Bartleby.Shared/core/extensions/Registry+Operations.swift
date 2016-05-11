@@ -36,20 +36,11 @@ extension Registry {
             let firstOperationTask=PushOperationTask(arguments: operations.first!)
 
             // We taskGroupFor the task
-            let group=try Bartleby.scheduler.taskGroupFor(firstOperationTask, groupedBy: "Push_Operations\(spaceUID)", inDataSpace: spaceUID)
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDataSpace: spaceUID)
+            try group.addConcurrentTask(firstOperationTask)
 
-            // Observe the task Group completion
-            NSNotificationCenter.defaultCenter().addObserverForName(group.completionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
-                // Relay the group completion handler
-                handlers.on(group.completionState)
-            })
-
-            // Observe the task Group completion
-            NSNotificationCenter.defaultCenter().addObserverForName(group.progressionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
-                // Relay the group completion handler
-                handlers.notify(group.progressionState)
-            })
-
+            // We add the calling handlers
+            group.handlers.appendChainedHandlers(handlers)
 
             for operation in operations {
                 let task=PushOperationTask(arguments:operation)

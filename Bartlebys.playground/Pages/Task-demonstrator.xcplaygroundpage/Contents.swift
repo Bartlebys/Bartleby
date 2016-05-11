@@ -1,13 +1,17 @@
+
+import XCPlayground
+
 //: [Previous](@previous)
+
 import Foundation
 import Alamofire
 import ObjectMapper
 import BartlebyKit
-import XCPlayground
+
 
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
-let document=BartlebyDocument()
+let document=BartlebyDocument() // We need a DataSpace
 TasksScheduler.DEBUG_TASKS=true
 
 let SEPARATOR="----------------------"
@@ -21,11 +25,11 @@ print("Creation of the root Object & Task")
 
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
-    
+
     /**
      This initializer **MUST:** call configureWithArguments
      - parameter arguments: the arguments
-     
+
      - returns: a well initialized task.
      */
     convenience required public init (arguments: Collectible) {
@@ -35,9 +39,9 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
             self.summary="ShowSummary \(s)" // For test purposes
         }
     }
-    
+
     public static var counter: Int=0
-    
+
     public func invoke() {
         do {
             if let object: JObject = try self.arguments() as JObject {
@@ -53,15 +57,10 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
             print("ERROR \(e)")
         }
     }
-    
 }
-
 
 Registry.declareCollectibleType(ShowSummary)
 Registry.declareCollectibleType(Alias<ShowSummary>)
-
-
-
 
 
 let rootObject=JObject()
@@ -71,7 +70,10 @@ let firstTask=ShowSummary(arguments: rootObject)
 
 do {
     print("Tasks create task Group")
-    let group = try Bartleby.scheduler.taskGroupFor(firstTask, groupedBy:"MyPlayGroundTasks", inDataSpace: document.spaceUID)
+
+    let group = try Bartleby.scheduler.getTaskGroupWithName("MyPlayGroundTasks", inDataSpace: document.spaceUID)
+    try group.addConcurrentTask(firstTask)
+
     print("Adding Child tasks")
     for i in 1...5 {
         let o=JObject()
@@ -79,13 +81,13 @@ do {
         let task=ShowSummary(arguments: o)
         try firstTask.appendSequentialTask(task)
     }
-    
+
     let rootTaskCounter=group.tasks.count
     print("Number of first level tasks = \(rootTaskCounter)")
     print(SEPARATOR)
     try group.start()
     print("Number of first level tasks = \(group.tasks.count)")
-    
+
 } catch {
     print("ERROR \(error)")
 }
@@ -96,7 +98,7 @@ print("Check the console result")
 
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
-Bartleby.executeAfter(5) { 
+Bartleby.executeAfter(5) {
     XCPlaygroundPage.currentPage.finishExecution()
 }
 

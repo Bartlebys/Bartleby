@@ -304,6 +304,7 @@ public class TasksGroupsCollectionController : JObject,IterableCollectibleCollec
 			item.addObserver(self, forKeyPath: "progressionState", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "completionState", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "name", options: .Old, context: &KVOContext)
+			item.addObserver(self, forKeyPath: "handlers", options: .Old, context: &KVOContext)
         }
     }
 
@@ -319,6 +320,7 @@ public class TasksGroupsCollectionController : JObject,IterableCollectibleCollec
 				item.removeObserver(self, forKeyPath: "progressionState", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "completionState", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "name", context: &KVOContext)
+				item.removeObserver(self, forKeyPath: "handlers", context: &KVOContext)
             }
         }
     }

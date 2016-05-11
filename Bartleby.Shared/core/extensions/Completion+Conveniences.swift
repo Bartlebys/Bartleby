@@ -11,6 +11,11 @@ import Foundation
     import ObjectMapper
 #endif
 
+
+extension Completion:ForwardableStates {
+
+}
+
 public extension Completion {
     /**
      Convenience initializer.
