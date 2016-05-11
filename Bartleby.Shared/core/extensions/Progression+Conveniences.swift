@@ -16,6 +16,18 @@ import Foundation
 extension Progression:ForwardableStates {
 
 }
+
+
+extension Progression:Descriptible {
+
+    public func toString() -> String {
+        return " \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentTaskProgress*100))% - \(data?.length ?? 0 ) bytes of data.\n\(message)"
+    }
+
+}
+
+
+
 public extension Progression {
 
 

@@ -130,6 +130,9 @@ public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding
 
     override public var description: String {
         get {
+            if self is Descriptible {
+                return (self as! Descriptible).toString()
+            }
             if let j=Mapper().toJSONString(self, prettyPrint:true) {
                 return "\n\(j)"
             } else {

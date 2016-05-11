@@ -43,3 +43,15 @@ public protocol Collectible: Identifiable, Serializable, UniversalType {
     // An accessor to the static collectionName
     var d_collectionName: String { get }
 }
+
+
+
+// Is used to propose an alternative to CustomConvertibleString
+// CustomConvertibleString in JObject for example normally expose the JSON serialized string.
+// We want sometimes more user frendly may be internationalized string description.
+// That's the purpose of Descriptible.
+public protocol Descriptible {
+
+    func toString() -> String
+
+}

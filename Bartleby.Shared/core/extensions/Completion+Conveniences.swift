@@ -16,6 +16,15 @@ extension Completion:ForwardableStates {
 
 }
 
+extension Completion:Descriptible {
+
+    public func toString() -> String {
+        return "Success \(success) StatusCode \(statusCode) \(data?.length ?? 0 ) bytes of data.\n\(message)"
+    }
+
+}
+
+
 public extension Completion {
     /**
      Convenience initializer.
