@@ -11,7 +11,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class JHTTPResponse: JObject, HTTPResponse {
+@objc(JHTTPResponse) public class JHTTPResponse: JObject, HTTPResponse {
 
 
     // Universal type support

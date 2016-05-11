@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-public class ReadTasksGroupsByIdsParameters : JObject {
+@objc(ReadTasksGroupsByIdsParameters) public class ReadTasksGroupsByIdsParameters : JObject {
 	
 	// Universal type support
 	override public class func typeName() -> String {
@@ -78,7 +78,7 @@ public class ReadTasksGroupsByIdsParameters : JObject {
 
 
 
-public class ReadTasksGroupsByIds : JObject{
+@objc(ReadTasksGroupsByIds) public class ReadTasksGroupsByIds : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

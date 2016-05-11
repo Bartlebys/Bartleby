@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model User
-public class User : JObject{
+@objc(User) public class User : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

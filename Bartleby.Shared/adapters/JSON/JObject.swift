@@ -22,7 +22,13 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
-public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding {
+
+// Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
+// During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
+// NSecureCoding does not implement Universal Strategy the module is prepended to the name.
+// By putting @objc(name) we fix the serialization name.
+// This is due to the impossibility to link a FrameWork to an XPC services.
+@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding {
 
 
     // MARK: - Initializable

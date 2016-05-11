@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Trigger
-public class Trigger : JObject{
+@objc(Trigger) public class Trigger : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model AbstractAlias
-public class AbstractAlias : JObject{
+@objc(AbstractAlias) public class AbstractAlias : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

@@ -16,7 +16,7 @@ import ObjectMapper
 
 
 
-public class ReadTasksGroupById : JObject{
+@objc(ReadTasksGroupById) public class ReadTasksGroupById : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

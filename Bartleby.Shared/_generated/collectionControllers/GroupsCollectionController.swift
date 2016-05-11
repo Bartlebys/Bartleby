@@ -23,7 +23,7 @@ import ObjectMapper
 // it uses KVO , KVC , dynamic invocation, oS X cocoa bindings,...
 // It should be used on documents and not very large collections as it is computationnally intensive
 
-public class GroupsCollectionController : JObject,IterableCollectibleCollection{
+@objc(GroupsCollectionController) public class GroupsCollectionController : JObject,IterableCollectibleCollection{
 
     // Universal type support
     override public class func typeName() -> String {

@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-public class ReadLockersByQueryParameters : JObject {
+@objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : JObject {
 	
 	// Universal type support
 	override public class func typeName() -> String {
@@ -78,7 +78,7 @@ public class ReadLockersByQueryParameters : JObject {
 
 
 
-public class ReadLockersByQuery : JObject{
+@objc(ReadLockersByQuery) public class ReadLockersByQuery : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

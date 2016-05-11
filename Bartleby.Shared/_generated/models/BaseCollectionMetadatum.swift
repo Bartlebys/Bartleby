@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseCollectionMetadatum
-public class BaseCollectionMetadatum : JObject{
+@objc(BaseCollectionMetadatum) public class BaseCollectionMetadatum : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

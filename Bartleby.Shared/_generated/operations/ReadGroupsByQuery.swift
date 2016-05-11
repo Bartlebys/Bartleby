@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-public class ReadGroupsByQueryParameters : JObject {
+@objc(ReadGroupsByQueryParameters) public class ReadGroupsByQueryParameters : JObject {
 	
 	// Universal type support
 	override public class func typeName() -> String {
@@ -78,7 +78,7 @@ public class ReadGroupsByQueryParameters : JObject {
 
 
 
-public class ReadGroupsByQuery : JObject{
+@objc(ReadGroupsByQuery) public class ReadGroupsByQuery : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

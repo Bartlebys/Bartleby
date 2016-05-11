@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 
-public class BsyncCredentials: JObject {
+@objc(BsyncCredentials) public class BsyncCredentials: JObject {
 
     override public class func typeName() -> String {
         return "BsyncCredentials"

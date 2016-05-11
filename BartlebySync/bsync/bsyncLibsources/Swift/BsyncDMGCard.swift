@@ -25,7 +25,7 @@ protocol IdentifiableCardContext {
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-public class BsyncDMGCard: JObject {
+@objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
 
     override public class func typeName() -> String {
         return "BsyncDMGCard"

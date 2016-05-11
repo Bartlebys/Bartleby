@@ -16,7 +16,7 @@ import ObjectMapper
 
 
 
-public class ReadTriggerById : JObject{
+@objc(ReadTriggerById) public class ReadTriggerById : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

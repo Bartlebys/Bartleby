@@ -14,8 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-
-public class DeleteTriggers : JObject,JHTTPCommand{
+@objc(DeleteTriggers) public class DeleteTriggers : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {

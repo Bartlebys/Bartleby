@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Progression
-public class Progression : JObject{
+@objc(Progression) public class Progression : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

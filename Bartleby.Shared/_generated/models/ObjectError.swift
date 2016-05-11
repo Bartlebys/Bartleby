@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model ObjectError
-public class ObjectError : JObject{
+@objc(ObjectError) public class ObjectError : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

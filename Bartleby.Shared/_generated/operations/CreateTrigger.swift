@@ -14,8 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-
-public class CreateTrigger : JObject,JHTTPCommand{
+@objc(CreateTrigger) public class CreateTrigger : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {

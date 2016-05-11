@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Operation
-public class Operation : JObject{
+@objc(Operation) public class Operation : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

@@ -14,8 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-
-public class CreateLockers : JObject,JHTTPCommand{
+@objc(CreateLockers) public class CreateLockers : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {

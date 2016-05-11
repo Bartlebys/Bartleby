@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Group
-public class Group : JObject{
+@objc(Group) public class Group : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

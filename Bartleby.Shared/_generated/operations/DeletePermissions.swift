@@ -14,8 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-
-public class DeletePermissions : JObject,JHTTPCommand{
+@objc(DeletePermissions) public class DeletePermissions : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {

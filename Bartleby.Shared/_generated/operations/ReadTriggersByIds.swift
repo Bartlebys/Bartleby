@@ -13,7 +13,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-public class ReadTriggersByIdsParameters : JObject {
+@objc(ReadTriggersByIdsParameters) public class ReadTriggersByIdsParameters : JObject {
 	
 	// Universal type support
 	override public class func typeName() -> String {
@@ -78,7 +78,7 @@ public class ReadTriggersByIdsParameters : JObject {
 
 
 
-public class ReadTriggersByIds : JObject{
+@objc(ReadTriggersByIds) public class ReadTriggersByIds : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

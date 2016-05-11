@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model BaseRegistryMetadata
-public class BaseRegistryMetadata : JObject{
+@objc(BaseRegistryMetadata) public class BaseRegistryMetadata : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

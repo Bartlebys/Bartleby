@@ -15,7 +15,7 @@ import ObjectMapper
 #endif
 
 // MARK: Model Locker
-public class Locker : JObject{
+@objc(Locker) public class Locker : JObject{
 
     // Universal type support
     override public class func typeName() -> String {

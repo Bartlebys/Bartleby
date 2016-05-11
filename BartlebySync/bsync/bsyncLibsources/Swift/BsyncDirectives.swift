@@ -21,7 +21,7 @@ import Foundation
  *  and we use its parent folder as tree root
  *  It suppports NSSecureCoding as it can be to perform XPC calls.
  */
-public class  BsyncDirectives: BsyncCredentials {
+@objc(BsyncDirectives) public class  BsyncDirectives: BsyncCredentials {
 
     override public class func typeName() -> String {
         return "BsyncDirectives"

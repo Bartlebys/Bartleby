@@ -14,8 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-
-public class CreateGroup : JObject,JHTTPCommand{
+@objc(CreateGroup) public class CreateGroup : JObject,JHTTPCommand{
 
     // Universal type support
     override public class func typeName() -> String {
