@@ -20,11 +20,7 @@
     import ObjectMapper
     import BartlebyKit
 #endif
-    
-    public enum BsyncImageDiskManagerError: ErrorType {
-        case InvalidFileName
-    }
-    
+        
     public class BsyncImageDiskManager {
         
         var type="SPARSE"

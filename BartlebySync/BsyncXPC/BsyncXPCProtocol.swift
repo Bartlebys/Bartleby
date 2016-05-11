@@ -16,6 +16,12 @@
  */
 @objc public protocol BsyncXPCProtocol {
 
+    // MARK: Minimal protocol
+    func createDMG(card: BsyncDMGCard, handler: ComposedHandler)
+    func mountDMG(card: BsyncDMGCard, handler: ComposedHandler)
+    func unMountDMG(card: BsyncDMGCard, handler: ComposedHandler)
+    
+    func touch(handler: ComposedHandler)
 
     // MARK:- Disk Image Management
 

@@ -9,31 +9,6 @@
 import XCTest
 
 class BsyncXPCProtocolTests: XCTestCase {
-//    func testExample() {
-//        let expectation = expectationWithDescription("XPC should reply")
-//        // Insert code here to initialize your application
-//        let connection = NSXPCConnection(serviceName: "fr.chaosmos.BsyncXPC")
-//        connection.remoteObjectInterface = NSXPCInterface(withProtocol: BsyncXPCProtocol.self)
-//        connection.resume()
-//        
-//        if let xpc = connection.remoteObjectProxy as? BsyncXPCProtocol {
-//            
-//            xpc.test("test", reply: { (result) in
-//                expectation.fulfill()
-//                XCTAssertEqual("test-salty", result)
-//                connection.invalidate()
-//            })
-//            
-//            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: { (error) in
-//                bprint(error?.localizedDescription)
-//            })
-//            
-//        } else {
-//            print("error with xpc")
-//            connection.invalidate()
-//        }
-//    }
-    
     func test101_exist_create_write_read_list() {
         // Insert code here to initialize your application
         let connection = NSXPCConnection(serviceName: "fr.chaosmos.BsyncXPC")
@@ -51,21 +26,21 @@ class BsyncXPCProtocolTests: XCTestCase {
                                             directoryShouldNotExist1.fulfill()
                                             XCTAssertFalse(existence.success)
                                             XCTAssertEqual(404, existence.statusCode)
-                }.composedHandlers())
+                }.composedHandler())
             let itemShouldNotExist = self.expectationWithDescription("Directory should not exist")
             xpc.itemExistsAtPath(folder,
                                      handler: Handlers { (existence) in
                                         itemShouldNotExist.fulfill()
                                         XCTAssertFalse(existence.success)
                                         XCTAssertEqual(404, existence.statusCode)
-                }.composedHandlers())
+                }.composedHandler())
             let fileShouldNotExist = self.expectationWithDescription("Directory should not exist")
             xpc.fileExistsAtPath(folder,
                                      handler: Handlers { (existence) in
                                         fileShouldNotExist.fulfill()
                                         XCTAssertFalse(existence.success)
                                         XCTAssertEqual(404, existence.statusCode)
-                }.composedHandlers())
+                }.composedHandler())
             
             // Create directory
             let directoryShouldBeCreated = self.expectationWithDescription("Directory should be created")
@@ -80,21 +55,21 @@ class BsyncXPCProtocolTests: XCTestCase {
                         directoryShouldExist.fulfill()
                         XCTAssertTrue(existence.success)
                         XCTAssertEqual(200, existence.statusCode)
-                    }.composedHandlers())
+                    }.composedHandler())
                 let itemShouldExist1 = self.expectationWithDescription("Item should exist")
                 xpc.itemExistsAtPath(folder,
                     handler: Handlers { (existence) in
                         itemShouldExist1.fulfill()
                         XCTAssertTrue(existence.success)
                         XCTAssertEqual(200, existence.statusCode)
-                    }.composedHandlers())
+                    }.composedHandler())
                 let itemIsNotAFile = self.expectationWithDescription("Item is not a file")
                 xpc.fileExistsAtPath(folder,
                     handler: Handlers { (existence) in
                         itemIsNotAFile.fulfill()
                         XCTAssertFalse(existence.success)
                         XCTAssertEqual(415, existence.statusCode)
-                    }.composedHandlers())
+                    }.composedHandler())
                 
                 // Create file
                 let aaa = Bartleby.randomStringWithLength(6)
@@ -111,21 +86,21 @@ class BsyncXPCProtocolTests: XCTestCase {
                             directoryShouldNotExist2.fulfill()
                             XCTAssertFalse(existence.success)
                             XCTAssertEqual(415, existence.statusCode)
-                        }.composedHandlers())
+                        }.composedHandler())
                     let itemShouldExist2 = self.expectationWithDescription("Item should exist")
                     xpc.itemExistsAtPath(filePath,
                         handler: Handlers { (existence) in
                             itemShouldExist2.fulfill()
                             XCTAssertTrue(existence.success)
                             XCTAssertEqual(200, existence.statusCode)
-                        }.composedHandlers())
+                        }.composedHandler())
                     let itemIsNotADirectory = self.expectationWithDescription("Item is not a directory")
                     xpc.fileExistsAtPath(filePath,
                         handler: Handlers { (existence) in
                             itemIsNotADirectory.fulfill()
                             XCTAssertTrue(existence.success)
                             XCTAssertEqual(200, existence.statusCode)
-                        }.composedHandlers())
+                        }.composedHandler())
                     
                     // Check the file content
                     let readExpectation = self.expectationWithDescription("A string shoudl be read")
@@ -136,7 +111,7 @@ class BsyncXPCProtocolTests: XCTestCase {
                         } else {
                             XCTFail(read.message)
                         }
-                        }.composedHandlers())
+                        }.composedHandler())
                     
                     // Retrieve the folder content
                     let listExpectation = self.expectationWithDescription("A list should be returned")
@@ -148,12 +123,12 @@ class BsyncXPCProtocolTests: XCTestCase {
                         } else {
                             XCTFail(content.message)
                         }
-                        }.composedHandlers())
+                        }.composedHandler())
                     
-                    }.composedHandlers())
+                    }.composedHandler())
                 
                 
-                }.composedHandlers())
+                }.composedHandler())
             
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
                 bprint(error?.localizedDescription)

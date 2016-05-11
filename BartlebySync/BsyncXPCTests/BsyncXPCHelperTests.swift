@@ -17,6 +17,58 @@ class TestContext: IdentifiableCardContext {
 class BsyncXPCHelperTests: XCTestCase {
     let fm = BFileManager()
     
+    func test_touch() {
+        let expectation = expectationWithDescription("Should call back")
+        
+        let helper = BsyncXPCHelper()
+        
+        helper.touch(Handlers {(touch) in
+            expectation.fulfill()
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+            bprint(error?.localizedDescription)
+        }
+    }
+    
+    func test_UnMountDMG_unexistingPath() {
+        let expectation = expectationWithDescription("Should failed")
+        
+        let helper = BsyncXPCHelper()
+        let card = helper.cardFor(User(), context: TestContext(), folderPath: "/unexisting/path", isMaster: false)
+        helper.unMountDMG(card, handlers: Handlers { (unmount) in
+            XCTAssertFalse(unmount.success)
+            expectation.fulfill()
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+            bprint(error?.localizedDescription)
+        }
+    }
+    
+    func test_Create_then_UnMount() {
+        let expectation1 = expectationWithDescription("should do")
+        let expectation2 = expectationWithDescription("should unmount")
+        
+        
+        let helper = BsyncXPCHelper()
+        let context = TestContext()
+        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let card = helper.cardFor(User(), context: context, folderPath: folderPath, isMaster: true)
+        
+        helper.createDMG(card, thenDo: { (whenDone) in
+            expectation1.fulfill()
+            whenDone.on(Completion.successState())
+            }, detachImageOnCompletion: false, handlers: Handlers { ( completion) in
+                XCTAssert(completion.success, completion.message)
+                expectation2.fulfill()
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+            bprint(error?.localizedDescription)
+        }
+    }
+    
     func test101_master_detach() {
         let expectation = expectationWithDescription("detach")
         let user = User()
@@ -26,14 +78,6 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        let handlers = Handlers { (work) in
-            XCTAssert(work.success, work.message)
-            // Check volume has been detach
-            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
-                XCTAssertFalse(existence.success)
-                expectation.fulfill()
-                })
-        }
         
         helper.createDMG(card, thenDo: { (whenDone) in
             // check volume path exists
@@ -41,7 +85,14 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 whenDone.on(existence)
                 })
-            }, detachImageOnCompletion: true, handlers: handlers)
+            }, detachImageOnCompletion: true, handlers: Handlers { (work) in
+                XCTAssert(work.success, work.message)
+                // Check volume has been detach
+                self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                    XCTAssertFalse(existence.success)
+                    expectation.fulfill()
+                    })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
@@ -57,18 +108,6 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
-        let handlers = Handlers { (work) in
-            XCTAssert(work.success, work.message)
-            // Check volume isn't detached yet
-            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
-                XCTAssertTrue(existence.success)
-                // Detach the volume for cleaning purpose
-                helper.unMountDMG(card.volumeName, handlers: Handlers { (unmount) in
-                    expectation.fulfill()
-                    XCTAssert(unmount.success, unmount.message)
-                    })
-                })
-        }
         
         helper.createDMG(card, thenDo: { (whenDone) in
             // Check volume path exists
@@ -76,7 +115,20 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 whenDone.on(existence)
                 })
-            }, detachImageOnCompletion: false, handlers: handlers)
+            }, detachImageOnCompletion: false, handlers: Handlers { (work) in
+                print("work done")
+                XCTAssert(work.success, work.message)
+                // Check volume isn't detached yet
+                self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                    print("check existence")
+                    XCTAssertTrue(existence.success)
+                    // Detach the volume for cleaning purpose
+                    helper.unMountDMG(card, handlers: Handlers { (unmount) in
+                        expectation.fulfill()
+                        XCTAssert(unmount.success, unmount.message)
+                        })
+                    })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
@@ -92,14 +144,6 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
-        let handlers = Handlers { (work) in
-            XCTAssert(work.success, work.message)
-            // Check volume has been detach
-            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
-                XCTAssertFalse(existence.success)
-                expectation.fulfill()
-                })
-        }
         
         helper.createDMG(card, thenDo: { (whenDone) in
             // use remoteObjectProxy
@@ -107,7 +151,14 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 whenDone.on(existence)
                 })
-            }, detachImageOnCompletion: true, handlers: handlers)
+            }, detachImageOnCompletion: true, handlers: Handlers { (work) in
+                XCTAssert(work.success, work.message)
+                // Check volume has been detach
+                self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                    XCTAssertFalse(existence.success)
+                    expectation.fulfill()
+                    })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)
@@ -123,18 +174,6 @@ class BsyncXPCHelperTests: XCTestCase {
         let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
-        let handlers = Handlers { (work) in
-            XCTAssert(work.success, work.message)
-            // Check volume isn't detached yet
-            self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
-                XCTAssertTrue(existence.success)
-                // Detach the volume for cleaning purpose
-                helper.unMountDMG(card.volumeName, handlers: Handlers { (detach) in
-                    expectation.fulfill()
-                    XCTAssert(detach.success, detach.message)
-                    })
-                })
-        }
         
         helper.createDMG(card, thenDo: { (whenDone) in
             // use remoteObjectProxy
@@ -142,7 +181,18 @@ class BsyncXPCHelperTests: XCTestCase {
                 XCTAssert(existence.success, existence.message)
                 whenDone.on(existence)
                 })
-            }, detachImageOnCompletion: false, handlers: handlers)
+            }, detachImageOnCompletion: false, handlers: Handlers { (work) in
+                XCTAssert(work.success, work.message)
+                // Check volume isn't detached yet
+                self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
+                    XCTAssertTrue(existence.success)
+                    // Detach the volume for cleaning purpose
+                    helper.unMountDMG(card, handlers: Handlers { (detach) in
+                        expectation.fulfill()
+                        XCTAssert(detach.success, detach.message)
+                        })
+                    })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription)

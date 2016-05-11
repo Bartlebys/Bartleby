@@ -138,7 +138,7 @@ public class Handlers: NSObject {
 
      - returns: the composed Handler
      */
-    public func composedHandlers() -> ComposedHandler {
+    public func composedHandler() -> ComposedHandler {
         let handler: ComposedHandler = {(progressionState, completionState) -> Void in
             if let progressionState=progressionState {
                  self.notify(progressionState)
