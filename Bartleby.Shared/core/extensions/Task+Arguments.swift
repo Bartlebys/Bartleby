@@ -54,6 +54,7 @@ extension Task {
 
     /**
      Final forwarding method.
+     We forward on the main queue.
      Supports currently Completion and Progression states.
 
      If the task is not in group we do nothing on forward.
@@ -61,45 +62,61 @@ extension Task {
      - parameter completionState: the completion state
      */
     final public func forward<T: ForwardableStates>(state: T) {
-        if let aliasOfGroup=self.group {
-            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
-                if state is Completion {
-                    self.completionState  = state as! Completion
-                    self.status = .Completed
-                    group.handlers.on(self.completionState)
-                    do {
-                        if TasksScheduler.DEBUG_TASKS {
-                            bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+        dispatch_async(dispatch_get_main_queue(), {
+            if let aliasOfGroup=self.group {
+                if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+                    if state is Completion {
+                        self.completionState  = state as! Completion
+                        self.status = .Completed
+                        // We Relay the completion as a progression to the group progression !
+                        // Including its data.
+                        let currentIndex=group.rankOfTask(self)
+                        let currentTotal=group.totalTaskCount()
+                        let progress: Double=Double(currentTotal)/Double(currentIndex)
+                        let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.completionState.data)
+                        group.handlers.notify(groupProgression)
+                        do {
+                            if TasksScheduler.DEBUG_TASKS {
+                                bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+                            }
+                            // WE CALL the onTaskCompletion on the main queue (!)
+                            try Bartleby.scheduler.onTaskCompletion(self)
+                        } catch {
+                            if TasksScheduler.DEBUG_TASKS {
+                                let t = self.summary ?? self.UID
+                                bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+                            }
                         }
-                        try Bartleby.scheduler.onTaskCompletion(self)
-                    } catch {
+                    } else if state is Progression {
+                        // We relay also the discreet task as a progression group progression !
+                        // Including its data.
+                        // May be it could be distincted from completion
+                        self.progressionState = state as! Progression
+                        let currentIndex=group.rankOfTask(self)
+                        let currentTotal=group.totalTaskCount()
+                        let progress: Double=Double(currentTotal)/Double(currentIndex)
+                        let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.progressionState.data)
+                        group.handlers.notify(groupProgression)
+                    } else {
                         if TasksScheduler.DEBUG_TASKS {
-                            let t = self.summary ?? self.UID
-                            bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
+                            bprint("ERROR unsupported ForwardableStates", file: #file, function: #function, line: #line)
                         }
                     }
-                } else if state is Progression {
-                    self.progressionState = state as! Progression
-                    group.handlers.notify(self.progressionState)
+
                 } else {
                     if TasksScheduler.DEBUG_TASKS {
-                        bprint("ERROR unsupported ForwardableStates", file: #file, function: #function, line: #line)
+                        bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
                     }
                 }
-
-            } else {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
-                }
             }
-        }
+        })
     }
 
 
 
 
     /**
-    The public final implementation of configureWithArguments
+     The public final implementation of configureWithArguments
 
      - parameter arguments: the collectible arguments.
      */
@@ -134,7 +151,7 @@ extension Task {
         let taskAlias: Alias<Task>=Alias(from: task)
         self.children.append(taskAlias)
         if let g=self.group {
-             task.group=g
+            task.group=g
         } else {
             if TasksScheduler.DEBUG_TASKS {
                 bprint("Adding \(self.summary ?? self.UID) has no tasks group alias", file: #file, function: #function, line: #line)

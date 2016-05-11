@@ -8,8 +8,6 @@ import Alamofire
 import ObjectMapper
 import BartlebyKit
 
-
-
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
 let document=BartlebyDocument() // We need a DataSpace
 TasksScheduler.DEBUG_TASKS=true
@@ -72,8 +70,13 @@ do {
     print("Tasks create task Group")
 
     let group = try Bartleby.scheduler.getTaskGroupWithName("MyPlayGroundTasks", inDataSpace: document.spaceUID)
+    // This is the unique root task
+    // So concurrency will be limited as we append sub tasks via appendSequentialTask
     try group.addConcurrentTask(firstTask)
-
+    group.handlers.appendCompletionHandler({ (completion) in
+        print("*****")
+    })
+    
     print("Adding Child tasks")
     for i in 1...5 {
         let o=JObject()
@@ -98,7 +101,7 @@ print("Check the console result")
 
 
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
-Bartleby.executeAfter(5) {
+Bartleby.executeAfter(10) {
     XCPlaygroundPage.currentPage.finishExecution()
 }
 

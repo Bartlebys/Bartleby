@@ -20,6 +20,7 @@ enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
     case TaskNotFound
     case AttemptToAddTaskInMultipleGroups
+    case InterruptedOnFault
 }
 
 /*
@@ -114,29 +115,72 @@ public extension TasksGroup {
         self.status = .Paused
     }
 
-    
-    
-    
+
+
     /**
      Add a top level concurrent task to the group.
      And registers the group alias
-     
+
      - parameter task:  the top level task to be added
      - parameter group: the group
      */
     public func addConcurrentTask(task: Task) throws {
-        if let _ = task.group{
+        if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
         task.group=Alias(from:self)
         self.tasks.append(task)
     }
-    
-    
 
-    
 
-    
+    /**
+     The total count at a given time
+
+     - returns: the number of tasks
+     */
+    public func totalTaskCount() -> Int {
+        var counter: Int=0
+        for task in self.tasks {
+            self._count(task, counter:&counter)
+        }
+        return counter
+    }
+
+
+    private func _count(task: Task, inout counter: Int) {
+        counter += 1
+        for alias in task.children {
+            if let child: Task=alias.toLocalInstance() {
+                self._count(child, counter: &counter)
+            }
+        }
+    }
+
+    /**
+     - returns: the rank of a given task and -1 if not found.
+     */
+    public func rankOfTask(task: Task) -> Int {
+        var rankCounter: Int = -1
+        var stop: Bool=false
+        for task in self.tasks {
+            self._rankOfTask(task, rankCounter:&rankCounter, stop:&stop)
+        }
+        return rankCounter
+    }
+
+    private func _rankOfTask(task: Task, inout rankCounter: Int, inout stop: Bool) {
+        if stop==false {
+            rankCounter += 1
+            for alias in task.children {
+                if let child: Task=alias.toLocalInstance() {
+                    stop=true
+                }
+            }
+        }
+    }
+
+
+
     // MARK: Find runnable Tasks
 
     /**

@@ -35,16 +35,6 @@ import Foundation
     If you need to taskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
 
 
-    IMPORTANT : Tasks are trans-serialized before invocation.
-    Check : ```public func invocableTaskFrom(task: Task) -> ConcreteTask?```
-    During the execution a specialized task clone is used.
-    So you cannot modify the state on the running task but should use its "original".
-
-    NOT IMPLEMENTED :
-    - 1. group.onfailure support
-    - 2. group priority and queues validation
-
-
 */
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
@@ -121,17 +111,16 @@ public class TasksScheduler {
 
     /**
      Called by a task on its completion.
+     Executed on the main queue
 
      - parameter completedTask: the reference to the task
      */
     func onTaskCompletion(completedTask: Task) throws {
         if let aliasOfGroup=completedTask.group {
             if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
-                if completedTask.completionState.success==false {
-                    // TODO @bpds implement group.onfailure support?
-                }
+
                 // Post invocation handler
-                func __postInvocation() {
+                func __postInvocation(lastCompletedTask: Task) {
                     let runnableTasks = group.findRunnableTasks()
                     if runnableTasks.count==0 {
                         // # Cleanup the tasks #
@@ -149,53 +138,85 @@ public class TasksScheduler {
                         }
                         group.tasks.removeAll()
 
-                        // # Notify the group completion #
-                        dispatch_async(dispatch_get_main_queue(), {
-                            if TasksScheduler.DEBUG_TASKS {
-                                bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
-                            }
-                            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-                        })
+                        // Determine the completion state.
+                        // We use the last TASK
+                        group.completionState = Completion.successState("Task group \(group.name) has been completed",
+                                                                        statusCode:.OK,
+                                                                        data: lastCompletedTask.completionState.data)
+                        
+                        // We call the completion off the group.
+                        group.handlers.on(group.completionState)
+
+                        // Then we Notify the group completion #
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+                        }
+                        NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
                     } else {
                         if TasksScheduler.DEBUG_TASKS {
                             bprint("Still \(runnableTasks.count) task(s) to run", file: #file, function: #function, line: #line)
                         }
                     }
                 }
-                if group.status != .Paused {
-                    // Group is Runnable
-                    // We gonna start all the children of the task.
-                    for child in completedTask.children {
-                        if let task: Task=child.toLocalInstance() {
-                            if let invocableTask = task as? Invocable {
-                                if TasksScheduler.DEBUG_TASKS {
-                                    bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
-                                }
-                                task.status = .Running
-                                dispatch_async(group.dispatchQueue, {
-                                    // Then invoke its invocable instance.
-                                    invocableTask.invoke()
-                                    __postInvocation()
-                                })
 
+                // If there is a failure task let's invoke this task
+                if completedTask.completionState.success==false {
+                    if let onFailureAlias=group.onFailure {
+                        if let onFailureTask=onFailureAlias.toLocalInstance() {
+                            if let onFailureTask = onFailureTask as? Invocable {
+                                // We run the failure task on the main queue
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    onFailureTask.invoke()
+                                    __postInvocation(completedTask)
+                                })
                             } else {
-                                __postInvocation()
-                                if TasksScheduler.DEBUG_TASKS {
-                                    bprint("NonInvocableTask", file: #file, function: #function, line: #line)
-                                }
-                                throw TasksGroupError.NonInvocableTask(task: completedTask)
+                                throw TasksGroupError.InterruptedOnFault
                             }
                         } else {
-                            __postInvocation()
-                            if TasksScheduler.DEBUG_TASKS {
-                                bprint("TaskNotFound", file: #file, function: #function, line: #line)
-                            }
-                            throw TasksGroupError.TaskNotFound
+                             throw TasksGroupError.InterruptedOnFault
                         }
+                    } else {
+                         throw TasksGroupError.InterruptedOnFault
                     }
                 } else {
-                    // Group is not Runnable
+
+                    // It is a success
+                    if group.status != .Paused {
+                        // Group is Runnable
+                        // We gonna start all the children of the task.
+                        for child in completedTask.children {
+                            if let task: Task=child.toLocalInstance() {
+                                if let invocableTask = task as? Invocable {
+                                    if TasksScheduler.DEBUG_TASKS {
+                                        bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
+                                    }
+                                    task.status = .Running
+                                    dispatch_async(group.dispatchQueue, {
+                                        // Then invoke its invocable instance.
+                                        invocableTask.invoke()
+                                        __postInvocation(completedTask)
+                                    })
+                                } else {
+                                    __postInvocation(completedTask)
+                                    if TasksScheduler.DEBUG_TASKS {
+                                        bprint("NonInvocableTask", file: #file, function: #function, line: #line)
+                                    }
+                                    throw TasksGroupError.NonInvocableTask(task: completedTask)
+                                }
+                            } else {
+                                __postInvocation(completedTask)
+                                if TasksScheduler.DEBUG_TASKS {
+                                    bprint("TaskNotFound", file: #file, function: #function, line: #line)
+                                }
+                                throw TasksGroupError.TaskNotFound
+                            }
+                        }
+                    } else {
+                        // Group is not Runnable
+                    }
                 }
+
+
             } else {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("ERROR: local task group instance not found \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
