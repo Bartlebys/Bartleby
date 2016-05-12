@@ -12,7 +12,12 @@ enum ReactiveTaskError: ErrorType {
     case MissingTaskGroup
 }
 
-@objc(ReactiveTask) public class  ReactiveTask: Task {
+public class  ReactiveTask: Task {
+
+    // Universal type support
+    override public class func typeName() -> String {
+       return "ReactiveTask"
+    }
 
     /**
      The convenience intializer that must be overriden.

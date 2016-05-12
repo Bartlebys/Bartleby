@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Permission
 @objc(Permission) public class Permission : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Permission"
+    }
 
 	//The call string e.g : DeleteOperation->call
 	public var callString:String?
@@ -83,14 +87,6 @@ import ObjectMapper
         return Permission.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

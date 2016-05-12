@@ -11,7 +11,7 @@ import Foundation
 
 class CleanupCommand: CommandBase {
 
-    required init(completionHandler: ((completion: Completion) -> ())) {
+    required init(completionHandler: CompletionHandler?){
         super.init(completionHandler: completionHandler)
 
         let folderPath = StringOption(shortFlag: "p", longFlag: "path", required: true,

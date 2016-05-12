@@ -13,7 +13,13 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
+
 @objc(CreateLockers) public class CreateLockers : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "CreateLockers"
+    }
 
     private var _lockers:[Locker] = [Locker]()
 

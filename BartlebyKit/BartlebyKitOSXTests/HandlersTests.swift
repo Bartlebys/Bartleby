@@ -11,13 +11,17 @@ import BartlebyKit
 
 class CompletionWithResultTests: XCTestCase {
 
+    static override func setUp() {
+        BartlebyDocument.declareCollectibleTypes()
+    }
+    
     // MARK: Generic result
     func  test101_generic_Result_mapping() {
         let handlers=Handlers(completionHandler: { (completion) in
             if let user: User = completion.getResult() {
-                 XCTAssertEqual(user.email, "bpds@me.com")
+                 XCTAssertEqual(user.email, "bartleby@barltebys.org")
             } else {
-                XCTFail()
+                XCTFail(completion.message)
             }
         })
         self.completionWitResult(handlers)
@@ -27,21 +31,17 @@ class CompletionWithResultTests: XCTestCase {
     func  test102_generic_Result_mapping_explicit_serializer() {
         let handlers=Handlers(completionHandler: { (completion) in
             if let user: User = completion.getResultFromSerializer(JSerializer.sharedInstance) {
-                XCTAssertEqual(user.email, "bpds@me.com")
+                XCTAssertEqual(user.email, "bartleby@barltebys.org")
             } else {
-                XCTFail()
+                XCTFail(completion.message)
             }
         })
         self.completionWitResult(handlers)
-
     }
-
-
-
 
     func completionWitResult(handlers: Handlers) {
         let user=User()
-        user.email="bpds@me.com"
+        user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.ByEmail
 
@@ -58,7 +58,7 @@ class CompletionWithResultTests: XCTestCase {
         let s2: String? = completion.getStringResult()
         XCTAssertEqual(s1, s2)
     }
-    
+
     // MARK: String array result
     func test301_string_array_result_mapping() {
         let completion = Completion.successState()

@@ -25,6 +25,11 @@ import ObjectMapper
 
 @objc(UsersCollectionController) public class UsersCollectionController : JObject,IterableCollectibleCollection{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "UsersCollectionController"
+    }
+
     weak public var undoManager:NSUndoManager?
 
     public var spaceUID:String=Default.NO_UID

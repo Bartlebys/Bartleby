@@ -26,9 +26,6 @@ public protocol Serializable {
      */
     func serialize() -> NSData
 
-    func deserialize(data: NSData) -> Serializable
-
-    // TODO: @bpds Should be splitted in a specific protocol
 
     /**
      Update an existant instance
@@ -38,7 +35,7 @@ public protocol Serializable {
 
      - returns: the patched Object
      */
-    func updateData(data: NSData) -> Serializable
+    func updateData(data: NSData) throws -> Serializable
 
 }
 
@@ -56,4 +53,8 @@ public protocol DictionaryRepresentation {
 
 
 public enum SerializableError: ErrorType {
+    case TypeMissmatch
+    case TypeNameUndefined
+    case UnknownTypeName(typeName:String)
+    case EnableToTransformDataToDictionary
 }

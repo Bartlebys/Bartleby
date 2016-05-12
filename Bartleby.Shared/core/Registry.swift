@@ -44,13 +44,7 @@ In a Document based app Each document have its own Registry.
 Documents can be shared between iOS, tvOS and OSX.
 
 */
-@objc public class Registry: BXDocument {
-
-
-    // To insure **cross product deserialization** of Aliases you should set up to true.
-    // Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
-    // Default is True
-    static public var USE_UNIVERSAL_TYPES=true
+public class Registry: BXDocument {
 
     // A notification that is sent when the registry is fully loaded.
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
@@ -89,15 +83,6 @@ Documents can be shared between iOS, tvOS and OSX.
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
 
-    // Default Serializer
-    internal var _serializer=JSerializer.sharedInstance
-
-    // Read Only public accessor
-    public var serializer: Serializer {
-        return _serializer
-    }
-
-
     /// The underlining storage hashed by collection name
     private var _collections=Array<Collectible>()
     // The indexes
@@ -107,14 +92,36 @@ Documents can be shared between iOS, tvOS and OSX.
     internal var _activeSecurityBookmarks=[NSURL]()
 
 
-    // MARK : - Universal Type Name management.
+    // MARK : - Universal Type management.
 
     private static var _associatedTypesMap=[String:String]()
 
-    public static func addUniversalTypeForAlias<T: Collectible>(prototype: Alias<T>) {
-        let name = prototype.universalTypeName()
-        Registry._associatedTypesMap[name]=NSStringFromClass(prototype.dynamicType)
+    /*
+    public static func declareCollectibleType(prototype: Collectible) {
+        let name = prototype.runTimeTypeName()
+        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
+    }*/
+
+    public static func declareCollectibleType(type: Collectible.Type) {
+        let prototype=type.init()
+        let name = prototype.runTimeTypeName()
+        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
     }
+
+    /**
+     Used for unit tests only.
+     */
+    public static func purgeCollectibleType() {
+        Registry._associatedTypesMap=[String:String]()
+    }
+
+
+    public static var universalMapping: [String:String] {
+        get {
+            return _associatedTypesMap
+        }
+    }
+
 
     /**
      Bartleby associate the types to allow serializable translitterations.
@@ -122,26 +129,17 @@ Documents can be shared between iOS, tvOS and OSX.
 
      - parameter universalTypeName: the universal type (e.g Alias<Tag> for _<XX>AliasCS_3Tag_)
 
-     - throws: UniversalSerializationTypMissmatch if the Type is not correctly associated
+     - throws:  SerializableError.UnknownTypeName  if the Type is not correctly associated
 
      - returns: the adapted type name
      */
     public static func resolveTypeName(from universalTypeName: String) throws -> String {
-        if universalTypeName.contains("Alias") && Registry.USE_UNIVERSAL_TYPES {
-            if let name = Registry._associatedTypesMap[universalTypeName] {
-                return name
-            } else {
-                throw BartlebyError.UniversalSerializationTypMissmatch
-            }
+        if let name = Registry._associatedTypesMap[universalTypeName] {
+            return name
         } else {
-            // We use the standard type name
-            return universalTypeName
+            throw SerializableError.UnknownTypeName(typeName: universalTypeName)
         }
     }
-
-
-
-
 
 
     //MARK: - Centralized ObjectList By UID
@@ -419,7 +417,7 @@ Documents can be shared between iOS, tvOS and OSX.
                 if var metadataNSData=wrapper.regularFileContents {
                     // We use a JSerializer not self.serializer that can be different.
                     metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
-                    let r=self.serializer.deserialize(metadataNSData)
+                    let r = try Bartleby.defaultSerializer.deserialize(metadataNSData)
                     if let registryMetadata=r as? JRegistryMetadata {
                         self.registryMetadata=registryMetadata
                     } else {
@@ -450,8 +448,7 @@ Documents can be shared between iOS, tvOS and OSX.
                                     if  pathExtension == Registry.DATA_EXTENSION {
                                         collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                     }
-                                    proxy.updateData(collectionData)
-
+                                    try proxy.updateData(collectionData)
                                 }
                             } else {
                                 throw RegistryError.AttemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
@@ -501,7 +498,7 @@ Documents can be shared between iOS, tvOS and OSX.
      */
     private func _collectionFileNames(metadatum: JCollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=Registry.DATA_EXTENSION
-        let nonCryptedExtension=".\(self.serializer.fileExtension)"
+        let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName.stringByAppendingString(cryptedExtension)
         let nonCryptedFileName=metadatum.collectionName.stringByAppendingString(nonCryptedExtension)
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)

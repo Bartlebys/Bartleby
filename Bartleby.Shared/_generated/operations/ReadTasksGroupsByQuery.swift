@@ -14,6 +14,11 @@ import Alamofire
 import ObjectMapper
 #endif
 @objc(ReadTasksGroupsByQueryParameters) public class ReadTasksGroupsByQueryParameters : JObject {
+	
+	// Universal type support
+	override public class func typeName() -> String {
+		 return "ReadTasksGroupsByQueryParameters"
+	}
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
@@ -73,8 +78,13 @@ import ObjectMapper
 
 
 
-
 @objc(ReadTasksGroupsByQuery) public class ReadTasksGroupsByQuery : JObject{
+
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadTasksGroupsByQuery"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTasksGroupsByQueryParameters,

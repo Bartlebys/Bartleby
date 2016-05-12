@@ -3,14 +3,11 @@ import Alamofire
 import ObjectMapper
 import BartlebyKit
 
-//:
-var message = ""
 let separator = "------------------"
 
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
- // Important
-BartlebyDocument.addUniversalTypesForAliases()
+let document=BartlebyDocument()
 
 
 let metadata=JRegistryMetadata()
@@ -25,33 +22,33 @@ print(metadataAlias.dictionaryRepresentation())
 
 let user=User()
 user.defineUID()
-user.email="bpds@me.com"
+user.email="bartleby@bartlebys.org"
 
 // Synchronous syntax 
 // when you are sure the alias exists and is loaded
-message="# Resolution #"
+print("# Resolution #")
 let alias=Alias<User>(iUID: user.UID)
 if let resolved:User=alias.toLocalInstance(){
-    message="\(user)"
+   print("\(user)")
 }else{
-    message="**NOT RESOLVED**"
+print("**NOT RESOLVED**")
 }
 
 
-separator
+print(separator)
 
 // Asynchronous
 // This approach supports lazy distributed fetching
-message="# Concretion #"
+print("# Concretion #")
 let _=alias.fetchInstance { (instance) in
     if let user=instance {
-        message="\(user)"
+        print("OK! \(user)")
     }else{
-        message="**NO USER!**"
+        print("**NO USER!**")
     }
 }
 
-separator
+print(separator)
 
 let tag=Tag()
 tag.color="Red"
@@ -61,63 +58,45 @@ let tag2=Tag()
 tag2.color="Black"
 let tag2Alias:Alias<Tag>=Alias(from:tag2)
 
-NSStringFromClass(user.dynamicType)
-NSStringFromClass(tag.dynamicType)
-NSStringFromClass(tag2.dynamicType)
-NSStringFromClass(alias.dynamicType)
-NSStringFromClass(tagAlias.dynamicType)
-NSStringFromClass(tag2Alias.dynamicType)
-
-tag.dynamicType
-tag.typeName()
-tagAlias.dynamicType
-tagAlias.typeName()
-
-
-separator
+print(separator)
 
 // False Alias casting Tag to user
 let errorTag=Tag()
 errorTag.color="Green"
 let errorTagAlias:Alias<User>=Alias(from:errorTag)
-errorTagAlias.dynamicType
-NSStringFromClass(errorTagAlias.dynamicType)
-errorTagAlias.typeName()
-errorTagAlias.d_collectionName
+print(Alias<User>.typeName())
+print(errorTagAlias.runTimeTypeName())
+print(errorTagAlias.d_collectionName)
 
 let resolveErrorTag=errorTagAlias.toLocalInstance()
 let resolvetag=tagAlias.toLocalInstance()
 let color=resolvetag?.color
 
-//let errorColor=resolveErrorTag.color // <= Produces an error.
-
-separator
-
-
-NSStringFromClass(tagAlias.dynamicType)
-tagAlias.typeName()
-
-
-separator
+print(separator)
 
 // Serialization
 
-message="Serialization of an Alias"
+print("Serialization of an Alias")
 
 let data=tagAlias.serialize()
 
-let a=JSerializer.sharedInstance.deserialize(data)
-a.dynamicType
+do{
+    let a = try JSerializer.deserialize(data)
+    print(a.dynamicType)
 
-if let deserializedAlias=JSerializer.sharedInstance.deserialize(data) as? Alias<Tag>{
-    message="DESERIALIZED"
-    if let deserializedTag=deserializedAlias.toLocalInstance() {
-        message="The color of the tag is \(deserializedTag.color!)"
+    if let deserializedAlias = try JSerializer.deserialize(data) as? Alias<Tag>{
+        print("OK! DESERIALIZED")
+        if let deserializedTag=deserializedAlias.toLocalInstance() {
+            print("OK! The color of the tag is \(deserializedTag.color!)")
+        }
+    }else{
+        print("NOT DESERIALIZED")
     }
-}else{
-    message="NOT DESERIALIZED"
+}catch{
+    print(error)
 }
 
-separator
+
+
 //: [Next page](@next)
 

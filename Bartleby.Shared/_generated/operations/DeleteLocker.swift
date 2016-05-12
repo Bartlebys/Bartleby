@@ -13,7 +13,13 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
+
 @objc(DeleteLocker) public class DeleteLocker : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "DeleteLocker"
+    }
 
     private var _lockerId:String = String()
 

@@ -23,7 +23,10 @@ import Foundation
  */
 @objc(BsyncDirectives) public class  BsyncDirectives: BsyncCredentials {
 
-    // @bpds I didn't used this in the tests but nil, shall we remove it???
+    override public class func typeName() -> String {
+        return "BsyncDirectives"
+    }
+
     public static let NO_HASHMAPVIEW="NO_HASHMAPVIEW"
 
     public static let distantSchemes: [String]=["http", "https", "ftp", "ftps"]
@@ -74,7 +77,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func upStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String)->BsyncDirectives {
+    public static func upStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = NSURL(fileURLWithPath: localPath)
         directives.destinationURL = distantURL
@@ -89,7 +92,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func downStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String)->BsyncDirectives {
+    public static func downStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = distantURL
         directives.destinationURL = NSURL(fileURLWithPath: localPath)
@@ -104,7 +107,7 @@ import Foundation
 
      - returns: the directives
      */
-    public static func localDirectivesWithPath(sourcePath: String, destinationPath: String)->BsyncDirectives {
+    public static func localDirectivesWithPath(sourcePath: String, destinationPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = NSURL(fileURLWithPath: sourcePath)
         directives.destinationURL = NSURL(fileURLWithPath: destinationPath)
@@ -165,16 +168,6 @@ import Foundation
     override public var d_collectionName: String {
         return BsyncDirectives.collectionName
     }
-
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
-
 
 
 }

@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model TasksGroup
 @objc(TasksGroup) public class TasksGroup : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "TasksGroup"
+    }
 
 	//TasksGroup Status
 	public enum Status:Int{
@@ -34,16 +38,18 @@ import ObjectMapper
 	public var priority:Priority = .Default
 	//The group dataspace
 	public var spaceUID:String = "\(Default.NO_UID)"
-	//A collection of Tasks
+	//A collection of Concrete Tasks Aliases
 	public var tasks:[Task] = [Task]()
-	//The failure task (can be used to cleanup or notify failure)
-	public var onFailure:Task?
+	//The alias of he failure task (can be used to cleanup or notify failure)
+	public var onFailure:Alias<Task>?
 	//The progression state of the group
 	public var progressionState:Progression = Progression()
 	//The completion state of the group
 	public var completionState:Completion = Completion()
 	//The group name
 	public var name:String = "\(Default.NO_NAME)"
+	//A void handler to allow subscribers to register their own handlers
+	public var handlers:Handlers = Handlers.withoutCompletion()
 
 
     // MARK: Mappable
@@ -74,7 +80,7 @@ import ObjectMapper
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		self.onFailure=decoder.decodeObjectOfClass(Task.self, forKey: "onFailure") 
+		self.onFailure=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "onFailure") 
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
@@ -93,6 +99,7 @@ import ObjectMapper
 		coder.encodeObject(self.progressionState,forKey:"progressionState")
 		coder.encodeObject(self.completionState,forKey:"completionState")
 		coder.encodeObject(self.name,forKey:"name")
+		coder.encodeObject(self.handlers,forKey:"handlers")
     }
 
 
@@ -115,14 +122,6 @@ import ObjectMapper
         return TasksGroup.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

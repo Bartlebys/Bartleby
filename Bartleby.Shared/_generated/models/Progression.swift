@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Progression
 @objc(Progression) public class Progression : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Progression"
+    }
 
 	//Index of the task
 	public var currentTaskIndex:Int = 0
@@ -90,14 +94,6 @@ import ObjectMapper
         return Progression.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

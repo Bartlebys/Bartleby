@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Operation
 @objc(Operation) public class Operation : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Operation"
+    }
 
 	//The dictionary representation of a serialized action call
 	public var toDictionary:Dictionary<String, AnyObject>?
@@ -121,14 +125,6 @@ import ObjectMapper
         return Operation.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

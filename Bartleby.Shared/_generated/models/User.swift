@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model User
 @objc(User) public class User : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "User"
+    }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	public var spaceUID:String = "\(Bartleby.createUID())"
@@ -137,14 +141,6 @@ import ObjectMapper
         return User.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

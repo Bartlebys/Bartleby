@@ -59,7 +59,6 @@ public func instancesToAliases<T: Collectible>(instances: [Collectible]) -> [Ali
     return aliases
 }
 
-//!!! mark sync !!!
 public func instancesFromAliases<T: Collectible>(aliases: [Alias<T>]) -> [T] {
     var instances=[T]()
     for alias in aliases {

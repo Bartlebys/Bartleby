@@ -27,6 +27,10 @@ protocol IdentifiableCardContext {
  */
 @objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
 
+    override public class func typeName() -> String {
+        return "BsyncDMGCard"
+    }
+
     public static let NO_PATH="none"
     public static let NOT_SET="not-set"
     public static let DMG_EXTENSION="sparseimage"
@@ -148,7 +152,7 @@ protocol IdentifiableCardContext {
 
      - returns: the password
      */
-    public func getPasswordForDMG()->String {
+    public func getPasswordForDMG() -> String {
         // This method will not return a correct password if Bartleby is not correctly initialized.
         do {
             return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))
@@ -169,13 +173,5 @@ protocol IdentifiableCardContext {
         return BsyncDMGCard.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }

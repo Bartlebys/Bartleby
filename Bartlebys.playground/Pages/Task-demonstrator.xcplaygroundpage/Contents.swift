@@ -1,34 +1,33 @@
+
+import XCPlayground
+
 //: [Previous](@previous)
+
 import Foundation
 import Alamofire
 import ObjectMapper
 import BartlebyKit
 
-// THIS PLAYGROUND IS CURRENTLY FAILING.
-// BUT THE SAME CODE PASTED IN Bsync's main works perfectly.
-// INVESTIGATION NEEDED
-
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
-BartlebyDocument.addUniversalTypesForAliases()
-let document=BartlebyDocument()
+let document=BartlebyDocument() // We need a DataSpace
 TasksScheduler.DEBUG_TASKS=true
-Registry.USE_UNIVERSAL_TYPES=true
 
 let SEPARATOR="----------------------"
-var message="Definition of the ShowSummary Task"
+print(SEPARATOR)
+print("Definition of the ShowSummary Task")
 
 var counter=0
 
-SEPARATOR
-message="Creation of the root Object & Task"
+print(SEPARATOR)
+print("Creation of the root Object & Task")
 
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
-    
+
     /**
      This initializer **MUST:** call configureWithArguments
      - parameter arguments: the arguments
-     
+
      - returns: a well initialized task.
      */
     convenience required public init (arguments: Collectible) {
@@ -38,71 +37,72 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
             self.summary="ShowSummary \(s)" // For test purposes
         }
     }
-    
+
     public static var counter: Int=0
-    
+
     public func invoke() {
-        var message=""
         do {
             if let object: JObject = try self.arguments() as JObject {
-                
                 if let summary = object.summary {
                     ShowSummary.counter += 1
-                    message="\(ShowSummary.counter)# \(summary)"
-                    print(message)
+                    print("\(ShowSummary.counter)# \(summary)")
                 } else {
-                    message="NO SUMMARY \(object.UID)"
-                    print(message)
+                    print("NO SUMMARY \(object.UID)")
                 }
             }
             self.forward(Completion.successState())
         } catch let e {
-            message="ERROR \(e)"
-            print(message)
+            print("ERROR \(e)")
         }
     }
 }
 
+Registry.declareCollectibleType(ShowSummary)
+Registry.declareCollectibleType(Alias<ShowSummary>)
 
 
 let rootObject=JObject()
 rootObject.summary="ROOT OBJECT"
 let firstTask=ShowSummary(arguments: rootObject)
 
+
 do {
-    message="Tasks create task Group"
-    print(message)
-    let group = try Bartleby.scheduler.createTaskGroupFor(firstTask, groupedBy:"MyPlayGroundTasks", inDataSpace: document.spaceUID)
-    message="Adding Child tasks"
-    print(message)
-    for i in 1...10 {
+    print("Tasks create task Group")
+
+    let group = try Bartleby.scheduler.getTaskGroupWithName("MyPlayGroundTasks", inDataSpace: document.spaceUID)
+    // This is the unique root task
+    // So concurrency will be limited as we append sub tasks via appendSequentialTask
+    try group.addConcurrentTask(firstTask)
+    group.handlers.appendCompletionHandler({ (completion) in
+        print("*****")
+    })
+    
+    print("Adding Child tasks")
+    for i in 1...5 {
         let o=JObject()
         o.summary="Object \(i)"
         let task=ShowSummary(arguments: o)
         try firstTask.appendSequentialTask(task)
     }
-    
+
     let rootTaskCounter=group.tasks.count
-    message="Number of first level tasks = \(rootTaskCounter)"
-    print(message)
+    print("Number of first level tasks = \(rootTaskCounter)")
     print(SEPARATOR)
-    Registry.USE_UNIVERSAL_TYPES=true
-    let use=Registry.USE_UNIVERSAL_TYPES
-    
     try group.start()
-    SEPARATOR
-    message="Check the console result"
-    SEPARATOR
-    message="Number of first level tasks = \(group.tasks.count)"
-    print(message)
-    
+    print("Number of first level tasks = \(group.tasks.count)")
+
 } catch {
-    message="ERROR \(error)"
-    print(message)
+    print("ERROR \(error)")
 }
-SEPARATOR
-message="Check the console result"
-SEPARATOR
-message="Check the console result"
+print(SEPARATOR)
+
+
+print("Check the console result")
+
+
+XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
+Bartleby.executeAfter(10) {
+    XCPlaygroundPage.currentPage.finishExecution()
+}
 
 //: [Next page](@next)

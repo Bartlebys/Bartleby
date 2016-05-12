@@ -3,6 +3,6 @@
     <pages>
         <page name='Hello World?'/>
         <page name='Aliases-experiments'/>
-        <page name='Tasks'/>
+        <page name='Task-demonstrator'/>
     </pages>
 </playground>

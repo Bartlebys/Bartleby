@@ -32,7 +32,8 @@ public extension Completion {
      */
     func getResult<T: Serializable>() -> T? {
         if let data=self.data {
-            return JSerializer.deserialize(data) as? T
+            let s = try? JSerializer.deserialize(data)
+            return s as? T
         }
         return nil
     }
@@ -47,7 +48,8 @@ public extension Completion {
      */
     func getResultFromSerializer<T: Serializable>(serializer: Serializer) -> T? {
         if let data=self.data {
-            return serializer.deserialize(data) as? T
+            let s=try? JSerializer.deserialize(data)
+            return s as? T
         }
         return nil
     }

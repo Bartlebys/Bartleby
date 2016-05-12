@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model BaseRegistryMetadata
 @objc(BaseRegistryMetadata) public class BaseRegistryMetadata : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "BaseRegistryMetadata"
+    }
 
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
@@ -114,14 +118,6 @@ import ObjectMapper
         return BaseRegistryMetadata.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

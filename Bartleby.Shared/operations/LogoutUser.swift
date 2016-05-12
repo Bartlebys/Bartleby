@@ -8,7 +8,12 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc(LogoutUser) public class LogoutUser: JObject {
+public class LogoutUser: JObject {
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "LogoutUser"
+    }
 
     static public func execute(fromDataSpace spaceUID: String,
                                sucessHandler success:()->(),

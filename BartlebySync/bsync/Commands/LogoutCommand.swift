@@ -10,7 +10,7 @@ import Cocoa
 
 class LogoutCommand: CommandBase {
 
-    required init(completionHandler: ((completion: Completion) -> ())) {
+     required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
 
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,

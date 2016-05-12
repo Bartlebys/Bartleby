@@ -16,20 +16,10 @@ public class CommandBase: Handlers {
 
     let cli = CommandLine()
 
-    public required init(completionHandler:((completion: Completion)->())) {
+    public required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
     }
 
-//    public convenience init() {
-//        self.init(completionHandler:{ (completion) in
-//            if completion.success {
-//                exit(EX_OK)
-//            } else {
-//                print(completion.message)
-//                exit(Int32(completion.statusCode))
-//            }
-//        })
-//    }
 
     func printVerbose(string: String) {
         if isVerbose {

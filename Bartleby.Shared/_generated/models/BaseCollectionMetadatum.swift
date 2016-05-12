@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model BaseCollectionMetadatum
 @objc(BaseCollectionMetadatum) public class BaseCollectionMetadatum : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "BaseCollectionMetadatum"
+    }
 
 	//the used file storage
 	public enum Storage:String{
@@ -92,14 +96,6 @@ import ObjectMapper
         return BaseCollectionMetadatum.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

@@ -16,8 +16,13 @@ import ObjectMapper
 
 
 
-
 @objc(ReadTriggerById) public class ReadTriggerById : JObject{
+
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadTriggerById"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						triggerId:String,

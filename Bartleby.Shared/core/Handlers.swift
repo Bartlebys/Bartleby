@@ -27,7 +27,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
  * Composable handlers with at least one Completion Handler
  * You can compose multiple completion and progression
  */
-@objc(Handlers) public class Handlers: NSObject {
+public class Handlers: NSObject {
 
     // MARK: Progression handlers
     private var _progressionHandlers: [ProgressHandler] = []
@@ -58,14 +58,54 @@ public typealias CompletionHandler = (_: Completion) -> ()
     }
 
     /**
+     A factory to declare an explicit Handlers with no completion.
+
+     - returns: an Handlers instance
+     */
+    public static func withoutCompletion() -> Handlers {
+        return Handlers.init(completionHandler: nil)
+    }
+
+
+    /**
+     Appends the chained handlers to the current Handlers
+     All The chained closure will be called sequentially.
+
+     - parameter chainedHandlers: the handlers to be chained.
+     */
+    public func appendChainedHandlers(chainedHandlers: Handlers) {
+        self.appendCompletionHandler(chainedHandlers.on)
+        self.appendProgressHandler(chainedHandlers.notify)
+    }
+
+
+    /**
      Designated initializer
-     You must pass a completion Handler.
+     You Should pass a completion Handler (that's the best practice)
+     It is optionnal for rare situations like (TaskGroup placeholder Handlers)
      - parameter completionHandler: the completion Handler
 
      - returns: the instance.
      */
-    public required init(completionHandler: CompletionHandler) {
-        self._completionHandlers.append(completionHandler)
+    public required init(completionHandler: CompletionHandler?) {
+        if let completionHandler=completionHandler {
+            self._completionHandlers.append(completionHandler)
+        }
+    }
+
+    /**
+     A convenience initializer
+
+     - parameter completionHandler:  the completion Handler
+     - parameter progressionHandler: the progression Handler
+
+     - returns: the instance
+     */
+    public convenience init(completionHandler: CompletionHandler?, progressionHandler: ProgressHandler?) {
+        self.init(completionHandler:completionHandler)
+        if let progressionHandler=progressionHandler {
+            self._progressionHandlers.append(progressionHandler)
+        }
     }
 
     /**

@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Tag
 @objc(Tag) public class Tag : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Tag"
+    }
 
 	public var creationDate:String?
 	//The relative paths to its parent tag e.g : registryUID/collectionName/instanceUID
@@ -95,14 +99,6 @@ import ObjectMapper
         return Tag.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

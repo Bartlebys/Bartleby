@@ -13,7 +13,7 @@ import Foundation
  * Provides an abstraction for file IO.
  * Sandoboxed os x App can use BsyncXPCHelper that implement BartlebyFileIO
  */
-@objc public protocol BartlebyFileIO {
+public protocol BartlebyFileIO {
 
     /**
     Creates a directory
@@ -53,16 +53,16 @@ import Foundation
     func writeData(data: NSData,
         path: String,
         handlers: Handlers) -> ()
-    
+
     /**
      Reads the data with options
-     
+
      - parameter path:            from file path
      - parameter handlers:        the handlers
-     
-     Here is an example showing how to extract the string 
+
+     Here is an example showing how to extract the string
      in the completion handler:
-     
+
          { (read) in
              if let s = read.getStringResult() where read.success {
                  // Handle success
@@ -94,32 +94,32 @@ import Foundation
 
     /**
      Determines if a file or directory exists.
-     
+
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
-     
+
      - returns: N/A
      */
     func itemExistsAtPath(path: String,
                           handlers: Handlers) -> ()
-    
+
     /**
      Determines if a file exists and is a directory.
-     
+
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
-     
+
      - returns: N/A
      */
     func fileExistsAtPath(path: String,
                           handlers: Handlers) -> ()
-    
+
     /**
      Determines if a directory exists.
-     
+
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
-     
+
      - returns: N/A
      */
     func directoryExistsAtPath(path: String,

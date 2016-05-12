@@ -25,6 +25,11 @@ import ObjectMapper
 
 @objc(PermissionsCollectionController) public class PermissionsCollectionController : JObject,IterableCollectibleCollection{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "PermissionsCollectionController"
+    }
+
     weak public var undoManager:NSUndoManager?
 
     public var spaceUID:String=Default.NO_UID

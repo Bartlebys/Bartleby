@@ -14,9 +14,11 @@ import Foundation
 #endif
 
 
-
 @objc(BsyncCredentials) public class BsyncCredentials: JObject {
 
+    override public class func typeName() -> String {
+        return "BsyncCredentials"
+    }
 
     /// Debug facility
     public static let DEBUG_DISABLE_ENCRYPTION=true // Should always be set to false in production (!)
@@ -84,14 +86,6 @@ import Foundation
         return BsyncCredentials.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 
 

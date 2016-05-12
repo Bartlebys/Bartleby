@@ -19,12 +19,40 @@ import Foundation
 enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
     case TaskNotFound
+    case AttemptToAddTaskInMultipleGroups
+    case InterruptedOnFault
 }
 
+/*
 
+ TaskGroup ?
+
+
+ How to monitor the taskGroup ?
+
+ 1. You can add the handlers
+ ```
+ group.handlers.appendCompletionHandler(handlers.on)
+ group.handlers.appendProgressHandler(handlers.notify)
+ ```
+ 2. or with with one expression
+ ```
+ group.handlers.appendChainedHandlers(handlers)
+ ```
+ 3. Observe the task Group completion and Progression by NSNotification.
+ ```
+ NSNotificationCenter.defaultCenter().addObserverForName(group.completionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+ //
+ })
+ // Observe the task Group completion
+ NSNotificationCenter.defaultCenter().addObserverForName(group.progressionNotificationName, object: nil, queue: nil, usingBlock: { (notification) in
+ //
+ })
+ ```
+ */
 public extension TasksGroup {
 
-    
+
     public var dispatchQueue: dispatch_queue_t {
         get {
             return Bartleby.scheduler.getQueueFor(self)
@@ -35,10 +63,18 @@ public extension TasksGroup {
     // NSNotificationCenter.defaultCenter()
     public var completionNotificationName: String {
         get {
-            return self.name+"_NOTIFICATION"
+            return self.name+"_COMPLETION_NOTIFICATION"
         }
     }
 
+
+    // The completion Notification osbervable
+    // NSNotificationCenter.defaultCenter()
+    public var progressionNotificationName: String {
+        get {
+            return self.name+"_PROGRESSION_NOTIFICATION"
+        }
+    }
 
     /**
      Starts the task group
@@ -54,11 +90,12 @@ public extension TasksGroup {
         let entryTasks=self.findRunnableTasks()
         for task in entryTasks {
             task.status = .Running // There was no trans serialization we can set directly the status.
-            if let invocableTask = self.invocableTaskFrom(task) {
+            if let invocableTask = task as? Invocable {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
                 dispatch_async(self.dispatchQueue, {
+                    print (invocableTask.runTimeTypeName())
                     invocableTask.invoke()
                 })
 
@@ -69,45 +106,6 @@ public extension TasksGroup {
         return entryTasks.count
     }
 
-    /**
-     Extract a fully typed concrete task from an abstract task
-     (!) Very important the Invocable task is a concrete Clone of the abstract Class.
-
-     - parameter task: the transitionnal task
-
-     - returns: an invocable task or nil
-     */
-    public func invocableTaskFrom(task: Task) -> ConcreteTask? {
-        if task.taskClassName != Default.NO_NAME {
-            // Serialize the current transitionnal task.
-            let dictionary=task.dictionaryRepresentation()
-            if let Reference: Collectible.Type = NSClassFromString(task.taskClassName) as? Collectible.Type {
-                // deserialize using its concrete type
-                if  var invocableTask = Reference.init() as? protocol<Mappable, ConcreteTask> {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
-                    invocableTask.mapping(map)
-                    return invocableTask
-                }
-            }
-        }
-        return nil
-    }
-
-
-    /**
-     Tasks are trans-serialized before invocation.
-     This grabs the original task instance.
-     Should be used to set the state or the status.
-
-     - parameter taskInstance: the task Instance
-
-     - returns: the original task
-     */
-    public func originalTaskFrom(taskInstance: Task) -> Task {
-        let original: Task?=Registry.registredObjectByUID(taskInstance.UID)
-        return original ?? taskInstance // Falls back on the current instance if nothing was found
-    }
-
 
     /**
         Simple Pause
@@ -116,6 +114,72 @@ public extension TasksGroup {
     public func pause() {
         self.status = .Paused
     }
+
+
+
+    /**
+     Add a top level concurrent task to the group.
+     And registers the group alias
+
+     - parameter task:  the top level task to be added
+     - parameter group: the group
+     */
+    public func addConcurrentTask(task: Task) throws {
+        if let _ = task.group {
+            throw TasksGroupError.AttemptToAddTaskInMultipleGroups
+        }
+        task.group=Alias(from:self)
+        self.tasks.append(task)
+    }
+
+
+    /**
+     The total count at a given time
+
+     - returns: the number of tasks
+     */
+    public func totalTaskCount() -> Int {
+        var counter: Int=0
+        for task in self.tasks {
+            self._count(task, counter:&counter)
+        }
+        return counter
+    }
+
+
+    private func _count(task: Task, inout counter: Int) {
+        counter += 1
+        for alias in task.children {
+            if let child: Task=alias.toLocalInstance() {
+                self._count(child, counter: &counter)
+            }
+        }
+    }
+
+    /**
+     - returns: the rank of a given task and -1 if not found.
+     */
+    public func rankOfTask(task: Task) -> Int {
+        var rankCounter: Int = -1
+        var stop: Bool=false
+        for task in self.tasks {
+            self._rankOfTask(task, rankCounter:&rankCounter, stop:&stop)
+        }
+        return rankCounter
+    }
+
+    private func _rankOfTask(task: Task, inout rankCounter: Int, inout stop: Bool) {
+        if stop==false {
+            rankCounter += 1
+            for alias in task.children {
+                if let child: Task=alias.toLocalInstance() {
+                    stop=true
+                }
+            }
+        }
+    }
+
+
 
     // MARK: Find runnable Tasks
 

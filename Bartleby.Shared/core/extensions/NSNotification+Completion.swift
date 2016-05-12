@@ -19,7 +19,8 @@ extension NSNotification {
 
     public func getCompletionState() -> Completion? {
         if let dictionary=self.userInfo as? [String:AnyObject] {
-              return JSerializer.sharedInstance.deserializeFromDictionary(dictionary) as? Completion
+            let completion = try? JSerializer.deserializeFromDictionary(dictionary)
+            return completion as? Completion
         }
         return nil
     }

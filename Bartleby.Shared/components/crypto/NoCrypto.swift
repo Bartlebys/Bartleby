@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc public class NoCrypto: NSObject, CryptoDelegate {
+public class NoCrypto: NSObject, CryptoDelegate {
 
 
     public override init() {

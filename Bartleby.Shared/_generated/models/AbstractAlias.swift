@@ -17,11 +17,13 @@ import ObjectMapper
 // MARK: Model AbstractAlias
 @objc(AbstractAlias) public class AbstractAlias : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "AbstractAlias"
+    }
 
 	//The UID of the instance
 	public var iUID:String = "\(Default.NO_UID)"
-	//The Type name of the aliased instance
-	public var iTypeName:String = "\(Default.NO_NAME)"
 
 
     // MARK: Mappable
@@ -34,7 +36,6 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
 		self.iUID <- map["iUID"]
-		self.iTypeName <- map["iTypeName"]
     }
 
 
@@ -43,14 +44,12 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iUID")! as NSString)
-		self.iTypeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iTypeName")! as NSString)
 
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeObject(self.iUID,forKey:"iUID")
-		coder.encodeObject(self.iTypeName,forKey:"iTypeName")
     }
 
 
@@ -73,14 +72,6 @@ import ObjectMapper
         return AbstractAlias.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Locker
 @objc(Locker) public class Locker : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Locker"
+    }
 
 	//The spaceUID is the data space UID.
 	public var spaceUID:String?
@@ -121,14 +125,6 @@ import ObjectMapper
         return Locker.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

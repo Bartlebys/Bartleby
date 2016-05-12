@@ -23,40 +23,40 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 
-// Notice the @objc(Name)
-// http://stackoverflow.com/a/24196632/341994
-// MARK: - JObject Class
-@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, Persistent, NSSecureCoding {
+// Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
+// During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
+// NSecureCoding does not implement Universal Strategy the module is prepended to the name.
+// By putting @objc(name) we fix the serialization name.
+// This is due to the impossibility to link a FrameWork to an XPC services.
+@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding {
 
-    // MARK: - ReferenceName
-
-    internal var _typeName: String=Default.NO_NAME
-
-    // The reference name is equivalent to the class name as a String
-    public func typeName() -> String {
-        return _typeName
-    }
-
-
-    public func defineTypeName() {
-        if _typeName == Default.NO_NAME {
-            let typeNameString: NSString=NSStringFromClass(self.dynamicType)
-            _typeName = typeNameString.stringByReplacingOccurrencesOfString("NSKVONotifying_", withString:"")
-        }
-    }
 
     // MARK: - Initializable
 
     override required public init() {
         super.init()
-        // We need to define the type name
-        // To support universal aliasing
-        self.defineTypeName()
     }
 
+    // MARK: - Collectible = Identifiable + Serializable + type and status management
 
-    // MARK: - Collectible = Identifiable + Serializable
+    // Used to store the type name on serialization
+    private var _typeName: String?
 
+    // The type name is Universal and used when serializing the instance
+    public class func typeName() -> String {
+        return "JObject"
+    }
+
+    internal var _runTimeTypeName: String?
+
+    // The runTypeName is used when deserializing the instance.
+    public func runTimeTypeName() -> String {
+        guard let _ = self._runTimeTypeName  else {
+            self._runTimeTypeName = NSStringFromClass(self.dynamicType)
+            return self._runTimeTypeName!
+        }
+        return self._runTimeTypeName!
+    }
 
     //Collectible protocol: committed
     public var committed: Bool = false
@@ -68,7 +68,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var summary: String?
 
 
-    // MARK: - Serializable
+    // MARK: Serializable
 
     public func serialize() -> NSData {
         let dictionaryRepresentation = self.dictionaryRepresentation()
@@ -84,28 +84,15 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public func deserialize(data: NSData) -> Serializable {
-        return JSerializer.deserialize(data)
-    }
-
-
-    public func updateData(data: NSData) -> Serializable {
-        do {
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
-                self.mapping(map)
-                return self
-            }
-        } catch {
-            //Silent catch
-            bprint("deserialize ERROR \(error)")
+    public func updateData(data: NSData) throws -> Serializable {
+        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+            let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
+            self.mapping(map)
         }
-        // If there is an issue we relay to the serializer
-
-        return JSerializer.deserialize(data)
+        return self
     }
 
-    // MARK: - Identifiable
+    // MARK: -Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
 
@@ -145,14 +132,13 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public func autoAlias<T: Collectible>()->Alias<T> {
-        return Alias<T>(from: self)
-    }
-
     // MARK: - CustomStringConvertible
 
     override public var description: String {
         get {
+            if self is Descriptible {
+                return (self as! Descriptible).toString()
+            }
             if let j=Mapper().toJSONString(self, prettyPrint:true) {
                 return "\n\(j)"
             } else {
@@ -170,6 +156,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     public func mapping(map: Map) {
+        if map.mappingType == .ToJSON {
+            // Store the universal type Name
+            self._typeName=self.dynamicType.typeName()
+        }
         self._id <- map[Default.UID_KEY]
         self._typeName <- map[Default.TYPE_NAME_KEY]
         self.committed <- map["committed"]
@@ -193,7 +183,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
     public func encodeWithCoder(coder: NSCoder) {
-        self._typeName=self.typeName()
+        self._typeName=self.dynamicType.typeName()// Store the universal type name on serialization
         coder.encodeObject(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encodeObject(self._id, forKey: Default.UID_KEY)
         coder.encodeBool(self.committed, forKey:"committed")
@@ -216,33 +206,14 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public func copyWithZone(zone: NSZone) -> AnyObject {
         let data: NSData=JSerializer.serialize(self)
-        return JSerializer.deserialize(data) as! AnyObject
-    }
-
-
-    // MARK: - Persistent
-
-    public func toPersistentRepresentation()->(UID: String, collectionName: String, serializedUTF8String: String, A: Double, B: Double, C: Double, D: Double, E: Double, S: String) {
-        if let data = Mapper().toJSONString(self, prettyPrint: Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT) {
-            return (self.UID, self.d_collectionName, data, 0, 0, 0, 0, 0, "")
-        } else {
-            let s="{\"Persitency Error - serialization failed\"}"
-            return (self.UID, self.d_collectionName, s, 0, 0, 0, 0, 0, "")
+        if let copied = try? JSerializer.deserialize(data) {
+            return copied as! AnyObject
         }
+        bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) ", file:#file, function:#function, line:#line)
+        return self as AnyObject
     }
 
 
-    static public func fromSerializedUTF8String(serializedUTF8String: String) -> Serializable {
-        // In our case the serializedUTF8String encapuslate all the required information
-        if let d = serializedUTF8String.dataUsingEncoding(Default.TEXT_ENCODING) {
-            return JSerializer.deserialize(d)
-        } else {
-            let error=ObjectError()
-            error.message="Error on deserialization of \(serializedUTF8String)"
-            return error
-        }
-
-    }
 }
 
 
@@ -252,6 +223,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 extension JObject:DictionaryRepresentation {
 
     public func dictionaryRepresentation()->[String:AnyObject] {
+        self.defineUID()
         return Mapper().toJSON(self)
     }
 }

@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model Trigger
 @objc(Trigger) public class Trigger : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "Trigger"
+    }
 
 	//A message that can be injected for monitoring or external observation
 	public var associatedMessage:String?
@@ -84,14 +88,6 @@ import ObjectMapper
         return Trigger.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

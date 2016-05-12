@@ -17,34 +17,62 @@ class SerializableInvocationsTests: XCTestCase {
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        BartlebyDocument.declareCollectibleTypes()
+        Registry.declareCollectibleType(PrintUser)// REQUIRED !!!
+        Registry.declareCollectibleType(Alias<PrintUser>)
     }
 
 
+    override static func tearDown() {
+        super.tearDown()
+        Registry.purgeCollectibleType()
+    }
+
+    /**
+      DIRECT INVOCATION BASIC TESTS
+     */
+
     func test001_PrintUserTask() {
         let user=User()
-        user.email="bpds@me.com"
+        user.email="bartleby@barltebys.org"
         let printer =  PrintUser(arguments:user)
         let serializedInvocation=printer.serialize()
-        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? PrintUser {
-            deserializedInvocation.invoke()
-            XCTAssert(true)
-        } else {
-            XCTFail("Deserialization as failed")
+        do {
+            let o = try JSerializer.deserialize(serializedInvocation)
+            if let deserializedInvocation=o as? PrintUser {
+                deserializedInvocation.invoke()
+                XCTAssert(true)
+            } else {
+                if let error = o as? ObjectError {
+                    XCTFail("Deserialization as failed \(error.message)")
+                } else {
+                    XCTFail("Deserialization as failed")
+                }
+
+            }
+        } catch {
+             XCTFail("\(error)")
         }
+
     }
 
 
     func test002_PrintUserTask_Dynamic() {
-        let user=User()
-        user.email="benoit@pereira-da-silva.com"
-        let printer = PrintUser(arguments:user)
-        let serializedInvocation=printer.serialize()
-        if let deserializedInvocation=JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
-            deserializedInvocation.invoke()
-            XCTAssert(true)
-        } else {
-            XCTFail("Deserialization as failed")
+        do{
+            let user=User()
+            user.email="benoit@pereira-da-silva.com"
+            let printer = PrintUser(arguments:user)
+            let serializedInvocation=printer.serialize()
+            if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
+                deserializedInvocation.invoke()
+                XCTAssert(true)
+            } else {
+                XCTFail("Deserialization as failed")
+            }
+        }catch{
+            XCTFail("\(error)")
         }
+        
     }
 
     func test002__PrintUserTask_Via_NSData_Performer() {

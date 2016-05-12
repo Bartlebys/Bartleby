@@ -13,7 +13,13 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
+
 @objc(DeleteTasks) public class DeleteTasks : JObject,JHTTPCommand{
+
+    // Universal type support
+    override public class func typeName() -> String {
+        return "DeleteTasks"
+    }
 
     private var _ids:[String] = [String]()
 

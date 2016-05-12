@@ -11,7 +11,7 @@ import Foundation
 class CreateUserCommand: CommandBase {
 
 
-    required init(completionHandler: ((completion: Completion) -> ())) {
+     required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
 
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,

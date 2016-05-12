@@ -14,6 +14,11 @@ import Alamofire
 import ObjectMapper
 #endif
 @objc(ReadTasksGroupsByIdsParameters) public class ReadTasksGroupsByIdsParameters : JObject {
+	
+	// Universal type support
+	override public class func typeName() -> String {
+		 return "ReadTasksGroupsByIdsParameters"
+	}
 	// 
 	public var ids:[String]?
 	// 
@@ -73,8 +78,13 @@ import ObjectMapper
 
 
 
-
 @objc(ReadTasksGroupsByIds) public class ReadTasksGroupsByIds : JObject{
+
+    // Universal type support
+    override public class func typeName() -> String {
+           return "ReadTasksGroupsByIds"
+    }
+
 
     public static func execute(fromDataSpace spaceUID:String,
 						parameters:ReadTasksGroupsByIdsParameters,

@@ -32,7 +32,8 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType {
                             if let base64EncodedString = value as? String {
                                 if let encryptedData = NSData(base64EncodedString: base64EncodedString, options: .IgnoreUnknownCharacters) {
                                     let deCryptedData = try Bartleby.cryptoDelegate.decryptData(encryptedData)
-                                    return JSerializer.deserialize(deCryptedData) as? Object
+                                    let o = try? JSerializer.deserialize(deCryptedData)
+                                    return  o as? Object
                                 }
                             }
                         }

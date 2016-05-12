@@ -17,6 +17,10 @@ import ObjectMapper
 // MARK: Model ObjectError
 @objc(ObjectError) public class ObjectError : JObject{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "ObjectError"
+    }
 
 	//The Error Message
 	public var message:String?
@@ -70,14 +74,6 @@ import ObjectMapper
         return ObjectError.collectionName
     }
 
-
-    // MARK: Persistent
-
-    override public func toPersistentRepresentation()->(UID:String,collectionName:String,serializedUTF8String:String,A:Double,B:Double,C:Double,D:Double,E:Double,S:String){
-        var r=super.toPersistentRepresentation()
-        r.A=NSDate().timeIntervalSince1970
-        return r
-    }
 
 }
 

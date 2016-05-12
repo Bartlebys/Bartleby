@@ -25,6 +25,11 @@ import ObjectMapper
 
 @objc(TasksCollectionController) public class TasksCollectionController : JObject,IterableCollectibleCollection{
 
+    // Universal type support
+    override public class func typeName() -> String {
+        return "TasksCollectionController"
+    }
+
     weak public var undoManager:NSUndoManager?
 
     public var spaceUID:String=Default.NO_UID
@@ -300,7 +305,6 @@ import ObjectMapper
 			item.addObserver(self, forKeyPath: "completionState", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "argumentsData", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "resultData", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "taskClassName", options: .Old, context: &KVOContext)
         }
     }
 
@@ -317,7 +321,6 @@ import ObjectMapper
 				item.removeObserver(self, forKeyPath: "completionState", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "argumentsData", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "resultData", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "taskClassName", context: &KVOContext)
             }
         }
     }
