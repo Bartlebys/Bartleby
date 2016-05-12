@@ -71,10 +71,12 @@ extension Task {
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
                         let currentIndex=group.rankOfTask(self)
-                        let currentTotal=group.totalTaskCount()
-                        let progress: Double=Double(currentTotal)/Double(currentIndex)
-                        let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.completionState.data)
-                        group.handlers.notify(groupProgression)
+                        if currentIndex>0 {
+                            let currentTotal=group.totalTaskCount()
+                            let progress: Double=Double(currentTotal)/Double(currentIndex)
+                            let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.completionState.data)
+                            group.handlers.notify(groupProgression)
+                        }
                         do {
                             if TasksScheduler.DEBUG_TASKS {
                                 bprint("Marking Completion on \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
@@ -93,10 +95,12 @@ extension Task {
                         // May be it could be distincted from completion
                         self.progressionState = state as! Progression
                         let currentIndex=group.rankOfTask(self)
-                        let currentTotal=group.totalTaskCount()
-                        let progress: Double=self.progressionState.currentTaskProgress
-                        let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.progressionState.data)
-                        group.handlers.notify(groupProgression)
+                          if currentIndex>1 {
+                            let currentTotal=group.totalTaskCount()
+                            let progress: Double=Double(currentTotal)/Double(currentIndex-1)
+                            let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:self.progressionState.message, data:self.progressionState.data)
+                            group.handlers.notify(groupProgression)
+                        }
                     } else {
                         if TasksScheduler.DEBUG_TASKS {
                             bprint("ERROR unsupported ForwardableStates", file: #file, function: #function, line: #line)
@@ -111,8 +115,6 @@ extension Task {
             }
         })
     }
-
-
 
 
     /**
