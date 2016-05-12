@@ -8,14 +8,9 @@
 
 import Foundation
 
-// Instanciate the facade
-//let facade=BartlebysCommandFacade()
-//facade.actOnArguments()
-  
-
-graph_exec_completion_routine(TasksGroup.Priority.Background, useRandomPause:false, numberOfSequTask:5)
-    
-    
+//Instanciate the facade
+let facade=BartlebysCommandFacade()
+facade.actOnArguments()
 
 var holdOn=true
 let runLoop=NSRunLoop.currentRunLoop()

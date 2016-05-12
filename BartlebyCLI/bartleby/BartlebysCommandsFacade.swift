@@ -25,7 +25,8 @@ struct BartlebysCommandFacade {
         case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
-
+        case "testTasks"?:
+            graph_exec_completion_routine(TasksGroup.Priority.High, useRandomPause:true, numberOfSequTask:100)
         default:
             // We want to propose the best verb candidate
             let reference=[
@@ -76,7 +77,7 @@ struct BartlebysCommandFacade {
     }
 
 
-    private func _noArgMessage()->String {
+    private func _noArgMessage() -> String {
         var s=""
         s += "Bartleby's CLI"
         s += "\nCreated by Benoit Pereira da Silva"
@@ -101,7 +102,7 @@ struct BartlebysCommandFacade {
     // MARK: levenshtein distance
     // https://en.wikipedia.org/wiki/Levenshtein_distance
 
-    private func bestCandidate(string: String, reference: [String])->String {
+    private func bestCandidate(string: String, reference: [String]) -> String {
         var selectedCandidate=string
         var minDistance: Int=Int.max
         for candidate in reference {
