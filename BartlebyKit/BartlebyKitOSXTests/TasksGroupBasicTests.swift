@@ -60,8 +60,7 @@ class TasksGroupBasicTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        ShowSummary.executionCounter=0
-    }
+            }
 
     func test_001_graph_exec_completion() {
         _graph_exec_completion_routine(TasksGroup.Priority.Background)
@@ -83,11 +82,9 @@ class TasksGroupBasicTests: XCTestCase {
         let firstTask=ShowSummary(arguments: rootObject)
         let document=BartlebyDocument()
         let numberOfSequTask=5
-
+        ShowSummary.executionCounter=0
         do {
-
-            let expectation = expectationWithDescription("Post execution is clean")
-
+            let expectation = expectationWithDescription("Post execution is clean \(priority)")
             let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
             group.priority=priority
 
@@ -97,7 +94,7 @@ class TasksGroupBasicTests: XCTestCase {
             group.handlers.appendCompletionHandler({ (completion) in
                 let taskCount=group.totalTaskCount()
                 XCTAssert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
-                XCTAssert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent")
+                XCTAssert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
                 expectation.fulfill()
             })
 
