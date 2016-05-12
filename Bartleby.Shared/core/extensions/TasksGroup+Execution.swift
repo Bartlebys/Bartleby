@@ -95,7 +95,6 @@ public extension TasksGroup {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
                 dispatch_async(self.dispatchQueue, {
-                    print (invocableTask.runTimeTypeName())
                     invocableTask.invoke()
                 })
 
@@ -172,7 +171,7 @@ public extension TasksGroup {
         if stop==false {
             rankCounter += 1
             for alias in task.children {
-                if let child: Task=alias.toLocalInstance() {
+                if let _: Task=alias.toLocalInstance() {
                     stop=true
                 }
             }

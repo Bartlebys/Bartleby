@@ -94,7 +94,7 @@ extension Task {
                         self.progressionState = state as! Progression
                         let currentIndex=group.rankOfTask(self)
                         let currentTotal=group.totalTaskCount()
-                        let progress: Double=Double(currentTotal)/Double(currentIndex)
+                        let progress: Double=self.progressionState.currentTaskProgress
                         let groupProgression=Progression(currentTaskIndex:currentIndex, totalTaskCount:currentTotal, currentTaskProgress:progress, message:"", data:self.progressionState.data)
                         group.handlers.notify(groupProgression)
                     } else {
