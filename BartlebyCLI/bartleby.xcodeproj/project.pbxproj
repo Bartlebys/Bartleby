@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
+		E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */; };
 		E5ACFD5E1CDF7719006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */; };
 		E5B77B0A1CDCDE38007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77A671CDCDE38007261E1 /* BartlebyDocument.swift */; };
 		E5B77B0B1CDCDE38007261E1 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B77A691CDCDE38007261E1 /* GroupsCollectionController.swift */; };
@@ -214,6 +215,7 @@
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
 		E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
+		E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manual_graph_exec_test.swift; sourceTree = "<group>"; };
 		E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B77A671CDCDE38007261E1 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5B77A691CDCDE38007261E1 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */,
 				E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */,
 				E5D086D01C550EFD00F0090E /* README.md */,
+				E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */,
 			);
 			path = bartleby;
 			sourceTree = "<group>";
@@ -1061,6 +1064,7 @@
 				E5B77B421CDCDE38007261E1 /* ReadLockersByIds.swift in Sources */,
 				E5B98E1C1CC0E63400A7ECD1 /* ToJSON.swift in Sources */,
 				E5B77B931CDCDE38007261E1 /* NSURL+Parameters.swift in Sources */,
+				E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */,
 				E5D0869D1C550E1900F0090E /* CryptedStringTransform.swift in Sources */,
 				E5B77B5F1CDCDE38007261E1 /* UpdateUser.swift in Sources */,
 				E5B77B491CDCDE38007261E1 /* ReadTasksByQuery.swift in Sources */,
