@@ -69,7 +69,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var executionCounter=0
     public static var randomPause=false
-    public static let ENABLE_RANDOM_PAUSE=false
+    public static let ENABLE_RANDOM_PAUSE=true
     public static let smallGraphSize=5
     public static let largeGraphSize=100
 
