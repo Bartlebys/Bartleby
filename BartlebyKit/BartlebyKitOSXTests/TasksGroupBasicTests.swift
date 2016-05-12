@@ -11,7 +11,7 @@ import BartlebyKit
 
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
-    
+
     public static var executionCounter=0
 
     /**
@@ -63,8 +63,21 @@ class TasksGroupBasicTests: XCTestCase {
         ShowSummary.executionCounter=0
     }
 
-    func test_001_PlayGroundTransposition() {
+    func test_001_graph_exec_completion() {
+        _graph_exec_completion_routine(TasksGroup.Priority.Background)
+    }
+    func test_002_graph_exec_completion() {
+        _graph_exec_completion_routine(TasksGroup.Priority.Low)
+    }
+    func test_003_graph_exec_completion() {
+        _graph_exec_completion_routine(TasksGroup.Priority.Default)
+    }
+    func test_004_graph_exec_completion() {
+        _graph_exec_completion_routine(TasksGroup.Priority.High)
+    }
 
+
+    private func _graph_exec_completion_routine(priority: TasksGroup.Priority) {
         let rootObject=JObject()
         rootObject.summary="ROOT OBJECT"
         let firstTask=ShowSummary(arguments: rootObject)
@@ -76,19 +89,19 @@ class TasksGroupBasicTests: XCTestCase {
             let expectation = expectationWithDescription("Post execution is clean")
 
             let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
+            group.priority=priority
+
             // This is the unique root task
             // So concurrency will be limited as we append sub tasks via appendSequentialTask
             try group.addConcurrentTask(firstTask)
             group.handlers.appendCompletionHandler({ (completion) in
-               let taskCount=group.totalTaskCount()
-                XCTAssert(taskCount==0,"All the task have been executed and the totalTaskCount == 0 ")
-                
+                let taskCount=group.totalTaskCount()
+                XCTAssert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
                 XCTAssert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent")
-                
                 expectation.fulfill()
             })
 
-            print("Adding Child tasks")
+            // Adding Child tasks
             for i in 1...numberOfSequTask {
                 let o=JObject()
                 o.summary="Object \(i)"
@@ -106,7 +119,6 @@ class TasksGroupBasicTests: XCTestCase {
                 bprint("Error: \(error.localizedDescription)")
             }
         }
-
     }
 
 
