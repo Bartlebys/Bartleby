@@ -24,8 +24,15 @@ public class  Bartleby: Consignee {
     // The File manager
     static public var fileManager: BartlebyFileIO=BFileManager()
 
+
+    static private var _scheduler: TasksScheduler=TasksScheduler()
+
     // The task Scheduler
-    static public var scheduler: TasksScheduler=TasksScheduler()
+    static public var scheduler: TasksScheduler {
+        get {
+            return _scheduler
+        }
+    }
 
     //
     static public var defaultSerializer: Serializer.Type=JSerializer.self
@@ -48,6 +55,14 @@ public class  Bartleby: Consignee {
         }
     }
 
+
+    /**
+     This method should be only used to cleanup in core unit test
+     */
+    public func hardCoreCleanupForUnitTests() {
+        Bartleby._scheduler=TasksScheduler()
+        self._registries=[String:Registry]()
+    }
 
 
     /**
@@ -98,7 +113,7 @@ public class  Bartleby: Consignee {
 
 
     /// Memory storage
-    private var _registries: [String:Registry]! = [String:Registry]()
+    private var _registries: [String:Registry] = [String:Registry]()
 
     /**
      Returns the registry if found

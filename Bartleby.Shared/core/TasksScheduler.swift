@@ -76,6 +76,7 @@ public class TasksScheduler {
         return group
     }
 
+
     /**
      Returns a TaskGroup by its name.
      If necessary it creates the group
@@ -143,7 +144,7 @@ public class TasksScheduler {
                         group.completionState = Completion.successState("Task group \(group.name) has been completed",
                                                                         statusCode:.OK,
                                                                         data: lastCompletedTask.completionState.data)
-                        
+
                         // We call the completion off the group.
                         group.handlers.on(group.completionState)
 

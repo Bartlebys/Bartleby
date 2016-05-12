@@ -38,6 +38,29 @@
                BlueprintName = "BartlebyKitOSXTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_006_graph_exec_completion_pausable_Low()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_007_graph_exec_completion_pausable_Default()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_008_graph_exec_completion_pausable_High()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_009_graph_exec_completion_Background_large()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_010_graph_exec_completion_Low_large()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_011_graph_exec_completion_Default_large()">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests/test_012_graph_exec_completion_High_large()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

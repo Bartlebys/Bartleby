@@ -42,6 +42,7 @@
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
 		E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00571C8ED51D00BB6B19 /* PrintUser.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
+		E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */; };
 		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
 		E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
 		E5B775A91CDCDDF2007261E1 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775061CDCDDF2007261E1 /* BartlebyDocument.swift */; };
@@ -402,6 +403,7 @@
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B775061CDCDDF2007261E1 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5B775081CDCDDF2007261E1 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 		5BDEF70C1C9FF49200D9FB70 /* Invocations */ = {
 			isa = PBXGroup;
 			children = (
+				E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */,
 				E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */,
 				E56C00571C8ED51D00BB6B19 /* PrintUser.swift */,
 			);
@@ -677,8 +680,7 @@
 				5BDEF70C1C9FF49200D9FB70 /* Invocations */,
 				E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */,
 				E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */,
-				E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */,
-				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
+				E595A2EB1CE4B34800099EB3 /* Support-files */,
 			);
 			path = BartlebyKitOSXTests;
 			sourceTree = "<group>";
@@ -703,6 +705,15 @@
 				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E595A2EB1CE4B34800099EB3 /* Support-files */ = {
+			isa = PBXGroup;
+			children = (
+				E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */,
+				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
+			);
+			name = "Support-files";
 			sourceTree = "<group>";
 		};
 		E5B775041CDCDDF2007261E1 /* Bartleby.Shared */ = {
@@ -1464,6 +1475,7 @@
 				E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */,
 				E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */,
 				E5959C0A1CA6702200557BDB /* AccessControlTests.swift in Sources */,
+				E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
 				E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */,
 				5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */,
 				E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */,
