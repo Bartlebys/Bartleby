@@ -191,7 +191,7 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
             XCTFail("\(error)")
         }
 
-        waitForExpectationsWithTimeout(20) { error -> Void in
+        waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)")
             }
