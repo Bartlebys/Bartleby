@@ -26,7 +26,7 @@ struct BartlebysCommandFacade {
             print(self._noArgMessage())
             exit(EX_USAGE)
         case "testTasks"?:
-            graph_exec_completion_routine(TasksGroup.Priority.High, useRandomPause:true, numberOfSequTask:100)
+            graph_exec_completion_routine(TasksGroup.Priority.Default, useRandomPause:true, numberOfSequTask:500)
         default:
             // We want to propose the best verb candidate
             let reference=[

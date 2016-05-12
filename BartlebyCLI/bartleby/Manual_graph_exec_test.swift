@@ -69,9 +69,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var executionCounter=0
     public static var randomPause=false
-    public static let ENABLE_RANDOM_PAUSE=true
-    public static let smallGraphSize=5
-    public static let largeGraphSize=100
+    public static var randomPausePercentProbability: UInt32=1
 
     /**
      This initializer **MUST:** call configureWithArguments
@@ -101,11 +99,18 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
             }
 
             // TEST random pauses and resumes
-            if ShowSummary.randomPause==true && ShowSummary.ENABLE_RANDOM_PAUSE {
-                if Int(arc4random_uniform(2))==1 {
+            if ShowSummary.randomPause==true {
+
+                if ShowSummary.randomPausePercentProbability<0 {
+                    ShowSummary.randomPausePercentProbability=1
+                }
+
+                let max: UInt32 = 100/ShowSummary.randomPausePercentProbability
+                if Int(arc4random_uniform(max)) == 1 {
                     print("Pausing")
                     self.group?.toLocalInstance()?.pause()
-                    Bartleby.executeAfter(1, closure: {
+                    // Pause for 1 or 2 seconds
+                    Bartleby.executeAfter(Double(arc4random_uniform(1)+1), closure: {
                         do {
                             print("Resuming")
                             try self.group?.toLocalInstance()?.start()
