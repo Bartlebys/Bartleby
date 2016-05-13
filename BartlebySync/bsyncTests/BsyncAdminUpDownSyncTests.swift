@@ -63,7 +63,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         }
         
         Bartleby.fileManager.removeItemAtPath(BsyncAdminUpDownSyncTests._folderPath, handlers: Handlers { (removal) in
-            XCTAssertTrue(removal.success, "\(removal.message)")
             expectation.fulfill()
             })
         
@@ -237,6 +236,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         
         Bartleby.fileManager.readString(contentsOfFile: BsyncAdminUpDownSyncTests._downFilePath, handlers: Handlers { (read) in
             expectation.fulfill()
+
             XCTAssertEqual(read.getStringResult(), BsyncAdminUpDownSyncTests._fileContent, read.message)
         })
         

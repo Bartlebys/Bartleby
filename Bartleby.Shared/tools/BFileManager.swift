@@ -19,7 +19,7 @@ import Foundation
      - parameter path:                the path
      - parameter createIntermediates: create intermediates paths ?
      - parameter attributes:          attributes
-     - parameter callBack:            the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -38,7 +38,7 @@ import Foundation
 
      - parameter path:            from file path
      - parameter readOptionsMask: readOptionsMask
-     - parameter callBack:        the callBack
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -59,7 +59,7 @@ import Foundation
      - parameter data:             the data
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
-     - parameter callBack:          the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -84,7 +84,7 @@ import Foundation
      Reads a string from a file
 
      - parameter path:     the file path
-     - parameter callBack: the callBack
+     - parameter handlers:            the progress and completion handlers
 
      - returns : N/A
      */
@@ -113,7 +113,7 @@ import Foundation
      - parameter path:             the path
      - parameter useAuxiliaryFile: useAuxiliaryFile
      - parameter enc:              encoding
-     - parameter callBack:          the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -133,7 +133,7 @@ import Foundation
      Determines if a file or a directory exists.
 
      - parameter path:     the path
-     - parameter callBack: the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns:  N/A
      */
@@ -152,7 +152,7 @@ import Foundation
      Determines if a file exists.
 
      - parameter path:     the path
-     - parameter callBack: the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns:  N/A
      */
@@ -175,7 +175,7 @@ import Foundation
      Determines if a file exists and is a directory.
 
      - parameter path:     the path
-     - parameter callBack: the call back
+     - parameter handlers:            the progress and completion handlers
 
      - returns:  N/A
      */
@@ -199,7 +199,7 @@ import Foundation
      Use with caution !
 
      - parameter path:     path
-     - parameter callBack: the call back
+     - parameter handlers:            the progress and completion handlers
      */
     func removeItemAtPath(path: String,
                           handlers: Handlers) -> () {
@@ -216,7 +216,7 @@ import Foundation
 
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
-     - parameter callBack: callBack
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -236,7 +236,7 @@ import Foundation
 
      - parameter srcPath:  srcPath
      - parameter dstPath:  dstPath
-     - parameter callBack: callBack
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */
@@ -256,7 +256,7 @@ import Foundation
      Lists the content of the directory
 
      - parameter path:     the path
-     - parameter callBack: the callBack
+     - parameter handlers:            the progress and completion handlers
 
      - returns: N/A
      */

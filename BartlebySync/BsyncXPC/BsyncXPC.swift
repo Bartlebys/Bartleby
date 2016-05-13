@@ -128,7 +128,7 @@ import Foundation
      - parameter volumeName:    the volume name
      - parameter size:          a size e.g : "10m" = 10MB "1g"=1GB
      - parameter password:      the password (if omitted the disk image will not be crypted
-     - parameter callBack:      the result of the creation
+     - parameter handler:       the composed handler for progress and completion
      
      - returns: nothing
      */
@@ -148,7 +148,7 @@ import Foundation
      
      - parameter path:         the path
      - parameter withPassword: the password
-     - parameter callBack:      the XPC callback
+     - parameter handler:       the composed handler for progress and completion
      
      - returns: return value description
      */
@@ -165,7 +165,7 @@ import Foundation
      Attaches a Volume identified by its card
      
      - parameter card:         the card
-     - parameter callBack:      the XPC callback
+     - parameter handler:       the composed handler for progress and completion
      
      
      - returns: N/A
@@ -187,7 +187,7 @@ import Foundation
      Detaches the volume
      
      - parameter named:    name of the volume
-     - parameter callBack: the XPC Call back
+     - parameter handler:       the composed handler for progress and completion
      
      */
     func detachVolume(named: String, handler: ComposedHandler) {
@@ -210,7 +210,7 @@ import Foundation
      - parameter directives: the directives
      - parameter secretKey:  the secret key to encrypt the directives
      - parameter sharedSalt: the shared salt
-     - parameter callBack:   the call back
+     - parameter handler:       the composed handler for progress and completion
      
      - returns: N/A
      */
