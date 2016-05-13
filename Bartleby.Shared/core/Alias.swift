@@ -49,7 +49,6 @@ import Foundation
 
     required public init?(_ map: Map) {
         super.init(map)
-        mapping(map)
     }
 
 
@@ -174,7 +173,6 @@ public class Alias<T:Collectible>:AbstractAlias {
 
     required public init?(_ map: Map) {
         super.init(map)
-        mapping(map)
     }
 
 

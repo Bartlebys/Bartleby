@@ -46,7 +46,6 @@ import ObjectMapper
 
     required public init?(_ map: Map) {
         super.init(map)
-        mapping(map)
     }
 
     override public func mapping(map: Map) {

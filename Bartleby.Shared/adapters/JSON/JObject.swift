@@ -151,7 +151,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public required init?(_ map: Map) {
         super.init()
-        mapping(map)
     }
 
 

@@ -55,7 +55,6 @@ import Foundation
 
     required public init?(_ map: Map) {
         super.init(map)
-        mapping(map)
     }
 
 
