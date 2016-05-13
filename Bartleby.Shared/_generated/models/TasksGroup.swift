@@ -40,8 +40,6 @@ import ObjectMapper
 	public var spaceUID:String = "\(Default.NO_UID)"
 	//A collection of Concrete Tasks Aliases
 	public var tasks:[Task] = [Task]()
-	//The alias of he failure task (can be used to cleanup or notify failure)
-	public var onFailure:Alias<Task>?
 	//The progression state of the group
 	public var progressionState:Progression = Progression()
 	//The completion state of the group
@@ -65,7 +63,6 @@ import ObjectMapper
 		self.priority <- map["priority"]
 		self.spaceUID <- map["spaceUID"]
 		self.tasks <- map["tasks"]
-		self.onFailure <- map["onFailure"]
 		self.progressionState <- map["progressionState"]
 		self.completionState <- map["completionState"]
 		self.name <- map["name"]
@@ -80,7 +77,6 @@ import ObjectMapper
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		self.onFailure=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "onFailure") 
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
@@ -93,9 +89,6 @@ import ObjectMapper
 		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
 		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
 		coder.encodeObject(self.tasks,forKey:"tasks")
-		if let onFailure = self.onFailure {
-			coder.encodeObject(onFailure,forKey:"onFailure")
-		}
 		coder.encodeObject(self.progressionState,forKey:"progressionState")
 		coder.encodeObject(self.completionState,forKey:"completionState")
 		coder.encodeObject(self.name,forKey:"name")

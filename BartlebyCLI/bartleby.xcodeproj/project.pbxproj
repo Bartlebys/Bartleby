@@ -685,6 +685,7 @@
 			isa = PBXGroup;
 			children = (
 				E5ACFD5D1CDF7719006A1692 /* TasksGroup+Execution.swift */,
+				E5B77AE61CDCDE38007261E1 /* Task+Arguments.swift */,
 				E5B77ADD1CDCDE38007261E1 /* Completion+Conveniences.swift */,
 				E5B77ADE1CDCDE38007261E1 /* Completion+Result.swift */,
 				E5B77ADF1CDCDE38007261E1 /* NSNotification+Completion.swift */,
@@ -694,7 +695,6 @@
 				E5B77AE31CDCDE38007261E1 /* Registry+SecurityScopes.swift */,
 				E5B77AE41CDCDE38007261E1 /* Registry+Triggers.swift */,
 				E5B77AE51CDCDE38007261E1 /* Registry+URD.swift */,
-				E5B77AE61CDCDE38007261E1 /* Task+Arguments.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";

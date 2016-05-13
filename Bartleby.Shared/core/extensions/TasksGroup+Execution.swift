@@ -19,6 +19,7 @@ import Foundation
 enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
     case TaskNotFound
+    case GroupNotFound
     case AttemptToAddTaskInMultipleGroups
     case InterruptedOnFault
 }
@@ -88,13 +89,14 @@ public extension TasksGroup {
         // The graph may be partially executed.
         // We search the entry tasks.
         let entryTasks=self.findRunnableTasks()
+
         for task in entryTasks {
             task.status = .Running // There was no trans serialization we can set directly the status.
             if let invocableTask = task as? Invocable {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
                 }
-                dispatch_async(self.dispatchQueue, {
+                 dispatch_sync(self.dispatchQueue, {
                     invocableTask.invoke()
                 })
 
@@ -102,6 +104,7 @@ public extension TasksGroup {
                 throw TasksGroupError.NonInvocableTask(task: task)
             }
         }
+
         return entryTasks.count
     }
 
@@ -154,6 +157,34 @@ public extension TasksGroup {
             }
         }
     }
+
+
+
+    /**
+     The total count at a given time
+
+     - returns: the number of tasks
+     */
+    public func runnableTaskCount() -> Int {
+        var counter: Int=0
+        for task in self.tasks {
+            self._runnableCount(task, counter:&counter)
+        }
+        return counter
+    }
+
+
+    private func _runnableCount(task: Task, inout counter: Int) {
+        if ( task.status != .Completed ) && (task.status != .Running) {
+           counter += 1
+        }
+        for alias in task.children {
+            if let child: Task=alias.toLocalInstance() {
+                self._runnableCount(child, counter: &counter)
+            }
+        }
+    }
+
 
     /**
      - returns: the rank of a given task and -1 if not found.

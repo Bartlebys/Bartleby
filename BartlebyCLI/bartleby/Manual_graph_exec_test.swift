@@ -10,6 +10,12 @@ import Foundation
 
 
 
+public enum GraphTestMode {
+    case Sequential
+    case Concurrent
+}
+
+
 
 /**
  Creates a graph of tasks
@@ -21,15 +27,22 @@ import Foundation
  - parameter numberOfSequTask: quantity of tasks.
  */
 
-public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRandomPause: Bool, numberOfSequTask: Int) {
+public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRandomPause: Bool, numberOfSequTask: Int, testMode: GraphTestMode) {
 
-    let rootObject=JObject()
-    rootObject.summary="ROOT OBJECT"
-    let firstTask=ShowSummary(arguments: rootObject)
+
+    Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
+    //Bartleby.startBufferingBprint()
+
+    TasksScheduler.DEBUG_TASKS=true
     let document=BartlebyDocument()
 
     ShowSummary.randomPause=useRandomPause
     ShowSummary.executionCounter=0
+    ShowSummary.startMeasuring()
+
+    let rootObject=JObject()
+    rootObject.summary="ROOT OBJECT"
+    let firstTask=ShowSummary(arguments: rootObject)
 
     do {
         let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
@@ -42,7 +55,11 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
             let taskCount=group.totalTaskCount()
             assert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
             assert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
+            Bartleby.stopBufferingBprint()
             print("FULLFILLING \(group.UID)")
+            let elapsed=ShowSummary.stopMeasuring()
+            print ("Elapsed time : \(elapsed)")
+
             exit(EX_OK)
         })
 
@@ -52,7 +69,13 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
             let o=JObject()
             o.summary="Object \(i)"
             let task=ShowSummary(arguments: o)
-            try firstTask.appendSequentialTask(task)
+            switch testMode {
+                case .Sequential:
+                    try firstTask.appendSequentialTask(task)
+                case .Concurrent:
+                    try group.addConcurrentTask(task)
+            }
+
         }
         try group.start()
 
@@ -64,12 +87,24 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
 
 
 
+
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var executionCounter=0
     public static var randomPause=false
     public static var randomPausePercentProbability: UInt32=1
+
+    private static var _startTimer: CFAbsoluteTime=CFAbsoluteTimeGetCurrent()
+
+
+    public static func startMeasuring() {
+        _startTimer=CFAbsoluteTimeGetCurrent()
+    }
+
+    public static func stopMeasuring() -> CFAbsoluteTime {
+        return CFAbsoluteTimeGetCurrent()-_startTimer
+    }
 
     /**
      This initializer **MUST:** call configureWithArguments

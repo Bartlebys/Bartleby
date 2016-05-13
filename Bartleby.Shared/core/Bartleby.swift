@@ -48,10 +48,34 @@ public class  Bartleby: Consignee {
     static let b_release = "beta2"
     private static var _enableBPrint: Bool=false
 
+
     /// The version string of Bartleby framework
     public static var versionString: String {
         get {
             return "\(self.b_version).\(self.b_release)"
+        }
+    }
+
+
+    static private var _bufferingBprint=false
+
+    static private var _printingBuffer=[String]()
+
+
+    public static func startBufferingBprint() {
+        _bufferingBprint=true
+        _printingBuffer=[String]()
+        print("# Buffering Bprint calls...")
+    }
+
+    public static func stopBufferingBprint() {
+        if _bufferingBprint==true {
+            print("# Bprint dump")
+            _bufferingBprint=false
+            for s in _printingBuffer {
+                print (s)
+            }
+            _printingBuffer=[String]()
         }
     }
 
@@ -228,7 +252,13 @@ public class  Bartleby: Consignee {
                 let elapsed=CFAbsoluteTimeGetCurrent()-_startTime
                 let ft: Int=Int(floor(elapsed))
                 let micro=Int((elapsed-Double(ft))*1000)
-                print("\(padded(Bartleby._printCounter, 6)) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}")
+                let s="\(padded(Bartleby._printCounter, 6)) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
+                if _bufferingBprint {
+                    _printingBuffer.append(s)
+                } else {
+                    print(s)
+                }
+
             }
         }
     }
