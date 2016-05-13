@@ -15,6 +15,7 @@ public class JDocument: Registry {
 
     public class func declareCollectibleTypes() {
         Registry.declareCollectibleType(JObject)
+        Registry.declareCollectibleType(ExternalReference)
         Registry.declareCollectibleType(Alias<JObject>)
         Registry.declareCollectibleType(JCollectionMetadatum)
         Registry.declareCollectibleType(Alias<JCollectionMetadatum>)

@@ -131,8 +131,6 @@
             ![self _pathIsInTheExclusionList:path isDirectory:isDirectory]
             // Exclude files from the meta folder
             && ![self _pathIsInSyncMetadataFolder:path]
-            // Exclude sync session files
-            && ![self _pathIsAnBSyncSessionFile:path]
             // Temp files
             && ![self _pathIsAnSyncTemporaryFile:path]);
     
@@ -160,11 +158,6 @@
         }
     }
     return false;
-}
-
-- (BOOL)_pathIsAnBSyncSessionFile:(NSString*)path{
-    return ([[path pathExtension] isEqualToString:[BsyncSession fileExtension]]
-            && [[path lastPathComponent] rangeOfString:[BsyncSession filePrefix]].location != NSNotFound);
 }
 
 - (BOOL)_pathIsAnSyncTemporaryFile:(NSString*)path{

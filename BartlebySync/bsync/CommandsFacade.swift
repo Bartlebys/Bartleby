@@ -74,12 +74,6 @@ public struct CommandsFacade {
         case "create-dmg"?, "create-disk-image"?:
             // Creates and mount a dmg
             let _ = CreateDmgCommand(completionHandler: completionHandler)
-        case "snapshot"?:
-            // Creates a crypted chunked snapshot with its own hashmap for each chunk
-            let _ = SnapshotCommand(completionHandler: completionHandler)
-        case "recover"?, "recover-from-snapshot"?:
-            // Recovers a tree from crypted snapshot
-            let _ = RecoverCommand(completionHandler: completionHandler)
         default:
             // We want to propose the best verb candidate
             let reference=[
@@ -95,8 +89,6 @@ public struct CommandsFacade {
                 "kvs", "key-value-storage", "keystore",
                 "cleanup",
                 "create-dmg", "create-disk-image",
-                "snapshoot",
-                "recover", "recover-from-snapshot"
             ]
             let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
@@ -105,7 +97,7 @@ public struct CommandsFacade {
         }
     }
 
-    private func _noArgMessage()->String {
+    private func _noArgMessage() -> String {
         var s=""
         s += "Bartleby's Sync client aka \"bsync\" is a delta synchronizer v1.0 R3"
         s += "\nCreated by Benoit Pereira da Silva"
@@ -145,11 +137,6 @@ public struct CommandsFacade {
         s += "\n\t\(executableName) cleanup <folder path> [options]"
         s += "\n\t\(executableName) create-dmg -f <folder path> -n <volume name> [options]"
         s += "\n"
-        s += "\n\t# Snapshots #"
-        s += "\n"
-        s += "\n\t\(executableName) snapshot -f <folder path> [options]"
-        s += "\n\t\(executableName) recover -f <folder path> [options]"
-        s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"
         s += "\n\te.g:\t\"bsync synchronize help\""
@@ -161,7 +148,7 @@ public struct CommandsFacade {
     // MARK: levenshtein distance
     // https://en.wikipedia.org/wiki/Levenshtein_distance
 
-    private func bestCandidate(string: String, reference: [String])->String {
+    private func bestCandidate(string: String, reference: [String]) -> String {
         var selectedCandidate=string
         var minDistance: Int=Int.max
         for candidate in reference {

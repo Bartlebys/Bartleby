@@ -546,7 +546,7 @@
 		E5B775A01CDCDDF2007261E1 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		E5B775A11CDCDDF2007261E1 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
 		E5B775A21CDCDDF2007261E1 /* VerifyLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyLocker.swift; sourceTree = "<group>"; };
-		E5B775A31CDCDDF2007261E1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5B775A31CDCDDF2007261E1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E5B775A51CDCDDF2007261E1 /* BFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManager.swift; sourceTree = "<group>"; };
 		E5B775A61CDCDDF2007261E1 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E5B775A71CDCDDF2007261E1 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
@@ -725,7 +725,6 @@
 				E5B775731CDCDDF2007261E1 /* core */,
 				E5B7759B1CDCDDF2007261E1 /* extensions */,
 				E5B7759F1CDCDDF2007261E1 /* operations */,
-				E5B775A31CDCDDF2007261E1 /* README.md */,
 				E5B775A41CDCDDF2007261E1 /* tools */,
 			);
 			name = Bartleby.Shared;
@@ -999,6 +998,7 @@
 		E5B775A41CDCDDF2007261E1 /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				E5B775A31CDCDDF2007261E1 /* README.md */,
 				E5B775A51CDCDDF2007261E1 /* BFileManager.swift */,
 				E5B775A61CDCDDF2007261E1 /* HTTPManager.swift */,
 				E5B775A71CDCDDF2007261E1 /* Pluralization.swift */,

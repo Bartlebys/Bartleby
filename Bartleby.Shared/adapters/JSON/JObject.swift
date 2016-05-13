@@ -175,6 +175,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public required init?(coder decoder: NSCoder) {
         super.init()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
+        self._typeName=self.dynamicType.typeName()
         self._typeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.TYPE_NAME_KEY)! as NSString)
         self.committed=decoder.decodeBoolForKey("committed")
         self.distributed=decoder.decodeBoolForKey("distributed")

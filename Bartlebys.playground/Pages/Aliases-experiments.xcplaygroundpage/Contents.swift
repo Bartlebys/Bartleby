@@ -24,6 +24,7 @@ let user=User()
 user.defineUID()
 user.email="bartleby@bartlebys.org"
 
+
 // Synchronous syntax 
 // when you are sure the alias exists and is loaded
 print("# Resolution #")
@@ -33,6 +34,7 @@ if let resolved:User=alias.toLocalInstance(){
 }else{
 print("**NOT RESOLVED**")
 }
+
 
 
 print(separator)

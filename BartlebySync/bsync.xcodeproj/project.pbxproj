@@ -214,14 +214,12 @@
 		5B5D09ED1CDC924E001FB281 /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
 		5B5D09EE1CDC924E001FB281 /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
 		5B5D09EF1CDC9256001FB281 /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
-		5B5D09F01CDC9256001FB281 /* BsyncSnapShooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */; };
 		5B5D09F11CDC9256001FB281 /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
 		5B5D09F21CDC9256001FB281 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
 		5B5D09F31CDC9256001FB281 /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
 		5B5D09F41CDC9256001FB281 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		5B5D09F51CDC9256001FB281 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B5D09F61CDC9256001FB281 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
-		5B5D09F71CDC9256001FB281 /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		5B5D09F81CDC9256001FB281 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B5D09FA1CDC961E001FB281 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
@@ -454,16 +452,12 @@
 		E53E28DA1CA572D80079ED23 /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
 		E53E28DB1CA572D80079ED23 /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
 		E53E28DC1CA572E20079ED23 /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
-		E53E28DD1CA572E20079ED23 /* BsyncSnapShooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */; };
 		E53E28DE1CA572E20079ED23 /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
 		E53E28DF1CA572E20079ED23 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
 		E53E28E01CA572E20079ED23 /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
 		E53E28E11CA572E20079ED23 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E53E28E21CA572E20079ED23 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
-		E53E28E31CA572E20079ED23 /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		E53E28E41CA572E20079ED23 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
-		E53E28E61CA572E80079ED23 /* SnapshotCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594061C3E627A000576AD /* SnapshotCommand.swift */; };
-		E53E28E71CA572E80079ED23 /* RecoverCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54594081C3E639A000576AD /* RecoverCommand.swift */; };
 		E53E28E81CA572E80079ED23 /* CreateHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */; };
 		E53E28E91CA572E80079ED23 /* SynchronizeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */; };
 		E53E28EA1CA572E80079ED23 /* RunDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */; };
@@ -479,7 +473,6 @@
 		E53E28F41CA572F40079ED23 /* CommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */; };
 		E53E28F51CA572F40079ED23 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CEC71C36CC2900F3B7B8 /* main.swift */; };
 		E53E28F61CA572F40079ED23 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
-		E54594111C3E6516000576AD /* BsyncSnapShooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */; };
 		E552B7AE1C3D4E49001CD53B /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
 		E552B7B01C3D4E49001CD53B /* HashMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7921C3D4E49001CD53B /* HashMap.m */; };
 		E552B7B21C3D4E49001CD53B /* NSData+CRC.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7941C3D4E49001CD53B /* NSData+CRC.m */; };
@@ -492,7 +485,6 @@
 		E552B7C41C3D4E49001CD53B /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
 		E552B7C61C3D4E49001CD53B /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
-		E552B7CA1C3D4E49001CD53B /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		E55C92491CBF84ED008163F6 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		E55C924A1CBF84ED008163F6 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
 		E55C924B1CBF84ED008163F6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3C1C86DBFC00C64569 /* Error.swift */; };
@@ -522,13 +514,11 @@
 		E55C92791CBF854D008163F6 /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
 		E55C927A1CBF854D008163F6 /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
 		E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
-		E55C927C1CBF8998008163F6 /* BsyncSnapShooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */; };
 		E55C927D1CBF8998008163F6 /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
 		E55C927E1CBF8998008163F6 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
 		E55C927F1CBF8998008163F6 /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
 		E55C92801CBF8998008163F6 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E55C92811CBF8998008163F6 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
-		E55C92821CBF8998008163F6 /* BsyncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A81C3D4E49001CD53B /* BsyncSession.swift */; };
 		E55C92831CBF8998008163F6 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E55FF2991C3EB8A800BD49DB /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
 		E56A8FEB1C8DF4EF0043F90E /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
@@ -1088,10 +1078,7 @@
 		E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncCredentials.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
-		E54594061C3E627A000576AD /* SnapshotCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotCommand.swift; sourceTree = "<group>"; };
-		E54594081C3E639A000576AD /* RecoverCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverCommand.swift; sourceTree = "<group>"; };
 		E545940C1C3E642C000576AD /* CleanupCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CleanupCommand.swift; sourceTree = "<group>"; };
-		E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncSnapShooter.swift; sourceTree = "<group>"; };
 		E54594121C3E7DD7000576AD /* CommandBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBase.swift; sourceTree = "<group>"; };
 		E54957581C43B57700102771 /* CreateDirectiveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDirectiveCommand.swift; sourceTree = "<group>"; };
 		E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeltaPathMap.h; sourceTree = "<group>"; };
@@ -1116,7 +1103,6 @@
 		E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectives.swift; sourceTree = "<group>"; };
 		E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncImageDiskManager.swift; sourceTree = "<group>"; };
 		E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncLocalAnalyzer.swift; sourceTree = "<group>"; };
-		E552B7A81C3D4E49001CD53B /* BsyncSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncSession.swift; sourceTree = "<group>"; };
 		E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizeCommand.swift; sourceTree = "<group>"; };
 		E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFacade.swift; sourceTree = "<group>"; };
 		E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDirectivesCommand.swift; sourceTree = "<group>"; };
@@ -1439,14 +1425,12 @@
 			isa = PBXGroup;
 			children = (
 				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
-				E545940F1C3E6516000576AD /* BsyncSnapShooter.swift */,
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
 				E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */,
 				E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */,
 				E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */,
 				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */,
-				E552B7A81C3D4E49001CD53B /* BsyncSession.swift */,
 				E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */,
 				5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */,
 			);
@@ -1458,8 +1442,6 @@
 			children = (
 				5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */,
 				5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */,
-				E54594061C3E627A000576AD /* SnapshotCommand.swift */,
-				E54594081C3E639A000576AD /* RecoverCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
 				5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */,
 				E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */,
@@ -2291,7 +2273,6 @@
 				5B5D09641CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09E11CDC9233001FB281 /* CryptedSerializableTransform.swift in Sources */,
 				5B5D0A2D1CDE2426001FB281 /* Registry+Operations.swift in Sources */,
-				5B5D09F71CDC9256001FB281 /* BsyncSession.swift in Sources */,
 				5B5D0ACD1CDE24B2001FB281 /* UpdateTriggers.swift in Sources */,
 				5B5D093F1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09A11CDC91F9001FB281 /* (null) in Sources */,
@@ -2439,7 +2420,6 @@
 				5B5D09D11CDC921E001FB281 /* (null) in Sources */,
 				5B5D09981CDC91E4001FB281 /* (null) in Sources */,
 				5B5D0AD71CDE2556001FB281 /* LoginUser.swift in Sources */,
-				5B5D09F01CDC9256001FB281 /* BsyncSnapShooter.swift in Sources */,
 				5B5D0A941CDE24B2001FB281 /* CreateLockers.swift in Sources */,
 				5B5D0A101CDE23AD001FB281 /* TriggersCollectionController.swift in Sources */,
 				5B5D0AC81CDE24B2001FB281 /* UpdateTask.swift in Sources */,
@@ -2527,7 +2507,6 @@
 				E5B777EC1CDCDE04007261E1 /* DeleteLocker.swift in Sources */,
 				E5B777741CDCDE04007261E1 /* BartlebyDocument.swift in Sources */,
 				E53E27531CA572940079ED23 /* Download.swift in Sources */,
-				E53E28DD1CA572E20079ED23 /* BsyncSnapShooter.swift in Sources */,
 				E5B778F71CDCDE04007261E1 /* RegistryMetadata.swift in Sources */,
 				E5B777DD1CDCDE04007261E1 /* CreateTriggers.swift in Sources */,
 				5BB60F4B1CBFE3C500D23B4F /* CryptoHelper.swift in Sources */,
@@ -2622,12 +2601,10 @@
 				E5B7777D1CDCDE04007261E1 /* OperationsCollectionController.swift in Sources */,
 				E5B777F51CDCDE04007261E1 /* DeletePermissions.swift in Sources */,
 				E5B778341CDCDE04007261E1 /* ReadTasksGroupById.swift in Sources */,
-				E53E28E61CA572E80079ED23 /* SnapshotCommand.swift in Sources */,
 				E53E28DC1CA572E20079ED23 /* BsyncAdmin.swift in Sources */,
 				E5B778B21CDCDE04007261E1 /* Default.swift in Sources */,
 				E5B778941CDCDE04007261E1 /* PNGTransform.swift in Sources */,
 				E5B98EBD1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */,
-				E53E28E71CA572E80079ED23 /* RecoverCommand.swift in Sources */,
 				E53E27621CA572940079ED23 /* Validation.swift in Sources */,
 				E5B7786A1CDCDE04007261E1 /* UpdateTasksGroups.swift in Sources */,
 				E53E28EE1CA572E80079ED23 /* CreateDmgCommand.swift in Sources */,
@@ -2698,7 +2675,6 @@
 				E5B777FE1CDCDE04007261E1 /* DeleteTasksGroup.swift in Sources */,
 				E5B779211CDCDE05007261E1 /* BFileManager.swift in Sources */,
 				E53E28E91CA572E80079ED23 /* SynchronizeCommand.swift in Sources */,
-				E53E28E31CA572E20079ED23 /* BsyncSession.swift in Sources */,
 				E5B777C21CDCDE04007261E1 /* CreateLocker.swift in Sources */,
 				E5B778C71CDCDE04007261E1 /* Registry+SecurityScopes.swift in Sources */,
 				E5B777801CDCDE04007261E1 /* PermissionsCollectionController.swift in Sources */,
@@ -2752,7 +2728,6 @@
 				E5B98EB21CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
 				5B8E5D5A1C8D7FCD002CFA03 /* ParameterEncoding.swift in Sources */,
 				E5B778AD1CDCDE04007261E1 /* Consignation.swift in Sources */,
-				E552B7CA1C3D4E49001CD53B /* BsyncSession.swift in Sources */,
 				E5B777E41CDCDE04007261E1 /* CreateUsers.swift in Sources */,
 				E5B777E71CDCDE04007261E1 /* DeleteGroup.swift in Sources */,
 				E5B778B91CDCDE04007261E1 /* Completion+Result.swift in Sources */,
@@ -2831,7 +2806,6 @@
 				5B8E5D5D1C8D7FCD002CFA03 /* ResponseSerialization.swift in Sources */,
 				E56A8FEB1C8DF4EF0043F90E /* Configuration.swift in Sources */,
 				E5B778261CDCDE04007261E1 /* ReadPermissionsByIds.swift in Sources */,
-				E54594111C3E6516000576AD /* BsyncSnapShooter.swift in Sources */,
 				E5B778021CDCDE04007261E1 /* DeleteTasksGroups.swift in Sources */,
 				E552B7B01C3D4E49001CD53B /* HashMap.m in Sources */,
 				E5B778741CDCDE04007261E1 /* UpdateUser.swift in Sources */,
@@ -2974,7 +2948,6 @@
 				E5B777BE1CDCDE04007261E1 /* CreateGroup.swift in Sources */,
 				E5B777EE1CDCDE04007261E1 /* DeleteLocker.swift in Sources */,
 				E5B778DE1CDCDE04007261E1 /* Collectible.swift in Sources */,
-				E55C927C1CBF8998008163F6 /* BsyncSnapShooter.swift in Sources */,
 				E5B778961CDCDE04007261E1 /* PNGTransform.swift in Sources */,
 				E5B7783F1CDCDE04007261E1 /* ReadTriggerById.swift in Sources */,
 				E5B778FC1CDCDE04007261E1 /* Serializable.swift in Sources */,
@@ -3023,7 +2996,6 @@
 				E5B98EA11CC0E6CD00A7ECD1 /* Mapper.swift in Sources */,
 				E5B778E11CDCDE04007261E1 /* CollectibleCollection.swift in Sources */,
 				E5B98EAA1CC0E6CD00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
-				E55C92821CBF8998008163F6 /* BsyncSession.swift in Sources */,
 				E5B7782D1CDCDE04007261E1 /* ReadTaskById.swift in Sources */,
 				E55C92781CBF854D008163F6 /* PdSFileManager.m in Sources */,
 				E5B778CF1CDCDE04007261E1 /* Registry+URD.swift in Sources */,

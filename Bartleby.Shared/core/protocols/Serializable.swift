@@ -52,6 +52,8 @@ public protocol DictionaryRepresentation {
 }
 
 
+
+
 public enum SerializableError: ErrorType {
     case TypeMissmatch
     case TypeNameUndefined

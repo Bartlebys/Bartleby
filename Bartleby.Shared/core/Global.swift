@@ -51,7 +51,7 @@ public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inou
     }
 }
 
-public func instancesToAliases<T: Collectible>(instances: [Collectible]) -> [Alias<T>] {
+public func instancesToAliases<T: Collectible>(instances: [T]) -> [Alias<T>] {
     var aliases=[Alias<T>]()
     for instance in instances {
         aliases.append(Alias(from:instance))

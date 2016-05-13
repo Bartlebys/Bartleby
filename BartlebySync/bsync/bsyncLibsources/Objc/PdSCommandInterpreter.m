@@ -115,16 +115,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         if([context isValid] && _bunchOfCommand){
             
-            // Instantiate the session
-            self->_session=[[BsyncSession alloc]initWithContext:self->_context
-                                                encodedCommands:[self->_bunchOfCommand copy]];
-            
-            NSError*error=nil;
-            [_session saveAndReturnError:&error];
-            if (error){
-                //;
-            }
-            
             self.queue=[[NSOperationQueue alloc] init];
             self.queue.name=[NSString stringWithFormat:@"com.pereira-da-silva.PdSSync.CommandInterpreter.%@",@([self hash])];
             [self.queue setMaxConcurrentOperationCount:1];// Sequential
