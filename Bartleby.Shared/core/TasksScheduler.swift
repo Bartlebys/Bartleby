@@ -31,7 +31,7 @@ import Foundation
  When you pause a group the running tasks are completed but the graph execution is interupted.
 
  The Task Scheduler performs locally
- That's why we use local dealiasing "taskAlias.toLocalInstance()"
+ That's why we use local dealiasing "taskExternalReference.toLocalInstance()"
  If you need to taskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
 
 

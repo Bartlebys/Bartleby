@@ -22,7 +22,7 @@ import Foundation
 
 
 // TODO: @md write the Unit test for OSX and IOS + integrate in all the targets
-public class PNGTransform: TransformType {
+public class ImageTransform: TransformType {
 
     public typealias Object = BXImage
     public typealias JSON = String

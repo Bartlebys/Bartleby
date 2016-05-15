@@ -32,260 +32,133 @@ public class BartlebyDocument : JDocument {
 
     override public class func declareCollectibleTypes() {
         super.declareCollectibleTypes()
-		Registry.declareCollectibleType(BaseCollectionMetadatum)
-		Registry.declareCollectibleType(Alias<BaseCollectionMetadatum>)
+		Registry.declareCollectibleType(CollectionMetadatum)
 		Registry.declareCollectibleType(Task)
-		Registry.declareCollectibleType(Alias<Task>)
 		Registry.declareCollectibleType(TasksCollectionController)
-		Registry.declareCollectibleType(Alias<TasksCollectionController>)
 		Registry.declareCollectibleType(TasksGroup)
-		Registry.declareCollectibleType(Alias<TasksGroup>)
 		Registry.declareCollectibleType(TasksGroupsCollectionController)
-		Registry.declareCollectibleType(Alias<TasksGroupsCollectionController>)
 		Registry.declareCollectibleType(Progression)
-		Registry.declareCollectibleType(Alias<Progression>)
 		Registry.declareCollectibleType(Completion)
-		Registry.declareCollectibleType(Alias<Completion>)
-		Registry.declareCollectibleType(BaseRegistryMetadata)
-		Registry.declareCollectibleType(Alias<BaseRegistryMetadata>)
-		Registry.declareCollectibleType(ObjectError)
-		Registry.declareCollectibleType(Alias<ObjectError>)
+		Registry.declareCollectibleType(RegistryMetadata)
 		Registry.declareCollectibleType(User)
-		Registry.declareCollectibleType(Alias<User>)
 		Registry.declareCollectibleType(UsersCollectionController)
-		Registry.declareCollectibleType(Alias<UsersCollectionController>)
 		Registry.declareCollectibleType(Locker)
-		Registry.declareCollectibleType(Alias<Locker>)
 		Registry.declareCollectibleType(LockersCollectionController)
-		Registry.declareCollectibleType(Alias<LockersCollectionController>)
 		Registry.declareCollectibleType(Group)
-		Registry.declareCollectibleType(Alias<Group>)
 		Registry.declareCollectibleType(GroupsCollectionController)
-		Registry.declareCollectibleType(Alias<GroupsCollectionController>)
 		Registry.declareCollectibleType(Permission)
-		Registry.declareCollectibleType(Alias<Permission>)
 		Registry.declareCollectibleType(PermissionsCollectionController)
-		Registry.declareCollectibleType(Alias<PermissionsCollectionController>)
+		Registry.declareCollectibleType(ExternalReference)
 		Registry.declareCollectibleType(Operation)
-		Registry.declareCollectibleType(Alias<Operation>)
 		Registry.declareCollectibleType(OperationsCollectionController)
-		Registry.declareCollectibleType(Alias<OperationsCollectionController>)
 		Registry.declareCollectibleType(Trigger)
-		Registry.declareCollectibleType(Alias<Trigger>)
 		Registry.declareCollectibleType(TriggersCollectionController)
-		Registry.declareCollectibleType(Alias<TriggersCollectionController>)
 		Registry.declareCollectibleType(Tag)
-		Registry.declareCollectibleType(Alias<Tag>)
 		Registry.declareCollectibleType(ReadTaskById)
-		Registry.declareCollectibleType(Alias<ReadTaskById>)
 		Registry.declareCollectibleType(CreateTask)
-		Registry.declareCollectibleType(Alias<CreateTask>)
 		Registry.declareCollectibleType(CreateTask)
-		Registry.declareCollectibleType(Alias<CreateTask>)
 		Registry.declareCollectibleType(UpdateTask)
-		Registry.declareCollectibleType(Alias<UpdateTask>)
 		Registry.declareCollectibleType(UpdateTask)
-		Registry.declareCollectibleType(Alias<UpdateTask>)
 		Registry.declareCollectibleType(DeleteTask)
-		Registry.declareCollectibleType(Alias<DeleteTask>)
 		Registry.declareCollectibleType(DeleteTask)
-		Registry.declareCollectibleType(Alias<DeleteTask>)
 		Registry.declareCollectibleType(CreateTasks)
-		Registry.declareCollectibleType(Alias<CreateTasks>)
 		Registry.declareCollectibleType(CreateTasks)
-		Registry.declareCollectibleType(Alias<CreateTasks>)
 		Registry.declareCollectibleType(ReadTasksByIds)
-		Registry.declareCollectibleType(Alias<ReadTasksByIds>)
 		Registry.declareCollectibleType(UpdateTasks)
-		Registry.declareCollectibleType(Alias<UpdateTasks>)
 		Registry.declareCollectibleType(UpdateTasks)
-		Registry.declareCollectibleType(Alias<UpdateTasks>)
 		Registry.declareCollectibleType(DeleteTasks)
-		Registry.declareCollectibleType(Alias<DeleteTasks>)
 		Registry.declareCollectibleType(DeleteTasks)
-		Registry.declareCollectibleType(Alias<DeleteTasks>)
 		Registry.declareCollectibleType(ReadTasksByQuery)
-		Registry.declareCollectibleType(Alias<ReadTasksByQuery>)
 		Registry.declareCollectibleType(ReadTasksGroupById)
-		Registry.declareCollectibleType(Alias<ReadTasksGroupById>)
 		Registry.declareCollectibleType(CreateTasksGroup)
-		Registry.declareCollectibleType(Alias<CreateTasksGroup>)
 		Registry.declareCollectibleType(CreateTasksGroup)
-		Registry.declareCollectibleType(Alias<CreateTasksGroup>)
 		Registry.declareCollectibleType(UpdateTasksGroup)
-		Registry.declareCollectibleType(Alias<UpdateTasksGroup>)
 		Registry.declareCollectibleType(UpdateTasksGroup)
-		Registry.declareCollectibleType(Alias<UpdateTasksGroup>)
 		Registry.declareCollectibleType(DeleteTasksGroup)
-		Registry.declareCollectibleType(Alias<DeleteTasksGroup>)
 		Registry.declareCollectibleType(DeleteTasksGroup)
-		Registry.declareCollectibleType(Alias<DeleteTasksGroup>)
 		Registry.declareCollectibleType(CreateTasksGroups)
-		Registry.declareCollectibleType(Alias<CreateTasksGroups>)
 		Registry.declareCollectibleType(CreateTasksGroups)
-		Registry.declareCollectibleType(Alias<CreateTasksGroups>)
 		Registry.declareCollectibleType(ReadTasksGroupsByIds)
-		Registry.declareCollectibleType(Alias<ReadTasksGroupsByIds>)
 		Registry.declareCollectibleType(UpdateTasksGroups)
-		Registry.declareCollectibleType(Alias<UpdateTasksGroups>)
 		Registry.declareCollectibleType(UpdateTasksGroups)
-		Registry.declareCollectibleType(Alias<UpdateTasksGroups>)
 		Registry.declareCollectibleType(DeleteTasksGroups)
-		Registry.declareCollectibleType(Alias<DeleteTasksGroups>)
 		Registry.declareCollectibleType(DeleteTasksGroups)
-		Registry.declareCollectibleType(Alias<DeleteTasksGroups>)
 		Registry.declareCollectibleType(ReadTasksGroupsByQuery)
-		Registry.declareCollectibleType(Alias<ReadTasksGroupsByQuery>)
 		Registry.declareCollectibleType(ReadUserById)
-		Registry.declareCollectibleType(Alias<ReadUserById>)
 		Registry.declareCollectibleType(CreateUser)
-		Registry.declareCollectibleType(Alias<CreateUser>)
 		Registry.declareCollectibleType(CreateUser)
-		Registry.declareCollectibleType(Alias<CreateUser>)
 		Registry.declareCollectibleType(UpdateUser)
-		Registry.declareCollectibleType(Alias<UpdateUser>)
 		Registry.declareCollectibleType(UpdateUser)
-		Registry.declareCollectibleType(Alias<UpdateUser>)
 		Registry.declareCollectibleType(DeleteUser)
-		Registry.declareCollectibleType(Alias<DeleteUser>)
 		Registry.declareCollectibleType(DeleteUser)
-		Registry.declareCollectibleType(Alias<DeleteUser>)
 		Registry.declareCollectibleType(CreateUsers)
-		Registry.declareCollectibleType(Alias<CreateUsers>)
 		Registry.declareCollectibleType(CreateUsers)
-		Registry.declareCollectibleType(Alias<CreateUsers>)
 		Registry.declareCollectibleType(ReadUsersByIds)
-		Registry.declareCollectibleType(Alias<ReadUsersByIds>)
 		Registry.declareCollectibleType(UpdateUsers)
-		Registry.declareCollectibleType(Alias<UpdateUsers>)
 		Registry.declareCollectibleType(UpdateUsers)
-		Registry.declareCollectibleType(Alias<UpdateUsers>)
 		Registry.declareCollectibleType(DeleteUsers)
-		Registry.declareCollectibleType(Alias<DeleteUsers>)
 		Registry.declareCollectibleType(DeleteUsers)
-		Registry.declareCollectibleType(Alias<DeleteUsers>)
 		Registry.declareCollectibleType(ReadUsersByQuery)
-		Registry.declareCollectibleType(Alias<ReadUsersByQuery>)
 		Registry.declareCollectibleType(ReadLockerById)
-		Registry.declareCollectibleType(Alias<ReadLockerById>)
 		Registry.declareCollectibleType(CreateLocker)
-		Registry.declareCollectibleType(Alias<CreateLocker>)
 		Registry.declareCollectibleType(CreateLocker)
-		Registry.declareCollectibleType(Alias<CreateLocker>)
 		Registry.declareCollectibleType(UpdateLocker)
-		Registry.declareCollectibleType(Alias<UpdateLocker>)
 		Registry.declareCollectibleType(UpdateLocker)
-		Registry.declareCollectibleType(Alias<UpdateLocker>)
 		Registry.declareCollectibleType(DeleteLocker)
-		Registry.declareCollectibleType(Alias<DeleteLocker>)
 		Registry.declareCollectibleType(DeleteLocker)
-		Registry.declareCollectibleType(Alias<DeleteLocker>)
 		Registry.declareCollectibleType(CreateLockers)
-		Registry.declareCollectibleType(Alias<CreateLockers>)
 		Registry.declareCollectibleType(CreateLockers)
-		Registry.declareCollectibleType(Alias<CreateLockers>)
 		Registry.declareCollectibleType(ReadLockersByIds)
-		Registry.declareCollectibleType(Alias<ReadLockersByIds>)
 		Registry.declareCollectibleType(UpdateLockers)
-		Registry.declareCollectibleType(Alias<UpdateLockers>)
 		Registry.declareCollectibleType(UpdateLockers)
-		Registry.declareCollectibleType(Alias<UpdateLockers>)
 		Registry.declareCollectibleType(DeleteLockers)
-		Registry.declareCollectibleType(Alias<DeleteLockers>)
 		Registry.declareCollectibleType(DeleteLockers)
-		Registry.declareCollectibleType(Alias<DeleteLockers>)
 		Registry.declareCollectibleType(ReadLockersByQuery)
-		Registry.declareCollectibleType(Alias<ReadLockersByQuery>)
 		Registry.declareCollectibleType(ReadGroupById)
-		Registry.declareCollectibleType(Alias<ReadGroupById>)
 		Registry.declareCollectibleType(CreateGroup)
-		Registry.declareCollectibleType(Alias<CreateGroup>)
 		Registry.declareCollectibleType(CreateGroup)
-		Registry.declareCollectibleType(Alias<CreateGroup>)
 		Registry.declareCollectibleType(UpdateGroup)
-		Registry.declareCollectibleType(Alias<UpdateGroup>)
 		Registry.declareCollectibleType(UpdateGroup)
-		Registry.declareCollectibleType(Alias<UpdateGroup>)
 		Registry.declareCollectibleType(DeleteGroup)
-		Registry.declareCollectibleType(Alias<DeleteGroup>)
 		Registry.declareCollectibleType(DeleteGroup)
-		Registry.declareCollectibleType(Alias<DeleteGroup>)
 		Registry.declareCollectibleType(CreateGroups)
-		Registry.declareCollectibleType(Alias<CreateGroups>)
 		Registry.declareCollectibleType(CreateGroups)
-		Registry.declareCollectibleType(Alias<CreateGroups>)
 		Registry.declareCollectibleType(ReadGroupsByIds)
-		Registry.declareCollectibleType(Alias<ReadGroupsByIds>)
 		Registry.declareCollectibleType(UpdateGroups)
-		Registry.declareCollectibleType(Alias<UpdateGroups>)
 		Registry.declareCollectibleType(UpdateGroups)
-		Registry.declareCollectibleType(Alias<UpdateGroups>)
 		Registry.declareCollectibleType(DeleteGroups)
-		Registry.declareCollectibleType(Alias<DeleteGroups>)
 		Registry.declareCollectibleType(DeleteGroups)
-		Registry.declareCollectibleType(Alias<DeleteGroups>)
 		Registry.declareCollectibleType(ReadGroupsByQuery)
-		Registry.declareCollectibleType(Alias<ReadGroupsByQuery>)
 		Registry.declareCollectibleType(ReadPermissionById)
-		Registry.declareCollectibleType(Alias<ReadPermissionById>)
 		Registry.declareCollectibleType(CreatePermission)
-		Registry.declareCollectibleType(Alias<CreatePermission>)
 		Registry.declareCollectibleType(CreatePermission)
-		Registry.declareCollectibleType(Alias<CreatePermission>)
 		Registry.declareCollectibleType(UpdatePermission)
-		Registry.declareCollectibleType(Alias<UpdatePermission>)
 		Registry.declareCollectibleType(UpdatePermission)
-		Registry.declareCollectibleType(Alias<UpdatePermission>)
 		Registry.declareCollectibleType(DeletePermission)
-		Registry.declareCollectibleType(Alias<DeletePermission>)
 		Registry.declareCollectibleType(DeletePermission)
-		Registry.declareCollectibleType(Alias<DeletePermission>)
 		Registry.declareCollectibleType(CreatePermissions)
-		Registry.declareCollectibleType(Alias<CreatePermissions>)
 		Registry.declareCollectibleType(CreatePermissions)
-		Registry.declareCollectibleType(Alias<CreatePermissions>)
 		Registry.declareCollectibleType(ReadPermissionsByIds)
-		Registry.declareCollectibleType(Alias<ReadPermissionsByIds>)
 		Registry.declareCollectibleType(UpdatePermissions)
-		Registry.declareCollectibleType(Alias<UpdatePermissions>)
 		Registry.declareCollectibleType(UpdatePermissions)
-		Registry.declareCollectibleType(Alias<UpdatePermissions>)
 		Registry.declareCollectibleType(DeletePermissions)
-		Registry.declareCollectibleType(Alias<DeletePermissions>)
 		Registry.declareCollectibleType(DeletePermissions)
-		Registry.declareCollectibleType(Alias<DeletePermissions>)
 		Registry.declareCollectibleType(ReadPermissionsByQuery)
-		Registry.declareCollectibleType(Alias<ReadPermissionsByQuery>)
 		Registry.declareCollectibleType(ReadTriggerById)
-		Registry.declareCollectibleType(Alias<ReadTriggerById>)
 		Registry.declareCollectibleType(CreateTrigger)
-		Registry.declareCollectibleType(Alias<CreateTrigger>)
 		Registry.declareCollectibleType(CreateTrigger)
-		Registry.declareCollectibleType(Alias<CreateTrigger>)
 		Registry.declareCollectibleType(UpdateTrigger)
-		Registry.declareCollectibleType(Alias<UpdateTrigger>)
 		Registry.declareCollectibleType(UpdateTrigger)
-		Registry.declareCollectibleType(Alias<UpdateTrigger>)
 		Registry.declareCollectibleType(DeleteTrigger)
-		Registry.declareCollectibleType(Alias<DeleteTrigger>)
 		Registry.declareCollectibleType(DeleteTrigger)
-		Registry.declareCollectibleType(Alias<DeleteTrigger>)
 		Registry.declareCollectibleType(CreateTriggers)
-		Registry.declareCollectibleType(Alias<CreateTriggers>)
 		Registry.declareCollectibleType(CreateTriggers)
-		Registry.declareCollectibleType(Alias<CreateTriggers>)
 		Registry.declareCollectibleType(ReadTriggersByIds)
-		Registry.declareCollectibleType(Alias<ReadTriggersByIds>)
 		Registry.declareCollectibleType(UpdateTriggers)
-		Registry.declareCollectibleType(Alias<UpdateTriggers>)
 		Registry.declareCollectibleType(UpdateTriggers)
-		Registry.declareCollectibleType(Alias<UpdateTriggers>)
 		Registry.declareCollectibleType(DeleteTriggers)
-		Registry.declareCollectibleType(Alias<DeleteTriggers>)
 		Registry.declareCollectibleType(DeleteTriggers)
-		Registry.declareCollectibleType(Alias<DeleteTriggers>)
 		Registry.declareCollectibleType(ReadTriggersByQuery)
-		Registry.declareCollectibleType(Alias<ReadTriggersByQuery>)
     }
 
     private var _KVOContext: Int = 0
@@ -580,65 +453,72 @@ public class BartlebyDocument : JDocument {
         // #1  Defines the Schema
         super.configureSchema()
 
-        let tasksGroupDefinition = JCollectionMetadatum()
+        let tasksGroupDefinition = CollectionMetadatum()
         tasksGroupDefinition.proxy = self.tasksGroups
         // By default we group the observation via the rootObjectUID
+        tasksGroupDefinition.collectionName = TasksGroup.collectionName
         tasksGroupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        tasksGroupDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        tasksGroupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         tasksGroupDefinition.allowDistantPersistency = true
         tasksGroupDefinition.inMemory = false
         
 
-        let userDefinition = JCollectionMetadatum()
+        let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
         // By default we group the observation via the rootObjectUID
+        userDefinition.collectionName = User.collectionName
         userDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        userDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        userDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         userDefinition.allowDistantPersistency = true
         userDefinition.inMemory = false
         
 
-        let lockerDefinition = JCollectionMetadatum()
+        let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
         // By default we group the observation via the rootObjectUID
+        lockerDefinition.collectionName = Locker.collectionName
         lockerDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        lockerDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        lockerDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         lockerDefinition.allowDistantPersistency = true
         lockerDefinition.inMemory = false
         
 
-        let groupDefinition = JCollectionMetadatum()
+        let groupDefinition = CollectionMetadatum()
         groupDefinition.proxy = self.groups
         // By default we group the observation via the rootObjectUID
+        groupDefinition.collectionName = Group.collectionName
         groupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        groupDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        groupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         groupDefinition.allowDistantPersistency = true
         groupDefinition.inMemory = false
         
 
-        let permissionDefinition = JCollectionMetadatum()
+        let permissionDefinition = CollectionMetadatum()
         permissionDefinition.proxy = self.permissions
         // By default we group the observation via the rootObjectUID
+        permissionDefinition.collectionName = Permission.collectionName
         permissionDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        permissionDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        permissionDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         permissionDefinition.allowDistantPersistency = true
         permissionDefinition.inMemory = false
         
 
-        let operationDefinition = JCollectionMetadatum()
+        let operationDefinition = CollectionMetadatum()
         operationDefinition.proxy = self.operations
         // By default we group the observation via the rootObjectUID
+        operationDefinition.collectionName = Operation.collectionName
         operationDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        operationDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        operationDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         operationDefinition.allowDistantPersistency = false
         operationDefinition.inMemory = false
         
 
-        let triggerDefinition = JCollectionMetadatum()
+        let triggerDefinition = CollectionMetadatum()
         triggerDefinition.proxy = self.triggers
         // By default we group the observation via the rootObjectUID
+        triggerDefinition.collectionName = Trigger.collectionName
         triggerDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        triggerDefinition.storage = BaseCollectionMetadatum.Storage.MonolithicFileStorage
+        triggerDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         triggerDefinition.allowDistantPersistency = true
         triggerDefinition.inMemory = false
         

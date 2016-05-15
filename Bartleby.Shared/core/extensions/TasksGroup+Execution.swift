@@ -130,7 +130,7 @@ public extension TasksGroup {
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
-        task.group=Alias(from:self)
+        task.group=ExternalReference(from:self)
         self.tasks.append(task)
     }
 

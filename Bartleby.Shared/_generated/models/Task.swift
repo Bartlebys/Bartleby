@@ -22,8 +22,8 @@ import ObjectMapper
         return "Task"
     }
 
-	//The alias of the TasksGroup
-	public var group:Alias<TasksGroup>?
+	//The Task group. External reference to a TaskGroup instance
+	public var group:ExternalReference?
 	//Task Status
 	public enum Status:Int{
 		case New
@@ -39,10 +39,10 @@ import ObjectMapper
 		case High
 	}
 	public var priority:Priority = .Default
-	//The alias of the parent task
-	public var parent:Alias<Task>?
-	//A collection of Concrete Tasks Aliases
-	public var children:[Alias<Task>] = [Alias<Task>]()
+	//The Task parent. 
+	public var parent:ExternalReference?
+	//A collection of children Task external references (in the same group)
+	public var children:[ExternalReference] = [ExternalReference]()
 	//The progression state of the task
 	public var progressionState:Progression = Progression()
 	//The completion state of the task
@@ -77,11 +77,11 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.group=decoder.decodeObjectOfClass(Alias<TasksGroup>.self, forKey: "group") 
+		self.group=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
-		self.parent=decoder.decodeObjectOfClass(Alias<Task>.self, forKey: "parent") 
-		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias<Task>.classForCoder()]), forKey: "children")! as! [Alias<Task>]
+		self.parent=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "parent") 
+		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "children")! as! [ExternalReference]
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?

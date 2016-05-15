@@ -296,8 +296,6 @@ import ObjectMapper
         if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
             _observedUIDS.append(item.UID)
 			item.addObserver(self, forKeyPath: "creationDate", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "parentReference", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "childrensReferences", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "color", options: .Old, context: &KVOContext)
 			item.addObserver(self, forKeyPath: "icon", options: .Old, context: &KVOContext)
         }
@@ -308,8 +306,6 @@ import ObjectMapper
             if let idx=_observedUIDS.indexOf(item.UID)  {
                 _observedUIDS.removeAtIndex(idx)
 				item.removeObserver(self, forKeyPath: "creationDate", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "parentReference", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "childrensReferences", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "color", context: &KVOContext)
 				item.removeObserver(self, forKeyPath: "icon", context: &KVOContext)
             }

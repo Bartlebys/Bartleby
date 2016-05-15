@@ -41,10 +41,9 @@ public protocol CollectibleCollection: Collectible {
 
     func removeObjectFromItemsAtIndex(index: Int)
 
-    func removeObject(item: Collectible)->Bool
+    func removeObject(item: Collectible) -> Bool
 
-    func removeObjectWithID(id: String)->Bool
-
+    func removeObjectWithID(id: String) -> Bool
 
 }
 

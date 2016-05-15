@@ -12,7 +12,6 @@ import BartlebyKit
 class CompletionWithResultTests: XCTestCase {
 
     static override func setUp() {
-        BartlebyDocument.declareCollectibleTypes()
     }
     
     // MARK: Generic result

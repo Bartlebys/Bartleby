@@ -33,11 +33,6 @@ extension Task:SerializableArguments {
     public final func arguments<ArgumentType: Collectible>() throws -> ArgumentType {
         if let argumentsData = self.argumentsData {
             let deserialized=try JSerializer.deserialize(argumentsData)
-            if let objectError = deserialized as? ObjectError {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("Argument Type deserialization error \(objectError.message)", file: #file, function: #function, line: #line)
-                }
-            }
             if let arguments = deserialized as? ArgumentType {
                 return arguments
             } else {
@@ -138,8 +133,8 @@ extension Task {
             var list=[Task]()
             func childrens(parent: Task, inout tasks: [Task]) {
                 tasks.append(parent)
-                for taskAlias in parent.children {
-                    if let task=taskAlias.toLocalInstance() {
+                for taskReference in parent.children {
+                    if let task:Task=taskReference.toLocalInstance() {
                         childrens(task, tasks: &tasks)
                     }
                 }
@@ -155,8 +150,8 @@ extension Task {
      - parameter task: the children to be added.
      */
     public func addChildren(task: Task) {
-        let taskAlias: Alias<Task>=Alias(from: task)
-        self.children.append(taskAlias)
+        let taskReference=ExternalReference(from: task)
+        self.children.append(taskReference)
         if let g=self.group {
             task.group=g
         } else {
@@ -165,7 +160,7 @@ extension Task {
 
             }
         }
-        task.parent=Alias(from:self)
+        task.parent=ExternalReference(from:self)
         if TasksScheduler.DEBUG_TASKS {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID

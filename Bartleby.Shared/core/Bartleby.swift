@@ -46,7 +46,7 @@ public class  Bartleby: Consignee {
 
     static let b_version = "1.0"
     static let b_release = "beta2"
-    private static var _enableBPrint: Bool=false
+
 
 
     /// The version string of Bartleby framework
@@ -56,28 +56,6 @@ public class  Bartleby: Consignee {
         }
     }
 
-
-    static private var _bufferingBprint=false
-
-    static private var _printingBuffer=[String]()
-
-
-    public static func startBufferingBprint() {
-        _bufferingBprint=true
-        _printingBuffer=[String]()
-        print("# Buffering Bprint calls...")
-    }
-
-    public static func stopBufferingBprint() {
-        if _bufferingBprint==true {
-            print("# Bprint dump")
-            _bufferingBprint=false
-            for s in _printingBuffer {
-                print (s)
-            }
-            _printingBuffer=[String]()
-        }
-    }
 
 
     /**
@@ -213,8 +191,33 @@ public class  Bartleby: Consignee {
     }
 
 
+    // MARK: - bprint
+    private static var _enableBPrint: Bool=false
     private static var _printCounter: Int=0
     private static let _startTime=CFAbsoluteTimeGetCurrent()
+    private static var _bufferingBprint=false
+    private static var _printingBuffer=[String]()
+
+
+    public static func startBufferingBprint() {
+        _bufferingBprint=true
+        _printingBuffer=[String]()
+        print("# Buffering Bprint calls...")
+    }
+
+    public static func stopBufferingBprint() {
+        if _bufferingBprint==true {
+            print("# Bprint dump")
+            _bufferingBprint=false
+            for s in _printingBuffer {
+                print (s)
+            }
+            _printingBuffer=[String]()
+        }
+    }
+
+
+
 
     /**
      Print indirection with guided contextual info

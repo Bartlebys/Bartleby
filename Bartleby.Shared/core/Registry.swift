@@ -59,7 +59,7 @@ public class Registry: BXDocument {
     // JRegistryMetadata and JSerializer
 
     // We use a  JRegistryMetadata
-    public var registryMetadata=JRegistryMetadata()
+    public var registryMetadata=RegistryMetadata()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -124,10 +124,10 @@ public class Registry: BXDocument {
 
 
     /**
-     Bartleby associate the types to allow serializable translitterations.
+     Bartleby is able to associate the types to allow serializable translitterations.
      Multiple Apps can interchange and consume Bartleby's Dynamic / Distributed Object
 
-     - parameter universalTypeName: the universal type (e.g Alias<Tag> for _<XX>AliasCS_3Tag_)
+     - parameter universalTypeName: the universal type (e.g ExternalReference<Tag> for _<XX>ExternalReferenceCS_3Tag_)
 
      - throws:  SerializableError.UnknownTypeName  if the Type is not correctly associated
 
@@ -311,7 +311,7 @@ public class Registry: BXDocument {
 
     // MARK: - Collections Public API
 
-    public func getCollection<T: IterableCollectibleCollection>  () throws -> T {
+    public func getCollection<T: CollectibleCollection>  () throws -> T {
         guard var collection=self._collectionByName(T.collectionName) as? T else {
             throw RegistryError.UnExistingCollection(collectionName: T.collectionName)
         }
@@ -367,12 +367,12 @@ public class Registry: BXDocument {
 
             // 2# Collections
 
-            for metadatum: JCollectionMetadatum in self.registryMetadata.collectionsMetadata {
+            for metadatum: CollectionMetadatum in self.registryMetadata.collectionsMetadata {
 
                 if !metadatum.inMemory {
                     let collectionfileName=self._collectionFileNames(metadatum).crypted
                     // MONOLITHIC STORAGE
-                    if metadatum.storage == BaseCollectionMetadatum.Storage.MonolithicFileStorage {
+                    if metadatum.storage == CollectionMetadatum.Storage.MonolithicFileStorage {
 
                         if let collection = self._collectionByName(metadatum.collectionName) as? CollectibleCollection {
 
@@ -418,7 +418,7 @@ public class Registry: BXDocument {
                     // We use a JSerializer not self.serializer that can be different.
                     metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
                     let r = try Bartleby.defaultSerializer.deserialize(metadataNSData)
-                    if let registryMetadata=r as? JRegistryMetadata {
+                    if let registryMetadata=r as? RegistryMetadata {
                         self.registryMetadata=registryMetadata
                     } else {
                         // There is an error
@@ -437,7 +437,7 @@ public class Registry: BXDocument {
 
             for metadatum in self.registryMetadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
-                if metadatum.storage == BaseCollectionMetadatum.Storage.MonolithicFileStorage {
+                if metadatum.storage == CollectionMetadatum.Storage.MonolithicFileStorage {
                     let names=self._collectionFileNames(metadatum)
                     if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
                         let filename=wrapper.filename
@@ -496,7 +496,7 @@ public class Registry: BXDocument {
 
      - returns: the crypted and the non crypted file name in a tupple.
      */
-    private func _collectionFileNames(metadatum: JCollectionMetadatum) -> (notCrypted: String, crypted: String) {
+    private func _collectionFileNames(metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=Registry.DATA_EXTENSION
         let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName.stringByAppendingString(cryptedExtension)

@@ -7,8 +7,8 @@
 //  All rights reserved you can ask for a license.
 
 
-// Aliases to simplify cross implementation
-// Those type Aliases are used to share signatures not implementation
+// ExternalReferences to simplify cross implementation
+// Those type ExternalReferences are used to share signatures not implementation
 
 
 // TODO: @bpds X alias for watchOS & TvOS

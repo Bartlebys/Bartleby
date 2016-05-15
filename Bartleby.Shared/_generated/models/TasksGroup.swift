@@ -38,7 +38,7 @@ import ObjectMapper
 	public var priority:Priority = .Default
 	//The group dataspace
 	public var spaceUID:String = "\(Default.NO_UID)"
-	//A collection of Concrete Tasks Aliases
+	//The root group Tasks
 	public var tasks:[Task] = [Task]()
 	//The progression state of the group
 	public var progressionState:Progression = Progression()

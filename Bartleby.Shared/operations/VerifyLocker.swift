@@ -40,15 +40,25 @@ public class VerifyLocker: JObject {
                             accessGranted success:(locker: Locker)->(),
                            accessRefused failure:(context: JHTTPResponse)->()) {
         // Let's determine if we should verify locally or not.
-        let lockerAlias=Alias<Locker>(iUID:lockerUID)
+        let lockerRef=ExternalReference(iUID: lockerUID, typeName: Locker.typeName())
         let verifyer=VerifyLocker()
-        lockerAlias.fetchInstance { (instance) in
+        lockerRef.fetchInstance(Locker.self) { (instance) in
             if let _=instance {
                 verifyer._proceedToLocalVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
             } else {
                 verifyer._proceedToDistantVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
             }
         }
+
+
+        /*
+        lockerExternalReference.fetchInstance<Locker>{ (instance) in
+            if let _=instance {
+                verifyer._proceedToLocalVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
+            } else {
+                verifyer._proceedToDistantVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
+            }
+        }*/
 
     }
 
@@ -73,9 +83,10 @@ public class VerifyLocker: JObject {
                                      httpStatusCode: 0,
                                      response: nil,
                                      result:nil)
-        let lockerAlias=Alias<Locker>(iUID:lockerUID)
 
-        lockerAlias.fetchInstance { (instance) in
+        let lockerRef=ExternalReference(iUID: lockerUID, typeName: Locker.typeName())
+
+        lockerRef.fetchInstance(Locker.self) { (instance) in
             if let locker=instance {
                 locker.verificationMethod=Locker.VerificationMethod.Offline
                 if locker.code==code {
@@ -92,7 +103,6 @@ public class VerifyLocker: JObject {
                 failure(context:context)
             }
         }
-
     }
 
 

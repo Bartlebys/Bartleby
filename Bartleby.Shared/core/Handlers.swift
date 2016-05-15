@@ -8,7 +8,7 @@
 import Foundation
 
 
-// MARK: - TypeAliases
+// MARK: - TypeExternalReferences
 
 //  A composed Closure with a progress and acompletion section
 //  Generally Used in XPC facades because we can pass only one handler per XPC call

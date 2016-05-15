@@ -17,8 +17,6 @@ class BsyncKeyValueStorageTests: XCTestCase {
 
     override static func setUp() {
         super.setUp()
-
-        Registry.declareCollectibleType(User)// REQUIRED !!!
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
 

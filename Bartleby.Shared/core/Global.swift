@@ -26,16 +26,10 @@ public func bprint(message: AnyObject?, file: String = "", function: String = ""
     Bartleby.bprint(message, file: file, function: function, line: line)
 }
 
-// MARK: - Aliasing
-
-// We uses Aliases to reference external enities.
-
-public func arrayOfAliases<T: Collectible>() -> [Alias<T>] {
-    return [Alias<T>]()
-}
+// MARK: - ExternalReferencing
 
 
-public func removeAliasWith<T: Collectible>(instanceUID: String, inout from aliases: [Alias<T>]) {
+public func removeExternalReferenceWith(instanceUID: String, inout from aliases: [ExternalReference]) {
     for (index, alias) in aliases.enumerate().reverse() {
         if alias.iUID==instanceUID {
             aliases.removeAtIndex(index)
@@ -51,15 +45,16 @@ public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inou
     }
 }
 
-public func instancesToAliases<T: Collectible>(instances: [T]) -> [Alias<T>] {
-    var aliases=[Alias<T>]()
+public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [ExternalReference] {
+    var aliases=[ExternalReference]()
     for instance in instances {
-        aliases.append(Alias(from:instance))
+        aliases.append(ExternalReference(from:instance))
     }
     return aliases
 }
 
-public func instancesFromAliases<T: Collectible>(aliases: [Alias<T>]) -> [T] {
+
+public func instancesFromExternalReferences<T: Collectible>(aliases: [ExternalReference]) -> [T] {
     var instances=[T]()
     for alias in aliases {
         if let instance: T=alias.toLocalInstance() {
@@ -69,3 +64,4 @@ public func instancesFromAliases<T: Collectible>(aliases: [Alias<T>]) -> [T] {
     }
     return instances
 }
+

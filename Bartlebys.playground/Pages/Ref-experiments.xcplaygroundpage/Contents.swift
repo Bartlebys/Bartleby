@@ -11,13 +11,13 @@ let document=BartlebyDocument()
 
 
 let metadata=JRegistryMetadata()
-let metadataAlias=Alias<JRegistryMetadata>()
+let metadataExternalReference=ExternalReference<JRegistryMetadata>()
 
 metadata.serialize()
-metadataAlias.serialize()
+metadataExternalReference.serialize()
 
 print(metadata.dictionaryRepresentation())
-print(metadataAlias.dictionaryRepresentation())
+print(metadataExternalReference.dictionaryRepresentation())
 
 
 let user=User()
@@ -28,7 +28,7 @@ user.email="bartleby@bartlebys.org"
 // Synchronous syntax 
 // when you are sure the alias exists and is loaded
 print("# Resolution #")
-let alias=Alias<User>(iUID: user.UID)
+let alias=ExternalReference<User>(iUID: user.UID)
 if let resolved:User=alias.toLocalInstance(){
    print("\(user)")
 }else{
@@ -54,51 +54,37 @@ print(separator)
 
 let tag=Tag()
 tag.color="Red"
-let tagAlias:Alias<Tag>=Alias(from:tag)
+let tagExternalReference:ExternalReference<Tag>=ExternalReference(from:tag)
 
 let tag2=Tag()
 tag2.color="Black"
-let tag2Alias:Alias<Tag>=Alias(from:tag2)
+let tag2ExternalReference:ExternalReference<Tag>=ExternalReference(from:tag2)
 
 print(separator)
 
-// False Alias casting Tag to user
+// False ExternalReference casting Tag to user
 let errorTag=Tag()
 errorTag.color="Green"
-let errorTagAlias:Alias<User>=Alias(from:errorTag)
-print(Alias<User>.typeName())
-print(errorTagAlias.runTimeTypeName())
-print(errorTagAlias.d_collectionName)
+let errorTagExternalReference:ExternalReference<User>=ExternalReference(from:errorTag)
+print(ExternalReference<User>.typeName())
+print(errorTagExternalReference.runTimeTypeName())
+print(errorTagExternalReference.d_collectionName)
 
-let resolveErrorTag=errorTagAlias.toLocalInstance()
-let resolvetag=tagAlias.toLocalInstance()
+let resolveErrorTag=errorTagExternalReference.toLocalInstance()
+let resolvetag=tagExternalReference.toLocalInstance()
 let color=resolvetag?.color
 
 print(separator)
 
 // Serialization
 
-print("Serialization of an Alias")
+print("Serialization of an ExternalReference")
 
-let data=tagAlias.serialize()
+let data=tagExternalReference.serialize()
 
 do{
     let a = try JSerializer.deserialize(data)
     print(a.dynamicType)
 
-    if let deserializedAlias = try JSerializer.deserialize(data) as? Alias<Tag>{
-        print("OK! DESERIALIZED")
-        if let deserializedTag=deserializedAlias.toLocalInstance() {
-            print("OK! The color of the tag is \(deserializedTag.color!)")
-        }
-    }else{
-        print("NOT DESERIALIZED")
-    }
-}catch{
-    print(error)
-}
-
-
-
-//: [Next page](@next)
-
+    if let deserializedExternalReference = try JSerializer.deserialize(data) as? ExternalReference<Tag>{
+     

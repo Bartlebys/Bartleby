@@ -9,7 +9,6 @@
 import Foundation
 
 // The goal of PString is to facilitate PHP to SWIFT port
-// And to make Swift strings more easy and natural to use.
 // It focuses on translating litteraly the PHP style string processing.
 // For example Flexions' Pluralization.php has been ported to swift in a few minutes
 // You can compare Pluralization.swift & Pluralization.php

@@ -10,18 +10,10 @@
 import Foundation
 
 
-public protocol UniversalType {
-
-    // The class or struct universal name is used to serialize the instance
-    static func typeName() -> String
-
-    // The concrete run time type name used to deserialize an instance
-    func runTimeTypeName() -> String
-}
 
 
 // Collectible items are identifiable and serializable
-public protocol Collectible: Identifiable, Serializable, UniversalType {
+public protocol Collectible: Initializable, Identifiable, Serializable, UniversalType {
 
     // This flag is set to true on first commit.
     var committed: Bool { get set }
@@ -33,7 +25,7 @@ public protocol Collectible: Identifiable, Serializable, UniversalType {
     // The creator UID
     var creatorUID: String { get set }
 
-    // A summary that can be used for example by Aliases to describe the instance
+    // A summary that can be used for example by ExternalReferences to describe the instance
     var summary: String? { get set }
 
     // The name of its holding collection e.g: projects for the class Project
@@ -42,16 +34,4 @@ public protocol Collectible: Identifiable, Serializable, UniversalType {
 
     // An accessor to the static collectionName
     var d_collectionName: String { get }
-}
-
-
-
-// Is used to propose an alternative to CustomConvertibleString
-// CustomConvertibleString in JObject for example normally expose the JSON serialized string.
-// We want sometimes more user frendly may be internationalized string description.
-// That's the purpose of Descriptible.
-public protocol Descriptible {
-
-    func toString() -> String
-
 }

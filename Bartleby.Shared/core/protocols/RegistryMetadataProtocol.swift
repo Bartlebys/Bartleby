@@ -17,7 +17,7 @@ public enum RegistryMetadataError: ErrorType {
 // A model that encapsulates the descriptions-CollectionMetadatum of its persitent collections
 // and stores the collaborative session data
 
-public protocol RegistryMetadata: Identifiable, Serializable {
+public protocol RegistryMetadataProtocol: Identifiable, Serializable {
 
     associatedtype CollectionMetadatumType
     associatedtype User

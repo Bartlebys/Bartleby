@@ -28,7 +28,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject, NSCopying, Mappable, Collectible, NSSecureCoding {
+@objc(JObject) public class JObject: NSObject, Mappable, Collectible, NSCopying, NSSecureCoding {
 
 
     // MARK: - Initializable
@@ -47,6 +47,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         return "JObject"
     }
 
+
     internal var _runTimeTypeName: String?
 
     // The runTypeName is used when deserializing the instance.
@@ -55,7 +56,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
             self._runTimeTypeName = NSStringFromClass(self.dynamicType)
             return self._runTimeTypeName!
         }
-        return self._runTimeTypeName!
+       return self._runTimeTypeName!
     }
 
     //Collectible protocol: committed

@@ -8,8 +8,8 @@
 
 // This pluralization class is equivalent to Flexions' Pluralization.php
 // You should pass lower case string for better results.
-// Eg: Thanks to this symetric implementation Aggregated CreateAlias operations
-// can be interpreted as CreateAliases
+// Eg: Thanks to this symetric implementation Aggregated CreateExternalReference operations
+// can be interpreted as CreateExternalReferences
 
 
 import Foundation

@@ -10,21 +10,17 @@ let user=User()
 user.defineUID()
 user.email="bartleby@bartlebys.org"
 
-//It is NOT Possible not to type the Alias
-//let alias=Alias(from:user)
-// You must constraint 
-let alias:Alias<User>=Alias(from:user)
-if let userFromAlias=alias.toLocalInstance(){
-    userFromAlias.email
-}
 
 // NOT compilable
-//if let u:Locker=userFromAlias.toLocalInstance(){}
+//if let u:Locker=userFromExternalReference.toLocalInstance(){}
 
 let ext=ExternalReference(from:user)
 if let u:User=ext.toLocalInstance(){
     u.email
 }
+
+if let u=ext.fetchInstance(User.self, instanceCallBack: <#T##((instance: T?) -> ())##((instance: T?) -> ())##(instance: T?) -> ()#>)
+
 
 // Compilable
 if let u:Locker=ext.toLocalInstance(){
@@ -32,6 +28,4 @@ if let u:Locker=ext.toLocalInstance(){
 }
 
 
-//: [Go to aliases experiments](@next)
-
-
+//: [Go to aliases experiment

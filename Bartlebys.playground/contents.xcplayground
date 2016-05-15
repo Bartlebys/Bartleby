@@ -2,7 +2,7 @@
 <playground version='6.0' target-platform='osx' display-mode='raw'>
     <pages>
         <page name='Hello World?'/>
-        <page name='Aliases-experiments'/>
-        <page name='Task-demonstrator'/>
+        <page name='Ref-experiments'/>
+        <page name='UnversalTypesAndSerialization'/>
     </pages>
 </playground>

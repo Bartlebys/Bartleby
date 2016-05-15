@@ -11,6 +11,15 @@
 import Foundation
 
 
+
+public enum SerializableError: ErrorType {
+    case TypeMissmatch
+    case TypeNameUndefined
+    case UnknownTypeName(typeName:String)
+    case EnableToTransformDataToDictionary
+}
+
+
 /**
  *   Any object that is serializable can be serialized deserialized
  */
@@ -37,26 +46,4 @@ public protocol Serializable {
      */
     func updateData(data: NSData) throws -> Serializable
 
-}
-
-
-
-public protocol DictionaryRepresentation {
-    /**
-     Should return a dictionary composed of native members that can be serialized (!)
-
-     - returns: the dictionary
-     */
-    func dictionaryRepresentation()->[String:AnyObject]
-
-}
-
-
-
-
-public enum SerializableError: ErrorType {
-    case TypeMissmatch
-    case TypeNameUndefined
-    case UnknownTypeName(typeName:String)
-    case EnableToTransformDataToDictionary
 }

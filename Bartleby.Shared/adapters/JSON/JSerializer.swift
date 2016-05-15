@@ -30,7 +30,7 @@ public class JSerializer: Serializer {
 
      - parameter data: the binary data
 
-     - returns: an instance (or an ObjectError)
+     - returns: the deserialized instance
      */
     static public func deserialize(data: NSData) throws -> Serializable {
         if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
@@ -45,7 +45,7 @@ public class JSerializer: Serializer {
 
      - parameter dictionary: the dictionnary
 
-     - returns: an instance (or an ObjectError)
+     - returns: an instance
      */
     static public func deserializeFromDictionary(dictionary: [String:AnyObject]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {

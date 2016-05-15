@@ -10,7 +10,7 @@ import Foundation
 
 
 
-public protocol CollectionMetadatum: Serializable {
+public protocol CollectionMetadatumProtocol: Serializable {
 
     // The collection name
     var collectionName: String { get }

@@ -17,9 +17,6 @@ class SerializableInvocationsTests: XCTestCase {
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        BartlebyDocument.declareCollectibleTypes()
-        Registry.declareCollectibleType(PrintUser)// REQUIRED !!!
-        Registry.declareCollectibleType(Alias<PrintUser>)
     }
 
 
@@ -43,12 +40,7 @@ class SerializableInvocationsTests: XCTestCase {
                 deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
-                if let error = o as? ObjectError {
-                    XCTFail("Deserialization as failed \(error.message)")
-                } else {
-                    XCTFail("Deserialization as failed")
-                }
-
+                XCTFail("Deserialization as failed")
             }
         } catch {
              XCTFail("\(error)")
@@ -58,7 +50,7 @@ class SerializableInvocationsTests: XCTestCase {
 
 
     func test002_PrintUserTask_Dynamic() {
-        do{
+        do {
             let user=User()
             user.email="benoit@pereira-da-silva.com"
             let printer = PrintUser(arguments:user)
@@ -69,10 +61,10 @@ class SerializableInvocationsTests: XCTestCase {
             } else {
                 XCTFail("Deserialization as failed")
             }
-        }catch{
+        } catch {
             XCTFail("\(error)")
         }
-        
+
     }
 
     func test002__PrintUserTask_Via_NSData_Performer() {

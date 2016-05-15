@@ -24,26 +24,28 @@ do{
 }
 
 
-let userAlias:Alias<User>=Alias(from:user)
-let aliasDictionary=userAlias.dictionaryRepresentation()
+let userExternalReference=ExternalReference(from:user)
+let aliasDictionary=userExternalReference.dictionaryRepresentation()
 print(aliasDictionary)
 
 // Update the instance
 user.email="nobody@nowhere.com"
 
 // Verify the alias Resolution
-let userReference=userAlias.toLocalInstance()
-if userReference?.UID==user.UID{
-    print("OK! Matching UID")
-    // Verify that it points to the good reference.
-    print("\(userReference!.email!)")
-}else{
-    print("Not Matching UID")
+if let userReference:User=userExternalReference.toLocalInstance(){
+    if userReference.UID==user.UID{
+        print("OK! Matching UID")
+        // Verify that it points to the good reference.
+        print("\(userReference.email!)")
+    }else{
+        print("Not Matching UID")
+    }
+
 }
 do {
-    // Alias serialization
-    let serializedAlias=userAlias.serialize()
-    if let deserializedAlias = try JSerializer.deserialize(serializedAlias) as? Alias<User>{
+    // ExternalReference serialization
+    let serializedExternalReference=userExternalReference.serialize()
+    if let deserializedExternalReference:ExternalReference = try JSerializer.deserialize(serializedExternalReference) as?ExternalReference{
         print("OK!")
     }else{
         print("NOT OK!")
@@ -54,11 +56,4 @@ do {
 
 /*
 var counter=1
-for (k,v) in Registry.universalMapping{
-    print("\(counter) \(v)=>\(k)")
-    counter += 1
-}
-*/
-
-
-//: [Next](@next)
+for (k,v) in Registry

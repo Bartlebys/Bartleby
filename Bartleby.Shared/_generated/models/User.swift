@@ -48,10 +48,10 @@ import ObjectMapper
 		case Suspended = "suspended"
 	}
 	public var status:Status = .New
-	//The tags of the user
-	public var tags:[Alias<Tag>] = [Alias<Tag>]()
-	//The groups of the user
-	public var groups:[Alias<Group>] = [Alias<Group>]()
+	//The user Tags. External reference to Tags instances
+	public var tags:[ExternalReference] = [ExternalReference]()
+	//The user Groups. External reference to Group instances
+	public var groups:[ExternalReference] = [ExternalReference]()
 	//Notes
 	public var notes:String?
 
@@ -92,8 +92,8 @@ import ObjectMapper
 		self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey: "password")! as NSString)
 		self.activationCode=String(decoder.decodeObjectOfClass(NSString.self, forKey: "activationCode")! as NSString)
 		self.status=User.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias<Tag>.classForCoder()]), forKey: "tags")! as! [Alias<Tag>]
-		self.groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Alias<Group>.classForCoder()]), forKey: "groups")! as! [Alias<Group>]
+		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tags")! as! [ExternalReference]
+		self.groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "groups")! as! [ExternalReference]
 		self.notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
 
     }

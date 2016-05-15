@@ -15,16 +15,9 @@ import Foundation
 
 // The standard RegistryMetadata implementation
 // The underlining model has been implemented by flexions in BaseRegistryMetadata
-@objc(JRegistryMetadata) public class JRegistryMetadata: BaseRegistryMetadata, RegistryMetadata {
+extension RegistryMetadata:RegistryMetadataProtocol {
 
-    // Universal type support
-    override public class func typeName() -> String {
-        return "JRegistryMetadata"
-    }
-
-
-
-    public func configureSchema(metadatum: JCollectionMetadatum) throws ->() {
+    public func configureSchema(metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {
             if m.collectionName == metadatum.collectionName {
                 throw RegistryMetadataError.DuplicatedCollectionName
@@ -43,33 +36,5 @@ import Foundation
             return ""
         }
     }
-
-    required public init() {
-        super.init()
-    }
-
-    // MARK: Mappable
-
-
-    required public init?(_ map: Map) {
-        super.init(map)
-    }
-
-
-    // MARK: NSecureCoding
-
-    public override func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-    }
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-    }
-
-    override public class func supportsSecureCoding() -> Bool {
-        return true
-    }
-
-
 
 }

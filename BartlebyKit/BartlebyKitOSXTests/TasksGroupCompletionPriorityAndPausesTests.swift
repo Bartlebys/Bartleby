@@ -77,21 +77,36 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
                     ShowSummary.randomPausePercentProbability=1
                 }
 
+                /*
                 let max: UInt32 = 100/ShowSummary.randomPausePercentProbability
                 if Int(arc4random_uniform(max)) == 1 {
                     print("Pausing")
-                    self.group?.toLocalInstance()?.pause()
+
+                    if var groupRef: ExternalReference=self.group {
+                        var realGroup: TasksGroup = groupRef.toLocalInstance() {
+                            realGroup.pause()
+                        }
+                    }
+
+
                     // Pause for 1 or 2 seconds
                     Bartleby.executeAfter(Double(arc4random_uniform(1)+1), closure: {
                         do {
                             print("Resuming")
-                            try self.group?.toLocalInstance()?.start()
+
+                            if var groupRef: ExternalReference=self.group {
+                                var realGroup: TasksGroup = groupRef.toLocalInstance() {
+                                   try realGroup.start()
+                                }
+                            }
+
 
                         } catch {
                             print("ERROR\(error)")
                         }
                     })
                 }
+ */
             }
 
 
@@ -113,8 +128,6 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
 
     override static func setUp() {
         super.setUp()
-        Registry.declareCollectibleType(ShowSummary)
-        Registry.declareCollectibleType(Alias<ShowSummary>)
         Bartleby.sharedInstance.hardCoreCleanupForUnitTests()
     }
 
