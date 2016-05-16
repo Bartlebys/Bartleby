@@ -221,7 +221,6 @@
 		E5959C091CA6702200557BDB /* AuthCookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */; };
 		E5959C0A1CA6702200557BDB /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
-		E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00571C8ED51D00BB6B19 /* PrintUser.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
 		E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */; };
 		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
@@ -340,6 +339,7 @@
 		E5B776CC1CDCDDF3007261E1 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A71CDCDDF2007261E1 /* Pluralization.swift */; };
 		E5B776CD1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
 		E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
+		E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -407,7 +407,6 @@
 		E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCreationWithTheSameMailInDifferentSpaceTests.swift; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
-		E56C00571C8ED51D00BB6B19 /* PrintUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrintUser.swift; sourceTree = "<group>"; };
 		E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -622,7 +621,6 @@
 			children = (
 				E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */,
 				E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */,
-				E56C00571C8ED51D00BB6B19 /* PrintUser.swift */,
 			);
 			name = Invocations;
 			sourceTree = "<group>";
@@ -1396,6 +1394,7 @@
 				E57A4C271CE8A34E0044106A /* ReadGroupsByQuery.swift in Sources */,
 				E57A4C4B1CE8A34E0044106A /* ReadUsersByQuery.swift in Sources */,
 				E57A4BDB1CE8A34E0044106A /* Permission.swift in Sources */,
+				E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */,
 				E5B7766A1CDCDDF2007261E1 /* ImageTransform.swift in Sources */,
 				E57A4C471CE8A34E0044106A /* ReadUserById.swift in Sources */,
 				E57A4C031CE8A34E0044106A /* CreateUser.swift in Sources */,
@@ -1479,7 +1478,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5959C0C1CA6702800557BDB /* PrintUser.swift in Sources */,
 				E5361CFD1CD8DD9E005855DC /* HandlersTests.swift in Sources */,
 				5B5D0A081CDE1F48001FB281 /* BFileManagerTests.swift in Sources */,
 				E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */,
