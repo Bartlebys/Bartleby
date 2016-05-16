@@ -50,16 +50,6 @@ public class VerifyLocker: JObject {
             }
         }
 
-
-        /*
-        lockerExternalReference.fetchInstance<Locker>{ (instance) in
-            if let _=instance {
-                verifyer._proceedToLocalVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
-            } else {
-                verifyer._proceedToDistantVerification(lockerUID, inDataSpace: spaceUID, code: code, accessGranted: success, accessRefused: failure)
-            }
-        }*/
-
     }
 
     /**

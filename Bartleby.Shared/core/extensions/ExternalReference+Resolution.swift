@@ -13,6 +13,11 @@ import Foundation
 #endif
 
 
+enum ExternalReferenceError: ErrorType {
+    case NotFound
+}
+
+
 extension ExternalReference {
 
     public convenience init(iUID: String, typeName: String) {
@@ -43,7 +48,12 @@ extension ExternalReference {
         instanceCallBack(instance:fetched)
     }
 
-
+/*
+    public func fetchInstanceAndFail<T: Collectible>(of: T.Type, instanceCallBack:((instance: T?) throws->()))rethrows->() {
+        let fetched = try Registry.guarantedRegistredObjectByUID(self.iUID) as T
+        instanceCallBack(instance:fetched)
+    }
+*/
     // MARK: - Synchronous Dealiasing
 
 

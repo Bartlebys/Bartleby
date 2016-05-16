@@ -19,12 +19,26 @@ if let u:User=ext.toLocalInstance(){
     u.email
 }
 
-if let u=ext.fetchInstance(User.self, instanceCallBack: <#T##((instance: T?) -> ())##((instance: T?) -> ())##(instance: T?) -> ()#>)
+ext.fetchInstance(User.self){ (instance) in
+    if let userInstance=instance{
+       userInstance.email
+    }
+}
+
+// User Tag ?
+ext.fetchInstance(Tag.self){ (instance) in
+    // WILL NEVER OCCUR
+    if let instance=instance{
+        instance.color
+    }
+}
 
 
-// Compilable
-if let u:Locker=ext.toLocalInstance(){
+
+if let u:Tag=ext.toLocalInstance(){
     u.UID // Will never occur.
+}else{
+    let eureka="We support types safety in external references"
 }
 
 

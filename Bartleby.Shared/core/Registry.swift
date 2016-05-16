@@ -22,6 +22,7 @@ public enum RegistryError: ErrorType {
     case MissingCollectionProxy(collectionName:String)
     case CollectionProxyTypeError
     case RootObjectTypeMissMatch
+    case InstanceNotFound
 }
 
 
@@ -170,6 +171,22 @@ public class Registry: BXDocument {
         return self._instancesByUID[UID] as? T
     }
 
+    /**
+     Returns the registred instance of by UID
+
+     - parameter UID:
+
+     - returns: the instance
+     */
+    public static func guarantedRegistredObjectByUID<T: Collectible>(UID: String) throws-> T {
+        if let instance=self._instancesByUID[UID] as? T {
+            return instance
+        } else {
+            throw RegistryError.InstanceNotFound
+        }
+    }
+
+
 
     /**
      Returns the instance by its UID
@@ -181,28 +198,6 @@ public class Registry: BXDocument {
     static public func collectibleInstanceByUID(UID: String) -> Collectible? {
         return self._instancesByUID[UID]
     }
-
-
-    /**
-
-     This method enumerates all the object of a given type.
-     The members can come from different Registries if you have multiple document opened simultaneously
-
-     - parameter block:           the enumeration block
-     */
-    public static func enumerateMembersFromRegistries<T>(block:((instance: T) -> ())?) -> [T] {
-        var instances=[T]()
-        for (_, instance) in self._instancesByUID {
-            if let o=instance as? T {
-                if let block=block {
-                    block(instance:o)
-                }
-                instances.append(o)
-            }
-        }
-        return instances
-    }
-
 
 
     //MARK: - Initializers
