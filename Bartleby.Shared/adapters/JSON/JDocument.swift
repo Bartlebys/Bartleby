@@ -13,26 +13,48 @@ import ObjectMapper
 
 public class JDocument: Registry {
 
+
+    /**
+
+     You can associate disymetric Type name
+     For example if you create an Alias class that uses Generics
+     runTimeTypeName() & typeName() can diverges.
+
+     **IMPORTANT** You Cannot use NSecureCoding for diverging classes
+
+     The role of declareCollectibleTypes() is to declare diverging members.
+     Or to produce an adaptation layer (from a type to another)
+
+     ## Let's take an advanced example:
+
+     ```
+     public class Alias<T:Collectible>:JObject {
+
+     override public class func typeName() -> String {
+        return "Alias<\(T.typeName())>"
+     }
+
+     ```
+     Let's say we instantiate an Alias<Tag>
+
+     To insure **cross product deserialization**
+     Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
+
+     To associate those disymetric type you can add the class declareCollectibleTypes
+     And implement typeName() and runTimeTypeName()
+
+     ```
+     public class func declareCollectibleTypes() {
+        Registry.declareCollectibleType(Object)
+        Registry.declareCollectibleType(Alias<Object>)
+
+     ```
+     */
     public class func declareCollectibleTypes() {
-        Registry.declareCollectibleType(JObject)
-        Registry.declareCollectibleType(ExternalReference)
-       // Registry.declareCollectibleType(ExternalReference<JObject>)
-        Registry.declareCollectibleType(CollectionMetadatum)
-        //Registry.declareCollectibleType(ExternalReference<CollectionMetadatum>)
-        Registry.declareCollectibleType(RegistryMetadata)
-        //Registry.declareCollectibleType(ExternalReference<JRegistryMetadata>)
-        Registry.declareCollectibleType(JHTTPResponse)
-        //Registry.declareCollectibleType(ExternalReference<JHTTPResponse>)
-        Registry.declareCollectibleType(LoginUser)
-        //Registry.declareCollectibleType(ExternalReference<LoginUser>)
-        Registry.declareCollectibleType(LogoutUser)
-        //Registry.declareCollectibleType(ExternalReference<LogoutUser>)
-        Registry.declareCollectibleType(VerifyLocker)
-        //Registry.declareCollectibleType(ExternalReference<VerifyLocker>)
-        Registry.declareCollectibleType(PushOperationTask)
-        //Registry.declareCollectibleType(ExternalReference<PushOperationTask>)
-        Registry.declareCollectibleType(ReactiveTask)
-        //Registry.declareCollectibleType(ExternalReference<ReactiveTask>)
+        /*
+         Registry.declareCollectibleType(Object)
+         Registry.declareCollectibleType(Alias<Object>)
+        */
     }
 
     #if os(OSX)

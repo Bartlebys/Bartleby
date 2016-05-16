@@ -10,8 +10,8 @@ Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
 let document=BartlebyDocument()
 
 
-let metadata=JRegistryMetadata()
-let metadataExternalReference=ExternalReference<JRegistryMetadata>()
+let metadata=RegistryMetadata()
+let metadataExternalReference=ExternalReference(from:metadata)
 
 metadata.serialize()
 metadataExternalReference.serialize()
@@ -28,7 +28,7 @@ user.email="bartleby@bartlebys.org"
 // Synchronous syntax 
 // when you are sure the alias exists and is loaded
 print("# Resolution #")
-let alias=ExternalReference<User>(iUID: user.UID)
+let alias=ExternalReference(iUID: user.UID,typeName: User.typeName())
 if let resolved:User=alias.toLocalInstance(){
    print("\(user)")
 }else{

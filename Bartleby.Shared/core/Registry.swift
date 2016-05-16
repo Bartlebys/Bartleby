@@ -96,48 +96,31 @@ public class Registry: BXDocument {
 
     private static var _associatedTypesMap=[String:String]()
 
-    /*
-    public static func declareCollectibleType(prototype: Collectible) {
-        let name = prototype.runTimeTypeName()
-        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
-    }*/
+    /**
+     Declares a collectible type with disymetric runTimeTypeName() and typeName()
+     Check [JDocument] (JDocument.swift) declareCollectibleTypes() for more detailled explanations.
 
+     - parameter type: a Collectible type
+     */
     public static func declareCollectibleType(type: Collectible.Type) {
         let prototype=type.init()
         let name = prototype.runTimeTypeName()
         Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
     }
 
-    /**
-     Used for unit tests only.
-     */
-    public static func purgeCollectibleType() {
-        Registry._associatedTypesMap=[String:String]()
-    }
-
-
-    public static var universalMapping: [String:String] {
-        get {
-            return _associatedTypesMap
-        }
-    }
-
 
     /**
-     Bartleby is able to associate the types to allow serializable translitterations.
-     Multiple Apps can interchange and consume Bartleby's Dynamic / Distributed Object
+     Bartleby is able to associate the types to allow translitterations
 
-     - parameter universalTypeName: the universal type (e.g ExternalReference<Tag> for _<XX>ExternalReferenceCS_3Tag_)
+     - parameter universalTypeName: the universal typename
 
-     - throws:  SerializableError.UnknownTypeName  if the Type is not correctly associated
-
-     - returns: the adapted type name
+     - returns: the resolved type name
      */
-    public static func resolveTypeName(from universalTypeName: String) throws -> String {
+    public static func resolveTypeName(from universalTypeName: String) -> String {
         if let name = Registry._associatedTypesMap[universalTypeName] {
             return name
         } else {
-            throw SerializableError.UnknownTypeName(typeName: universalTypeName)
+            return universalTypeName
         }
     }
 
