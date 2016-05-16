@@ -12,7 +12,7 @@ import Foundation
 //MARK: - Bartleby
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
-// Bartleby 2.0 will implement storage layers for larger data set, and distant aliases
+// Bartleby 2.0 will implement storage layers for larger data set, and distant external references
 public class  Bartleby: Consignee {
 
     // The configuration

@@ -20,21 +20,35 @@ enum ExternalReferenceError: ErrorType {
 
 extension ExternalReference {
 
-    public convenience init(iUID: String, typeName: String) {
+
+    /**
+     Sort of a virtual initializer.
+     E.g : `let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())`
+
+     - parameter iUID:     the instance UID
+     - parameter iTypeName: the instance typeName
+
+     - returns: an External Reference.
+     */
+    public convenience init(iUID: String, iTypeName: String) {
         self.init()
         self.iUID=iUID
-        self.iTypeName=typeName
+        self.iTypeName=iTypeName
     }
 
+    /**
+    External reference from a Generic Collectible Instance
 
+     - parameter from: a Collectible instance
+
+     - returns: the ExternalReference
+     */
     public convenience init<T: Collectible>(from: T) {
         self.init()
         self.iUID=from.UID
         self.iTypeName=T.typeName()
         self.summary=from.summary
     }
-
-
 
 
     /**
@@ -44,16 +58,16 @@ extension ExternalReference {
      - parameter instanceCallBack: the closure that returns the instance.
      */
     public func fetchInstance<T: Collectible>(of: T.Type, instanceCallBack:((instance: T?)->())) {
-        let fetched=Registry.registredObjectByUID(self.iUID) as T?
-        instanceCallBack(instance:fetched)
+        if let fetched = try? Registry.registredObjectByUID(self.iUID) as T {
+            // Return the fetched instance.
+            instanceCallBack(instance:fetched)
+        } else {
+            // Return nil
+            instanceCallBack(instance:nil)
+        }
+
     }
 
-/*
-    public func fetchInstanceAndFail<T: Collectible>(of: T.Type, instanceCallBack:((instance: T?) throws->()))rethrows->() {
-        let fetched = try Registry.guarantedRegistredObjectByUID(self.iUID) as T
-        instanceCallBack(instance:fetched)
-    }
-*/
     // MARK: - Synchronous Dealiasing
 
 
@@ -63,34 +77,8 @@ extension ExternalReference {
      - returns: the local instance
      */
     public func toLocalInstance<T: Collectible>() -> T? {
-        return Registry.registredObjectByUID(self.iUID) as T?
+        return try? Registry.registredObjectByUID(self.iUID) as T
     }
 
-
-    // MARK : Loosely typing TO BE DEPRECATED
-    /*
-
-    /**
-     Asynchronous resolution of the instance, without inferred type.
-     This approach is used in fully dynamic situations in witch the type should not be inferred
-     E.G : interpreters
-     If possible you should use ```to(call:((instance: T?)->()))```
-
-     - parameter instance: the instance return closure
-     */
-    public func fetchCollectibleInstance(instanceCallBack:((instance: Collectible?)->())) {
-        instanceCallBack(instance:Registry.collectibleInstanceByUID(self.iUID))
-    }
-
-
-    /**
-     Local Dealiasing
-
-     - returns: the local instance without inferred type
-     */
-    public func toLocalCollectibleInstance() -> Collectible? {
-        return Registry.collectibleInstanceByUID(self.iUID)
-    }
- */
 
 }

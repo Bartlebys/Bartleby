@@ -40,7 +40,7 @@ public class VerifyLocker: JObject {
                             accessGranted success:(locker: Locker)->(),
                            accessRefused failure:(context: JHTTPResponse)->()) {
         // Let's determine if we should verify locally or not.
-        let lockerRef=ExternalReference(iUID: lockerUID, typeName: Locker.typeName())
+        let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
         let verifyer=VerifyLocker()
         lockerRef.fetchInstance(Locker.self) { (instance) in
             if let _=instance {
@@ -74,7 +74,7 @@ public class VerifyLocker: JObject {
                                      response: nil,
                                      result:nil)
 
-        let lockerRef=ExternalReference(iUID: lockerUID, typeName: Locker.typeName())
+        let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
 
         lockerRef.fetchInstance(Locker.self) { (instance) in
             if let locker=instance {

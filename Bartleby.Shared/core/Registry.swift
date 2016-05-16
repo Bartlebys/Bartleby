@@ -167,18 +167,7 @@ public class Registry: BXDocument {
 
      - returns: the instance
      */
-    public static func registredObjectByUID<T: Collectible>(UID: String) -> T? {
-        return self._instancesByUID[UID] as? T
-    }
-
-    /**
-     Returns the registred instance of by UID
-
-     - parameter UID:
-
-     - returns: the instance
-     */
-    public static func guarantedRegistredObjectByUID<T: Collectible>(UID: String) throws-> T {
+    public static func registredObjectByUID<T: Collectible>(UID: String) throws-> T {
         if let instance=self._instancesByUID[UID] as? T {
             return instance
         } else {
