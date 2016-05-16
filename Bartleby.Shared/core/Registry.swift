@@ -129,7 +129,7 @@ public class Registry: BXDocument {
     //MARK: - Centralized ObjectList By UID
 
     // this centralized dictionary allows to access to any referenced object by its UID
-    // to resolve aliases, cross reference, it simplify instance mobility from a registry to another, etc..
+    // to resolve externalReferences, cross reference, it simplify instance mobility from a registry to another, etc..
     // future implementation may include extension for lazy Storage
 
     private static var _instancesByUID=Dictionary<String, Collectible>()

@@ -26,10 +26,10 @@ user.email="bartleby@bartlebys.org"
 
 
 // Synchronous syntax 
-// when you are sure the alias exists and is loaded
+// when you are sure the external exists and is loaded
 print("# Resolution #")
-let alias=ExternalReference(iUID: user.UID,typeName: User.typeName())
-if let resolved:User=alias.toLocalInstance(){
+let ref=ExternalReference(iUID: user.UID,iTypeName: User.typeName())
+if let resolved:User==.toLocalInstance(){
    print("\(user)")
 }else{
 print("**NOT RESOLVED**")
@@ -42,7 +42,7 @@ print(separator)
 // Asynchronous
 // This approach supports lazy distributed fetching
 print("# Concretion #")
-let _=alias.fetchInstance { (instance) in
+ref.fetchInstance { (instance) in
     if let user=instance {
         print("OK! \(user)")
     }else{
@@ -54,25 +54,25 @@ print(separator)
 
 let tag=Tag()
 tag.color="Red"
-let tagExternalReference:ExternalReference<Tag>=ExternalReference(from:tag)
+let tagExternalReference=ExternalReference(from:tag)
 
 let tag2=Tag()
 tag2.color="Black"
-let tag2ExternalReference:ExternalReference<Tag>=ExternalReference(from:tag2)
+let tag2ExternalReference=ExternalReference(from:tag2)
 
 print(separator)
 
 // False ExternalReference casting Tag to user
 let errorTag=Tag()
 errorTag.color="Green"
-let errorTagExternalReference:ExternalReference<User>=ExternalReference(from:errorTag)
-print(ExternalReference<User>.typeName())
+let errorTagExternalReference=ExternalReference(from:errorTag)
 print(errorTagExternalReference.runTimeTypeName())
 print(errorTagExternalReference.d_collectionName)
 
-let resolveErrorTag=errorTagExternalReference.toLocalInstance()
-let resolvetag=tagExternalReference.toLocalInstance()
-let color=resolvetag?.color
+if let resolvedTag:Tag=tagExternalReference.toLocalInstance(){
+    let color=resolvedTag.color
+}
+
 
 print(separator)
 
@@ -86,5 +86,6 @@ do{
     let a = try JSerializer.deserialize(data)
     print(a.dynamicType)
 
-    if let deserializedExternalReference = try JSerializer.deserialize(data) as? ExternalReference<Tag>{
-     
+    if let deserializedExternalReference = try JSerializer.deserialize(data) as? ExternalReference{
+    }
+}

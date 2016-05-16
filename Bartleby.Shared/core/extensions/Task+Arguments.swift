@@ -57,8 +57,8 @@ extension Task {
      - parameter completionState: the completion state
      */
     final public func forward<T: ForwardableStates>(state: T) {
-        if let aliasOfGroup=self.group {
-            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+        if let groupExtRef=self.group {
+            if let group: TasksGroup = groupExtRef.toLocalInstance() {
                 dispatch_sync(group.dispatchQueue, {
                     if state is Completion {
                         self.completionState  = state as! Completion
@@ -145,7 +145,7 @@ extension Task {
     }
 
     /**
-     Adds a children task to a task and setup its parent and group aliases
+     Adds a children task to a task and setup its parent and group externalReferences
 
      - parameter task: the children to be added.
      */

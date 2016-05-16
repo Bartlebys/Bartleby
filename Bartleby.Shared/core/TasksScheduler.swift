@@ -31,7 +31,7 @@ import Foundation
  When you pause a group the running tasks are completed but the graph execution is interupted.
 
  The Task Scheduler performs locally
- That's why we use local dealiasing "taskExternalReference.toLocalInstance()"
+ That's why we use local reference "taskExternalReference.toLocalInstance()"
  If you need to taskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
 
 
@@ -117,8 +117,8 @@ public class TasksScheduler {
      - parameter completedTask: the reference to the task
      */
     func onTaskCompletion(completedTask: Task) throws {
-        if let aliasOfGroup=completedTask.group {
-            if let group: TasksGroup = aliasOfGroup.toLocalInstance() {
+        if let groupExtRef=completedTask.group {
+            if let group: TasksGroup = groupExtRef.toLocalInstance() {
                 // IT IS A SUCESS.
                 if group.status != .Paused {
                     // Group is Runnable
@@ -162,7 +162,7 @@ public class TasksScheduler {
             }
         } else {
             if TasksScheduler.DEBUG_TASKS {
-                bprint("ERROR: no alias group found in \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
+                bprint("ERROR: no external Reference group found in \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
             }
             throw TasksSchedulerError.TaskGroupNotFound
         }

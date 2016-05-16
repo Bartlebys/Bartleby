@@ -65,7 +65,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var distributed: Bool = false
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)"
-    //The object summary can be used for example by aliases to describe the JObject instance.
+    //The object summary can be used for example by externalReferences to describe the JObject instance.
     public var summary: String?
 
 

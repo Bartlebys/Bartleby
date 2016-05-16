@@ -29,10 +29,10 @@ public func bprint(message: AnyObject?, file: String = "", function: String = ""
 // MARK: - ExternalReferencing
 
 
-public func removeExternalReferenceWith(instanceUID: String, inout from aliases: [ExternalReference]) {
-    for (index, alias) in aliases.enumerate().reverse() {
-        if alias.iUID==instanceUID {
-            aliases.removeAtIndex(index)
+public func removeExternalReferenceWith(instanceUID: String, inout from externalReferences: [ExternalReference]) {
+    for (index, reference) in externalReferences.enumerate().reverse() {
+        if reference.iUID==instanceUID {
+            externalReferences.removeAtIndex(index)
         }
     }
 }
@@ -46,18 +46,18 @@ public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inou
 }
 
 public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [ExternalReference] {
-    var aliases=[ExternalReference]()
+    var externalReferences=[ExternalReference]()
     for instance in instances {
-        aliases.append(ExternalReference(from:instance))
+        externalReferences.append(ExternalReference(from:instance))
     }
-    return aliases
+    return externalReferences
 }
 
 
-public func instancesFromExternalReferences<T: Collectible>(aliases: [ExternalReference]) -> [T] {
+public func instancesFromExternalReferences<T: Collectible>(externalReferences: [ExternalReference]) -> [T] {
     var instances=[T]()
-    for alias in aliases {
-        if let instance: T=alias.toLocalInstance() {
+    for reference in externalReferences {
+        if let instance: T=reference.toLocalInstance() {
             instances.append(instance)
         }
 

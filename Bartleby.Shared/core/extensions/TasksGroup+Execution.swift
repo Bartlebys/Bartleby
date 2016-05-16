@@ -121,7 +121,7 @@ public extension TasksGroup {
 
     /**
      Add a top level concurrent task to the group.
-     And registers the group alias
+     And registers the group
 
      - parameter task:  the top level task to be added
      - parameter group: the group
@@ -151,8 +151,8 @@ public extension TasksGroup {
 
     private func _count(task: Task, inout counter: Int) {
         counter += 1
-        for alias in task.children {
-            if let child: Task=alias.toLocalInstance() {
+        for ref in task.children {
+            if let child: Task=ref.toLocalInstance() {
                 self._count(child, counter: &counter)
             }
         }
@@ -178,8 +178,8 @@ public extension TasksGroup {
         if ( task.status != .Completed ) && (task.status != .Running) {
            counter += 1
         }
-        for alias in task.children {
-            if let child: Task=alias.toLocalInstance() {
+        for ref in task.children {
+            if let child: Task=ref.toLocalInstance() {
                 self._runnableCount(child, counter: &counter)
             }
         }
@@ -201,8 +201,8 @@ public extension TasksGroup {
     private func _rankOfTask(task: Task, inout rankCounter: Int, inout stop: Bool) {
         if stop==false {
             rankCounter += 1
-            for alias in task.children {
-                if let _: Task=alias.toLocalInstance() {
+            for ref in task.children {
+                if let _: Task=ref.toLocalInstance() {
                     stop=true
                 }
             }
@@ -233,8 +233,8 @@ public extension TasksGroup {
             tasks.append(task)
             return
         }
-        for alias in task.children {
-            if let child: Task=alias.toLocalInstance() {
+        for ref in task.children {
+            if let child: Task=ref.toLocalInstance() {
                 if ( child.status != .Completed ) && (child.status != .Running) {
                     tasks.append(child)
                 } else {
@@ -268,8 +268,8 @@ public extension TasksGroup {
         if ( task.status != .Completed ) && (task.status != .Running) {
             tasks.append(task)
         }
-        for alias in task.children {
-            if let child: Task=alias.toLocalInstance() {
+        for ref in task.children {
+            if let child: Task=ref.toLocalInstance() {
                 if child.status == status {
                     tasks.append(child)
                 }
