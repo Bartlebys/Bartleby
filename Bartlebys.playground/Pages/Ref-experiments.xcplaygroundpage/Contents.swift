@@ -29,8 +29,8 @@ user.email="bartleby@bartlebys.org"
 // when you are sure the external exists and is loaded
 print("# Resolution #")
 let ref=ExternalReference(iUID: user.UID,iTypeName: User.typeName())
-if let resolved:User==.toLocalInstance(){
-   print("\(user)")
+if let resolved:User=ref.toLocalInstance(){
+   print("\(resolved)")
 }else{
 print("**NOT RESOLVED**")
 }
@@ -42,7 +42,7 @@ print(separator)
 // Asynchronous
 // This approach supports lazy distributed fetching
 print("# Concretion #")
-ref.fetchInstance { (instance) in
+ref.fetchInstance(User.self) { (instance) in
     if let user=instance {
         print("OK! \(user)")
     }else{

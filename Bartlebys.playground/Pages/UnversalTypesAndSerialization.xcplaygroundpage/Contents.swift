@@ -54,6 +54,3 @@ do {
     print(error)
 }
 
-/*
-var counter=1
-for (k,v) in Registry
