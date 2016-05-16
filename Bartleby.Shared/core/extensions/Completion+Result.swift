@@ -58,13 +58,13 @@ public extension Completion {
 
 
     func setStringResult(s: String) {
-        self.data = s.dataUsingEncoding(Default.TEXT_ENCODING)?.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
+        self.data = s.dataUsingEncoding(Default.STRING_ENCODING)?.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
     }
 
     func getStringResult() -> String? {
         if let b64data = self.data {
             if let plainData = NSData(base64EncodedData: b64data, options: .IgnoreUnknownCharacters) {
-                return String(data: plainData, encoding: Default.TEXT_ENCODING)
+                return String(data: plainData, encoding: Default.STRING_ENCODING)
             }
         }
         return nil

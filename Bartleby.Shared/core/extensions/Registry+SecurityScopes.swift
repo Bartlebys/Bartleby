@@ -131,7 +131,7 @@ extension Registry {
             var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped, documentfileURL:documentfileURL)
             // Encode the bookmark data as a Base64 string.
             shareData=shareData.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
-            let stringifyedData=String(data: shareData, encoding: Default.TEXT_ENCODING)
+            let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             self.registryMetadata.URLBookmarkData[key]=stringifyedData
 
@@ -169,7 +169,7 @@ extension Registry {
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             if let stringifyedData=self.registryMetadata.URLBookmarkData[key] as? String {
-                if let base64EncodedData=stringifyedData.dataUsingEncoding(Default.TEXT_ENCODING) {
+                if let base64EncodedData=stringifyedData.dataUsingEncoding(Default.STRING_ENCODING) {
                     if let data=NSData(base64EncodedData: base64EncodedData, options: [.IgnoreUnknownCharacters]) {
                         var bookmarkIsStale: ObjCBool = false
                         do {

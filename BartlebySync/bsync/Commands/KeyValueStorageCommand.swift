@@ -176,7 +176,7 @@ class KeyValueStorageCommand: CommandBase {
     func input() -> String? {
         let keyboard = NSFileHandle.fileHandleWithStandardInput()
         let inputData = keyboard.availableData
-        return NSString(data: inputData, encoding:Default.TEXT_ENCODING) as? String
+        return NSString(data: inputData, encoding:Default.STRING_ENCODING) as? String
     }
 
 }

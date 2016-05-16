@@ -22,7 +22,7 @@ public class CryptedStringKeyValueTransform: TransformType {
     public func transformFromJSON(value: AnyObject?) -> Object? {
 
         if let s = value as? String {
-            if let jsonData=s.dataUsingEncoding(Default.TEXT_ENCODING) {
+            if let jsonData=s.dataUsingEncoding(Default.STRING_ENCODING) {
                 do {
                     if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(jsonData, options: []) as? Dictionary<String, String> {
                         var dictionary = Dictionary<String, String>()
@@ -48,7 +48,7 @@ public class CryptedStringKeyValueTransform: TransformType {
                     cryptedDictionary[try Bartleby.cryptoDelegate.encryptString(key)]=try Bartleby.cryptoDelegate.encryptString(value)
                 }
                 let jsonData = try NSJSONSerialization.dataWithJSONObject(cryptedDictionary, options: NSJSONWritingOptions.PrettyPrinted)
-                return String(data: jsonData, encoding: Default.TEXT_ENCODING)
+                return String(data: jsonData, encoding: Default.STRING_ENCODING)
             } catch {
                 bprint("\(error)", file: #file, function: #function, line: #line)
             }

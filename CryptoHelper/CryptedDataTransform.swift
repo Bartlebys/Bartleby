@@ -21,7 +21,7 @@ public class CryptedDataTransform: TransformType {
 
     public func transformFromJSON(value: AnyObject?) -> Object? {
         if let s=value as? String {
-            if let data=s.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
+            if let data=s.dataUsingEncoding(Default.STRING_ENCODING, allowLossyConversion:false) {
                 return try? Bartleby.cryptoDelegate.decryptData(data)
             }
         }

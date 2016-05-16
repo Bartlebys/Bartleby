@@ -93,12 +93,12 @@ import Foundation
         do {
             // TODO: @md Check common usage for option
             let data=try NSData(contentsOfFile: path, options: [])
-            if let s = String(data: data, encoding: Default.TEXT_ENCODING) {
+            if let s = String(data: data, encoding: Default.STRING_ENCODING) {
                 let read = Completion.successState()
                 read.setStringResult(s)
                 handlers.on(read)
             } else {
-                handlers.on(Completion.failureState("\(path) doesn't contains valid data for given encoding \(Default.TEXT_ENCODING)", statusCode: .Unsupported_Media_Type))
+                handlers.on(Completion.failureState("\(path) doesn't contains valid data for given encoding \(Default.STRING_ENCODING)", statusCode: .Unsupported_Media_Type))
             }
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromNSError(error))
@@ -122,7 +122,7 @@ import Foundation
                                           handlers: Handlers) -> () {
         do {
             // TODO: @md Check common usage for atomically
-            try string.writeToFile(path, atomically: true, encoding: Default.TEXT_ENCODING)
+            try string.writeToFile(path, atomically: true, encoding: Default.STRING_ENCODING)
             handlers.on(Completion.successState())
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromNSError(error))

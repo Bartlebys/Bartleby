@@ -186,7 +186,7 @@ public class  Bartleby: Consignee {
         // (!) NSUUID are not suitable for MONGODB as Primary Ids.
         // We need to encode them we have choosen base64
         let uid=NSUUID().UUIDString
-        let utf8str = uid.dataUsingEncoding(Default.TEXT_ENCODING)
+        let utf8str = uid.dataUsingEncoding(Default.STRING_ENCODING)
         return utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue:0))
     }
 

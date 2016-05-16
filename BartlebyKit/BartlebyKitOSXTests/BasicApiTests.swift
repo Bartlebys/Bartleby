@@ -179,7 +179,7 @@ class BasicApiTests: XCTestCase {
                                 XCTAssertTrue(uidMatchs, "UID should match")
 
                                 let password=user.password
-                                let passwordIsMasked=(password.lengthOfBytesUsingEncoding(Default.TEXT_ENCODING)==0)
+                                let passwordIsMasked=(password.lengthOfBytesUsingEncoding(Default.STRING_ENCODING)==0)
                                 XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
         }) { (context) -> () in
@@ -208,7 +208,7 @@ class BasicApiTests: XCTestCase {
                                     let uidMatchs=(user.UID==BasicApiTests._createdUser!.UID)
                                     XCTAssertTrue(uidMatchs, "UID  should match")
 
-                                    let passwordIsMasked=(user.password.lengthOfBytesUsingEncoding(Default.TEXT_ENCODING)==0)
+                                    let passwordIsMasked=(user.password.lengthOfBytesUsingEncoding(Default.STRING_ENCODING)==0)
                                     XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
                                 } else {

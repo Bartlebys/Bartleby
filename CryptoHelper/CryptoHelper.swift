@@ -26,7 +26,7 @@ import Foundation
     }
 
     // We use a hash of the _salt+key as initialization vector
-    lazy var initializationVector: NSData?=CryptoHelper.hash(self.salt.stringByAppendingString(self.key)).dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false)
+    lazy var initializationVector: NSData?=CryptoHelper.hash(self.salt.stringByAppendingString(self.key)).dataUsingEncoding(Default.STRING_ENCODING, allowLossyConversion:false)
 
 
     // MARK: - Cryptography
@@ -123,7 +123,7 @@ import Foundation
     // MARK: Crypt operation
 
     private func _encryptOperation(operation: CCOperation, on data: NSData) throws ->NSData {
-        if let d=self.key.dataUsingEncoding(Default.TEXT_ENCODING, allowLossyConversion:false) {
+        if let d=self.key.dataUsingEncoding(Default.STRING_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
         } else {
@@ -165,7 +165,7 @@ import Foundation
 
     public static func hash(string: String) -> String {
         var digest = [UInt8](count: Int(CC_MD5_DIGEST_LENGTH), repeatedValue: 0)
-        if let data = string.dataUsingEncoding(Default.TEXT_ENCODING) {
+        if let data = string.dataUsingEncoding(Default.STRING_ENCODING) {
             CC_MD5(data.bytes, CC_LONG(data.length), &digest)
         }
         var digestHex = ""

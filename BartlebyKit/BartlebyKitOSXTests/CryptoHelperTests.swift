@@ -76,11 +76,11 @@ class CryptoHelperTests: XCTestCase {
             // Let's convert the encrypted base64 string to an encrypted buffer
             // if let encryptedData = NSData(base64EncodedString: encryptedString, options: [.IgnoreUnknownCharacters]) {
             // BPDS > @md  No that's not correct !
-            if let encryptedData = encryptedString.dataUsingEncoding(Default.TEXT_ENCODING) {
+            if let encryptedData = encryptedString.dataUsingEncoding(Default.STRING_ENCODING) {
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)
                 // And convert its content to a string
-                let decryptedString = String(data: decryptedData, encoding: Default.TEXT_ENCODING)
+                let decryptedString = String(data: decryptedData, encoding: Default.STRING_ENCODING)
                 // Let's transform it to a string
                 XCTAssertEqual(decryptedString, "martin")
             } else {
@@ -94,10 +94,10 @@ class CryptoHelperTests: XCTestCase {
 
     func testEncryptDataDecrypString() {
         let string = "martin"
-        if let data = string.dataUsingEncoding(Default.TEXT_ENCODING) {
+        if let data = string.dataUsingEncoding(Default.STRING_ENCODING) {
             do {
                 let encryptedData = try CryptoHelperTests._cryptoHelper.encryptData(data)
-                if let dataString=String(data: encryptedData, encoding: Default.TEXT_ENCODING) {
+                if let dataString=String(data: encryptedData, encoding: Default.STRING_ENCODING) {
                     let decryptedString = try CryptoHelperTests._cryptoHelper.decryptString(dataString)
                     XCTAssertEqual(decryptedString, "martin")
                 } else {

@@ -152,7 +152,7 @@ class CreateDirectiveCommand: CommandBase {
                     let filePath=filePath.value!
                     do {
                         JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                        try JSONString.writeToFile(filePath, atomically: true, encoding: Default.TEXT_ENCODING)
+                        try JSONString.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
                     } catch {
                         print("\(error)")
                         exit(EX__BASE)

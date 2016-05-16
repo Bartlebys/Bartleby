@@ -55,14 +55,14 @@ class TransformTests: XCTestCase {
         let transform = Base64DataTransform()
 
         let s1 = "Une année de plus"
-        let data1 = s1.dataUsingEncoding(Default.TEXT_ENCODING)
+        let data1 = s1.dataUsingEncoding(Default.STRING_ENCODING)
 
         let json = transform.transformToJSON(data1)
 
         print("json:\(json)")
 
         if let data2 = transform.transformFromJSON(json) {
-            let s2 = String(data: data2, encoding: Default.TEXT_ENCODING)
+            let s2 = String(data: data2, encoding: Default.STRING_ENCODING)
             XCTAssertEqual(s1, s2)
         } else {
             XCTFail("Error transforming string")

@@ -70,7 +70,7 @@ public enum BsyncAdminError: ErrorType {
             }
             if let jsonString=Mapper().toJSONString(directives) {
                 do {
-                    try jsonString.writeToURL(fileURL, atomically: true, encoding:Default.TEXT_ENCODING)
+                    try jsonString.writeToURL(fileURL, atomically: true, encoding:Default.STRING_ENCODING)
                 } catch {
                     let baseMessage=NSLocalizedString("We were not able to save the directives", comment: "We were not able to save the directives")
                     throw BsyncAdminError.DirectivesAreNotValid(explanations:"\(baseMessage)\n\(error)")
@@ -136,11 +136,11 @@ public enum BsyncAdminError: ErrorType {
         do {
             let dictionary=hashMap.dictionaryRepresentation()
             let data=try NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
-            guard let string: NSString=NSString.init(data: data, encoding: Default.TEXT_ENCODING) else {
+            guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING) else {
                 throw BsyncAdminError.HashMapViewError(explanations: "Data encoding as failed")
             }
             let crypted: NSString=try Bartleby.cryptoDelegate.encryptString(string as String)
-            try crypted.writeToFile(hashmapviewPath, atomically: true, encoding: Default.TEXT_ENCODING)
+            try crypted.writeToFile(hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING)
         }
     }
 
