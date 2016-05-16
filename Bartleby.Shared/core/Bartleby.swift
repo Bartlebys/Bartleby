@@ -101,7 +101,7 @@ public class  Bartleby: Consignee {
 
 
     // MARK: -
-    // TODO: @md Check crypto key requirement
+    // TODO: @md #crypto Check crypto key requirement
     static public func isValidKey(key: String) -> Bool {
         return key.characters.count >= 32
     }

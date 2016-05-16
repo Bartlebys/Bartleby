@@ -21,7 +21,7 @@ import Foundation
 #endif
 
 
-// TODO: @md write the Unit test for OSX and IOS + integrate in all the targets
+// TODO: @md #test write the Unit test for OSX and IOS + integrate in all the targets
 public class ImageTransform: TransformType {
 
     public typealias Object = BXImage

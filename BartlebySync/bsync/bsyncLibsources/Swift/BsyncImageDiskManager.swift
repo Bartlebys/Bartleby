@@ -27,9 +27,6 @@
         var encryption="AES-128"
         var file_system="HFS+J"
         
-        // TODO: @md ???
-        var password: String?
-        
         // https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/hdiutil.1.html
         // echo -n popok|hdiutil create -size 30g -type SPARSE -fs HFS+J -volname "Video Locker" -nospotlight -stdinpass -encryption AES-128 ~/Desktop/V
         // echo -n popok|hdiutil attach -stdinpass /Users/bpds/Desktop/V.sparseimage
@@ -54,24 +51,18 @@
          - parameter password:      the password (if omitted the disk image will not be crypted
          */
         public func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?, handlers: Handlers) {
-            
-            // TODO: @md ???
-            let path: NSString=NSString(string: imageFilePath)
-            let imagePath: String=path as String
-            self.password=password
-            
             // Main task
             let createImageDiskTask=NSTask()
             createImageDiskTask.launchPath="/usr/bin/hdiutil"
             
-            if let password=password {
+            if let password = password {
                 let interPipe=NSPipe()
                 // Password injection task
-                let passwordTask=NSTask()
-                passwordTask.launchPath="/bin/echo"
-                passwordTask.standardOutput=interPipe
+                let passwordTask = NSTask()
+                passwordTask.launchPath = "/bin/echo"
+                passwordTask.standardOutput = interPipe
                 passwordTask.arguments=["-n", password]
-                createImageDiskTask.standardInput=interPipe
+                createImageDiskTask.standardInput = interPipe
                 createImageDiskTask.arguments=[
                     "create",
                     "-size", size,
@@ -79,12 +70,12 @@
                     "-fs", self.file_system,
                     "-nospotlight",
                     // "-debug",
-                    // TODO: @md Try to get progress with puppetstring
+                    // TODO: @md #bsync Try to get progress with puppetstring
                     //"-puppetstrings",
                     //"-verbose",
                     "-stdinpass",
                     "-volname", volumeName,
-                    "-encryption", self.encryption, imagePath
+                    "-encryption", self.encryption, imageFilePath
                 ]
                 
                 passwordTask.launch()
@@ -101,7 +92,7 @@
                     //"-puppetstrings",
                     //"-verbose",
                     "-volname", volumeName,
-                    imagePath
+                    imageFilePath
                 ]
             }
             

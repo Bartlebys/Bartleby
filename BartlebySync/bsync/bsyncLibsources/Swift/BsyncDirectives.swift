@@ -47,7 +47,7 @@ import Foundation
         super.init()
     }
 
-    // TODO: @md Test credential are not nil when using distant url (source or destination)
+    // TODO: @md #test #bsync Test credential are not nil when using distant url (source or destination)
     public func areValid()->(valid: Bool, message: String?) {
         if sourceURL == nil || destinationURL == nil {
             return (false, NSLocalizedString("The source and the destination must be set", comment: "The source and the destination must be set"))

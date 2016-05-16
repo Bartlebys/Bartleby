@@ -241,7 +241,19 @@
 
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
+     
+     Here is an example showing how to extract the string
+     in the completion handler:
+     
+        { (content) in
+            if let s = content.getStringArrayResult() where content.success {
+                // Handle success
+                ...
+            } else {
+                // Handle error
+                ...
+            }
+        }
      */
-    // TODO @md Explain how to extract result
     func contentsOfDirectoryAtPath(path: String, handler: ComposedHandler)
 }

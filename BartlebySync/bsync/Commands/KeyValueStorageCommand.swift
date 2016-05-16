@@ -100,7 +100,7 @@ class KeyValueStorageCommand: CommandBase {
 
                 try kvs.open()
 
-                // TODO: @md Restore behavior
+                // TODO: @md #bsync Restore behavior
 //                switch op.value {
 //                case .Upsert?:
 //                    if let k=keyArg.value, v=value.value {

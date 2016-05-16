@@ -100,7 +100,7 @@ public enum BsyncAdminError: ErrorType {
                 }, andCompletionBlock: {(success, statusCode, message) in
                     let c = Completion()
                     c.success = success
-                    // TODO: @md Use CompletionStatus in PdsSync
+                    // TODO: @md #bsync Use CompletionStatus in PdsSync
                     c.statusCode = statusCode
                     c.message = message
                     handler.on(c)

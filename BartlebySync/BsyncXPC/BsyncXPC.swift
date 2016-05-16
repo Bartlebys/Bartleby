@@ -241,7 +241,6 @@ import Foundation
         if var JSONString: NSString = Mapper().toJSONString(directives) {
             do {
                 JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                // TODO: @md Use self.writeToFile
                 try JSONString.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
             } catch {
                 handlers.on(Completion.failureState("\(error)", statusCode: .Undefined))
