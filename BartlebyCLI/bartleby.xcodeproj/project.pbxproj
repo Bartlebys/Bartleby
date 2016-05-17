@@ -95,7 +95,6 @@
 		E50145001CE8B96400EDD9C3 /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501445C1CE8B96400EDD9C3 /* UpdateUsers.swift */; };
 		E50145011CE8B96400EDD9C3 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501445F1CE8B96400EDD9C3 /* Base64DataTransform.swift */; };
 		E50145021CE8B96400EDD9C3 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144601CE8B96400EDD9C3 /* ImageTransform.swift */; };
-		E50145041CE8B96400EDD9C3 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144621CE8B96400EDD9C3 /* JDataPerformer.swift */; };
 		E50145051CE8B96400EDD9C3 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144631CE8B96400EDD9C3 /* JDocument.swift */; };
 		E50145061CE8B96400EDD9C3 /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144641CE8B96400EDD9C3 /* JHTTPCommand.swift */; };
 		E50145071CE8B96400EDD9C3 /* JHTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144651CE8B96400EDD9C3 /* JHTTPResponse.swift */; };
@@ -302,7 +301,6 @@
 		E501445C1CE8B96400EDD9C3 /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
 		E501445F1CE8B96400EDD9C3 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E50144601CE8B96400EDD9C3 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
-		E50144621CE8B96400EDD9C3 /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
 		E50144631CE8B96400EDD9C3 /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		E50144641CE8B96400EDD9C3 /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
 		E50144651CE8B96400EDD9C3 /* JHTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPResponse.swift; sourceTree = "<group>"; };
@@ -582,7 +580,6 @@
 				E501445F1CE8B96400EDD9C3 /* Base64DataTransform.swift */,
 				E50146851CE8CB2800EDD9C3 /* CollectionMetadatum+Proxy.swift */,
 				E50144601CE8B96400EDD9C3 /* ImageTransform.swift */,
-				E50144621CE8B96400EDD9C3 /* JDataPerformer.swift */,
 				E50144631CE8B96400EDD9C3 /* JDocument.swift */,
 				E50144641CE8B96400EDD9C3 /* JHTTPCommand.swift */,
 				E50144651CE8B96400EDD9C3 /* JHTTPResponse.swift */,
@@ -1026,7 +1023,6 @@
 				E50145221CE8B96400EDD9C3 /* Collectible.swift in Sources */,
 				E501451F1CE8B96400EDD9C3 /* Global.swift in Sources */,
 				E50144B21CE8B96400EDD9C3 /* TriggersCollectionController.swift in Sources */,
-				E50145041CE8B96400EDD9C3 /* JDataPerformer.swift in Sources */,
 				E501453E1CE8B96400EDD9C3 /* HTTPManager.swift in Sources */,
 				E50144D31CE8B96400EDD9C3 /* DeleteLockers.swift in Sources */,
 				E50144EB1CE8B96400EDD9C3 /* ReadTasksGroupsByIds.swift in Sources */,

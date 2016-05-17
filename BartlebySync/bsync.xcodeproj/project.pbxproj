@@ -625,10 +625,6 @@
 		E50143071CE8B93900EDD9C3 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501415F1CE8B93900EDD9C3 /* ImageTransform.swift */; };
 		E50143081CE8B93900EDD9C3 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501415F1CE8B93900EDD9C3 /* ImageTransform.swift */; };
 		E50143091CE8B93900EDD9C3 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501415F1CE8B93900EDD9C3 /* ImageTransform.swift */; };
-		E501430E1CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */; };
-		E501430F1CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */; };
-		E50143101CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */; };
-		E50143111CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */; };
 		E50143121CE8B93900EDD9C3 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141621CE8B93900EDD9C3 /* JDocument.swift */; };
 		E50143131CE8B93900EDD9C3 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141621CE8B93900EDD9C3 /* JDocument.swift */; };
 		E50143141CE8B93900EDD9C3 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141621CE8B93900EDD9C3 /* JDocument.swift */; };
@@ -1174,7 +1170,6 @@
 		E501415B1CE8B93900EDD9C3 /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
 		E501415E1CE8B93900EDD9C3 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E501415F1CE8B93900EDD9C3 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
-		E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
 		E50141621CE8B93900EDD9C3 /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		E50141631CE8B93900EDD9C3 /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
 		E50141641CE8B93900EDD9C3 /* JHTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPResponse.swift; sourceTree = "<group>"; };
@@ -1552,7 +1547,6 @@
 				E501415E1CE8B93900EDD9C3 /* Base64DataTransform.swift */,
 				E501415F1CE8B93900EDD9C3 /* ImageTransform.swift */,
 				E50146801CE8CB0F00EDD9C3 /* CollectionMetadatum+Proxy.swift */,
-				E50141611CE8B93900EDD9C3 /* JDataPerformer.swift */,
 				E50141621CE8B93900EDD9C3 /* JDocument.swift */,
 				E50141631CE8B93900EDD9C3 /* JHTTPCommand.swift */,
 				E50141641CE8B93900EDD9C3 /* JHTTPResponse.swift */,
@@ -2206,7 +2200,6 @@
 				5B5D097A1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09861CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09371CDC91C4001FB281 /* Stream.swift in Sources */,
-				E50143111CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */,
 				E501428D1CE8B93900EDD9C3 /* ReadLockersByQuery.swift in Sources */,
 				5B5D09231CDC91B4001FB281 /* DateFormatterTransform.swift in Sources */,
 				E501426D1CE8B93900EDD9C3 /* DeleteTriggers.swift in Sources */,
@@ -2685,7 +2678,6 @@
 				E50142B21CE8B93900EDD9C3 /* ReadTriggerById.swift in Sources */,
 				E50143EA1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */,
 				E50142F61CE8B93900EDD9C3 /* UpdateTriggers.swift in Sources */,
-				E501430E1CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */,
 				E53E27591CA572940079ED23 /* ParameterEncoding.swift in Sources */,
 				E53E28D81CA572D80079ED23 /* NSData+CRC.m in Sources */,
 				E50A6EFE1CC8DE4D00F89311 /* CryptedSerializableTransform.swift in Sources */,
@@ -2879,7 +2871,6 @@
 				E501426F1CE8B93900EDD9C3 /* DeleteUser.swift in Sources */,
 				5BB60F511CBFE4E200D23B4F /* CryptedStringTransform.swift in Sources */,
 				E501427B1CE8B93900EDD9C3 /* ReadGroupsByIds.swift in Sources */,
-				E501430F1CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */,
 				E501438F1CE8B93900EDD9C3 /* CollectionMetadatumProtocol.swift in Sources */,
 				E50141F71CE8B93900EDD9C3 /* Task.swift in Sources */,
 				E552B7C81C3D4E49001CD53B /* BsyncLocalAnalyzer.swift in Sources */,
@@ -3103,7 +3094,6 @@
 				E50143441CE8B93900EDD9C3 /* Consignee.swift in Sources */,
 				E55C924E1CBF84ED008163F6 /* NetworkReachabilityManager.swift in Sources */,
 				5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
-				E50143101CE8B93900EDD9C3 /* JDataPerformer.swift in Sources */,
 				E55C924F1CBF84ED008163F6 /* Notifications.swift in Sources */,
 				E5B98EB61CC0E6CD00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
 				E50143581CE8B93900EDD9C3 /* NSNotification+Completion.swift in Sources */,

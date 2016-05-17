@@ -231,8 +231,6 @@
 		E5B776581CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */; };
 		E5B776591CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */; };
 		E5B7765A1CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */; };
-		E5B7765B1CDCDDF2007261E1 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775641CDCDDF2007261E1 /* JDataPerformer.swift */; };
-		E5B7765C1CDCDDF2007261E1 /* JDataPerformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775641CDCDDF2007261E1 /* JDataPerformer.swift */; };
 		E5B7765D1CDCDDF2007261E1 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775651CDCDDF2007261E1 /* JDocument.swift */; };
 		E5B7765E1CDCDDF2007261E1 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775651CDCDDF2007261E1 /* JDocument.swift */; };
 		E5B7765F1CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775661CDCDDF2007261E1 /* JHTTPCommand.swift */; };
@@ -503,7 +501,6 @@
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
-		E5B775641CDCDDF2007261E1 /* JDataPerformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDataPerformer.swift; sourceTree = "<group>"; };
 		E5B775651CDCDDF2007261E1 /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		E5B775661CDCDDF2007261E1 /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
 		E5B775671CDCDDF2007261E1 /* JHTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPResponse.swift; sourceTree = "<group>"; };
@@ -867,7 +864,6 @@
 			isa = PBXGroup;
 			children = (
 				E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */,
-				E5B775641CDCDDF2007261E1 /* JDataPerformer.swift */,
 				E5B775651CDCDDF2007261E1 /* JDocument.swift */,
 				E5B775661CDCDDF2007261E1 /* JHTTPCommand.swift */,
 				E5B775671CDCDDF2007261E1 /* JHTTPResponse.swift */,
@@ -1279,7 +1275,6 @@
 				E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */,
 				E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */,
 				E5B7766B1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
-				E5B7765B1CDCDDF2007261E1 /* JDataPerformer.swift in Sources */,
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769B1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E5B776BB1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */,
@@ -1441,7 +1436,6 @@
 				E57A4C311CE8A34E0044106A /* ReadPermissionsByIds.swift in Sources */,
 				E5B776761CDCDDF2007261E1 /* Bartleby.swift in Sources */,
 				E5B7766C1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
-				E5B7765C1CDCDDF2007261E1 /* JDataPerformer.swift in Sources */,
 				E57A4BE71CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769C1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E5B776BC1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */,

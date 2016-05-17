@@ -140,15 +140,20 @@ class SerializableInvocationsTests: XCTestCase {
 
     }
 
-    func test002__PrintUserTask_Via_NSData_Performer() {
+    func test002__PrintUserTask_Invocation() {
         let user=User()
         user.email="benoit@chaosmose.com"
         do {
             let invocation = PrintUser(arguments:user)
             // Serialize to NSData
             let serializedInvocation: NSData=invocation.serialize()
-            // Try to execute
-            try serializedInvocation.executeSerializedTask()
+            let deserializedInvocation = try JSerializer.deserialize(serializedInvocation)
+            if let invocable=deserializedInvocation as? Invocable {
+                try invocable.invoke()
+            } else {
+                XCTFail("Deserialized instance is not Invocable")
+            }
+
             XCTAssert(true)
         } catch let exception {
             XCTFail("\(exception)")
@@ -219,15 +224,19 @@ class SerializableInvocationsTests: XCTestCase {
 
     }
 
-    func test007__RePrintUserWithoutObjc_Via_NSData_Performer() {
+    func test007__RePrintUserWithoutObjc_Invocation() {
         let user=User()
         user.email="benoit@chaosmose.com"
         do {
             let invocation = PrintUser(arguments:user)
             // Serialize to NSData
             let serializedInvocation: NSData=invocation.serialize()
-            // Try to execute
-            try serializedInvocation.executeSerializedTask()
+            let deserializedInvocation = try JSerializer.deserialize(serializedInvocation)
+            if let invocable=deserializedInvocation as? Invocable {
+                try invocable.invoke()
+            } else {
+               XCTFail("Deserialized instance is not Invocable")
+            }
             XCTAssert(true)
         } catch let exception {
             XCTFail("\(exception)")
