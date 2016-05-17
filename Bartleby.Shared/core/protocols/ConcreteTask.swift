@@ -9,11 +9,6 @@
 import Foundation
 
 
-public protocol SerializableArguments {
-    // (!) This method is implemented as final in a Task extension to force Type Matching Safety
-    // it throws Task.ArgumentsTypeMisMatch
-    func arguments<ExpectedType: Collectible>() throws -> ExpectedType
-}
 
 public protocol Invocable: Collectible {
 
@@ -39,25 +34,46 @@ public protocol ForwardableStates {
 }
 
 
-public protocol ConcreteTask: SerializableArguments, Invocable {
+/*
+
+ To implement a concreteTask :
+
+ 1. Inheritate from Task or ReactiveTask.
+ 2. You MUST define an associated type.
+ 3. The convenience initializer MUST Call self.configureWithArguments(arguments)
+    E.g:    convenience required public init(arguments: ArgumentType) {
+                self.init()
+                self.configureWithArguments(arguments)
+            }
+
+
+
+ */
+public protocol ConcreteTask: Invocable {
 
     /**
-     This initializer **MUST:**
-     - Store the Serialized Argument into argumentsData
-     - Set the explicit concrete task class name
+     You MUST define an associated type.
 
-     E.g :
-     ```swift
-     convenience required public init (arguments: Serializable) {
-        self.init()
-        self.argumentsData=arguments.serialize()
-        self.taskClassName=self.typeName // (!) Used to force the transitionnal casting
-     }
+     - returns: A collectible argument type
+     */
+    associatedtype ArgumentType:Collectible
+
+    /**
+     This initializer MUST !
+     - Call self.configureWithArguments(arguments)
+
      ```
 
      - parameter arguments: the arguments
 
      - returns: a well initialized task.
      */
-    init(arguments: Collectible)
+    init(arguments: ArgumentType)
+
+
+
+    // (!) This method is implemented as final in a Task extension to force Type Matching Safety
+    // it throws Task.ArgumentsTypeMisMatch
+    func arguments<ExpectedType:Collectible>() throws -> ExpectedType
+
 }

@@ -16,6 +16,9 @@ import BartlebyKit
 
 @objc(PrintUser) public class PrintUser: Task, ConcreteTask {
 
+
+    public typealias ArgumentType=User
+
     // Universal type support
     override public class func typeName() -> String {
         return "PrintUser"
@@ -26,7 +29,7 @@ import BartlebyKit
 
      - returns: a well initialized task.
      */
-    convenience required public init (arguments: Collectible) {
+    convenience required public init (arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
     }
@@ -34,7 +37,7 @@ import BartlebyKit
 
     override public func invoke() throws {
         try super.invoke()
-        if let user: User = try self.arguments() as User {
+        if let user: ArgumentType = try self.arguments() as ArgumentType {
             if let email = user.email {
                 bprint("\(email)", file:#file, function:#function, line: #line)
             } else {
@@ -50,6 +53,9 @@ import BartlebyKit
 
 public class RePrintUserWithoutObjc: Task, ConcreteTask {
 
+
+    public typealias ArgumentType=User
+
     // Universal type support
     override public class func typeName() -> String {
         return "RePrintUserWithoutObjc"
@@ -60,7 +66,7 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
 
      - returns: a well initialized task.
      */
-    convenience required public init (arguments: Collectible) {
+    convenience required public init (arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
     }
@@ -68,7 +74,7 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
 
     public override func invoke() throws {
 
-        if let user: User = try self.arguments() as User {
+        if let user: ArgumentType = try self.arguments() as ArgumentType {
             if let email = user.email {
                 bprint("\(email)", file:#file, function:#function, line: #line)
             } else {
@@ -128,7 +134,7 @@ class SerializableInvocationsTests: XCTestCase {
             user.email="benoit@pereira-da-silva.com"
             let printer = PrintUser(arguments:user)
             let serializedInvocation=printer.serialize()
-            if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
+            if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? Task {
                 try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
@@ -212,7 +218,7 @@ class SerializableInvocationsTests: XCTestCase {
             user.email="benoit@pereira-da-silva.com"
             let printer = PrintUser(arguments:user)
             let serializedInvocation=printer.serialize()
-            if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
+            if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? Task {
                 try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {

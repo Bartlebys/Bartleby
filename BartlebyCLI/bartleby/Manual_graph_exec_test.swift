@@ -122,7 +122,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public override func invoke() throws {
             try super.invoke()
-            if let object: JObject = try self.arguments() as JObject {
+            if let object: ArgumentType = try self.arguments() as ArgumentType {
                 if let summary = object.summary {
                     ShowSummary.counter += 1
                     print("\(ShowSummary.counter)# \(summary)")

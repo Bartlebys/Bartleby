@@ -23,6 +23,9 @@ let PseudoSequential=GraphTestMode.Chained
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
 
+    
+    public typealias ArgumentType=JObject
+    
     public static var executionCounter=0
     public static var randomPause=false
     public static var randomPausePercentProbability: UInt32=1
@@ -49,7 +52,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
      - returns: a well initialized task.
      */
-    convenience required public init (arguments: Collectible) {
+    convenience required public init (arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
         if let s=arguments.summary {

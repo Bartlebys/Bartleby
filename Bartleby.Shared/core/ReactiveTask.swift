@@ -9,24 +9,12 @@
 import Foundation
 
 
+// Abstract Reactive Task
 @objc(ReactiveTask) public class  ReactiveTask: Task {
 
     // Universal type support
     override public class func typeName() -> String {
        return "ReactiveTask"
-    }
-
-    /**
-     The convenience intializer that must be overriden.
-     You should always serialize the argument during initialization phasse!
-
-     - parameter arguments: the arguments to be serialized
-
-     - returns: the task instance.
-     */
-    convenience required public init (arguments: Collectible) {
-        self.init()
-        self.configureWithArguments(arguments)
     }
 
     // MARK: Reactive Handlers

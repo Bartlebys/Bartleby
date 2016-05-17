@@ -18,6 +18,8 @@ import Foundation
 
 public class  PushOperationTask: ReactiveTask, ConcreteTask {
 
+    public typealias ArgumentType=Operation
+
     // Universal type support
     override public class func typeName() -> String {
         return "PushOperationTask"
@@ -30,7 +32,7 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
 
      - returns: a well initialized task.
      */
-    convenience required public init (arguments: Collectible) {
+    convenience required public init(arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
     }
@@ -40,8 +42,7 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
      */
     public override func invoke() throws {
         try super.invoke()
-        if let arguments: Operation = try? self.arguments() {
-            let operation=arguments
+        if let operation: ArgumentType = try? self.arguments() {
             if let serialized=operation.toDictionary {
                 if let command = try? JSerializer.deserializeFromDictionary(serialized) {
                     if let jcommand=command as? JHTTPCommand {

@@ -27,17 +27,21 @@ public enum TaskError: ErrorType {
 // MARK: - Serializable Arguments
 
 
-extension Task:SerializableArguments {
+extension Task {
+
+
 
     /**
+     Final argument getter.
+
      - throws: Error on deserialization and type missmatch
 
      - returns: A collectible object
      */
-    public final func arguments<ArgumentType: Collectible>() throws -> ArgumentType {
+    public final func arguments<ExpectedType:Collectible>() throws -> ExpectedType {
         if let argumentsData = self.argumentsData {
             let deserialized=try JSerializer.deserialize(argumentsData)
-            if let arguments = deserialized as? ArgumentType {
+            if let arguments = deserialized as? ExpectedType {
                 return arguments
             } else {
                 throw TaskError.ArgumentsTypeMisMatch
@@ -103,7 +107,7 @@ extension Task {
             if let group: TasksGroup = groupExtRef.toLocalInstance() {
                     if let state = state as? Completion {
                         self.completionState  = state
-                        
+
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
 
