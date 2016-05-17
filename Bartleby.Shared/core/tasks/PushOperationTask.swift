@@ -51,6 +51,13 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
                         jcommand.push(sucessHandler: { (context) in
                             let completion=Completion.successState()
                             completion.setResult(context as! JHTTPResponse)
+
+                            // Clean up the successful task.
+                            let spaceUID=operation.spaceUID
+                            if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
+                                registry.delete(operation)
+                            }
+
                             self.reactiveHandlers.on(completion)
                             }, failureHandler: { (context) in
                                 let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))

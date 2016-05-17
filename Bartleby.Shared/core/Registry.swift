@@ -39,13 +39,13 @@ func ==(lhs: Registry, rhs: Registry) -> Bool {
 
 /*
 
-A Registry stores collections of Objects in memory for high performance read and write access
-(future versions may implement incremental storage, a modified collection is actually globally serialized)
-The registry can be used to developp apps that performs on and off line.
-In a Document based app Each document have its own Registry.
-Documents can be shared between iOS, tvOS and OSX.
+ A Registry stores collections of Objects in memory for high performance read and write access
+ (future versions may implement incremental storage, a modified collection is actually globally serialized)
+ The registry can be used to developp apps that performs on and off line.
+ In a Document based app Each document have its own Registry.
+ Documents can be shared between iOS, tvOS and OSX.
 
-*/
+ */
 public class Registry: BXDocument {
 
     // A notification that is sent when the registry is fully loaded.
@@ -213,16 +213,16 @@ public class Registry: BXDocument {
     #else
 
     public init() {
-        super.init(fileURL: NSURL())
+    super.init(fileURL: NSURL())
     }
 
     public init(fileUrl url: NSURL) {
-        super.init(fileURL: url)
-        self.configureSchema()
-        // Setup the default collaboration server
-        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-        // First registration
-        Bartleby.sharedInstance.declare(self)
+    super.init(fileURL: url)
+    self.configureSchema()
+    // Setup the default collaboration server
+    self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
+    // First registration
+    Bartleby.sharedInstance.declare(self)
     }
 
     #endif
@@ -233,13 +233,13 @@ public class Registry: BXDocument {
 
     /**
 
-    In this func you should :
+     In this func you should :
 
-    #1  Define the Schema
-    #2  Register the collections (by calling registerCollections())
-    #3  Replace the collections proxies (if you want to use cocoa bindings)
+     #1  Define the Schema
+     #2  Register the collections (by calling registerCollections())
+     #3  Replace the collections proxies (if you want to use cocoa bindings)
 
-    */
+     */
     public func configureSchema() {
 
     }
@@ -489,6 +489,106 @@ public class Registry: BXDocument {
     public func registryWillSave() {
 
     }
+
+
+/*
+
+
+    /**
+     Pushes the operation
+
+     - parameter operations: the provionned operations
+     - parameter iterator:   the iteraror reference for recursive calls.
+     */
+    public func pushChainedOperation(operations: [Operation], inout iterator: IndexingGenerator<[Operation]>) {
+        if let currentOperation=iterator.next() {
+            self.pushOperation(currentOperation, sucessHandler: { (context) -> () in
+                if let operationDictionary=currentOperation.data {
+                    if let referenceName=operationDictionary[Default.REFERENCE_NAME_KEY],
+                        uid=operationDictionary[Default.UID_KEY] {
+                        self.delete(currentOperation)
+                        do {
+                            let ic: OperationsCollectionController = try self.getCollection()
+                            Bartleby.bprint("\(ic.UID)->OPCOUNT_AFTER_EXEC=\(ic.items.count) \(referenceName) \(uid)", file: #file, function: #function, line: #line)
+                        } catch {
+                            Bartleby.bprint("OperationsCollectionController getCollection \(error)", file: #file, function: #function, line: #line)
+                        }
+                    }
+                }
+                Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: {
+                    self.pushChainedOperation(operations, iterator: &iterator)
+                })
+                }, failureHandler: { (context) -> () in
+                    // Stop the chain
+            })
+        }
+    }
+
+    /**
+     Pushes the operations
+     Is a wrapper that pushes chained operations
+     - parameter operations: the operations
+     */
+    public func pushOperations(operations: [Operation]) {
+        var iterator=operations.generate()
+        self.pushChainedOperation(operations, iterator: &iterator)
+    }
+
+
+
+    /**
+     Pushes a unique operation
+     On success the operation is deleted.
+     - parameter operation: the operation
+     */
+    public func pushOperation(operation: Operation) {
+        self.pushOperation(operation, sucessHandler: { (context) -> () in
+            self.delete(operation)
+        }) { (context) -> () in
+
+        }
+    }
+
+    /**
+     Pushes an operation with success and failure handlers
+
+     - parameter operation: the operation
+     - parameter success:   the success handler
+     - parameter failure:   the failure handler
+     */
+    public func pushOperation(operation: Operation, sucessHandler success:(context: HTTPResponse)->(), failureHandler failure:(context: HTTPResponse)->()) {
+        if let serialized=operation.data {
+            if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand {
+                command.push(sucessHandler:success, failureHandler:failure)
+            } else {
+                //TODO: what should be done
+            }
+        }
+    }
+
+
+    /**
+
+     Deletes, aggregates and generates operations to reduce the push and subscribe load.
+
+     - parameter operations: the operations
+
+     - returns: the reduced operations + a trigger
+     */
+    public func optimizeOperations(operations: [Operation]) -> [Operation] {
+        /*
+         var toBeDeleted=[Operation]()
+         var groups=[String:[Operation]]()
+         for operation in operations{
+
+         }*/
+
+        // TODO: Append a Trigger
+
+        return operations
+    }
+
+*/
 
 
 

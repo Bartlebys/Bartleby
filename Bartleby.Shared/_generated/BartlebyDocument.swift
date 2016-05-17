@@ -333,7 +333,7 @@ public class BartlebyDocument : JDocument {
         tasksGroupDefinition.collectionName = TasksGroup.collectionName
         tasksGroupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         tasksGroupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        tasksGroupDefinition.allowDistantPersistency = true
+        tasksGroupDefinition.allowDistantPersistency = false
         tasksGroupDefinition.inMemory = false
         
 

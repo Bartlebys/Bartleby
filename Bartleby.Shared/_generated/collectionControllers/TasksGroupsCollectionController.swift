@@ -161,24 +161,6 @@ import ObjectMapper
         if let item=item as? TasksGroup{
 
 
-            if let undoManager = self.undoManager{
-                // Has an edit occurred already in this event?
-                if undoManager.groupingLevel > 0 {
-                    // Close the last group
-                    undoManager.endUndoGrouping()
-                    // Open a new group
-                    undoManager.beginUndoGrouping()
-                }
-            }
-
-            // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
-                undoManager.prepareWithInvocationTarget(self).removeObjectFromItemsAtIndex(index)
-                if !undoManager.undoing {
-                    undoManager.setActionName(NSLocalizedString("AddTasksGroup", comment: "AddTasksGroup undo action"))
-                }
-            }
-            
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
                 // Add it to the array controller's content array
@@ -208,10 +190,6 @@ import ObjectMapper
             self._startObserving(item)
 
 
-            if item.committed==false{
-               CreateTasksGroup.commit(item, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
-            }
-
         }else{
            
         }
@@ -225,19 +203,6 @@ import ObjectMapper
     public func removeObjectFromItemsAtIndex(index: Int) {
         if let item : TasksGroup = items[index] {
 
-            // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
-                // We don't want to introduce a retain cycle
-                // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
-                // That's why we have added an registerUndo extension on NSUndoManager
-                undoManager.registerUndo({ () -> Void in
-                   self.insertObject(item, inItemsAtIndex: index)
-                })
-                if !undoManager.undoing {
-                    undoManager.setActionName(NSLocalizedString("RemoveTasksGroup", comment: "Remove TasksGroup undo action"))
-                }
-            }
-            
             // Unregister the item
             Registry.unRegister(item)
 
@@ -257,8 +222,6 @@ import ObjectMapper
             self._stopObserving(item)
 
         
-            DeleteTasksGroup.commit(item.UID,fromDataSpace:self.spaceUID, observableBy: self.observableByUID)  
-
 
         }
     }
@@ -332,9 +295,6 @@ import ObjectMapper
             return
         }
         
-        if let tasksGroup = object as? TasksGroup{
-            UpdateTasksGroup.commit(tasksGroup, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
-        }
         if let undoManager = self.undoManager{
 
             if let keyPath = keyPath, object = object, change = change {
