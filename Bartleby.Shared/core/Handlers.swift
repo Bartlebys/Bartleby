@@ -30,6 +30,14 @@ public typealias CompletionHandler = (_: Completion) -> ()
 public class Handlers: NSObject {
 
     // MARK: Progression handlers
+
+    public var progressionHandlersCount: Int {
+        get {
+            return self._progressionHandlers.count
+        }
+    }
+
+
     private var _progressionHandlers: [ProgressHandler] = []
 
     public func appendProgressHandler(progressHandler: ProgressHandler) {
@@ -44,6 +52,14 @@ public class Handlers: NSObject {
     }
 
     // MARK: Completion handlers
+
+
+    public var completionHandlersCount: Int {
+        get {
+            return self._completionHandlers.count
+        }
+    }
+
     private var _completionHandlers: [CompletionHandler] = []
 
     public func appendCompletionHandler(handler: CompletionHandler) {
@@ -56,6 +72,8 @@ public class Handlers: NSObject {
             handler(completionState)
         }
     }
+
+
 
     /**
      A factory to declare an explicit Handlers with no completion.
