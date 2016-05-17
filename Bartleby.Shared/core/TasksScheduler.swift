@@ -24,8 +24,9 @@ import Foundation
  - serialized
  - and if the underlining logic permits, moved from a physical device to another
 
- Any child task is reputed concurential.
+ Child tasks are reputed "concurential".
  When its parent is completed the scheduler run all its direct children.
+ According to the group context it can use paralelism via GCD
 
  TasksGroup can be paused.
  When you pause a group the running tasks are completed but the graph execution is interupted.
@@ -39,7 +40,12 @@ import Foundation
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
     case TaskGroupNotFound
+    case TaskGroupUndefined
+    case TaskIsNotInvocable
+    case TaskNotFound(UID:String)
+    case UnconsistentGroup
 }
+
 
 public class TasksScheduler {
 
@@ -116,63 +122,77 @@ public class TasksScheduler {
 
      - parameter completedTask: the reference to the task
      */
-    func onTaskCompletion(completedTask: Task) throws {
+    func onAnyTaskCompletion(completedTask: Task) throws {
         if let groupExtRef=completedTask.group {
             if let group: TasksGroup = groupExtRef.toLocalInstance() {
-                // IT IS A SUCESS.
                 if group.status != .Paused {
-                    // Group is Runnable
                     // We gonna start all the children of the task.
                     for child in completedTask.children {
                         if let task: Task=child.toLocalInstance() {
                             if let invocableTask = task as? Invocable {
-                                if TasksScheduler.DEBUG_TASKS {
-                                    bprint("\(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
-                                }
-                                task.status = .Running
                                 // Then invoke its invocable instance.
-                                invocableTask.invoke()
+                                dispatch_async(group.dispatchQueue, {
+                                    do {
+                                        try invocableTask.invoke()
+                                    } catch {
+                                        if TasksScheduler.DEBUG_TASKS {
+                                            bprint("\(error) on \(invocableTask.summary ?? invocableTask.UID)", file: #file, function: #function, line: #line)
+                                        }
+                                    }
+                                })
+
                             } else {
-                                if TasksScheduler.DEBUG_TASKS {
-                                    bprint("NonInvocableTask", file: #file, function: #function, line: #line)
-                                }
-                                throw TasksGroupError.NonInvocableTask(task: completedTask)
+                                task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
+                                throw TasksSchedulerError.TaskIsNotInvocable
                             }
                         } else {
-                            if TasksScheduler.DEBUG_TASKS {
-                                bprint("TaskNotFound", file: #file, function: #function, line: #line)
-                            }
-                            throw TasksGroupError.TaskNotFound
+                            throw TasksSchedulerError.TaskNotFound(UID: child.iUID)
                         }
                     }
-                } else {
-                    // Group is not Runnable
                 }
                 let runnableTasksCount=group.runnableTaskCount()
                 if runnableTasksCount==0 {
-                    self._onGroupCompletion(group, lastCompletedTask:completedTask)
+                    // We dispatch the completion of the group on the main Queue
+                    dispatch_async(GlobalQueue.Main.get(), {
+                        do {
+                            try self._onGroupCompletion(group, lastCompletedTask:completedTask)
+                        } catch {
+                             bprint("\(error) on group completion \(group.UID)", file: #file, function: #function, line: #line)
+                        }
+
+                    })
                 }
-
-
             } else {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("ERROR: local task group instance not found \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
-                }
                 throw TasksSchedulerError.TaskGroupNotFound
             }
         } else {
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("ERROR: no external Reference group found in \(completedTask.summary ?? completedTask.UID )", file: #file, function: #function, line: #line)
-            }
-            throw TasksSchedulerError.TaskGroupNotFound
+            throw TasksSchedulerError.TaskGroupUndefined
         }
     }
 
 
+    private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) throws {
+
+        var hasInconsistencies=false
+        let errorTasks=group.findTasks { (task) -> Bool in
+                if let completed=task.completionState {
+                    return completed.success==false
+                } else {
+                    hasInconsistencies=true
+                }
+                return false
+        }
 
 
-    private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) {
 
+
+        if hasInconsistencies {
+            throw TasksSchedulerError.UnconsistentGroup
+        }
+
+
+        let errorTasksCount=errorTasks.count
+        if errorTasksCount==0 {
             // # Cleanup the tasks #
 
             if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
@@ -188,75 +208,111 @@ public class TasksScheduler {
                     registry.delete(task)
                 }
             }
+
+
             group.tasks.removeAll()
 
             // Determine the completion state.
             // We use the last TASK
             group.completionState = Completion.successState("Task group \(group.name) has been completed",
                                                             statusCode:.OK,
-                                                            data: lastCompletedTask.completionState.data)
+                                                            data: lastCompletedTask.completionState?.data)
+        } else {
+            // We donnot cleanup the tasks
+            group.completionState = Completion.successState("\(errorTasksCount) error(s)",
+                                                            statusCode:.Expectation_Failed,
+                                                            data: nil)
+        }
 
-            // We call the completion off the group.
-            group.handlers.on(group.completionState)
+        // We call the completion off the group.
+        group.handlers.on(group.completionState!)
 
-            // Then we Notify the group completion #
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+        // Then we Notify the group completion #
+        if TasksScheduler.DEBUG_TASKS {
+            bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
 
     }
 
+
+    /**
+     Resets all the task with Errors.
+
+     - parameter group: the group to be reset
+    */
+    func resetAllTasksWithErrors(group: TasksGroup) {
+        let errorTasks=group.findTasks { (task) -> Bool in
+            if let completed=task.completionState {
+                return completed.success == false
+            } else {
+                return false
+            }
+        }
+        for task in errorTasks {
+            task.completionState=nil
+            task.status = .Runnable
+            task.progressionState=nil
+        }
+    }
 
 
 
     /**
      Returns the queue for the group.
 
+
      - parameter group: the tasks group
 
      - returns: the queue
      */
     func getQueueFor(group: TasksGroup) -> dispatch_queue_t {
+        switch group.priority {
+        case .Background:
+            return GlobalQueue.Background.get()
+        case .Low:
+            return GlobalQueue.Utility.get()
+        case .Default:
+            return GlobalQueue.UserInitiated.get()
+        case .High:
+            return GlobalQueue.UserInteractive.get()
+        }
 
-        let groupName=group.name
-        let priority=group.priority
+        /*
 
-        /**
-         *  - DISPATCH_QUEUE_PRIORITY_HIGH:         QOS_CLASS_USER_INITIATED
-         *  - DISPATCH_QUEUE_PRIORITY_DEFAULT:      QOS_CLASS_DEFAULT
-         *  - DISPATCH_QUEUE_PRIORITY_LOW:          QOS_CLASS_UTILITY
-         *  - DISPATCH_QUEUE_PRIORITY_BACKGROUND:   QOS_CLASS_BACKGROUND
+         let groupName=group.name
+         let priority=group.priority
+
+         let queueName="org.bartlebys.\(groupName)_\(priority)"
+         if let queue: dispatch_queue_t=_queues[queueName] {
+         return queue
+         }
+
+         // Create the queue if necessary
+         if #available(OSX 10.10, *) {
+         var qos: qos_class_t=QOS_CLASS_DEFAULT
+         switch group.priority {
+         case .Background:
+         qos=QOS_CLASS_BACKGROUND
+         case .Low:
+         qos=QOS_CLASS_UTILITY
+         case .Default:
+         qos=QOS_CLASS_DEFAULT
+         case .High:
+         qos=QOS_CLASS_USER_INITIATED
+         }
+
+         let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, qos, 0)
+         let queue: dispatch_queue_t = dispatch_queue_create(queueName, attr)
+         _queues[queueName]=queue
+
+         return queue
+         } else {
+         // Fallback on earlier versions
+         // TODO @bpds older approach ? + IOS?
+         return dispatch_get_main_queue()
+         }
          */
-        let queueName="org.bartlebys.\(groupName)_\(priority)"
-        if let queue: dispatch_queue_t=_queues[queueName] {
-            return queue
-        }
-
-        // Create the queue if necessary
-        if #available(OSX 10.10, *) {
-            var qos: qos_class_t=QOS_CLASS_DEFAULT
-            switch group.priority {
-            case .Background:
-                qos=QOS_CLASS_BACKGROUND
-            case .Low:
-                qos=QOS_CLASS_UTILITY
-            case .Default:
-                qos=QOS_CLASS_DEFAULT
-            case .High:
-                qos=QOS_CLASS_USER_INITIATED
-            }
-
-            let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, qos, 0)
-            let queue: dispatch_queue_t = dispatch_queue_create(queueName, attr)
-            _queues[queueName]=queue
-
-            return queue
-        } else {
-            // Fallback on earlier versions
-            // TODO @bpds older approach ? + IOS?
-            return dispatch_get_main_queue()
-        }
 
     }
 

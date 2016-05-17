@@ -37,14 +37,14 @@ extension Registry {
 
             // We taskGroupFor the task
             let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDataSpace: spaceUID)
-            try group.addConcurrentTask(firstOperationTask)
+            try group.addTask(firstOperationTask)
 
             // We add the calling handlers
             group.handlers.appendChainedHandlers(handlers)
 
             for operation in operations {
                 let task=PushOperationTask(arguments:operation)
-                try firstOperationTask.appendSequentialTask(task)
+                try group.appendChainedTask(task)
             }
             try group.start()
         }

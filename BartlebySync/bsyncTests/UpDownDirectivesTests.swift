@@ -18,6 +18,7 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 
 class UpDownDirectivesTests: XCTestCase {
+    
     private static let _spaceUID = Bartleby.createUID()
     private static let _password = Bartleby.randomStringWithLength(6)
     private static var _user: User?

@@ -17,7 +17,7 @@ extension NSData {
 
     public func executeSerializedTask()throws ->() {
         if let dsi: ConcreteTask = try JSerializer.deserialize(self) as? ConcreteTask {
-            dsi.invoke()
+            try dsi.invoke()
         } else {
            throw InvocationPerformanceError.ConcreteTaskRequired
         }

@@ -11,8 +11,8 @@ import Foundation
 
 
 public enum GraphTestMode {
-    case Sequential
-    case Concurrent
+    case Chained
+    case Flat
 }
 
 
@@ -29,10 +29,8 @@ public enum GraphTestMode {
 
 public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRandomPause: Bool, numberOfSequTask: Int, testMode: GraphTestMode) {
 
-
     Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
     //Bartleby.startBufferingBprint()
-
     TasksScheduler.DEBUG_TASKS=true
     let document=BartlebyDocument()
 
@@ -47,20 +45,20 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
     do {
         let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
         group.priority=priority
-
-        // This is the unique root task
-        // So concurrency will be limited as we append sub tasks via appendSequentialTask
-        try group.addConcurrentTask(firstTask)
+        try group.addTask(firstTask)
+        print("Appending Completion Handler \(group.UID)")
         group.handlers.appendCompletionHandler({ (completion) in
-            let taskCount=group.totalTaskCount()
-            assert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
-            assert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
-            Bartleby.stopBufferingBprint()
-            print("FULLFILLING \(group.UID)")
-            let elapsed=ShowSummary.stopMeasuring()
-            print ("Elapsed time : \(elapsed)")
+                let taskCount=group.totalTaskCount()
+                assert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
+                assert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
+                //Bartleby.stopBufferingBprint()
+                bprint("FULLFILLING \(group.UID)", file:#file, function: #function, line: #line)
+                let elapsed=ShowSummary.stopMeasuring()
+                bprint("Elapsed time : \(elapsed)", file:#file, function: #function, line: #line)
+                dispatch_async(GlobalQueue.Main.get(), {
+                    exit(EX_OK)
+                })
 
-            exit(EX_OK)
         })
 
 
@@ -70,10 +68,10 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
             o.summary="Object \(i)"
             let task=ShowSummary(arguments: o)
             switch testMode {
-                case .Sequential:
-                    try firstTask.appendSequentialTask(task)
-                case .Concurrent:
-                    try group.addConcurrentTask(task)
+                case .Chained:
+                    try group.appendChainedTask(task)
+                case .Flat:
+                    try group.addTask(task)
             }
 
         }
@@ -122,8 +120,8 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var counter: Int=0
 
-    public func invoke() {
-        do {
+    public override func invoke() throws {
+            try super.invoke()
             if let object: JObject = try self.arguments() as JObject {
                 if let summary = object.summary {
                     ShowSummary.counter += 1
@@ -143,26 +141,24 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
                 let max: UInt32 = 100/ShowSummary.randomPausePercentProbability
                 if Int(arc4random_uniform(max)) == 1 {
                     print("Pausing")
-                    self.group?.toLocalInstance()?.pause()
+                    if let group: TasksGroup=self.group!.toLocalInstance() {
+                        group.pause()
+                    }
                     // Pause for 1 or 2 seconds
                     Bartleby.executeAfter(Double(arc4random_uniform(1)+1), closure: {
                         do {
                             print("Resuming")
-                            try self.group?.toLocalInstance()?.start()
-
+                            if let group: TasksGroup=self.group!.toLocalInstance() {
+                                try group.start()
+                            }
                         } catch {
                             print("ERROR\(error)")
                         }
                     })
                 }
             }
-
-
             ShowSummary.executionCounter += 1
-            self.forward(Completion.successState())
+            try self.forward(Completion.successState())
 
-        } catch {
-            print("\(error)")
-        }
     }
 }

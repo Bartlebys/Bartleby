@@ -32,20 +32,16 @@ import BartlebyKit
     }
 
 
-    public func invoke() {
-        do {
-            if let user: User = try self.arguments() as User {
-                if let email = user.email {
-                    bprint("\(email)", file:#file, function:#function, line: #line)
-                } else {
-                    bprint("\(user.UID)", file:#file, function:#function, line: #line)
-                }
+    override public func invoke() throws {
+        try super.invoke()
+        if let user: User = try self.arguments() as User {
+            if let email = user.email {
+                bprint("\(email)", file:#file, function:#function, line: #line)
+            } else {
+                bprint("\(user.UID)", file:#file, function:#function, line: #line)
             }
-            self.forward(Completion.successState())
-        } catch let e {
-            bprint("\(e)", file:#file, function:#function, line:#line)
         }
-
+        try self.forward(Completion.successState())
     }
 }
 
@@ -70,19 +66,16 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
     }
 
 
-    public func invoke() {
-        do {
-            if let user: User = try self.arguments() as User {
-                if let email = user.email {
-                    bprint("\(email)", file:#file, function:#function, line: #line)
-                } else {
-                    bprint("\(user.UID)", file:#file, function:#function, line: #line)
-                }
+    public override func invoke() throws {
+
+        if let user: User = try self.arguments() as User {
+            if let email = user.email {
+                bprint("\(email)", file:#file, function:#function, line: #line)
+            } else {
+                bprint("\(user.UID)", file:#file, function:#function, line: #line)
             }
-            self.forward(Completion.successState())
-        } catch let e {
-            bprint("\(e)", file:#file, function:#function, line:#line)
         }
+        try self.forward(Completion.successState())
 
     }
 }
@@ -106,7 +99,7 @@ class SerializableInvocationsTests: XCTestCase {
     }
 
     /**
-      DIRECT INVOCATION BASIC TESTS
+     DIRECT INVOCATION BASIC TESTS
      */
 
     func test001_PrintUserTask() {
@@ -117,13 +110,13 @@ class SerializableInvocationsTests: XCTestCase {
         do {
             let o = try JSerializer.deserialize(serializedInvocation)
             if let deserializedInvocation=o as? PrintUser {
-                deserializedInvocation.invoke()
+                try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
                 XCTFail("Deserialization as failed")
             }
         } catch {
-             XCTFail("\(error)")
+            XCTFail("\(error)")
         }
 
     }
@@ -136,7 +129,7 @@ class SerializableInvocationsTests: XCTestCase {
             let printer = PrintUser(arguments:user)
             let serializedInvocation=printer.serialize()
             if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
-                deserializedInvocation.invoke()
+                try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
                 XCTFail("Deserialization as failed")
@@ -173,7 +166,7 @@ class SerializableInvocationsTests: XCTestCase {
             let o = try JSerializer.deserialize(serializedInvocation)
 
             if let deserializedInvocation=o as? RePrintUserWithoutObjc {
-                deserializedInvocation.invoke()
+                try deserializedInvocation.invoke()
                 XCTFail("Deserialization should fail because RePrintUserWithoutObjc is not declared")
             } else {
 
@@ -196,7 +189,7 @@ class SerializableInvocationsTests: XCTestCase {
         do {
             let o = try JSerializer.deserialize(serializedInvocation)
             if let deserializedInvocation=o as? RePrintUserWithoutObjc {
-                deserializedInvocation.invoke()
+                try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
                 XCTFail("Deserialization as failed")
@@ -215,7 +208,7 @@ class SerializableInvocationsTests: XCTestCase {
             let printer = PrintUser(arguments:user)
             let serializedInvocation=printer.serialize()
             if let deserializedInvocation = try JSerializer.deserialize(serializedInvocation) as? ConcreteTask {
-                deserializedInvocation.invoke()
+                try deserializedInvocation.invoke()
                 XCTAssert(true)
             } else {
                 XCTFail("Deserialization as failed")

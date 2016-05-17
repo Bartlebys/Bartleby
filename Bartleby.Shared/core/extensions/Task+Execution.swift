@@ -17,6 +17,10 @@ import Foundation
 public enum TaskError: ErrorType {
     case ArgumentsTypeMisMatch
     case NoArgument
+    case MissingTaskGroup
+    case UnSupportedForwardableState
+    case MissingExternalReference
+    case MultipleAttemptToRunTask
 }
 
 
@@ -47,6 +51,44 @@ extension Task:SerializableArguments {
 
 extension Task {
 
+
+    /**
+     Call to signal completion
+
+     - parameter state: the completionState
+     */
+    public func complete(state: Completion) {
+        self.completionState = state
+    }
+
+    /**
+     This implementation should be calld in any Task invoke override
+     To Detect multiple attempt to run the task
+
+     - throws: MultipleAttemptToRunTAsk
+     */
+    public func invoke() throws {
+        if self.status != .Runnable {
+            throw TaskError.MultipleAttemptToRunTask
+        } else {
+            self.status = .Running
+        }
+        if TasksScheduler.DEBUG_TASKS {
+            bprint("Running \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
+        }
+    }
+
+
+    public var hasBeenSuccessfullyCompleted: Bool {
+        get {
+            if let c=self.completionState {
+                 return c.success
+            }
+            return false
+        }
+    }
+
+
     /**
      Final forwarding method.
      We forward on the main queue.
@@ -56,65 +98,46 @@ extension Task {
 
      - parameter completionState: the completion state
      */
-    final public func forward<T: ForwardableStates>(state: T) {
+    final public func forward<T: ForwardableStates>(state: T) throws {
         if let groupExtRef=self.group {
             if let group: TasksGroup = groupExtRef.toLocalInstance() {
-                dispatch_sync(group.dispatchQueue, {
-                    if state is Completion {
-                        self.completionState  = state as! Completion
-                        self.status = .Completed
+                    if let state = state as? Completion {
+                        self.completionState  = state
+                        
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
 
                         let total=group.totalTaskCount()
                         let executed=total-group.runnableTaskCount()
                         let progress: Double = Double(executed)/Double(total)
-                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState.data)
+                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
 
                         group.handlers.notify(groupProgression)
 
-                        do {
-                            if TasksScheduler.DEBUG_TASKS {
-                                bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line)
-                            }
-                            // WE CALL the onTaskCompletion on the main queue (!)
-                            try Bartleby.scheduler.onTaskCompletion(self)
-                        } catch {
-                            if TasksScheduler.DEBUG_TASKS {
-                                let t = self.summary ?? self.UID
-                                bprint("ERROR Task Forwarding  of \(t) \(error)", file: #file, function: #function, line: #line)
-                            }
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line)
                         }
+                        try Bartleby.scheduler.onAnyTaskCompletion(self)
                     } else if state is Progression {
-
                         // We relay also the discreet task as a progression group progression !
                         // Including its data.
                         // May be it could be distincted from completion
-                        self.progressionState = state as! Progression
+                        self.progressionState = state as? Progression
                         let total=group.totalTaskCount()
                         let executed=total-group.runnableTaskCount()
                         let progress: Double = Double(executed)/Double(total)
-                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState.message, data:self.progressionState.data)
-
+                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState?.message ?? Default.NO_MESSAGE, data:self.progressionState?.data)
                         group.handlers.notify(groupProgression)
-
-
                     } else {
-                        if TasksScheduler.DEBUG_TASKS {
-                            bprint("ERROR unsupported ForwardableStates", file: #file, function: #function, line: #line)
-                        }
+                        throw TaskError.UnSupportedForwardableState
                     }
 
-
-                })
             } else {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("ERROR No TaskGroup on \(self)", file: #file, function: #function, line: #line)
-                }
+                throw TaskError.MissingTaskGroup
             }
         }
-        //})
     }
+
 
 
     /**
@@ -134,7 +157,7 @@ extension Task {
             func childrens(parent: Task, inout tasks: [Task]) {
                 tasks.append(parent)
                 for taskReference in parent.children {
-                    if let task:Task=taskReference.toLocalInstance() {
+                    if let task: Task=taskReference.toLocalInstance() {
                         childrens(task, tasks: &tasks)
                     }
                 }
@@ -149,22 +172,19 @@ extension Task {
 
      - parameter task: the children to be added.
      */
-    public func addChildren(task: Task) {
+    public func addChildren(task: Task) throws {
         let taskReference=ExternalReference(from: task)
         self.children.append(taskReference)
         if let g=self.group {
             task.group=g
         } else {
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("Adding \(self.summary ?? self.UID) has no tasks group alias", file: #file, function: #function, line: #line)
-
-            }
+            throw TaskError.MissingTaskGroup
         }
         task.parent=ExternalReference(from:self)
         if TasksScheduler.DEBUG_TASKS {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID
-            let g = task.group?.UID ?? Default.NO_GROUP
+            let g = task.group?.iUID ?? Default.NO_GROUP
             bprint("Adding \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
         }
     }

@@ -8,11 +8,8 @@
 
 import Foundation
 
-enum ReactiveTaskError: ErrorType {
-    case MissingTaskGroup
-}
 
-public class  ReactiveTask: Task {
+@objc(ReactiveTask) public class  ReactiveTask: Task {
 
     // Universal type support
     override public class func typeName() -> String {
@@ -32,24 +29,6 @@ public class  ReactiveTask: Task {
         self.configureWithArguments(arguments)
     }
 
-    // MARK: Sequential Tasks
-
-    private lazy var _lastSequentialTask: Task = self
-
-    /**
-     Appends a task to the last sequential task
-
-     - parameter task: the task to be sequentially added
-     */
-    public func appendSequentialTask(task: Task) throws {
-        if self._lastSequentialTask.group==nil {
-            throw ReactiveTaskError.MissingTaskGroup
-        }
-        self._lastSequentialTask.addChildren(task)
-        self._lastSequentialTask=task
-    }
-
-
     // MARK: Reactive Handlers
 
     private var _reactiveHandlers: Handlers?
@@ -62,7 +41,7 @@ public class  ReactiveTask: Task {
             }
             let onCompletion: CompletionHandler = { (completionState) in
                 // We forward the completion to the scheduler.
-                self.forward(completionState)
+                let _=try? self.forward(completionState)
                 // We use the main queue to dispatch the completion state
                 dispatch_async(dispatch_get_main_queue(), {
                     NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)

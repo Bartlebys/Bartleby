@@ -26,27 +26,18 @@ import ObjectMapper
 	public var group:ExternalReference?
 	//Task Status
 	public enum Status:Int{
-		case New
+		case Runnable
 		case Running
-		case Completed
 	}
-	public var status:Status = .New
-	//The priority is equal to the parent task.
-	public enum Priority:Int{
-		case Background
-		case Low
-		case Default
-		case High
-	}
-	public var priority:Priority = .Default
+	public var status:Status = .Runnable
 	//The Task parent. 
 	public var parent:ExternalReference?
 	//A collection of children Task external references (in the same group)
 	public var children:[ExternalReference] = [ExternalReference]()
 	//The progression state of the task
-	public var progressionState:Progression = Progression()
+	public var progressionState:Progression?
 	//The completion state of the task
-	public var completionState:Completion = Completion()
+	public var completionState:Completion?
 	//The serialized arguments
 	public var argumentsData:NSData?
 	//The serialized result
@@ -63,7 +54,6 @@ import ObjectMapper
         super.mapping(map)
 		self.group <- map["group"]
 		self.status <- map["status"]
-		self.priority <- map["priority"]
 		self.parent <- map["parent"]
 		self.children <- map["children"]
 		self.progressionState <- map["progressionState"]
@@ -79,11 +69,10 @@ import ObjectMapper
         super.init(coder: decoder)
 		self.group=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
-		self.priority=Task.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.parent=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "parent") 
 		self.children=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "children")! as! [ExternalReference]
-		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState") 
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
 		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
 
@@ -95,13 +84,16 @@ import ObjectMapper
 			coder.encodeObject(group,forKey:"group")
 		}
 		coder.encodeInteger(self.status.rawValue ,forKey:"status")
-		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
 		if let parent = self.parent {
 			coder.encodeObject(parent,forKey:"parent")
 		}
 		coder.encodeObject(self.children,forKey:"children")
-		coder.encodeObject(self.progressionState,forKey:"progressionState")
-		coder.encodeObject(self.completionState,forKey:"completionState")
+		if let progressionState = self.progressionState {
+			coder.encodeObject(progressionState,forKey:"progressionState")
+		}
+		if let completionState = self.completionState {
+			coder.encodeObject(completionState,forKey:"completionState")
+		}
 		if let argumentsData = self.argumentsData {
 			coder.encodeObject(argumentsData,forKey:"argumentsData")
 		}

@@ -23,6 +23,7 @@ public enum RegistryError: ErrorType {
     case CollectionProxyTypeError
     case RootObjectTypeMissMatch
     case InstanceNotFound
+    case InstanceTypeMissMatch
 }
 
 
@@ -161,7 +162,7 @@ public class Registry: BXDocument {
     }
 
     /**
-     Returns the registred instance of by UID
+     Returns the registred instance of by its UID
 
      - parameter UID:
 
@@ -170,9 +171,9 @@ public class Registry: BXDocument {
     public static func registredObjectByUID<T: Collectible>(UID: String) throws-> T {
         if let instance=self._instancesByUID[UID] as? T {
             return instance
-        } else {
-            throw RegistryError.InstanceNotFound
         }
+        throw RegistryError.InstanceNotFound
+
     }
 
 

@@ -20,16 +20,17 @@ public protocol Invocable: Collectible {
     /**
         Runs the invocation
         All the logic is encapuslated.
-        You should call forward() on completion
+        You must call try super.invoke() and forward() on completion
      */
-    func invoke()
+    func invoke() throws
+
 
     /**
      (!) This method is implemented as final in Task Extension to guarantee the task scheduler consistency
      You must call this method when the task is completed.
      - parameter completionState: the completion state
      */
-    func forward<T:ForwardableStates>(state: T)
+    func forward<T: ForwardableStates>(state: T) throws
 
 }
 

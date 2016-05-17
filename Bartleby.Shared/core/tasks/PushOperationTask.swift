@@ -38,7 +38,8 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
     /**
      Pushes the operations
      */
-    public func invoke() {
+    public override func invoke() throws {
+        try super.invoke()
         if let arguments: Operation = try? self.arguments() {
             let operation=arguments
             if let serialized=operation.toDictionary {

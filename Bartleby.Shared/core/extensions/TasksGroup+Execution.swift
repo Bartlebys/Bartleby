@@ -21,7 +21,10 @@ enum TasksGroupError: ErrorType {
     case TaskNotFound
     case GroupNotFound
     case AttemptToAddTaskInMultipleGroups
+    case MultipleAttemptToAddTask
     case InterruptedOnFault
+    case MissingExternalReference
+    case MultipleRunAttempts
 }
 
 /*
@@ -51,9 +54,11 @@ enum TasksGroupError: ErrorType {
  })
  ```
  */
+
 public extension TasksGroup {
 
 
+    @available(OSX 10.9, *)
     public var dispatchQueue: dispatch_queue_t {
         get {
             return Bartleby.scheduler.getQueueFor(self)
@@ -77,6 +82,8 @@ public extension TasksGroup {
         }
     }
 
+    // MARK: Main API
+
     /**
      Starts the task group
 
@@ -85,33 +92,40 @@ public extension TasksGroup {
      - returns: the number of entry tasks if >1 there is something to do.
      */
     public func start() throws -> Int {
-        self.status = .Runnable
+        if self.status == .Running {
+            throw TasksGroupError.MultipleRunAttempts
+        }
+        self.status = .Running
         // The graph may be partially executed.
         // We search the entry tasks.
-        let entryTasks=self.findRunnableTasks()
-
+        let entryTasks=self.runnableTasks()
+        // We start and run the task Code not on the main dispatch Queue
+        // We will roll back to the MainQueue on taskGroup Completion.
+        dispatch_async(self.dispatchQueue, {
+        // We dispatch sync on the dispatch queue to be able to dispatch exceptions
         for task in entryTasks {
-            task.status = .Running // There was no trans serialization we can set directly the status.
             if let invocableTask = task as? Invocable {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("\(invocableTask.summary ?? invocableTask.UID ) task is invoked", file: #file, function: #function, line: #line)
-                }
-                 dispatch_sync(self.dispatchQueue, {
-                    invocableTask.invoke()
-                })
+                    do {
+                      try invocableTask.invoke()
+                    } catch {
+                        if TasksScheduler.DEBUG_TASKS {
+                            bprint("Task invocation error \(error) \(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
+                        }
+                    }
 
             } else {
-                throw TasksGroupError.NonInvocableTask(task: task)
+                task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
             }
         }
-
+        })
         return entryTasks.count
     }
 
 
+
     /**
-        Simple Pause
-        When the group is paused on completion of a task we donnot run its childrens.
+     Simple Pause
+     When the group is paused on completion of a task we donnot run its childrens.
      */
     public func pause() {
         self.status = .Paused
@@ -120,20 +134,54 @@ public extension TasksGroup {
 
 
     /**
-     Add a top level concurrent task to the group.
+     Add top level concurrent task or a child task to the group.
      And registers the group
 
      - parameter task:  the top level task to be added
      - parameter group: the group
      */
-    public func addConcurrentTask(task: Task) throws {
+    public func addTask(task: Task) throws {
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
         task.group=ExternalReference(from:self)
+
+        if let _=self.tasks.indexOf(task) {
+            throw TasksGroupError.MultipleAttemptToAddTask
+        }
+        // Add the task to the root tasks.
         self.tasks.append(task)
+        if TasksScheduler.DEBUG_TASKS {
+            let s = task.summary ?? task.UID
+            let t = self.summary ?? self.UID
+            let g = task.group?.iUID ?? Default.NO_GROUP
+            bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
+        }
     }
 
+
+    /**
+     Appends a task to the last task
+
+     - parameter task: the task to be sequentially added
+     */
+    public func appendChainedTask(task: Task) throws {
+        if self.lastChainedTask == nil {
+            if let lastTask=self.tasks.last {
+                 try lastTask.addChildren(task)
+            } else {
+                try self.addTask(task)
+            }
+        } else if let lastTask: Task=self.lastChainedTask?.toLocalInstance() {
+            try lastTask.addChildren(task)
+        } else {
+            throw TasksGroupError.MissingExternalReference
+        }
+        self.lastChainedTask=ExternalReference(from: task)
+        task.group=ExternalReference(from: self)
+    }
+
+    // MARK: - Counters
 
     /**
      The total count at a given time
@@ -175,8 +223,8 @@ public extension TasksGroup {
 
 
     private func _runnableCount(task: Task, inout counter: Int) {
-        if ( task.status != .Completed ) && (task.status != .Running) {
-           counter += 1
+        if ( task.status == .Runnable) {
+            counter += 1
         }
         for ref in task.children {
             if let child: Task=ref.toLocalInstance() {
@@ -185,6 +233,8 @@ public extension TasksGroup {
         }
     }
 
+
+    // MARK: Ranking
 
     /**
      - returns: the rank of a given task and -1 if not found.
@@ -210,7 +260,6 @@ public extension TasksGroup {
     }
 
 
-
     // MARK: Find runnable Tasks
 
     /**
@@ -219,28 +268,28 @@ public extension TasksGroup {
 
      - returns: a collection of tasks
      */
-    public func findRunnableTasks() -> [Task] {
+    public func runnableTasks() -> [Task] {
         var tasks=[Task]()
         for task in self.tasks {
-            self._findRunnableTasksFrom(task, tasks:&tasks)
+            self._runnableTasksFrom(task, tasks:&tasks)
         }
         return tasks
     }
 
 
-    private func _findRunnableTasksFrom(task: Task, inout tasks: [Task]) {
-        if ( task.status != .Completed ) && (task.status != .Running) {
+    private func _runnableTasksFrom(task: Task, inout tasks: [Task]) {
+        if (task.status != .Running && task.completionState == nil) {
             tasks.append(task)
             return
         }
         for ref in task.children {
             if let child: Task=ref.toLocalInstance() {
-                if ( child.status != .Completed ) && (child.status != .Running) {
+                if (child.status != .Running && task.completionState == nil) {
                     tasks.append(child)
                 } else {
                     // We search recursively tasks
                     // Only if there are not runnable task at previous levels
-                    self._findRunnableTasksFrom(child, tasks:&tasks)
+                    self._runnableTasksFrom(child, tasks:&tasks)
                 }
             }
         }
@@ -257,25 +306,42 @@ public extension TasksGroup {
      - returns: the list of tasks
      */
     public func findTasksWithStatus(status: Task.Status) -> [Task] {
+        return findTasks({ (task) -> Bool in
+            return task.status==status
+        })
+    }
+
+
+    //MARK : find Tasks
+
+    /**
+     General purpose task Extractor
+
+     - parameter matching: filter
+
+     - returns: an array of tasks.
+     */
+    public func findTasks(@noescape matching:(task: Task) -> Bool) -> [Task] {
         var tasks=[Task]()
         for task in self.tasks {
-            self._findTasksWithStatusFrom(task, status:status, tasks:&tasks)
+            self._findTasks(task, matching: matching, tasks:&tasks)
         }
         return tasks
     }
 
-    private func _findTasksWithStatusFrom(task: Task, status: Task.Status, inout tasks: [Task]) {
-        if ( task.status != .Completed ) && (task.status != .Running) {
+    private func _findTasks(task: Task, @noescape matching:(task: Task) -> Bool, inout tasks: [Task]) {
+        if matching(task: task) {
             tasks.append(task)
         }
         for ref in task.children {
             if let child: Task=ref.toLocalInstance() {
-                if child.status == status {
+                if matching(task: child) {
                     tasks.append(child)
                 }
-                self._findTasksWithStatusFrom(child, status:status, tasks:&tasks)
+                self._findTasks(child, matching:matching, tasks:&tasks)
             }
         }
     }
+
 
 }

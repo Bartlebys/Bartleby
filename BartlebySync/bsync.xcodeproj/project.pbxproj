@@ -725,10 +725,6 @@
 		E501436F1CE8B93900EDD9C3 /* Registry+URD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501417F1CE8B93900EDD9C3 /* Registry+URD.swift */; };
 		E50143701CE8B93900EDD9C3 /* Registry+URD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501417F1CE8B93900EDD9C3 /* Registry+URD.swift */; };
 		E50143711CE8B93900EDD9C3 /* Registry+URD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501417F1CE8B93900EDD9C3 /* Registry+URD.swift */; };
-		E50143721CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */; };
-		E50143731CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */; };
-		E50143741CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */; };
-		E50143751CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */; };
 		E50143761CE8B93900EDD9C3 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141811CE8B93900EDD9C3 /* TasksGroup+Execution.swift */; };
 		E50143771CE8B93900EDD9C3 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141811CE8B93900EDD9C3 /* TasksGroup+Execution.swift */; };
 		E50143781CE8B93900EDD9C3 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141811CE8B93900EDD9C3 /* TasksGroup+Execution.swift */; };
@@ -849,10 +845,6 @@
 		E50143EB1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A31CE8B93900EDD9C3 /* VerifyLocker.swift */; };
 		E50143EC1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A31CE8B93900EDD9C3 /* VerifyLocker.swift */; };
 		E50143ED1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A31CE8B93900EDD9C3 /* VerifyLocker.swift */; };
-		E50143EE1CE8B93900EDD9C3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E50141A41CE8B93900EDD9C3 /* README.md */; };
-		E50143EF1CE8B93900EDD9C3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E50141A41CE8B93900EDD9C3 /* README.md */; };
-		E50143F01CE8B93900EDD9C3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E50141A41CE8B93900EDD9C3 /* README.md */; };
-		E50143F11CE8B93900EDD9C3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E50141A41CE8B93900EDD9C3 /* README.md */; };
 		E50143F21CE8B93900EDD9C3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A61CE8B93900EDD9C3 /* BFileManager.swift */; };
 		E50143F31CE8B93900EDD9C3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A61CE8B93900EDD9C3 /* BFileManager.swift */; };
 		E50143F41CE8B93900EDD9C3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141A61CE8B93900EDD9C3 /* BFileManager.swift */; };
@@ -980,6 +972,10 @@
 		E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A90A11C8DFF2C0043F90E /* bsyncBasicTests.swift */; };
 		E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */; };
 		E5A557CA1C8EC84D009A9A63 /* bsyncMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */; };
+		E5AAC5531CEB16C5005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */; };
+		E5AAC5541CEB16C5005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */; };
+		E5AAC5551CEB16C5005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */; };
+		E5AAC5561CEB16C5005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */; };
 		E5B98E961CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
 		E5B98E971CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
 		E5B98E981CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
@@ -1203,7 +1199,6 @@
 		E501417D1CE8B93900EDD9C3 /* Registry+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SecurityScopes.swift"; sourceTree = "<group>"; };
 		E501417E1CE8B93900EDD9C3 /* Registry+Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+Triggers.swift"; sourceTree = "<group>"; };
 		E501417F1CE8B93900EDD9C3 /* Registry+URD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+URD.swift"; sourceTree = "<group>"; };
-		E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Arguments.swift"; sourceTree = "<group>"; };
 		E50141811CE8B93900EDD9C3 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E50141821CE8B93900EDD9C3 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E50141831CE8B93900EDD9C3 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
@@ -1297,6 +1292,7 @@
 		E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCredentialsCommand.swift; sourceTree = "<group>"; };
 		E59A14191C3BB43F009AC461 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
 		E5A557CB1C8EC9DF009A9A63 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E881CC0E6CD00A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E891CC0E6CD00A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -1623,6 +1619,7 @@
 		E50141751CE8B93900EDD9C3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5AAC5521CEB16C5005C15E2 /* Task+Execution.swift */,
 				E50141761CE8B93900EDD9C3 /* Completion+Conveniences.swift */,
 				E50141771CE8B93900EDD9C3 /* Completion+Result.swift */,
 				E50141781CE8B93900EDD9C3 /* ExternalReference+Resolution.swift */,
@@ -1633,7 +1630,6 @@
 				E501417D1CE8B93900EDD9C3 /* Registry+SecurityScopes.swift */,
 				E501417E1CE8B93900EDD9C3 /* Registry+Triggers.swift */,
 				E501417F1CE8B93900EDD9C3 /* Registry+URD.swift */,
-				E50141801CE8B93900EDD9C3 /* Task+Arguments.swift */,
 				E50141811CE8B93900EDD9C3 /* TasksGroup+Execution.swift */,
 			);
 			path = extensions;
@@ -2182,6 +2178,7 @@
 				5B5D09401CDC91E3001FB281 /* (null) in Sources */,
 				E50141D11CE8B93900EDD9C3 /* CollectionMetadatum.swift in Sources */,
 				E50142151CE8B93900EDD9C3 /* CreateLockers.swift in Sources */,
+				E5AAC5561CEB16C5005C15E2 /* Task+Execution.swift in Sources */,
 				E50143211CE8B93900EDD9C3 /* JObject.swift in Sources */,
 				E50142491CE8B93900EDD9C3 /* DeleteLocker.swift in Sources */,
 				E50143E11CE8B93900EDD9C3 /* User+Auth.swift in Sources */,
@@ -2274,7 +2271,6 @@
 				5B5D09DA1CDC921E001FB281 /* (null) in Sources */,
 				5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */,
 				5B5D0A061CDDE56D001FB281 /* BsyncXPC.swift in Sources */,
-				E50143751CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */,
 				E50142D51CE8B93900EDD9C3 /* UpdateLocker.swift in Sources */,
 				5B5D0B5D1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift in Sources */,
 				E50141D91CE8B93900EDD9C3 /* ExternalReference.swift in Sources */,
@@ -2287,7 +2283,6 @@
 				E50142051CE8B93900EDD9C3 /* User.swift in Sources */,
 				5B5D09201CDC91B4001FB281 /* Operators.swift in Sources */,
 				E50143FD1CE8B93900EDD9C3 /* Pluralization.swift in Sources */,
-				E50143F11CE8B93900EDD9C3 /* README.md in Sources */,
 				5B5D098A1CDC91E3001FB281 /* (null) in Sources */,
 				E501432D1CE8B93900EDD9C3 /* XTypeAliases.swift in Sources */,
 				E50143611CE8B93900EDD9C3 /* Progression+Conveniences.swift in Sources */,
@@ -2663,10 +2658,9 @@
 				E5B98EAB1CC0E6CD00A7ECD1 /* DateFormatterTransform.swift in Sources */,
 				E50142DA1CE8B93900EDD9C3 /* UpdatePermission.swift in Sources */,
 				E50143CE1CE8B93900EDD9C3 /* PushOperationTask.swift in Sources */,
-				E50143721CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */,
-				E50143EE1CE8B93900EDD9C3 /* README.md in Sources */,
 				E53E28D61CA572D80079ED23 /* DeltaPathMap.m in Sources */,
 				E5B98EB71CC0E6CD00A7ECD1 /* TransformOf.swift in Sources */,
+				E5AAC5531CEB16C5005C15E2 /* Task+Execution.swift in Sources */,
 				E50143FE1CE8B93900EDD9C3 /* PString.swift in Sources */,
 				E50141EE1CE8B93900EDD9C3 /* RegistryMetadata.swift in Sources */,
 				E501425E1CE8B93900EDD9C3 /* DeleteTasksGroup.swift in Sources */,
@@ -2803,7 +2797,6 @@
 				E50143071CE8B93900EDD9C3 /* ImageTransform.swift in Sources */,
 				E552B7C41C3D4E49001CD53B /* BsyncDirectives.swift in Sources */,
 				E50142E71CE8B93900EDD9C3 /* UpdateTasks.swift in Sources */,
-				E50143EF1CE8B93900EDD9C3 /* README.md in Sources */,
 				E50143A31CE8B93900EDD9C3 /* HTTPCommand.swift in Sources */,
 				E50141E71CE8B93900EDD9C3 /* Permission.swift in Sources */,
 				E50142BB1CE8B93900EDD9C3 /* ReadTriggersByQuery.swift in Sources */,
@@ -2861,7 +2854,6 @@
 				E50142571CE8B93900EDD9C3 /* DeleteTask.swift in Sources */,
 				E50143A71CE8B93900EDD9C3 /* HTTPResponse.swift in Sources */,
 				5B8E5D621C8D7FCD002CFA03 /* Upload.swift in Sources */,
-				E50143731CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */,
 				E50143331CE8B93900EDD9C3 /* EventSource.swift in Sources */,
 				E50143FF1CE8B93900EDD9C3 /* PString.swift in Sources */,
 				E501431F1CE8B93900EDD9C3 /* JObject.swift in Sources */,
@@ -2869,6 +2861,7 @@
 				E50143BB1CE8B93900EDD9C3 /* Serializer.swift in Sources */,
 				E50142F31CE8B93900EDD9C3 /* UpdateTrigger.swift in Sources */,
 				E50143AB1CE8B93900EDD9C3 /* Identifiable.swift in Sources */,
+				E5AAC5541CEB16C5005C15E2 /* Task+Execution.swift in Sources */,
 				E50142FB1CE8B93900EDD9C3 /* UpdateUser.swift in Sources */,
 				E501424F1CE8B93900EDD9C3 /* DeletePermission.swift in Sources */,
 				E50141E31CE8B93900EDD9C3 /* Operation.swift in Sources */,
@@ -2997,6 +2990,7 @@
 				E50143881CE8B93900EDD9C3 /* Collectible.swift in Sources */,
 				E50143C81CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
 				E50141FC1CE8B93900EDD9C3 /* TasksGroup.swift in Sources */,
+				E5AAC5551CEB16C5005C15E2 /* Task+Execution.swift in Sources */,
 				E50142381CE8B93900EDD9C3 /* CreateUser.swift in Sources */,
 				E501426C1CE8B93900EDD9C3 /* DeleteTriggers.swift in Sources */,
 				E50142C41CE8B93900EDD9C3 /* ReadUsersByIds.swift in Sources */,
@@ -3018,7 +3012,6 @@
 				E55C92741CBF854D008163F6 /* PdSCommandInterpreter.m in Sources */,
 				E50142781CE8B93900EDD9C3 /* ReadGroupById.swift in Sources */,
 				E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */,
-				E50143741CE8B93900EDD9C3 /* Task+Arguments.swift in Sources */,
 				E50143201CE8B93900EDD9C3 /* JObject.swift in Sources */,
 				E55C927E1CBF8998008163F6 /* BsyncCredentials.swift in Sources */,
 				E50142981CE8B93900EDD9C3 /* ReadPermissionsByQuery.swift in Sources */,
@@ -3099,7 +3092,6 @@
 				E50143C01CE8B93900EDD9C3 /* UniversalType.swift in Sources */,
 				E55C924D1CBF84ED008163F6 /* MultipartFormData.swift in Sources */,
 				E5B98EA41CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
-				E50143F01CE8B93900EDD9C3 /* README.md in Sources */,
 				E50142001CE8B93900EDD9C3 /* Trigger.swift in Sources */,
 				E50143AC1CE8B93900EDD9C3 /* Identifiable.swift in Sources */,
 				E50143701CE8B93900EDD9C3 /* Registry+URD.swift in Sources */,

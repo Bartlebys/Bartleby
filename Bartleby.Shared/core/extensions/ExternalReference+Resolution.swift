@@ -65,8 +65,8 @@ extension ExternalReference {
             // Return nil
             instanceCallBack(instance:nil)
         }
-
     }
+
 
     // MARK: - Synchronous Dealiasing
 

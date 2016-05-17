@@ -24,10 +24,10 @@ import ObjectMapper
 
 	//TasksGroup Status
 	public enum Status:Int{
-		case Runnable
 		case Paused
+		case Running
 	}
-	public var status:Status = .Runnable
+	public var status:Status = .Paused
 	//The priority is equal to the parent task.
 	public enum Priority:Int{
 		case Background
@@ -40,10 +40,12 @@ import ObjectMapper
 	public var spaceUID:String = "\(Default.NO_UID)"
 	//The root group Tasks
 	public var tasks:[Task] = [Task]()
+	//The last chained (sequential) task external reference. 
+	public var lastChainedTask:ExternalReference?
 	//The progression state of the group
-	public var progressionState:Progression = Progression()
+	public var progressionState:Progression?
 	//The completion state of the group
-	public var completionState:Completion = Completion()
+	public var completionState:Completion?
 	//The group name
 	public var name:String = "\(Default.NO_NAME)"
 	//A void handler to allow subscribers to register their own handlers
@@ -62,6 +64,7 @@ import ObjectMapper
 		self.priority <- map["priority"]
 		self.spaceUID <- map["spaceUID"]
 		self.tasks <- map["tasks"]
+		self.lastChainedTask <- map["lastChainedTask"]
 		self.progressionState <- map["progressionState"]
 		self.completionState <- map["completionState"]
 		self.name <- map["name"]
@@ -76,8 +79,9 @@ import ObjectMapper
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
-		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState")! 
-		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState")! 
+		self.lastChainedTask=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "lastChainedTask") 
+		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState") 
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
 
     }
@@ -88,8 +92,15 @@ import ObjectMapper
 		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
 		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
 		coder.encodeObject(self.tasks,forKey:"tasks")
-		coder.encodeObject(self.progressionState,forKey:"progressionState")
-		coder.encodeObject(self.completionState,forKey:"completionState")
+		if let lastChainedTask = self.lastChainedTask {
+			coder.encodeObject(lastChainedTask,forKey:"lastChainedTask")
+		}
+		if let progressionState = self.progressionState {
+			coder.encodeObject(progressionState,forKey:"progressionState")
+		}
+		if let completionState = self.completionState {
+			coder.encodeObject(completionState,forKey:"completionState")
+		}
 		coder.encodeObject(self.name,forKey:"name")
 		coder.encodeObject(self.handlers,forKey:"handlers")
     }

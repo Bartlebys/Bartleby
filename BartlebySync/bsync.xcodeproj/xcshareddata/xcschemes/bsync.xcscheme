@@ -37,14 +37,6 @@
                BlueprintName = "bsyncTests"
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "BsyncAdminUpDownSyncTests">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
@@ -129,6 +121,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = ""
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument

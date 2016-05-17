@@ -65,3 +65,43 @@ public func instancesFromExternalReferences<T: Collectible>(externalReferences: 
     return instances
 }
 
+
+enum GlobalQueue {
+
+    case Main
+    case UserInteractive
+    case UserInitiated
+    case Utility
+    case Background
+
+     func get() -> dispatch_queue_t {
+        switch self {
+        case .Main:
+            return dispatch_get_main_queue()
+        case .UserInteractive:
+            if #available(OSX 10.10, *) {
+                return dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
+            } else {
+                return dispatch_get_main_queue()
+            }
+        case .UserInitiated:
+            if #available(OSX 10.10, *) {
+                return dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
+            } else {
+               return dispatch_get_main_queue()
+            }
+        case .Utility:
+            if #available(OSX 10.10, *) {
+                return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
+            } else {
+                return dispatch_get_main_queue()
+            }
+        case .Background:
+            if #available(OSX 10.10, *) {
+                return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+            } else {
+                return dispatch_get_main_queue()
+            }
+        }
+    }
+}
