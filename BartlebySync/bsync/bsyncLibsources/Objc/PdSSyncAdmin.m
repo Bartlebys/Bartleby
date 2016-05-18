@@ -582,24 +582,15 @@
                                                          if(!error && response){
                                                              double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (httpStatusCode==200) {
-                                                                 
-                                                                 // In this case decryptString is not directly interoparable with decrypt data.
-                                                                 // We cannot infer the data encoding
-                                                                 // So we need to proceed to multiple transformations.
-                                                                 // from data to string and from string to data before to JSON deserialize
-                                                                 NSString*cryptoString=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                 printf("Pre decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                  NSError *cryptoError = nil;
-                                                                 cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
+                                                                 NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     printf("Post decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("Post decrypt String decryption error");
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
-                                                                     data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
-                                                                     
                                                                      @try {
                                                                          NSError *parseError = nil;
-                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
                                                                                                                                             options:0
                                                                                                                                               error:&parseError];
                                                                          if(parseError){
@@ -787,24 +778,15 @@
                                                          if(!error && response){
                                                              double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (httpStatusCode==200) {
-                                                                 
-                                                                 // In this case decryptString is not directly interoparable with decrypt data.
-                                                                 // We cannot infer the data encoding
-                                                                 // So we need to proceed to multiple transformations.
-                                                                 // from data to string and from string to data before to JSON deserialize
-                                                                 NSString*cryptoString=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                 printf("Pre decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                  NSError *cryptoError = nil;
-                                                                 cryptoString=[[Bartleby cryptoDelegate] decryptString:cryptoString error:&cryptoError];
+                                                                 NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                  if(cryptoError){
-                                                                     printf("Post decrypt String decryption error: %s\n", [cryptoString cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     printf("Post decrypt String decryption error");
                                                                      block(nil,PdSStatusErrorHashMapDeserialization);
                                                                  } else {
-                                                                     data=[cryptoString dataUsingEncoding:NSUTF8StringEncoding];
-                                                                 
-                                                                     @try {
+                                                                                                                                          @try {
                                                                          NSError *parseError = nil;
-                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data
+                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
                                                                                                                                             options:0
                                                                                                                                               error:&parseError];
                                                                          if(parseError){
