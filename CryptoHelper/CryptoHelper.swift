@@ -55,12 +55,14 @@ import Foundation
      */
     public func encryptString(string: String) throws ->String {
         if let data=string.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
-                let crypted=try encryptData(data)
-                if let cryptedString=String(data: crypted,encoding:NSUTF8StringEncoding){
-                    return cryptedString
-                }
+            let crypted=try encryptData(data)
+            if let cryptedString=String(data: crypted,encoding:NSUTF8StringEncoding){
+                return cryptedString
+            } else {
+                throw CryptoError.CodingError(message: "Invalid crypted data (not UTF8)")
+            }
         }
-        return string
+        throw CryptoError.CodingError(message: "Error converting UTF8 string to data")
     }
 
     /**
@@ -75,13 +77,12 @@ import Foundation
      */
     public func decryptString(string: String) throws ->String {
         if let data=string.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
-                let decrypted=try decryptData(data)
-                if let decryptedString=String(data: decrypted,encoding:NSUTF8StringEncoding){
-                    return decryptedString
-                }
-            
+            let decrypted=try decryptData(data)
+            if let decryptedString=String(data: decrypted,encoding:NSUTF8StringEncoding){
+                return decryptedString
+            }
         }
-            throw CryptoError.DecryptBase64Failure
+        throw CryptoError.DecryptBase64Failure
         
     }
 

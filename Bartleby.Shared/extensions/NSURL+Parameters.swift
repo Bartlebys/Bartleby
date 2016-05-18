@@ -8,6 +8,16 @@
 
 import Foundation
 
+extension String {
+    func stringByAddingPercentEncodingForRFC3986() -> String? {
+        let unreserved = "-._~/?"
+        let allowed = NSMutableCharacterSet.alphanumericCharacterSet()
+        allowed.addCharactersInString(unreserved)
+        return stringByAddingPercentEncodingWithAllowedCharacters(allowed)
+    }
+}
+
+
 
 extension NSURL {
 
@@ -18,7 +28,7 @@ extension NSURL {
 
      - returns: a new NSURL object
      */
-    public func URLByAppendingQueryStringDictionary(dictionary: Dictionary<String, AnyObject>)->NSURL? {
+    public func URLByAppendingQueryStringDictionary(dictionary: Dictionary<String, String>)->NSURL? {
 
         // Decompose the current url
         let components = NSURLComponents()
@@ -27,6 +37,15 @@ extension NSURL {
         components.path=self.path
         components.query=self.query
 
+//        // Old implementation compatible only with 10.10
+//        var mutableQueryItems=Array<NSURLQueryItem>()
+//        if let queryItems=components.queryItems{
+//            for item in  queryItems {
+//                mutableQueryItems.append(item)
+//            }
+//        }
+//        
+//        components.queryItems=mutableQueryItems
 
         var queryItems=[String]()
         if let query = self.query where !query.isEmpty {
@@ -35,7 +54,9 @@ extension NSURL {
 
         // Add the dictionary value
         for (k, v) in dictionary {
-            queryItems.append("\(k)=\(v)")
+            if let encodedK = k.stringByAddingPercentEncodingForRFC3986(), let encodedV = v.stringByAddingPercentEncodingForRFC3986() {
+                queryItems.append("\(encodedK)=\(encodedV)")
+            }
         }
         components.query = queryItems.joinWithSeparator("&")
 

@@ -19,8 +19,8 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 class UpDownDirectivesTests: XCTestCase {
     
-    private static let _spaceUID = Bartleby.createUID()
-    private static let _password = Bartleby.randomStringWithLength(6)
+    private static var _spaceUID = ""
+    private static var _password = ""
     private static var _user: User?
     
     private static var _treeName = ""
@@ -40,12 +40,15 @@ class UpDownDirectivesTests: XCTestCase {
     
     override class func setUp() {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        
-        _treeName = Bartleby.randomStringWithLength(6)
+   
+        _spaceUID = Bartleby.createUID()
+        _password = Bartleby.randomStringWithLength(6)
+
+        _treeName = NSStringFromClass(self)
         _folderPath = TestsConfiguration.ASSET_PATH + self.className() + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
-        _fileContent = Bartleby.randomStringWithLength(20)
+        _fileContent = "martin" //Bartleby.randomStringWithLength(20)
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
         

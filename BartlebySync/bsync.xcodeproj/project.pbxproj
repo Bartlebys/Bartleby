@@ -2010,7 +2010,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -e /usr/local/bin ]; then\n    cp ${TARGET_BUILD_DIR}/${TARGET_NAME} /usr/local/bin/\"bsync\"\nfi";
+			shellScript = "if [ -e /usr/local/bin ]; then\n    cp ${TARGET_BUILD_DIR}/${TARGET_NAME} /usr/local/bin/${TARGET_NAME}\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
