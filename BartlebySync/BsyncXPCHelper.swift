@@ -283,7 +283,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
     public func createDirectoryAtPath(path: String, handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -304,7 +304,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
     public func readData( contentsOfFile path: String,
                                          handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -328,7 +328,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                            path: String,
                            handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -349,7 +349,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
     public func readString(contentsOfFile path: String,
                                           handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -373,7 +373,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                              path: String,
                              handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -395,7 +395,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                  handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -417,7 +417,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                  handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -440,7 +440,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                       handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -461,7 +461,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
     public func removeItemAtPath(path: String,
                                  handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -485,7 +485,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                toPath dstPath: String,
                                       handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -508,7 +508,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                toPath dstPath: String,
                                       handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
@@ -530,7 +530,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
     public func contentsOfDirectoryAtPath(path: String,
                                           handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
             return
         }
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {

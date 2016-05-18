@@ -22,23 +22,15 @@ extension Registry {
     public func pushOperations(operations: [Operation], handlers: Handlers) throws->() {
         TasksScheduler.DEBUG_TASKS=true
         if operations.count==0 {
-            handlers.on(Completion.successState())
+            handlers.on(Completion.successState(NSLocalizedString("Operations stack is void", comment: "Operations stack is void")))
         } else {
             // We use the encapsulated SpaceUID
-            let spaceUID=operations.first!.spaceUID
-
-            // ??? L'ORDRE D'AJOUT EST INCIDENT
-            // BPDS Implementer une Progression cohérente.
-            // le task Group devrait connaitre son nombre total de tâche + le nb completé couramment.
-            // A chaque completion de task il devrait mettre à jour
-
+            let spaceUID=self.spaceUID
             // Create the root Task.
             let firstOperationTask=PushOperationTask(arguments: operations.first!)
 
             // We taskGroupFor the task
             let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDataSpace: spaceUID)
-            try group.addTask(firstOperationTask)
-
             // We add the calling handlers
             group.handlers.appendChainedHandlers(handlers)
 
@@ -46,7 +38,13 @@ extension Registry {
                 let task=PushOperationTask(arguments:operation)
                 try group.appendChainedTask(task)
             }
-            try group.start()
+            do {
+                try group.start()
+            } catch {
+                handlers.on(Completion.failureStateFromError(error))
+                throw error
+            }
+
         }
     }
 

@@ -74,8 +74,15 @@ public extension Completion {
         return Completion(success:false, message:message, statusCode:statusCode)
     }
 
-    public static func failureStateFromNSError(error: NSError) -> Completion {
-        return Completion(success: false, message: error.localizedDescription, statusCode: CompletionStatus(rawValue: error.code) ?? .Undefined)
+ 
+
+    public static func failureStateFromError(error: ErrorType) -> Completion {
+        if let nse=error as? NSError {
+            return Completion(success: false, message: nse.localizedDescription, statusCode: CompletionStatus(rawValue: nse.code) ?? .Undefined)
+        } else {
+            return Completion(success: false, message: "\(error)", statusCode:.Undefined)
+        }
+
     }
 
     public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {

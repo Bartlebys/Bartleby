@@ -29,7 +29,7 @@ import Foundation
             try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -47,7 +47,7 @@ import Foundation
             let data=try NSData(contentsOfFile: path, options: [])
             handlers.on(Completion.successState(data: data))
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -67,7 +67,7 @@ import Foundation
             try data.writeToFile(path, options:[])
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -89,7 +89,7 @@ import Foundation
                 handlers.on(Completion.failureState("\(path) doesn't contains valid data for given encoding \(Default.STRING_ENCODING)", statusCode: .Unsupported_Media_Type))
             }
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -112,7 +112,7 @@ import Foundation
             try string.writeToFile(path, atomically: true, encoding: Default.STRING_ENCODING)
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -194,7 +194,7 @@ import Foundation
             try NSFileManager.defaultManager().removeItemAtPath(path)
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -214,7 +214,7 @@ import Foundation
             try NSFileManager.defaultManager().copyItemAtPath(srcPath, toPath: dstPath)
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -234,7 +234,7 @@ import Foundation
             try NSFileManager.defaultManager().moveItemAtPath(srcPath, toPath: dstPath)
             handlers.on(Completion.successState())
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
     
@@ -255,7 +255,7 @@ import Foundation
             c.setStringArrayResult(content)
             handlers.on(c)
         } catch let error as NSError {
-            handlers.on(Completion.failureStateFromNSError(error))
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
 }
