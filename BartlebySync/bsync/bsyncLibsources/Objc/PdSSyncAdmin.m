@@ -586,7 +586,7 @@
                                                                  NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                  if(cryptoError){
                                                                      printf("Post decrypt String decryption error");
-                                                                     block(nil,PdSStatusErrorHashMapDeserialization);
+                                                                     block(nil,PdSStatusErrorHashMapDecryptFailure);
                                                                  } else {
                                                                      @try {
                                                                          NSError *parseError = nil;
@@ -782,7 +782,7 @@
                                                                  NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                  if(cryptoError){
                                                                      printf("Post decrypt String decryption error");
-                                                                     block(nil,PdSStatusErrorHashMapDeserialization);
+                                                                     block(nil,PdSStatusErrorHashMapDecryptFailure);
                                                                  } else {
                                                                                                                                           @try {
                                                                          NSError *parseError = nil;
