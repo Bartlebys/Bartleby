@@ -37,28 +37,35 @@ extension NSURL {
         components.path=self.path
         components.query=self.query
 
-//        // Old implementation compatible only with 10.10
-//        var mutableQueryItems=Array<NSURLQueryItem>()
-//        if let queryItems=components.queryItems{
-//            for item in  queryItems {
-//                mutableQueryItems.append(item)
-//            }
-//        }
-//        
-//        components.queryItems=mutableQueryItems
-
-        var queryItems=[String]()
-        if let query = self.query where !query.isEmpty {
-            queryItems.append(query)
-        }
-
-        // Add the dictionary value
-        for (k, v) in dictionary {
-            if let encodedK = k.stringByAddingPercentEncodingForRFC3986(), let encodedV = v.stringByAddingPercentEncodingForRFC3986() {
-                queryItems.append("\(encodedK)=\(encodedV)")
+        // This implementation work only from 10.11
+        var mutableQueryItems=Array<NSURLQueryItem>()
+        if let queryItems=components.queryItems{
+            for item in  queryItems {
+                mutableQueryItems.append(item)
             }
         }
-        components.query = queryItems.joinWithSeparator("&")
+        
+        // Add the dictionary value
+        for (k,v) in dictionary{
+            let queryItem=NSURLQueryItem(name: k, value:"\(v)")
+            mutableQueryItems.append(queryItem)
+        }
+        
+        components.queryItems=mutableQueryItems
+
+        // Attempt to make it work on 10.9
+//        var queryItems=[String]()
+//        if let query = self.query where !query.isEmpty {
+//            queryItems.append(query)
+//        }
+//
+//        // Add the dictionary value
+//        for (k, v) in dictionary {
+//            if let encodedK = k.stringByAddingPercentEncodingForRFC3986(), let encodedV = v.stringByAddingPercentEncodingForRFC3986() {
+//                queryItems.append("\(encodedK)=\(encodedV)")
+//            }
+//        }
+//        components.query = queryItems.joinWithSeparator("&")
 
         return components.URL
     }
