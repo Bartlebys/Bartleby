@@ -499,7 +499,6 @@
 		E5B775A71CDCDDF2007261E1 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E5B775A81CDCDDF2007261E1 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5DB43CB1CEDA5A10079C883 /* BartlebyError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -837,7 +836,6 @@
 		E5B775731CDCDDF2007261E1 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				E5DB43CB1CEDA5A10079C883 /* BartlebyError.swift */,
 				E5B775741CDCDDF2007261E1 /* ReactiveTask.swift */,
 				E5B775761CDCDDF2007261E1 /* Bartleby.swift */,
 				E5B775771CDCDDF2007261E1 /* CompletionStatus.swift */,
