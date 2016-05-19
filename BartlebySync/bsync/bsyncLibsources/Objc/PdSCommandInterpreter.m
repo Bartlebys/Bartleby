@@ -527,7 +527,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             
             NSURL *url = [_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@&redirect=true&returnValue=false",
                                                                                        treeId,
-                                                                                       [source copy]
+                                                                                       [source stringByRemovingPercentEncoding]
                                                                                        ]];
             
  
