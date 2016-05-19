@@ -182,10 +182,6 @@ public class TasksScheduler {
                 }
                 return false
         }
-
-
-
-
         if hasInconsistencies {
             throw TasksSchedulerError.UnconsistentGroup
         }

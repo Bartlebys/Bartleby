@@ -75,7 +75,6 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
             } else {
                 self.reactiveHandlers.on(Completion.failureState("To dictionnary \(#file)", statusCode: CompletionStatus.Precondition_Failed))
             }
-
         } else {
             self.reactiveHandlers.on(Completion.failureState("Invocation argument type missmatch \(#file)", statusCode: CompletionStatus.Precondition_Failed))
         }

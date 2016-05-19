@@ -79,29 +79,14 @@ enum GlobalQueue {
         case .Main:
             return dispatch_get_main_queue()
         case .UserInteractive:
-            if #available(OSX 10.10, *) {
-                return dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
-            } else {
-                return dispatch_get_main_queue()
-            }
+            return dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
         case .UserInitiated:
-            if #available(OSX 10.10, *) {
-                return dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
-            } else {
-               return dispatch_get_main_queue()
-            }
+            return dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
         case .Utility:
-            if #available(OSX 10.10, *) {
-                return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
-            } else {
-                return dispatch_get_main_queue()
-            }
+            return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
         case .Background:
-            if #available(OSX 10.10, *) {
-                return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
-            } else {
-                return dispatch_get_main_queue()
-            }
+            return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+           
         }
     }
 }
