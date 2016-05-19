@@ -747,15 +747,18 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                      @"hashMap":jsonHashMap
                                      };
         
-        NSURL*url=[[NSURL URLWithString:URLString] URLByAppendingQueryStringDictionary:parameters];
+        NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+        
+//        NSURL*url=[[NSURL URLWithString:URLString] URLByAppendingQueryStringDictionary:parameters];
+        NSURL*url = [NSURL URLWithString:URLString];
         
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                                 forMethod:@"POST"
                                                                                       and:url];
-        
-        
+
+        [request setHTTPBody:jsonBodyData];
 
         // DATA TASK
         [self addCurrentTaskAndResume:[[self urlSession] dataTaskWithRequest:request

@@ -38,7 +38,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         _password = Bartleby.randomStringWithLength(6)
 
         _treeName = NSStringFromClass(self)
-        _folderPath = TestsConfiguration.ASSET_PATH + "BsyncAdminUpDownSyncTests/"
+        _folderPath = TestsConfiguration.ASSET_PATH + _treeName + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent = Bartleby.randomStringWithLength(20)
