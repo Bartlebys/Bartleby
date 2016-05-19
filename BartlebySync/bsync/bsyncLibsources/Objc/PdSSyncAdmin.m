@@ -192,13 +192,10 @@
 - (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         
-        NSDictionary*parameters=@{@"repositoryPath": _syncContext.repositoryPath};
-        
-        NSURL*baseUrl=[_syncContext.destinationBaseUrl URLByAppendingPathComponent:@"/install"];
-        NSURL*urlWithParameters=[baseUrl URLByAppendingQueryStringDictionary:parameters];
+        NSURL*url=[_syncContext.destinationBaseUrl URLByAppendingPathComponent: [NSString stringWithFormat:@"/install?repositoryPath=", _syncContext.repositoryPath]];
         
         // REQUEST
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:urlWithParameters];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         request.HTTPMethod = @"POST";
         
         // TASK
@@ -757,19 +754,17 @@
     // DOWNLOAD
     NSString*treeId =_syncContext.sourceTreeId;
     // Decompose in a GET for the URI then a download task
-    NSDictionary *parameters = @{
-                                 @"path": [NSString stringWithFormat:@"%@%@",kBsyncHashmapViewPrefixSignature,_syncContext.hashMapViewName],
-                                 @"redirect":@"true",
-                                 @"returnValue":@"false"
-                                 };
-    NSURL*url=[baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@",treeId]];
-    NSURL*urlWithParameters=[url URLByAppendingQueryStringDictionary:parameters];
+    NSURL*url=[baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@%@&redirect=true&returnValue=false",
+                                                    treeId,
+                                                    kBsyncHashmapViewPrefixSignature,
+                                                    _syncContext.hashMapViewName
+                                                    ]];
 
     // REQUEST
     NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncGetFile"
                                                                                 forMethod:@"GET"
-                                                                                      and:urlWithParameters];
+                                                                                      and:url];
 
     // TASK
     

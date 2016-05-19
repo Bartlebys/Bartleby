@@ -14,15 +14,6 @@
 NSString * const PdSSyncInterpreterWillFinalize = @"PdSSyncInterpreterWillFinalize";
 NSString * const PdSSyncInterpreterHasFinalized = @"PdSSyncInterpreterHasFinalized";
 
-// if set to 1 use redirection for download
-// else it use a two step request (less efficient)
-// redirection is much more efficient than two step downloading.
-// do not turn off if the redirection works.
-// when using redirection the server on get send a location header with a 307 Status code
-// the NSURLSessionDelegate relay to NSURLSessionTaskDelegate willPerformHTTPRedirection
-// that relay the request.
-#define kUseRedirection 1
-
 typedef void(^ProgressBlock_type)(uint taskIndex,double progress);
 typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString*_Nonnull message);
 
@@ -413,15 +404,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         PdSCommandInterpreter *__weak weakSelf=self;
         
         NSURL *sourceURL=[_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",_context.sourceTreeId,source]];
-        NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/uploadFileTo/tree/%@/",_context.destinationTreeId];
-        NSDictionary *parameters = @{
-                                     @"syncIdentifier": _context.syncID,
-                                     @"destination":destination
-                                     };
+        NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/uploadFileTo/tree/%@/?syncIdentifier=%@&destination=%@",
+                              _context.destinationTreeId, _context.syncID, destination];
         
-        NSURL*url=[[NSURL URLWithString:URLString] URLByAppendingQueryStringDictionary:parameters];
+        NSURL*url=[NSURL URLWithString:URLString];
         
-
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncUploadFileTo"
@@ -537,25 +524,21 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             // DOWNLOAD
             NSString*treeId=_context.sourceTreeId;
             // Decompose in a GET for the URI then a download task
-            NSDictionary *parameters = @{
-                                         @"path": [source copy],
-#if kUseRedirection
-                                         @"redirect":@"true",
-#endif
-                                         @"returnValue":@"false"
-                                         };
-            NSURL*url=[_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@",treeId]];
-            NSURL*urlWithParameters=[url URLByAppendingQueryStringDictionary:parameters];
+            
+            NSURL *url = [_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@&redirect=true&returnValue=false%@",
+                                                                                       treeId,
+                                                                                       [source copy]
+                                                                                       ]];
             
  
             // REQUEST
             NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                                withActionName:@"BartlebySyncGetFile"
                                                                                     forMethod:@"GET"
-                                                                                          and:urlWithParameters];
+                                                                                          and:url];
             
             
-            [self _progressMessage:@"Downloading %@", urlWithParameters];
+            [self _progressMessage:@"Downloading %@", url];
             
             
             // Prepare the destination
@@ -566,9 +549,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             
             
             [_fileManager createRecursivelyRequiredFolderForPath:p];
-            
-#if kUseRedirection
-            
             
             [self addCurrentTaskAndResume:[[self urlSession]downloadTaskWithRequest:request
                                                                   completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -602,49 +582,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                       [strongSelf _interruptOnFault:msg];
                                                                       
                                                                   }]];
-            
-#else
-            
-            // DETERMINE THE URI
-            // THEN PROCEED TO DOWNLOAD
-            
-            [self addCurrentTaskAndResume:[[self urlSession]dataTaskWithRequest:request
-                                                              completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                                  //
-                                                                  PdSCommandInterpreter*__strong strongSelf=weakSelf;
-                                                                  if(!error){
-                                                                      NSError *parseError = nil;
-                                                                      NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-                                                                      if(parseError){
-                                                                          [strongSelf _progressMessage:@"FAILURE before GET File @URI %@",response.URL ];
-                                                                          [strongSelf _interruptOnFault:[weakSelf _stringFromError:error]];
-                                                                          
-                                                                      }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
-                                                                          NSDictionary*d=responseDictionary;
-                                                                          NSString*uriString=[d objectForKey:@"uri"];
-                                                                          [strongSelf _progressMessage:@"Downloading %@ \nFrom %@", uriString,response.URL];
-                                                                          if(uriString && [uriString isKindOfClass:[NSString class]]){
-                                                                              // Proceed to download
-                                                                              [strongSelf _download:[NSURL URLWithString:uriString]
-                                                                                      toDestination:[destination copy]];
-                                                                          }else{
-                                                                              [strongSelf _interruptOnFault:[NSString stringWithFormat:@"Missing url in response of %@",response.URL]];
-                                                                          }
-                                                                      }else{
-                                                                          [strongSelf _interruptOnFault:[NSString stringWithFormat:@"Casting issue for url in response of %@",response.URL]];
-                                                                      }
-                                                                  }else{
-                                                                      [strongSelf _progressMessage:@"FAILURE before GET File @URI %@",response.URL];
-                                                                      if (data!=nil) {
-                                                                          NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                          printf("Fault : %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                                      }
-                                                                      [strongSelf _interruptOnFault:[strongSelf _stringFromError:error]];
-                                                                  }
-                                                              }]];
-            
-            
-#endif
         };
         
         
@@ -655,69 +592,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // CURRENTLY NOT SUPPORTED
     }
 }
-
-
-#if !kUseRedirection
-
-// TWO STEP DOWNLOAD
-
-- (void)_download:(NSURL*)url toDestination:(NSString*)destination{
-
-    // REQUEST
-    NSMutableURLRequest *fileRequest = [HTTPManager mutableRequestWithTokenWithspaceUID:_context.credentials.spaceUID
-                                                                       withActionName:@"BartlebySyncGetFile"
-                                                                            forMethod:@"GET"
-                                                                                  and:url];
-    
-    
-    
-    NSString*__block p=[self _absoluteLocalPathFromRelativePath:destination
-                                                     toLocalUrl:_context.destinationBaseUrl
-                                                     withTreeId:_context.destinationTreeId
-                                                      addPrefix:YES];
-    
-    [_fileManager createRecursivelyRequiredFolderForPath:p];
-    
-    PdSCommandInterpreter *__weak weakSelf=self;
-    [self addCurrentTaskAndResume:[[self urlSession]downloadTaskWithRequest:fileRequest
-                                                          completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                              PdSCommandInterpreter *__strong strongSelf=weakSelf;
-                                                              if (!error){
-                                                                  NSError*moveItemError=nil;
-                                                                  NSURL*destinationURL=[NSURL fileURLWithPath:p];
-                                                                  [_fileManager moveItemAtURL:location
-                                                                                        toURL:destinationURL
-                                                                                        error:&moveItemError];
-                                                                  if(moveItemError){
-                                                                      NSString*message=[NSString stringWithFormat:@"Error when moving tmp loaded file %@",[strongSelf _stringFromError:error]];
-                                                                      [strongSelf _interruptOnFault:message];
-                                                                      return;
-                                                                  }else{
-                                                                      [strongSelf _nextCommand];
-                                                                      return;
-                                                                  }
-                                                                  
-                                                              }
-                                                              if (response) {
-                                                                  NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                                  NSDictionary*headers=[(NSHTTPURLResponse*)response allHeaderFields];
-                                                                  NSString*message=[[NSString alloc]initWithFormat:@"Http Status code: %@\n%@",@(httpStatusCode),headers];
-                                                                  printf("Fault on download: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                              }
-                                                              
-                                                              NSString *msg=@"No message";
-                                                              if (error) {
-                                                                  msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[weakSelf _stringFromError:error]];
-                                                              }
-                                                              [strongSelf _interruptOnFault:msg];
-                                                              
-                                                              
-                                                          }]];
-}
-
-
-#endif
-
 
 #pragma  mark  Finalize
 
@@ -749,7 +623,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
         
-//        NSURL*url=[[NSURL URLWithString:URLString] URLByAppendingQueryStringDictionary:parameters];
         NSURL*url = [NSURL URLWithString:URLString];
         
         // REQUEST
@@ -757,7 +630,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                            withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                                 forMethod:@"POST"
                                                                                       and:url];
-
+        
         [request setHTTPBody:jsonBodyData];
 
         // DATA TASK
