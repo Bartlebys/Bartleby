@@ -126,7 +126,6 @@
 		E50145341CE8B96400EDD9C3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */; };
 		E50145351CE8B96400EDD9C3 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449B1CE8B96400EDD9C3 /* TasksScheduler.swift */; };
 		E50145361CE8B96400EDD9C3 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449E1CE8B96400EDD9C3 /* NSUndomanager+RegisterUndo.swift */; };
-		E50145371CE8B96400EDD9C3 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449F1CE8B96400EDD9C3 /* NSURL+Parameters.swift */; };
 		E50145381CE8B96400EDD9C3 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144A01CE8B96400EDD9C3 /* User+Auth.swift */; };
 		E50145391CE8B96400EDD9C3 /* LoginUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144A21CE8B96400EDD9C3 /* LoginUser.swift */; };
 		E501453A1CE8B96400EDD9C3 /* LogoutUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144A31CE8B96400EDD9C3 /* LogoutUser.swift */; };
@@ -313,7 +312,6 @@
 		E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E501449B1CE8B96400EDD9C3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E501449E1CE8B96400EDD9C3 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
-		E501449F1CE8B96400EDD9C3 /* NSURL+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Parameters.swift"; sourceTree = "<group>"; };
 		E50144A01CE8B96400EDD9C3 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E50144A21CE8B96400EDD9C3 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		E50144A31CE8B96400EDD9C3 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
@@ -648,7 +646,6 @@
 			isa = PBXGroup;
 			children = (
 				E501449E1CE8B96400EDD9C3 /* NSUndomanager+RegisterUndo.swift */,
-				E501449F1CE8B96400EDD9C3 /* NSURL+Parameters.swift */,
 				E50144A01CE8B96400EDD9C3 /* User+Auth.swift */,
 			);
 			path = extensions;
@@ -980,7 +977,6 @@
 				E50144B71CE8B96400EDD9C3 /* Group.swift in Sources */,
 				E50145251CE8B96400EDD9C3 /* ConcreteTask.swift in Sources */,
 				E501452B1CE8B96400EDD9C3 /* Identifiable.swift in Sources */,
-				E50145371CE8B96400EDD9C3 /* NSURL+Parameters.swift in Sources */,
 				E50145211CE8B96400EDD9C3 /* BartlebyFileIO.swift in Sources */,
 				E50144F41CE8B96400EDD9C3 /* UpdateGroups.swift in Sources */,
 				E50144DD1CE8B96400EDD9C3 /* DeleteUsers.swift in Sources */,

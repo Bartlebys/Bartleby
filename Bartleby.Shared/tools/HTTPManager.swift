@@ -48,7 +48,7 @@ public class HTTPManager: NSObject {
 
      - returns: the mutable request
      */
-    static public func mutableRequestWithHeaders(method: String, url: NSURL)->NSMutableURLRequest {
+    static public func mutableRequestWithHeaders(method: String, url: NSURL) -> NSMutableURLRequest {
         let request=NSMutableURLRequest(URL: url)
         request.HTTPMethod=method
         request.addValue(HTTPManager.deviceIdentifier, forHTTPHeaderField: "Device-Identifier")
@@ -74,7 +74,7 @@ public class HTTPManager: NSObject {
 
      - returns: the mutable
      */
-    static public func mutableRequestWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL)->NSMutableURLRequest {
+    static public func mutableRequestWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
         let r=HTTPManager.mutableRequestWithHeaders(method, url: url)
         // We prefer to Inject the token and spaceUID within the HTTP headers.
         // Note It is also possible to pass them as query strings.
@@ -229,7 +229,7 @@ public class HTTPManager: NSObject {
 
      - returns: the salted value
      */
-    static public func salt(string: String)->String {
+    static public func salt(string: String) -> String {
         return CryptoHelper.hash(string.stringByAppendingString(Bartleby.configuration.SHARED_SALT))
     }
 

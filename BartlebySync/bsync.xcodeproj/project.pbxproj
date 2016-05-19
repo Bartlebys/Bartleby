@@ -745,10 +745,6 @@
 		E50143D71CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419D1CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift */; };
 		E50143D81CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419D1CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift */; };
 		E50143D91CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419D1CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift */; };
-		E50143DA1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */; };
-		E50143DB1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */; };
-		E50143DC1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */; };
-		E50143DD1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */; };
 		E50143DE1CE8B93900EDD9C3 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419F1CE8B93900EDD9C3 /* User+Auth.swift */; };
 		E50143DF1CE8B93900EDD9C3 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419F1CE8B93900EDD9C3 /* User+Auth.swift */; };
 		E50143E01CE8B93900EDD9C3 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501419F1CE8B93900EDD9C3 /* User+Auth.swift */; };
@@ -1124,7 +1120,6 @@
 		E50141991CE8B93900EDD9C3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E501419A1CE8B93900EDD9C3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E501419D1CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
-		E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Parameters.swift"; sourceTree = "<group>"; };
 		E501419F1CE8B93900EDD9C3 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E50141A11CE8B93900EDD9C3 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		E50141A21CE8B93900EDD9C3 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
@@ -1558,7 +1553,6 @@
 			isa = PBXGroup;
 			children = (
 				E501419D1CE8B93900EDD9C3 /* NSUndomanager+RegisterUndo.swift */,
-				E501419E1CE8B93900EDD9C3 /* NSURL+Parameters.swift */,
 				E501419F1CE8B93900EDD9C3 /* User+Auth.swift */,
 			);
 			path = extensions;
@@ -2340,7 +2334,6 @@
 				5B5D092E1CDC91C4001FB281 /* MultipartFormData.swift in Sources */,
 				E50143ED1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */,
 				5B5D09511CDC91E3001FB281 /* (null) in Sources */,
-				E50143DD1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */,
 				E50142191CE8B93900EDD9C3 /* CreatePermission.swift in Sources */,
 				5B5D09791CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09261CDC91B4001FB281 /* ISO8601DateTransform.swift in Sources */,
@@ -2548,7 +2541,6 @@
 				E501424E1CE8B93900EDD9C3 /* DeletePermission.swift in Sources */,
 				E53E28EA1CA572E80079ED23 /* RunDirectivesCommand.swift in Sources */,
 				E53E28F51CA572F40079ED23 /* main.swift in Sources */,
-				E50143DA1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */,
 				E53E28DE1CA572E20079ED23 /* BsyncContext.swift in Sources */,
 				E50143521CE8B93900EDD9C3 /* ExternalReference+Resolution.swift in Sources */,
 				E501438E1CE8B93900EDD9C3 /* CollectionMetadatumProtocol.swift in Sources */,
@@ -2615,7 +2607,6 @@
 				E5B98E971CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */,
 				E50142831CE8B93900EDD9C3 /* ReadLockerById.swift in Sources */,
 				E50143C71CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
-				E50143DB1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */,
 				E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */,
 				E50142DF1CE8B93900EDD9C3 /* UpdatePermissions.swift in Sources */,
 				E501439F1CE8B93900EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
@@ -2827,7 +2818,6 @@
 				E55C92801CBF8998008163F6 /* BsyncImageDiskManager.swift in Sources */,
 				E55C927D1CBF8998008163F6 /* BsyncContext.swift in Sources */,
 				E55C92761CBF854D008163F6 /* HashMap.m in Sources */,
-				E50143DC1CE8B93900EDD9C3 /* NSURL+Parameters.swift in Sources */,
 				E55C92741CBF854D008163F6 /* PdSCommandInterpreter.m in Sources */,
 				E50142781CE8B93900EDD9C3 /* ReadGroupById.swift in Sources */,
 				E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */,

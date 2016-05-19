@@ -192,7 +192,7 @@
 - (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         
-        NSURL*url=[_syncContext.destinationBaseUrl URLByAppendingPathComponent: [NSString stringWithFormat:@"/install?repositoryPath=", _syncContext.repositoryPath]];
+        NSURL*url=[_syncContext.destinationBaseUrl URLByAppendingPathComponent: [NSString stringWithFormat:@"/install?repositoryPath=%@", _syncContext.repositoryPath]];
         
         // REQUEST
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];

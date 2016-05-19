@@ -281,8 +281,6 @@
 		E5B776B81CDCDDF3007261E1 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759A1CDCDDF2007261E1 /* TasksScheduler.swift */; };
 		E5B776B91CDCDDF3007261E1 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759C1CDCDDF2007261E1 /* NSUndomanager+RegisterUndo.swift */; };
 		E5B776BA1CDCDDF3007261E1 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759C1CDCDDF2007261E1 /* NSUndomanager+RegisterUndo.swift */; };
-		E5B776BB1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759D1CDCDDF2007261E1 /* NSURL+Parameters.swift */; };
-		E5B776BC1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759D1CDCDDF2007261E1 /* NSURL+Parameters.swift */; };
 		E5B776BD1CDCDDF3007261E1 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759E1CDCDDF2007261E1 /* User+Auth.swift */; };
 		E5B776BE1CDCDDF3007261E1 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7759E1CDCDDF2007261E1 /* User+Auth.swift */; };
 		E5B776BF1CDCDDF3007261E1 /* LoginUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A01CDCDDF2007261E1 /* LoginUser.swift */; };
@@ -488,7 +486,6 @@
 		E5B775991CDCDDF2007261E1 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E5B7759A1CDCDDF2007261E1 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E5B7759C1CDCDDF2007261E1 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
-		E5B7759D1CDCDDF2007261E1 /* NSURL+Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Parameters.swift"; sourceTree = "<group>"; };
 		E5B7759E1CDCDDF2007261E1 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E5B775A01CDCDDF2007261E1 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		E5B775A11CDCDDF2007261E1 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
@@ -908,7 +905,6 @@
 			isa = PBXGroup;
 			children = (
 				E5B7759C1CDCDDF2007261E1 /* NSUndomanager+RegisterUndo.swift */,
-				E5B7759D1CDCDDF2007261E1 /* NSURL+Parameters.swift */,
 				E5B7759E1CDCDDF2007261E1 /* User+Auth.swift */,
 			);
 			path = extensions;
@@ -1183,7 +1179,6 @@
 				E5B7766B1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769B1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
-				E5B776BB1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */,
 				E57A4BE81CE8A34E0044106A /* User.swift in Sources */,
 				E57A4C601CE8A34E0044106A /* UpdateTrigger.swift in Sources */,
 				E5B776791CDCDDF2007261E1 /* Consignation.swift in Sources */,
@@ -1325,7 +1320,6 @@
 				E5B7766C1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
 				E57A4BE71CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769C1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
-				E5B776BC1CDCDDF3007261E1 /* NSURL+Parameters.swift in Sources */,
 				E57A4BE91CE8A34E0044106A /* User.swift in Sources */,
 				E57A4C611CE8A34E0044106A /* UpdateTrigger.swift in Sources */,
 				E5B7767A1CDCDDF2007261E1 /* Consignation.swift in Sources */,
