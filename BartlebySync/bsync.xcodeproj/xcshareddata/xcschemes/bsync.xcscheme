@@ -169,11 +169,19 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--file $HOME/dev/YouDub/YouDubAPI/files/bsyncTests.BsyncAdminUpDownSyncTests/.bsync/hashmap"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--secretKey UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

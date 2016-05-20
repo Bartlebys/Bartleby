@@ -112,4 +112,19 @@ class CryptoHelperTests: XCTestCase {
             XCTFail("Error data creation from string")
         }
     }
+    
+    func testEncryptDecrypt_HashMap() {
+        let hashMapString = "{\"pthToH\":{\"file.txt\":\"1408464486\"}}"
+        do {
+            let cryptedHashMapString = try CryptoHelperTests._cryptoHelper.encryptString(hashMapString)
+            // we get an encrypted base64 string
+//            XCTAssertEqual(cryptedHashMapString, "eTCPvyGC1XPax9XAwdBDdQ==")
+            // If we decrypt it
+            let decryptedHashMapString = try CryptoHelperTests._cryptoHelper.decryptString(cryptedHashMapString)
+            // we get back our original string
+            XCTAssertEqual(decryptedHashMapString, "{\"pthToH\":{\"file.txt\":\"1408464486\"}}")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 }

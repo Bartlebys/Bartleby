@@ -524,13 +524,14 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             // DOWNLOAD
             NSString*treeId=_context.sourceTreeId;
             // Decompose in a GET for the URI then a download task
+            NSString *urlString = [NSString stringWithFormat:@"%@/file/tree/%@/?path=%@&redirect=true&returnValue=false",
+                                   [_context.sourceBaseUrl absoluteString],
+                                   treeId,
+                                   [source stringByRemovingPercentEncoding]
+                                   ];
             
-            NSURL *url = [_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@&redirect=true&returnValue=false",
-                                                                                       treeId,
-                                                                                       [source stringByRemovingPercentEncoding]
-                                                                                       ]];
-            
- 
+            NSURL *url = [NSURL URLWithString:urlString];
+             
             // REQUEST
             NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                                withActionName:@"BartlebySyncGetFile"
