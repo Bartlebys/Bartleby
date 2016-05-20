@@ -297,6 +297,7 @@
 		E5B776CC1CDCDDF3007261E1 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A71CDCDDF2007261E1 /* Pluralization.swift */; };
 		E5B776CD1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
 		E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
+		E5BB0D3F1CEF904D0054C23A /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5BDC62F1CEF4C6A00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5BDC6301CEF4C6F00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
@@ -498,6 +499,7 @@
 		E5B775A71CDCDDF2007261E1 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E5B775A81CDCDDF2007261E1 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
+		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -627,6 +629,7 @@
 				E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */,
 				E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
+				E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */,
 			);
 			path = BartlebyKitOSXTests;
 			sourceTree = "<group>";
@@ -1366,6 +1369,7 @@
 				5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */,
 				5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */,
 				E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */,
+				E5BB0D3F1CEF904D0054C23A /* DocumentTests.swift in Sources */,
 				E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */,
 				E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */,
 				E5959C0A1CA6702200557BDB /* AccessControlTests.swift in Sources */,

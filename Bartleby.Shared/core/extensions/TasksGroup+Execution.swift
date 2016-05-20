@@ -375,11 +375,10 @@ public extension TasksGroup {
     private func _insurePersistencyOfTask(task: Task) throws {
         if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
             let persitentTasks: TasksCollectionController = try registry.getCollection()
-             persitentTasks.add(task)
-        }else{
+            persitentTasks.add(task)
+        } else {
             throw TasksGroupError.TaskGroupDataSpaceNotFound
         }
-
     }
 
 

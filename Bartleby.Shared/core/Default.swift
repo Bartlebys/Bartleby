@@ -26,6 +26,9 @@ public protocol BartlebyConfiguration {
     // Bartleby Bprint
     static var ENABLE_BPRINT: Bool { get set }
 
+    // Use NoCrypto as CryptoDelegate
+    static var DISABLE_DATA_CRYPTO: Bool { get }
+
     // Consignation
     static var API_CALL_TRACKING_IS_ENABLED: Bool { get set }
     static var BPRINT_API_TRACKED_CALLS: Bool { get set }
@@ -65,6 +68,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
+
+    // Use NoCrypto as CryptoDelegate
+    public static var DISABLE_DATA_CRYPTO: Bool { return false }
 
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true

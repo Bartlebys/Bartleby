@@ -38,6 +38,53 @@
                BlueprintName = "BartlebyKitOSXTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AccessControlTests">
+               </Test>
+               <Test
+                  Identifier = "AuthCookiesTests">
+               </Test>
+               <Test
+                  Identifier = "BFileManagerTests">
+               </Test>
+               <Test
+                  Identifier = "BasicApiTests">
+               </Test>
+               <Test
+                  Identifier = "CompletionWithResultTests">
+               </Test>
+               <Test
+                  Identifier = "CryptoHelperTests">
+               </Test>
+               <Test
+                  Identifier = "InterSpaceTests">
+               </Test>
+               <Test
+                  Identifier = "InterSpaceUpdateUserSpaceToAnotherSpaceTests">
+               </Test>
+               <Test
+                  Identifier = "JObjectTests">
+               </Test>
+               <Test
+                  Identifier = "LockerTests">
+               </Test>
+               <Test
+                  Identifier = "SerializableInvocationsTests">
+               </Test>
+               <Test
+                  Identifier = "TasksGroupCompletionPriorityAndPausesTests">
+               </Test>
+               <Test
+                  Identifier = "TransformTests">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests">
+               </Test>
+               <Test
+                  Identifier = "UserStatusTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

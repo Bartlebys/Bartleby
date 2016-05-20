@@ -73,8 +73,13 @@ public class  Bartleby: Consignee {
      */
     public func configureWith(configuration: BartlebyConfiguration.Type) {
 
-        //Initialize the crypto delegate with the valid KEY & SALT
-        Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT)
+        if configuration.DISABLE_DATA_CRYPTO {
+            // Use NoCrypto a neutral crypto delegate
+            Bartleby.cryptoDelegate=NoCrypto()
+        } else {
+            //Initialize the crypto delegate with the valid KEY & SALT
+            Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT)
+        }
 
         // Store the configuration
         Bartleby.configuration=configuration
@@ -349,5 +354,8 @@ public class  Bartleby: Consignee {
         }
         return nil
     }
+
+
+
 
 }
