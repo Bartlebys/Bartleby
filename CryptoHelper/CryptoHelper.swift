@@ -54,9 +54,12 @@ import Foundation
      - returns: A base 64 string representing a crypted buffer
      */
     public func encryptString(string: String) throws ->String {
-        if let data=string.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
+        if CryptoHelper.DISABLE_CRYPTO==true {
+            return string
+        }
+        if let data=string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
             let crypted=try encryptData(data)
-            if let cryptedString=String(data: crypted,encoding:NSUTF8StringEncoding){
+            if let cryptedString=String(data: crypted, encoding:NSUTF8StringEncoding) {
                 return cryptedString
             } else {
                 throw CryptoError.CodingError(message: "Invalid crypted data (not UTF8)")
@@ -76,14 +79,17 @@ import Foundation
      - returns: A string
      */
     public func decryptString(string: String) throws ->String {
-        if let data=string.dataUsingEncoding(NSUTF8StringEncoding,allowLossyConversion:false){
+        if CryptoHelper.DISABLE_CRYPTO==true {
+            return string
+        }
+        if let data=string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion:false) {
             let decrypted=try decryptData(data)
-            if let decryptedString=String(data: decrypted,encoding:NSUTF8StringEncoding){
+            if let decryptedString=String(data: decrypted, encoding:NSUTF8StringEncoding) {
                 return decryptedString
             }
         }
         throw CryptoError.DecryptBase64Failure
-        
+
     }
 
     /**
@@ -96,7 +102,10 @@ import Foundation
      - returns: An encrypted buffer
      */
     public func encryptData(data: NSData) throws ->NSData {
-        let crypted=try self._encryptOperation(CCOperation(kCCEncrypt),on: data)
+        if CryptoHelper.DISABLE_CRYPTO==true {
+            return data
+        }
+        let crypted=try self._encryptOperation(CCOperation(kCCEncrypt), on: data)
         // (!) IMPORTANT
         // the crypted data may produces invalid UTF8 data producing nil Strings
         // We need to base64 encode any NSData.
@@ -114,8 +123,11 @@ import Foundation
      - returns: A decrypted buffer
      */
     public func decryptData(data: NSData) throws ->NSData {
-        if let b64Data=NSData(base64EncodedData: data, options: [.IgnoreUnknownCharacters]){
-            return try self._encryptOperation(CCOperation(kCCDecrypt),on:b64Data)
+        if CryptoHelper.DISABLE_CRYPTO==true {
+            return data
+        }
+        if let b64Data=NSData(base64EncodedData: data, options: [.IgnoreUnknownCharacters]) {
+            return try self._encryptOperation(CCOperation(kCCDecrypt), on:b64Data)
         }
         throw CryptoError.DecryptBase64Failure
     }
