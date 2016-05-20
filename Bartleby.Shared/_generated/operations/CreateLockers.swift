@@ -136,7 +136,8 @@ import ObjectMapper
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
-				self._operation.summary="CreateLockers(..))"
+				let stringIDS=self._lockers.reduce("", combine: { $0+","+$1.UID })
+				self._operation.summary="CreateLockers(\(stringIDS))"
 
                 if let currentUser=registry.registryMetadata.currentUser{
                     self._operation.creatorUID=currentUser.UID
