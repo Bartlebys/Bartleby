@@ -52,7 +52,7 @@ public class Registry: BXDocument {
     static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
 
     // The file extension for crypted data
-    static let DATA_EXTENSION: String=".data"
+    static let DATA_EXTENSION: String = CryptoHelper.DISABLE_CRYPTO ? ".json" : ".data"
 
     // The metadata file name
     private let _metadataFileName="metadata".stringByAppendingString(Registry.DATA_EXTENSION)

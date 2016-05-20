@@ -9,8 +9,13 @@
 import Foundation
 
 @objc public class CryptoHelper: NSObject, CryptoDelegate {
+
     // (!Should always be set to false (debug only)
-    private static let DISABLE_CRYPTO = false
+    public static var DISABLE_CRYPTO: Bool {
+        get {
+            return false
+        }
+    }
 
     let salt: String
 
