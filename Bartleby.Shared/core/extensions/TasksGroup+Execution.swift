@@ -25,7 +25,7 @@ enum TasksGroupError: ErrorType {
     case InterruptedOnFault
     case MissingExternalReference
     case MultipleRunAttempts
-    case TaskCollectionControllerNotFound
+    case TaskGroupDataSpaceNotFound
 }
 
 /*
@@ -148,11 +148,11 @@ public extension TasksGroup {
         }
         task.group=ExternalReference(from:self)
 
-        if let _=self.tasks.indexOf(task) {
+        if self.tasks.filter({$0.iUID==task.UID}).count>0 {
             throw TasksGroupError.MultipleAttemptToAddTask
         }
         // Add the task to the root tasks.
-        self.tasks.append(task)
+        self.tasks.append(ExternalReference(from:task))
         if TasksScheduler.DEBUG_TASKS {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID
@@ -170,9 +170,12 @@ public extension TasksGroup {
     public func appendChainedTask(task: Task) throws {
         try self._insurePersistencyOfTask(task)
         if self.lastChainedTask == nil {
-            if let lastTask=self.tasks.last {
-
-                 try lastTask.addChildren(task)
+            if let lastTaskRef=self.tasks.last {
+                if let lastTask: Task=lastTaskRef.toLocalInstance() {
+                     try lastTask.addChildren(task)
+                } else {
+                     throw TasksGroupError.MissingExternalReference
+                }
             } else {
                 try self.addTask(task)
             }
@@ -199,8 +202,10 @@ public extension TasksGroup {
      */
     public func totalTaskCount() -> Int {
         var counter: Int=0
-        for task in self.tasks {
-            self._count(task, counter:&counter)
+        for taskRef in self.tasks {
+            if let task: Task=taskRef.toLocalInstance() {
+                self._count(task, counter:&counter)
+            }
         }
         return counter
     }
@@ -224,8 +229,10 @@ public extension TasksGroup {
      */
     public func runnableTaskCount() -> Int {
         var counter: Int=0
-        for task in self.tasks {
-            self._runnableCount(task, counter:&counter)
+        for taskRef in self.tasks {
+            if let task: Task=taskRef.toLocalInstance() {
+                 self._runnableCount(task, counter:&counter)
+            }
         }
         return counter
     }
@@ -251,8 +258,10 @@ public extension TasksGroup {
     public func rankOfTask(task: Task) -> Int {
         var rankCounter: Int = -1
         var stop: Bool=false
-        for task in self.tasks {
-            self._rankOfTask(task, rankCounter:&rankCounter, stop:&stop)
+        for taskref in self.tasks {
+            if let task: Task=taskref.toLocalInstance() {
+                self._rankOfTask(task, rankCounter:&rankCounter, stop:&stop)
+            }
         }
         return rankCounter
     }
@@ -279,8 +288,10 @@ public extension TasksGroup {
      */
     public func runnableTasks() -> [Task] {
         var tasks=[Task]()
-        for task in self.tasks {
-            self._runnableTasksFrom(task, tasks:&tasks)
+        for taskRef in self.tasks {
+            if let task: Task=taskRef.toLocalInstance() {
+                self._runnableTasksFrom(task, tasks:&tasks)
+            }
         }
         return tasks
     }
@@ -332,8 +343,10 @@ public extension TasksGroup {
      */
     public func findTasks(@noescape matching:(task: Task) -> Bool) -> [Task] {
         var tasks=[Task]()
-        for task in self.tasks {
-            self._findTasks(task, matching: matching, tasks:&tasks)
+        for taskRef in self.tasks {
+            if let task: Task=taskRef.toLocalInstance() {
+                self._findTasks(task, matching: matching, tasks:&tasks)
+            }
         }
         return tasks
     }
@@ -342,8 +355,8 @@ public extension TasksGroup {
         if matching(task: task) {
             tasks.append(task)
         }
-        for ref in task.children {
-            if let child: Task=ref.toLocalInstance() {
+        for taskRef in task.children {
+            if let child: Task=taskRef.toLocalInstance() {
                 if matching(task: child) {
                     tasks.append(child)
                 }
@@ -363,10 +376,12 @@ public extension TasksGroup {
         if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
             let persitentTasks: TasksCollectionController = try registry.getCollection()
              persitentTasks.add(task)
+        }else{
+            throw TasksGroupError.TaskGroupDataSpaceNotFound
         }
-        throw TasksGroupError.TaskCollectionControllerNotFound
+
     }
-    
-    
+
+
 
 }

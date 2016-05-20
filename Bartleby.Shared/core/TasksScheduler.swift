@@ -195,13 +195,15 @@ public class TasksScheduler {
                 if TasksScheduler.DEBUG_TASKS {
                     bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line)
                 }
-                for task in group.tasks.reverse() {
-                    let linearListOfSubTasks=task.linearTaskList.reverse()
-                    for subtask in linearListOfSubTasks {
-
-                        registry.delete(subtask)
+                for taskReference in group.tasks.reverse() {
+                    if let task: Task=taskReference.toLocalInstance() {
+                        let linearListOfSubTasks=task.linearTaskList.reverse()
+                        for subtask in linearListOfSubTasks {
+                            registry.delete(subtask)
+                        }
+                        registry.delete(task)
                     }
-                    registry.delete(task)
+
                 }
             }
 
@@ -260,7 +262,7 @@ public class TasksScheduler {
 
      - parameter group: the tasks group
 
-     - returns: the queue 
+     - returns: the queue
      */
     func getQueueFor(group: TasksGroup) -> dispatch_queue_t {
         switch group.priority {

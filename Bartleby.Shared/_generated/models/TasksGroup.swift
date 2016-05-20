@@ -38,8 +38,8 @@ import ObjectMapper
 	public var priority:Priority = .Default
 	//The group dataspace
 	public var spaceUID:String = "\(Default.NO_UID)"
-	//The root group Tasks
-	public var tasks:[Task] = [Task]()
+	//The root group Tasks (external references)
+	public var tasks:[ExternalReference] = [ExternalReference]()
 	//The last chained (sequential) task external reference. 
 	public var lastChainedTask:ExternalReference?
 	//The progression state of the group
@@ -78,7 +78,7 @@ import ObjectMapper
 		self.status=TasksGroup.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "tasks")! as! [Task]
+		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tasks")! as! [ExternalReference]
 		self.lastChainedTask=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "lastChainedTask") 
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState") 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
