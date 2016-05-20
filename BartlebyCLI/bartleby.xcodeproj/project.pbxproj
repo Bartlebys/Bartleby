@@ -152,6 +152,7 @@
 		E5B98E2B1CC0E63C00A7ECD1 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E231CC0E63C00A7ECD1 /* TransformOf.swift */; };
 		E5B98E2C1CC0E63C00A7ECD1 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */; };
 		E5B98E2D1CC0E63C00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */; };
+		E5BDC6371CEF4D5700F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC6361CEF4D5700F20E56 /* TasksCollectionController.swift */; };
 		E5CD99EA1C86D96E00C64569 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D71C86D96E00C64569 /* Alamofire.swift */; };
 		E5CD99EB1C86D96E00C64569 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D81C86D96E00C64569 /* Download.swift */; };
 		E5CD99EC1C86D96E00C64569 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD99D91C86D96E00C64569 /* Error.swift */; };
@@ -341,6 +342,7 @@
 		E5B98E231CC0E63C00A7ECD1 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5B98E241CC0E63C00A7ECD1 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
 		E5B98E251CC0E63C00A7ECD1 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		E5BDC6361CEF4D5700F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E5CD99D71C86D96E00C64569 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CD99D81C86D96E00C64569 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		E5CD99D91C86D96E00C64569 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 		E50144051CE8B96400EDD9C3 /* collectionControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5BDC6361CEF4D5700F20E56 /* TasksCollectionController.swift */,
 				E50144061CE8B96400EDD9C3 /* GroupsCollectionController.swift */,
 				E50144071CE8B96400EDD9C3 /* LockersCollectionController.swift */,
 				E50144081CE8B96400EDD9C3 /* OperationsCollectionController.swift */,
@@ -883,6 +886,7 @@
 				E501452F1CE8B96400EDD9C3 /* Serializer.swift in Sources */,
 				E501450C1CE8B96400EDD9C3 /* NoCrypto.swift in Sources */,
 				E5D085411C550DC500F0090E /* BartlebysCommandsFacade.swift in Sources */,
+				E5BDC6371CEF4D5700F20E56 /* TasksCollectionController.swift in Sources */,
 				E50144E41CE8B96400EDD9C3 /* ReadPermissionById.swift in Sources */,
 				E50144E31CE8B96400EDD9C3 /* ReadLockersByQuery.swift in Sources */,
 				E50144DE1CE8B96400EDD9C3 /* ReadGroupById.swift in Sources */,

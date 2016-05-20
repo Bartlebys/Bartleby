@@ -934,6 +934,10 @@
 		E5B98EBD1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5B98EBE1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
 		E5B98EBF1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */; };
+		E5BDC6321CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */; };
+		E5BDC6331CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */; };
+		E5BDC6341CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */; };
+		E5BDC6351CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */; };
 		E5C0CF201C36CD6E00F3B7B8 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF1A1C36CD6E00F3B7B8 /* TestsConfiguration.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		E5FEE5EB1CBF5FA2006AFA2E /* BsyncXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */; };
@@ -1202,6 +1206,7 @@
 		E5B98E931CC0E6CD00A7ECD1 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5B98E941CC0E6CD00A7ECD1 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
 		E5B98E951CC0E6CD00A7ECD1 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E5C0CEC41C36CC2900F3B7B8 /* bsync */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bsync; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5C0CEC71C36CC2900F3B7B8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E5C0CED21C36CCDD00F3B7B8 /* bsyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bsyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1329,6 +1334,7 @@
 		E50141041CE8B93900EDD9C3 /* collectionControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5BDC6311CEF4C8800F20E56 /* TasksCollectionController.swift */,
 				E50141051CE8B93900EDD9C3 /* GroupsCollectionController.swift */,
 				E50141061CE8B93900EDD9C3 /* LockersCollectionController.swift */,
 				E50141071CE8B93900EDD9C3 /* OperationsCollectionController.swift */,
@@ -2026,6 +2032,7 @@
 				E50143511CE8B93900EDD9C3 /* Completion+Result.swift in Sources */,
 				5B5D09901CDC91E3001FB281 /* (null) in Sources */,
 				E50143B91CE8B93900EDD9C3 /* Serializable.swift in Sources */,
+				E5BDC6351CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */,
 				5B5D09731CDC91E3001FB281 /* (null) in Sources */,
 				5B5D094D1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D095D1CDC91E3001FB281 /* (null) in Sources */,
@@ -2404,6 +2411,7 @@
 				E501435A1CE8B93900EDD9C3 /* NSNotification+Progression.swift in Sources */,
 				E50146811CE8CB0F00EDD9C3 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E50142DE1CE8B93900EDD9C3 /* UpdatePermissions.swift in Sources */,
+				E5BDC6321CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */,
 				5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */,
 				E53E28DF1CA572E20079ED23 /* BsyncCredentials.swift in Sources */,
 				E50142861CE8B93900EDD9C3 /* ReadLockersByIds.swift in Sources */,
@@ -2574,6 +2582,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5BDC6331CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */,
 				5B8E5D561C8D7FCD002CFA03 /* Manager.swift in Sources */,
 				E501427F1CE8B93900EDD9C3 /* ReadGroupsByQuery.swift in Sources */,
 				5B66FABE1CD2060D000A2534 /* BsyncAdminUpDownSyncTests.swift in Sources */,
@@ -2944,6 +2953,7 @@
 				E50143B01CE8B93900EDD9C3 /* Initializable.swift in Sources */,
 				E55C92581CBF84ED008163F6 /* Upload.swift in Sources */,
 				E55C92591CBF84ED008163F6 /* Validation.swift in Sources */,
+				E5BDC6341CEF4C8800F20E56 /* TasksCollectionController.swift in Sources */,
 				E50143941CE8B93900EDD9C3 /* ConcreteTask.swift in Sources */,
 				E55C925A1CBF84ED008163F6 /* CommandLine.swift in Sources */,
 				E50143D41CE8B93900EDD9C3 /* TasksScheduler.swift in Sources */,

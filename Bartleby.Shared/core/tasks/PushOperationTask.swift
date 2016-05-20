@@ -35,6 +35,7 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
     convenience required public init(arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
+        self.summary=arguments.summary // Relay the summary
     }
 
     /**

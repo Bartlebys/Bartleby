@@ -260,7 +260,7 @@ public class TasksScheduler {
 
      - parameter group: the tasks group
 
-     - returns: the queue
+     - returns: the queue 
      */
     func getQueueFor(group: TasksGroup) -> dispatch_queue_t {
         switch group.priority {

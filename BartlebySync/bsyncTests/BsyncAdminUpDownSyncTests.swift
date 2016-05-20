@@ -67,13 +67,16 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
 
+        /*
         Bartleby.fileManager.removeItemAtPath(BsyncAdminUpDownSyncTests._folderPath, handlers: Handlers { (removal) in
             expectation.fulfill()
             })
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint("\(error)", file: #file, function: #function, line: #line)
-        }
+        }*/
+
+        expectation.fulfill()
     }
 
     // MARK: 1 - Create user

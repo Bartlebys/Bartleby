@@ -42,6 +42,8 @@ public class BartlebyDocument : JDocument {
     // On document deserialization the collection are populated.
 
 	// We enable KVO in Document context enabling discreet auto-commit)
+	dynamic lazy public var tasks=TasksCollectionController(enableKVO:true)
+	// We enable KVO in Document context enabling discreet auto-commit)
 	dynamic lazy public var tasksGroups=TasksGroupsCollectionController(enableKVO:true)
 	// We enable KVO in Document context enabling discreet auto-commit)
 	dynamic lazy public var users=UsersCollectionController(enableKVO:true)
@@ -64,6 +66,26 @@ public class BartlebyDocument : JDocument {
     // Those array controllers are Owned by their respective ViewControllers
     // Those view Controller are observed here to insure a consistent persitency
 
+
+    weak public var tasksArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the CollectionController
+            self.tasks.arrayController=tasksArrayController
+            // Add observer
+            tasksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
+            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey] as? Int{
+               if self.tasks.items.count > index{
+                   let selection=self.tasks.items[index]
+                   self.tasksArrayController?.setSelectedObjects([selection])
+                }
+             }
+        }
+    }
+        
 
     weak public var tasksGroupsArrayController: NSArrayController?{
         willSet{
@@ -211,6 +233,20 @@ public class BartlebyDocument : JDocument {
 
 //Focus indexes persistency
 
+    static public let kSelectedTaskIndexKey="selectedTaskIndexKey"
+    static public let TASK_SELECTED_INDEX_CHANGED_NOTIFICATION="TASK_SELECTED_INDEX_CHANGED_NOTIFICATION"
+    dynamic public var selectedTask:Task?{
+        didSet{
+            if let task = selectedTask {
+                if let index=tasks.items.indexOf(task){
+                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey]=index
+                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASK_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
+                }
+            }
+        }
+    }
+        
+
     static public let kSelectedTasksGroupIndexKey="selectedTasksGroupIndexKey"
     static public let TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION="TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION"
     dynamic public var selectedTasksGroup:TasksGroup?{
@@ -327,6 +363,16 @@ public class BartlebyDocument : JDocument {
         // #1  Defines the Schema
         super.configureSchema()
 
+        let taskDefinition = CollectionMetadatum()
+        taskDefinition.proxy = self.tasks
+        // By default we group the observation via the rootObjectUID
+        taskDefinition.collectionName = Task.collectionName
+        taskDefinition.observableViaUID = self.registryMetadata.rootObjectUID
+        taskDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
+        taskDefinition.allowDistantPersistency = false
+        taskDefinition.inMemory = false
+        
+
         let tasksGroupDefinition = CollectionMetadatum()
         tasksGroupDefinition.proxy = self.tasksGroups
         // By default we group the observation via the rootObjectUID
@@ -401,6 +447,7 @@ public class BartlebyDocument : JDocument {
         // Proceed to configuration
         do{
 
+			try self.registryMetadata.configureSchema(taskDefinition)
 			try self.registryMetadata.configureSchema(tasksGroupDefinition)
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
@@ -439,7 +486,15 @@ public class BartlebyDocument : JDocument {
     // We prefer to centralize the KVO for selection indexes at the top level
     if let keyPath = keyPath, object = object {
 
-             if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
+             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
+            if let task=self.tasksArrayController?.selectedObjects.first as? Task{
+                self.selectedTask=task
+                return
+            }
+        }
+        
+
+         if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
             if let tasksGroup=self.tasksGroupsArrayController?.selectedObjects.first as? TasksGroup{
                 self.selectedTasksGroup=tasksGroup
                 return
@@ -503,6 +558,14 @@ public class BartlebyDocument : JDocument {
 
     // MARK:  Delete currently selected items
     
+    public func deleteSelectedTask() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedTask{
+            self.tasks.removeObject(selected)
+        }
+    }
+        
+
     public func deleteSelectedTasksGroup() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedTasksGroup{
@@ -573,14 +636,14 @@ public class BartlebyDocument : JDocument {
     }
 
 
-     public func synchronize(handlers: Handlers){
+     public func synchronizeOperations(handlers: Handlers){
         if let currentUser=self.registryMetadata.currentUser{
             currentUser.login(withPassword: currentUser.password, sucessHandler: {
                 self.optimizeOperations()
                 do {
                     try self.pushOperations(handlers)
                 } catch {
-                    handlers.on(Completion.failureState("Push operations has failed", statusCode: CompletionStatus.Expectation_Failed))
+                    handlers.on(Completion.failureState("Push operations has failed \(error)", statusCode: CompletionStatus.Expectation_Failed))
                 }
                 }, failureHandler: { (context) in
                 handlers.on(Completion.failureStateFromJHTTPResponse(context))

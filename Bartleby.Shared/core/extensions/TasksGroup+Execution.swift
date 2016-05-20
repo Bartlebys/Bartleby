@@ -25,6 +25,7 @@ enum TasksGroupError: ErrorType {
     case InterruptedOnFault
     case MissingExternalReference
     case MultipleRunAttempts
+    case TaskCollectionControllerNotFound
 }
 
 /*
@@ -141,6 +142,7 @@ public extension TasksGroup {
      - parameter group: the group
      */
     public func addTask(task: Task) throws {
+        try self._insurePersistencyOfTask(task)
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
@@ -157,8 +159,8 @@ public extension TasksGroup {
             let g = task.group?.iUID ?? Default.NO_GROUP
             bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
         }
-    }
 
+    }
 
     /**
      Appends a task to the last task
@@ -166,15 +168,22 @@ public extension TasksGroup {
      - parameter task: the task to be sequentially added
      */
     public func appendChainedTask(task: Task) throws {
+        try self._insurePersistencyOfTask(task)
         if self.lastChainedTask == nil {
             if let lastTask=self.tasks.last {
+
                  try lastTask.addChildren(task)
             } else {
                 try self.addTask(task)
             }
-        } else if let lastTask: Task=self.lastChainedTask?.toLocalInstance() {
+        } else if let lastTask: Task=self.lastChainedTask!.toLocalInstance() {
             try lastTask.addChildren(task)
         } else {
+            if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+                let tasksCollection: TasksCollectionController = try registry.getCollection()
+                print(tasksCollection.items.count)
+
+            }
             throw TasksGroupError.MissingExternalReference
         }
         self.lastChainedTask=ExternalReference(from: task)
@@ -343,5 +352,21 @@ public extension TasksGroup {
         }
     }
 
+    /**
+     Adds the task to the relevant collection.
+
+     - parameter task: the task
+
+     - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
+     */
+    private func _insurePersistencyOfTask(task: Task) throws {
+        if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+            let persitentTasks: TasksCollectionController = try registry.getCollection()
+             persitentTasks.add(task)
+        }
+        throw TasksGroupError.TaskCollectionControllerNotFound
+    }
+    
+    
 
 }
