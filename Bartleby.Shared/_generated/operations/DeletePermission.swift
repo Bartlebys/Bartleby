@@ -136,7 +136,7 @@ import ObjectMapper
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
-				self._operation.summary="DeletePermission(\(self._permissionId))"
+                self._operation.summary="DeletePermission(\(self._permissionId))"
 
                 if let currentUser=registry.registryMetadata.currentUser{
                     self._operation.creatorUID=currentUser.UID
