@@ -49,7 +49,6 @@ import ObjectMapper
         super.mapping(map)
 		self.storage <- map["storage"]
 		self.collectionName <- map["collectionName"]
-		self.proxy <- map["proxy"]
 		self.allowDistantPersistency <- map["allowDistantPersistency"]
 		self.inMemory <- map["inMemory"]
 		self.observableViaUID <- map["observableViaUID"]
@@ -62,7 +61,6 @@ import ObjectMapper
         super.init(coder: decoder)
 		self.storage=CollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
-		self.proxy=decoder.decodeObjectOfClass(JObject.self, forKey: "proxy") 
 		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
 		self.inMemory=decoder.decodeBoolForKey("inMemory") 
 		self.observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
@@ -73,9 +71,6 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeObject(self.storage.rawValue ,forKey:"storage")
 		coder.encodeObject(self.collectionName,forKey:"collectionName")
-		if let proxy = self.proxy {
-			coder.encodeObject(proxy,forKey:"proxy")
-		}
 		coder.encodeBool(self.allowDistantPersistency,forKey:"allowDistantPersistency")
 		coder.encodeBool(self.inMemory,forKey:"inMemory")
 		coder.encodeObject(self.observableViaUID,forKey:"observableViaUID")

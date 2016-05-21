@@ -102,7 +102,6 @@ import ObjectMapper
 			coder.encodeObject(completionState,forKey:"completionState")
 		}
 		coder.encodeObject(self.name,forKey:"name")
-		coder.encodeObject(self.handlers,forKey:"handlers")
     }
 
 
