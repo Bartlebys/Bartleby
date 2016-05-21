@@ -75,7 +75,8 @@ public class TasksScheduler {
         let group=try self._taskGroupByName(groupName, inDataSpace: spaceUID)
         group.spaceUID=spaceUID
         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
-            document.tasksGroups.add(group)
+            let tasksGroups: TasksGroupsCollectionController = try document.getCollection()
+            tasksGroups.add(group)
         } else {
             throw TasksSchedulerError.DataSpaceNotFound
         }

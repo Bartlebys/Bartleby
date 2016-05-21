@@ -69,7 +69,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
 
-    // Use NoCrypto as CryptoDelegate
+    // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool { return false }
 
     // Consignation
