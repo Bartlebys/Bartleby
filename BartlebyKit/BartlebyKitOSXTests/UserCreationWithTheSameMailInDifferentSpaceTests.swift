@@ -63,7 +63,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -85,7 +85,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -107,7 +107,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -139,7 +139,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -158,7 +158,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -179,7 +179,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -201,7 +201,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -223,7 +223,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 

@@ -561,7 +561,7 @@ public class Registry: BXDocument {
             if let command=self.serializer.deserializeFromDictionary(serialized) as? JHTTPCommand {
                 command.push(sucessHandler:success, failureHandler:failure)
             } else {
-                //TODO: what should be done
+
             }
         }
     }
@@ -583,7 +583,7 @@ public class Registry: BXDocument {
 
          }*/
 
-        // TODO: Append a Trigger
+
 
         return operations
     }

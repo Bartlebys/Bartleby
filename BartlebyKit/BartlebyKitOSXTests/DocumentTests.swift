@@ -30,7 +30,7 @@ class DocumentTests: XCTestCase {
         do {
             let operations: OperationsCollectionController = try document.getCollection()
             // We taskGroupFor the task
-            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(document.spaceUID)", inDataSpace: document.spaceUID)
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(document.spaceUID)", inDocument:document)
             group.priority=TasksGroup.Priority.High
             // We add the calling handlers
             //group.handlers.appendChainedHandlers(handlers)

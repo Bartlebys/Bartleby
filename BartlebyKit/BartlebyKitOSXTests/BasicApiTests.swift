@@ -69,7 +69,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -90,7 +90,7 @@ class BasicApiTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -111,7 +111,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -133,7 +133,7 @@ class BasicApiTests: XCTestCase {
         }
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -155,7 +155,7 @@ class BasicApiTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -189,7 +189,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -221,7 +221,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -243,7 +243,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -272,7 +272,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(200.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -297,7 +297,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -321,7 +321,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(200.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -338,7 +338,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -356,7 +356,7 @@ class BasicApiTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
 
@@ -384,7 +384,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -403,7 +403,7 @@ class BasicApiTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

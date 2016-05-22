@@ -12,10 +12,10 @@ import BartlebyKit
 class BFileManagerTests: XCTestCase {
     let fm = Bartleby.fileManager
     let contextName = Bartleby.randomStringWithLength(6) + "/"
-    
+
     func test101_writeString() {
         let folder = TestsConfiguration.ASSET_PATH + contextName
-        
+
         // Checking no items (directory or file) exists
         let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")
         self.fm.directoryExistsAtPath(folder,
@@ -38,13 +38,13 @@ class BFileManagerTests: XCTestCase {
                                     XCTAssertFalse(existence.success)
                                     XCTAssertEqual(404, existence.statusCode)
             })
-        
+
         // Create directory
         let directoryShouldBeCreated = self.expectationWithDescription("Directory should be created")
         self.fm.createDirectoryAtPath(folder, handlers: Handlers { (creation) in
             directoryShouldBeCreated.fulfill()
             XCTAssert(creation.success, creation.message)
-            
+
             // Check the new directory exists
             let directoryShouldExist = self.expectationWithDescription("Directory should exist")
             self.fm.directoryExistsAtPath(folder,
@@ -67,7 +67,7 @@ class BFileManagerTests: XCTestCase {
                     XCTAssertFalse(existence.success)
                     XCTAssertEqual(415, existence.statusCode)
                 })
-            
+
             // Create file
             let aaa = Bartleby.randomStringWithLength(6)
             let filePath = folder + "test.txt"
@@ -75,7 +75,7 @@ class BFileManagerTests: XCTestCase {
             self.fm.writeString(aaa, path: filePath, handlers: Handlers { (write) in
                 writeExpectation.fulfill()
                 XCTAssert(write.success, write.message)
-                
+
                 // Check the new file exists
                 let directoryShouldNotExist2 = self.expectationWithDescription("Directory should not exist")
                 self.fm.directoryExistsAtPath(filePath,
@@ -98,7 +98,7 @@ class BFileManagerTests: XCTestCase {
                         XCTAssertTrue(existence.success)
                         XCTAssertEqual(200, existence.statusCode)
                     })
-                
+
                 // Check the file content
                 let readExpectation = self.expectationWithDescription("A string shoudl be read")
                 self.fm.readString(contentsOfFile: filePath, handlers: Handlers { (read) in
@@ -109,7 +109,7 @@ class BFileManagerTests: XCTestCase {
                         XCTFail(read.message)
                     }
                 })
-                
+
                 // Retrieve the folder content
                 let listExpectation = self.expectationWithDescription("A list should be returned")
                 self.fm.contentsOfDirectoryAtPath(folder, handlers: Handlers { (content) in
@@ -121,14 +121,14 @@ class BFileManagerTests: XCTestCase {
                         XCTFail(content.message)
                     }
                 })
-                
+
             })
-            
-            
+
+
         })
-        
+
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint(error?.localizedDescription)
+            bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
         }
     }
 }

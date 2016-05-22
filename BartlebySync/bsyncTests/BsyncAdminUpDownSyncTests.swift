@@ -177,7 +177,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -207,7 +207,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         waitForExpectationsWithTimeout(500.0) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -234,7 +234,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         waitForExpectationsWithTimeout(500.0) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

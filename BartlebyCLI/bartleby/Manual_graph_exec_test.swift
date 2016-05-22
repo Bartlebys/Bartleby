@@ -29,25 +29,26 @@ public enum GraphTestMode {
 
 public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRandomPause: Bool, numberOfSequTask: Int, testMode: GraphTestMode) {
 
-    Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
-    //Bartleby.startBufferingBprint()
-    TasksScheduler.DEBUG_TASKS=true
-    let document=BartlebyDocument()
 
-    ShowSummary.randomPause=useRandomPause
-    ShowSummary.executionCounter=0
-    ShowSummary.startMeasuring()
+        Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
+        //Bartleby.startBufferingBprint()
+        TasksScheduler.DEBUG_TASKS=true
+        let document=BartlebyDocument()
 
-    let rootObject=JObject()
-    rootObject.summary="ROOT OBJECT"
-    let firstTask=ShowSummary(arguments: rootObject)
+        ShowSummary.randomPause=useRandomPause
+        ShowSummary.executionCounter=0
+        ShowSummary.startMeasuring()
 
-    do {
-        let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
-        group.priority=priority
-        try group.addTask(firstTask)
-        print("Appending Completion Handler \(group.UID)")
-        group.handlers.appendCompletionHandler({ (completion) in
+        let rootObject=JObject()
+        rootObject.summary="ROOT OBJECT"
+        let firstTask=ShowSummary(arguments: rootObject)
+
+        do {
+            let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDocument:document)
+            group.priority=priority
+            try group.addTask(firstTask)
+            print("Appending Completion Handler \(group.UID)")
+            group.handlers.appendCompletionHandler({ (completion) in
                 let taskCount=group.totalTaskCount()
                 assert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
                 assert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
@@ -59,27 +60,29 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
                     exit(EX_OK)
                 })
 
-        })
+            })
 
 
-        // Adding Child tasks
-        for i in 1...numberOfSequTask {
-            let o=JObject()
-            o.summary="Object \(i)"
-            let task=ShowSummary(arguments: o)
-            switch testMode {
+            // Adding Child tasks
+            for i in 1...numberOfSequTask {
+                let o=JObject()
+                o.summary="Object \(i)"
+                let task=ShowSummary(arguments: o)
+                switch testMode {
                 case .Chained:
                     try group.appendChainedTask(task)
                 case .Flat:
                     try group.addTask(task)
+                }
+
             }
+            try group.start()
 
+        } catch {
+            bprint("Error: \(error)", file:#file, function:#function, line:#line)
         }
-        try group.start()
 
-    } catch {
-        print("\(error)")
-    }
+
 }
 
 
@@ -90,7 +93,7 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
 public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public typealias ArgumentType=JObject
-    
+
     public static var executionCounter=0
     public static var randomPause=false
     public static var randomPausePercentProbability: UInt32=1

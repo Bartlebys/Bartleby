@@ -121,7 +121,7 @@ public class HTTPManager: NSObject {
                 body: NSLocalizedString("Please Check your connection or your configuration!",
                     comment: "Please Check your connection or your configuration!"),
                 trigger: { (selectedIndex) -> () in
-                    bprint("Post presentation message selectedIndex:\(selectedIndex)")
+                    bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
             if result.isFailure {
@@ -134,7 +134,7 @@ public class HTTPManager: NSObject {
                     } else {
                         reactions.append(failureReaction)
                         if(result.value != "") {
-                            bprint(result.value)
+                            bprint(result.value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context:context)
                     }
@@ -183,7 +183,7 @@ public class HTTPManager: NSObject {
                 body: NSLocalizedString("Credentials are not valid",
                     comment: "Credentials are not valid"),
                 trigger: { (selectedIndex) -> () in
-                    bprint("Post presentation message selectedIndex:\(selectedIndex)")
+                    bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
             if result.isFailure {
@@ -196,7 +196,7 @@ public class HTTPManager: NSObject {
                     } else {
                         reactions.append(failureReaction)
                         if(result.value != "") {
-                            bprint(result.value)
+                            bprint(result.value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context:context)
                     }

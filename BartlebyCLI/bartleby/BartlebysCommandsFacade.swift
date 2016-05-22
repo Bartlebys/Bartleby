@@ -39,7 +39,7 @@ struct BartlebysCommandFacade {
             let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
             print("Did you mean:\"bsync \(bestCandidate)\"?")
-            exit(EX__BASE)
+
         }
     }
 

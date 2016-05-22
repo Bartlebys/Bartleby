@@ -68,7 +68,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -98,7 +98,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -121,7 +121,7 @@ class InterSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -148,7 +148,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -172,7 +172,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -191,7 +191,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -214,7 +214,7 @@ class InterSpaceTests: XCTestCase {
 
                 waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                     if let error = error {
-                        bprint("Error: \(error.localizedDescription)")
+                        bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                     }
                 }
             }
@@ -243,7 +243,7 @@ class InterSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -265,7 +265,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -284,7 +284,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -304,7 +304,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -321,7 +321,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -342,7 +342,7 @@ class InterSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -363,7 +363,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -380,7 +380,7 @@ class InterSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

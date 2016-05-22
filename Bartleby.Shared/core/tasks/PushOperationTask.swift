@@ -46,10 +46,9 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
         if let operation: ArgumentType = try? self.arguments() {
             if let serialized=operation.toDictionary {
                 if let command = try? JSerializer.deserializeFromDictionary(serialized) {
-                    if let jcommand=command as? JHTTPCommand {
-
+                    if let jCommand=command as? JHTTPCommand {
                         // Push the command.
-                        jcommand.push(sucessHandler: { (context) in
+                        jCommand.push(sucessHandler: { (context) in
                             let completion=Completion.successState()
                             completion.setResult(context as! JHTTPResponse)
 
@@ -58,12 +57,19 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
                             if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
                                 registry.delete(operation)
                             }
-
+                            // !!!  we should be able to throw.
+                            if let _ = try? self.forward(completion) {
+                                // SILENT
+                            }
                             self.reactiveHandlers.on(completion)
-                            }, failureHandler: { (context) in
-                                let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))
-                                completion.setResult(context as! JHTTPResponse)
-                                self.reactiveHandlers.on(completion)
+                        }, failureHandler: { (context) in
+                            let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))
+                            completion.setResult(context as! JHTTPResponse)
+                            // !!!  we should be able to throw.
+                            if let _ = try? self.forward(completion) {
+                                // SILENT
+                            }
+                            self.reactiveHandlers.on(completion)
                         })
                     } else {
                         self.reactiveHandlers.on(Completion.failureState("Casting error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
@@ -71,7 +77,6 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
                     }
                 } else {
                     self.reactiveHandlers.on(Completion.failureState("Deserialization error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
-
                 }
             } else {
                 self.reactiveHandlers.on(Completion.failureState("To dictionnary \(#file)", statusCode: CompletionStatus.Precondition_Failed))

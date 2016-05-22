@@ -13,6 +13,7 @@ import Foundation
 
 public protocol HTTPCommand {
 
+
     /**
      An http command implements a push method with success and failure contextual responses
 

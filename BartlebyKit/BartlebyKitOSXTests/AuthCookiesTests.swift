@@ -63,7 +63,7 @@ class AuthCookiesTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -89,7 +89,7 @@ class AuthCookiesTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -112,7 +112,7 @@ class AuthCookiesTests: XCTestCase {
 
         waitForExpectationsWithTimeout(7.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -136,7 +136,7 @@ class AuthCookiesTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -160,7 +160,7 @@ class AuthCookiesTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -181,7 +181,7 @@ class AuthCookiesTests: XCTestCase {
 
         waitForExpectationsWithTimeout(7.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

@@ -89,7 +89,7 @@ class LockerTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
                 if let error = error {
-                    bprint(error.localizedDescription)
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -118,7 +118,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -136,7 +136,7 @@ class LockerTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -166,7 +166,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -187,7 +187,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -210,7 +210,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -227,7 +227,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(7.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -252,7 +252,7 @@ class LockerTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -276,7 +276,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint(error.localizedDescription)
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -297,7 +297,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(100.0) { (error) in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -314,7 +314,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(7.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -340,7 +340,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -360,7 +360,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -380,7 +380,7 @@ class LockerTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -401,7 +401,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -422,7 +422,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -443,7 +443,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -460,7 +460,7 @@ class LockerTests: XCTestCase {
 
         waitForExpectationsWithTimeout(7.0) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

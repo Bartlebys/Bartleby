@@ -627,34 +627,7 @@ public class BartlebyDocument : JDocument {
 
 
     #endif
-
-
-    // MARK: - Actions
-
-     public func pushOperations(handlers: Handlers)throws{
-        try self.pushOperations(self.operations.items, handlers:handlers)
-    }
-
-
-     public func synchronizeOperations(handlers: Handlers){
-        if let currentUser=self.registryMetadata.currentUser{
-            currentUser.login(withPassword: currentUser.password, sucessHandler: {
-                self.optimizeOperations()
-                do {
-                    try self.pushOperations(handlers)
-                } catch {
-                    handlers.on(Completion.failureState("Push operations has failed \(error)", statusCode: CompletionStatus.Expectation_Failed))
-                }
-                }, failureHandler: { (context) in
-                handlers.on(Completion.failureStateFromJHTTPResponse(context))
-            })
-        }
-    }
-
-     public func optimizeOperations() {
-        self.optimizeOperations(self.operations.items)
-    }
-
+    
     #if os(OSX)
 
     required public init() {

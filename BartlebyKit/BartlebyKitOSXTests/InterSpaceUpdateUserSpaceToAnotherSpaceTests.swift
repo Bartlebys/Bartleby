@@ -63,7 +63,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
 
@@ -88,7 +88,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                 if let error = error {
-                    bprint("Error: \(error.localizedDescription)")
+                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                 }
             }
         } else {
@@ -115,7 +115,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
                     waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
                         if let error = error {
-                            bprint("Error: \(error.localizedDescription)")
+                            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
                         }
                     }
                 } else {
@@ -145,7 +145,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -162,7 +162,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

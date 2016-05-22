@@ -22,7 +22,7 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(message: AnyObject?, file: String = "", function: String = "", line: Int = -1) {
+public func bprint(message: AnyObject?, file: String, function: String, line: Int) {
     Bartleby.bprint(message, file: file, function: function, line: line)
 }
 
@@ -86,7 +86,7 @@ enum GlobalQueue {
             return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
         case .Background:
             return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
-           
+
         }
     }
 }

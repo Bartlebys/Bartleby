@@ -78,7 +78,7 @@ public class TestsConfiguration: BartlebyConfiguration {
 
 
     public static let TIME_OUT_DURATION = 5.0
-    public static let LONG_TIME_OUT_DURATION = 200.0
+    public static let LONG_TIME_OUT_DURATION = 1000.0
 
     public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "BartlebyKitTests/"
 }

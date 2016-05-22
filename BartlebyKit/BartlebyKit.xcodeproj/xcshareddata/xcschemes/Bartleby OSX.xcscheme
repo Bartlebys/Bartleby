@@ -58,6 +58,9 @@
                   Identifier = "CryptoHelperTests">
                </Test>
                <Test
+                  Identifier = "DocumentTests">
+               </Test>
+               <Test
                   Identifier = "InterSpaceTests">
                </Test>
                <Test
@@ -71,9 +74,6 @@
                </Test>
                <Test
                   Identifier = "SerializableInvocationsTests">
-               </Test>
-               <Test
-                  Identifier = "TasksGroupCompletionPriorityAndPausesTests">
                </Test>
                <Test
                   Identifier = "TransformTests">

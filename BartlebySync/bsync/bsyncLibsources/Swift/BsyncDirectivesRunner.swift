@@ -118,12 +118,12 @@ class BsyncDirectivesRunner {
                             }
                             if fm.fileExistsAtPath(folderPath, isDirectory: &isAFolder) {
                                 if isAFolder {
-                                    Bartleby.bprint("# hash map computation #")
+                                    Bartleby.bprint("# hash map computation #", file: #file, function: #function, line: #line)
                                     try analyzer.createHashMapFromLocalPath(folderPath,
                                                                             progressBlock: { (hash, path, index) -> Void in
-                                                                                bprint("\(index) checksum of \(path) is \(hash)")
+                                                                                bprint("\(index) checksum of \(path) is \(hash)", file: #file, function: #function, line: #line)
                                         }, completionBlock: { (hashMap) -> Void in
-                                            bprint("# End of hash map computation#")
+                                            bprint("# End of hash map computation#", file: #file, function: #function, line: #line)
                                             runSynchronizationCommand()
                                     })
                                 } else {

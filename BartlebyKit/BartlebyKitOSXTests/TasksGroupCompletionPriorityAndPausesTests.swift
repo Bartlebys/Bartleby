@@ -23,15 +23,15 @@ let PseudoSequential=GraphTestMode.Chained
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
 
-    
+
     public typealias ArgumentType=JObject
-    
+
     public static var executionCounter=0
     public static var randomPause=false
     public static var randomPausePercentProbability: UInt32=1
 
-    public static let smallGraphSize=10
-    public static let largeGraphSize=1000
+    public static let smallGraphSize=9
+    public static let largeGraphSize=999
 
 
 
@@ -241,9 +241,9 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
             var expectation: XCTestExpectation? = self.expectationWithDescription("Post execution is clean \(priority) \(useRandomPause) \(numberOfSequTask) \(testMode)")
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
 
-            TasksScheduler.DEBUG_TASKS=false
+            TasksScheduler.DEBUG_TASKS=true
             let document=BartlebyDocument()
-            Bartleby.startBufferingBprint()
+            //Bartleby.startBufferingBprint()
 
             ShowSummary.randomPause=useRandomPause
             ShowSummary.executionCounter=0
@@ -254,7 +254,7 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
             let firstTask=ShowSummary(arguments: rootObject)
 
             do {
-                let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDataSpace: document.spaceUID)
+                let group = try Bartleby.scheduler.getTaskGroupWithName(Bartleby.createUID(), inDocument: document)
                 group.priority=priority
 
                 // This is the unique root task
@@ -296,9 +296,9 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
 
 
 
-        self.waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION) { error -> Void in
+        self.waitForExpectationsWithTimeout(3600) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)")
+                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
