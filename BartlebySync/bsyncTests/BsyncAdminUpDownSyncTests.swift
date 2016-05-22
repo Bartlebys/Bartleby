@@ -67,16 +67,13 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
 
-        /*
         Bartleby.fileManager.removeItemAtPath(BsyncAdminUpDownSyncTests._folderPath, handlers: Handlers { (removal) in
             expectation.fulfill()
             })
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint("\(error)", file: #file, function: #function, line: #line)
-        }*/
-
-        expectation.fulfill()
+        }
     }
 
     // MARK: 1 - Create user
@@ -129,15 +126,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let expectation = expectationWithDescription("Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
 
-        do {
-            try analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._upFolderPath, progressBlock: { (hash, path, index) in
-                print("\(index) checksum of \(path) is \(hash)")
-                }, completionBlock: { (hashMap) in
-                    expectation.fulfill()
+        analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._upFolderPath, handlers: Handlers { (analyze) in
+            expectation.fulfill()
+            XCTAssert(analyze.success, analyze.message)
             })
-        } catch {
-            XCTFail("\(error)")
-        }
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)
@@ -148,15 +140,10 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         let expectation = expectationWithDescription("Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
 
-        do {
-            try analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._downFolderPath, progressBlock: { (hash, path, index) in
-                print("\(index) checksum of \(path) is \(hash)")
-                }, completionBlock: { (hashMap) in
-                    expectation.fulfill()
+        analyzer.createHashMapFromLocalPath(BsyncAdminUpDownSyncTests._downFolderPath, handlers: Handlers { (analyze) in
+            expectation.fulfill()
+            XCTAssert(analyze.success, analyze.message)
             })
-        } catch {
-            XCTFail("\(error)")
-        }
 
         waitForExpectationsWithTimeout(5) { (error) in
             bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)

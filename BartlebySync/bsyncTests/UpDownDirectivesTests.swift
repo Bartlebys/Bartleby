@@ -34,16 +34,16 @@ class UpDownDirectivesTests: XCTestCase {
     private static var _downFolderPath = ""
     private static var _downFilePath = ""
     
-    private static var _upDirectivePath = ""
+    private static var _upDirectivesPath = ""
     private static var _downDirectivePath = ""
     private static let _fm = BFileManager()
     
     override class func setUp() {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-   
+        
         _spaceUID = Bartleby.createUID()
         _password = Bartleby.randomStringWithLength(6)
-
+        
         _treeName = NSStringFromClass(self)
         _folderPath = TestsConfiguration.ASSET_PATH + self.className() + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
@@ -55,7 +55,7 @@ class UpDownDirectivesTests: XCTestCase {
         _downFolderPath = _folderPath + "Down/" + _treeName + "/"
         _downFilePath = _downFolderPath + "file.txt"
         
-        _upDirectivePath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
+        _upDirectivesPath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
         _downDirectivePath = _downFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
     }
     
@@ -118,9 +118,9 @@ class UpDownDirectivesTests: XCTestCase {
                 Bartleby.fileManager.writeString(UpDownDirectivesTests._fileContent, path: UpDownDirectivesTests._upFilePath, handlers: Handlers { (fileCreation) in
                     XCTAssertTrue(fileCreation.success, fileCreation.message)
                     expectation.fulfill()
+                    })
                 })
             })
-        })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
@@ -136,19 +136,15 @@ class UpDownDirectivesTests: XCTestCase {
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        let directivesURL = NSURL(fileURLWithPath: UpDownDirectivesTests._upDirectivePath)
-        let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
+        let expectation = expectationWithDescription("save")
         
-        if(!success) {
-            if let message = message {
-                XCTFail(message)
-            } else {
-                XCTFail("Unknown error")
-            }
-        } else {
-            Bartleby.fileManager.fileExistsAtPath(UpDownDirectivesTests._upDirectivePath, handlers: Handlers { (existence) in
-                XCTAssertTrue(existence.success, existence.message)
-                })
+        directives.save(UpDownDirectivesTests._upDirectivesPath, handlers: Handlers { (save) in
+            expectation.fulfill()
+            XCTAssert(save.success, save.message)
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -161,50 +157,55 @@ class UpDownDirectivesTests: XCTestCase {
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        let directivesURL = NSURL(fileURLWithPath: UpDownDirectivesTests._downDirectivePath)
-        let (success, message) = BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
+        let expectation = expectationWithDescription("save")
         
-        if(!success) {
-            if let message = message {
-                XCTFail(message)
-            } else {
-                XCTFail("Unknown error")
-            }
-        } else {
-            Bartleby.fileManager.fileExistsAtPath(UpDownDirectivesTests._downDirectivePath, handlers: Handlers { (existence) in
-                XCTAssertTrue(existence.success, existence.message)
-                })
-        }
-    }
-    func test402_RunDirectives_UpToDistant() {
-        let expectation = expectationWithDescription("Synchronization should complete")
-        
-        let runner = BsyncDirectivesRunner()
-        let handlers = Handlers { (completion) in
+        directives.save(UpDownDirectivesTests._downDirectivePath, handlers: Handlers { (save) in
             expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
-        }
-        runner.runDirectives(UpDownDirectivesTests._upDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+            XCTAssert(save.success, save.message)
+            })
+        
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
-    func test403_RunDirectives_DistantToDown() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+    func test402_RunDirectives_UpToDistant() {
         
-        let runner = BsyncDirectivesRunner()
-        let handlers = Handlers { (completion) in
-            expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
-        }
-        runner.runDirectives(UpDownDirectivesTests._downDirectivePath, secretKey: TestsConfiguration.KEY, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+        do {
+            let directives = try BsyncDirectives.load(UpDownDirectivesTests._upDirectivesPath)
+            
+            let expectation = expectationWithDescription("Synchronization should complete")
+            
+            directives.run(TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+                expectation.fulfill()
+                XCTAssertTrue(completion.success, completion.message)
+                })
+            
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
             }
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+    }
+    
+    func test403_RunDirectives_DistantToDown() {
+        do {
+            let directives = try BsyncDirectives.load(UpDownDirectivesTests._downDirectivePath)
+            
+            let expectation = expectationWithDescription("Synchronization should complete")
+            
+            directives.run(TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+                expectation.fulfill()
+                XCTAssertTrue(completion.success, completion.message)
+                })
+            
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
+                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
+            }
+        } catch {
+            XCTFail("\(error)")
         }
     }
     
@@ -217,7 +218,7 @@ class UpDownDirectivesTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
 }

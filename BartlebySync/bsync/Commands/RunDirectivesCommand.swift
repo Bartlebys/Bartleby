@@ -9,44 +9,43 @@
 import Foundation
 
 /*
-
-*/
+ 
+ */
 class RunDirectivesCommand: CommandBase {
-
+    
     required init(completionHandler: CompletionHandler?){
         super.init(completionHandler: completionHandler)
     }
-
+    
     /**
      The commandline mode execution
      */
     func executeCMD() {
-
+        
         let filePath = StringOption(shortFlag: "f", longFlag: "file", required: true,
-            helpMessage: "Path to the directive file.")
-
+                                    helpMessage: "Path to the directive file.")
+        
         let secretKey = StringOption(shortFlag: "i", longFlag: "secretKey", required: true,
-            helpMessage: "The secret key to encryp the data (if not set we use bsync's default)")
-
+                                     helpMessage: "The secret key to encryp the data (if not set we use bsync's default)")
+        
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
-            helpMessage: "The salt (if not set we use bsync's default)")
-
+                                      helpMessage: "The salt (if not set we use bsync's default)")
+        
         let help = BoolOption(shortFlag: "h", longFlag: "help",
-            helpMessage: "Prints a help message.")
-
-        let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
-            helpMessage: "Print verbose messages.\n\n")
-
-        cli.addOptions(filePath, secretKey, sharedSalt, help, verbosity)
+                              helpMessage: "Prints a help message.")
+        
+        cli.addOptions(filePath, secretKey, sharedSalt, help)
         do {
             try cli.parse()
-            self.isVerbose=verbosity.value
-            let key = secretKey.value!
-            let salt = sharedSalt.value!
-
-            let runner = BsyncDirectivesRunner()
-            runner.runDirectives(filePath.value!, secretKey: key, sharedSalt: salt, handlers: self)
-
+            if let filePath = filePath.value, let salt = sharedSalt.value {
+                // TODO: @md Configure Bartleby before running directives
+                
+                let directives = try BsyncDirectives.load(filePath)
+                directives.run(salt, handlers: self)
+            } else {
+                self.on(Completion.failureState("Unwrapping error", statusCode: .Undefined))
+            }
+            
         } catch {
             cli.printUsage(error)
             exit(EX_USAGE)

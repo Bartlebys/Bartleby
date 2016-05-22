@@ -68,50 +68,31 @@ class bsyncMiscTests: XCTestCase {
         
         let startTime = CFAbsoluteTimeGetCurrent()
         
-        if let url=NSURL(string: "file://\(NSHomeDirectory())/Desktop/UnitTestSamples/") {
-            
-            let fsm=NSFileManager()
-            if !fsm.fileExistsAtPath(url.path!) {
-                do {
-                    try fsm.createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
-                    try fsm.createDirectoryAtURL(url.URLByAppendingPathComponent("subfolder"), withIntermediateDirectories: true, attributes: nil)
-                    
-                } catch {
-                    XCTFail("Creation of \(url.path) failure \(error)")
-                }
-            }
+        let path = TestsConfiguration.ASSET_PATH + "bsyncMiscTests/"
+        let fm = BFileManager()
+        fm.createDirectoryAtPath(path + "subfolder/", handlers: Handlers { (create) in
+            XCTAssert(create.success, create.message)
             
             for i in 1...20 {
-                let s=randomStringWithLength(i*1024)
-                let surl=(i>10 ? url.URLByAppendingPathComponent("subfolder/\(i).data") : url.URLByAppendingPathComponent("\(i).data"))
+                let s = Bartleby.randomStringWithLength(UInt(i * 1024))
+                let subPath = path + (i > 10 ? "subfolder/\(i).data" : "\(i).data")
                 do {
-                    try s.writeToURL(surl,
-                                     atomically: false, encoding: Default.STRING_ENCODING)
+                    try s.writeToFile(subPath, atomically: false, encoding: Default.STRING_ENCODING)
                 } catch {
-                    XCTFail("Creation of \(surl.path) failure \(error)")
+                    XCTFail("Creation of \(subPath) failure \(error)")
                 }
             }
             
-            let path=url.path!
-            do {
-                try analyzer.createHashMapFromLocalPath(path, progressBlock: { (hash, path, index) -> Void in
-                    print("\(index)# Hash of \(path) is \(hash)")
-                    }, completionBlock: { (hashMap) -> Void in
-                        let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                        print ("elapsed time \(elapsedTime)")
-                        do {
-                            try fsm.removeItemAtURL(url)
-                        } catch {
-                            XCTFail("Deletion of folder \(url)failure \(error)")
-                        }
-                        expectation.fulfill()
-                        
+            analyzer.createHashMapFromLocalPath(path, handlers: Handlers { (analyze) in
+                XCTAssert(analyze.success, analyze.message)
+                let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
+                print ("elapsed time \(elapsedTime)")
+                fm.removeItemAtPath(path, handlers: Handlers { (remove) in
+                    expectation.fulfill()
+                    XCTAssert(remove.success, remove.message)
+                    })
                 })
-            } catch {
-                XCTFail("\(error)")
-            }
-            
-        }
+        })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {

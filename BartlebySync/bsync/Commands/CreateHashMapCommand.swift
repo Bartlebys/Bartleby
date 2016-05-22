@@ -30,21 +30,7 @@ class CreateHashMapCommand: CommandBase {
             self.isVerbose=verbosity.value
             if let path=folderPath.value {
                 var analyzer=BsyncLocalAnalyzer()
-                do {
-                    try analyzer.createHashMapFromLocalPath(path,
-                        progressBlock: { (hash, path, index) -> Void in
-                           self.printVerbose("#\(index) checksum of \(path) is \(hash)")
-                        }, completionBlock: { (hashMap) -> Void in
-                           self.printVerbose("End of hash map computation")
-                            exit(EX_OK)
-                    })
-                } catch BsyncLocalAnalyzerError.InvalidURL(let explanations) {
-                    print(explanations)
-                    exit(EX__BASE)
-                } catch {
-                    print("Unexpected error \(error)")
-                    exit(EX__BASE)
-                }
+                analyzer.createHashMapFromLocalPath(path, handlers: self)
             } else {
                 print("Invalid folder path \(folderPath.value)")
                 exit(EX__BASE)

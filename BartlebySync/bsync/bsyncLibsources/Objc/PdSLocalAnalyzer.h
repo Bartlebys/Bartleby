@@ -18,13 +18,13 @@
  *  Creates a hashmap - a dictionary with  relative paths as key and  CRC32 as value
  *  And save it to the relevent path
  *
- *  @param url the folder url
+ *  @param folderPath the folder path
  *  @param dataBlock if you define this block it will be used to extract the data from the file
  *  @param progressBlock the progress block
  *  @param completionBlock the completion block.
  *
  */
-- (void)createHashMapFromLocalFolderURL:(nonnull NSURL* )folderURL
+- (void)createHashMapFromLocalFolder:(nonnull NSString* )folderPath
                                 dataBlock:(nullable  NSData *_Nullable (^)(NSString* _Nonnull path, NSUInteger index))dataBlock
                         progressBlock:(nullable void(^)(NSString*_Nonnull hash,NSString*_Nonnull path, NSUInteger index))progressBlock
               andCompletionBlock:(nonnull void(^)(HashMap* _Nonnull hashMap))completionBlock;
@@ -52,7 +52,7 @@
  *  @param hashMap   the hashMap
  *  @param folderURL the folderURL
  */
-- (void)saveHashMap:(nonnull HashMap*)hashMap toFolderUrl:(nonnull NSURL*)folderURL;
+- (void)saveHashMap:(nonnull HashMap*)hashMap toFolder:(nonnull NSString*)folderPath;
 
 
 @end

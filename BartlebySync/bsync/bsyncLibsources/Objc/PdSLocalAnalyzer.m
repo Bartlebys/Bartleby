@@ -30,31 +30,33 @@
 /**
  *  Creates a dictionary with  relative paths as key and  CRC32 as value
  *
- *  @param url the folder url
+ *  @param folderPath the folder path
  *  @param dataBlock if you define this block it will be used to extract the data from the file
  *  @param progressBlock the progress block
  *  @param completionBlock the completion block.
  *
  */
-- (void)createHashMapFromLocalFolderURL:(nonnull NSURL* )folderURL
+- (void)createHashMapFromLocalFolder:(nonnull NSString* )folderPath
                               dataBlock:(nullable  NSData *_Nullable (^)(NSString* _Nonnull path, NSUInteger index))dataBlock
                           progressBlock:(nullable void(^)(NSString*_Nonnull hash,NSString*_Nonnull path, NSUInteger index))progressBlock
                      andCompletionBlock:(nonnull void(^)(HashMap* _Nonnull hashMap))completionBlock{
     
-    NSString *folderPath=[folderURL path];
     PdSFileManager*fileManager=[PdSFileManager sharedInstance] ;
     HashMap*hashMap=[[HashMap alloc]init];
+    if (![folderPath hasSuffix:@"/"]) {
+        folderPath = [folderPath stringByAppendingString:@"/"];
+    }
+    
     if([fileManager fileExistsAtPath:folderPath]){
         
         NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
-        NSDirectoryEnumerator *dirEnum =[fileManager enumeratorAtURL:folderURL
+        NSDirectoryEnumerator *dirEnum =[fileManager enumeratorAtURL:[NSURL fileURLWithPath:folderPath]
                                           includingPropertiesForKeys:keys
                                                              options:0
                                                         errorHandler:^BOOL(NSURL *url, NSError *error) {
                                                             NSLog(@"ERROR when enumerating  %@ %@",url, [error localizedDescription]);
                                                             return YES;
                                                         }];
-        
         
         NSURL *file;
         int i=0;
@@ -73,7 +75,7 @@
                 @autoreleasepool {
                     NSData *data=nil;
                     NSString*hashfile=[filePath stringByAppendingFormat:@".%@",kBsyncHashFileExtension];
-                    NSString *relativePath=[filePath stringByReplacingOccurrencesOfString:[folderPath stringByAppendingString:@"/"] withString:@""];
+                    NSString *relativePath=[filePath stringByReplacingOccurrencesOfString:folderPath withString:@""];
                     if([isDirectory boolValue]){
                         relativePath=[relativePath stringByAppendingString:@"/"];
                     }
@@ -119,8 +121,7 @@
             }
         }
         
-        [self saveHashMap:hashMap
-              toFolderUrl:folderURL];
+        [self saveHashMap:hashMap toFolder:folderPath];
         completionBlock(hashMap);
     }
 }
@@ -166,11 +167,11 @@
 
 
 
-- (void)saveHashMap:(nonnull HashMap*)hashMap toFolderUrl:(nonnull NSURL*)folderURL{
+- (void)saveHashMap:(nonnull HashMap*)hashMap toFolder:(nonnull NSString*)folderPath{
     
     PdSFileManager*fileManager=[PdSFileManager sharedInstance] ;
     // We gonna create the hashmap folder
-    NSString*hashMapFileP=[[folderURL path] stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
+    NSString *hashMapFileP = [folderPath stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
     [fileManager createRecursivelyRequiredFolderForPath:hashMapFileP];
     
     // Let s write the serialized HashMap file

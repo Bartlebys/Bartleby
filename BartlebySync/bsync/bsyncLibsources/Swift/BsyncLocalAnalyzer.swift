@@ -33,18 +33,22 @@ public struct BsyncLocalAnalyzer {
     private lazy var _localAnalyzer: PdSLocalAnalyzer=PdSLocalAnalyzer()
 
 
-    mutating public func createHashMapFromLocalPath(folderPath: String, progressBlock: ((hash: String, path: String, index: UInt) -> Void)?, completionBlock: (hashMap: HashMap) -> Void) throws {
+    mutating public func createHashMapFromLocalPath(folderPath: String, handlers:Handlers) {
 
-        guard NSFileManager.defaultManager().fileExistsAtPath(folderPath) else {
-            throw BsyncLocalAnalyzerError.InvalidURL(explanations: "Attempt to create an HashMap has failed. \nUnexisting folderPath \(folderPath)")
-        }
-
-       let folderURL=NSURL(fileURLWithPath: folderPath, isDirectory:true)
-        self._localAnalyzer.recomputeHash=self.recomputeHash
-        self._localAnalyzer.saveHashInAFile=self.saveHashInAFile
-        self._localAnalyzer.createHashMapFromLocalFolderURL(folderURL, dataBlock: nil, progressBlock: progressBlock, andCompletionBlock: completionBlock)
+        // TODO: @bpds @md #io Which file manager shall we use here???
+        let fm = BFileManager()
+        fm.directoryExistsAtPath(folderPath, handlers: Handlers { (exists) in
+            if exists.success {
+                self._localAnalyzer.recomputeHash=self.recomputeHash
+                self._localAnalyzer.saveHashInAFile=self.saveHashInAFile
+                self._localAnalyzer.createHashMapFromLocalFolder(folderPath, dataBlock: nil, progressBlock: { (hash: String, path: String, index: UInt) in
+                    handlers.notify(Progression(currentTaskIndex: Int(index), message: "\(path): \(hash)"))
+                    }, andCompletionBlock: { (_: HashMap) in
+                        handlers.on(Completion.successState())
+                })
+            } else {
+                handlers.on(exists)
+            }
+            })
     }
-
-
-
 }

@@ -10,9 +10,6 @@
 		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */; };
-		5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
-		5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
-		5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B5D08FF1CDC8D92001FB281 /* BsyncXPCHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D08FE1CDC8D92001FB281 /* BsyncXPCHelperTests.swift */; };
 		5B5D091C1CDC91B4001FB281 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
 		5B5D091D1CDC91B4001FB281 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E881CC0E6CD00A7ECD1 /* Map.swift */; };
@@ -221,7 +218,6 @@
 		5B5D09F51CDC9256001FB281 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B5D09F61CDC9256001FB281 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
 		5B5D09F81CDC9256001FB281 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
-		5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */; };
 		5B5D09FA1CDC961E001FB281 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		5B5D09FB1CDC977E001FB281 /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		5B5D0A051CDDE4DF001FB281 /* BsyncXPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A041CDDE4DF001FB281 /* BsyncXPCTests.swift */; };
@@ -821,7 +817,6 @@
 		E53E28E21CA572E20079ED23 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
 		E53E28E41CA572E20079ED23 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E53E28E81CA572E80079ED23 /* CreateHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */; };
-		E53E28E91CA572E80079ED23 /* SynchronizeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */; };
 		E53E28EA1CA572E80079ED23 /* RunDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */; };
 		E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */; };
 		E53E28EC1CA572E80079ED23 /* CreateDirectiveCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54957581C43B57700102771 /* CreateDirectiveCommand.swift */; };
@@ -986,7 +981,6 @@
 
 /* Begin PBXFileReference section */
 		5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealHashMapCommand.swift; sourceTree = "<group>"; };
-		5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectivesRunner.swift; sourceTree = "<group>"; };
 		5B5D08FC1CDC8D91001FB281 /* BsyncXPCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncXPCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B5D08FE1CDC8D92001FB281 /* BsyncXPCHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BsyncXPCHelperTests.swift; sourceTree = "<group>"; };
 		5B5D09001CDC8D92001FB281 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1163,7 +1157,6 @@
 		E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDirectives.swift; sourceTree = "<group>"; };
 		E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncImageDiskManager.swift; sourceTree = "<group>"; };
 		E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncLocalAnalyzer.swift; sourceTree = "<group>"; };
-		E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizeCommand.swift; sourceTree = "<group>"; };
 		E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFacade.swift; sourceTree = "<group>"; };
 		E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunDirectivesCommand.swift; sourceTree = "<group>"; };
 		E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateHashMapCommand.swift; sourceTree = "<group>"; };
@@ -1629,7 +1622,6 @@
 				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */,
 				E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */,
-				5B1EA3271CCA84370089D440 /* BsyncDirectivesRunner.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -1641,7 +1633,6 @@
 				5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
 				5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */,
-				E552B7AC1C3D4E49001CD53B /* SynchronizeCommand.swift */,
 				E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */,
 				E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */,
 				E54957581C43B57700102771 /* CreateDirectiveCommand.swift */,
@@ -2141,7 +2132,6 @@
 				5B5D092B1CDC91C4001FB281 /* Download.swift in Sources */,
 				5B5D095B1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09DA1CDC921E001FB281 /* (null) in Sources */,
-				5B5D09F91CDC9256001FB281 /* BsyncDirectivesRunner.swift in Sources */,
 				5B5D0A061CDDE56D001FB281 /* BsyncXPC.swift in Sources */,
 				E50142D51CE8B93900EDD9C3 /* UpdateLocker.swift in Sources */,
 				5B5D0B5D1CDF91C9001FB281 /* BsyncXPCProtocolTests.swift in Sources */,
@@ -2491,7 +2481,6 @@
 				E53E27541CA572940079ED23 /* Error.swift in Sources */,
 				E501423A1CE8B93900EDD9C3 /* CreateUsers.swift in Sources */,
 				E5B98EA21CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
-				5B1EA3281CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
 				E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */,
 				E501421A1CE8B93900EDD9C3 /* CreatePermissions.swift in Sources */,
 				E50143221CE8B93900EDD9C3 /* JSerializer.swift in Sources */,
@@ -2538,7 +2527,6 @@
 				E50142121CE8B93900EDD9C3 /* CreateLockers.swift in Sources */,
 				E50143A61CE8B93900EDD9C3 /* HTTPResponse.swift in Sources */,
 				E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */,
-				E53E28E91CA572E80079ED23 /* SynchronizeCommand.swift in Sources */,
 				E50143661CE8B93900EDD9C3 /* Registry+SecurityScopes.swift in Sources */,
 				E50143421CE8B93900EDD9C3 /* Consignee.swift in Sources */,
 				E50141DE1CE8B93900EDD9C3 /* Locker.swift in Sources */,
@@ -2751,7 +2739,6 @@
 				E552B7B81C3D4E49001CD53B /* PdSFileManager.m in Sources */,
 				E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */,
 				E50142B71CE8B93900EDD9C3 /* ReadTriggersByIds.swift in Sources */,
-				5B1EA3291CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
 				E50142BF1CE8B93900EDD9C3 /* ReadUserById.swift in Sources */,
 				5B8E5D551C8D7FCD002CFA03 /* Error.swift in Sources */,
 				E50142971CE8B93900EDD9C3 /* ReadPermissionsByQuery.swift in Sources */,
@@ -2912,7 +2899,6 @@
 				E50141E81CE8B93900EDD9C3 /* Permission.swift in Sources */,
 				E50143441CE8B93900EDD9C3 /* Consignee.swift in Sources */,
 				E55C924E1CBF84ED008163F6 /* NetworkReachabilityManager.swift in Sources */,
-				5B1EA32A1CCA84370089D440 /* BsyncDirectivesRunner.swift in Sources */,
 				E55C924F1CBF84ED008163F6 /* Notifications.swift in Sources */,
 				E5B98EB61CC0E6CD00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
 				E50143581CE8B93900EDD9C3 /* NSNotification+Completion.swift in Sources */,

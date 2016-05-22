@@ -44,12 +44,6 @@ public struct CommandsFacade {
             let _ = LogoutCommand(completionHandler: completionHandler)
         case "verify"?, "verify-credentials"?:
             let _ = VerifyCredentialsCommand(completionHandler: completionHandler)
-        case "synchronize"?:
-            // Proceed to authentication if necessary
-            // Synchronizes from and to local or distant tree
-            // Starts a new session or resumes the current session
-            // Uses a snapshot most of the time
-            let _ = SynchronizeCommand(completionHandler: completionHandler).executeCMD()
         case "cd"?, "create-directives"?:
             // Runs the synchronization directives
             let _ = CreateDirectiveCommand(completionHandler: completionHandler)

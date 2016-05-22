@@ -25,6 +25,9 @@ public class TestsConfiguration: BartlebyConfiguration {
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
 
+    // Use NoCrypto as CryptoDelegate (should be false)
+    public static var DISABLE_DATA_CRYPTO: Bool=false
+
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
     public static var BPRINT_API_TRACKED_CALLS: Bool=true

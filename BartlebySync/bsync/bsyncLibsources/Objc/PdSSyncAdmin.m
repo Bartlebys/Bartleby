@@ -334,7 +334,7 @@
     HashMap*hashMap=[[HashMap alloc] init];
     PdSLocalAnalyzer*analyzer=[[PdSLocalAnalyzer alloc] init];
     analyzer.saveHashInAFile=NO;
-    [analyzer saveHashMap:hashMap toFolderUrl:[NSURL URLWithString:p]];
+    [analyzer saveHashMap:hashMap toFolder:p];
     return YES;
 }
 

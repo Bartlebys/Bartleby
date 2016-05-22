@@ -30,6 +30,8 @@ class LocalDMGSyncTests: XCTestCase {
     private static let _slaveVolumePath = "/Volumes/" + _slaveDMGName + "/"
     private static let _slaveVolumeURL = NSURL(fileURLWithPath: _slaveVolumePath)
     
+    private static let _directivesPath = _masterVolumePath + BsyncDirectives.DEFAULT_FILE_NAME
+    
     private static let _filePath = _masterVolumePath + "test.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
     
@@ -50,7 +52,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -62,7 +64,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -76,7 +78,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -99,7 +101,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -111,29 +113,20 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
     func test103_CreateDirectives() {
-        let expectation = expectationWithDescription("File exists")
-        let directives = BsyncDirectives()
-        directives.sourceURL = LocalDMGSyncTests._masterVolumeURL
-        directives.destinationURL = LocalDMGSyncTests._slaveVolumeURL
-        
-        let directivesURL = LocalDMGSyncTests._masterVolumeURL.URLByAppendingPathComponent(BsyncDirectives.DEFAULT_FILE_NAME, isDirectory: false)
-        BsyncAdmin.createDirectives(directives, saveTo: directivesURL)
-        if let path = directivesURL.path {
-            LocalDMGSyncTests._fileManager.fileExistsAtPath(path, handlers: Handlers { (existence) in
+        let expectation = expectationWithDescription("save")
+        let directives = BsyncDirectives.localDirectivesWithPath(LocalDMGSyncTests._masterDMGPath, destinationPath: LocalDMGSyncTests._slaveDMGPath)
+        directives.save(LocalDMGSyncTests._directivesPath, handlers: Handlers { (save) in
                 expectation.fulfill()
-                XCTAssert(existence.success, existence.message)
+                XCTAssert(save.success, save.message)
                 })
-        } else {
-            XCTFail("Bad directive URL: \(directivesURL)")
-        }
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -141,20 +134,20 @@ class LocalDMGSyncTests: XCTestCase {
     // MARK: Run synchronization
     func test201_RunDirectives() {
         let expectation = expectationWithDescription("Synchronize should complete")
+        
+        // TODO: @md #test #bsync Use BsyncDirectives
         let context = BsyncContext(sourceURL: LocalDMGSyncTests._masterVolumeURL,
                                    andDestinationUrl: LocalDMGSyncTests._slaveVolumeURL,
-                                   restrictedTo: BsyncDirectives.NO_HASHMAPVIEW)
+                                   restrictedTo: nil)
         let admin = BsyncAdmin(context: context)
         admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
-            // TODO: @md #test #bsync Reactivate test check wich currently fais
+            // TODO: @md #test #bsync Reactivate test check wich currently fails
             //XCTAssertTrue(c.success, c.message)
             expectation.fulfill()
         }))
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -168,9 +161,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -182,9 +173,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -196,9 +185,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -210,9 +197,7 @@ class LocalDMGSyncTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
 }

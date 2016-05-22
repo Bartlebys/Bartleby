@@ -408,7 +408,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                               _context.destinationTreeId, _context.syncID, destination];
         
         NSURL*url=[NSURL URLWithString:URLString];
-        
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                            withActionName:@"BartlebySyncUploadFileTo"
@@ -527,7 +526,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSString *urlString = [NSString stringWithFormat:@"%@/file/tree/%@/?path=%@&redirect=true&returnValue=false",
                                    [_context.sourceBaseUrl absoluteString],
                                    treeId,
-                                   [source stringByRemovingPercentEncoding]
+                                   [source stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]
                                    ];
             
             NSURL *url = [NSURL URLWithString:urlString];
@@ -717,7 +716,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                     
                     if(error){
                         [self _progressMessage:@"Error during local finalization on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",destinationPrefixedFilePath,destinationFileWithoutPrefix,[error description]];
-                        //[self _interruptOnFault:[error description]];
+                        [self _interruptOnFault:[error description]];
                         return;
                     }
                 }
@@ -802,13 +801,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // COPY LOCALLY
         
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
-                                                              toLocalUrl:_context.destinationBaseUrl
+                                                              toLocalUrl:_context.sourceBaseUrl
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
         NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath:destination
                                                                    toLocalUrl:_context.destinationBaseUrl
                                                                    withTreeId:_context.destinationTreeId
-                                                                    addPrefix:NO];
+                                                                    addPrefix:YES];
         
         NSError*error=nil;
         
@@ -824,7 +823,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error description]];
                 [self _interruptOnFault:[error description]];
                 
+            } else {
+                [self _nextCommand];
             }
+        } else {
+            [self _nextCommand];
         }
         
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){

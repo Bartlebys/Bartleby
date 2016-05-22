@@ -20,9 +20,6 @@ import Foundation
         return "BsyncCredentials"
     }
 
-    /// Debug facility
-    public static let DEBUG_DISABLE_ENCRYPTION=true // Should always be set to false in production (!)
-
 
     // CRYPTED
     public var user: User?
@@ -42,15 +39,9 @@ import Foundation
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        if BsyncCredentials.DEBUG_DISABLE_ENCRYPTION {
-            user <- map["user"]
-            password <- map ["password"]
-            salt <- map ["salt"]
-        } else {
-            user <- (map["user"], CryptedSerializableTransform())
-            password <- (map ["password"], CryptedStringTransform())
-            salt <- (map ["salt"], CryptedStringTransform())
-        }
+        user <- (map["user"], CryptedSerializableTransform())
+        password <- (map ["password"], CryptedStringTransform())
+        salt <- (map ["salt"], CryptedStringTransform())
     }
 
 

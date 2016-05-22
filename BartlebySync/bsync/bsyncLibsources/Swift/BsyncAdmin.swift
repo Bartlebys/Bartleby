@@ -16,7 +16,6 @@ import Foundation
 
 
 public enum BsyncAdminError: ErrorType {
-    case DirectivesAreNotValid(explanations:String)
     case HashMapViewError(explanations:String)
 }
 
@@ -47,45 +46,6 @@ public enum BsyncAdminError: ErrorType {
         let messages=[String]()
         return messages
     }
-
-
-    /**
-
-     Create directives.
-
-     - parameter directive: the synchronization directive
-     - parameter fileURL: the folder URL
-
-     - throws: Explanation is something wrong happened
-     */
-    public static func createDirectives(directives: BsyncDirectives, saveTo fileURL: NSURL)->(success: Bool, message: String?) {
-        do {
-            let result=directives.areValid()
-            if result.valid==false {
-                if let explanations=result.message {
-                    throw BsyncAdminError.DirectivesAreNotValid(explanations:explanations )
-                } else {
-                    throw BsyncAdminError.DirectivesAreNotValid(explanations:NSLocalizedString("Humm... That's not clear", comment: "Humm... That's not clear") )
-                }
-            }
-            if let jsonString=Mapper().toJSONString(directives) {
-                do {
-                    try jsonString.writeToURL(fileURL, atomically: true, encoding:Default.STRING_ENCODING)
-                } catch {
-                    let baseMessage=NSLocalizedString("We were not able to save the directives", comment: "We were not able to save the directives")
-                    throw BsyncAdminError.DirectivesAreNotValid(explanations:"\(baseMessage)\n\(error)")
-                }
-            } else {
-                throw BsyncAdminError.DirectivesAreNotValid(explanations:NSLocalizedString("We have encountered directives deserialization issues", comment: "We have encountered directives deserialization issues"))
-            }
-        } catch BsyncAdminError.DirectivesAreNotValid(let explanations) {
-           return (false, explanations)
-        } catch {
-            return (false, "An error has occured \(error)")
-        }
-        return (true, nil)
-    }
-
 
     /**
      The synchronization method

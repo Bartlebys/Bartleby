@@ -140,11 +140,7 @@ class CreateDirectiveCommand: CommandBase {
                 // IMPORTANT !
                 let validity=directives.areValid()
                 guard validity.valid else {
-                    if let explanation=validity.message {
-                        print("Directives are not valid : \(explanation)")
-                    } else {
-                        print("Directives are not valid")
-                    }
+                    print("Directives are not valid : \(validity.message)")
                     exit(EX__BASE)
                 }
 
