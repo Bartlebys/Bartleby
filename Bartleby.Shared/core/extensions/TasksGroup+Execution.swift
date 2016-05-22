@@ -24,8 +24,7 @@ enum TasksGroupError: ErrorType {
     case MultipleAttemptToAddTask
     case InterruptedOnFault
     case MissingExternalReference
-    case MultipleRunAttempts
-    case TaskGroupDataSpaceNotFound
+    case TaskGroupDataSpaceNotFound(spaceUID:String)
 }
 
 /*
@@ -93,32 +92,36 @@ public extension TasksGroup {
      - returns: the number of entry tasks if >1 there is something to do.
      */
     public func start() throws -> Int {
-        if self.status == .Running {
-            throw TasksGroupError.MultipleRunAttempts
-        }
-        self.status = .Running
         // The graph may be partially executed.
         // We search the entry tasks.
         let entryTasks=self.runnableTasks()
-        // We start and run the task Code not on the main dispatch Queue
-        // We will roll back to the MainQueue on taskGroup Completion.
-        dispatch_async(self.dispatchQueue, {
-        // We dispatch sync on the dispatch queue to be able to dispatch exceptions
-        for task in entryTasks {
-            if let invocableTask = task as? Invocable {
-                    do {
-                      try invocableTask.invoke()
-                    } catch {
-                        if TasksScheduler.DEBUG_TASKS {
-                            bprint("Task invocation error \(error) \(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
-                        }
-                    }
-
-            } else {
-                task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
-            }
+        if TasksScheduler.DEBUG_TASKS {
+            bprint("Starting group \(self.name) \(entryTasks.count) entry task(s)", file: #file, function: #function, line: #line)
         }
-        })
+        if self.status != .Running {
+            // We donnot want to re-run an already running group.
+            self.status = .Running
+            // We start and run the task Code not on the main dispatch Queue
+            // We will roll back to the MainQueue on taskGroup Completion.
+            dispatch_async(self.dispatchQueue, {
+                // We dispatch sync on the dispatch queue to be able to dispatch exceptions
+                for task in entryTasks {
+                    if let invocableTask = task as? Invocable {
+                        do {
+                            try invocableTask.invoke()
+                        } catch {
+                            if TasksScheduler.DEBUG_TASKS {
+                                bprint("Task invocation error \(error) \(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
+                            }
+                        }
+
+                    } else {
+                        task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
+                    }
+                }
+            })
+
+        }
         return entryTasks.count
     }
 
@@ -168,6 +171,10 @@ public extension TasksGroup {
      - parameter task: the task to be sequentially added
      */
     public func appendChainedTask(task: Task) throws {
+        defer {
+            self.lastChainedTask=ExternalReference(from: task)
+            task.group=ExternalReference(from: self)
+        }
         try self._insurePersistencyOfTask(task)
         if self.lastChainedTask == nil {
             if let lastTaskRef=self.tasks.last {
@@ -185,12 +192,9 @@ public extension TasksGroup {
             if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
                 let tasksCollection: TasksCollectionController = try registry.getCollection()
                 print(tasksCollection.items.count)
-
             }
-            throw TasksGroupError.MissingExternalReference
+            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID: self.spaceUID)
         }
-        self.lastChainedTask=ExternalReference(from: task)
-        task.group=ExternalReference(from: self)
     }
 
     // MARK: - Counters
@@ -374,10 +378,14 @@ public extension TasksGroup {
      */
     private func _insurePersistencyOfTask(task: Task) throws {
         if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+            // Identify the task Creator.
+            task.creatorUID=registry.currentUser.UID
+            // Add the taksk to the peristent tasks.
             let persitentTasks: TasksCollectionController = try registry.getCollection()
             persitentTasks.add(task)
+
         } else {
-            throw TasksGroupError.TaskGroupDataSpaceNotFound
+            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID:self.spaceUID)
         }
     }
 

@@ -38,7 +38,7 @@ extension Task {
 
      - returns: A collectible object
      */
-    public final func arguments<ExpectedType:Collectible>() throws -> ExpectedType {
+    public final func arguments<ExpectedType: Collectible>() throws -> ExpectedType {
         if let argumentsData = self.argumentsData {
             let deserialized=try JSerializer.deserialize(argumentsData)
             if let arguments = deserialized as? ExpectedType {
@@ -110,18 +110,20 @@ extension Task {
 
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
-
                         let total=group.totalTaskCount()
                         let executed=total-group.runnableTaskCount()
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
-
                         group.handlers.notify(groupProgression)
 
+                        // We mark the completion
                         if TasksScheduler.DEBUG_TASKS {
                             bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line)
                         }
+
+                        // Check if all the task has been completed
                         try Bartleby.scheduler.onAnyTaskCompletion(self)
+
                     } else if state is Progression {
                         // We relay also the discreet task as a progression group progression !
                         // Including its data.
@@ -172,7 +174,7 @@ extension Task {
     }
 
     /**
-     Adds a children task to a task and setup its parent and group externalReferences
+     Adds a children task references to a task and setup its parent and group external References
 
      - parameter task: the children to be added.
      */

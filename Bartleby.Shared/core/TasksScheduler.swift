@@ -43,7 +43,7 @@ enum TasksSchedulerError: ErrorType {
     case TaskGroupUndefined
     case TaskIsNotInvocable
     case TaskNotFound(UID:String)
-    case UnconsistentGroup
+    case UnconsistentGroup(details:String)
 }
 
 
@@ -65,21 +65,15 @@ public class TasksScheduler {
      Return a group
 
      - parameter groupName:  its group name
-     - parameter spaceUID:   the relevent DataSpace
+     - parameter document:  the document
 
      - throws: DataSpace Not found
 
      - returns: the Task group
      */
-    public func getTaskGroupWithName(groupName: String, inDataSpace spaceUID: String) throws -> TasksGroup {
-        let group=try self._taskGroupByName(groupName, inDataSpace: spaceUID)
-        group.spaceUID=spaceUID
-        if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
-            let tasksGroups: TasksGroupsCollectionController = try document.getCollection()
-            tasksGroups.add(group)
-        } else {
-            throw TasksSchedulerError.DataSpaceNotFound
-        }
+    public func getTaskGroupWithName(groupName: String, inDocument document: BartlebyDocument) throws -> TasksGroup {
+        let group=try self._taskGroupByName(groupName, inDocument: document)
+        group.spaceUID=document.spaceUID
         return group
     }
 
@@ -92,27 +86,27 @@ public class TasksScheduler {
 
      - returns: a task group
      */
-    private func _taskGroupByName(groupName: String, inDataSpace spaceUID: String) throws ->TasksGroup {
+    private func _taskGroupByName(groupName: String, inDocument document: BartlebyDocument) throws ->TasksGroup {
         if let group=_groups[groupName] {
             return group
         } else {
-            if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
-                if let groups: [TasksGroup]=document.tasksGroups.filter({(group) -> Bool in return group.name==groupName}) {
-                    if groups.count>0 {
-                        _groups[groups.first!.name]=groups.first!
-                        return groups.first!
-                    }
-                    let group=TasksGroup()
-                    group.name=groupName
-                    _groups[groupName]=group
-                    return group
-
-                } else {
-                    throw TasksSchedulerError.DataSpaceNotFound
+            if let groups: [TasksGroup]=document.tasksGroups.filter({(group) -> Bool in return group.name==groupName}) {
+                if groups.count>0 {
+                    _groups[groups.first!.name]=groups.first!
+                    return groups.first!
                 }
+                let group=TasksGroup()
+                group.name=groupName
+                _groups[groupName]=group
+                document.tasksGroups.add(group)
+                return group
+
+            } else {
+                throw TasksSchedulerError.TaskGroupNotFound
+
             }
+
         }
-        throw TasksSchedulerError.TaskGroupNotFound
     }
 
     // MARK: - Task completion and Execution graph
@@ -132,15 +126,15 @@ public class TasksScheduler {
                         if let task: Task=child.toLocalInstance() {
                             if let invocableTask = task as? Invocable {
                                 // Then invoke its invocable instance.
-                                dispatch_async(group.dispatchQueue, {
-                                    do {
-                                        try invocableTask.invoke()
-                                    } catch {
-                                        if TasksScheduler.DEBUG_TASKS {
-                                            bprint("\(error) on \(invocableTask.summary ?? invocableTask.UID)", file: #file, function: #function, line: #line)
-                                        }
+
+                                do {
+                                    try invocableTask.invoke()
+                                } catch {
+                                    if TasksScheduler.DEBUG_TASKS {
+                                        bprint("\(error) on \(invocableTask.summary ?? invocableTask.UID)", file: #file, function: #function, line: #line)
                                     }
-                                })
+                                }
+
 
                             } else {
                                 task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
@@ -158,7 +152,7 @@ public class TasksScheduler {
                         do {
                             try self._onGroupCompletion(group, lastCompletedTask:completedTask)
                         } catch {
-                             bprint("\(error) on group completion \(group.UID)", file: #file, function: #function, line: #line)
+                            bprint("\(error) on group completion \(group.UID)", file: #file, function: #function, line: #line)
                         }
 
                     })
@@ -173,18 +167,34 @@ public class TasksScheduler {
 
 
     private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) throws {
+        defer {
+            // We call the completion off the group.
+            group.handlers.on(group.completionState!)
 
-        var hasInconsistencies=false
-        let errorTasks=group.findTasks { (task) -> Bool in
-                if let completed=task.completionState {
-                    return completed.success==false
-                } else {
-                    hasInconsistencies=true
-                }
-                return false
+            // Then we Notify the group completion #
+            if TasksScheduler.DEBUG_TASKS {
+                bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+            self._cleanUpGroup(group)
         }
-        if hasInconsistencies {
-            throw TasksSchedulerError.UnconsistentGroup
+
+
+        var inconsistencyDetails=""
+        let errorTasks=group.findTasks { (task) -> Bool in
+            if let completed=task.completionState {
+                // Include the task that are completed with failure
+                return completed.success==false
+            } else {
+                // Mark the not completed tasks as anomalies
+                inconsistencyDetails += "Not Completed "+(task.summary ?? task.UID)+"\n"
+            }
+            return false
+        }
+        if inconsistencyDetails != "" {
+            let error=TasksSchedulerError.UnconsistentGroup(details:inconsistencyDetails)
+            group.completionState = Completion.failureStateFromError(error)
+            throw error
         }
 
 
@@ -204,11 +214,8 @@ public class TasksScheduler {
                         }
                         registry.delete(task)
                     }
-
                 }
             }
-
-
             group.tasks.removeAll()
 
             // Determine the completion state.
@@ -223,23 +230,33 @@ public class TasksScheduler {
                                                             data: nil)
         }
 
-        // We call the completion off the group.
-        group.handlers.on(group.completionState!)
 
-        // Then we Notify the group completion #
-        if TasksScheduler.DEBUG_TASKS {
-            bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
 
     }
+
+    /**
+     We "cleanup" the handlers and reset the status.
+     On Completion (successful or not).
+
+     - parameter group: the Task Group
+     */
+    private func _cleanUpGroup(group: TasksGroup) {
+        // 1# Set the status group to Paused for future usages.
+        group.status = .Paused
+
+        // 2# We Reset the handlers
+        group.handlers=Handlers.withoutCompletion()
+    }
+
+
+
 
 
     /**
      Resets all the task with Errors.
 
      - parameter group: the group to be reset
-    */
+     */
     func resetAllTasksWithErrors(group: TasksGroup) {
         let errorTasks=group.findTasks { (task) -> Bool in
             if let completed=task.completionState {
@@ -276,43 +293,6 @@ public class TasksScheduler {
         case .High:
             return GlobalQueue.UserInteractive.get()
         }
-
-        /*
-
-         let groupName=group.name
-         let priority=group.priority
-
-         let queueName="org.bartlebys.\(groupName)_\(priority)"
-         if let queue: dispatch_queue_t=_queues[queueName] {
-         return queue
-         }
-
-         // Create the queue if necessary
-         if #available(OSX 10.10, *) {
-         var qos: qos_class_t=QOS_CLASS_DEFAULT
-         switch group.priority {
-         case .Background:
-         qos=QOS_CLASS_BACKGROUND
-         case .Low:
-         qos=QOS_CLASS_UTILITY
-         case .Default:
-         qos=QOS_CLASS_DEFAULT
-         case .High:
-         qos=QOS_CLASS_USER_INITIATED
-         }
-
-         let attr: dispatch_queue_attr_t = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_CONCURRENT, qos, 0)
-         let queue: dispatch_queue_t = dispatch_queue_create(queueName, attr)
-         _queues[queueName]=queue
-
-         return queue
-         } else {
-         // Fallback on earlier versions
-         // TODO @bpds older approach ? + IOS?
-         return dispatch_get_main_queue()
-         }
-         */
-
     }
 
 
