@@ -101,7 +101,7 @@ class UpDownDirectivesTests: XCTestCase {
         }
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -123,7 +123,7 @@ class UpDownDirectivesTests: XCTestCase {
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
+            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
         }
     }
     
