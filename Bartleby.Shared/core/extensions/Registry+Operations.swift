@@ -20,8 +20,7 @@ extension BartlebyDocument {
      - parameter handlers:   the handlers to hooks the completion / Progression
      */
     public func pushOperations(operations: [Operation], handlers: Handlers) throws->() {
-        TasksScheduler.DEBUG_TASKS=true
-        bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line)
+        bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line,category:TasksScheduler.BPRINT_CATEGORY)
         if operations.count==0 {
             handlers.on(Completion.successState(NSLocalizedString("Operations stack is void", comment: "Operations stack is void")))
         } else {

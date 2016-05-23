@@ -17,25 +17,25 @@ import Foundation
 // MARK: - TasksScheduler
 
 /*
-
+ 
  The tasks Scheduler runs graph of task that can be
-
+ 
  - paused
  - serialized
  - and if the underlining logic permits, moved from a physical device to another
-
+ 
  Child tasks are reputed "concurential".
  When its parent is completed the scheduler run all its direct children.
  According to the group context it can use paralelism via GCD
-
+ 
  TasksGroup can be paused.
  When you pause a group the running tasks are completed but the graph execution is interupted.
-
+ 
  The Task Scheduler performs locally
  That's why we use local reference "taskExternalReference.toLocalInstance()"
  If you need to taskGroupFor distant task you should grab the distant task (eg: ReadTaskById...)
-
-
+ 
+ 
  */
 enum TasksSchedulerError: ErrorType {
     case DataSpaceNotFound
@@ -43,32 +43,33 @@ enum TasksSchedulerError: ErrorType {
     case TaskGroupUndefined
     case TaskIsNotInvocable
     case TaskNotFound(UID:String)
-    case UnconsistentGroup(details:String)
 }
 
 
 public class TasksScheduler {
-
+    
     // Task may be difficult to debug
     // So we expose a debug setting
-    static public var DEBUG_TASKS=false
-
+    static public let DEBUG_TASKS=false
+    
+    static public let BPRINT_CATEGORY="TasksScheduler"
+    
     //Storage
     private var _groups=Dictionary<String, TasksGroup>()
-
+    
     // Dispatch Queues
     private var _queues=Dictionary<String, dispatch_queue_t>()
-
+    
     // MARK: - Tasks Groups
-
+    
     /**
      Return a group
-
+     
      - parameter groupName:  its group name
      - parameter document:  the document
-
+     
      - throws: DataSpace Not found
-
+     
      - returns: the Task group
      */
     public func getTaskGroupWithName(groupName: String, inDocument document: BartlebyDocument) throws -> TasksGroup {
@@ -76,14 +77,14 @@ public class TasksScheduler {
         group.spaceUID=document.spaceUID
         return group
     }
-
-
+    
+    
     /**
      Returns a TaskGroup by its name.
      If necessary it creates the group
-
+     
      - parameter groupName: the group name
-
+     
      - returns: a task group
      */
     private func _taskGroupByName(groupName: String, inDocument document: BartlebyDocument) throws ->TasksGroup {
@@ -100,86 +101,85 @@ public class TasksScheduler {
                 _groups[groupName]=group
                 document.tasksGroups.add(group)
                 return group
-
             } else {
                 throw TasksSchedulerError.TaskGroupNotFound
-
+                
             }
-
+            
         }
     }
-
+    
     // MARK: - Task completion and Execution graph
-
+    
     /**
      Called by a task on its completion.
      Executed on the main queue
-
+     
      - parameter completedTask: the reference to the task
      */
-    func onAnyTaskCompletion(completedTask: Task) throws {
+    func onAnyTaskCompletion(completedTask: Task) {
         if let groupExtRef=completedTask.group {
             if let group: TasksGroup = groupExtRef.toLocalInstance() {
                 if group.status != .Paused {
-                    // We gonna start all the children of the task.
-                    for child in completedTask.children {
-                        if let task: Task=child.toLocalInstance() {
-                            if let invocableTask = task as? Invocable {
-                                // Then invoke its invocable instance.
-
-                                do {
-                                    try invocableTask.invoke()
-                                } catch {
-                                    if TasksScheduler.DEBUG_TASKS {
-                                        bprint("\(error) on \(invocableTask.summary ?? invocableTask.UID)", file: #file, function: #function, line: #line)
-                                    }
+                    dispatch_async(group.dispatchQueue, {
+                        // We gonna start all the children of the task.
+                        for child in completedTask.children {
+                            if let task: Task=child.toLocalInstance() {
+                                if let invocableTask = task as? Invocable {
+                                    invocableTask.invoke()
+                                } else {
+                                    let failureState=Completion.failureState("Task \(task.summary ?? task.UID) is not invocable", statusCode: CompletionStatus.Precondition_Failed)
+                                    bprint(failureState, file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                                    // Mark task completion
+                                    task.complete(failureState)
+                                    // Handle the failure
+                                    group.handlers.on(failureState)
                                 }
-
-
                             } else {
-                                task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
-                                throw TasksSchedulerError.TaskIsNotInvocable
+                                let failureState=Completion.failureState("External reference of Task \(child.summary ?? child.iUID) not found", statusCode: CompletionStatus.Precondition_Failed)
+                                bprint(failureState, file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                                group.handlers.on(failureState)
                             }
-                        } else {
-                            throw TasksSchedulerError.TaskNotFound(UID: child.iUID)
                         }
-                    }
-                }
-                let runnableTasksCount=group.runnableTaskCount()
-                if runnableTasksCount==0 {
-                    // We dispatch the completion of the group on the main Queue
-                    dispatch_async(GlobalQueue.Main.get(), {
-                        do {
-                            try self._onGroupCompletion(group, lastCompletedTask:completedTask)
-                        } catch {
-                            bprint("\(error) on group completion \(group.UID)", file: #file, function: #function, line: #line)
-                        }
-
                     })
                 }
+                // We dispatch the completion of the group on the main Queue
+                dispatch_async(GlobalQueue.Main.get(), {
+                    let runnableTasksCount=group.runnableTaskCount()
+                    if runnableTasksCount==0 {
+                        self._onGroupCompletion(group, lastCompletedTask:completedTask)
+                    }
+                })
+                
             } else {
-                throw TasksSchedulerError.TaskGroupNotFound
+                bprint("External reference of TaskGroup \(groupExtRef.summary ?? groupExtRef.iUID) not found", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
             }
         } else {
-            throw TasksSchedulerError.TaskGroupUndefined
+            bprint("Task Group undefined in \(completedTask.summary ?? completedTask.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         }
     }
-
-
-    private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) throws {
+    
+    
+    private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) {
         defer {
-            // We call the completion off the group.
-            group.handlers.on(group.completionState!)
-
-            // Then we Notify the group completion #
-            if TasksScheduler.DEBUG_TASKS {
-                bprint("Dispatching completion \(group.completionNotificationName)", file: #file, function: #function, line: #line)
+            if let completionState=group.completionState {
+                // We call the completion off the group.
+                group.handlers.on(completionState)
+                
+                bprint("Completion of Tasks Group \(group.name) \(completionState)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                
+                // Then we Notify the group completion #
+                NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+                
+                self._cleanUpGroup(group)
+                
+            } else {
+                bprint("ERROR! on Completion of Tasks Group \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
             }
-            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-            self._cleanUpGroup(group)
+            
         }
-
-
+        
+        
         var inconsistencyDetails=""
         let errorTasks=group.findTasks { (task) -> Bool in
             if let completed=task.completionState {
@@ -191,21 +191,17 @@ public class TasksScheduler {
             }
             return false
         }
+        
         if inconsistencyDetails != "" {
-            let error=TasksSchedulerError.UnconsistentGroup(details:inconsistencyDetails)
-            group.completionState = Completion.failureStateFromError(error)
-            throw error
+            group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
         }
-
-
+        
         let errorTasksCount=errorTasks.count
         if errorTasksCount==0 {
             // # Cleanup the tasks #
-
+            
             if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
-                if TasksScheduler.DEBUG_TASKS {
-                    bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line)
-                }
+                bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
                 for taskReference in group.tasks.reverse() {
                     if let task: Task=taskReference.toLocalInstance() {
                         let linearListOfSubTasks=task.linearTaskList.reverse()
@@ -217,7 +213,7 @@ public class TasksScheduler {
                 }
             }
             group.tasks.removeAll()
-
+            
             // Determine the completion state.
             // We use the last TASK
             group.completionState = Completion.successState("Task group \(group.name) has been completed",
@@ -229,32 +225,31 @@ public class TasksScheduler {
                                                             statusCode:.Expectation_Failed,
                                                             data: nil)
         }
-
-
-
+        
     }
-
+    
+    
     /**
      We "cleanup" the handlers and reset the status.
      On Completion (successful or not).
-
+     
      - parameter group: the Task Group
      */
     private func _cleanUpGroup(group: TasksGroup) {
         // 1# Set the status group to Paused for future usages.
         group.status = .Paused
-
+        
         // 2# We Reset the handlers
         group.handlers=Handlers.withoutCompletion()
     }
-
-
-
-
-
+    
+    
+    
+    
+    
     /**
      Resets all the task with Errors.
-
+     
      - parameter group: the group to be reset
      */
     func resetAllTasksWithErrors(group: TasksGroup) {
@@ -271,15 +266,15 @@ public class TasksScheduler {
             task.progressionState=nil
         }
     }
-
-
-
+    
+    
+    
     /**
      Returns the queue for the group.
-
-
+     
+     
      - parameter group: the tasks group
-
+     
      - returns: the queue
      */
     func getQueueFor(group: TasksGroup) -> dispatch_queue_t {
@@ -294,7 +289,7 @@ public class TasksScheduler {
             return GlobalQueue.UserInteractive.get()
         }
     }
-
-
-
+    
+    
+    
 }

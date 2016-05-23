@@ -133,8 +133,8 @@ public class HTTPManager: NSObject {
                         successHandler()
                     } else {
                         reactions.append(failureReaction)
-                        if(result.value != "") {
-                            bprint(result.value, file: #file, function: #function, line: #line)
+                        if let value=result.value {
+                            bprint(value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context:context)
                     }
@@ -195,8 +195,8 @@ public class HTTPManager: NSObject {
                         successHandler()
                     } else {
                         reactions.append(failureReaction)
-                        if(result.value != "") {
-                            bprint(result.value, file: #file, function: #function, line: #line)
+                        if let value=result.value {
+                            bprint(value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context:context)
                     }

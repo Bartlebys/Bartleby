@@ -18,7 +18,6 @@ import Foundation
 
 enum TasksGroupError: ErrorType {
     case NonInvocableTask(task:Task)
-    case TaskNotFound
     case GroupNotFound
     case AttemptToAddTaskInMultipleGroups
     case MultipleAttemptToAddTask
@@ -95,9 +94,7 @@ public extension TasksGroup {
         // The graph may be partially executed.
         // We search the entry tasks.
         let entryTasks=self.runnableTasks()
-        if TasksScheduler.DEBUG_TASKS {
-            bprint("Starting group \(self.name) \(entryTasks.count) entry task(s)", file: #file, function: #function, line: #line)
-        }
+        bprint("Starting group \(self.name) \(entryTasks.count) entry task(s)", file: #file, function: #function, line: #line,category:TasksScheduler.BPRINT_CATEGORY)
         if self.status != .Running {
             // We donnot want to re-run an already running group.
             self.status = .Running
@@ -107,16 +104,11 @@ public extension TasksGroup {
                 // We dispatch sync on the dispatch queue to be able to dispatch exceptions
                 for task in entryTasks {
                     if let invocableTask = task as? Invocable {
-                        do {
-                            try invocableTask.invoke()
-                        } catch {
-                            if TasksScheduler.DEBUG_TASKS {
-                                bprint("Task invocation error \(error) \(invocableTask.summary ?? invocableTask.UID )", file: #file, function: #function, line: #line)
-                            }
-                        }
-
+                        invocableTask.invoke()
                     } else {
-                        task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
+                        dispatch_async(GlobalQueue.Main.get(), {
+                            task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
+                        })
                     }
                 }
             })
@@ -145,7 +137,9 @@ public extension TasksGroup {
      - parameter group: the group
      */
     public func addTask(task: Task) throws {
+
         try self._insurePersistencyOfTask(task)
+        
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
@@ -160,7 +154,7 @@ public extension TasksGroup {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID
             let g = task.group?.iUID ?? Default.NO_GROUP
-            bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
+            bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line,category:TasksScheduler.BPRINT_CATEGORY)
         }
 
     }
@@ -198,6 +192,11 @@ public extension TasksGroup {
     }
 
     // MARK: - Counters
+
+    // !!! REMPLACER LES PROCESSUS EXPLORATOIRES PAR DES COMPTEURS UNE FOIS LE CODE STABILISÉ
+    // totalTaskCount() - EXPLORER LES TASK À L'AJOUT ET INCRÉMENTER LES COMPETEUR
+    // PAREIL POUR runnableTaskCount()
+    // UTILISER EVENTUELLEMENT UN FLATMAP POUR optimiser les appels.
 
     /**
      The total count at a given time
@@ -256,32 +255,6 @@ public extension TasksGroup {
 
     // MARK: Ranking
 
-    /**
-     - returns: the rank of a given task and -1 if not found.
-     */
-    public func rankOfTask(task: Task) -> Int {
-        var rankCounter: Int = -1
-        var stop: Bool=false
-        for taskref in self.tasks {
-            if let task: Task=taskref.toLocalInstance() {
-                self._rankOfTask(task, rankCounter:&rankCounter, stop:&stop)
-            }
-        }
-        return rankCounter
-    }
-
-    private func _rankOfTask(task: Task, inout rankCounter: Int, inout stop: Bool) {
-        if stop==false {
-            rankCounter += 1
-            for ref in task.children {
-                if let _: Task=ref.toLocalInstance() {
-                    stop=true
-                }
-            }
-        }
-    }
-
-
     // MARK: Find runnable Tasks
 
     /**
@@ -306,6 +279,8 @@ public extension TasksGroup {
             tasks.append(task)
             return
         }
+        // There is no task at this level of the task Graph.
+        // Let's explore the next level (children references)
         for ref in task.children {
             if let child: Task=ref.toLocalInstance() {
                 if (child.status != .Running && task.completionState == nil) {
@@ -319,21 +294,6 @@ public extension TasksGroup {
         }
     }
 
-
-    // MARK: Find tasks with status
-
-    /**
-     Returns a filtered list of task.
-
-     - parameter status: the status
-
-     - returns: the list of tasks
-     */
-    public func findTasksWithStatus(status: Task.Status) -> [Task] {
-        return findTasks({ (task) -> Bool in
-            return task.status==status
-        })
-    }
 
 
     //MARK : find Tasks

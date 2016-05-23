@@ -31,7 +31,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
     public static var randomPausePercentProbability: UInt32=1
 
     public static let smallGraphSize=9
-    public static let largeGraphSize=999
+    public static let largeGraphSize=99
 
 
 
@@ -62,9 +62,9 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var counter: Int=0
 
-     public override func invoke() throws {
-            try super.invoke()
-            if let object: JObject = try self.arguments() as JObject {
+     public override func invoke() {
+            super.invoke()
+            if let object: JObject = try? self.arguments() as JObject {
                 if let summary = object.summary {
                     ShowSummary.counter += 1
                     print("\(ShowSummary.counter)# \(summary)")
@@ -108,7 +108,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
 
             ShowSummary.executionCounter += 1
-            try self.forward(Completion.successState())
+            self.forward(Completion.successState())
     }
 }
 
@@ -235,13 +235,10 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
 
     private func _graph_exec_completion_routine(priority: TasksGroup.Priority, useRandomPause: Bool, numberOfSequTask: Int, testMode: GraphTestMode) {
 
-            // (!) To prevent a unit tests crashes :
-            // `Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'API violation - multiple calls made to -[XCTestExpectation fulfill]`
-            //  We set the expectation to ? and set expectation to nil on Fullfillment.
-            var expectation: XCTestExpectation? = self.expectationWithDescription("Post execution is clean \(priority) \(useRandomPause) \(numberOfSequTask) \(testMode)")
+
+            let expectation: XCTestExpectation = self.expectationWithDescription("Post execution is clean \(priority) \(useRandomPause) \(numberOfSequTask) \(testMode)")
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
 
-            TasksScheduler.DEBUG_TASKS=true
             let document=BartlebyDocument()
             //Bartleby.startBufferingBprint()
 
@@ -262,16 +259,13 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
                 try group.addTask(firstTask)
                 group.handlers.appendCompletionHandler({ (completion) in
                     let taskCount=group.totalTaskCount()
-                    if (expectation != nil) {
                         XCTAssert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
                         XCTAssert(ShowSummary.executionCounter==numberOfSequTask, "Execution counter should be consistent \(ShowSummary.executionCounter)")
                         Bartleby.stopBufferingBprint()
                         print("FULLFILLING \(group.UID)")
                         let elapsed=ShowSummary.stopMeasuring()
                         print ("Elapsed time : \(elapsed)")
-                        expectation?.fulfill()
-                        expectation=nil // To prevent Multiple FullFillment.
-                    }
+                        expectation.fulfill()
                 })
 
 

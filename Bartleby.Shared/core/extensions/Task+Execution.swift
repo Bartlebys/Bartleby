@@ -18,7 +18,6 @@ public enum TaskError: ErrorType {
     case ArgumentsTypeMisMatch
     case NoArgument
     case MissingTaskGroup
-    case UnSupportedForwardableState
     case MissingExternalReference
     case MultipleAttemptToRunTask
 }
@@ -71,15 +70,13 @@ extension Task {
 
      - throws: MultipleAttemptToRunTAsk
      */
-    public func invoke() throws {
+    public func invoke() {
         if self.status != .Runnable {
-            throw TaskError.MultipleAttemptToRunTask
+            bprint("Multiple Attempt To Run Task \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         } else {
             self.status = .Running
         }
-        if TasksScheduler.DEBUG_TASKS {
-            bprint("Running \(self.summary ?? self.UID)", file: #file, function: #function, line: #line)
-        }
+        bprint("Running \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
     }
 
 
@@ -102,12 +99,13 @@ extension Task {
 
      - parameter completionState: the completion state
      */
-    final public func forward<T: ForwardableStates>(state: T) throws {
-        if let groupExtRef=self.group {
-            if let group: TasksGroup = groupExtRef.toLocalInstance() {
+    final public func forward<T: ForwardableState>(state: T) {
+        dispatch_async(GlobalQueue.Main.get()) { 
+            if let groupExtRef=self.group {
+                if let group: TasksGroup = groupExtRef.toLocalInstance() {
                     if let state = state as? Completion {
                         self.completionState  = state
-
+                        
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
                         let total=group.totalTaskCount()
@@ -115,15 +113,14 @@ extension Task {
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
                         group.handlers.notify(groupProgression)
-
+                        
                         // We mark the completion
-                        if TasksScheduler.DEBUG_TASKS {
-                            bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line)
-                        }
-
+                        bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                        
+                        
                         // Check if all the task has been completed
-                        try Bartleby.scheduler.onAnyTaskCompletion(self)
-
+                        Bartleby.scheduler.onAnyTaskCompletion(self)
+                        
                     } else if state is Progression {
                         // We relay also the discreet task as a progression group progression !
                         // Including its data.
@@ -135,12 +132,15 @@ extension Task {
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState?.message ?? Default.NO_MESSAGE, data:self.progressionState?.data)
                         group.handlers.notify(groupProgression)
                     } else {
-                        throw TaskError.UnSupportedForwardableState
+                        
+                        bprint("UnSupported  ForwardableState \(state) \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
                     }
-
-            } else {
-                throw TaskError.MissingTaskGroup
+                } else {
+                    // We cannot mark (completion)
+                    bprint("Missing task Group!  \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                }
             }
+
         }
     }
 
@@ -191,7 +191,7 @@ extension Task {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID
             let g = task.group?.iUID ?? Default.NO_GROUP
-            bprint("Adding \(s) to \(t) in \(g)", file: #file, function: #function, line: #line)
+            bprint("Adding \(s) to \(t) in \(g)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         }
     }
 
