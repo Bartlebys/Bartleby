@@ -223,23 +223,25 @@ public class  Bartleby: Consignee {
     }
 
 
+    // @bpds we should relay to ASL (including Rank and Micro time info)
+    // https://github.com/emaloney/CleanroomASL#about-the-apple-system-log
+    // http://ericasadun.com/2015/05/22/swift-logging/
 
 
     /**
      Print indirection with guided contextual info
-     Usage : bprint("<Message>",file:#file,function:#function,line:#line")
+     Usage : bprint("<Message>",file:#file,function:#function,line:#line,category:DEFAULT.BPRINT_CATEGORY")
      You can create code snippet
 
-     - parameter items: the items to print
+     - parameter message: the message
      - parameter file:  the file
      - parameter line:  the line
      - parameter function : the function name
-     - parameter context: a contextual string
+     - parameter category: a categorizer string
      */
-    public static func bprint(message: AnyObject?, file: String = "", function: String = "", line: Int = -1) {
+    public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String) {
         if(self._enableBPrint) {
-            if let message=message {
-                func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
+            func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
                     var s="\(number)"
                     while s.characters.count < numberOfDigit {
                         if left {
@@ -261,15 +263,14 @@ public class  Bartleby: Consignee {
                 let elapsed=CFAbsoluteTimeGetCurrent()-_startTime
                 let ft: Int=Int(floor(elapsed))
                 let micro=Int((elapsed-Double(ft))*1000)
-                let s="\(padded(Bartleby._printCounter, 6)) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
+                let s="\(padded(Bartleby._printCounter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
                 if _bufferingBprint {
                     _printingBuffer.append(s)
                 } else {
                     print(s)
                 }
-
-            }
         }
+
     }
 
     /**

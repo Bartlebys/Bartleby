@@ -41,8 +41,8 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
     /**
      Pushes the operations
      */
-    public override func invoke() throws {
-        try super.invoke()
+    public override func invoke() {
+        super.invoke()
         if let operation: ArgumentType = try? self.arguments() {
             if let serialized=operation.toDictionary {
                 if let command = try? JSerializer.deserializeFromDictionary(serialized) {
@@ -51,24 +51,17 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
                         jCommand.push(sucessHandler: { (context) in
                             let completion=Completion.successState()
                             completion.setResult(context as! JHTTPResponse)
-
                             // Clean up the successful task.
                             let spaceUID=operation.spaceUID
                             if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
                                 registry.delete(operation)
                             }
-                            // !!!  we should be able to throw.
-                            if let _ = try? self.forward(completion) {
-                                // SILENT
-                            }
+                            self.forward(completion)
                             self.reactiveHandlers.on(completion)
                         }, failureHandler: { (context) in
                             let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))
                             completion.setResult(context as! JHTTPResponse)
-                            // !!!  we should be able to throw.
-                            if let _ = try? self.forward(completion) {
-                                // SILENT
-                            }
+                            self.forward(completion)
                             self.reactiveHandlers.on(completion)
                         })
                     } else {

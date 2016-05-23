@@ -8,29 +8,30 @@
 
 import Foundation
 
-
-
 public protocol Invocable: Collectible {
 
     /**
-        Runs the invocation
+        Runs the invocation on the Group Dispatch Queue
         All the logic is encapuslated.
-        You must call try super.invoke() and forward() on completion
+        You must call super.invoke() and forward() on completion
      */
-    func invoke() throws
+    func invoke()
 
 
     /**
      (!) This method is implemented as final in Task Extension to guarantee the task scheduler consistency
      You must call this method when the task is completed.
+
+     it will forward the state on the main queue.
+
      - parameter completionState: the completion state
      */
-    func forward<T: ForwardableStates>(state: T) throws
+    func forward<T: ForwardableState>(state: T)
 
 }
 
 
-public protocol ForwardableStates {
+public protocol ForwardableState {
 }
 
 
@@ -74,6 +75,6 @@ public protocol ConcreteTask: Invocable {
 
     // (!) This method is implemented as final in a Task extension to force Type Matching Safety
     // it throws Task.ArgumentsTypeMisMatch
-    func arguments<ExpectedType:Collectible>() throws -> ExpectedType
+    func arguments<ExpectedType: Collectible>() throws -> ExpectedType
 
 }

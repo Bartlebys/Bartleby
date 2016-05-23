@@ -861,8 +861,8 @@
 			isa = PBXGroup;
 			children = (
 				E5B7757C1CDCDDF2007261E1 /* Completion+Conveniences.swift */,
-				E5B7757D1CDCDDF2007261E1 /* Completion+Result.swift */,
 				E5B7757E1CDCDDF2007261E1 /* NSNotification+Completion.swift */,
+				E5B7757D1CDCDDF2007261E1 /* Completion+Result.swift */,
 				E5B7757F1CDCDDF2007261E1 /* NSNotification+Progression.swift */,
 				E5B775801CDCDDF2007261E1 /* Progression+Conveniences.swift */,
 				E5B775811CDCDDF2007261E1 /* Registry+Operations.swift */,

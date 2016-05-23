@@ -11,6 +11,12 @@ import Foundation
 
 // MARK: - bartleby Print
 
+
+
+public var DEFAULT_BPRINT_CATEGORY: String=""
+
+
+
 /**
 Print indirection with guided contextual info
 Usage : bprint("<Message>",file:#file,function:#function,line:#line")
@@ -22,9 +28,11 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(message: AnyObject?, file: String, function: String, line: Int) {
-    Bartleby.bprint(message, file: file, function: function, line: line)
+public func bprint(message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY) {
+    Bartleby.bprint(message, file: file, function: function, line: line, category:category)
 }
+
+
 
 // MARK: - ExternalReferencing
 
@@ -60,10 +68,11 @@ public func instancesFromExternalReferences<T: Collectible>(externalReferences: 
         if let instance: T=reference.toLocalInstance() {
             instances.append(instance)
         }
-
     }
     return instances
 }
+
+
 
 
 enum GlobalQueue {

@@ -12,14 +12,14 @@ import Foundation
 #endif
 
 
-extension Completion:ForwardableStates {
+extension Completion:ForwardableState {
 
 }
 
 extension Completion:Descriptible {
 
     public func toString() -> String {
-        return "Success \(success) StatusCode \(statusCode) \(data?.length ?? 0 ) bytes of data.\n\(message)"
+        return "Completion success:\(success) statusCode:\(statusCode) \(data?.length ?? 0 ) bytes of data.\n\(message)"
     }
 
 }
@@ -79,12 +79,6 @@ public extension Completion {
     public static func failureStateFromError(error: ErrorType) -> Completion {
         let nse = error as NSError
         return Completion(success: false, message: nse.localizedDescription, statusCode: CompletionStatus(rawValue: nse.code) ?? .Undefined)
-        /*
-        if let nse = error as NSError {
-            return Completion(success: false, message: nse.localizedDescription, statusCode: CompletionStatus(rawValue: nse.code) ?? .Undefined)
-        } else {
-            return Completion(success: false, message: "\(error)", statusCode:.Undefined)
-        }*/
 
     }
 

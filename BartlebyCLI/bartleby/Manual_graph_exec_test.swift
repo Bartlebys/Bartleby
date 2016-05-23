@@ -32,7 +32,6 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
 
         Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
         //Bartleby.startBufferingBprint()
-        TasksScheduler.DEBUG_TASKS=true
         let document=BartlebyDocument()
 
         ShowSummary.randomPause=useRandomPause
@@ -125,8 +124,8 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var counter: Int=0
 
-    public override func invoke() throws {
-            try super.invoke()
+    public override func invoke()  {
+            super.invoke()
             if let object: ArgumentType = try? self.arguments() {
                 if let summary = object.summary {
                     ShowSummary.counter += 1
@@ -163,7 +162,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
                 }
             }
             ShowSummary.executionCounter += 1
-            try self.forward(Completion.successState())
+             self.forward(Completion.successState())
 
     }
 }

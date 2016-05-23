@@ -28,22 +28,32 @@ import Foundation
                 return self._reactiveHandlers!
             }
             let onCompletion: CompletionHandler = { (completionState) in
-                // We forward the completion to the scheduler.
-                let _=try? self.forward(completionState)
-                // We use the main queue to dispatch the completion state
-                dispatch_async(dispatch_get_main_queue(), {
-                    NSNotificationCenter.defaultCenter().postNotification(completionState.completionNotification)
-                })
+                self.relayCompletionState(completionState)
             }
             self._reactiveHandlers=Handlers(completionHandler: onCompletion)
             self._reactiveHandlers!.appendProgressHandler({ (progressionState) in
-                 // We use the main queue to dispatch the progression state
-                 dispatch_async(dispatch_get_main_queue(), {
-                    NSNotificationCenter.defaultCenter().postNotification(progressionState.progressionNotification)
-                })
+                self.relayProgressionState(progressionState)
             })
+
             return self._reactiveHandlers!
         }
     }
+
+
+    public func relayCompletionState(state: Completion) {
+        // We use the main queue to dispatch the completion state
+        dispatch_async(dispatch_get_main_queue(), {
+            NSNotificationCenter.defaultCenter().postNotification(state.completionNotification)
+        })
+    }
+
+
+    public func relayProgressionState(state: Progression) {
+        // We use the main queue to dispatch the progression state
+        dispatch_async(dispatch_get_main_queue(), {
+            NSNotificationCenter.defaultCenter().postNotification(state.progressionNotification)
+        })
+    }
+
 
 }

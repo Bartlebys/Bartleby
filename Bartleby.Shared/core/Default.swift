@@ -100,6 +100,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
 public struct Default {
 
+    // B
+    static public let BPRINT_CATEGORY=""
+
     //MARK: UserDefault key/values
     static public let SERVER_KEY="user_default_server"
     static public let USER_EMAIL_KEY="user_default_email"
@@ -123,6 +126,7 @@ public struct Default {
     static public let NO_GROUP: String="NO_GROUP"
     static public let NO_INT_INDEX=Int.max
     static public let STRING_ENCODING = NSUTF8StringEncoding
+
 
     // A bunch of char in wich to pick to compose a random password
     static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
