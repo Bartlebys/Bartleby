@@ -185,6 +185,22 @@ public class TasksScheduler {
                                                             statusCode:.OK,
                                                             data: nil)
 
+
+            // Erase the tasks
+            if let document=group.document {
+                bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+                for taskReference in group.tasks.reverse() {
+                    if let task: Task=taskReference.toLocalInstance() {
+                        let linearListOfSubTasks=task.linearTaskList.reverse()
+                        for subtask in linearListOfSubTasks {
+                            document.delete(subtask)
+                        }
+                        document.delete(task)
+                    }
+                }
+            }
+
+
         } else {
             group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
         }
@@ -213,23 +229,6 @@ public class TasksScheduler {
      - parameter group: the Task Group
      */
     private func _cleanUpGroup(group: TasksGroup) {
-
-
-
-        // # Cleanup the tasks #
-        if let document=group.document {
-            bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
-            for taskReference in group.tasks.reverse() {
-                if let task: Task=taskReference.toLocalInstance() {
-                    let linearListOfSubTasks=task.linearTaskList.reverse()
-                    for subtask in linearListOfSubTasks {
-                        document.delete(subtask)
-                    }
-                    document.delete(task)
-                }
-            }
-        }
-
 
         // Remove the group from the dictionnary
         _groups.removeValueForKey(group.name)
