@@ -114,34 +114,55 @@ public enum BsyncAdminError: ErrorType {
 
     /**
      *  Proceed to installation of the Repository
-     *  @param block   the completion block
+     *
+     *  @param content the syncrhonization context
+     *  @param handlers   the progress and completion handlers
      */
-    // TODO: @md #bsync Use handlers
-    public func installWithCompletionBlock(context: BsyncContext, block:(success: Bool, statusCode: Int)->()) {
+    public func installWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.installWithCompletionBlock(block)
+        admin.installWithCompletionBlock { (success, statusCode) in
+            let completion = Completion.defaultState()
+            completion.success = success
+            completion.message = "Error during PdsSyncAdmin installation"
+            completion.statusCode = statusCode
+            handlers.on(completion)
+        }
     }
 
 
     /**
      *  Creates a tree
-     *  @param block      the completion block
+     *
+     *  @param content the syncrhonization context
+     *  @param handlers   the progress and completion handlers
      */
-    // TODO: @md #bsync Use handlers
-    public func createTreesWithCompletionBlock(context: BsyncContext, block:(success: Bool, statusCode: Int)->()) {
+    public func createTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.createTreesWithCompletionBlock(block)
+        admin.createTreesWithCompletionBlock { (success, statusCode) in
+            let completion = Completion.defaultState()
+            completion.success = success
+            completion.message = "Error during PdsSyncAdmin tree creation"
+            completion.statusCode = statusCode
+            handlers.on(completion)
+        }
     }
 
     /**
      *  Touches the trees (changes the public ID )
      *
-     *  @param block      the completion block
+     *  @param content the syncrhonization context
+     *  @param handlers   the progress and completion handlers
      */
-    // TODO: @md #bsync Use handlers
-    public func touchTreesWithCompletionBlock(context: BsyncContext, block:(success: Bool, statusCode: Int)->()) {
+    public func touchTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.touchTreesWithCompletionBlock(block)
+        admin.touchTreesWithCompletionBlock { (success, statusCode) in
+            let completion = Completion.defaultState()
+            completion.success = success
+            completion.message = "Error during PdsSyncAdmin tree touch"
+            completion.statusCode = statusCode
+            handlers.on(completion)
+
+        }
     }
 
 
