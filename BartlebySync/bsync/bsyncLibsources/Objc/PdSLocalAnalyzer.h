@@ -12,7 +12,7 @@
 
 @interface PdSLocalAnalyzer : NSObject
 
-// TODO: Use SHA1 instead of CRC32
+// TODO: @md Use SHA1 instead of CRC32
 
 /**
  *  Creates a hashmap - a dictionary with  relative paths as key and  CRC32 as value

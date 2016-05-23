@@ -60,7 +60,6 @@ class BsyncKeyValueStorage {
                 if let cryptedValueData = NSData(base64EncodedString: base64CryptedValueString, options: [.IgnoreUnknownCharacters]) {
                     do {
                         let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
-                        // TODO: Generalize to any serializer
                         return try JSerializer.deserialize(decryptedValueData)
                     } catch {
 

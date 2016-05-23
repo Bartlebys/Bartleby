@@ -33,9 +33,8 @@ public struct BsyncLocalAnalyzer {
     private lazy var _localAnalyzer: PdSLocalAnalyzer=PdSLocalAnalyzer()
 
 
-    mutating public func createHashMapFromLocalPath(folderPath: String, handlers:Handlers) {
+    mutating public func createHashMapFromLocalPath(folderPath: String, handlers: Handlers) {
 
-        // TODO: @bpds @md #io Which file manager shall we use here???
         let fm = BFileManager()
         fm.directoryExistsAtPath(folderPath, handlers: Handlers { (exists) in
             if exists.success {

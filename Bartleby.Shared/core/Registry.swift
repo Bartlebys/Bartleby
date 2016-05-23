@@ -348,11 +348,8 @@ public class Registry: BXDocument {
 
                             var collectionData = collection.serialize()
                             collectionData = try Bartleby.cryptoDelegate.encryptData(collectionData)
-
-
+                            
                             // Remove the previous data
-                            // TODO: @bpds if collection data have changed only !
-
                             if let wrapper=fileWrappers[collectionfileName] {
                                 fileWrapper.removeFileWrapper(wrapper)
                             }

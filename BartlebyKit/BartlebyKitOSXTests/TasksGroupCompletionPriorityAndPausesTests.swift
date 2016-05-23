@@ -16,9 +16,6 @@ public enum GraphTestMode {
     case Flat
 }
 
-// !!! @bpds  Sequential MUST Work
-let PseudoSequential=GraphTestMode.Chained
-
 
 // You Must Implement ConcreteTask to be invocable
 public class ShowSummary: ReactiveTask, ConcreteTask {
