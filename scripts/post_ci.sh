@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CHANNEL="bartlebys"
+CHANNEL="youdub"
 REPOSITORY="Bartleby"
 MESSAGE=$(git log --oneline -1)
 REVISION=$(git rev-parse HEAD)
@@ -13,6 +13,11 @@ then
     COLOR="warning"
 else
     COLOR="good"
+fi
+
+change=$(expr ${XCS_ERROR_CHANGE} + ${XCS_TEST_FAILURE_CHANGE} + ${XCS_WARNING_CHANGE} + ${XCS_ANALYZER_WARNING_CHANGE} )
+if [[ ( ${change} == 0 ) ]]
+then
     exit 0
 fi
 
