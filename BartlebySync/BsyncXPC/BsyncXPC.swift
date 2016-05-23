@@ -272,8 +272,9 @@ import Foundation
         Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
         do {
-            let directives = try BsyncDirectives.load(filePath)
-            directives.run(sharedSalt, handlers: handlers)
+            let admin = BsyncAdmin()
+            let directives = try admin.loadDirectives(filePath)
+            admin.runDirectives(directives, sharedSalt: sharedSalt, handlers: handlers)
         } catch {
             handlers.on(Completion.failureStateFromError(error))
         }

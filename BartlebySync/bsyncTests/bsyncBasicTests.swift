@@ -32,10 +32,10 @@ class bsyncBasicTests: XCTestCase {
     // And a waitForExpectationsWithTimeout block
     func test002_Bad_Async_Test_Create_a_tree() {
         let context=BsyncContext()//No definition of the sync context
-        let admin=BsyncAdmin(context: context)
-        admin.createTreesWithCompletionBlock { (success, statusCode) -> () in
+        let admin=BsyncAdmin()
+        admin.createTreesWithCompletionBlock(context, block: { (success, statusCode) -> () in
             XCTAssertFalse(success==true, "The creation should fail the context is not well defined")
-        }
+        })
     }
 
 
@@ -47,11 +47,11 @@ class bsyncBasicTests: XCTestCase {
         let expectation = expectationWithDescription("Create a tree with a void context")
 
         let context=BsyncContext()
-        let admin=BsyncAdmin(context: context)
-        admin.createTreesWithCompletionBlock { (success, statusCode) -> () in
+        let admin=BsyncAdmin()
+        admin.createTreesWithCompletionBlock(context, block: { (success, statusCode) -> () in
             XCTAssertFalse(success==true, "The creation should fail the context is not well defined")
             expectation.fulfill()
-        }
+        })
 
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {

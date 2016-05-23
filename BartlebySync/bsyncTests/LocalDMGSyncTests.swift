@@ -118,15 +118,12 @@ class LocalDMGSyncTests: XCTestCase {
     }
     
     func test103_CreateDirectives() {
-        let expectation = expectationWithDescription("save")
         let directives = BsyncDirectives.localDirectivesWithPath(LocalDMGSyncTests._masterDMGPath, destinationPath: LocalDMGSyncTests._slaveDMGPath)
-        directives.save(LocalDMGSyncTests._directivesPath, handlers: Handlers { (save) in
-                expectation.fulfill()
-                XCTAssert(save.success, save.message)
-                })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
+        let admin = BsyncAdmin()
+        do {
+            try admin.saveDirectives(directives, path: LocalDMGSyncTests._directivesPath)
+        } catch {
+            bprint("Error: \(error)", file: #file, function: #function, line: #line)
         }
     }
     
@@ -139,10 +136,9 @@ class LocalDMGSyncTests: XCTestCase {
         let context = BsyncContext(sourceURL: LocalDMGSyncTests._masterVolumeURL,
                                    andDestinationUrl: LocalDMGSyncTests._slaveVolumeURL,
                                    restrictedTo: nil)
-        let admin = BsyncAdmin(context: context)
-        admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
-            // TODO: @md #test #bsync Reactivate test check wich currently fails
-            //XCTAssertTrue(c.success, c.message)
+        let admin = BsyncAdmin()
+        admin.synchronize(context, handlers: Handlers(completionHandler: { (c) in
+            XCTAssertTrue(c.success, c.message)
             expectation.fulfill()
         }))
         

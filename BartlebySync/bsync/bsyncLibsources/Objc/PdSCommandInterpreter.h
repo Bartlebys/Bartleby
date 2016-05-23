@@ -30,13 +30,6 @@ extern NSString * const PdSSyncInterpreterHasFinalized;// Notification
 
 @property (nonatomic)id<PdSSyncFinalizationDelegate>finalizationDelegate;
 
-/**
- *  The progress counter in percent.
- * ( Total command number / executed command ) + proportionnal progress on the current command
- */
-@property (nonatomic,readonly)uint progressCounter;
-
-
 #pragma mark Interpretation
 
 /**

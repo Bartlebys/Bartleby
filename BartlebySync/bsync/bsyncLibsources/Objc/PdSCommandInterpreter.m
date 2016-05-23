@@ -93,7 +93,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         self->_progressBlock=progressBlock?[progressBlock copy]:nil;
         self->_completionBlock=completionBlock?[completionBlock copy]:nil;
         self->_fileManager=[PdSFileManager sharedInstance];
-        self->_progressCounter=0;
         self->_messageCounter=0;
         self->_sanitizeAutomatically=YES;
         
@@ -169,7 +168,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     }
     
     if([_bunchOfCommand count]>0){
-        PdSCommandInterpreter * __weak weakSelf=self;
         NSMutableArray*__block creativeCommands=[NSMutableArray array];
         _allCommands=[NSMutableArray array];
         
@@ -194,24 +192,23 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         }
         
         if (!_hasBeenInterrupted) {
+            // Add all creational commands
             for (NSArray*cmd in creativeCommands) {
                 [self->_queue addOperationWithBlock:^{
-                    PdSCommandInterpreter __strong *strongSelf=weakSelf;
-                    [strongSelf _runCommandFromArrayOfArgs:cmd];
+                    // The queue will be suspended and restarted with _commandInProgress and _nextCommand
+                    [self _runCommandFromArrayOfArgs:cmd];
                 }];
             }
             
             [_queue addOperationWithBlock:^{
-                PdSCommandInterpreter __strong *strongSelf=weakSelf;
                 [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterWillFinalize
-                                                                    object:strongSelf];
+                                                                    object:self];
             }];
             [_queue addOperationWithBlock:^{
-                PdSCommandInterpreter __strong *strongSelf=weakSelf;
-                if(strongSelf.finalizationDelegate){
-                    [strongSelf.finalizationDelegate readyForFinalization:strongSelf];
+                if(self.finalizationDelegate){
+                    [self.finalizationDelegate readyForFinalization:self];
                 }else{
-                    [strongSelf finalize];
+                    [self finalize];
                 }
             }];
         }
@@ -249,8 +246,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     if (self->_context.mode==SourceIsDistantDestinationIsLocal||
         self->_context.mode==SourceIsLocalDestinationIsLocal){
         
-        PdSCommandInterpreter __weak *weakSelf=self;
-        
         // SANITIZE LOCALLY
         NSString *folderPath=[self _absoluteLocalPathFromRelativePath:relativePath
                                                            toLocalUrl:_context.destinationBaseUrl
@@ -262,8 +257,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                            includingPropertiesForKeys:keys
                                                               options:0
                                                          errorHandler:^BOOL(NSURL *url, NSError *error) {
-                                                             PdSCommandInterpreter __strong *strongSelf=weakSelf;
-                                                             [strongSelf _progressMessage:@"ERROR when enumerating  %@ %@",url, [error localizedDescription]];
+                                                             [self _progressMessage:@"ERROR when enumerating  %@ %@",url, [error localizedDescription]];
                                                              return YES;
                                                          }];
         NSURL *file;
@@ -315,7 +309,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     }
     if(cmd && [cmd isKindOfClass:[NSArray class]] && [cmd count]>0){
         return cmd;
-    }else{
+    } else {
         [self _interruptOnFault:[NSString stringWithFormat:@"Invalid command (encoding) : %@, %@",encoded,cmd]];
     }
     return nil;
@@ -323,7 +317,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 -(void)_runCommandFromArrayOfArgs:(NSArray*)cmd{
-    
     [self _commandInProgress];
     if(cmd && [cmd isKindOfClass:[NSArray class]] && [cmd count]>0){
         int cmdName=[[cmd objectAtIndex:0] intValue];
@@ -385,7 +378,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 }
 
 - (void)_nextCommand{
-    _progressCounter++;
     [_queue setSuspended:NO];
 }
 
@@ -401,7 +393,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         // UPLOAD
         //_context.destinationBaseUrl;
-        PdSCommandInterpreter *__weak weakSelf=self;
         
         NSURL *sourceURL=[_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",_context.sourceTreeId,source]];
         NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/uploadFileTo/tree/%@/?syncIdentifier=%@&destination=%@",
@@ -436,13 +427,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             [self addCurrentTaskAndResume:[[self urlSession] uploadTaskWithRequest:request
                                                         fromFile:sourceURL
                                                completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                   PdSCommandInterpreter __strong *strongSelf=weakSelf;
                                                    if (response){
                                                        NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                        NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                        printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
                                                        if (httpStatusCode>=200 && httpStatusCode<300) {
-                                                           [strongSelf _nextCommand];
+                                                           [self _nextCommand];
                                                            return ;
                                                        }
                                                    }
@@ -453,9 +443,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                    
                                                    NSString *msg=@"No message";
                                                    if (error) {
-                                                       msg=[NSString stringWithFormat:@"Error on file upload: %@",[strongSelf _stringFromError:error]];
+                                                       msg=[NSString stringWithFormat:@"Error on file upload: %@",[self _stringFromError:error]];
                                                    }
-                                                   [strongSelf _interruptOnFault:msg];
+                                                   [self _interruptOnFault:msg];
                                                    
                                                }]];
             
@@ -469,14 +459,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             // We use a data task.
             [self addCurrentTaskAndResume:[[self urlSession] dataTaskWithRequest:request
                                                               completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                                  PdSCommandInterpreter __strong *strongSelf=weakSelf;
                                                                   
                                                                   if (response) {
                                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                                       NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                                       printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
-                                                                          [strongSelf _nextCommand];
+                                                                          [self _nextCommand];
                                                                           return ;
                                                                       }
                                                                   }
@@ -487,18 +476,15 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                   
                                                                   NSString *msg=@"No message";
                                                                   if (error) {
-                                                                      msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[strongSelf _stringFromError:error]];
+                                                                      msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[self _stringFromError:error]];
                                                                   }
-                                                                  [strongSelf _interruptOnFault:msg];
+                                                                  [self _interruptOnFault:msg];
                                                               }]];
             
         }
         
         
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal){
-        
-        PdSCommandInterpreter *__weak weakSelf=self;
-        
         // If it is a folder we gonna create it directly
         
         BOOL isAFolder= [[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
@@ -552,7 +538,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             
             [self addCurrentTaskAndResume:[[self urlSession]downloadTaskWithRequest:request
                                                                   completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                                      PdSCommandInterpreter *__strong strongSelf=weakSelf;
                                                                       if (!error){
                                                                           NSError*moveItemError=nil;
                                                                           NSURL*destinationURL=[NSURL fileURLWithPath:p];
@@ -560,11 +545,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                                                 toURL:destinationURL
                                                                                                 error:&moveItemError];
                                                                           if(moveItemError){
-                                                                              NSString*message=[NSString stringWithFormat:@"Error when moving tmp loaded file %@",[strongSelf _stringFromError:error]];
-                                                                              [strongSelf _interruptOnFault:message];
+                                                                              NSString*message=[NSString stringWithFormat:@"Error when moving tmp loaded file %@",[self _stringFromError:error]];
+                                                                              [self _interruptOnFault:message];
                                                                               return ;
                                                                           }else{
-                                                                              [strongSelf _nextCommand];
+                                                                              [self _nextCommand];
                                                                               return ;
                                                                           }
                                                                       }
@@ -577,9 +562,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                       
                                                                       NSString *msg=@"No message";
                                                                       if (error) {
-                                                                          msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[strongSelf _stringFromError:error]];
+                                                                          msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[self _stringFromError:error]];
                                                                       }
-                                                                      [strongSelf _interruptOnFault:msg];
+                                                                      [self _interruptOnFault:msg];
                                                                       
                                                                   }]];
         };
@@ -588,6 +573,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     }else if (self->_context.mode==SourceIsLocalDestinationIsLocal){
         // It is a copy
         [self _runCopy:source destination:destination];
+        [self _nextCommand];
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
         // CURRENTLY NOT SUPPORTED
     }
@@ -612,8 +598,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             return;
         }
         
-        PdSCommandInterpreter *__weak weakSelf=self;
-        
         NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/finalizeTransactionIn/tree/%@/",_context.destinationTreeId];
         NSDictionary *parameters = @{
                                      @"syncIdentifier": _context.syncID,
@@ -636,13 +620,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // DATA TASK
         [self addCurrentTaskAndResume:[[self urlSession] dataTaskWithRequest:request
                                                            completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                               PdSCommandInterpreter *__strong strongSelf=weakSelf;
                                                                if (response) {
                                                                    NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                                    NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
                                                                    printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                    if (httpStatusCode>=200 && httpStatusCode<300) {
-                                                                       [strongSelf _successFullEnd];
+                                                                       [self _successFullEnd];
                                                                        return ;
                                                                    }
                                                                }
@@ -653,9 +636,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                
                                                                NSString *msg=@"No message";
                                                                if (error) {
-                                                                   msg=[NSString stringWithFormat:@"(!) Error on finalization: %@",[weakSelf _stringFromError:error]];
+                                                                   msg=[NSString stringWithFormat:@"(!) Error on finalization: %@",[self _stringFromError:error]];
                                                                }
-                                                               [strongSelf _interruptOnFault:msg];
+                                                               [self _interruptOnFault:msg];
                                                            }]];
         
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal||
@@ -821,13 +804,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
                 // NSFileManagerDelegate seems not to handle correctly this case
                 [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error description]];
-                [self _interruptOnFault:[error description]];
-                
-            } else {
-                [self _nextCommand];
             }
-        } else {
-            [self _nextCommand];
+            [self _interruptOnFault:[error description]];
         }
         
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
@@ -948,6 +926,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 - (void)_interruptOnFault:(NSString*)faultMessage{
+    NSLog(@"INTERUPT ON FAULT: %@", faultMessage);
+
     [self _progressMessage:@"INTERUPT ON FAULT %@",faultMessage];
     [self->_queue cancelAllOperations];
     self->_hasBeenInterrupted=YES;

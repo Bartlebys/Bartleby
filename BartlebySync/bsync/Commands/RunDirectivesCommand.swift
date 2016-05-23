@@ -31,17 +31,30 @@ class RunDirectivesCommand: CommandBase {
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt (if not set we use bsync's default)")
         
+        // Optional
+        let api = StringOption(shortFlag: "a", longFlag: "api",
+                               helpMessage: "Bartleby base url e.g http://yd.local/api/v1")
+
         let help = BoolOption(shortFlag: "h", longFlag: "help",
                               helpMessage: "Prints a help message.")
         
         cli.addOptions(filePath, secretKey, sharedSalt, help)
         do {
             try cli.parse()
-            if let filePath = filePath.value, let salt = sharedSalt.value {
-                // TODO: @md Configure Bartleby before running directives
+            if let api = api.value, let url = NSURL(string: api) {
+                Bartleby.configuration.API_BASE_URL = url
+            }
+            
+            if let filePath = filePath.value, key = secretKey.value, let salt = sharedSalt.value {
+                Bartleby.configuration.KEY = key
+                Bartleby.configuration.SHARED_SALT = salt
+                Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED = false
+                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+
+                let admin = BsyncAdmin()
                 
-                let directives = try BsyncDirectives.load(filePath)
-                directives.run(salt, handlers: self)
+                let directives = try admin.loadDirectives(filePath)
+                admin.runDirectives(directives, sharedSalt: salt, handlers: self)
             } else {
                 self.on(Completion.failureState("Unwrapping error", statusCode: .Undefined))
             }

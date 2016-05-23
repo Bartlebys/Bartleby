@@ -185,14 +185,14 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         context.credentials?.password = BsyncAdminUpDownSyncTests._password
         context.credentials?.salt = TestsConfiguration.SHARED_SALT
 
-        let admin = BsyncAdmin(context: context)
+        let admin = BsyncAdmin()
 
-        admin.synchronizeWithprogressBlock(Handlers { (c) in
-            XCTAssertTrue(c.success, c.message)
+        admin.synchronize(context, handlers: Handlers { (sync) in
+            XCTAssertTrue(sync.success, sync.message)
             expectation.fulfill()
         })
 
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
@@ -212,14 +212,14 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         context.credentials?.password = BsyncAdminUpDownSyncTests._password
         context.credentials?.salt = TestsConfiguration.SHARED_SALT
 
-        let admin = BsyncAdmin(context: context)
+        let admin = BsyncAdmin()
 
-        admin.synchronizeWithprogressBlock(Handlers(completionHandler: { (c) in
+        admin.synchronize(context, handlers: Handlers(completionHandler: { (c) in
             XCTAssertTrue(c.success, c.message)
             expectation.fulfill()
         }))
 
-        waitForExpectationsWithTimeout(500.0) { (error) in
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }

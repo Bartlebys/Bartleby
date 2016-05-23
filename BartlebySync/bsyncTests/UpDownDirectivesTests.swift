@@ -136,15 +136,11 @@ class UpDownDirectivesTests: XCTestCase {
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        let expectation = expectationWithDescription("save")
-        
-        directives.save(UpDownDirectivesTests._upDirectivesPath, handlers: Handlers { (save) in
-            expectation.fulfill()
-            XCTAssert(save.success, save.message)
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
+        let admin = BsyncAdmin()
+        do {
+            try admin.saveDirectives(directives, path:UpDownDirectivesTests._upDirectivesPath)
+        } catch {
+            XCTFail("\(error)")
         }
     }
     
@@ -157,26 +153,23 @@ class UpDownDirectivesTests: XCTestCase {
         directives.password = UpDownDirectivesTests._password
         directives.salt = TestsConfiguration.SHARED_SALT
         
-        let expectation = expectationWithDescription("save")
-        
-        directives.save(UpDownDirectivesTests._downDirectivePath, handlers: Handlers { (save) in
-            expectation.fulfill()
-            XCTAssert(save.success, save.message)
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
+        let admin = BsyncAdmin()
+        do {
+            try admin.saveDirectives(directives, path:UpDownDirectivesTests._downDirectivePath)
+        } catch {
+            XCTFail("\(error)")
         }
     }
     
     func test402_RunDirectives_UpToDistant() {
         
         do {
-            let directives = try BsyncDirectives.load(UpDownDirectivesTests._upDirectivesPath)
+            let admin = BsyncAdmin()
+            let directives = try admin.loadDirectives(UpDownDirectivesTests._upDirectivesPath)
             
             let expectation = expectationWithDescription("Synchronization should complete")
             
-            directives.run(TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+            admin.runDirectives(directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
                 expectation.fulfill()
                 XCTAssertTrue(completion.success, completion.message)
                 })
@@ -192,11 +185,12 @@ class UpDownDirectivesTests: XCTestCase {
     
     func test403_RunDirectives_DistantToDown() {
         do {
-            let directives = try BsyncDirectives.load(UpDownDirectivesTests._downDirectivePath)
+            let admin = BsyncAdmin()
+            let directives = try admin.loadDirectives(UpDownDirectivesTests._downDirectivePath)
             
             let expectation = expectationWithDescription("Synchronization should complete")
             
-            directives.run(TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+            admin.runDirectives(directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
                 expectation.fulfill()
                 XCTAssertTrue(completion.success, completion.message)
                 })

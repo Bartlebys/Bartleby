@@ -67,7 +67,7 @@ protocol IdentifiableCardContext {
             if self.directivesRelativePath != BsyncDMGCard.NO_PATH {
                  return self.volumePath+"/\(self.directivesRelativePath)"
             } else {
-                  return self.volumePath+"/\(BsyncDirectives.DEFAULT_FILE_NAME)"
+                return self.volumePath+"/\(BsyncDirectives.DEFAULT_FILE_NAME)"
             }
 
         }

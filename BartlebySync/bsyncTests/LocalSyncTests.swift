@@ -9,21 +9,21 @@
 import XCTest
 
 class LocalSyncTests: XCTestCase {
-
+    
     private static let _diskManager = BsyncImageDiskManager()
     private static let _fileManager = NSFileManager()
-
+    
     private static let _treeName = "LocalSyncTests"
     private static let _folderPath = TestsConfiguration.ASSET_PATH + "LocalSyncTests/"
     private static let _sourceFolderPath = _folderPath + "Source/" + _treeName + "/"
     private static let _sourceFilePath = _sourceFolderPath + "file.txt"
     private static let _fileContent = Bartleby.randomStringWithLength(20)
-
+    
     private static let _destinationFolderPath = _folderPath + "Destination/" + _treeName + "/"
     private static let _destinationFilePath = _destinationFolderPath + "file.txt"
     
     private static let _directivesPath = _sourceFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
-
+        
     // MARK: 1 - Prepare folder and directives
     func test101_CreateFileInUpFolder() {
         let expectation = expectationWithDescription("All files should be created")
@@ -46,42 +46,41 @@ class LocalSyncTests: XCTestCase {
                     })
                 })
             })
-
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
-        }
-    }
-
-    func test102_CreateDirectives() {
-        let expectation = expectationWithDescription("save")
-        let directives = BsyncDirectives.localDirectivesWithPath(LocalSyncTests._sourceFolderPath, destinationPath: LocalSyncTests._destinationFolderPath)
-        
-        directives.save(LocalSyncTests._directivesPath, handlers: Handlers { (save) in
-            XCTAssert(save.success, save.message)
-            expectation.fulfill()
-        })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
         }
     }
     
-
-    // MARK: Run synchronization
-    func test201_RunSynchronisation() {
-        let expectation = expectationWithDescription("Synchronize should complete")
-
+    func test102_CreateDirectives() {
+        let directives = BsyncDirectives.localDirectivesWithPath(LocalSyncTests._sourceFolderPath, destinationPath: LocalSyncTests._destinationFolderPath)
+        directives.automaticTreeCreation = true
+        
+        let admin = BsyncAdmin()
         do {
-        let directives = try BsyncDirectives.load(LocalSyncTests._directivesPath)
-        directives.run(TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
-            expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
-            })
-
+            try admin.saveDirectives(directives, path: LocalSyncTests._directivesPath)
         } catch {
             XCTFail("\(error)")
         }
-
+    }
+    
+    
+    // MARK: Run synchronization
+    func test201_RunSynchronisation() {
+        let expectation = expectationWithDescription("Synchronize should complete")
+        
+        do {
+            let admin = BsyncAdmin()
+            let directives = try admin.loadDirectives(LocalSyncTests._directivesPath)
+            admin.runDirectives(directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+                expectation.fulfill()
+                XCTAssertTrue(completion.success, completion.message)
+                })
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+        
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
             bprint(error?.localizedDescription, file: #file, function: #function, line: #line)
         }
