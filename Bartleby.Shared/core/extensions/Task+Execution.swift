@@ -62,6 +62,7 @@ extension Task {
      */
     public func complete(state: Completion) {
         self.completionState = state
+        self.status = .Completed
     }
 
     /**
@@ -100,39 +101,40 @@ extension Task {
      - parameter completionState: the completion state
      */
     final public func forward<T: ForwardableState>(state: T) {
-        dispatch_async(GlobalQueue.Main.get()) { 
+        dispatch_async(GlobalQueue.Main.get()) {
             if let groupExtRef=self.group {
                 if let group: TasksGroup = groupExtRef.toLocalInstance() {
                     if let state = state as? Completion {
-                        self.completionState  = state
-                        
+
+                        // Complete the task
+                        self.complete(state)
+
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
                         let total=group.totalTaskCount()
-                        let executed=total-group.runnableTaskCount()
+                        let executed=group.countTasks({ return $0.status == .Completed })
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
                         group.handlers.notify(groupProgression)
-                        
+
                         // We mark the completion
                         bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
-                        
-                        
+
                         // Check if all the task has been completed
                         Bartleby.scheduler.onAnyTaskCompletion(self)
-                        
+
                     } else if state is Progression {
                         // We relay also the discreet task as a progression group progression !
                         // Including its data.
                         // May be it could be distincted from completion
                         self.progressionState = state as? Progression
                         let total=group.totalTaskCount()
-                        let executed=total-group.runnableTaskCount()
+                        let executed=group.countTasks({ return $0.status == .Completed })
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState?.message ?? Default.NO_MESSAGE, data:self.progressionState?.data)
                         group.handlers.notify(groupProgression)
                     } else {
-                        
+
                         bprint("UnSupported  ForwardableState \(state) \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
                     }
                 } else {
@@ -156,7 +158,7 @@ extension Task {
     }
 
     // A linearized list from the tasks graph
-    public dynamic var linearTaskList: [Task] {
+    public var linearTaskList: [Task] {
         get {
             // Return a linear task List
             var list=[Task]()
