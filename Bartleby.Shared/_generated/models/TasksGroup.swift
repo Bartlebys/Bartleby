@@ -22,6 +22,8 @@ import ObjectMapper
         return "TasksGroup"
     }
 
+	//A non serializable reference to the hosting document
+	public var document:BartlebyDocument?
 	//TasksGroup Status
 	public enum Status:Int{
 		case Paused
