@@ -223,11 +223,7 @@ import Foundation
         let validity=directives.areValid()
         guard validity.valid else {
             var validityMessage=""
-            if let explanation=validity.message {
-                validityMessage="Directives are not valid : \(explanation)"
-            } else {
-                validityMessage="Directives are not valid"
-            }
+            validityMessage="Directives are not valid : \(validity.message)"
             handlers.on(Completion.failureState(validityMessage, statusCode: .Precondition_Failed))
             return
         }
@@ -269,15 +265,18 @@ import Foundation
         // From the unique handler form
         // progress and completion handlers.
         let handlers=Handlers.handlersFrom(handler)
-        
-        let runner = BsyncDirectivesRunner()
-        
+
         Bartleby.configuration.KEY=secretKey
         Bartleby.configuration.SHARED_SALT=sharedSalt
         Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
         Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-        
-        runner.runDirectives(filePath, secretKey: secretKey, sharedSalt: sharedSalt, handlers: handlers)
+
+        do {
+            let directives = try BsyncDirectives.load(filePath)
+            directives.run(sharedSalt, handlers: handlers)
+        } catch {
+            handlers.on(Completion.failureStateFromError(error))
+        }
     }
     
     // MARK: File IO
