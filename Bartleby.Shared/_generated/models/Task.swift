@@ -28,6 +28,7 @@ import ObjectMapper
 	public enum Status:Int{
 		case Runnable
 		case Running
+		case Completed
 	}
 	public var status:Status = .Runnable
 	//The Task parent. 

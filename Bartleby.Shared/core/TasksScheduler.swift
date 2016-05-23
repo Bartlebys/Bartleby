@@ -149,8 +149,8 @@ public class TasksScheduler {
                 }
                 // We dispatch the completion of the group on the main Queue
                 dispatch_async(GlobalQueue.Main.get(), {
-                    let runnableTasksCount=group.runnableTaskCount()
-                    if runnableTasksCount==0 {
+                    let residualTasksCount=group.countTasks({ return $0.status == .Runnable ||  $0.status == .Running })
+                    if residualTasksCount==0 {
                         self._onGroupCompletion(group, lastCompletedTask:completedTask)
                     }
                 })
@@ -165,24 +165,6 @@ public class TasksScheduler {
 
 
     private func _onGroupCompletion(group: TasksGroup, lastCompletedTask: Task) {
-        defer {
-            if let completionState=group.completionState {
-                // We call the completion off the group.
-                group.handlers.on(completionState)
-
-                bprint("Completion of Tasks Group \(group.name) \(completionState)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
-
-                // Then we Notify the group completion #
-                NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
-
-                self._cleanUpGroup(group)
-
-            } else {
-                bprint("ERROR! on Completion of Tasks Group \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
-            }
-
-        }
-
 
         var inconsistencyDetails=""
         let errorTasks=group.findTasks { (task) -> Bool in
@@ -192,42 +174,33 @@ public class TasksScheduler {
             } else {
                 // Mark the not completed tasks as anomalies
                 inconsistencyDetails += "Not Completed "+(task.summary ?? task.UID)+"\n"
+                return false
             }
-            return false
-        }
-
-        if inconsistencyDetails != "" {
-            group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
         }
 
         let errorTasksCount=errorTasks.count
         if errorTasksCount==0 {
-            // # Cleanup the tasks #
-
-            if let registry=Bartleby.sharedInstance.getRegistryByUID(group.spaceUID) {
-                bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
-                for taskReference in group.tasks.reverse() {
-                    if let task: Task=taskReference.toLocalInstance() {
-                        let linearListOfSubTasks=task.linearTaskList.reverse()
-                        for subtask in linearListOfSubTasks {
-                            registry.delete(subtask)
-                        }
-                        registry.delete(task)
-                    }
-                }
-            }
-            group.tasks.removeAll()
-
-            // Determine the completion state.
-            // We use the last TASK
+            // Relay success state
             group.completionState = Completion.successState("Task group \(group.name) has been completed",
                                                             statusCode:.OK,
-                                                            data: lastCompletedTask.completionState?.data)
-        } else {
-            // We donnot cleanup the tasks
-            group.completionState = Completion.successState("\(errorTasksCount) error(s)",
-                                                            statusCode:.Expectation_Failed,
                                                             data: nil)
+
+        } else {
+            group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
+        }
+
+
+
+        if let completionState=group.completionState {
+            // We call the completion off the group.
+            group.handlers.on(completionState)
+            // Notify the group completion #
+            NSNotificationCenter.defaultCenter().postNotificationName(group.completionNotificationName, object: nil)
+            bprint("Completion of Tasks Group \(group.name) \(completionState)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+            if completionState.success {
+                // Then Clean up and auto delete the group
+                self._cleanUpGroup(group)
+            }
         }
 
     }
@@ -240,27 +213,39 @@ public class TasksScheduler {
      - parameter group: the Task Group
      */
     private func _cleanUpGroup(group: TasksGroup) {
-        // 1# Set the status group to Paused for future usages.
-        group.status = .Paused
 
-        // 2# We Reset the handlers
-        group.handlers=Handlers.withoutCompletion()
-        // 3# reset members.
-        group.lastChainedTask=nil
-        group.progressionState=nil
-        group.completionState=nil
+
+
+        // # Cleanup the tasks #
+        if let document=group.document {
+            bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+            for taskReference in group.tasks.reverse() {
+                if let task: Task=taskReference.toLocalInstance() {
+                    let linearListOfSubTasks=task.linearTaskList.reverse()
+                    for subtask in linearListOfSubTasks {
+                        document.delete(subtask)
+                    }
+                    document.delete(task)
+                }
+            }
+        }
+
 
         // Remove the group from the dictionnary
         _groups.removeValueForKey(group.name)
 
+        // Explicit removal
+        group.tasks.removeAll()
+        group.status = .Paused
+        group.handlers=Handlers.withoutCompletion()
+        group.lastChainedTask=nil
+        group.progressionState=nil
+        group.completionState=nil
+
         // Remove the group from the registry.
         if let document=group.document {
             document.tasksGroups.removeObject(group)
-
         }
-
-
-
     }
 
 

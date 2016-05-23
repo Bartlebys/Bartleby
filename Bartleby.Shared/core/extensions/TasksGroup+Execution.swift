@@ -93,8 +93,8 @@ public extension TasksGroup {
     public func start() throws -> Int {
         // The graph may be partially executed.
         // We search the entry tasks.
-        let entryTasks=self.runnableTasks()
-        bprint("Starting group \(self.name) \(entryTasks.count) entry task(s)", file: #file, function: #function, line: #line,category:TasksScheduler.BPRINT_CATEGORY)
+        let entryTasks=self._findEntryTasks()
+        bprint("Starting group \(self.name) \(entryTasks.count) entry task(s)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         if self.status != .Running {
             // We donnot want to re-run an already running group.
             self.status = .Running
@@ -139,7 +139,7 @@ public extension TasksGroup {
     public func addTask(task: Task) throws {
 
         try self._insurePersistencyOfTask(task)
-        
+
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
@@ -154,7 +154,7 @@ public extension TasksGroup {
             let s = task.summary ?? task.UID
             let t = self.summary ?? self.UID
             let g = task.group?.iUID ?? Default.NO_GROUP
-            bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line,category:TasksScheduler.BPRINT_CATEGORY)
+            bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         }
 
     }
@@ -191,90 +191,51 @@ public extension TasksGroup {
         }
     }
 
-    // MARK: - Counters
-
-    // !!! REMPLACER LES PROCESSUS EXPLORATOIRES PAR DES COMPTEURS UNE FOIS LE CODE STABILISÉ
-    // totalTaskCount() - EXPLORER LES TASK À L'AJOUT ET INCRÉMENTER LES COMPETEUR
-    // PAREIL POUR runnableTaskCount()
-    // UTILISER EVENTUELLEMENT UN FLATMAP POUR optimiser les appels.
-
-    /**
-     The total count at a given time
-
-     - returns: the number of tasks
-     */
-    public func totalTaskCount() -> Int {
-        var counter: Int=0
-        for taskRef in self.tasks {
-            if let task: Task=taskRef.toLocalInstance() {
-                self._count(task, counter:&counter)
-            }
-        }
-        return counter
-    }
-
-
-    private func _count(task: Task, inout counter: Int) {
-        counter += 1
-        for ref in task.children {
-            if let child: Task=ref.toLocalInstance() {
-                self._count(child, counter: &counter)
-            }
-        }
-    }
-
 
 
     /**
-     The total count at a given time
+     Adds the task to the relevant collection.
 
-     - returns: the number of tasks
+     - parameter task: the task
+
+     - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
      */
-    public func runnableTaskCount() -> Int {
-        var counter: Int=0
-        for taskRef in self.tasks {
-            if let task: Task=taskRef.toLocalInstance() {
-                 self._runnableCount(task, counter:&counter)
-            }
-        }
-        return counter
-    }
+    private func _insurePersistencyOfTask(task: Task) throws {
+        if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+            // Identify the task Creator.
+            task.creatorUID=registry.currentUser.UID
+            // Add the taksk to the peristent tasks.
+            let persitentTasks: TasksCollectionController = try registry.getCollection()
+            persitentTasks.add(task)
 
-
-    private func _runnableCount(task: Task, inout counter: Int) {
-        if ( task.status == .Runnable) {
-            counter += 1
-        }
-        for ref in task.children {
-            if let child: Task=ref.toLocalInstance() {
-                self._runnableCount(child, counter: &counter)
-            }
+        } else {
+            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID:self.spaceUID)
         }
     }
 
 
-    // MARK: Ranking
 
-    // MARK: Find runnable Tasks
+    // MARK: Find Entry Tasks
 
     /**
      Determines the bunch of task to use to start or resume a TaskGroup.
      The entry tasks may be deeply nested if the graph has already been partially running
+     The recursive exploration ends when some tasks have been found at given level.
 
      - returns: a collection of tasks
      */
-    public func runnableTasks() -> [Task] {
+    private func _findEntryTasks() -> [Task] {
         var tasks=[Task]()
         for taskRef in self.tasks {
             if let task: Task=taskRef.toLocalInstance() {
-                self._runnableTasksFrom(task, tasks:&tasks)
+                self._findEntryTasksFrom(task, tasks:&tasks)
             }
         }
         return tasks
     }
 
 
-    private func _runnableTasksFrom(task: Task, inout tasks: [Task]) {
+    private func _findEntryTasksFrom(task: Task, inout tasks: [Task]) {
         if (task.status != .Running && task.completionState == nil) {
             tasks.append(task)
             return
@@ -288,15 +249,60 @@ public extension TasksGroup {
                 } else {
                     // We search recursively tasks
                     // Only if there are not runnable task at previous levels
-                    self._runnableTasksFrom(child, tasks:&tasks)
+                    self._findEntryTasksFrom(child, tasks:&tasks)
                 }
             }
         }
     }
 
 
+    //MARK : Count Tasks
 
-    //MARK : find Tasks
+
+    /**
+     The total count at a given time
+
+     - returns: the number of tasks
+     */
+    public func totalTaskCount() -> Int {
+        // Any task
+        return self.countTasks({ return $0.UID != nil })
+    }
+    /**
+     General purpose task Extractor
+
+     - parameter matching: filter
+
+     - returns: an array of tasks.
+     */
+    public func countTasks(@noescape matching:(task: Task) -> Bool) -> Int {
+        var counter: Int=0
+        for taskRef in self.tasks {
+            if let task: Task=taskRef.toLocalInstance() {
+                self._countTasks(task, matching: matching, counter:&counter)
+            }
+        }
+        return counter
+    }
+
+    private func _countTasks(task: Task, @noescape matching:(task: Task) -> Bool, inout counter: Int) {
+        if matching(task: task) {
+            counter += 1
+        }
+        for taskRef in task.children {
+            if let child: Task=taskRef.toLocalInstance() {
+                if matching(task: child) {
+                    counter += 1
+                }
+                self._countTasks(child, matching:matching, counter:&counter)
+            }
+        }
+    }
+
+
+
+    //MARK : Find Tasks
+
 
     /**
      General purpose task Extractor
@@ -329,25 +335,6 @@ public extension TasksGroup {
         }
     }
 
-    /**
-     Adds the task to the relevant collection.
-
-     - parameter task: the task
-
-     - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
-     */
-    private func _insurePersistencyOfTask(task: Task) throws {
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
-            // Identify the task Creator.
-            task.creatorUID=registry.currentUser.UID
-            // Add the taksk to the peristent tasks.
-            let persitentTasks: TasksCollectionController = try registry.getCollection()
-            persitentTasks.add(task)
-
-        } else {
-            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID:self.spaceUID)
-        }
-    }
 
 
 
