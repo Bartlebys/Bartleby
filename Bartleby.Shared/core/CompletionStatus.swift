@@ -156,91 +156,91 @@ public func messageFromStatus(status: Int) -> String {
     var message: String
     switch status {
     case 100:
-        message = "Continue"
+        message = NSLocalizedString("Continue", tableName:"system", comment: "Universal Http status code")
     case 101:
-        message = "Switching Protocols"
+        message = NSLocalizedString("Switching Protocols", tableName:"system", comment: "Universal Http status code")
     case 200:
-        message = "OK"
+        message = NSLocalizedString("OK", tableName:"system", comment: "Universal Http status code")
     case 201:
-        message = "Created"
+        message = NSLocalizedString("Created", tableName:"system", comment: "Universal Http status code")
     case 202:
-        message = "Accepted"
+        message = NSLocalizedString("Accepted", tableName:"system", comment: "Universal Http status code")
     case 203:
-        message = "Non-Authoritative Information"
+        message = NSLocalizedString("Non-Authoritative Information", tableName:"system", comment: "Universal Http status code")
     case 204:
-        message = "No Content"
+        message = NSLocalizedString("No Content", tableName:"system", comment: "Universal Http status code")
     case 205:
-        message = "Reset Content"
+        message = NSLocalizedString("Reset Content", tableName:"system", comment: "Universal Http status code")
     case 206:
-        message = "Partial Content"
+        message = NSLocalizedString("Partial Content", tableName:"system", comment: "Universal Http status code")
     case 300:
-        message = "Multiple Choices"
+        message = NSLocalizedString("Multiple Choices", tableName:"system", comment: "Universal Http status code")
     case 301:
-        message = "Moved Permanently"
+        message = NSLocalizedString("Moved Permanently", tableName:"system", comment: "Universal Http status code")
     case 302:
-        message = "Found"
+        message = NSLocalizedString("Found", tableName:"system", comment: "Universal Http status code")
     case 303:
-        message = "See Other"
+        message = NSLocalizedString("See Other", tableName:"system", comment: "Universal Http status code")
     case 304:
-        message = "Not Modified"
+        message = NSLocalizedString("Not Modified", tableName:"system", comment: "Universal Http status code")
     case 305:
-        message = "Use Proxy"
+        message = NSLocalizedString("Use Proxy", tableName:"system", comment: "Universal Http status code")
     case 306:
-        message = "(Unused)"
+        message = NSLocalizedString("(Unused)", tableName:"system", comment: "Universal Http status code")
     case 307:
-        message = "Temporary Redirect"
+        message = NSLocalizedString("Temporary Redirect", tableName:"system", comment: "Universal Http status code")
     case 400:
-        message = "Bad Request"
+        message = NSLocalizedString("Bad Request", tableName:"system", comment: "Universal Http status code")
     case 401:
-        message = "Unauthorized"
+        message = NSLocalizedString("Unauthorized", tableName:"system", comment: "Universal Http status code")
     case 402:
-        message = "Payment Required"
+        message = NSLocalizedString("Payment Required", tableName:"system", comment: "Universal Http status code")
     case 403:
-        message = "Forbidden"
+        message = NSLocalizedString("Forbidden", tableName:"system", comment: "Universal Http status code")
     case 404:
-        message = "Not Found"
+        message = NSLocalizedString("Not Found", tableName:"system", comment: "Universal Http status code")
     case 405:
-        message = "Method Not Allowed"
+        message = NSLocalizedString("Method Not Allowed", tableName:"system", comment: "Universal Http status code")
     case 406:
-        message = "Not Acceptable"
+        message = NSLocalizedString("Not Acceptable", tableName:"system", comment: "Universal Http status code")
     case 407:
-        message = "Proxy Authentication Required"
+        message = NSLocalizedString("Proxy Authentication Required", tableName:"system", comment: "Universal Http status code")
     case 408:
-        message = "Request Timeout"
+        message = NSLocalizedString("Request Timeout", tableName:"system", comment: "Universal Http status code")
     case 409:
-        message = "Conflict"
+        message = NSLocalizedString("Conflict", tableName:"system", comment: "Universal Http status code")
     case 410:
-        message = "Gone"
+        message = NSLocalizedString("Gone", tableName:"system", comment: "Universal Http status code")
     case 411:
-        message = "Length Required"
+        message = NSLocalizedString("Length Required", tableName:"system", comment: "Universal Http status code")
     case 412:
-        message = "Precondition Failed"
+        message = NSLocalizedString("Precondition Failed", tableName:"system", comment: "Universal Http status code")
     case 413:
-        message = "Request Entity Too Large"
+        message = NSLocalizedString("Request Entity Too Large", tableName:"system", comment: "Universal Http status code")
     case 414:
-        message = "Request-URI Too Long"
+        message = NSLocalizedString("Request-URI Too Long", tableName:"system", comment: "Universal Http status code")
     case 415:
-        message = "Unsupported Media Type"
+        message = NSLocalizedString("Unsupported Media Type", tableName:"system", comment: "Universal Http status code")
     case 416:
-        message = "Requested Range Not Satisfiable"
+        message = NSLocalizedString("Requested Range Not Satisfiable", tableName:"system", comment: "Universal Http status code")
     case 417:
-        message = "Expectation Failed"
+        message = NSLocalizedString("Expectation Failed", tableName:"system", comment: "Universal Http status code")
     case 423:
-        message = "Locked"
+        message = NSLocalizedString("Locked", tableName:"system", comment: "Universal Http status code")
     case 500:
-        message = "Internal Server Error"
+        message = NSLocalizedString("Internal Server Error", tableName:"system", comment: "Universal Http status code")
     case 501:
-        message = "Not Implemented"
+        message = NSLocalizedString("Not Implemented", tableName:"system", comment: "Universal Http status code")
     case 502:
-        message = "Bad EndPointsGateway"
+        message = NSLocalizedString("Bad EndPointsGateway", tableName:"system", comment: "Universal Http status code")
     case 503:
-        message = "Service Unavailable"
+        message = NSLocalizedString("Service Unavailable", tableName:"system", comment: "Universal Http status code")
     case 504:
-        message = "EndPointsGateway Timeout"
+        message = NSLocalizedString("EndPointsGateway Timeout", tableName:"system", comment: "Universal Http status code")
     case 505:
-        message = "HTTP Version Not Supported"
+        message = NSLocalizedString("HTTP Version Not Supported", tableName:"system", comment: "Universal Http status code")
     default:
-        message = "Undefined"
+        message = NSLocalizedString("Undefined", tableName:"system", comment: "Universal Http status code")
     }
     return message
 }
