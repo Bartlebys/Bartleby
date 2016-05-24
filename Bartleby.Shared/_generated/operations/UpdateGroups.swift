@@ -172,8 +172,8 @@ import ObjectMapper
         }
     }
 
-    public func push(sucessHandler success:(context:HTTPResponse)->(),
-        failureHandler failure:(context:HTTPResponse)->()){
+    public func push(sucessHandler success:(context:JHTTPResponse)->(),
+        failureHandler failure:(context:JHTTPResponse)->()){
         if let _ = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
             // The unitary operation are not always idempotent
             // so we do not want to push multiple times unintensionnaly.

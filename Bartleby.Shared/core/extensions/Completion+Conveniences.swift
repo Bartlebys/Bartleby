@@ -63,6 +63,10 @@ public extension Completion {
         return Completion(success:true, message: message, statusCode:statusCode, data: data)
     }
 
+    
+    public static func successStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
+        return Completion(success: true, message: messageFromStatus(context.httpStatusCode), statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
+    }
 
 
     /**

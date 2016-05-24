@@ -17,9 +17,9 @@ public protocol HTTPCommand {
     /**
      An http command implements a push method with success and failure contextual responses
 
-     - parameter success: the successful HTTPRreponse
-     - parameter failure: the unsucessful HTTPRreponse
+     - parameter success: the successful JHTTPResponse
+     - parameter failure: the unsucessful JHTTPResponse
      */
-    func push(sucessHandler success:(context: HTTPResponse)->(), failureHandler failure:(context: HTTPResponse)->())
+    func push(sucessHandler success:(context: JHTTPResponse)->(), failureHandler failure:(context: JHTTPResponse)->())
 
 }

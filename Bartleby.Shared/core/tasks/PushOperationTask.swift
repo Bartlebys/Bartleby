@@ -48,8 +48,9 @@ import Foundation
                     if let jCommand=command as? JHTTPCommand {
                         // Push the command.
                         jCommand.push(sucessHandler: { (context) in
-                            let completion=Completion.successState()
-                            completion.setResult(context as! JHTTPResponse)
+                            let completion=Completion.successStateFromJHTTPResponse(context)
+                            completion.setResult(context)
+                            bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             // Clean up the successful task.
                             let spaceUID=operation.spaceUID
                             if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
@@ -58,8 +59,8 @@ import Foundation
                             self.forward(completion)
                             self.reactiveHandlers.on(completion)
                         }, failureHandler: { (context) in
-                            let completion=Completion.failureStateFromJHTTPResponse(context as! JHTTPResponse)
-                            completion.setResult(context as! JHTTPResponse)
+                            let completion=Completion.failureStateFromJHTTPResponse(context)
+                            completion.setResult(context)
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             self.forward(completion)
                             self.reactiveHandlers.on(completion)
