@@ -33,8 +33,8 @@ class bsyncBasicTests: XCTestCase {
     func test002_Bad_Async_Test_Create_a_tree() {
         let context=BsyncContext()//No definition of the sync context
         let admin=BsyncAdmin()
-        admin.createTreesWithCompletionBlock(context, block: { (success, statusCode) -> () in
-            XCTAssertFalse(success==true, "The creation should fail the context is not well defined")
+        admin.createTreesWithCompletionBlock(context, handlers: Handlers { (creation) -> () in
+            XCTAssertFalse(creation.success, "The creation should fail the context is not well defined")
         })
     }
 
@@ -48,8 +48,8 @@ class bsyncBasicTests: XCTestCase {
 
         let context=BsyncContext()
         let admin=BsyncAdmin()
-        admin.createTreesWithCompletionBlock(context, block: { (success, statusCode) -> () in
-            XCTAssertFalse(success==true, "The creation should fail the context is not well defined")
+        admin.createTreesWithCompletionBlock(context, handlers: Handlers { (creation) -> () in
+            XCTAssertFalse(creation.success, "The creation should fail the context is not well defined")
             expectation.fulfill()
         })
 
