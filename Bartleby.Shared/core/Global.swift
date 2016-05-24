@@ -9,6 +9,33 @@
 import Foundation
 
 
+// MARK: General Equatable implementation
+
+/*
+
+public func ==<T:Equatable>(lhs: [T], rhs: [T]) -> Bool {
+    if lhs.count != rhs.count {
+        return false
+    }
+    for i in 0...lhs.count {
+        if lhs[i] != rhs [i] {
+            return false
+        }
+    }
+    return true
+}
+
+
+public  func ==(lhs: [String]?, rhs: [String]?) -> Bool {
+    if let lhs=lhs, rhs=rhs {
+        return lhs == rhs
+    } else {
+        return false
+    }
+}
+*/
+
+
 // MARK: - bartleby Print
 
 

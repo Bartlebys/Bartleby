@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model User
+// MARK: Bartleby's Core: a user in a specified data Space
 @objc(User) public class User : JObject{
 
     // Universal type support
@@ -23,37 +23,121 @@ import ObjectMapper
     }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	public var spaceUID:String = "\(Bartleby.createUID())"
+	public var spaceUID:String = "\(Bartleby.createUID())"{	 
+	    willSet { 
+	       if spaceUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//the verification method
 	public enum VerificationMethod:String{
 		case None = "None"
 		case ByPhoneNumber = "ByPhoneNumber"
 		case ByEmail = "ByEmail"
 	}
-	public var verificationMethod:VerificationMethod = .ByPhoneNumber
-	public var firstname:String = "\(Bartleby.randomStringWithLength(5))"
-	public var lastname:String = "\(Bartleby.randomStringWithLength(5))"
+	public var verificationMethod:VerificationMethod = .ByPhoneNumber  {	 
+	    willSet { 
+	       if verificationMethod != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	    willSet { 
+	       if firstname != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	    willSet { 
+	       if lastname != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The user's email. Can be the secondary Identification source 
-	public var email:String?
+	public var email:String? {	 
+	    willSet { 
+	       if email != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The user's phone number. Can be the secondary Identification source 
-	public var phoneNumber:String?
+	public var phoneNumber:String? {	 
+	    willSet { 
+	       if phoneNumber != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The hashed version of the user password
-	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"
+	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	    willSet { 
+	       if password != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//An activation code
-	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"
+	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	    willSet { 
+	       if activationCode != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//User Status
 	public enum Status:String{
 		case New = "new"
 		case Actived = "actived"
 		case Suspended = "suspended"
 	}
-	public var status:Status = .New
+	public var status:Status = .New  {	 
+	    willSet { 
+	       if status != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The user Tags. External reference to Tags instances
-	public var tags:[ExternalReference] = [ExternalReference]()
+	public var tags:[ExternalReference] = [ExternalReference]()  {	 
+	    willSet { 
+	       if tags != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The user Groups. External reference to Group instances
-	public var groups:[ExternalReference] = [ExternalReference]()
+	public var groups:[ExternalReference] = [ExternalReference]()  {	 
+	    willSet { 
+	       if groups != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//Notes
-	public var notes:String?
+	public var notes:String? {	 
+	    willSet { 
+	       if notes != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

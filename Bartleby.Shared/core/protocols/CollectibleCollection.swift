@@ -14,11 +14,7 @@ import Cocoa
 
 // Informal Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
-// A pure swift collection with a CollectionType would not be suitable !
-// We use KVC, KVO to implement distributed execution.
-// And Cocoa Bindings
 public protocol CollectibleCollection: Collectible {
-
 
     weak var undoManager: NSUndoManager? { get set }
 
@@ -48,6 +44,44 @@ public protocol CollectibleCollection: Collectible {
 }
 
 
-public protocol IterableCollectibleCollection: CollectibleCollection, SequenceType {
+// @bpds split files ?
+
+
+public typealias Collection=protocol< CollectibleCollection, SuperIterable, Committable>
+
+
+public protocol Committable {
+
+    /**
+     Commits the changes in one bunch
+     */
+    func commitChanges()
+
+}
+
+
+
+public protocol SuperIterable {
+    /**
+
+     An iterator that permit dynamic approaches. (not equivalent to SequenceType)
+
+     - parameter on: the iteration closure
+
+     - returns: return value description
+     */
+    func superIterate(@noescape on:(element: protocol<Collectible, Supervisable>)->())
+}
+
+
+public protocol Supervisable {
+    var toBeCommitted: Bool { get }
+    func commitRequired()
+    func lockChangesFlag()
+    func unLockChangesFlag()
+}
+
+
+public protocol IterableCollectibleCollection: CollectibleCollection, SequenceType, SuperIterable, Committable {
 
 }

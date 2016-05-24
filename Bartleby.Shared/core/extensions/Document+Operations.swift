@@ -22,8 +22,23 @@ extension BartlebyDocument {
      - throws: throws
      */
     public func pushPendingOperations(handlers: Handlers)throws {
+        self.commitPendingChanges()
         try self.pushArrayOfOperations(self.operations.items, handlers:handlers)
     }
+
+    /**
+     Prepares the operations.
+     */
+    public func commitPendingChanges() {
+        do {
+            try self.iterateOnCollections { (collection) in
+                collection.commitChanges()
+            }
+        } catch {
+            bprint("MAJOR ERROR Iteration on collections has Failed \(error)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
+        }
+    }
+
 
     /**
      Synchronizes the pending operations
@@ -34,6 +49,7 @@ extension BartlebyDocument {
      - parameter handlers: the handlers to monitor the progress and completion
      */
     public func synchronizePendingOperations(handlers: Handlers) {
+        self.commitPendingChanges()
         if self._operationsAreAvailable(self.operations.items, handlers:handlers)==true {
             if let currentUser=self.registryMetadata.currentUser {
                 currentUser.login(withPassword: currentUser.password, sucessHandler: {

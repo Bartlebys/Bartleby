@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Trigger
+// MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
 @objc(Trigger) public class Trigger : JObject{
 
     // Universal type support
@@ -23,11 +23,32 @@ import ObjectMapper
     }
 
 	//A message that can be injected for monitoring or external observation
-	public var associatedMessage:String?
+	public var associatedMessage:String? {	 
+	    willSet { 
+	       if associatedMessage != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The index is injected server side.
-	public var index:Int?
+	public var index:Int? {	 
+	    willSet { 
+	       if index != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//A UID characterizing the observable
-	public var observableUID:String?
+	public var observableUID:String? {	 
+	    willSet { 
+	       if observableUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

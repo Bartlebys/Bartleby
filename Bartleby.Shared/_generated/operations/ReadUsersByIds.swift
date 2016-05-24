@@ -24,7 +24,7 @@ import ObjectMapper
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
-	public var sort:Dictionary<String, AnyObject>?
+	public var sort:[String:AnyObject]?
 
     required public init(){
         super.init()
@@ -51,7 +51,7 @@ import ObjectMapper
         super.init(coder: decoder)
 		self.ids=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "ids") as? [String]
 		self.result_fields=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "result_fields") as? [String]
-		self.sort=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? Dictionary<String, AnyObject>
+		self.sort=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? [String:AnyObject]
 
     }
 

@@ -22,9 +22,9 @@ import ObjectMapper
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
-	public var sort:Dictionary<String, AnyObject>?
+	public var sort:[String:AnyObject]?
 	// the query (MONGO DB)
-	public var query:Dictionary<String, AnyObject>?
+	public var query:[String:AnyObject]?
 
     required public init(){
         super.init()
@@ -50,8 +50,8 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 		self.result_fields=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "result_fields") as? [String]
-		self.sort=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? Dictionary<String, AnyObject>
-		self.query=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "query")as? Dictionary<String, AnyObject>
+		self.sort=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? [String:AnyObject]
+		self.query=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "query")as? [String:AnyObject]
 
     }
 

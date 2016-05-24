@@ -20,8 +20,6 @@ import ObjectMapper
 // MARK: A  collection controller of "triggers"
 
 // This controller implements data automation features.
-// it uses KVO , KVC , dynamic invocation, oS X cocoa bindings,...
-// It should be used on documents and not very large collections as it is computationnally intensive
 
 @objc(TriggersCollectionController) public class TriggersCollectionController : JObject,IterableCollectibleCollection{
 
@@ -44,13 +42,6 @@ import ObjectMapper
 
     weak public var tableView: BXTableView?
 
-    public var enableKVO=false
-
-    convenience init(enableKVO:Bool){
-        self.init()
-        self.enableKVO=enableKVO
-    }
-
     public func generate() -> AnyGenerator<Trigger> {
         var nextIndex = -1
         let limit=self.items.count-1
@@ -63,33 +54,39 @@ import ObjectMapper
         }
     }
 
+    /**
+    An iterator that permit dynamic approaches.
+    The Registry ignore the real types.
+    Currently we do not use SequenceType, Subscript, ...
+
+    - parameter on: the closure
+    */
+    public func superIterate(@noescape on:(element: protocol<Collectible,Supervisable>)->()){
+        for item in self.items {
+            on(element:item)
+        }
+    }
+
+
+    /**
+    Commit all the changes in one bunch
+    Marking commit on each item will toggle hasChanged flag.
+    */
+    public func commitChanges() {
+        let changedItems=self.items.filter { $0.toBeCommitted == true }
+        bprint("\(changedItems.count) \( changedItems.count>1 ? "triggers" : "trigger" )  has changed in TriggersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+        if  changedItems.count > 0 {
+            UpdateTriggers.commit(changedItems, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
+        }
+    }
+
     required public init() {
         super.init()
     }
 
-    deinit{
-        _stopObservingAllItems()
-    }
 
     dynamic public var items:[Trigger]=[Trigger]()
 
-    // We store the UIDs to guarantee KVO consistency.
-    // Example : calling Mapper().toJSON(self) on a Collection adds the items to KVO.
-    // Calling twice would add twice the observers.
-    private var _observedUIDS=[String]()
-
-
-    private func _stopObservingAllItems(){
-        for item in items {
-            _stopObserving(item)
-        }
-    }
-
-    private func _startObservingAllItems(){
-        for item in items {
-            _startObserving(item)
-        }
-    }
 
 
 
@@ -117,7 +114,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
 		self.items <- map["items"]
-		_startObservingAllItems()
+		
     }
 
 
@@ -126,7 +123,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
 		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "items")! as! [Trigger]
-		_startObservingAllItems()
+		
 
     }
 
@@ -205,8 +202,6 @@ import ObjectMapper
                 self.items.insert(item, atIndex: index)
             #endif
 
-            self._startObserving(item)
-
 
             if item.committed==false{
                CreateTrigger.commit(item, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
@@ -254,8 +249,6 @@ import ObjectMapper
             items.removeAtIndex(index)
             #endif
 
-            self._stopObserving(item)
-
         
             DeleteTrigger.commit(item.UID,fromDataSpace:self.spaceUID, observableBy: self.observableByUID)  
 
@@ -287,64 +280,5 @@ import ObjectMapper
         return false
     }
 
-
-    // MARK: - Key Value Observing
-
-    private var KVOContext: Int = 0
-
-    private func _startObserving(item: Trigger) {
-        if _observedUIDS.indexOf(item.UID) == nil && self.enableKVO {
-            _observedUIDS.append(item.UID)
-			item.addObserver(self, forKeyPath: "associatedMessage", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "index", options: .Old, context: &KVOContext)
-			item.addObserver(self, forKeyPath: "observableUID", options: .Old, context: &KVOContext)
-        }
-    }
-
-    private func _stopObserving(item: Trigger) {
-        if self.enableKVO{
-            if let idx=_observedUIDS.indexOf(item.UID)  {
-                _observedUIDS.removeAtIndex(idx)
-				item.removeObserver(self, forKeyPath: "associatedMessage", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "index", context: &KVOContext)
-				item.removeObserver(self, forKeyPath: "observableUID", context: &KVOContext)
-            }
-        }
-    }
-
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard context == &KVOContext else {
-        // If the context does not match, this message
-        // must be intended for our superclass.
-        super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-            return
-        }
-        
-        if let trigger = object as? Trigger{
-            UpdateTrigger.commit(trigger, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
-        }
-        if let undoManager = self.undoManager{
-
-            if let keyPath = keyPath, object = object, change = change {
-                var oldValue: AnyObject? = change[NSKeyValueChangeOldKey]
-                 if oldValue is NSNull {
-                    oldValue = nil
-                }
-                undoManager.prepareWithInvocationTarget(object).setValue(oldValue, forKeyPath: keyPath)
-            }
-        }
-        #if os(OSX) && !USE_EMBEDDED_MODULES
-        // Sort descriptors support
-        if let keyPath = keyPath {
-            if let arrayController = self.arrayController{
-                for sortDescriptor:NSSortDescriptor in arrayController.sortDescriptors{
-                    if sortDescriptor.key==keyPath {
-                        // Re-sort
-                        arrayController.rearrangeObjects()
-                    }
-                }
-            }
-        }
-        #endif
-    }
+    
 }

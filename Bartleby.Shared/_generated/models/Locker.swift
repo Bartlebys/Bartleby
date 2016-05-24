@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Locker
+// MARK: Bartleby's Core: a locker
 @objc(Locker) public class Locker : JObject{
 
     // Universal type support
@@ -23,31 +23,101 @@ import ObjectMapper
     }
 
 	//The spaceUID is the data space UID.
-	public var spaceUID:String?
+	public var spaceUID:String? {	 
+	    willSet { 
+	       if spaceUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The subject UID you want to lock
-	public var subjectUID:String = "\(Default.NO_UID)"
+	public var subjectUID:String = "\(Default.NO_UID)"{	 
+	    willSet { 
+	       if subjectUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The userUID that can unlock the locker
-	public var userUID:String = "\(Default.NO_UID)"
+	public var userUID:String = "\(Default.NO_UID)"{	 
+	    willSet { 
+	       if userUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//the locker mode
 	public enum Mode:String{
 		case AutoDestructive = "AutoDestructive"
 		case Persistent = "Persistent"
 	}
-	public var mode:Mode = .AutoDestructive
+	public var mode:Mode = .AutoDestructive  {	 
+	    willSet { 
+	       if mode != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//the locker mode
 	public enum VerificationMethod:String{
 		case Online = "Online"
 		case Offline = "Offline"
 	}
-	public var verificationMethod:VerificationMethod = .Online
+	public var verificationMethod:VerificationMethod = .Online  {	 
+	    willSet { 
+	       if verificationMethod != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//This code should be crypted / decrypted
-	public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"
+	public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
+	    willSet { 
+	       if code != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The number of attempts
-	public var numberOfAttempt:Int = 3
-	public var startDate:NSDate = NSDate.distantPast()
-	public var endDate:NSDate = NSDate.distantFuture()
+	public var numberOfAttempt:Int = 3  {	 
+	    willSet { 
+	       if numberOfAttempt != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var startDate:NSDate = NSDate.distantPast()  {	 
+	    willSet { 
+	       if startDate != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var endDate:NSDate = NSDate.distantFuture()  {	 
+	    willSet { 
+	       if endDate != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//This cake will be return on success
-	public var cake:String = "\(Default.NO_CAKE)"
+	public var cake:String = "\(Default.NO_CAKE)"{	 
+	    willSet { 
+	       if cake != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Completion
+// MARK: Bartleby's Commons: A completion state
 @objc(Completion) public class Completion : JObject{
 
     // Universal type support
@@ -23,13 +23,41 @@ import ObjectMapper
     }
 
 	//Success if set to true
-	public var success:Bool = true
+	public var success:Bool = true  {	 
+	    willSet { 
+	       if success != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The status
-	public var statusCode:Int = CompletionStatus.Undefined.rawValue
+	public var statusCode:Int = CompletionStatus.Undefined.rawValue  {	 
+	    willSet { 
+	       if statusCode != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The Message
-	public var message:String = ""
+	public var message:String = ""{	 
+	    willSet { 
+	       if message != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//completion data
-	public var data:NSData?
+	public var data:NSData? {	 
+	    willSet { 
+	       if data != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

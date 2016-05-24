@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model RegistryMetadata
+// MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not observable.
 @objc(RegistryMetadata) public class RegistryMetadata : JObject{
 
     // Universal type support
@@ -31,11 +31,18 @@ import ObjectMapper
 	//The url of the collaboration server
 	dynamic public var collaborationServerURL:NSURL?
 	//A collection of CollectionMetadatum
-	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()  {	 
+	    willSet { 
+	       if collectionsMetadata != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The State dictionary to insure registry persistency 
-	public var stateDictionary:Dictionary<String, AnyObject> = [String:AnyObject]()
+	public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
-	public var URLBookmarkData:Dictionary<String, AnyObject> = [String:AnyObject]()
+	public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
 	//Save the password or not?
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
@@ -71,8 +78,8 @@ import ObjectMapper
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! Dictionary<String, AnyObject>
-		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! Dictionary<String, AnyObject>
+		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
+		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
 

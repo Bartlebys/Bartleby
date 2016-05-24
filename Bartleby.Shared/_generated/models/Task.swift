@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Task
+// MARK: Bartleby's Commons A task (abstract)
 @objc(Task) public class Task : JObject{
 
     // Universal type support
@@ -23,26 +23,82 @@ import ObjectMapper
     }
 
 	//The Task group. External reference to a TaskGroup instance
-	public var group:ExternalReference?
+	public var group:ExternalReference? {	 
+	    willSet { 
+	       if group != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//Task Status
 	public enum Status:Int{
 		case Runnable
 		case Running
 		case Completed
 	}
-	public var status:Status = .Runnable
+	public var status:Status = .Runnable  {	 
+	    willSet { 
+	       if status != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The Task parent. 
-	public var parent:ExternalReference?
+	public var parent:ExternalReference? {	 
+	    willSet { 
+	       if parent != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//A collection of children Task external references (in the same group)
-	public var children:[ExternalReference] = [ExternalReference]()
+	public var children:[ExternalReference] = [ExternalReference]()  {	 
+	    willSet { 
+	       if children != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The progression state of the task
-	public var progressionState:Progression?
+	public var progressionState:Progression? {	 
+	    willSet { 
+	       if progressionState != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The completion state of the task
-	public var completionState:Completion?
+	public var completionState:Completion? {	 
+	    willSet { 
+	       if completionState != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The serialized arguments
-	public var argumentsData:NSData?
+	public var argumentsData:NSData? {	 
+	    willSet { 
+	       if argumentsData != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The serialized result
-	public var resultData:NSData?
+	public var resultData:NSData? {	 
+	    willSet { 
+	       if resultData != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

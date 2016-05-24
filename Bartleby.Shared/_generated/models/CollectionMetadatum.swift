@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model CollectionMetadatum
+// MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
 @objc(CollectionMetadatum) public class CollectionMetadatum : JObject{
 
     // Universal type support
@@ -27,16 +27,58 @@ import ObjectMapper
 		case MonolithicFileStorage = "MonolithicFileStorage"
 		case SQLiteIncrementalStore = "SQLiteIncrementalStore"
 	}
-	public var storage:Storage = .MonolithicFileStorage
+	public var storage:Storage = .MonolithicFileStorage  {	 
+	    willSet { 
+	       if storage != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The holding collection name
-	public var collectionName:String = "\(Default.NO_NAME)"
-	public var proxy:JObject?
+	public var collectionName:String = "\(Default.NO_NAME)"{	 
+	    willSet { 
+	       if collectionName != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var proxy:JObject? {	 
+	    willSet { 
+	       if proxy != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//Allow distant persistency?
-	public var allowDistantPersistency:Bool = true
+	public var allowDistantPersistency:Bool = true  {	 
+	    willSet { 
+	       if allowDistantPersistency != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//In Memory?
-	public var inMemory:Bool = true
+	public var inMemory:Bool = true  {	 
+	    willSet { 
+	       if inMemory != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The observable UID
-	dynamic public var observableViaUID:String = "\(Default.NO_UID)"
+	dynamic public var observableViaUID:String = "\(Default.NO_UID)"{	 
+	    willSet { 
+	       if observableViaUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

@@ -21,6 +21,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 }
 
 
+
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 
 // Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
@@ -28,7 +29,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject, Mappable, Collectible, NSCopying, NSSecureCoding {
+@objc(JObject) public class JObject: NSObject, Mappable, Collectible, Supervisable, NSCopying, NSSecureCoding {
 
 
     // MARK: - Initializable
@@ -59,15 +60,64 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
        return self._runTimeTypeName!
     }
 
+    // The internal marker for changes.
+    private var _shouldBeCommitted: Bool = false
+    // Supervisable
+    public var toBeCommitted: Bool {
+        get {
+            return _shouldBeCommitted
+        }
+    }
+
+    //The property is marked as changed
+    public func commitRequired() {
+        if !_lockChangesFlag {
+            self._shouldBeCommitted=true
+        }
+    }
+
+    //
+    public func lockChangesFlag() {
+        _lockChangesFlag=true
+    }
+
+    public func unLockChangesFlag() {
+        _lockChangesFlag=false
+    }
+
+    private var _lockChangesFlag: Bool = false
+
+
     //Collectible protocol: committed
-    public var committed: Bool = false
+    public var committed: Bool = false {
+        willSet {
+            // The changes have been committed
+            _shouldBeCommitted=false
+        }
+        didSet {
+        }
+    }
+
     //Collectible protocol: distributed
     public var distributed: Bool = false
-    //Collectible protocol: The Creator UID
-    public var creatorUID: String = "\(Default.NO_UID)"
-    //The object summary can be used for example by externalReferences to describe the JObject instance.
-    public var summary: String?
 
+    //Collectible protocol: The Creator UID
+    public var creatorUID: String = "\(Default.NO_UID)" {
+        willSet {
+            if creatorUID != newValue {
+                self.commitRequired()
+            }
+        }
+    }
+
+    //The object summary can be used for example by externalReferences to describe the JObject instance.
+    public var summary: String? {
+        willSet {
+            if summary != newValue {
+                self.commitRequired()
+            }
+        }
+    }
 
     // MARK: Serializable
 
@@ -164,6 +214,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.distributed <- map["distributed"]
         self.creatorUID <- map["creatorUID"]
         self.summary <- map["summary"]
+        self._shouldBeCommitted <- map["_toBeCommitted"]
     }
 
 
@@ -179,6 +230,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.distributed=decoder.decodeBoolForKey("distributed")
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
         self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
+        self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
     }
 
     public func encodeWithCoder(coder: NSCoder) {
@@ -191,6 +243,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         if let summary = self.summary {
             coder.encodeObject(summary, forKey:"summary")
         }
+        coder.encodeBool(self._shouldBeCommitted, forKey: "_toBeCommitted")
      }
 
 

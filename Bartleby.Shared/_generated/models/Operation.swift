@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Operation
+// MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not observable
 @objc(Operation) public class Operation : JObject{
 
     // Universal type support
@@ -23,9 +23,9 @@ import ObjectMapper
     }
 
 	//The dictionary representation of a serialized action call
-	public var toDictionary:Dictionary<String, AnyObject>?
+	public var toDictionary:[String:AnyObject]?
 	//The dictionary representation of the last response serialized data
-	public var responseDictionary:Dictionary<String, AnyObject>?
+	public var responseDictionary:[String:AnyObject]?
 	public var baseUrl:NSURL?
 	//The invocation Status
 	public enum Status:String{
@@ -69,8 +69,8 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? Dictionary<String, AnyObject>
-		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? Dictionary<String, AnyObject>
+		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
+		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
 		self.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
 		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)

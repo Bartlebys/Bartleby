@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Group
+// MARK: Bartleby's Core: a group of user
 @objc(Group) public class Group : JObject{
 
     // Universal type support
@@ -22,9 +22,30 @@ import ObjectMapper
         return "Group"
     }
 
-	public var creationDate:String?
-	public var color:String?
-	public var icon:String?
+	public var creationDate:String? {	 
+	    willSet { 
+	       if creationDate != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var color:String? {	 
+	    willSet { 
+	       if color != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
+	public var icon:String? {	 
+	    willSet { 
+	       if icon != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model Progression
+// MARK: Bartleby's Commons: A progression state
 @objc(Progression) public class Progression : JObject{
 
     // Universal type support
@@ -23,15 +23,50 @@ import ObjectMapper
     }
 
 	//Index of the task
-	public var currentTaskIndex:Int = 0
+	public var currentTaskIndex:Int = 0  {	 
+	    willSet { 
+	       if currentTaskIndex != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//Total number of tasks
-	public var totalTaskCount:Int = 0
+	public var totalTaskCount:Int = 0  {	 
+	    willSet { 
+	       if totalTaskCount != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//0 to 1
-	dynamic public var currentTaskProgress:Double = 0
+	dynamic public var currentTaskProgress:Double = 0  {	 
+	    willSet { 
+	       if currentTaskProgress != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The Message
-	dynamic public var message:String = ""
+	dynamic public var message:String = ""{	 
+	    willSet { 
+	       if message != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The associated data
-	public var data:NSData?
+	public var data:NSData? {	 
+	    willSet { 
+	       if data != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

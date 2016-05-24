@@ -14,7 +14,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Model ExternalReference
+// MARK: Bartleby's Core: an ExternalReference stores all the necessary data to find a unique resource.
 @objc(ExternalReference) public class ExternalReference : JObject{
 
     // Universal type support
@@ -23,9 +23,23 @@ import ObjectMapper
     }
 
 	//The UID of the referred instance
-	public var iUID:String = "\(Default.NO_UID)"
+	public var iUID:String = "\(Default.NO_UID)"{	 
+	    willSet { 
+	       if iUID != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 	//The typeName of the referred instance
-	public var iTypeName:String = "\(Default.NO_UID)"
+	public var iTypeName:String = "\(Default.NO_UID)"{	 
+	    willSet { 
+	       if iTypeName != newValue {
+	            self.commitRequired() 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable

@@ -41,22 +41,13 @@ public class BartlebyDocument : JDocument {
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var tasks=TasksCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var tasksGroups=TasksGroupsCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var users=UsersCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var lockers=LockersCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var groups=GroupsCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var permissions=PermissionsCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var operations=OperationsCollectionController(enableKVO:true)
-	// We enable KVO in Document context enabling discreet auto-commit)
-	dynamic lazy public var triggers=TriggersCollectionController(enableKVO:true)
+	public var tasks=TasksCollectionController()
+	public var tasksGroups=TasksGroupsCollectionController()
+	public var users=UsersCollectionController()
+	public var lockers=LockersCollectionController()
+	public var groups=GroupsCollectionController()
+	public var operations=OperationsCollectionController()
+	public var triggers=TriggersCollectionController()
 
     // MARK: - OSX
  #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -67,10 +58,10 @@ public class BartlebyDocument : JDocument {
     // Those view Controller are observed here to insure a consistent persitency
 
 
-    weak public var tasksArrayController: NSArrayController?{
+    public var tasksArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -87,10 +78,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var tasksGroupsArrayController: NSArrayController?{
+    public var tasksGroupsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            tasksGroupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            tasksGroupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -107,10 +98,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var usersArrayController: NSArrayController?{
+    public var usersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -127,10 +118,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var lockersArrayController: NSArrayController?{
+    public var lockersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -147,10 +138,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var groupsArrayController: NSArrayController?{
+    public var groupsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            groupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            groupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -167,30 +158,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var permissionsArrayController: NSArrayController?{
+    public var operationsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            permissionsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.permissions.arrayController=permissionsArrayController
-            // Add observer
-            permissionsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey] as? Int{
-               if self.permissions.items.count > index{
-                   let selection=self.permissions.items[index]
-                   self.permissionsArrayController?.setSelectedObjects([selection])
-                }
-             }
-        }
-    }
-        
-
-    weak public var operationsArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            operationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            operationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -207,10 +178,10 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    weak public var triggersArrayController: NSArrayController?{
+    public var triggersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            triggersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &_KVOContext)
+            triggersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
@@ -297,20 +268,6 @@ public class BartlebyDocument : JDocument {
                 if let index=groups.items.indexOf(group){
                     self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupIndexKey]=index
                      NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.GROUP_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
-            }
-        }
-    }
-        
-
-    static public let kSelectedPermissionIndexKey="selectedPermissionIndexKey"
-    static public let PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION="PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedPermission:Permission?{
-        didSet{
-            if let permission = selectedPermission {
-                if let index=permissions.items.indexOf(permission){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
                 }
             }
         }
@@ -413,16 +370,6 @@ public class BartlebyDocument : JDocument {
         groupDefinition.inMemory = false
         
 
-        let permissionDefinition = CollectionMetadatum()
-        permissionDefinition.proxy = self.permissions
-        // By default we group the observation via the rootObjectUID
-        permissionDefinition.collectionName = Permission.collectionName
-        permissionDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        permissionDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        permissionDefinition.allowDistantPersistency = true
-        permissionDefinition.inMemory = false
-        
-
         let operationDefinition = CollectionMetadatum()
         operationDefinition.proxy = self.operations
         // By default we group the observation via the rootObjectUID
@@ -452,7 +399,6 @@ public class BartlebyDocument : JDocument {
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(groupDefinition)
-			try self.registryMetadata.configureSchema(permissionDefinition)
 			try self.registryMetadata.configureSchema(operationDefinition)
 			try self.registryMetadata.configureSchema(triggerDefinition)
 
@@ -483,76 +429,73 @@ public class BartlebyDocument : JDocument {
             return
         }
 
-    // We prefer to centralize the KVO for selection indexes at the top level
-    if let keyPath = keyPath, object = object {
+        // We prefer to centralize the KVO for selection indexes at the top level
+        if let keyPath = keyPath, object = object {
 
-             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
-            if let task=self.tasksArrayController?.selectedObjects.first as? Task{
-                self.selectedTask=task
-                return
+                    
+            if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
+                if let task=self.tasksArrayController?.selectedObjects.first as? Task{
+                    self.selectedTask=task
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
-            if let tasksGroup=self.tasksGroupsArrayController?.selectedObjects.first as? TasksGroup{
-                self.selectedTasksGroup=tasksGroup
-                return
+            
+            if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
+                if let tasksGroup=self.tasksGroupsArrayController?.selectedObjects.first as? TasksGroup{
+                    self.selectedTasksGroup=tasksGroup
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
-            if let user=self.usersArrayController?.selectedObjects.first as? User{
-                self.selectedUser=user
-                return
+            
+            if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
+                if let user=self.usersArrayController?.selectedObjects.first as? User{
+                    self.selectedUser=user
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
-            if let locker=self.lockersArrayController?.selectedObjects.first as? Locker{
-                self.selectedLocker=locker
-                return
+            
+            if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
+                if let locker=self.lockersArrayController?.selectedObjects.first as? Locker{
+                    self.selectedLocker=locker
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
-            if let group=self.groupsArrayController?.selectedObjects.first as? Group{
-                self.selectedGroup=group
-                return
+            
+            if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
+                if let group=self.groupsArrayController?.selectedObjects.first as? Group{
+                    self.selectedGroup=group
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
-            if let permission=self.permissionsArrayController?.selectedObjects.first as? Permission{
-                self.selectedPermission=permission
-                return
+            
+            if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
+                if let operation=self.operationsArrayController?.selectedObjects.first as? Operation{
+                    self.selectedOperation=operation
+                    return
+                }
             }
-        }
-        
+            
 
-         if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
-            if let operation=self.operationsArrayController?.selectedObjects.first as? Operation{
-                self.selectedOperation=operation
-                return
+            
+            if keyPath=="selectionIndexes" && self.triggersArrayController == object as? NSArrayController {
+                if let trigger=self.triggersArrayController?.selectedObjects.first as? Trigger{
+                    self.selectedTrigger=trigger
+                    return
+                }
             }
+            
+
         }
-        
-
-         if keyPath=="selectionIndexes" && self.triggersArrayController == object as? NSArrayController {
-            if let trigger=self.triggersArrayController?.selectedObjects.first as? Trigger{
-                self.selectedTrigger=trigger
-                return
-            }
-        }
-        
-
-
-
-    }
 
     }
 
@@ -594,14 +537,6 @@ public class BartlebyDocument : JDocument {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedGroup{
             self.groups.removeObject(selected)
-        }
-    }
-        
-
-    public func deleteSelectedPermission() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedPermission{
-            self.permissions.removeObject(selected)
         }
     }
         
