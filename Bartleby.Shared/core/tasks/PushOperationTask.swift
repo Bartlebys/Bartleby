@@ -16,7 +16,7 @@ import Foundation
 
 #if !DUSE_EMBEDDED_MODULES
 
-public class  PushOperationTask: ReactiveTask, ConcreteTask {
+    public class  PushOperationTask: ReactiveTask, ConcreteTask {
 
     public typealias ArgumentType=Operation
 
@@ -24,7 +24,6 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
     override public class func typeName() -> String {
         return "PushOperationTask"
     }
-
 
     /**
      This initializer **MUST:** call configureWithArguments
@@ -59,23 +58,31 @@ public class  PushOperationTask: ReactiveTask, ConcreteTask {
                             self.forward(completion)
                             self.reactiveHandlers.on(completion)
                         }, failureHandler: { (context) in
-                            let completion=Completion.failureState("", statusCode: completionStatusFromExitCodes(context.httpStatusCode))
+                            let completion=Completion.failureStateFromJHTTPResponse(context as! JHTTPResponse)
                             completion.setResult(context as! JHTTPResponse)
+                            bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             self.forward(completion)
                             self.reactiveHandlers.on(completion)
                         })
                     } else {
-                        self.reactiveHandlers.on(Completion.failureState("Casting error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
-
+                        let completion=Completion.failureState(NSLocalizedString("Error of operation casting", comment: "Error of operation casting"), statusCode: CompletionStatus.Expectation_Failed)
+                        bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+                        self.reactiveHandlers.on(completion)
                     }
                 } else {
-                    self.reactiveHandlers.on(Completion.failureState("Deserialization error \(#file)", statusCode: CompletionStatus.Expectation_Failed))
+                    let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", comment:  "Error on operation deserialization"), statusCode: CompletionStatus.Expectation_Failed)
+                    bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+                    self.reactiveHandlers.on(completion)
                 }
             } else {
-                self.reactiveHandlers.on(Completion.failureState("To dictionnary \(#file)", statusCode: CompletionStatus.Precondition_Failed))
+                let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", comment: "Error when converting the operation to dictionnary"), statusCode: CompletionStatus.Precondition_Failed)
+                bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+                self.reactiveHandlers.on(completion)
             }
         } else {
-            self.reactiveHandlers.on(Completion.failureState("Invocation argument type missmatch \(#file)", statusCode: CompletionStatus.Precondition_Failed))
+            let completion=Completion.failureState(NSLocalizedString( "Task operation Invocation argument type missmatch",comment:"Task operation Invocation argument type missmatch"), statusCode: CompletionStatus.Precondition_Failed)
+            bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+            self.reactiveHandlers.on(completion)
         }
     }
 

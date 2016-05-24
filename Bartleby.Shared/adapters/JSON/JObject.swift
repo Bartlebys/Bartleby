@@ -96,8 +96,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: -Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
-
-    // @bpds to be revised
     private var _id: String=Default.NO_UID {
         didSet {
             Registry.register(self)

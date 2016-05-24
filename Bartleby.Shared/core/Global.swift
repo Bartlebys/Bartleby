@@ -12,9 +12,11 @@ import Foundation
 // MARK: - bartleby Print
 
 
-
 public var DEFAULT_BPRINT_CATEGORY: String=""
 
+protocol BprintCategorizable {
+    static var BPRINT_CATEGORY: String { get }
+}
 
 
 /**

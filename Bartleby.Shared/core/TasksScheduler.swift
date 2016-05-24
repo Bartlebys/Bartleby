@@ -46,7 +46,7 @@ enum TasksSchedulerError: ErrorType {
 }
 
 
-public class TasksScheduler {
+public class TasksScheduler: BprintCategorizable {
 
     // Task may be difficult to debug
     // So we expose a debug setting
@@ -206,7 +206,6 @@ public class TasksScheduler {
         }
 
 
-
         if let completionState=group.completionState {
             // We call the completion off the group.
             group.handlers.on(completionState)
@@ -248,9 +247,6 @@ public class TasksScheduler {
     }
 
 
-
-
-
     /**
      Resets all the task with Errors.
 
@@ -270,7 +266,6 @@ public class TasksScheduler {
             task.progressionState=nil
         }
     }
-
 
 
     /**
@@ -293,7 +288,5 @@ public class TasksScheduler {
             return GlobalQueue.UserInteractive.get()
         }
     }
-
-
 
 }
