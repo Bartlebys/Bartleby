@@ -33,14 +33,52 @@ public struct PString {
         }
     }
 
+    /**
+     Left trims the characters specified in the characterSet
+
+     E.g:
+     + PString.ltrim("   *   Hello    *    ",characterSet: NSCharacterSet(charactersInString:" *")) // returns "Hello    *    "
+     + PString.ltrim(",A,B,C",characterSet: NSCharacterSet(charactersInString:",")) // Returns "A,B,C"
+
+     - parameter string:       the string
+     - parameter characterSet: the character set (White spaces and new line by default)
+
+     - returns: the string
+     */
     public static func ltrim(string: String, characterSet: NSCharacterSet=NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
         if let range = string.rangeOfCharacterFromSet(characterSet.invertedSet) {
             return string[range.startIndex..<string.endIndex]
         }
         return string
-
     }
 
+    /**
+     Left trims the characters specified in the characters
+
+     E.g:
+     + PString.ltrim("   *   Hello    *    ",characters:" *") // returns "Hello    *    "
+     + PString.ltrim(",A,B,C",characters:",")) // Returns "A,B,C"
+
+     - parameter string:       the string
+     - parameter characterSet: the character set (White spaces and new line by default)
+
+     - returns: the string
+     */
+    public static func ltrim(string: String, characters: String) -> String {
+        return ltrim(string, characterSet: NSCharacterSet(charactersInString:characters) )
+    }
+
+
+
+
+    /**
+     Right trim the characters specified in the characterSet
+
+     - parameter string:       the string
+     - parameter characters: the character set (White spaces and new line by default)
+
+     - returns: the string
+     */
 
     public static func rtrim(string: String, characterSet: NSCharacterSet=NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
         if let range = string.rangeOfCharacterFromSet(characterSet.invertedSet, options: NSStringCompareOptions.BackwardsSearch) {
@@ -48,7 +86,17 @@ public struct PString {
         }
         return string
     }
+    /**
+     Right trim the characters specified in the characters
 
+     - parameter string:     the string
+     - parameter characters: the characters
+
+     - returns: the string
+     */
+    public static func rtrim(string: String, characters: String) -> String {
+        return rtrim(string, characterSet: NSCharacterSet(charactersInString:characters) )
+    }
 
 
     /**

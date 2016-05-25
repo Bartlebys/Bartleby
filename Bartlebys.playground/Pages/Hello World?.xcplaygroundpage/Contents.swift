@@ -42,4 +42,11 @@ if let u:Tag=ext.toLocalInstance(){
 }
 
 
+// PString
+
+PString.ltrim("    *   Hello    *    ")
+PString.rtrim("    *   Hello    *    ")
+PString.ltrim("*,    *   Hello    *    ",characterSet: NSCharacterSet(charactersInString:",* "))
+PString.ltrim(",A,B,C",characterSet: NSCharacterSet(charactersInString:","))
+
 //: [Go to externalReferences 
