@@ -110,7 +110,8 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
-    //The object summary can be used for example by externalReferences to describe the JObject instance.
+    // The object summary can be used for example by externalReferences to describe the JObject instance.
+    // If you want to disclose more information you can adopt the Descriptible protocol.
     public var summary: String? {
         willSet {
             if summary != newValue {
@@ -182,6 +183,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     // MARK: - CustomStringConvertible
+
 
     override public var description: String {
         get {

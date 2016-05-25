@@ -36,8 +36,6 @@ public class NoCrypto: NSObject, CryptoDelegate {
         return data
     }
 
-
-
     public static func hash(string: String) -> String {
         return string
     }

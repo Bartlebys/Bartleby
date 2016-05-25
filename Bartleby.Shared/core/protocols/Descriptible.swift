@@ -10,8 +10,9 @@ import Foundation
 
 // Is used to propose an alternative to CustomConvertibleString
 // CustomConvertibleString in JObject for example normally expose the JSON serialized string.
-// We want sometimes more user frendly may be internationalized string description.
+// We want sometimes more user frendly
 // That's the purpose of Descriptible.
+// By convention we use MarkDown.
 public protocol Descriptible {
     func toString() -> String
 }

@@ -57,7 +57,7 @@ public protocol ConcreteTask: Invocable {
 
      - returns: A collectible argument type
      */
-    associatedtype ArgumentType:Collectible
+    associatedtype ArgumentType:Serializable
 
     /**
      This initializer MUST !
@@ -75,6 +75,6 @@ public protocol ConcreteTask: Invocable {
 
     // (!) This method is implemented as final in a Task extension to force Type Matching Safety
     // it throws Task.ArgumentsTypeMisMatch
-    func arguments<ExpectedType: Collectible>() throws -> ExpectedType
+    func arguments<ExpectedType: Serializable>() throws -> ExpectedType
 
 }

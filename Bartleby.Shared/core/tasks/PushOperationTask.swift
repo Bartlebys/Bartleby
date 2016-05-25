@@ -38,7 +38,7 @@ import Foundation
     }
 
     /**
-     Pushes the operations
+     Pushes the operations and deletes the operation object on success.
      */
     public override func invoke() {
         super.invoke()
