@@ -559,12 +559,13 @@
                                                                            withActionName:@"BartlebySyncGetHashMap"
                                                                                 forMethod:@"GET"
                                                                                       and:url];
-    
+        NSLog(@"BartlebySyncGetHashMap: %@", url);
     // TASK
     
         NSLog(@"%@",[request URLString]);
     [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                                         NSLog(@"=> %@", response);
                                                          if(!error && response){
                                                              double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (httpStatusCode==200) {

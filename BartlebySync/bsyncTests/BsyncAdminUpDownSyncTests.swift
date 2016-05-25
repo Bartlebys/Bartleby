@@ -9,6 +9,12 @@
 import XCTest
 
 class BsyncAdminUpDownSyncTestsNoCrypto: BsyncAdminUpDownSyncTests {
+    override static var _treeName: String {
+        get {
+            return "BsyncAdminUpDownSyncTestsNoCrypto"
+        }
+    }
+
     override class func setUp() {
         super.setUp()
         Bartleby.cryptoDelegate = NoCrypto()
@@ -20,7 +26,14 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
     private static var _password = ""
     private static var _user: User?
 
-    private static var _treeName = ""
+    // TODO: @md @bpds For an obscure reason, if _treeName is set to `NSStringFromClass(self)`,
+    // tree created on the alternative server are not touchable ???
+    class var _treeName: String {
+        get {
+            return "BsyncAdminUpDownSyncTests"
+        }
+    }
+
     private static var _folderPath = ""
     private static var _upFolderPath = ""
     private static var _upFilePath = ""
@@ -37,7 +50,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         _spaceUID = Bartleby.createUID()
         _password = Bartleby.randomStringWithLength(6)
 
-        _treeName = NSStringFromClass(self)
         _folderPath = TestsConfiguration.ASSET_PATH + _treeName + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
