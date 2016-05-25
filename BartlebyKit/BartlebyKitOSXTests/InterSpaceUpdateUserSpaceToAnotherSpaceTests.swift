@@ -61,12 +61,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Login, update user space and logout
@@ -86,11 +81,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                 XCTFail("Status code \(context.httpStatusCode)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -113,11 +104,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
                         XCTAssert(context.httpStatusCode >= 400 )
                     }
 
-                    waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                        if let error = error {
-                            bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                        }
-                    }
+                    waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
                 } else {
                     XCTFail("Invalid user")
                 }
@@ -143,11 +130,7 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test302_LogoutUserA() {
@@ -160,10 +143,6 @@ class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

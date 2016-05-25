@@ -86,7 +86,7 @@
         return;
     }
     if(self.syncContext.autoCreateTrees){
-        [self touchTreesWithCompletionBlock:^(BOOL success, NSInteger statusCode) {
+        [self touchTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
             if(success){
                 NSString*message=@"Tree exists!";
                 printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -97,7 +97,7 @@
                 if (statusCode==404){
                     NSString*message=@"Auto creation of tree";
                     printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                    [self createTreesWithCompletionBlock:^(BOOL success, NSInteger statusCode) {
+                    [self createTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
                         if(success){
                             // Recursive call
                             [self _prepareAndSynchronizeWithprogressBlock:progressBlock
@@ -189,7 +189,7 @@
  *  Proceed to installation of the Repository
  *  @param block   the completion block
  */
-- (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
+- (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         
         NSURL*url=[_syncContext.destinationBaseUrl URLByAppendingPathComponent: [NSString stringWithFormat:@"/install?repositoryPath=%@", _syncContext.repositoryPath]];
@@ -205,27 +205,24 @@
                                                                if(!error && response){
                                                                    NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                                    if (HTTPStatusCode>=200 && HTTPStatusCode<=300){
-                                                                       block(YES,HTTPStatusCode);
+                                                                       block(YES, @"",HTTPStatusCode);
                                                                        return ;
                                                                    }else{
+                                                                       NSString *message = @"Fault on repository installation";
                                                                        if (data!=nil) {
-                                                                           NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                           printf("Fault on repository installation: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                           message=[NSString stringWithFormat:@"%@: %@", message, [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]];
                                                                        }
-                                                                       block(NO,HTTPStatusCode);
+                                                                       block(NO, message, HTTPStatusCode);
                                                                        return;
                                                                    }
                                                                }
-                                                               if(error){
-                                                                   NSString*message=[[NSString alloc]initWithFormat:@"%@",error];
-                                                                   printf("Error on repository installation: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                               }
-                                                               block(NO,0);
+                                                               NSString*message=[[NSString alloc]initWithFormat:@"%@",error];
+                                                               block(NO, message, 0);
                                                            }]];
     }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
-        // CURRENTLY NOT SUPPORTED
+        block(NO, @"Currently not supported", 501);
     }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
+        block(NO, @"Currently not supported", 501);
     }
 }
 
@@ -233,7 +230,7 @@
  *  Creates a tree
  *  @param block      the completion block
  */
-- (void)createTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
+- (void)createTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
     
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         if([self _createOrConfirmTreeLocalUrl:_syncContext.sourceBaseUrl
@@ -241,11 +238,11 @@
             
             [self _createTreeDistantUrl:_syncContext.destinationBaseUrl
                                  withId:_syncContext.destinationTreeId
-                     andCompletionBlock:^(BOOL success, NSInteger statusCode) {
-                         block(success,statusCode);
+                     andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
+                         block(success, message,statusCode);
                      }];
         }else{
-            block(NO,404);
+            block(NO, [NSString stringWithFormat:@"Unable to create %@/%@", _syncContext.sourceBaseUrl, _syncContext.sourceTreeId], 404);
         }
     }else if(_syncContext.mode==SourceIsDistantDestinationIsLocal){
         if([self _createOrConfirmTreeLocalUrl:_syncContext.destinationBaseUrl
@@ -253,36 +250,34 @@
             
             [self _createTreeDistantUrl:_syncContext.sourceBaseUrl
                                  withId:_syncContext.sourceTreeId
-                     andCompletionBlock:^(BOOL success, NSInteger statusCode) {
-                         block(success,statusCode);
+                     andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
+                         block(success, message, statusCode);
                      }];
         }else{
-            block(NO,404);
+            block(NO, [NSString stringWithFormat:@"Unable to create %@/%@", _syncContext.destinationBaseUrl, _syncContext.sourceTreeId], 404);
         }
     }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
         if([self _createOrConfirmTreeLocalUrl:_syncContext.sourceBaseUrl
                                        withId:_syncContext.sourceTreeId]&&
            [self _createOrConfirmTreeLocalUrl:_syncContext.destinationBaseUrl
                                        withId:_syncContext.destinationTreeId]){
-               block(YES,200);
+               block(YES, @"", 200);
            }else{
-               block(NO,404);
+               block(NO, [NSString stringWithFormat:@"Unable to create %@/%@", _syncContext.sourceBaseUrl, _syncContext.sourceTreeId], 404);
            }
     }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
-        block(NO, 501);
+        block(NO, @"Currently not supported", 501);
     }
 }
 
 
 -(void)_createTreeDistantUrl:(NSURL*)baseUrl withId:(NSString*)identifier
-          andCompletionBlock:(void (^)(BOOL success, NSInteger statusCode))block{
+          andCompletionBlock:(void (^)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
 
     
     
     if(! _syncContext.credentials.user ){
-        printf("Invalid context credentials.user ");
-        block(NO,0);
+        block(NO, @"Invalid context credentials.user",0);
     }else{
         // URL
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/create/tree/%@",identifier]];
@@ -292,27 +287,21 @@
                                                                            withActionName:@"BartlebySyncCreateTree"
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
+        NSLog(@"BartlebySyncCreateTree: %@", baseUrl);
         
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if(!error && response){
+                NSLog(@"=> %@", response);
                 NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                 if (HTTPStatusCode>=200 && HTTPStatusCode<=300){
-                    block(YES,HTTPStatusCode);
+                    block(YES, @"", HTTPStatusCode);
                     return ;
                 }else{
-                    if (data!=nil) {
-                        NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                        printf("Fault on distant tree creation: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                    }
-                    block(NO,HTTPStatusCode);
+                    block(NO, @"Fault on distant tree creation", HTTPStatusCode);
                     return ;
                 }
             }
-            if(error){
-                NSString*message=[[NSString alloc]initWithFormat:@"%@",error];
-                printf("Error on distant tree creation: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-            }
-            block(NO,0);
+            block(NO, [[NSString alloc]initWithFormat:@"%@",error], 0);
         }]];
     }
         
@@ -346,53 +335,55 @@
  *
  *  @param block      the completion block
  */
-- (void)touchTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block{
+- (void)touchTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
     
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         if( [self _touchLocalUrl:_syncContext.sourceBaseUrl
                    andTreeWithId:_syncContext.sourceTreeId]){
             [self _touchDistantUrl:_syncContext.destinationBaseUrl
                     withTreeWithId:_syncContext.destinationTreeId
-                andCompletionBlock:^(BOOL success, NSInteger statusCode) {
-                    block(success,statusCode);
+                andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
+                    block(success, message, statusCode);
                 }];
         }else{
-            block(NO,404);
+            block(NO, [NSString stringWithFormat: @"Unexisting source: %@", _syncContext.sourceBaseUrl], 404);
         }
     }else if (_syncContext.mode==SourceIsDistantDestinationIsLocal){
         if([self _touchLocalUrl:_syncContext.destinationBaseUrl
                   andTreeWithId:_syncContext.destinationTreeId]){
             [self _touchDistantUrl:_syncContext.sourceBaseUrl
                     withTreeWithId:_syncContext.sourceTreeId
-                andCompletionBlock:^(BOOL success, NSInteger statusCode) {
-                    block(success,statusCode);
+                andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
+                    block(success, message, statusCode);
                 }];
         }else{
-            block(NO,404);
+            block(NO, [NSString stringWithFormat: @"Unexisting destination: %@", _syncContext.sourceBaseUrl], 404);
         }
         
     }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
-        if([self _touchLocalUrl:_syncContext.sourceBaseUrl andTreeWithId:_syncContext.sourceTreeId]&&
-           [self _touchLocalUrl:_syncContext.destinationBaseUrl andTreeWithId:_syncContext.destinationTreeId]){
-            block(YES,200);
-        }else{
-            block(NO,404);
+        if([self _touchLocalUrl:_syncContext.sourceBaseUrl andTreeWithId:_syncContext.sourceTreeId]) {
+            if ([self _touchLocalUrl:_syncContext.destinationBaseUrl andTreeWithId:_syncContext.destinationTreeId]) {
+                block(YES, @"", 200);
+            } else {
+                block(NO, [NSString stringWithFormat: @"Unexisting destination: %@", _syncContext.sourceBaseUrl], 404);
+            }
+        } else {
+            block(NO, [NSString stringWithFormat: @"Unexisting source: %@", _syncContext.sourceBaseUrl], 404);
         }
-    }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
+    } else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
+        block(NO, @"Currently not supported", 501);
     }
 }
 
 -(void)_touchDistantUrl:(NSURL*)baseUrl
          withTreeWithId:(NSString*)identifier
-     andCompletionBlock:(void (^)(BOOL success, NSInteger statusCode))block{
+     andCompletionBlock:(void (^)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
     
-    if( ! _syncContext.credentials.user  ){
-        printf("Invalid context credentials.user must be set");
-        block(NO,0);
-    }else{
+    if (!_syncContext.credentials.user) {
+        block(NO, @"Invalid context credentials.user must be set", 0);
+    } else {
         // URL
-        baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
+        baseUrl = [baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
     
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
@@ -400,29 +391,27 @@
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
         
+        NSLog(@"BartlebySyncTouchTree: %@", baseUrl);
+
 
     // TASK
     [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                          if(!error && response){
+                                                             NSLog(@"=> %@", response);
                                                              NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (HTTPStatusCode>=200 && HTTPStatusCode<300){
-                                                                 block(YES,HTTPStatusCode);
+                                                                 block(YES, @"", HTTPStatusCode);
                                                                  return;
                                                              }else{
-                                                                 if (data!=nil) {
-                                                                     NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                     printf("Fault on touch distant url : %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                                 }
-                                                                 block(NO,HTTPStatusCode);
+                                                                 NSString *message=[NSString stringWithFormat:@"Fault on touch distant url: %@",
+                                                                                    [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]];
+                                                                 block(NO, message, HTTPStatusCode);
                                                                  return;
                                                              }
                                                          }
-                                                         if(error){
-                                                             NSString*message=[[NSString alloc]initWithFormat:@"%@",error];
-                                                             printf("Error on touch distant url : %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
-                                                         }
-                                                         block(NO,0);
+                                                         NSString *message = [[NSString alloc]initWithFormat:@"Error on touch distant url: %@", error];
+                                                         block(NO, message, 0);
                                                      }]];
     }
     
@@ -497,7 +486,7 @@
                 block(sourceHashMap,destinationHashMap,404);
             }
         }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-            // CURRENTLY NOT SUPPORTED
+            block(NO, @"Currently not supported", 501);
         }
  
     }
@@ -690,7 +679,7 @@
             block(sourceHashMap,destinationHashMap,404);
         }
     }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
+        block(nil, nil, 501);
     }
 
 }

@@ -10,16 +10,6 @@ import XCTest
 
 class bsyncBasicTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
     func test001_Create_invalid_directivesA() {
         let directives=BsyncDirectives.upStreamDirectivesWithDistantURL(NSURL(), localPath: "")
         XCTAssertFalse(directives.areValid().valid, "Directives should not be valid")
@@ -53,12 +43,7 @@ class bsyncBasicTests: XCTestCase {
             expectation.fulfill()
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 }

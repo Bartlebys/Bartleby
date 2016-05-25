@@ -71,9 +71,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             expectation.fulfill()
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 1 - Create user
@@ -93,9 +91,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Prepare folder and directives
@@ -115,9 +111,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
                 })
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 3 - Run local analyser
@@ -131,9 +125,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssert(analyze.success, analyze.message)
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test302_RunLocalAnalyser_DownPath() {
@@ -145,9 +137,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssert(analyze.success, analyze.message)
             })
 
-        waitForExpectationsWithTimeout(5) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 4 - Run synchronization
@@ -162,9 +152,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -185,16 +173,12 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         let admin = BsyncAdmin()
 
-        admin.synchronize(context, handlers: Handlers { (sync) in
+        admin.synchronizeWithprogressBlock(context, handlers: Handlers { (sync) in
             XCTAssertTrue(sync.success, sync.message)
             expectation.fulfill()
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test403_RunDirectives_DistantToDown() {
@@ -212,14 +196,12 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         let admin = BsyncAdmin()
 
-        admin.synchronize(context, handlers: Handlers(completionHandler: { (c) in
+        admin.synchronizeWithprogressBlock(	context, handlers: Handlers(completionHandler: { (c) in
             XCTAssertTrue(c.success, c.message)
             expectation.fulfill()
         }))
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test404_CheckFileHasBeenDownloaded() {
@@ -231,8 +213,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssertEqual(read.getStringResult(), BsyncAdminUpDownSyncTests._fileContent, read.message)
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

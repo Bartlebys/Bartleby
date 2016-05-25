@@ -50,12 +50,7 @@ class bsyncMiscTests: XCTestCase {
             }
             })
         
-        // This test is very long
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test002_hash_sample_folder() {
@@ -94,12 +89,7 @@ class bsyncMiscTests: XCTestCase {
                 })
         })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func randomStringWithLength (len: Int) -> String {

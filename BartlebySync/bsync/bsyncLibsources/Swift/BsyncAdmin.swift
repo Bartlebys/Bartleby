@@ -120,10 +120,10 @@ public enum BsyncAdminError: ErrorType {
      */
     public func installWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.installWithCompletionBlock { (success, statusCode) in
+        admin.installWithCompletionBlock { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
-            completion.message = "Error during PdsSyncAdmin installation"
+            completion.message = message
             completion.statusCode = statusCode
             handlers.on(completion)
         }
@@ -138,10 +138,10 @@ public enum BsyncAdminError: ErrorType {
      */
     public func createTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.createTreesWithCompletionBlock { (success, statusCode) in
+        admin.createTreesWithCompletionBlock { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
-            completion.message = "Error during PdsSyncAdmin tree creation"
+            completion.message = message
             completion.statusCode = statusCode
             handlers.on(completion)
         }
@@ -155,10 +155,10 @@ public enum BsyncAdminError: ErrorType {
      */
     public func touchTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.touchTreesWithCompletionBlock { (success, statusCode) in
+        admin.touchTreesWithCompletionBlock { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
-            completion.message = "Error during PdsSyncAdmin tree touch"
+            completion.message = message
             completion.statusCode = statusCode
             handlers.on(completion)
 

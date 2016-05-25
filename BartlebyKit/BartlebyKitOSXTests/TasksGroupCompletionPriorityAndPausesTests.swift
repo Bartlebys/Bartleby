@@ -287,10 +287,6 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
 
 
 
-        self.waitForExpectationsWithTimeout(3600) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(3600, handler: nil)
     }
 }

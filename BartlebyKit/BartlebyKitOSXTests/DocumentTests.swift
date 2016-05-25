@@ -53,12 +53,7 @@ class DocumentTests: XCTestCase {
             }
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 /*
@@ -81,12 +76,7 @@ class DocumentTests: XCTestCase {
 
         expectation.fulfill()
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 */
