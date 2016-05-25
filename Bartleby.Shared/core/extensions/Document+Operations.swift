@@ -15,49 +15,59 @@ extension BartlebyDocument {
     // MARK: - Operations
 
     /**
-     Pushes directly the operations without neither login nor optimizing the operations.
+     Commits and Pushes the pending operations.
+     The Command will optimize and inject commands if some changes has occured.
 
      - parameter handlers: the handlers to monitor the progress and completion
 
      - throws: throws
      */
     public func pushPendingOperations(handlers: Handlers)throws {
-        self.commitPendingChanges()
-        try self.pushArrayOfOperations(self.operations.items, handlers:handlers)
+        let operations=self.operations.items
+        bprint("Pushing  pending \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
+        if self._operationsAreAvailable(operations, handlers:handlers)==true {
+            // We use the encapsulated SpaceUID
+            let spaceUID=self.spaceUID
+            // We taskGroupFor the task
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(spaceUID)", inDocument: self)
+            group.priority=TasksGroup.Priority.High
+            // We add the calling handlers
+            group.handlers.appendChainedHandlers(handlers)
+
+            // This task will append task
+            let dataSpaceString: JString=JString()
+            dataSpaceString.string=self.spaceUID
+            let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:dataSpaceString)
+            try group.appendChainedTask(commitPendingOperationsTask)
+            try group.start()
+        }
+
     }
 
     /**
-     Prepares the operations.
+     Commits the pending changes.
      */
-    public func commitPendingChanges() {
-        do {
-            try self.iterateOnCollections { (collection) in
-                collection.commitChanges()
-            }
-        } catch {
-            bprint("MAJOR ERROR Iteration on collections has Failed \(error)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
+    public func commitPendingChanges() throws {
+        try self.iterateOnCollections { (collection) in
+            collection.commitChanges()
         }
     }
-
 
     /**
      Synchronizes the pending operations
      1. Proceeds to login
-     2. Optimizes the operations
-     3. Then pushes the operations
+     3. Then pushes the pending operations
 
      - parameter handlers: the handlers to monitor the progress and completion
      */
     public func synchronizePendingOperations(handlers: Handlers) {
-        self.commitPendingChanges()
         if self._operationsAreAvailable(self.operations.items, handlers:handlers)==true {
             if let currentUser=self.registryMetadata.currentUser {
                 currentUser.login(withPassword: currentUser.password, sucessHandler: {
-                    self.optimizeOperations()
                     do {
                         try self.pushPendingOperations(handlers)
                     } catch {
-                        handlers.on(Completion.failureState("Push operations has failed error: \(error)", statusCode: CompletionStatus.Expectation_Failed))
+                        handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: CompletionStatus.Expectation_Failed))
                     }
                     }, failureHandler: { (context) in
                         handlers.on(Completion.failureStateFromJHTTPResponse(context))
@@ -69,9 +79,10 @@ extension BartlebyDocument {
 
     /**
      Pushes an array of operations using a Group of chained PushOperationTasks
+
      - On successful completion the operation is deleted.
      - On total completion the tasks are deleted on global success.
-     If an error as occured the task group is preserved for rerun or analysis.
+     If an error as occured the task group is preserved for re-run or analysis.
 
      - parameter operations: operations description
      - parameter handlers:   the handlers to hook the completion / Progression
@@ -79,9 +90,7 @@ extension BartlebyDocument {
     public func pushArrayOfOperations(operations: [Operation], handlers: Handlers) throws->() {
         bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
         if self._operationsAreAvailable(operations, handlers:handlers)==true {
-            if operations.count==0 {
-                handlers.on(Completion.successState(NSLocalizedString("Operations stack is void", comment: "Operations stack is void")))
-            } else {
+
                 // We use the encapsulated SpaceUID
                 let spaceUID=self.spaceUID
                 // We taskGroupFor the task
@@ -90,12 +99,13 @@ extension BartlebyDocument {
                 // We add the calling handlers
                 group.handlers.appendChainedHandlers(handlers)
 
+                // #2 add the operations tasks.
                 for operation in operations {
                     let task=PushOperationTask(arguments:operation)
                     try group.appendChainedTask(task)
                 }
                 try group.start()
-            }
+
         }
     }
 

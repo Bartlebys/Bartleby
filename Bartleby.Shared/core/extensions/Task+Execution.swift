@@ -35,9 +35,9 @@ extension Task {
 
      - throws: Error on deserialization and type missmatch
 
-     - returns: A collectible object
+     - returns: A Serializable object
      */
-    public final func arguments<ExpectedType: Collectible>() throws -> ExpectedType {
+    public final func arguments<ExpectedType: Serializable>() throws -> ExpectedType {
         if let argumentsData = self.argumentsData {
             let deserialized=try JSerializer.deserialize(argumentsData)
             if let arguments = deserialized as? ExpectedType {

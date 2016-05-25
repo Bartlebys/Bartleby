@@ -173,9 +173,9 @@ public extension TasksGroup {
         if self.lastChainedTask == nil {
             if let lastTaskRef=self.tasks.last {
                 if let lastTask: Task=lastTaskRef.toLocalInstance() {
-                     try lastTask.addChildren(task)
+                    try lastTask.addChildren(task)
                 } else {
-                     throw TasksGroupError.MissingExternalReference
+                    throw TasksGroupError.MissingExternalReference
                 }
             } else {
                 try self.addTask(task)
@@ -256,7 +256,7 @@ public extension TasksGroup {
     }
 
 
-    //MARK : Count Tasks
+    //MARK: Count Tasks
 
 
     /**
@@ -301,7 +301,7 @@ public extension TasksGroup {
 
 
 
-    //MARK : Find Tasks
+    //MARK: Find Tasks
 
 
     /**
@@ -336,6 +336,30 @@ public extension TasksGroup {
     }
 
 
+}
 
 
+//MARK: Descriptible protocol
+
+extension TasksGroup:Descriptible {
+
+    public func toString() -> String {
+        var infos = "# TasksGroup \(name)\n"
+        infos += "totalTaskCount: \(self.totalTaskCount())\n"
+        let tasks = self.findTasks({ (task) -> Bool in
+            return true
+        })
+        for task  in tasks {
+            infos += "\(task.summary ?? task.UID)\n"
+            if let progressionState = task.progressionState {
+                infos += "\(progressionState)"
+            }
+            if let completionState = task.completionState {
+                infos += "\(completionState)"
+            }
+
+
+        }
+        return infos
+    }
 }
