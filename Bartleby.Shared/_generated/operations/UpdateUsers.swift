@@ -136,7 +136,7 @@ import ObjectMapper
                 self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
-                let stringIDS=PString.rtrim(self._users.reduce("", combine: { $0+","+$1.UID }),characters:",")
+                let stringIDS=PString.ltrim(self._users.reduce("", combine: { $0+","+$1.UID }),characters:",")
                 self._operation.summary="UpdateUsers(\(stringIDS))"
 
                 if let currentUser=registry.registryMetadata.currentUser{
