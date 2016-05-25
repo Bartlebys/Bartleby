@@ -113,6 +113,23 @@ public class TasksScheduler: BprintCategorizable {
         }
     }
 
+    /**
+     Returns a qualified infos string
+
+     - parameter groupName: the name of the group
+     - parameter document:  the document
+
+     - returns: the informations on the current state of the group.
+     */
+    public func groupInfos(groupName: String, inDocument document: BartlebyDocument) -> String {
+        do {
+            let group = try getTaskGroupWithName(groupName, inDocument: document)
+            return group.toString()
+        } catch {
+         return "Error while attempting to find \(groupName) in \(document.spaceUID) \(error)"
+        }
+    }
+
     // MARK: - Task completion and Execution graph
 
     /**
@@ -185,7 +202,6 @@ public class TasksScheduler: BprintCategorizable {
                                                             statusCode:.OK,
                                                             data: nil)
 
-
             // Erase the tasks
             if let document=group.document {
                 bprint("Deleting tasks of \(group.name)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
@@ -204,7 +220,6 @@ public class TasksScheduler: BprintCategorizable {
         } else {
             group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
         }
-
 
         if let completionState=group.completionState {
             // We call the completion off the group.
@@ -287,6 +302,23 @@ public class TasksScheduler: BprintCategorizable {
         case .High:
             return GlobalQueue.UserInteractive.get()
         }
+    }
+
+}
+
+
+// MARK: Descriptible protocol
+
+extension TasksScheduler:Descriptible {
+
+    public func toString() -> String {
+        var infos="\n# TasksScheduler\n"
+        infos += "Number of Groups: \(_groups.count)\n"
+        for (_, group) in _groups {
+             infos += "## \(group.name) \n"
+            infos += " Number of task: \(group.totalTaskCount()), \(group.progressionState ?? "" ), \(group.completionState ?? "" ) \n"
+        }
+        return infos
     }
 
 }
