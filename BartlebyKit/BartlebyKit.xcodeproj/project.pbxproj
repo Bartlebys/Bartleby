@@ -23,6 +23,12 @@
 		E50140FD1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FB1CE8B3D400EDD9C3 /* Descriptible.swift */; };
 		E50140FF1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */; };
 		E50141001CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */; };
+		E509A01A1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */; };
+		E509A01B1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */; };
+		E509A0221CF58468007DEF8C /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A01F1CF58468007DEF8C /* JData.swift */; };
+		E509A0231CF58468007DEF8C /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A01F1CF58468007DEF8C /* JData.swift */; };
+		E509A0261CF58468007DEF8C /* JString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0211CF58468007DEF8C /* JString.swift */; };
+		E509A0271CF58468007DEF8C /* JString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0211CF58468007DEF8C /* JString.swift */; };
 		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51029171CB68FC50040FC2C /* JObjectTests.swift */; };
@@ -329,6 +335,9 @@
 		E50140F81CE8B3BA00EDD9C3 /* Initializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Initializable.swift; sourceTree = "<group>"; };
 		E50140FB1CE8B3D400EDD9C3 /* Descriptible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Descriptible.swift; sourceTree = "<group>"; };
 		E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DicitionaryRepresentation.swift; sourceTree = "<group>"; };
+		E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
+		E509A01F1CF58468007DEF8C /* JData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JData.swift; sourceTree = "<group>"; };
+		E509A0211CF58468007DEF8C /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
 		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* JObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObjectTests.swift; sourceTree = "<group>"; };
 		E51834391CA52F96006ED867 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
@@ -651,6 +660,8 @@
 		E57A4B6D1CE8A34E0044106A /* models */ = {
 			isa = PBXGroup;
 			children = (
+				E509A01F1CF58468007DEF8C /* JData.swift */,
+				E509A0211CF58468007DEF8C /* JString.swift */,
 				E57A4B6E1CE8A34E0044106A /* CollectionMetadatum.swift */,
 				E57A4B6F1CE8A34E0044106A /* Completion.swift */,
 				E57A4B701CE8A34E0044106A /* ExternalReference.swift */,
@@ -860,6 +871,7 @@
 			isa = PBXGroup;
 			children = (
 				E5B775991CDCDDF2007261E1 /* PushOperationTask.swift */,
+				E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */,
 			);
 			path = tasks;
 			sourceTree = "<group>";
@@ -1073,6 +1085,7 @@
 				E57A4C4C1CE8A34E0044106A /* UpdateGroup.swift in Sources */,
 				E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E57A4BC21CE8A34E0044106A /* OperationsCollectionController.swift in Sources */,
+				E509A0261CF58468007DEF8C /* JString.swift in Sources */,
 				E57A4BE21CE8A34E0044106A /* Task.swift in Sources */,
 				E57A4C041CE8A34E0044106A /* CreateUsers.swift in Sources */,
 				E5B776A71CDCDDF2007261E1 /* Identifiable.swift in Sources */,
@@ -1081,6 +1094,7 @@
 				E5B776AB1CDCDDF2007261E1 /* RegistryMetadataProtocol.swift in Sources */,
 				E5B7768F1CDCDDF2007261E1 /* Registry+URD.swift in Sources */,
 				E5B776671CDCDDF2007261E1 /* JSerializer.swift in Sources */,
+				E509A0221CF58468007DEF8C /* JData.swift in Sources */,
 				E5B776831CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E57A4BC01CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
@@ -1136,6 +1150,7 @@
 				E5B776791CDCDDF2007261E1 /* Consignation.swift in Sources */,
 				E57A4C001CE8A34E0044106A /* CreateTriggers.swift in Sources */,
 				E57A4BF01CE8A34E0044106A /* CreateLockers.swift in Sources */,
+				E509A01A1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E57A4C1C1CE8A34E0044106A /* DeleteTriggers.swift in Sources */,
 				E5B7768D1CDCDDF2007261E1 /* Registry+Triggers.swift in Sources */,
@@ -1204,6 +1219,7 @@
 				E5B776881CDCDDF2007261E1 /* Progression+Conveniences.swift in Sources */,
 				E5B776801CDCDDF2007261E1 /* Completion+Conveniences.swift in Sources */,
 				E57A4C4D1CE8A34E0044106A /* UpdateGroup.swift in Sources */,
+				E509A0271CF58468007DEF8C /* JString.swift in Sources */,
 				E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E57A4BC31CE8A34E0044106A /* OperationsCollectionController.swift in Sources */,
 				E57A4BE31CE8A34E0044106A /* Task.swift in Sources */,
@@ -1212,6 +1228,7 @@
 				E57A4BE51CE8A34E0044106A /* TasksGroup.swift in Sources */,
 				E5B7769A1CDCDDF2007261E1 /* Collectible.swift in Sources */,
 				E5B776AC1CDCDDF2007261E1 /* RegistryMetadataProtocol.swift in Sources */,
+				E509A0231CF58468007DEF8C /* JData.swift in Sources */,
 				E5B776901CDCDDF2007261E1 /* Registry+URD.swift in Sources */,
 				E5B776681CDCDDF2007261E1 /* JSerializer.swift in Sources */,
 				E5B776841CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
@@ -1267,6 +1284,7 @@
 				E5B7767A1CDCDDF2007261E1 /* Consignation.swift in Sources */,
 				E57A4C011CE8A34E0044106A /* CreateTriggers.swift in Sources */,
 				E57A4BF11CE8A34E0044106A /* CreateLockers.swift in Sources */,
+				E509A01B1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E57A4C1D1CE8A34E0044106A /* DeleteTriggers.swift in Sources */,
 				E5B7768E1CDCDDF2007261E1 /* Registry+Triggers.swift in Sources */,

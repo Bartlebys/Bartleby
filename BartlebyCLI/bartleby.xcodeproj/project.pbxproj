@@ -123,6 +123,9 @@
 		E501453F1CE8B96400EDD9C3 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144A91CE8B96400EDD9C3 /* Pluralization.swift */; };
 		E50145401CE8B96400EDD9C3 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144AA1CE8B96400EDD9C3 /* PString.swift */; };
 		E50146861CE8CB2800EDD9C3 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50146851CE8CB2800EDD9C3 /* CollectionMetadatum+Proxy.swift */; };
+		E509A0381CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0371CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift */; };
+		E509A03B1CF5AF56007DEF8C /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0391CF5AF56007DEF8C /* JData.swift */; };
+		E509A03C1CF5AF56007DEF8C /* JString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A03A1CF5AF56007DEF8C /* JString.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
 		E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */; };
@@ -300,6 +303,9 @@
 		E50144A91CE8B96400EDD9C3 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E50144AA1CE8B96400EDD9C3 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E50146851CE8CB2800EDD9C3 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
+		E509A0371CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
+		E509A0391CF5AF56007DEF8C /* JData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JData.swift; sourceTree = "<group>"; };
+		E509A03A1CF5AF56007DEF8C /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -416,6 +422,8 @@
 		E501440E1CE8B96400EDD9C3 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				E509A0391CF5AF56007DEF8C /* JData.swift */,
+				E509A03A1CF5AF56007DEF8C /* JString.swift */,
 				E501440F1CE8B96400EDD9C3 /* CollectionMetadatum.swift */,
 				E50144101CE8B96400EDD9C3 /* Completion.swift */,
 				E50144111CE8B96400EDD9C3 /* ExternalReference.swift */,
@@ -600,6 +608,7 @@
 		E50144991CE8B96400EDD9C3 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				E509A0371CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift */,
 				E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */,
 			);
 			path = tasks;
@@ -860,6 +869,7 @@
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
 				E50144ED1CE8B96400EDD9C3 /* ReadTriggerById.swift in Sources */,
 				E50144DF1CE8B96400EDD9C3 /* ReadGroupsByIds.swift in Sources */,
+				E509A0381CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E50145011CE8B96400EDD9C3 /* Base64DataTransform.swift in Sources */,
 				E50144AD1CE8B96400EDD9C3 /* LockersCollectionController.swift in Sources */,
 				E50144DA1CE8B96400EDD9C3 /* DeleteTrigger.swift in Sources */,
@@ -998,8 +1008,10 @@
 				E5CD99F61C86D96E00C64569 /* ServerTrustPolicy.swift in Sources */,
 				E501453B1CE8B96400EDD9C3 /* VerifyLocker.swift in Sources */,
 				E50144BE1CE8B96400EDD9C3 /* Task.swift in Sources */,
+				E509A03B1CF5AF56007DEF8C /* JData.swift in Sources */,
 				E50145401CE8B96400EDD9C3 /* PString.swift in Sources */,
 				E50144BF1CE8B96400EDD9C3 /* TasksGroup.swift in Sources */,
+				E509A03C1CF5AF56007DEF8C /* JString.swift in Sources */,
 				E50144CE1CE8B96400EDD9C3 /* CreateUser.swift in Sources */,
 				E50145241CE8B96400EDD9C3 /* CollectionMetadatumProtocol.swift in Sources */,
 				E50144C01CE8B96400EDD9C3 /* Trigger.swift in Sources */,
