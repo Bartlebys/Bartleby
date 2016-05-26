@@ -40,6 +40,8 @@ class DocumentTests: XCTestCase {
                 try group.appendChainedTask(task)
             }
 
+
+
         } catch {
             XCTFail("\(error)")
         }
@@ -53,7 +55,16 @@ class DocumentTests: XCTestCase {
             }
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler:nil)
+
+        // Delete Document file
+        Bartleby.executeAfter(1, closure: {
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(url)
+            } catch {
+
+            }
+        })
     }
 
 /*
