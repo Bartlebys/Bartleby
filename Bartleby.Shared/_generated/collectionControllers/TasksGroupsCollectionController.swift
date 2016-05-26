@@ -107,7 +107,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.items <- map["items"]
+		self.items <- ( map["items"] )
 		
     }
 

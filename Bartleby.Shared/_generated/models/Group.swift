@@ -56,9 +56,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.creationDate <- map["creationDate"]
-		self.color <- map["color"]
-		self.icon <- map["icon"]
+		self.creationDate <- ( map["creationDate"] )
+		self.color <- ( map["color"] )
+		self.icon <- ( map["icon"] )
     }
 
 

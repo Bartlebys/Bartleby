@@ -132,14 +132,14 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.status <- map["status"]
-		self.priority <- map["priority"]
-		self.spaceUID <- map["spaceUID"]
-		self.tasks <- map["tasks"]
-		self.lastChainedTask <- map["lastChainedTask"]
-		self.progressionState <- map["progressionState"]
-		self.completionState <- map["completionState"]
-		self.name <- map["name"]
+		self.status <- ( map["status"] )
+		self.priority <- ( map["priority"] )
+		self.spaceUID <- ( map["spaceUID"] )
+		self.tasks <- ( map["tasks"] )
+		self.lastChainedTask <- ( map["lastChainedTask"] )
+		self.progressionState <- ( map["progressionState"] )
+		self.completionState <- ( map["completionState"] )
+		self.name <- ( map["name"] )
     }
 
 

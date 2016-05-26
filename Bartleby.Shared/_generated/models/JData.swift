@@ -41,7 +41,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.data <- (map["data"],Base64DataTransform())
+		self.data <- ( map["data"], Base64DataTransform() )
     }
 
 

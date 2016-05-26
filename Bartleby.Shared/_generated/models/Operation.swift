@@ -54,14 +54,16 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.toDictionary <- map["toDictionary"]
-		self.responseDictionary <- map["responseDictionary"]
-		self.baseUrl <- (map["baseUrl"],URLTransform())
-		self.status <- map["status"]
-		self.spaceUID <- map["spaceUID"]
-		self.counter <- map["counter"]
-		self.creationDate <- (map["creationDate"],ISO8601DateTransform())
-		self.lastInvocationDate <- (map["lastInvocationDate"],ISO8601DateTransform())
+		self.toDictionary <- ( map["toDictionary"] )
+		self.responseDictionary <- ( map["responseDictionary"] )
+		self.baseUrl <- ( map["baseUrl"], URLTransform() )
+		self.status <- ( map["status"] )
+		self.spaceUID <- ( map["spaceUID"] )
+		self.counter <- ( map["counter"] )
+		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
+		self.creationDate <- ( map["creationDate"] )
+		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
+		self.lastInvocationDate <- ( map["lastInvocationDate"] )
     }
 
 

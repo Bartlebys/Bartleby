@@ -77,11 +77,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.currentTaskIndex <- map["currentTaskIndex"]
-		self.totalTaskCount <- map["totalTaskCount"]
-		self.currentTaskProgress <- map["currentTaskProgress"]
-		self.message <- map["message"]
-		self.data <- (map["data"],Base64DataTransform())
+		self.currentTaskIndex <- ( map["currentTaskIndex"] )
+		self.totalTaskCount <- ( map["totalTaskCount"] )
+		self.currentTaskProgress <- ( map["currentTaskProgress"] )
+		self.message <- ( map["message"] )
+		self.data <- ( map["data"], Base64DataTransform() )
     }
 
 

@@ -128,16 +128,18 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.spaceUID <- map["spaceUID"]
-		self.subjectUID <- map["subjectUID"]
-		self.userUID <- map["userUID"]
-		self.mode <- map["mode"]
-		self.verificationMethod <- map["verificationMethod"]
-		self.code <- map["code"]
-		self.numberOfAttempt <- map["numberOfAttempt"]
-		self.startDate <- (map["startDate"],ISO8601DateTransform())
-		self.endDate <- (map["endDate"],ISO8601DateTransform())
-		self.cake <- map["cake"]
+		self.spaceUID <- ( map["spaceUID"] )
+		self.subjectUID <- ( map["subjectUID"] )
+		self.userUID <- ( map["userUID"] )
+		self.mode <- ( map["mode"] )
+		self.verificationMethod <- ( map["verificationMethod"] )
+		self.code <- ( map["code"] )
+		self.numberOfAttempt <- ( map["numberOfAttempt"] )
+		self.startDate <- ( map["startDate"], ISO8601DateTransform() )
+		self.startDate <- ( map["startDate"] )
+		self.endDate <- ( map["endDate"], ISO8601DateTransform() )
+		self.endDate <- ( map["endDate"] )
+		self.cake <- ( map["cake"] )
     }
 
 

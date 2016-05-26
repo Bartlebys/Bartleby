@@ -89,11 +89,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.storage <- map["storage"]
-		self.collectionName <- map["collectionName"]
-		self.allowDistantPersistency <- map["allowDistantPersistency"]
-		self.inMemory <- map["inMemory"]
-		self.observableViaUID <- map["observableViaUID"]
+		self.storage <- ( map["storage"] )
+		self.collectionName <- ( map["collectionName"] )
+		self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
+		self.inMemory <- ( map["inMemory"] )
+		self.observableViaUID <- ( map["observableViaUID"] )
     }
 
 

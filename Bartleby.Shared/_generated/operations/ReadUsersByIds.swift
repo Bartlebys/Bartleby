@@ -39,9 +39,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.ids <- map["ids"]
-		self.result_fields <- map["result_fields"]
-		self.sort <- map["sort"]
+		self.ids <- ( map["ids"] )
+		self.result_fields <- ( map["result_fields"] )
+		self.sort <- ( map["sort"] )
     }
 
 

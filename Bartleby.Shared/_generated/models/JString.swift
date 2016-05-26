@@ -41,7 +41,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.string <- map["string"]
+		self.string <- ( map["string"] )
     }
 
 

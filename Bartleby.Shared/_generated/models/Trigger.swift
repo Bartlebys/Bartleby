@@ -59,9 +59,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.associatedMessage <- map["associatedMessage"]
-		self.index <- map["index"]
-		self.observableUID <- map["observableUID"]
+		self.associatedMessage <- ( map["associatedMessage"] )
+		self.index <- ( map["index"] )
+		self.observableUID <- ( map["observableUID"] )
     }
 
 

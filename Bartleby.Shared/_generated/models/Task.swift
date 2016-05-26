@@ -109,14 +109,14 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.group <- map["group"]
-		self.status <- map["status"]
-		self.parent <- map["parent"]
-		self.children <- map["children"]
-		self.progressionState <- map["progressionState"]
-		self.completionState <- map["completionState"]
-		self.argumentsData <- (map["argumentsData"],Base64DataTransform())
-		self.resultData <- (map["resultData"],Base64DataTransform())
+		self.group <- ( map["group"] )
+		self.status <- ( map["status"] )
+		self.parent <- ( map["parent"] )
+		self.children <- ( map["children"] )
+		self.progressionState <- ( map["progressionState"] )
+		self.completionState <- ( map["completionState"] )
+		self.argumentsData <- ( map["argumentsData"], Base64DataTransform() )
+		self.resultData <- ( map["resultData"], Base64DataTransform() )
     }
 
 

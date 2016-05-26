@@ -68,10 +68,10 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.success <- map["success"]
-		self.statusCode <- map["statusCode"]
-		self.message <- map["message"]
-		self.data <- (map["data"],Base64DataTransform())
+		self.success <- ( map["success"] )
+		self.statusCode <- ( map["statusCode"] )
+		self.message <- ( map["message"] )
+		self.data <- ( map["data"], Base64DataTransform() )
     }
 
 

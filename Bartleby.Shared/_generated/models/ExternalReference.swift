@@ -50,8 +50,8 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.iUID <- map["iUID"]
-		self.iTypeName <- map["iTypeName"]
+		self.iUID <- ( map["iUID"] )
+		self.iTypeName <- ( map["iTypeName"] )
     }
 
 

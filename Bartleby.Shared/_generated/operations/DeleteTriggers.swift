@@ -42,15 +42,16 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self._ids <- map["_ids"]
-		self._spaceUID <- map["_spaceUID"]
-		self._observationUID <- map["_observationUID"]
-		self._operation.spaceUID <- map["_operation.spaceUID"]
-		self._operation.creatorUID <- map["_operation.creatorUID"]
-		self._operation.status <- map["_operation.status"]
-		self._operation.counter <- map["_operation.counter"]
-		self._operation.creationDate <- (map["_operation.creationDate"],ISO8601DateTransform())
-		self._operation.baseUrl <- (map["_operation.baseUrl"],URLTransform())
+		self._ids <- ( map["_ids"] )
+		self._spaceUID <- ( map["_spaceUID"] )
+		self._observationUID <- ( map["_observationUID"] )
+		self._operation.spaceUID <- ( map["_operation.spaceUID"] )
+		self._operation.creatorUID <- ( map["_operation.creatorUID"] )
+		self._operation.status <- ( map["_operation.status"] )
+		self._operation.counter <- ( map["_operation.counter"] )
+		self._operation.creationDate <- ( map["_operation.creationDate"], ISO8601DateTransform() )
+		self._operation.creationDate <- ( map["_operation.creationDate"] )
+		self._operation.baseUrl <- ( map["_operation.baseUrl"], URLTransform() )
     }
 
 

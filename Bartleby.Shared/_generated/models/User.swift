@@ -148,18 +148,18 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.spaceUID <- map["spaceUID"]
-		self.verificationMethod <- map["verificationMethod"]
-		self.firstname <- map["firstname"]
-		self.lastname <- map["lastname"]
-		self.email <- map["email"]
-		self.phoneNumber <- map["phoneNumber"]
-		self.password <- map["password"]
-		self.activationCode <- map["activationCode"]
-		self.status <- map["status"]
-		self.tags <- map["tags"]
-		self.groups <- map["groups"]
-		self.notes <- map["notes"]
+		self.spaceUID <- ( map["spaceUID"] )
+		self.verificationMethod <- ( map["verificationMethod"] )
+		self.firstname <- ( map["firstname"] )
+		self.lastname <- ( map["lastname"] )
+		self.email <- ( map["email"] )
+		self.phoneNumber <- ( map["phoneNumber"] )
+		self.password <- ( map["password"], CryptedStringTransform() )
+		self.activationCode <- ( map["activationCode"] )
+		self.status <- ( map["status"] )
+		self.tags <- ( map["tags"] )
+		self.groups <- ( map["groups"] )
+		self.notes <- ( map["notes"] )
     }
 
 

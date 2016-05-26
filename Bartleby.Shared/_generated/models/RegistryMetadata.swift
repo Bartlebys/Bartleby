@@ -57,15 +57,15 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-		self.spaceUID <- map["spaceUID"]
-		self.currentUser <- map["currentUser"]
-		self.rootObjectUID <- map["rootObjectUID"]
-		self.collaborationServerURL <- (map["collaborationServerURL"],URLTransform())
-		self.collectionsMetadata <- map["collectionsMetadata"]
-		self.stateDictionary <- map["stateDictionary"]
-		self.URLBookmarkData <- map["URLBookmarkData"]
-		self.saveThePassword <- map["saveThePassword"]
-		self.assetsFolderURL <- (map["assetsFolderURL"],URLTransform())
+		self.spaceUID <- ( map["spaceUID"] )
+		self.currentUser <- ( map["currentUser"] )
+		self.rootObjectUID <- ( map["rootObjectUID"] )
+		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
+		self.collectionsMetadata <- ( map["collectionsMetadata"] )
+		self.stateDictionary <- ( map["stateDictionary"] )
+		self.URLBookmarkData <- ( map["URLBookmarkData"] )
+		self.saveThePassword <- ( map["saveThePassword"] )
+		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
     }
 
 
