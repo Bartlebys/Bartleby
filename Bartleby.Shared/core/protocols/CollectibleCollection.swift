@@ -8,18 +8,29 @@
 
 
 import Foundation
- #if os(OSX) && !USE_EMBEDDED_MODULES
+#if os(OSX) && !USE_EMBEDDED_MODULES
 import Cocoa
 #endif
 
-// Informal Protocol to mark that a class is a generated collection.
+// A collection without generic constraint.
+public typealias Collection=protocol< CollectibleCollection, SuperIterable, Committable>
+
+/// We add SequenceType Support
+// 'SequenceType' can only be used as a generic constraint because it has Self or associated type requirements
+public typealias IterableCollectibleCollection = protocol<Collection, SequenceType>
+
+
+// Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
 public protocol CollectibleCollection: Collectible {
 
+    // The undo manager (for automation)
     weak var undoManager: NSUndoManager? { get set }
 
+    // The dataspace UID
     var spaceUID: String { get set }
 
+    // The UID to be used to observe this collection
     var observableByUID: String { get set }
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -28,27 +39,55 @@ public protocol CollectibleCollection: Collectible {
     weak var arrayController: NSArrayController? { get set }
     #endif
 
-    // And also a tableview
+    /// You can reference a tableview for automation
     weak var tableView: BXTableView? { get set }
 
+    /**
+     Adds an item
+
+     - parameter item: the collectible item
+     */
     func add(item: Collectible)
 
+    /**
+     Insert an item at a given index.
+
+     - parameter item:  the collectible item
+     - parameter index: the insertion index
+     */
     func insertObject(item: Collectible, inItemsAtIndex index: Int)
 
+
+    /**
+     Remove the item at a given index.
+
+     - parameter index: the index
+     */
     func removeObjectFromItemsAtIndex(index: Int)
 
+    /**
+     Remove the item
+
+     - parameter item: the collectible item.
+
+     - returns: true if the item has been removed
+     */
     func removeObject(item: Collectible) -> Bool
 
+
+    /**
+     Removes an item by it UID
+
+     - parameter id: the UID
+
+     - returns: true if the item has been removed
+     */
     func removeObjectWithID(id: String) -> Bool
 
 }
 
 
 // @bpds split files ?
-
-
-public typealias Collection=protocol< CollectibleCollection, SuperIterable, Committable>
-
 
 public protocol Committable {
 
@@ -60,11 +99,10 @@ public protocol Committable {
 }
 
 
-
 public protocol SuperIterable {
     /**
 
-     An iterator that permit dynamic approaches. (not equivalent to SequenceType)
+     An iterator that permit dynamic approaches. (SequenceType uses Generics)
 
      - parameter on: the iteration closure
 
@@ -75,13 +113,21 @@ public protocol SuperIterable {
 
 
 public protocol Supervisable {
+    
+    /// Shall we commit that instance during next autocommit
     var toBeCommitted: Bool { get }
+    /**
+     Mark that the instance requires to be committed
+     */
     func commitRequired()
-    func lockChangesFlag()
-    func unLockChangesFlag()
-}
 
+    /**
+     Locks the auto commit observer
+     */
+    func lockAutoCommitObserver()
 
-public protocol IterableCollectibleCollection: CollectibleCollection, SequenceType, SuperIterable, Committable {
-
+    /**
+     Unlock the auto commit observer
+     */
+    func unlockAutoCommitObserver()
 }

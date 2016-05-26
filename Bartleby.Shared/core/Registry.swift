@@ -50,9 +50,8 @@ func ==(lhs: Registry, rhs: Registry) -> Bool {
 public class Registry: BXDocument, SuperIterable {
 
 
-
     // A notification that is sent when the registry is fully loaded.
-    static let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
+    static public let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
 
     // The file extension for crypted data
     static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
@@ -89,11 +88,7 @@ public class Registry: BXDocument, SuperIterable {
     public var hasBeenLoaded: Bool=false
 
     /// The underlining storage hashed by collection name
-
-    // !!! try to refactor with Array<Collection>()
-    private var _collections=Array<Collectible>()
-    // The indexes
-    private var _indexes=Array<String>()
+    private var _collections=[String:Collection]()
 
     /// We store the URL of the active security bookmarks
     internal var _activeSecurityBookmarks=[NSURL]()
@@ -252,8 +247,8 @@ public class Registry: BXDocument, SuperIterable {
     public func registerCollections() throws {
         for metadatum in self.registryMetadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
-                self._addCollection(proxy)
-                if var proxy = proxy as? CollectibleCollection {
+                if var proxy = proxy as? Collection {
+                    self._addCollection(proxy)
                     self._refreshIdentifier(&proxy)
                 } else {
                     throw RegistryError.CollectionProxyTypeError
@@ -266,7 +261,7 @@ public class Registry: BXDocument, SuperIterable {
 
     private func _refreshProxies()throws {
         for metadatum in self.registryMetadata.collectionsMetadata {
-            if var proxy=self._collectionByName(metadatum.collectionName) as? CollectibleCollection {
+            if var proxy=self._collectionByName(metadatum.collectionName) {
                 self._refreshIdentifier(&proxy)
             } else {
                 throw RegistryError.MissingCollectionProxy(collectionName: metadatum.collectionName)
@@ -274,7 +269,7 @@ public class Registry: BXDocument, SuperIterable {
         }
     }
 
-    private func _refreshIdentifier(inout collectionProxy: CollectibleCollection) {
+    private func _refreshIdentifier(inout collectionProxy: Collection) {
         collectionProxy.undoManager=self.undoManager
         collectionProxy.spaceUID=self.spaceUID
         // @bpds Possibly a core issue Check carefully
@@ -296,19 +291,15 @@ public class Registry: BXDocument, SuperIterable {
     // Weak Casting for internal behavior
     // Those dynamic method are only used internally
 
-    internal func _addCollection(collection: Collectible) {
+    internal func _addCollection(collection: Collection) {
         let collectionName=collection.d_collectionName
-        _collections.append(collection)
-        _indexes.append(collectionName)
+        _collections[collectionName]=collection
     }
 
 
     // Any call should always be casted to a CollectibleCollection
-    func _collectionByName(name: String) -> Collectible? {
-        if let i=_indexes.indexOf(name) {
-            return _collections[i]
-        }
-        return nil
+    func _collectionByName(name: String) -> Collection? {
+        return _collections[name]
     }
 
 
@@ -436,7 +427,10 @@ public class Registry: BXDocument, SuperIterable {
             } catch {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
-            self.registryDidLoad()
+
+            dispatch_async(GlobalQueue.Main.get(), {
+                self.registryDidLoad()
+            })
         }
     }
 

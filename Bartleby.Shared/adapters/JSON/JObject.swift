@@ -71,21 +71,21 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     //The property is marked as changed
     public func commitRequired() {
-        if !_lockChangesFlag {
+        if !_lockAutoCommitObserver {
             self._shouldBeCommitted=true
         }
     }
 
     //
-    public func lockChangesFlag() {
-        _lockChangesFlag=true
+    public func lockAutoCommitObserver() {
+        _lockAutoCommitObserver=true
     }
 
-    public func unLockChangesFlag() {
-        _lockChangesFlag=false
+    public func unlockAutoCommitObserver() {
+        _lockAutoCommitObserver=false
     }
 
-    private var _lockChangesFlag: Bool = false
+    private var _lockAutoCommitObserver: Bool = false
 
 
     //Collectible protocol: committed
