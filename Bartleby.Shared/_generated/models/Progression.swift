@@ -26,7 +26,7 @@ import ObjectMapper
 	public var currentTaskIndex:Int = 0  {	 
 	    willSet { 
 	       if currentTaskIndex != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -35,7 +35,7 @@ import ObjectMapper
 	public var totalTaskCount:Int = 0  {	 
 	    willSet { 
 	       if totalTaskCount != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -44,7 +44,7 @@ import ObjectMapper
 	dynamic public var currentTaskProgress:Double = 0  {	 
 	    willSet { 
 	       if currentTaskProgress != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -53,7 +53,7 @@ import ObjectMapper
 	dynamic public var message:String = ""{	 
 	    willSet { 
 	       if message != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -62,7 +62,7 @@ import ObjectMapper
 	public var data:NSData? {	 
 	    willSet { 
 	       if data != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

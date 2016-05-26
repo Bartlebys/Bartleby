@@ -26,7 +26,7 @@ import ObjectMapper
 	public var group:ExternalReference? {	 
 	    willSet { 
 	       if group != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -40,7 +40,7 @@ import ObjectMapper
 	public var status:Status = .Runnable  {	 
 	    willSet { 
 	       if status != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -49,7 +49,7 @@ import ObjectMapper
 	public var parent:ExternalReference? {	 
 	    willSet { 
 	       if parent != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -58,7 +58,7 @@ import ObjectMapper
 	public var children:[ExternalReference] = [ExternalReference]()  {	 
 	    willSet { 
 	       if children != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -67,7 +67,7 @@ import ObjectMapper
 	public var progressionState:Progression? {	 
 	    willSet { 
 	       if progressionState != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -76,7 +76,7 @@ import ObjectMapper
 	public var completionState:Completion? {	 
 	    willSet { 
 	       if completionState != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -85,7 +85,7 @@ import ObjectMapper
 	public var argumentsData:NSData? {	 
 	    willSet { 
 	       if argumentsData != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -94,7 +94,7 @@ import ObjectMapper
 	public var resultData:NSData? {	 
 	    willSet { 
 	       if resultData != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

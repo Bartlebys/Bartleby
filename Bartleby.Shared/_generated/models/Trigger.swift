@@ -26,7 +26,7 @@ import ObjectMapper
 	public var associatedMessage:String? {	 
 	    willSet { 
 	       if associatedMessage != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -35,7 +35,7 @@ import ObjectMapper
 	public var index:Int? {	 
 	    willSet { 
 	       if index != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -44,7 +44,7 @@ import ObjectMapper
 	public var observableUID:String? {	 
 	    willSet { 
 	       if observableUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

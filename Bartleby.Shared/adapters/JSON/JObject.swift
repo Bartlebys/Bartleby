@@ -60,7 +60,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
        return self._runTimeTypeName!
     }
 
-    // The internal marker for changes.
+    /// The internal flag for auto commit
     private var _shouldBeCommitted: Bool = false
     // Supervisable
     public var toBeCommitted: Bool {
@@ -69,8 +69,10 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
-    //The property is marked as changed
-    public func commitRequired() {
+    /**
+     If the auto commit observer flag is set to true then _shouldBeCommitted is turned to true.
+     */
+    public func provisionChanges() {
         if !self._lockAutoCommitObserver {
             self._shouldBeCommitted=true
         }
@@ -105,7 +107,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var creatorUID: String = "\(Default.NO_UID)" {
         willSet {
             if creatorUID != newValue {
-                self.commitRequired()
+                self.provisionChanges()
             }
         }
     }
@@ -115,7 +117,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var summary: String? {
         willSet {
             if summary != newValue {
-                self.commitRequired()
+                self.provisionChanges()
             }
         }
     }

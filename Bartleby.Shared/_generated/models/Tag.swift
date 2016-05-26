@@ -25,7 +25,7 @@ import ObjectMapper
 	public var creationDate:String? {	 
 	    willSet { 
 	       if creationDate != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -33,7 +33,7 @@ import ObjectMapper
 	public var color:String? {	 
 	    willSet { 
 	       if color != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -41,7 +41,7 @@ import ObjectMapper
 	public var icon:String? {	 
 	    willSet { 
 	       if icon != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

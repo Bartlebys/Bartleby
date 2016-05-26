@@ -26,7 +26,7 @@ import ObjectMapper
 	public var success:Bool = true  {	 
 	    willSet { 
 	       if success != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -35,7 +35,7 @@ import ObjectMapper
 	public var statusCode:Int = CompletionStatus.Undefined.rawValue  {	 
 	    willSet { 
 	       if statusCode != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -44,7 +44,7 @@ import ObjectMapper
 	public var message:String = ""{	 
 	    willSet { 
 	       if message != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -53,7 +53,7 @@ import ObjectMapper
 	public var data:NSData? {	 
 	    willSet { 
 	       if data != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

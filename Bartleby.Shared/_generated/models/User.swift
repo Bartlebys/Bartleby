@@ -26,7 +26,7 @@ import ObjectMapper
 	public var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    willSet { 
 	       if spaceUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -40,7 +40,7 @@ import ObjectMapper
 	public var verificationMethod:VerificationMethod = .ByPhoneNumber  {	 
 	    willSet { 
 	       if verificationMethod != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -48,7 +48,7 @@ import ObjectMapper
 	public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    willSet { 
 	       if firstname != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -56,7 +56,7 @@ import ObjectMapper
 	public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    willSet { 
 	       if lastname != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -65,7 +65,7 @@ import ObjectMapper
 	public var email:String? {	 
 	    willSet { 
 	       if email != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -74,7 +74,7 @@ import ObjectMapper
 	public var phoneNumber:String? {	 
 	    willSet { 
 	       if phoneNumber != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -83,7 +83,7 @@ import ObjectMapper
 	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    willSet { 
 	       if password != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -92,7 +92,7 @@ import ObjectMapper
 	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    willSet { 
 	       if activationCode != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -106,7 +106,7 @@ import ObjectMapper
 	public var status:Status = .New  {	 
 	    willSet { 
 	       if status != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -115,7 +115,7 @@ import ObjectMapper
 	public var tags:[ExternalReference] = [ExternalReference]()  {	 
 	    willSet { 
 	       if tags != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -124,7 +124,7 @@ import ObjectMapper
 	public var groups:[ExternalReference] = [ExternalReference]()  {	 
 	    willSet { 
 	       if groups != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -133,7 +133,7 @@ import ObjectMapper
 	public var notes:String? {	 
 	    willSet { 
 	       if notes != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

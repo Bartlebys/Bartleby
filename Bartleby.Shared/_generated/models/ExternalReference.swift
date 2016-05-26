@@ -26,7 +26,7 @@ import ObjectMapper
 	public var iUID:String = "\(Default.NO_UID)"{	 
 	    willSet { 
 	       if iUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -35,7 +35,7 @@ import ObjectMapper
 	public var iTypeName:String = "\(Default.NO_UID)"{	 
 	    willSet { 
 	       if iTypeName != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

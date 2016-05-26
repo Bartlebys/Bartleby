@@ -114,12 +114,12 @@ public protocol SuperIterable {
 
 public protocol Supervisable {
     
-    /// Shall we commit that instance during next autocommit
+    /// Shall we commit that instance during next autocommit?
     var toBeCommitted: Bool { get }
     /**
-     Mark that the instance requires to be committed
+     Mark that the instance requires to be committed if the auto commit observer is active
      */
-    func commitRequired()
+    func provisionChanges()
 
     /**
      Locks the auto commit observer

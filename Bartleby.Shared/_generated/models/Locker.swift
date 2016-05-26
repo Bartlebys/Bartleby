@@ -26,7 +26,7 @@ import ObjectMapper
 	public var spaceUID:String? {	 
 	    willSet { 
 	       if spaceUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -35,7 +35,7 @@ import ObjectMapper
 	public var subjectUID:String = "\(Default.NO_UID)"{	 
 	    willSet { 
 	       if subjectUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -44,7 +44,7 @@ import ObjectMapper
 	public var userUID:String = "\(Default.NO_UID)"{	 
 	    willSet { 
 	       if userUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -57,7 +57,7 @@ import ObjectMapper
 	public var mode:Mode = .AutoDestructive  {	 
 	    willSet { 
 	       if mode != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -70,7 +70,7 @@ import ObjectMapper
 	public var verificationMethod:VerificationMethod = .Online  {	 
 	    willSet { 
 	       if verificationMethod != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -79,7 +79,7 @@ import ObjectMapper
 	public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
 	    willSet { 
 	       if code != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -88,7 +88,7 @@ import ObjectMapper
 	public var numberOfAttempt:Int = 3  {	 
 	    willSet { 
 	       if numberOfAttempt != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -96,7 +96,7 @@ import ObjectMapper
 	public var startDate:NSDate = NSDate.distantPast()  {	 
 	    willSet { 
 	       if startDate != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -104,7 +104,7 @@ import ObjectMapper
 	public var endDate:NSDate = NSDate.distantFuture()  {	 
 	    willSet { 
 	       if endDate != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -113,7 +113,7 @@ import ObjectMapper
 	public var cake:String = "\(Default.NO_CAKE)"{	 
 	    willSet { 
 	       if cake != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

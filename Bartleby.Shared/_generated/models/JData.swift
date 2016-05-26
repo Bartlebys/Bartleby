@@ -26,7 +26,7 @@ import ObjectMapper
 	public var data:NSData? {	 
 	    willSet { 
 	       if data != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

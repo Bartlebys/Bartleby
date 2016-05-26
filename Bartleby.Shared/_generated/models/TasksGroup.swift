@@ -26,7 +26,7 @@ import ObjectMapper
 	public var document:BartlebyDocument? {	 
 	    willSet { 
 	       if document != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -39,7 +39,7 @@ import ObjectMapper
 	public var status:Status = .Paused  {	 
 	    willSet { 
 	       if status != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -54,7 +54,7 @@ import ObjectMapper
 	public var priority:Priority = .Default  {	 
 	    willSet { 
 	       if priority != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -63,7 +63,7 @@ import ObjectMapper
 	public var spaceUID:String = "\(Default.NO_UID)"{	 
 	    willSet { 
 	       if spaceUID != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -72,7 +72,7 @@ import ObjectMapper
 	public var tasks:[ExternalReference] = [ExternalReference]()  {	 
 	    willSet { 
 	       if tasks != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -81,7 +81,7 @@ import ObjectMapper
 	public var lastChainedTask:ExternalReference? {	 
 	    willSet { 
 	       if lastChainedTask != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -90,7 +90,7 @@ import ObjectMapper
 	public var progressionState:Progression? {	 
 	    willSet { 
 	       if progressionState != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -99,7 +99,7 @@ import ObjectMapper
 	public var completionState:Completion? {	 
 	    willSet { 
 	       if completionState != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -108,7 +108,7 @@ import ObjectMapper
 	public var name:String = "\(Default.NO_NAME)"{	 
 	    willSet { 
 	       if name != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
@@ -117,7 +117,7 @@ import ObjectMapper
 	public var handlers:Handlers = Handlers.withoutCompletion()  {	 
 	    willSet { 
 	       if handlers != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}

@@ -26,7 +26,7 @@ import ObjectMapper
 	public var string:String? {	 
 	    willSet { 
 	       if string != newValue {
-	            self.commitRequired() 
+	            self.provisionChanges() 
 	       } 
 	    }
 	}
