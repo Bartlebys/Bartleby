@@ -61,12 +61,7 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test002_LoginUser() {
@@ -87,11 +82,7 @@ class AuthCookiesTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -110,11 +101,7 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(7.0) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test004_LoginUser() {
@@ -134,11 +121,7 @@ class AuthCookiesTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -158,12 +141,7 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test009_LogoutUser() {
@@ -179,10 +157,6 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(7.0) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

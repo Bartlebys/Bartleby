@@ -61,12 +61,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
@@ -83,11 +78,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403, "The ACL should block this deletion")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test003_LoginUser1() {
@@ -105,11 +96,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
                 XCTFail("Status code \(context.httpStatusCode)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -137,11 +124,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test006_deleteUser2_shouldFailAgain() {
@@ -156,11 +139,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403, "The ACL should block this deletion")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test007_LoginUser2() {
@@ -177,11 +156,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
                 XCTFail("Status code \(context.httpStatusCode)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -199,12 +174,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
@@ -221,12 +191,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
             XCTFail("Status code \(context.httpStatusCode)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 

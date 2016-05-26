@@ -26,9 +26,7 @@ class BsyncXPCHelperTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test_UnMountDMG_unexistingPath() {
@@ -41,9 +39,7 @@ class BsyncXPCHelperTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test_Create_then_UnMount() {
@@ -64,9 +60,7 @@ class BsyncXPCHelperTests: XCTestCase {
                 expectation2.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_master_detach() {
@@ -94,9 +88,7 @@ class BsyncXPCHelperTests: XCTestCase {
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_master_dont_detach() {
@@ -130,9 +122,7 @@ class BsyncXPCHelperTests: XCTestCase {
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_slave_detach() {
@@ -160,9 +150,7 @@ class BsyncXPCHelperTests: XCTestCase {
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_slave_dont_detach() {
@@ -194,8 +182,6 @@ class BsyncXPCHelperTests: XCTestCase {
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

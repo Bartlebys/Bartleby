@@ -67,12 +67,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Login Logout
@@ -88,11 +83,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -109,11 +100,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 3 - Read User while not auth.
@@ -131,12 +118,8 @@ class BasicApiTests: XCTestCase {
             expectation.fulfill()
             XCTAssertEqual(context.httpStatusCode, 403)
         }
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
 
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
@@ -153,11 +136,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -187,11 +166,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test403_ReadUsersByIds_Should_Succeed() {
@@ -219,12 +194,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test404_ReadUserByID_WithUnexistingId_ShouldFail() {
@@ -241,17 +211,10 @@ class BasicApiTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 404)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
-
     // MARK: 5 - Update
-
 
     func test501_updateUserEmail() {
 
@@ -270,11 +233,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(200.0) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test502_checkUserHasBeenUpdated() {
@@ -295,11 +254,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test503_updateUserPassword() {
@@ -319,11 +274,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(200.0) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test504_LogoutUser() {
@@ -336,11 +287,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test505_re_LoginUser() {
@@ -354,12 +301,7 @@ class BasicApiTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                if let error = error {
-                    bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-                }
-            }
-
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -382,12 +324,7 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
-
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test602_LogoutUser() {
@@ -401,10 +338,6 @@ class BasicApiTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

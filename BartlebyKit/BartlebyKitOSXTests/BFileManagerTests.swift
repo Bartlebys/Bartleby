@@ -127,8 +127,6 @@ class BFileManagerTests: XCTestCase {
 
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

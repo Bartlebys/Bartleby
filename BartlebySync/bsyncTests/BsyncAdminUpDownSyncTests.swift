@@ -9,6 +9,12 @@
 import XCTest
 
 class BsyncAdminUpDownSyncTestsNoCrypto: BsyncAdminUpDownSyncTests {
+    override static var _treeName: String {
+        get {
+            return "BsyncAdminUpDownSyncTestsNoCrypto"
+        }
+    }
+
     override class func setUp() {
         super.setUp()
         Bartleby.cryptoDelegate = NoCrypto()
@@ -20,7 +26,14 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
     private static var _password = ""
     private static var _user: User?
 
-    private static var _treeName = ""
+    // TODO: @md @bpds For an obscure reason, if _treeName is set to `NSStringFromClass(self)`,
+    // tree created on the alternative server are not touchable ???
+    class var _treeName: String {
+        get {
+            return "BsyncAdminUpDownSyncTests"
+        }
+    }
+
     private static var _folderPath = ""
     private static var _upFolderPath = ""
     private static var _upFilePath = ""
@@ -37,7 +50,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
         _spaceUID = Bartleby.createUID()
         _password = Bartleby.randomStringWithLength(6)
 
-        _treeName = NSStringFromClass(self)
         _folderPath = TestsConfiguration.ASSET_PATH + _treeName + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
@@ -71,9 +83,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             expectation.fulfill()
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 1 - Create user
@@ -93,9 +103,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Prepare folder and directives
@@ -115,9 +123,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
                 })
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 3 - Run local analyser
@@ -131,9 +137,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssert(analyze.success, analyze.message)
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("\(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test302_RunLocalAnalyser_DownPath() {
@@ -145,9 +149,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssert(analyze.success, analyze.message)
             })
 
-        waitForExpectationsWithTimeout(5) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 4 - Run synchronization
@@ -162,9 +164,7 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
-                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -185,16 +185,12 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         let admin = BsyncAdmin()
 
-        admin.synchronize(context, handlers: Handlers { (sync) in
+        admin.synchronizeWithprogressBlock(context, handlers: Handlers { (sync) in
             XCTAssertTrue(sync.success, sync.message)
             expectation.fulfill()
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
-            }
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test403_RunDirectives_DistantToDown() {
@@ -212,14 +208,12 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
 
         let admin = BsyncAdmin()
 
-        admin.synchronize(context, handlers: Handlers(completionHandler: { (c) in
+        admin.synchronizeWithprogressBlock(	context, handlers: Handlers(completionHandler: { (c) in
             XCTAssertTrue(c.success, c.message)
             expectation.fulfill()
         }))
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test404_CheckFileHasBeenDownloaded() {
@@ -231,8 +225,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
             XCTAssertEqual(read.getStringResult(), BsyncAdminUpDownSyncTests._fileContent, read.message)
         })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

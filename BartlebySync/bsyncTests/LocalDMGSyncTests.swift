@@ -51,9 +51,7 @@ class LocalDMGSyncTests: XCTestCase {
                                                         }
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test002_AttachMasterDMG() {
@@ -63,9 +61,7 @@ class LocalDMGSyncTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test003_CreateFileInDMG() {
@@ -77,9 +73,7 @@ class LocalDMGSyncTests: XCTestCase {
                                                     expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     
@@ -100,9 +94,7 @@ class LocalDMGSyncTests: XCTestCase {
                                                         }
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test102_AttachSlaveDMG() {
@@ -112,9 +104,7 @@ class LocalDMGSyncTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test103_CreateDirectives() {
@@ -142,9 +132,7 @@ class LocalDMGSyncTests: XCTestCase {
             expectation.fulfill()
         }))
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     
@@ -156,9 +144,7 @@ class LocalDMGSyncTests: XCTestCase {
             XCTAssert(detach.success, detach.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test902_RemoveSlaveDMG() {
@@ -168,9 +154,7 @@ class LocalDMGSyncTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test903_DetachMasterDMG() {
@@ -180,9 +164,7 @@ class LocalDMGSyncTests: XCTestCase {
             XCTAssert(detach.success, detach.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test904_RemoveMasterDMG() {
@@ -192,8 +174,6 @@ class LocalDMGSyncTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

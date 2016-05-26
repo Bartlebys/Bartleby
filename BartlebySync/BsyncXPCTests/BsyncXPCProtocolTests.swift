@@ -130,9 +130,7 @@ class BsyncXPCProtocolTests: XCTestCase {
                 
                 }.composedHandler())
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("error unwrapping XPC")
         }

@@ -78,9 +78,7 @@ class UpDownDirectivesTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("\(error)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 1 - Create user
@@ -100,9 +98,7 @@ class UpDownDirectivesTests: XCTestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 2 - Prepare folder and directives
@@ -122,9 +118,7 @@ class UpDownDirectivesTests: XCTestCase {
                 })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     
@@ -174,9 +168,7 @@ class UpDownDirectivesTests: XCTestCase {
                 XCTAssertTrue(completion.success, completion.message)
                 })
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("\(error)")
         }
@@ -195,9 +187,7 @@ class UpDownDirectivesTests: XCTestCase {
                 XCTAssertTrue(completion.success, completion.message)
                 })
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-                bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-            }
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("\(error)")
         }
@@ -211,8 +201,6 @@ class UpDownDirectivesTests: XCTestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { (error) in
-            bprint("Error: \(error?.localizedDescription)", file: #file, function: #function, line: #line)
-        }
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

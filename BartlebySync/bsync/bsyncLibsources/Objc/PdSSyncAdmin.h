@@ -87,20 +87,20 @@
  *  Proceed to installation of the Repository
  *  @param block   the completion block
  */
-- (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block;
+- (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block;
 
 /**
  *  Creates a tree
  *  @param block      the completion block
  */
-- (void)createTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block;
+- (void)createTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block;
 
 /**
  *  Touches the trees (changes the public ID )
  *
  *  @param block      the completion block
  */
-- (void)touchTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSInteger statusCode))block;
+- (void)touchTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block;
 
 
 #pragma  mark - Utilities 
