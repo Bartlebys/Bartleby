@@ -59,9 +59,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.associatedMessage <- ( map["associatedMessage"] )
 		self.index <- ( map["index"] )
 		self.observableUID <- ( map["observableUID"] )
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -69,10 +71,11 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.associatedMessage=String(decoder.decodeObjectOfClass(NSString.self, forKey:"associatedMessage") as NSString?)
 		self.index=decoder.decodeIntegerForKey("index") 
 		self.observableUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observableUID") as NSString?)
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

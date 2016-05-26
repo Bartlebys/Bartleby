@@ -107,8 +107,10 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.items <- ( map["items"] )
 		
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -116,9 +118,10 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Operation.classForCoder()]), forKey: "items")! as! [Operation]
 		
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

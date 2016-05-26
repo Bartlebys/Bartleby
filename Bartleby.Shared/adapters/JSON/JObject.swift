@@ -65,24 +65,24 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     // Supervisable
     public var toBeCommitted: Bool {
         get {
-            return _shouldBeCommitted
+            return self._shouldBeCommitted
         }
     }
 
     //The property is marked as changed
     public func commitRequired() {
-        if !_lockAutoCommitObserver {
+        if !self._lockAutoCommitObserver {
             self._shouldBeCommitted=true
         }
     }
 
     //
     public func lockAutoCommitObserver() {
-        _lockAutoCommitObserver=true
+        self._lockAutoCommitObserver=true
     }
 
     public func unlockAutoCommitObserver() {
-        _lockAutoCommitObserver=false
+        self._lockAutoCommitObserver=false
     }
 
     private var _lockAutoCommitObserver: Bool = false
@@ -92,7 +92,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     public var committed: Bool = false {
         willSet {
             // The changes have been committed
-            _shouldBeCommitted=false
+           self._shouldBeCommitted=false
         }
         didSet {
         }
@@ -167,7 +167,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
     final public var UID: String {
         get {
             self.defineUID()
-            return _id
+            return self._id
         }
     }
 
@@ -206,6 +206,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     public func mapping(map: Map) {
+        self.lockAutoCommitObserver()
         if map.mappingType == .ToJSON {
             // Store the universal type Name
             self._typeName=self.dynamicType.typeName()
@@ -217,6 +218,7 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.creatorUID <- map["creatorUID"]
         self.summary <- map["summary"]
         self._shouldBeCommitted <- map["_toBeCommitted"]
+        self.unlockAutoCommitObserver()
     }
 
 

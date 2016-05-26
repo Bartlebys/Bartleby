@@ -31,14 +31,7 @@ import ObjectMapper
 	//The url of the collaboration server
 	dynamic public var collaborationServerURL:NSURL?
 	//A collection of CollectionMetadatum
-	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()  {	 
-	    willSet { 
-	       if collectionsMetadata != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 	//The State dictionary to insure registry persistency 
 	public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
@@ -57,6 +50,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.spaceUID <- ( map["spaceUID"] )
 		self.currentUser <- ( map["currentUser"] )
 		self.rootObjectUID <- ( map["rootObjectUID"] )
@@ -66,6 +60,7 @@ import ObjectMapper
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -73,6 +68,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.currentUser=decoder.decodeObjectOfClass(User.self, forKey: "currentUser") 
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
@@ -82,7 +78,7 @@ import ObjectMapper
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

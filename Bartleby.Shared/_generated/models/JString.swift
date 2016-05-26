@@ -41,7 +41,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.string <- ( map["string"] )
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -49,8 +51,9 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.string=String(decoder.decodeObjectOfClass(NSString.self, forKey:"string") as NSString?)
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

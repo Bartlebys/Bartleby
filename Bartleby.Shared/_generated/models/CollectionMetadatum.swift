@@ -27,58 +27,17 @@ import ObjectMapper
 		case MonolithicFileStorage = "MonolithicFileStorage"
 		case SQLiteIncrementalStore = "SQLiteIncrementalStore"
 	}
-	public var storage:Storage = .MonolithicFileStorage  {	 
-	    willSet { 
-	       if storage != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	public var storage:Storage = .MonolithicFileStorage
 	//The holding collection name
-	public var collectionName:String = "\(Default.NO_NAME)"{	 
-	    willSet { 
-	       if collectionName != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
-	public var proxy:JObject? {	 
-	    willSet { 
-	       if proxy != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	public var collectionName:String = "\(Default.NO_NAME)"
+	//The proxy object (not serializable, not observable)
+	public var proxy:JObject?
 	//Allow distant persistency?
-	public var allowDistantPersistency:Bool = true  {	 
-	    willSet { 
-	       if allowDistantPersistency != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	public var allowDistantPersistency:Bool = true
 	//In Memory?
-	public var inMemory:Bool = true  {	 
-	    willSet { 
-	       if inMemory != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	public var inMemory:Bool = true
 	//The observable UID
-	dynamic public var observableViaUID:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if observableViaUID != newValue {
-	            self.commitRequired() 
-	       } 
-	    }
-	}
-
+	dynamic public var observableViaUID:String = "\(Default.NO_UID)"
 
 
     // MARK: Mappable
@@ -89,11 +48,13 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.storage <- ( map["storage"] )
 		self.collectionName <- ( map["collectionName"] )
 		self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
 		self.inMemory <- ( map["inMemory"] )
 		self.observableViaUID <- ( map["observableViaUID"] )
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -101,12 +62,13 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.storage=CollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
 		self.inMemory=decoder.decodeBoolForKey("inMemory") 
 		self.observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

@@ -68,10 +68,12 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
 		self.success <- ( map["success"] )
 		self.statusCode <- ( map["statusCode"] )
 		self.message <- ( map["message"] )
 		self.data <- ( map["data"], Base64DataTransform() )
+        self.unlockAutoCommitObserver()
     }
 
 
@@ -79,11 +81,12 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
 		self.success=decoder.decodeBoolForKey("success") 
 		self.statusCode=decoder.decodeIntegerForKey("statusCode") 
 		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
 		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
-
+        self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
