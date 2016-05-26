@@ -26,7 +26,10 @@ class RevealHashMapCommand: CommandBase {
         let secretKeyOption = StringOption(shortFlag: "i", longFlag: "secretKey", required: !Bartleby.isValidKey(secretKey),
                                      helpMessage: "The secret key to encryp the data")
 
-        cli.addOptions(hashMapPathOption, secretKeyOption)
+        let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
+                                      helpMessage: "The salt used for authentication.")
+
+        cli.addOptions(hashMapPathOption, secretKeyOption, sharedSalt)
         do {
             try cli.parse()
 
@@ -40,27 +43,18 @@ class RevealHashMapCommand: CommandBase {
 
             }
 
-            if let path = hashMapPathOption.value {
+            if let path = hashMapPathOption.value, let salt = sharedSalt.value {
 
                 // Configure Bartleby without a specific URL
                 Bartleby.configuration.KEY = secretKey
+                Bartleby.configuration.SHARED_SALT = salt
+                Bartleby.configuration.ENABLE_BPRINT = false
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
-                let fm = BFileManager()
-
-                fm.readString(contentsOfFile: path, handlers: Handlers { (read) in
-                    if let encryptedHashMapString = read.getStringResult() where read.success {
-                        do {
-                            let decryptedHashMapString = try Bartleby.cryptoDelegate.decryptString(encryptedHashMapString)
-                            print("# Hash map \(path) #\n\(decryptedHashMapString)\n# End of hash map #")
-                            self.on(Completion.successState())
-                        } catch {
-                            self.on(Completion.failureState("Error decrypting \"\(encryptedHashMapString)", statusCode: .Precondition_Failed))
-                        }
-                    } else {
-                        self.on(read)
-                    }
-                })
+                let cryptedHashMap = try String(contentsOfFile: path)
+                let hashmap = try Bartleby.cryptoDelegate.decryptString(cryptedHashMap)
+                print(hashmap)
+                self.on(Completion.successState())
             }
         } catch {
             cli.printUsage(error)
