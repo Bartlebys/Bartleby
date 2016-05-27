@@ -26,7 +26,6 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
     private static var _password = ""
     private static var _user: User?
 
-    // TODO: @md @bpds For an obscure reason, if _treeName is set to `NSStringFromClass(self)`,
     // tree created on the alternative server are not touchable ???
     class var _treeName: String {
         get {
