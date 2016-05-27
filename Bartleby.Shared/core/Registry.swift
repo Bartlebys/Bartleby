@@ -98,6 +98,14 @@ public class Registry: BXDocument, SuperIterable {
 
     private static var _associatedTypesMap=[String:String]()
 
+
+     internal var _sentTriggersUID=[String]()
+
+    internal var _receivedTriggersUID=[String]()
+
+
+
+
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
      Check [JDocument] (JDocument.swift) declareCollectibleTypes() for more detailled explanations.

@@ -22,32 +22,15 @@ import ObjectMapper
     }
 
 	//A message that can be injected for monitoring or external observation
-	public var associatedMessage:String? {	 
-	    willSet { 
-	       if associatedMessage != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var associatedMessage:String?
 	//The index is injected server side.
-	public var index:Int? {	 
-	    willSet { 
-	       if index != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
-	//A UID characterizing the observable
-	public var observableUID:String? {	 
-	    willSet { 
-	       if observableUID != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var index:Int?
+	//The user.UID of the sender
+	public var senderUID:String?
+	//An array of String encoding [spaceUID,collectionName,UID1, UID2,...]
+	public var upserted:[String] = [String]()
+	//An array of String encoding [spaceUID,collectionName, UID1, UID2,...]
+	public var deleted:[String] = [String]()
 
 
     // MARK: Mappable
@@ -61,7 +44,9 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self.associatedMessage <- ( map["associatedMessage"] )
 		self.index <- ( map["index"] )
-		self.observableUID <- ( map["observableUID"] )
+		self.senderUID <- ( map["senderUID"] )
+		self.upserted <- ( map["upserted"] )
+		self.deleted <- ( map["deleted"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -73,7 +58,9 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self.associatedMessage=String(decoder.decodeObjectOfClass(NSString.self, forKey:"associatedMessage") as NSString?)
 		self.index=decoder.decodeIntegerForKey("index") 
-		self.observableUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observableUID") as NSString?)
+		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
+		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "upserted")! as! [String]
+		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "deleted")! as! [String]
         self.unlockAutoCommitObserver()
     }
 
@@ -85,9 +72,11 @@ import ObjectMapper
 		if let index = self.index {
 			coder.encodeInteger(index,forKey:"index")
 		}
-		if let observableUID = self.observableUID {
-			coder.encodeObject(observableUID,forKey:"observableUID")
+		if let senderUID = self.senderUID {
+			coder.encodeObject(senderUID,forKey:"senderUID")
 		}
+		coder.encodeObject(self.upserted,forKey:"upserted")
+		coder.encodeObject(self.deleted,forKey:"deleted")
     }
 
 
