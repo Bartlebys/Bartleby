@@ -91,6 +91,26 @@ extension Task {
         }
     }
 
+    /**
+     Returns the task group.
+     You can normally call `try! task.getGroup()` on any task that has been added to the TaskScheduler.
+
+     - throws: errors on group resolution.
+
+     - returns: the task's TasksGroup
+     */
+    public func getGroup() throws -> TasksGroup {
+        if let groupExtRef=self.group {
+            if let group: TasksGroup = groupExtRef.toLocalInstance() {
+                return group
+            } else {
+                throw TaskError.MissingTaskGroup
+            }
+        } else {
+            throw TaskError.MissingExternalReference
+        }
+    }
+
 
     /**
      Forwarding method.
