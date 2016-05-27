@@ -74,9 +74,10 @@ import ObjectMapper
     public func commitChanges() {
         let changedItems=self.items.filter { $0.toBeCommitted == true }
         bprint("\(changedItems.count) \( changedItems.count>1 ? "lockers" : "locker" )  has changed in LockersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
-        if  changedItems.count > 0 {
-            UpdateLockers.commit(changedItems, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
+        for changed in changedItems{
+            UpdateLocker.commit(changed, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
         }
+
     }
 
     required public init() {
@@ -87,10 +88,7 @@ import ObjectMapper
     dynamic public var items:[Locker]=[Locker]()
 
 
-
-
-
-// MARK: Identifiable
+    // MARK: Identifiable
 
     override public class var collectionName:String{
         return Locker.collectionName
@@ -99,8 +97,6 @@ import ObjectMapper
     override public var d_collectionName:String{
         return Locker.collectionName
     }
-
-
 
 
 

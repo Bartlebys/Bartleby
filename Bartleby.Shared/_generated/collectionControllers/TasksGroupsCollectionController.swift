@@ -81,10 +81,7 @@ import ObjectMapper
     dynamic public var items:[TasksGroup]=[TasksGroup]()
 
 
-
-
-
-// MARK: Identifiable
+    // MARK: Identifiable
 
     override public class var collectionName:String{
         return TasksGroup.collectionName
@@ -93,8 +90,6 @@ import ObjectMapper
     override public var d_collectionName:String{
         return TasksGroup.collectionName
     }
-
-
 
 
 
