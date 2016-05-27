@@ -565,10 +565,9 @@
                                                                                 forMethod:@"GET"
                                                                                       and:url];
         NSLog(@"BartlebySyncGetHashMap: %@", url);
-    // TASK
-    
-        NSLog(@"%@",[request URLString]);
-    [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
+        
+        // TASK
+        [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                          NSLog(@"=> %@", response);
                                                          if(!error && response){
@@ -744,7 +743,7 @@
     if( !_syncContext.hashMapViewName || !_syncContext.sourceTreeId || ! _syncContext.credentials.user  ){
         printf("Invalid context hashMapViewName, sourceTreeId and credentials.user must be set");
         block(NO,0);
-    }else{
+    } else {
         
     // DOWNLOAD
     NSString*treeId =_syncContext.sourceTreeId;

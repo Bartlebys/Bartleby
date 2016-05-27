@@ -7,6 +7,39 @@
 //
 
 import Foundation
+import XCTest
+
+enum RemoveAssets {
+    case Always
+    case OnSuccess
+    case Never
+}
+
+class TestsObserver: NSObject, XCTestObservation {
+    var failureCount = 0
+    
+    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+        print(description)
+    }
+
+    func testBundleDidFinish(testBundle: NSBundle) {
+        let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
+        if remove != RemoveAssets.Never {
+            if (remove == RemoveAssets.Always) || (self.failureCount == 0) {
+                do {
+                    try NSFileManager().removeItemAtPath(TestsConfiguration.ASSET_PATH)
+                } catch {
+                    bprint("Error: \(error)", file: #file, function: #function, line: #line)
+                }
+            }
+        }
+    }
+}
+
+public let center: XCTestObservationCenter = { center in
+    center.addTestObserver(TestsObserver())
+    return center
+}(XCTestObservationCenter.sharedTestObservationCenter())
 
 // A shared configuration Model
 public class TestsConfiguration: BartlebyConfiguration {
@@ -57,7 +90,7 @@ public class TestsConfiguration: BartlebyConfiguration {
         case Production
     }
 
-    static var currentEnvironment: Environment = .Alternative
+    static var currentEnvironment: Environment = .Local
 
     static private var __BASE_URL: NSURL {
         get {
@@ -77,5 +110,7 @@ public class TestsConfiguration: BartlebyConfiguration {
     public static let TIME_OUT_DURATION = 200.0
 
     public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncTests/"
+    
+    static let REMOVE_ASSET_AFTER_TESTS = RemoveAssets.OnSuccess
 
 }
