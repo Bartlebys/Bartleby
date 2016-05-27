@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's
+// MARK: Bartleby's TasksGroup its property are not autocommitted (not observable)
 @objc(TasksGroup) public class TasksGroup : JObject{
 
     // Universal type support
@@ -22,27 +22,13 @@ import ObjectMapper
     }
 
 	//A non serializable reference to the hosting document
-	public var document:BartlebyDocument? {	 
-	    willSet { 
-	       if document != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var document:BartlebyDocument?
 	//TasksGroup Status
 	public enum Status:Int{
 		case Paused
 		case Running
 	}
-	public var status:Status = .Paused  {	 
-	    willSet { 
-	       if status != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var status:Status = .Paused
 	//The priority is equal to the parent task.
 	public enum Priority:Int{
 		case Background
@@ -50,77 +36,21 @@ import ObjectMapper
 		case Default
 		case High
 	}
-	public var priority:Priority = .Default  {	 
-	    willSet { 
-	       if priority != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var priority:Priority = .Default
 	//The group dataspace
-	public var spaceUID:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if spaceUID != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var spaceUID:String = "\(Default.NO_UID)"
 	//The root group Tasks (external references)
-	public var tasks:[ExternalReference] = [ExternalReference]()  {	 
-	    willSet { 
-	       if tasks != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var tasks:[ExternalReference] = [ExternalReference]()
 	//The last chained (sequential) task external reference. 
-	public var lastChainedTask:ExternalReference? {	 
-	    willSet { 
-	       if lastChainedTask != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var lastChainedTask:ExternalReference?
 	//The progression state of the group
-	public var progressionState:Progression? {	 
-	    willSet { 
-	       if progressionState != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var progressionState:Progression?
 	//The completion state of the group
-	public var completionState:Completion? {	 
-	    willSet { 
-	       if completionState != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var completionState:Completion?
 	//The group name
-	public var name:String = "\(Default.NO_NAME)"{	 
-	    willSet { 
-	       if name != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var name:String = "\(Default.NO_NAME)"
 	//A void handler to allow subscribers to register their own handlers
-	public var handlers:Handlers = Handlers.withoutCompletion()  {	 
-	    willSet { 
-	       if handlers != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var handlers:Handlers = Handlers.withoutCompletion()
 
 
     // MARK: Mappable

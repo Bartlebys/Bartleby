@@ -22,82 +22,26 @@ import ObjectMapper
     }
 
 	//The Task group. External reference to a TaskGroup instance
-	public var group:ExternalReference? {	 
-	    willSet { 
-	       if group != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var group:ExternalReference?
 	//Task Status
 	public enum Status:Int{
 		case Runnable
 		case Running
 		case Completed
 	}
-	public var status:Status = .Runnable  {	 
-	    willSet { 
-	       if status != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var status:Status = .Runnable
 	//The Task parent. 
-	public var parent:ExternalReference? {	 
-	    willSet { 
-	       if parent != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var parent:ExternalReference?
 	//A collection of children Task external references (in the same group)
-	public var children:[ExternalReference] = [ExternalReference]()  {	 
-	    willSet { 
-	       if children != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var children:[ExternalReference] = [ExternalReference]()
 	//The progression state of the task
-	public var progressionState:Progression? {	 
-	    willSet { 
-	       if progressionState != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var progressionState:Progression?
 	//The completion state of the task
-	public var completionState:Completion? {	 
-	    willSet { 
-	       if completionState != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var completionState:Completion?
 	//The serialized arguments
-	public var argumentsData:NSData? {	 
-	    willSet { 
-	       if argumentsData != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var argumentsData:NSData?
 	//The serialized result
-	public var resultData:NSData? {	 
-	    willSet { 
-	       if resultData != newValue {
-	            self.provisionChanges() 
-	       } 
-	    }
-	}
-
+	public var resultData:NSData?
 
 
     // MARK: Mappable
