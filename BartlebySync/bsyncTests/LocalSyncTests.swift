@@ -17,12 +17,18 @@ class LocalSyncTests: XCTestCase {
     private static let _folderPath = TestsConfiguration.ASSET_PATH + "LocalSyncTests/"
     private static let _sourceFolderPath = _folderPath + "Source/" + _treeName + "/"
     private static let _sourceFilePath = _sourceFolderPath + "file.txt"
-    private static let _fileContent = Bartleby.randomStringWithLength(20)
+    private static let _fileContent = "dummy content"
     
     private static let _destinationFolderPath = _folderPath + "Destination/" + _treeName + "/"
     private static let _destinationFilePath = _destinationFolderPath + "file.txt"
     
     private static let _directivesPath = _sourceFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
+    
+    override func setUp() {
+        super.setUp()
+        
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+    }
         
     // MARK: 1 - Prepare folder and directives
     func test101_CreateFileInUpFolder() {

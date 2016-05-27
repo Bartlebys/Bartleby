@@ -585,24 +585,27 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 - (void)_finalizeWithCommands:(NSArray*)commands{
     
     [self _progressMessage:@"Finalizing %@ cmds", @([commands count])];
+
+    NSDictionary *hashMapDict = [_context.finalHashMap dictionaryRepresentation];
+    NSString *hashMapJsonString = [self _encodetoJson: hashMapDict];
+    NSLog(@"hashmap: %@", hashMapJsonString);
+    NSError *cryptoError=nil;
+    NSString *hashMapCryptedString = [[Bartleby cryptoDelegate] encryptString:hashMapJsonString error:&cryptoError];
+    if(cryptoError){
+        [self _interruptOnFault:[NSString stringWithFormat:@"CryptoError: %@", cryptoError]];
+        return;
+    }
+    NSLog(@"crypted hashmap: %@", hashMapCryptedString);
     
     if((self->_context.mode==SourceIsLocalDestinationIsDistant)||
        self->_context.mode==SourceIsDistantDestinationIsDistant){
         
         
-        NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
-        NSError*cryptoError=nil;
-        jsonHashMap=[[Bartleby cryptoDelegate] encryptString:jsonHashMap error:&cryptoError];
-        if(cryptoError){
-            [self _interruptOnFault:@"CryptoError"];
-            return;
-        }
-        
         NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/finalizeTransactionIn/tree/%@/",_context.destinationTreeId];
         NSDictionary *parameters = @{
                                      @"syncIdentifier": _context.syncID,
-                                     @"commands":[self  _encodetoJson:commands],
-                                     @"hashMap":jsonHashMap
+                                     @"commands":[self _encodetoJson:commands],
+                                     @"hashMap":hashMapCryptedString
                                      };
         
         NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
@@ -727,23 +730,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         }
         
         // Write the Hash Map
-        NSString*jsonHashMap=[self _encodetoJson:[_context.finalHashMap dictionaryRepresentation]];
-        NSError*cryptoError=nil;
-        jsonHashMap=[[Bartleby cryptoDelegate] encryptString:jsonHashMap error:&cryptoError];
-        if(cryptoError){
-            [self _interruptOnFault:@"CryptoError"];
-            return;
-        }
-        
-        
-        
         NSString*relativePathOfHashMapFile=[_context.destinationTreeId stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
         NSURL *hashMapFileUrl=[_context.destinationBaseUrl URLByAppendingPathComponent:relativePathOfHashMapFile];
         
         
         
         NSError*jsonHashMapError=nil;
-        [jsonHashMap writeToFile:[hashMapFileUrl path]
+        [hashMapCryptedString writeToFile:[hashMapFileUrl path]
                       atomically:YES
                         encoding:NSUTF8StringEncoding error:&jsonHashMapError];
         
@@ -979,12 +972,10 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object
                                                        options:0
                                                          error:&error];
-    if (!jsonData) {
-        return [error localizedDescription];
+    if (jsonData) {
+        return [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
     } else {
-        return [[NSString alloc]initWithBytes:[jsonData bytes]
-                                       length:[jsonData length] encoding:NSUTF8StringEncoding];
-        
+        return [error localizedDescription];
     }
 }
 

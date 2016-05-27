@@ -486,7 +486,8 @@
                 block(sourceHashMap,destinationHashMap,404);
             }
         }else if (_syncContext.mode==SourceIsDistantDestinationIsDistant){
-            block(NO, @"Currently not supported", 501);
+            // NOT SUPPORTED
+            block(NO, nil, 501);
         }
  
     }
@@ -502,19 +503,23 @@
     
     NSError*stringLoadingError=nil;
     
-    NSString *string=[NSString stringWithContentsOfURL:hashMapUrl
+    NSString *hashMapCryptedString=[NSString stringWithContentsOfURL:hashMapUrl
                                               encoding:NSUTF8StringEncoding
                                                  error:&stringLoadingError];
+    
+    NSLog(@"crypted hashmap: %@", hashMapCryptedString);
+
     if(!stringLoadingError){
         NSError*cryptoError=nil;
         
-        string = [[Bartleby cryptoDelegate] decryptString:string error:&cryptoError];
+        NSString *hashMapJsonString = [[Bartleby cryptoDelegate] decryptString:hashMapCryptedString error:&cryptoError];
         if (cryptoError){
-            NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map crypto error %@",cryptoError];
+            NSString *message = [[NSString alloc]initWithFormat:@"Get local hash map crypto error %@", cryptoError];
             printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
             return nil;
-        }else{
-            NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            NSLog(@"hashmap: %@", hashMapJsonString);
+            NSData *data = [hashMapJsonString dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
                 // We use mutable containers and leaves by default.
