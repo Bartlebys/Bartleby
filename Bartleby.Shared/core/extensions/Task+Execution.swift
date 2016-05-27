@@ -60,9 +60,10 @@ extension Task {
 
      - parameter state: the completionState
      */
-    public func complete(state: Completion) {
+    public final func complete(state: Completion) {
         self.completionState = state
         self.status = .Completed
+        self.forward(state)
     }
 
     /**
@@ -92,7 +93,7 @@ extension Task {
 
 
     /**
-     Final forwarding method.
+     Forwarding method.
      We forward on the main queue.
      Supports currently Completion and Progression states.
 
@@ -104,10 +105,8 @@ extension Task {
         dispatch_async(GlobalQueue.Main.get()) {
             if let groupExtRef=self.group {
                 if let group: TasksGroup = groupExtRef.toLocalInstance() {
-                    if let state = state as? Completion {
 
-                        // Complete the task
-                        self.complete(state)
+                    if let state = state as? Completion {
 
                         // We Relay the completion as a progression to the group progression !
                         // Including its data.
@@ -116,9 +115,13 @@ extension Task {
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
                         group.handlers.notify(groupProgression)
-
                         // We mark the completion
                         bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
+
+                        // Reactive Tasks
+                        if let reactiveTask = self as? Reactive {
+                            reactiveTask.reactiveHandlers.on(state)
+                        }
 
                         // Check if all the task has been completed
                         Bartleby.scheduler.onAnyTaskCompletion(self)
@@ -133,6 +136,12 @@ extension Task {
                         let progress: Double = Double(executed)/Double(total)
                         let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState?.message ?? Default.NO_MESSAGE, data:self.progressionState?.data)
                         group.handlers.notify(groupProgression)
+
+                        // Reactive tasks
+                        if let reactiveTask = self as? Reactive {
+                            reactiveTask.reactiveHandlers.notify(state as! Progression)
+                        }
+
                     } else {
 
                         bprint("UnSupported  ForwardableState \(state) \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)

@@ -15,10 +15,10 @@ import BartlebyKit
 // MARK: - With ObjC
 
 @objc(PrintUser) public class PrintUser: Task, ConcreteTask {
-    
-    
+
+
     public typealias ArgumentType=User
-    
+
     // Universal type support
     override public class func typeName() -> String {
         return "PrintUser"
@@ -26,18 +26,18 @@ import BartlebyKit
     /**
      This initializer **MUST:** call configureWithArguments
      - parameter arguments: the arguments
-     
+
      - returns: a well initialized task.
      */
     convenience required public init (arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
     }
-    
-    
-    override public func invoke()  {
+
+
+    override public func invoke() {
         super.invoke()
-        do{
+        do {
             if let user: ArgumentType = try self.arguments() as ArgumentType {
                 if let email = user.email {
                     bprint("\(email)", file:#file, function:#function, line: #line)
@@ -45,9 +45,9 @@ import BartlebyKit
                     bprint("\(user.UID)", file:#file, function:#function, line: #line)
                 }
             }
-            self.forward(Completion.successState())
-        }catch{
-            self.forward(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
+            self.complete(Completion.successState())
+        } catch {
+            self.complete(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
         }
     }
 }
@@ -56,10 +56,10 @@ import BartlebyKit
 // MARK: -
 
 public class RePrintUserWithoutObjc: Task, ConcreteTask {
-    
-    
+
+
     public typealias ArgumentType=User
-    
+
     // Universal type support
     override public class func typeName() -> String {
         return "RePrintUserWithoutObjc"
@@ -67,17 +67,18 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
     /**
      This initializer **MUST:** call configureWithArguments
      - parameter arguments: the arguments
-     
+
      - returns: a well initialized task.
      */
     convenience required public init (arguments: ArgumentType) {
         self.init()
         self.configureWithArguments(arguments)
     }
-    
-    
+
+
     public override func invoke() {
-        do{
+        super.invoke()
+        do {
             if let user: ArgumentType = try self.arguments() as ArgumentType {
                 if let email = user.email {
                     bprint("\(email)", file:#file, function:#function, line: #line)
@@ -85,9 +86,9 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
                     bprint("\(user.UID)", file:#file, function:#function, line: #line)
                 }
             }
-            self.forward(Completion.successState())
-        }catch{
-            self.forward(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
+            self.complete(Completion.successState())
+        } catch {
+            self.complete(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
         }
     }
 }
@@ -99,21 +100,21 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
 
 
 class SerializableInvocationsTests: XCTestCase {
-    
+
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
-    
-    
+
+
     override static func tearDown() {
         super.tearDown()
     }
-    
+
     /**
      DIRECT INVOCATION BASIC TESTS
      */
-    
+
     func test001_PrintUserTask() {
         let user=User()
         user.email="bartleby@barltebys.org"
@@ -130,10 +131,10 @@ class SerializableInvocationsTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+
     }
-    
-    
+
+
     func test002_PrintUserTask_Dynamic() {
         do {
             let user=User()
@@ -149,9 +150,9 @@ class SerializableInvocationsTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+
     }
-    
+
     func test002__PrintUserTask_Invocation() {
         let user=User()
         user.email="benoit@chaosmose.com"
@@ -165,15 +166,15 @@ class SerializableInvocationsTests: XCTestCase {
             } else {
                 XCTFail("Deserialized instance is not Invocable")
             }
-            
+
             XCTAssert(true)
         } catch let exception {
             XCTFail("\(exception)")
         }
     }
-    
-    
-    
+
+
+
     func test004_RePrintUserWithoutObjcTask_ShouldFail() {
         let user=User()
         user.email="bartleby@barltebys.org"
@@ -181,27 +182,27 @@ class SerializableInvocationsTests: XCTestCase {
         let serializedInvocation=printer.serialize()
         do {
             let o = try JSerializer.deserialize(serializedInvocation)
-            
+
             if let deserializedInvocation=o as? RePrintUserWithoutObjc {
                 deserializedInvocation.invoke()
                 XCTFail("Deserialization should fail because RePrintUserWithoutObjc is not declared")
             } else {
-                
+
                 XCTFail("Deserialization should fail because RePrintUserWithoutObjc is not declared")
             }
         } catch {
             XCTAssert(true)
         }
-        
+
     }
-    
-    
+
+
     func test005_RePrintUserWithoutObjcTask() {
         let user=User()
         user.email="bartleby@barltebys.org"
         let printer =  RePrintUserWithoutObjc(arguments:user)
         Registry.declareCollectibleType(RePrintUserWithoutObjc)
-        
+
         let serializedInvocation=printer.serialize()
         do {
             let o = try JSerializer.deserialize(serializedInvocation)
@@ -214,10 +215,10 @@ class SerializableInvocationsTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+
     }
-    
-    
+
+
     func test006_RePrintUserWithoutObjc_Dynamic() {
         do {
             let user=User()
@@ -233,9 +234,9 @@ class SerializableInvocationsTests: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+
     }
-    
+
     func test007__RePrintUserWithoutObjc_Invocation() {
         let user=User()
         user.email="benoit@chaosmose.com"
@@ -254,6 +255,6 @@ class SerializableInvocationsTests: XCTestCase {
             XCTFail("\(exception)")
         }
     }
-    
-    
+
+
 }

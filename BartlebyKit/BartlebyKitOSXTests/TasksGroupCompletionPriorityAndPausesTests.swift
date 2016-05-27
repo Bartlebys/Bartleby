@@ -18,7 +18,7 @@ public enum GraphTestMode {
 
 
 // You Must Implement ConcreteTask to be invocable
-public class ShowSummary: ReactiveTask, ConcreteTask {
+public class ShowSummary: Task, ConcreteTask {
 
 
     public typealias ArgumentType=JObject
@@ -105,7 +105,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
 
             ShowSummary.executionCounter += 1
-            self.forward(Completion.successState())
+            self.complete(Completion.successState())
     }
 }
 

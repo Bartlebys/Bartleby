@@ -25,7 +25,7 @@ import Foundation
 #if !DUSE_EMBEDDED_MODULES
 
 
-public class  CommitAndPushPendingOperationsTask: ReactiveTask, ConcreteTask {
+public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
 
 
         public typealias ArgumentType=JString
@@ -64,7 +64,7 @@ public class  CommitAndPushPendingOperationsTask: ReactiveTask, ConcreteTask {
                         } catch {
                             let completion=Completion.failureState(NSLocalizedString( "Unexpected Commit pending changes error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: CompletionStatus.Precondition_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                            self.reactiveHandlers.on(completion)
+                            self.complete(completion)
                         }
 
                         // #2 Optimize the operations
@@ -82,34 +82,35 @@ public class  CommitAndPushPendingOperationsTask: ReactiveTask, ConcreteTask {
                                         let task=PushOperationTask(arguments:operation)
                                         try group.appendChainedTask(task)
                                     }
-                                    print(group)
+                                    let completion=Completion.successState()
+                                    self.complete(completion)
                                 } else {
                                     // No valid group
                                     let completion=Completion.failureState(NSLocalizedString( "No valid task group found external reference is missing", tableName:"operations", comment:"No valid task group found external reference is missing"), statusCode: CompletionStatus.Precondition_Failed)
                                     bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                                    self.reactiveHandlers.on(completion)
+                                    self.complete(completion)
                                 }
                             } else {
                                 // No external reference
                                 let completion=Completion.failureState(NSLocalizedString( "No external reference for TaskGroup", tableName:"operations", comment:"No external reference for TaskGroup"), statusCode: CompletionStatus.Precondition_Failed)
                                 bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                                self.reactiveHandlers.on(completion)
+                                self.complete(completion)
                             }
                         } catch {
                             let completion=Completion.failureState(NSLocalizedString( "Unexpected Operation task appending error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: CompletionStatus.Precondition_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                            self.reactiveHandlers.on(completion)
+                            self.complete(completion)
                         }
 
                     } else {
                         let completion=Completion.failureState(NSLocalizedString( "Document dataspace not found", tableName:"operations", comment:"Document dataspace not found"), statusCode: CompletionStatus.Precondition_Failed)
                         bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                        self.reactiveHandlers.on(completion)
+                        self.complete(completion)
                 }
             } else {
                 let completion=Completion.failureState(NSLocalizedString( "Commit pending operations Invocation argument type missmatch", tableName:"operations", comment:"Task operation Invocation argument type missmatch"), statusCode: CompletionStatus.Precondition_Failed)
                 bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                self.reactiveHandlers.on(completion)
+                self.complete(completion)
             }
         }
 

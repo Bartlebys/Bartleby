@@ -89,7 +89,7 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
 
 
 // You Must Implement ConcreteTask to be invocable
-public class ShowSummary: ReactiveTask, ConcreteTask {
+public class ShowSummary: Task, ConcreteTask {
 
     public typealias ArgumentType=JObject
 
@@ -124,7 +124,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
 
     public static var counter: Int=0
 
-    public override func invoke()  {
+    public override func invoke() {
             super.invoke()
             if let object: ArgumentType = try? self.arguments() {
                 if let summary = object.summary {
@@ -162,7 +162,7 @@ public class ShowSummary: ReactiveTask, ConcreteTask {
                 }
             }
             ShowSummary.executionCounter += 1
-             self.forward(Completion.successState())
+            self.complete(Completion.successState())
 
     }
 }

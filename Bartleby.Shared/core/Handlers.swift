@@ -21,6 +21,15 @@ public typealias ProgressHandler = (_: Progression) -> ()
 //CompletionHandler
 public typealias CompletionHandler = (_: Completion) -> ()
 
+
+
+// Reactive Protocol
+protocol Reactive {
+    var reactiveHandlers: Handlers { get }
+}
+
+
+
 // MARK: -
 
 /**
