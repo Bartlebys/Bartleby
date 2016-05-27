@@ -77,8 +77,7 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
                                     // Let's add all the operations to the group.
                                     // #2 add the operations tasks.
                                     for operation in document.operations.items {
-
-                                        // @bpds DO NOT RE ADD OPERATION ALLREADY PLANIFIED
+                                        // @bpds WE SHOULD NOT NOT RE ADD OPERATION ALLREADY PLANIFIED
                                         let task=PushOperationTask(arguments:operation)
                                         try group.appendChainedTask(task)
                                     }

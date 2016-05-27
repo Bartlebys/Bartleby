@@ -14,35 +14,7 @@ extension BartlebyDocument {
 
     // MARK: - Operations
 
-    /**
-     Commits and Pushes the pending operations.
-     The Command will optimize and inject commands if some changes has occured.
 
-     - parameter handlers: the handlers to monitor the progress and completion
-
-     - throws: throws
-     */
-    public func pushPendingOperations(handlers: Handlers)throws {
-        let operations=self.operations.items
-        bprint("Pushing  pending \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
-        if self._operationsAreAvailable(operations, handlers:handlers)==true {
-            // We use the encapsulated SpaceUID
-            let spaceUID=self.spaceUID
-            // We taskGroupFor the task
-            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(spaceUID)", inDocument: self)
-            group.priority=TasksGroup.Priority.High
-            // We add the calling handlers
-            group.handlers.appendChainedHandlers(handlers)
-
-            // This task will append task
-            let dataSpaceString: JString=JString()
-            dataSpaceString.string=self.spaceUID
-            let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:dataSpaceString)
-            try group.appendChainedTask(commitPendingOperationsTask)
-            try group.start()
-        }
-
-    }
 
     /**
      Commits the pending changes.
@@ -61,19 +33,18 @@ extension BartlebyDocument {
      - parameter handlers: the handlers to monitor the progress and completion
      */
     public func synchronizePendingOperations(handlers: Handlers) {
-        if self._operationsAreAvailable(self.operations.items, handlers:handlers)==true {
-            if let currentUser=self.registryMetadata.currentUser {
-                currentUser.login(withPassword: currentUser.password, sucessHandler: {
-                    do {
-                        try self.pushPendingOperations(handlers)
-                    } catch {
-                        handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: CompletionStatus.Expectation_Failed))
-                    }
-                    }, failureHandler: { (context) in
-                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
-                })
-            }
+        if let currentUser=self.registryMetadata.currentUser {
+            currentUser.login(withPassword: currentUser.password, sucessHandler: {
+                do {
+                    try self._commitAndPushPendingOperations(handlers)
+                } catch {
+                    handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: CompletionStatus.Expectation_Failed))
+                }
+                }, failureHandler: { (context) in
+                    handlers.on(Completion.failureStateFromJHTTPResponse(context))
+            })
         }
+
     }
 
 
@@ -89,47 +60,52 @@ extension BartlebyDocument {
      */
     public func pushArrayOfOperations(operations: [Operation], handlers: Handlers) throws->() {
         bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
-        if self._operationsAreAvailable(operations, handlers:handlers)==true {
+        if  operations.count>0 {
 
-                // We use the encapsulated SpaceUID
-                let spaceUID=self.spaceUID
-                // We taskGroupFor the task
-                let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDocument: self)
-                group.priority=TasksGroup.Priority.High
-                // We add the calling handlers
-                group.handlers.appendChainedHandlers(handlers)
+            // We use the encapsulated SpaceUID
+            let spaceUID=self.spaceUID
+            // We taskGroupFor the task
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDocument: self)
+            group.priority=TasksGroup.Priority.High
+            // We add the calling handlers
+            group.handlers.appendChainedHandlers(handlers)
 
-                // #2 add the operations tasks.
-                for operation in operations {
-                    let task=PushOperationTask(arguments:operation)
-                    try group.appendChainedTask(task)
-                }
-                try group.start()
-
-        }
-    }
-
-
-
-
-    /**
-     Normalized reaction to void operations stack
-     Returns true if there are operation available, false if not, and react directly if not.
-
-     - parameter operations: the operation
-     - parameter handlers:   the handlers
-
-     - returns: true if there are operation available and react directly if not.
-     */
-    private func _operationsAreAvailable(operations: [Operation], handlers: Handlers) -> Bool {
-        if operations.count > 0 {
-            return true
+            // #2 add the operations tasks.
+            for operation in operations {
+                let task=PushOperationTask(arguments:operation)
+                try group.appendChainedTask(task)
+            }
+            try group.start()
         } else {
             let completion=Completion.successState()
             completion.message=NSLocalizedString("There was no pending operation", tableName:"operations", comment: "There was no pending operation")
             handlers.on(completion)
-            return false
         }
+    }
+
+    /**
+     Commits and Pushes the pending operations.
+     The Command will optimize and inject commands if some changes has occured.
+
+     - parameter handlers: the handlers to monitor the progress and completion
+
+     - throws: throws
+     */
+    private func _commitAndPushPendingOperations(handlers: Handlers)throws {
+        // We use the encapsulated SpaceUID
+        let spaceUID=self.spaceUID
+        // We taskGroupFor the task
+        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(spaceUID)", inDocument: self)
+        group.priority=TasksGroup.Priority.High
+        // We add the calling handlers
+        group.handlers.appendChainedHandlers(handlers)
+
+        // This task will append task
+        let dataSpaceString: JString=JString()
+        dataSpaceString.string=self.spaceUID
+        let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:dataSpaceString)
+        try group.appendChainedTask(commitPendingOperationsTask)
+        try group.start()
     }
 
 
@@ -191,6 +167,6 @@ extension Registry {
             instance.distributed=true
         }
     }
-
-
+    
+    
 }
