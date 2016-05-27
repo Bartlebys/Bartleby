@@ -109,7 +109,6 @@
 		E501452F1CE8B96400EDD9C3 /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144941CE8B96400EDD9C3 /* Serializer.swift */; };
 		E50145301CE8B96400EDD9C3 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144951CE8B96400EDD9C3 /* UniversalType.swift */; };
 		E50145311CE8B96400EDD9C3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144961CE8B96400EDD9C3 /* UserProtocol.swift */; };
-		E50145321CE8B96400EDD9C3 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144971CE8B96400EDD9C3 /* ReactiveTask.swift */; };
 		E50145331CE8B96400EDD9C3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50144981CE8B96400EDD9C3 /* Registry.swift */; };
 		E50145341CE8B96400EDD9C3 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */; };
 		E50145351CE8B96400EDD9C3 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501449B1CE8B96400EDD9C3 /* TasksScheduler.swift */; };
@@ -129,6 +128,10 @@
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
 		E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */; };
+		E537045F1CF879350099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537045C1CF879350099440D /* ReactiveTask.swift */; };
+		E53704601CF879350099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537045D1CF879350099440D /* RelayingTask.swift */; };
+		E53704611CF879350099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537045E1CF879350099440D /* TaskWithNotifications.swift */; };
+		E53704631CF8793F0099440D /* Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704621CF8793F0099440D /* Triggers.swift */; };
 		E5837E291CF45616005B698E /* Document+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5837E281CF45616005B698E /* Document+Operations.swift */; };
 		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
 		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
@@ -288,7 +291,6 @@
 		E50144941CE8B96400EDD9C3 /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
 		E50144951CE8B96400EDD9C3 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E50144961CE8B96400EDD9C3 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
-		E50144971CE8B96400EDD9C3 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E50144981CE8B96400EDD9C3 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E501449B1CE8B96400EDD9C3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
@@ -311,6 +313,10 @@
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
 		E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manual_graph_exec_test.swift; sourceTree = "<group>"; };
+		E537045C1CF879350099440D /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
+		E537045D1CF879350099440D /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
+		E537045E1CF879350099440D /* TaskWithNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskWithNotifications.swift; sourceTree = "<group>"; };
+		E53704621CF8793F0099440D /* Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triggers.swift; sourceTree = "<group>"; };
 		E5837E281CF45616005B698E /* Document+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Document+Operations.swift"; sourceTree = "<group>"; };
 		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
@@ -545,18 +551,18 @@
 		E50144701CE8B96400EDD9C3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E50144761CE8B96400EDD9C3 /* extensions */,
+				E50144851CE8B96400EDD9C3 /* protocols */,
+				E50144991CE8B96400EDD9C3 /* tasks */,
 				E50144711CE8B96400EDD9C3 /* Bartleby.swift */,
 				E50144721CE8B96400EDD9C3 /* CompletionStatus.swift */,
 				E50144731CE8B96400EDD9C3 /* Consignation.swift */,
 				E50144741CE8B96400EDD9C3 /* Consignee.swift */,
 				E50144751CE8B96400EDD9C3 /* Default.swift */,
-				E50144761CE8B96400EDD9C3 /* extensions */,
 				E50144831CE8B96400EDD9C3 /* Global.swift */,
 				E50144841CE8B96400EDD9C3 /* Handlers.swift */,
-				E50144851CE8B96400EDD9C3 /* protocols */,
-				E50144971CE8B96400EDD9C3 /* ReactiveTask.swift */,
 				E50144981CE8B96400EDD9C3 /* Registry.swift */,
-				E50144991CE8B96400EDD9C3 /* tasks */,
+				E53704621CF8793F0099440D /* Triggers.swift */,
 				E501449B1CE8B96400EDD9C3 /* TasksScheduler.swift */,
 			);
 			path = core;
@@ -608,6 +614,9 @@
 		E50144991CE8B96400EDD9C3 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				E537045C1CF879350099440D /* ReactiveTask.swift */,
+				E537045D1CF879350099440D /* RelayingTask.swift */,
+				E537045E1CF879350099440D /* TaskWithNotifications.swift */,
 				E509A0371CF5AF4B007DEF8C /* CommitAndPushPendingOperationsTask.swift */,
 				E501449A1CE8B96400EDD9C3 /* PushOperationTask.swift */,
 			);
@@ -881,6 +890,7 @@
 				E5CD99EE1C86D96E00C64569 /* MultipartFormData.swift in Sources */,
 				E50145291CE8B96400EDD9C3 /* HTTPCommand.swift in Sources */,
 				E5B98E281CC0E63C00A7ECD1 /* DateTransform.swift in Sources */,
+				E537045F1CF879350099440D /* ReactiveTask.swift in Sources */,
 				E501452C1CE8B96400EDD9C3 /* Initializable.swift in Sources */,
 				E50145231CE8B96400EDD9C3 /* CollectibleCollection.swift in Sources */,
 				E501453D1CE8B96400EDD9C3 /* BFileManager.swift in Sources */,
@@ -888,6 +898,7 @@
 				E501453A1CE8B96400EDD9C3 /* LogoutUser.swift in Sources */,
 				E50144D01CE8B96400EDD9C3 /* DeleteGroup.swift in Sources */,
 				E5CD99EF1C86D96E00C64569 /* NetworkReachabilityManager.swift in Sources */,
+				E53704601CF879350099440D /* RelayingTask.swift in Sources */,
 				E50144F11CE8B96400EDD9C3 /* ReadUsersByIds.swift in Sources */,
 				E50144AC1CE8B96400EDD9C3 /* GroupsCollectionController.swift in Sources */,
 				E50144E11CE8B96400EDD9C3 /* ReadLockerById.swift in Sources */,
@@ -923,6 +934,7 @@
 				E501452A1CE8B96400EDD9C3 /* HTTPResponse.swift in Sources */,
 				E501450F1CE8B96400EDD9C3 /* CompletionStatus.swift in Sources */,
 				E5D086CE1C550E7500F0090E /* Option.swift in Sources */,
+				E53704631CF8793F0099440D /* Triggers.swift in Sources */,
 				E50144CF1CE8B96400EDD9C3 /* CreateUsers.swift in Sources */,
 				E501451B1CE8B96400EDD9C3 /* Registry+Triggers.swift in Sources */,
 				E5D0869A1C550E1900F0090E /* CryptedDataTransform.swift in Sources */,
@@ -975,6 +987,7 @@
 				E50144B11CE8B96400EDD9C3 /* TasksGroupsCollectionController.swift in Sources */,
 				E50144F01CE8B96400EDD9C3 /* ReadUserById.swift in Sources */,
 				E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */,
+				E53704611CF879350099440D /* TaskWithNotifications.swift in Sources */,
 				E50144C21CE8B96400EDD9C3 /* CreateGroup.swift in Sources */,
 				E5B98E1A1CC0E63400A7ECD1 /* Mapper.swift in Sources */,
 				E5B98E2A1CC0E63C00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
@@ -987,7 +1000,6 @@
 				E50144C31CE8B96400EDD9C3 /* CreateGroups.swift in Sources */,
 				E50145331CE8B96400EDD9C3 /* Registry.swift in Sources */,
 				E501453F1CE8B96400EDD9C3 /* Pluralization.swift in Sources */,
-				E50145321CE8B96400EDD9C3 /* ReactiveTask.swift in Sources */,
 				E5CD99F71C86D96E00C64569 /* Stream.swift in Sources */,
 				E50144E21CE8B96400EDD9C3 /* ReadLockersByIds.swift in Sources */,
 				E5CD99EA1C86D96E00C64569 /* Alamofire.swift in Sources */,

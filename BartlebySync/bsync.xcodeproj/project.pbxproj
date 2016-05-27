@@ -674,10 +674,6 @@
 		E50143C31CE8B93900EDD9C3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141951CE8B93900EDD9C3 /* UserProtocol.swift */; };
 		E50143C41CE8B93900EDD9C3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141951CE8B93900EDD9C3 /* UserProtocol.swift */; };
 		E50143C51CE8B93900EDD9C3 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141951CE8B93900EDD9C3 /* UserProtocol.swift */; };
-		E50143C61CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */; };
-		E50143C71CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */; };
-		E50143C81CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */; };
-		E50143C91CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */; };
 		E50143CA1CE8B93900EDD9C3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141971CE8B93900EDD9C3 /* Registry.swift */; };
 		E50143CB1CE8B93900EDD9C3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141971CE8B93900EDD9C3 /* Registry.swift */; };
 		E50143CC1CE8B93900EDD9C3 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50141971CE8B93900EDD9C3 /* Registry.swift */; };
@@ -746,6 +742,22 @@
 		E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6F001CC8DE5100F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
+		E537044B1CF8773D0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704481CF8773D0099440D /* ReactiveTask.swift */; };
+		E537044C1CF8773D0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704481CF8773D0099440D /* ReactiveTask.swift */; };
+		E537044D1CF8773D0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704481CF8773D0099440D /* ReactiveTask.swift */; };
+		E537044E1CF8773D0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704481CF8773D0099440D /* ReactiveTask.swift */; };
+		E537044F1CF8773D0099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704491CF8773D0099440D /* RelayingTask.swift */; };
+		E53704501CF8773D0099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704491CF8773D0099440D /* RelayingTask.swift */; };
+		E53704511CF8773D0099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704491CF8773D0099440D /* RelayingTask.swift */; };
+		E53704521CF8773D0099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704491CF8773D0099440D /* RelayingTask.swift */; };
+		E53704531CF8773D0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537044A1CF8773D0099440D /* TaskWithNotifications.swift */; };
+		E53704541CF8773D0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537044A1CF8773D0099440D /* TaskWithNotifications.swift */; };
+		E53704551CF8773D0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537044A1CF8773D0099440D /* TaskWithNotifications.swift */; };
+		E53704561CF8773D0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537044A1CF8773D0099440D /* TaskWithNotifications.swift */; };
+		E53704581CF8774C0099440D /* Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704571CF8774C0099440D /* Triggers.swift */; };
+		E53704591CF8774C0099440D /* Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704571CF8774C0099440D /* Triggers.swift */; };
+		E537045A1CF8774C0099440D /* Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704571CF8774C0099440D /* Triggers.swift */; };
+		E537045B1CF8774C0099440D /* Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704571CF8774C0099440D /* Triggers.swift */; };
 		E53E27521CA572940079ED23 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3A1C86DBFC00C64569 /* Alamofire.swift */; };
 		E53E27531CA572940079ED23 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3B1C86DBFC00C64569 /* Download.swift */; };
 		E53E27541CA572940079ED23 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CD9A3C1C86DBFC00C64569 /* Error.swift */; };
@@ -1071,7 +1083,6 @@
 		E50141931CE8B93900EDD9C3 /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
 		E50141941CE8B93900EDD9C3 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E50141951CE8B93900EDD9C3 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
-		E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E50141971CE8B93900EDD9C3 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E50141991CE8B93900EDD9C3 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E501419A1CE8B93900EDD9C3 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
@@ -1092,6 +1103,10 @@
 		E509A0321CF5AEB6007DEF8C /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
 		E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncCredentials.swift; sourceTree = "<group>"; };
+		E53704481CF8773D0099440D /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
+		E53704491CF8773D0099440D /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
+		E537044A1CF8773D0099440D /* TaskWithNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskWithNotifications.swift; sourceTree = "<group>"; };
+		E53704571CF8774C0099440D /* Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triggers.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
 		E545940C1C3E642C000576AD /* CleanupCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CleanupCommand.swift; sourceTree = "<group>"; };
 		E54594121C3E7DD7000576AD /* CommandBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBase.swift; sourceTree = "<group>"; };
@@ -1426,18 +1441,18 @@
 		E501416F1CE8B93900EDD9C3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E50141751CE8B93900EDD9C3 /* extensions */,
+				E50141841CE8B93900EDD9C3 /* protocols */,
+				E50141981CE8B93900EDD9C3 /* tasks */,
 				E50141701CE8B93900EDD9C3 /* Bartleby.swift */,
 				E50141711CE8B93900EDD9C3 /* CompletionStatus.swift */,
 				E50141721CE8B93900EDD9C3 /* Consignation.swift */,
 				E50141731CE8B93900EDD9C3 /* Consignee.swift */,
 				E50141741CE8B93900EDD9C3 /* Default.swift */,
-				E50141751CE8B93900EDD9C3 /* extensions */,
 				E50141821CE8B93900EDD9C3 /* Global.swift */,
 				E50141831CE8B93900EDD9C3 /* Handlers.swift */,
-				E50141841CE8B93900EDD9C3 /* protocols */,
-				E50141961CE8B93900EDD9C3 /* ReactiveTask.swift */,
+				E53704571CF8774C0099440D /* Triggers.swift */,
 				E50141971CE8B93900EDD9C3 /* Registry.swift */,
-				E50141981CE8B93900EDD9C3 /* tasks */,
 				E501419A1CE8B93900EDD9C3 /* TasksScheduler.swift */,
 			);
 			path = core;
@@ -1489,6 +1504,9 @@
 		E50141981CE8B93900EDD9C3 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				E53704481CF8773D0099440D /* ReactiveTask.swift */,
+				E53704491CF8773D0099440D /* RelayingTask.swift */,
+				E537044A1CF8773D0099440D /* TaskWithNotifications.swift */,
 				E509A0321CF5AEB6007DEF8C /* CommitAndPushPendingOperationsTask.swift */,
 				E50141991CE8B93900EDD9C3 /* PushOperationTask.swift */,
 			);
@@ -1986,6 +2004,7 @@
 				5B5D09571CDC91E3001FB281 /* (null) in Sources */,
 				E50143551CE8B93900EDD9C3 /* ExternalReference+Resolution.swift in Sources */,
 				5B5D09421CDC91E3001FB281 /* (null) in Sources */,
+				E53704561CF8773D0099440D /* TaskWithNotifications.swift in Sources */,
 				5B5D09E61CDC9233001FB281 /* CryptoHelper.swift in Sources */,
 				5B5D09E31CDC9233001FB281 /* CryptedKeyValueStorage.swift in Sources */,
 				E501436D1CE8B93900EDD9C3 /* Registry+Triggers.swift in Sources */,
@@ -2000,6 +2019,7 @@
 				E50143B11CE8B93900EDD9C3 /* Initializable.swift in Sources */,
 				5B5D09BA1CDC921E001FB281 /* (null) in Sources */,
 				5B5D09621CDC91E3001FB281 /* (null) in Sources */,
+				E537044E1CF8773D0099440D /* ReactiveTask.swift in Sources */,
 				5B5D093E1CDC91E3001FB281 /* (null) in Sources */,
 				E50141B51CE8B93900EDD9C3 /* LockersCollectionController.swift in Sources */,
 				E50143F91CE8B93900EDD9C3 /* HTTPManager.swift in Sources */,
@@ -2128,6 +2148,7 @@
 				E50143891CE8B93900EDD9C3 /* Collectible.swift in Sources */,
 				5B5D09CA1CDC921E001FB281 /* (null) in Sources */,
 				5B5D098C1CDC91E3001FB281 /* (null) in Sources */,
+				E53704521CF8773D0099440D /* RelayingTask.swift in Sources */,
 				5B5D09811CDC91E3001FB281 /* (null) in Sources */,
 				5B5D099D1CDC91E4001FB281 /* (null) in Sources */,
 				5B5D09641CDC91E3001FB281 /* (null) in Sources */,
@@ -2167,7 +2188,6 @@
 				5B5D09D51CDC921E001FB281 /* (null) in Sources */,
 				5B5D09F81CDC9256001FB281 /* BsyncDMGCard.swift in Sources */,
 				5B5D09411CDC91E3001FB281 /* (null) in Sources */,
-				E50143C91CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
 				5B5D09F41CDC9256001FB281 /* BsyncImageDiskManager.swift in Sources */,
 				E50143791CE8B93900EDD9C3 /* TasksGroup+Execution.swift in Sources */,
 				E50143C11CE8B93900EDD9C3 /* UniversalType.swift in Sources */,
@@ -2263,6 +2283,7 @@
 				5B5D097E1CDC91E3001FB281 /* (null) in Sources */,
 				5B5D093D1CDC91C4001FB281 /* StringExtensions.swift in Sources */,
 				5B5D09F61CDC9256001FB281 /* BsyncLocalAnalyzer.swift in Sources */,
+				E537045B1CF8774C0099440D /* Triggers.swift in Sources */,
 				E50141C91CE8B93900EDD9C3 /* TriggersCollectionController.swift in Sources */,
 				5B5D097C1CDC91E3001FB281 /* (null) in Sources */,
 				E50143A91CE8B93900EDD9C3 /* HTTPResponse.swift in Sources */,
@@ -2418,11 +2439,13 @@
 				E53E28DA1CA572D80079ED23 /* PdSLocalAnalyzer.m in Sources */,
 				E50143B21CE8B93900EDD9C3 /* RegistryMetadataProtocol.swift in Sources */,
 				E53E27631CA572AB0079ED23 /* CommandLine.swift in Sources */,
+				E537044F1CF8773D0099440D /* RelayingTask.swift in Sources */,
 				E50141D21CE8B93900EDD9C3 /* Completion.swift in Sources */,
 				E509A0331CF5AEB6007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E53E27541CA572940079ED23 /* Error.swift in Sources */,
 				E501423A1CE8B93900EDD9C3 /* CreateUsers.swift in Sources */,
 				E5B98EA21CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
+				E537044B1CF8773D0099440D /* ReactiveTask.swift in Sources */,
 				E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */,
 				E50143221CE8B93900EDD9C3 /* JSerializer.swift in Sources */,
 				E501433A1CE8B93900EDD9C3 /* CompletionStatus.swift in Sources */,
@@ -2450,7 +2473,6 @@
 				E50142BA1CE8B93900EDD9C3 /* ReadTriggersByQuery.swift in Sources */,
 				E53E27641CA572AB0079ED23 /* Option.swift in Sources */,
 				E501438A1CE8B93900EDD9C3 /* CollectibleCollection.swift in Sources */,
-				E50143C61CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
 				E50142821CE8B93900EDD9C3 /* ReadLockerById.swift in Sources */,
 				E50143461CE8B93900EDD9C3 /* Default.swift in Sources */,
 				E50141D61CE8B93900EDD9C3 /* ExternalReference.swift in Sources */,
@@ -2458,6 +2480,7 @@
 				E50143E61CE8B93900EDD9C3 /* LogoutUser.swift in Sources */,
 				E50142B21CE8B93900EDD9C3 /* ReadTriggerById.swift in Sources */,
 				E50143EA1CE8B93900EDD9C3 /* VerifyLocker.swift in Sources */,
+				E53704531CF8773D0099440D /* TaskWithNotifications.swift in Sources */,
 				E50142F61CE8B93900EDD9C3 /* UpdateTriggers.swift in Sources */,
 				E53E27591CA572940079ED23 /* ParameterEncoding.swift in Sources */,
 				E53E28D81CA572D80079ED23 /* NSData+CRC.m in Sources */,
@@ -2498,6 +2521,7 @@
 				E50142761CE8B93900EDD9C3 /* ReadGroupById.swift in Sources */,
 				E50142661CE8B93900EDD9C3 /* DeleteTrigger.swift in Sources */,
 				E50141B61CE8B93900EDD9C3 /* OperationsCollectionController.swift in Sources */,
+				E53704581CF8774C0099440D /* Triggers.swift in Sources */,
 				E50142F21CE8B93900EDD9C3 /* UpdateTrigger.swift in Sources */,
 				E501427E1CE8B93900EDD9C3 /* ReadGroupsByQuery.swift in Sources */,
 				E50141FA1CE8B93900EDD9C3 /* TasksGroup.swift in Sources */,
@@ -2540,11 +2564,11 @@
 				E50141AB1CE8B93900EDD9C3 /* BartlebyDocument.swift in Sources */,
 				E50142731CE8B93900EDD9C3 /* DeleteUsers.swift in Sources */,
 				E50A6F001CC8DE5100F89311 /* CryptedSerializableTransform.swift in Sources */,
+				E53704591CF8774C0099440D /* Triggers.swift in Sources */,
 				E50143B71CE8B93900EDD9C3 /* Serializable.swift in Sources */,
 				E5B98E9A1CC0E6CD00A7ECD1 /* Map.swift in Sources */,
 				E5B98E971CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */,
 				E50142831CE8B93900EDD9C3 /* ReadLockerById.swift in Sources */,
-				E50143C71CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
 				E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */,
 				E501439F1CE8B93900EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
 				E56A90001C8DF5120043F90E /* BsyncDMGCard.swift in Sources */,
@@ -2553,6 +2577,7 @@
 				E50141B71CE8B93900EDD9C3 /* OperationsCollectionController.swift in Sources */,
 				5B8E5D571C8D7FCD002CFA03 /* MultipartFormData.swift in Sources */,
 				E50143471CE8B93900EDD9C3 /* Default.swift in Sources */,
+				E537044C1CF8773D0099440D /* ReactiveTask.swift in Sources */,
 				E50142431CE8B93900EDD9C3 /* DeleteGroups.swift in Sources */,
 				E5B98EBE1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */,
 				E501423F1CE8B93900EDD9C3 /* DeleteGroup.swift in Sources */,
@@ -2584,6 +2609,7 @@
 				E50143DF1CE8B93900EDD9C3 /* User+Auth.swift in Sources */,
 				5BB60F521CBFE4E200D23B4F /* CryptoHelper.swift in Sources */,
 				E50143F71CE8B93900EDD9C3 /* HTTPManager.swift in Sources */,
+				E53704541CF8773D0099440D /* TaskWithNotifications.swift in Sources */,
 				E5B98EA01CC0E6CD00A7ECD1 /* Mapper.swift in Sources */,
 				5B8E5D5B1C8D7FCD002CFA03 /* Request.swift in Sources */,
 				E5B98EAF1CC0E6CD00A7ECD1 /* DateTransform.swift in Sources */,
@@ -2673,6 +2699,7 @@
 				E552B7B81C3D4E49001CD53B /* PdSFileManager.m in Sources */,
 				E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */,
 				E50142B71CE8B93900EDD9C3 /* ReadTriggersByIds.swift in Sources */,
+				E53704501CF8773D0099440D /* RelayingTask.swift in Sources */,
 				E50142BF1CE8B93900EDD9C3 /* ReadUserById.swift in Sources */,
 				5B8E5D551C8D7FCD002CFA03 /* Error.swift in Sources */,
 				E501432B1CE8B93900EDD9C3 /* XTypeAliases.swift in Sources */,
@@ -2726,7 +2753,6 @@
 				E50142C81CE8B93900EDD9C3 /* ReadUsersByQuery.swift in Sources */,
 				5BB60F431CBFE3C500D23B4F /* CryptedKeyValueStorage.swift in Sources */,
 				E50143881CE8B93900EDD9C3 /* Collectible.swift in Sources */,
-				E50143C81CE8B93900EDD9C3 /* ReactiveTask.swift in Sources */,
 				E50141FC1CE8B93900EDD9C3 /* TasksGroup.swift in Sources */,
 				E5AAC5551CEB16C5005C15E2 /* Task+Execution.swift in Sources */,
 				E50142381CE8B93900EDD9C3 /* CreateUser.swift in Sources */,
@@ -2750,6 +2776,7 @@
 				E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */,
 				E50143201CE8B93900EDD9C3 /* JObject.swift in Sources */,
 				E55C927E1CBF8998008163F6 /* BsyncCredentials.swift in Sources */,
+				E53704511CF8773D0099440D /* RelayingTask.swift in Sources */,
 				E50143981CE8B93900EDD9C3 /* CryptoDelegate.swift in Sources */,
 				E50143A41CE8B93900EDD9C3 /* HTTPCommand.swift in Sources */,
 				E50141D01CE8B93900EDD9C3 /* CollectionMetadatum.swift in Sources */,
@@ -2792,6 +2819,7 @@
 				E50143BC1CE8B93900EDD9C3 /* Serializer.swift in Sources */,
 				E55C92491CBF84ED008163F6 /* Alamofire.swift in Sources */,
 				E50143A01CE8B93900EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
+				E537045A1CF8774C0099440D /* Triggers.swift in Sources */,
 				E5B98EA71CC0E6CD00A7ECD1 /* ToJSON.swift in Sources */,
 				E50146831CE8CB0F00EDD9C3 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E501427C1CE8B93900EDD9C3 /* ReadGroupsByIds.swift in Sources */,
@@ -2830,6 +2858,7 @@
 				E5B98EB61CC0E6CD00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
 				E50143581CE8B93900EDD9C3 /* NSNotification+Completion.swift in Sources */,
 				E50142881CE8B93900EDD9C3 /* ReadLockersByIds.swift in Sources */,
+				E537044D1CF8773D0099440D /* ReactiveTask.swift in Sources */,
 				E50141DC1CE8B93900EDD9C3 /* Group.swift in Sources */,
 				E50143241CE8B93900EDD9C3 /* JSerializer.swift in Sources */,
 				E50142CC1CE8B93900EDD9C3 /* UpdateGroup.swift in Sources */,
@@ -2860,6 +2889,7 @@
 				E501433C1CE8B93900EDD9C3 /* CompletionStatus.swift in Sources */,
 				E55C92561CBF84ED008163F6 /* Stream.swift in Sources */,
 				E50143901CE8B93900EDD9C3 /* CollectionMetadatumProtocol.swift in Sources */,
+				E53704551CF8773D0099440D /* TaskWithNotifications.swift in Sources */,
 				E55C92571CBF84ED008163F6 /* Timeline.swift in Sources */,
 				E50143B01CE8B93900EDD9C3 /* Initializable.swift in Sources */,
 				E55C92581CBF84ED008163F6 /* Upload.swift in Sources */,

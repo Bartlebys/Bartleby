@@ -1,59 +1,14 @@
 //
-//  ReactiveTask.swift
+//  TaskWithNotifications.swift
 //  BartlebyKit
 //
-//  Created by Benoit Pereira da silva on 29/04/2016.
-//  Copyright © 2016 Lylo Media Group SA. All rights reserved.
+//  Created by Benoit Pereira da silva on 27/05/2016.
+//
 //
 
 import Foundation
 
-// MARK: ReactiveTask
 
-// A Reactive Task that allows to append handlers.
-@objc(ReactiveTask) public class  ReactiveTask: Task, Reactive {
-
-    // Universal type support
-    override public class func typeName() -> String {
-        return "ReactiveTask"
-    }
-
-    // The reactive Handlers
-    public var reactiveHandlers: Handlers=Handlers.withoutCompletion()
-
-}
-
-// MARK: RelayingTask
-
-// A Reactive Task that relays it completion an progression.
-@objc(RelayingTask) public class  RelayingTask: Task, Reactive {
-
-    // Universal type support
-    override public class func typeName() -> String {
-        return "TaskWithNotifications"
-    }
-
-    // MARK: Reactive Handlers
-
-    private var _reactiveHandlers: Handlers?
-
-    // The reactive Handlers
-    public var reactiveHandlers: Handlers {
-        get {
-            if let _ = _reactiveHandlers {
-                return self._reactiveHandlers!
-            }
-            let onCompletion: CompletionHandler = { (completionState) in
-                self.complete(completionState)
-            }
-            self._reactiveHandlers=Handlers(completionHandler: onCompletion)
-            self._reactiveHandlers!.appendProgressHandler({ (progressionState) in
-                self.forward(progressionState)
-            })
-            return self._reactiveHandlers!
-        }
-    }
-}
 
 
 // MARK: TaskWithNotifications
@@ -102,5 +57,5 @@ import Foundation
             NSNotificationCenter.defaultCenter().postNotification(state.progressionNotification)
         })
     }
-
+    
 }
