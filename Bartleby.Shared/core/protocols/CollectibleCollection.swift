@@ -30,9 +30,6 @@ public protocol CollectibleCollection: Collectible {
     // The dataspace UID
     var spaceUID: String { get set }
 
-    // The UID to be used to observe this collection
-    var observableByUID: String { get set }
-
     #if os(OSX) && !USE_EMBEDDED_MODULES
     // When using cocoa bindings with an array controller
     // You can set the arrayController for a seamless integration
@@ -113,7 +110,7 @@ public protocol SuperIterable {
 
 
 public protocol Supervisable {
-    
+
     /// Shall we commit that instance during next autocommit?
     var toBeCommitted: Bool { get }
     /**

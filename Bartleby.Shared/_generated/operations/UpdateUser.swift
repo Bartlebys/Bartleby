@@ -22,14 +22,14 @@ import ObjectMapper
 
     private var _user:User = User()
 
+    // The dataSpace UID
     private var _spaceUID:String=Default.NO_UID
 
-    private var _observationUID:String=Default.NOT_OBSERVABLE
-
+    // The operation
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init(User(), inDataSpace:Default.NO_UID,observableBy:Default.NOT_OBSERVABLE)
+        self.init(User(), inDataSpace:Default.NO_UID)
     }
 
 
@@ -44,7 +44,6 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self._user <- ( map["_user"] )
 		self._spaceUID <- ( map["_spaceUID"] )
-		self._observationUID <- ( map["_observationUID"] )
 		self._operation.spaceUID <- ( map["_operation.spaceUID"] )
 		self._operation.creatorUID <- ( map["_operation.creatorUID"] )
 		self._operation.status <- ( map["_operation.status"] )
@@ -63,7 +62,6 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self._user=decoder.decodeObjectOfClass(User.self, forKey: "_user")! 
 		self._spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
-		self._observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_observationUID")! as NSString)
 		self._operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
 		self._operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
 		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
@@ -77,7 +75,6 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeObject(self._user,forKey:"_user")
 		coder.encodeObject(self._spaceUID,forKey:"_spaceUID")
-		coder.encodeObject(self._observationUID,forKey:"_observationUID")
 		coder.encodeObject(self._operation.spaceUID,forKey:"_operation.spaceUID")
 		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
 		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
@@ -104,13 +101,11 @@ import ObjectMapper
 
     - parameter user: the user concerned the operation
     - parameter spaceUID the space UID
-    - parameter oID: If you want to support distributed execution this action will be propagated to subscribers by this UID
 
     */
-    init (_ user:User=User(), inDataSpace spaceUID:String,observableBy observationUID:String=Default.NOT_OBSERVABLE) {
+    init (_ user:User=User(), inDataSpace spaceUID:String) {
         self._user=user
         self._spaceUID=spaceUID
-        self._observationUID=observationUID
         super.init()
     }
 
@@ -119,10 +114,9 @@ import ObjectMapper
 
     - parameter user: the instance
     - parameter spaceUID:     the space UID
-    - parameter oID:     the observable UID
     */
-    static func commit(user:User, inDataSpace spaceUID:String,observableBy observationUID:String){
-        let operationInstance=UpdateUser(user,inDataSpace:spaceUID,observableBy:observationUID)
+    static func commit(user:User, inDataSpace spaceUID:String){
+        let operationInstance=UpdateUser(user,inDataSpace:spaceUID)
         operationInstance.commit()
     }
 

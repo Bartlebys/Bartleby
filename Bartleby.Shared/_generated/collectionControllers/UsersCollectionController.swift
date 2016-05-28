@@ -31,8 +31,6 @@ import ObjectMapper
 
     public var spaceUID:String=Default.NO_UID
 
-    public var observableByUID:String=Default.NOT_OBSERVABLE
-
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
     public weak var arrayController:NSArrayController?
@@ -75,7 +73,7 @@ import ObjectMapper
         let changedItems=self.items.filter { $0.toBeCommitted == true }
         bprint("\(changedItems.count) \( changedItems.count>1 ? "users" : "user" )  has changed in UsersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
-            UpdateUser.commit(changed, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
+            UpdateUser.commit(changed, inDataSpace:self.spaceUID)
         }
 
     }
@@ -202,7 +200,7 @@ import ObjectMapper
 
 
             if item.committed==false{
-               CreateUser.commit(item, inDataSpace:self.spaceUID, observableBy: self.observableByUID)
+               CreateUser.commit(item, inDataSpace:self.spaceUID)
             }
 
         }else{
@@ -248,7 +246,7 @@ import ObjectMapper
             #endif
 
         
-            DeleteUser.commit(item.UID,fromDataSpace:self.spaceUID, observableBy: self.observableByUID)  
+            DeleteUser.commit(item.UID,fromDataSpace:self.spaceUID)  
 
 
         }

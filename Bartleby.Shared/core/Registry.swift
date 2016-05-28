@@ -283,8 +283,6 @@ public class Registry: BXDocument, SuperIterable {
     private func _refreshIdentifier(inout collectionProxy: Collection) {
         collectionProxy.undoManager=self.undoManager
         collectionProxy.spaceUID=self.spaceUID
-        // @bpds Possibly a core issue Check carefully
-        collectionProxy.observableByUID=self.spaceUID
     }
 
 

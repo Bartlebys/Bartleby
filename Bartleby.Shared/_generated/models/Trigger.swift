@@ -14,7 +14,7 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
-@objc(Trigger) public class Trigger: JObject {
+@objc(Trigger) public class Trigger : JObject{
 
     // Universal type support
     override public class func typeName() -> String {
@@ -22,17 +22,17 @@ import ObjectMapper
     }
 
 	//The index is injected server side.
-	public var index: Int?
+	public var index:Int?
 	//The session UID
-	public var sessionUID: String?
+	public var sessionUID:String?
 	//The user.UID of the sender
-	public var senderUID: String?
+	public var senderUID:String?
 	//The dataSpace UID
-	public var spaceUID: String?
+	public var spaceUID:String?
 	//An array of String encoding [collectionName,UID1, UID2,...]
-	public var upserted: [String] = [String]()
+	public var upserted:[String] = [String]()
 	//An array of String encoding [collectionName, UID1, UID2,...]
-	public var deleted: [String] = [String]()
+	public var deleted:[String] = [String]()
 
 
     // MARK: Mappable
@@ -59,35 +59,35 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.lockAutoCommitObserver()
-		self.index=decoder.decodeIntegerForKey("index")
+		self.index=decoder.decodeIntegerForKey("index") 
 		self.sessionUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"sessionUID") as NSString?)
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
-		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(), NSString.self]), forKey: "upserted")! as! [String]
-		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(), NSString.self]), forKey: "deleted")! as! [String]
+		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "upserted")! as! [String]
+		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "deleted")! as! [String]
         self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		if let index = self.index {
-			coder.encodeInteger(index, forKey:"index")
+			coder.encodeInteger(index,forKey:"index")
 		}
 		if let sessionUID = self.sessionUID {
-			coder.encodeObject(sessionUID, forKey:"sessionUID")
+			coder.encodeObject(sessionUID,forKey:"sessionUID")
 		}
 		if let senderUID = self.senderUID {
-			coder.encodeObject(senderUID, forKey:"senderUID")
+			coder.encodeObject(senderUID,forKey:"senderUID")
 		}
 		if let spaceUID = self.spaceUID {
-			coder.encodeObject(spaceUID, forKey:"spaceUID")
+			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
-		coder.encodeObject(self.upserted, forKey:"upserted")
-		coder.encodeObject(self.deleted, forKey:"deleted")
+		coder.encodeObject(self.upserted,forKey:"upserted")
+		coder.encodeObject(self.deleted,forKey:"deleted")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool {
+    override public class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -98,13 +98,14 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName: String {
+    override public class var collectionName:String{
         return "triggers"
     }
 
-    override public var d_collectionName: String {
+    override public var d_collectionName:String{
         return Trigger.collectionName
     }
 
 
 }
+

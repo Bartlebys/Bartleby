@@ -31,8 +31,6 @@ import ObjectMapper
 
     public var spaceUID:String=Default.NO_UID
 
-    public var observableByUID:String=Default.NOT_OBSERVABLE
-
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
     public weak var arrayController:NSArrayController?
