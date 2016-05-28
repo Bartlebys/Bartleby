@@ -9,25 +9,51 @@
 import Foundation
 
 
-
 extension BartlebyDocument {
-
 
     /*
 
-     The triggers are stored before transmission in document.triggers
+     # Triggers Life Cycle
 
-     Triggers CRUD
-     + Trigger getNewTrigger(minRank)
+     OutGoing triggers are provisionned before transmission in document.triggers
+     On successful transmission they are deleted (like operations)
+     Received triggers are immediately executed and deleted (local execution is resilient to fault, faults are ignored)
 
+     # CRUD on Triggers
+     Normal Users can use the "Create" an "Read" on triggers "Update" and "Delete" are reserved to SuperAdmin and Iss
 
-     Trigger.upserted or deleted encoding = [spaceUID,collectionName,UID1, UID2,...]
-     SSE_Trigger encoding = [senderUID,index,spaceUID,collectionName,UID1, UID2,...]
+     # API
 
+     + Trigger getTriggers(spaceUID,lastIndex=-1)
+     + SSE /triggers/spaceUID/ (Auth required)
+
+     # SSE Encoding
+
+     To insure good performance we encode the triggers for SSE usage.
+     ```
+     [<index>==-1,<sessionUID>,<senderUID>,<spaceUID>,<collectionName>,UID1, UID2,...]
+     ```
+
+     # Trigger.upserted or Trigger.deleted are also encoded
+
+     ```
+     //An array of String encoding [collectionName,UID1, UID2,...]
+     public var upserted: [String] = [String]()
+     //An array of String encoding [collectionName, UID1, UID2,...]
+     public var deleted: [String] = [String]()
+     ```
+
+     On trigger incorporate a full bunch of consistent actions.
+     You can encode a complete graph transformation within one trigger.
+
+     # Why do we use Upsert ?
+
+     Because triggered information are transformed to get operations.
+     A new instance or an updated instance can be grabbed the same way.
 
      */
 
-
+    // MARK: Acknowledgement
 
     public func triggerHasBeenReceived(trigger: Trigger) {
         self._receivedTriggersUID.append(trigger.UID)
