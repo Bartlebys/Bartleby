@@ -21,8 +21,8 @@ import ObjectMapper
         return "Trigger"
     }
 
-	//The index is injected server side.
-	public var index:Int?
+	//The index is injected server side (each dataspace-registry) has it own counter)
+	public var index:Int = -1
 	//The session UID
 	public var sessionUID:String?
 	//The user.UID of the sender
@@ -33,6 +33,12 @@ import ObjectMapper
 	public var upserted:[String] = [String]()
 	//An array of String encoding [collectionName, UID1, UID2,...]
 	public var deleted:[String] = [String]()
+	//The direction of the trigger
+	public enum Direction:Int{
+		case Incoming
+		case Outgoing
+	}
+	public var direction:Direction = .Outgoing
 
 
     // MARK: Mappable
@@ -50,6 +56,7 @@ import ObjectMapper
 		self.spaceUID <- ( map["spaceUID"] )
 		self.upserted <- ( map["upserted"] )
 		self.deleted <- ( map["deleted"] )
+		self.direction <- ( map["direction"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -65,14 +72,13 @@ import ObjectMapper
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "upserted")! as! [String]
 		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "deleted")! as! [String]
+		self.direction=Trigger.Direction(rawValue:decoder.decodeIntegerForKey("direction") )! 
         self.unlockAutoCommitObserver()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		if let index = self.index {
-			coder.encodeInteger(index,forKey:"index")
-		}
+		coder.encodeInteger(self.index,forKey:"index")
 		if let sessionUID = self.sessionUID {
 			coder.encodeObject(sessionUID,forKey:"sessionUID")
 		}
@@ -84,6 +90,7 @@ import ObjectMapper
 		}
 		coder.encodeObject(self.upserted,forKey:"upserted")
 		coder.encodeObject(self.deleted,forKey:"deleted")
+		coder.encodeInteger(self.direction.rawValue ,forKey:"direction")
     }
 
 

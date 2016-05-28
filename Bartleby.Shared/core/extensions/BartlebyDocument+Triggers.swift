@@ -24,7 +24,7 @@ extension BartlebyDocument {
 
      # API
 
-     + Trigger getTriggers(spaceUID,lastIndex=-1)
+     + Trigger getTriggerSuccessors(spaceUID,lastIndex=-1)
      + SSE /triggers/spaceUID/ (Auth required)
 
      # SSE Encoding
@@ -51,17 +51,97 @@ extension BartlebyDocument {
      Because triggered information are transformed to get operations.
      A new instance or an updated instance can be grabbed the same way.
 
+
+     # Trigger.index
+     The index is injected server side using a semaphore on insertion to guarantee its consistency.
+     self.registryMetadata.triggersIndexes permitts to detect the data Holes
+
+
      */
 
-    // MARK: Acknowledgement
+    // MARK: -
 
-    public func triggerHasBeenReceived(trigger: Trigger) {
-        self._receivedTriggersUID.append(trigger.UID)
+    public func getTriggerSuccessors(lastIndex: Int) {
+        // Grab all the triggers > lastIndex
+        // AND Call triggersHasBeenReceived(...)
     }
 
+    public func getTriggersForIndexes(range: Range<Int>) {
+        // Grab the triggers for a given range.
+        // And Call triggersHasBeenReceived(...)
+    }
+
+    public func analyzeConsistency() {
+        // Check self.registryMetadata.triggersIndexes
+        // If there are holes call getTriggersForIndexes()
+        // PREVENT UNLIMITED LOOP ?
+    }
+
+
+
+
+    public func triggersHasBeenReceived(triggers: [Trigger]) {
+        for trigger in triggers {
+
+                // Mark the trigger as Incoming
+                trigger.direction = .Incoming
+                self.triggers.add(trigger)
+
+
+                // If the api is Reachable
+
+                if (trigger.sessionUID != self.sessionUID) {
+
+                    // Decode
+
+                    // Add to the GET_triggers taskGroup
+
+                    // 1. GET all The assets
+                    // 2. Upsert the Grabbed Instance and DELETE the assets.
+                    // 3. Call triggerHasBeenSent(..)
+                    // 4. Call analyzeConsistency()
+
+                    // Those operation are resilient
+                    // There is no transactionnal guarantees at all
+                    // Any exectution is conclusive and partial errors are ignored.
+
+                    // This approach is conflict free.
+
+                } else {
+                    // It is a data larsen.
+                    bprint("Trigger larsen \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
+                }
+
+        }
+    }
+
+
+
+    /**
+     To be called when the trigger has been successufully sent.
+
+     - parameter trigger: the outgoing trigger
+     */
     public func triggerHasBeenSent(trigger: Trigger) {
-        self._sentTriggersUID.append(trigger.UID)
-
+        self.acknowledgeTrigger(trigger)
+        self.delete(trigger)
     }
+
+    /**
+     Acknowledge the trigger permits to detect data holes
+
+     - parameter trigger: the trigger
+     */
+    public func acknowledgeTrigger(trigger: Trigger) {
+        if trigger.index>=0 {
+            if registryMetadata.triggersIndexes.indexOf(trigger.index) == nil {
+                self.registryMetadata.triggersIndexes.append(trigger.index)
+            }
+        } else {
+            // Should never occur (Dev purposes
+            bprint("Trigger index is <0 \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
+        }
+    }
+
 
 }

@@ -73,6 +73,15 @@ protocol BprintCategorizable {
 }
 
 
+
+public func bprintCategoryFor(subject: AnyObject) -> String {
+    if let s = subject as? Collectible {
+        return s.d_collectionName
+    }
+    return DEFAULT_BPRINT_CATEGORY
+}
+
+
 /**
 Print indirection with guided contextual info
 Usage : bprint("<Message>",file:#file,function:#function,line:#line")

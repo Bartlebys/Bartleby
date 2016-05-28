@@ -38,7 +38,11 @@ import ObjectMapper
 	//Save the password or not?
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
-	dynamic public var assetsFolderURL:NSURL?
+	public var assetsFolderURL:NSURL?
+	//Last trigger index received
+	public var lastTriggerIndex:Int = -1
+	//A collection of the trigger Indexes (used to detect data holes)
+	public var triggersIndexes:[Int] = [Int]()
 
 
     // MARK: Mappable
@@ -59,6 +63,8 @@ import ObjectMapper
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
+		self.lastTriggerIndex <- ( map["lastTriggerIndex"] )
+		self.triggersIndexes <- ( map["triggersIndexes"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -77,6 +83,8 @@ import ObjectMapper
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
+		self.lastTriggerIndex=decoder.decodeIntegerForKey("lastTriggerIndex") 
+		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
         self.unlockAutoCommitObserver()
     }
 
@@ -97,6 +105,8 @@ import ObjectMapper
 		if let assetsFolderURL = self.assetsFolderURL {
 			coder.encodeObject(assetsFolderURL,forKey:"assetsFolderURL")
 		}
+		coder.encodeInteger(self.lastTriggerIndex,forKey:"lastTriggerIndex")
+		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
     }
 
 
