@@ -23,8 +23,6 @@ import ObjectMapper
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
 	public var index:Int = -1
-	//The session UID
-	public var sessionUID:String?
 	//The user.UID of the sender
 	public var senderUID:String?
 	//The dataSpace UID
@@ -51,7 +49,6 @@ import ObjectMapper
         super.mapping(map)
         self.lockAutoCommitObserver()
 		self.index <- ( map["index"] )
-		self.sessionUID <- ( map["sessionUID"] )
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.upserted <- ( map["upserted"] )
@@ -67,7 +64,6 @@ import ObjectMapper
         super.init(coder: decoder)
         self.lockAutoCommitObserver()
 		self.index=decoder.decodeIntegerForKey("index") 
-		self.sessionUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"sessionUID") as NSString?)
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "upserted")! as! [String]
@@ -79,9 +75,6 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeInteger(self.index,forKey:"index")
-		if let sessionUID = self.sessionUID {
-			coder.encodeObject(sessionUID,forKey:"sessionUID")
-		}
 		if let senderUID = self.senderUID {
 			coder.encodeObject(senderUID,forKey:"senderUID")
 		}

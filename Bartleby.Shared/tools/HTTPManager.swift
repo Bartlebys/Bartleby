@@ -55,7 +55,8 @@ public class HTTPManager: NSObject {
         request.addValue(HTTPManager.userAgent, forHTTPHeaderField: "User-Agent" )
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("bartleby", forHTTPHeaderField: Bartleby.versionString)
+        request.addValue("bartleby", forHTTPHeaderField: Bartleby.versionString+"; "+Bartleby.deviceIdentifier)
+        request.addValue("runUID", forHTTPHeaderField: Bartleby.runUID)
         if let additionnalHeaders=HTTPManager.additionnalHeaders {
             for (name, value) in additionnalHeaders {
                 request.addValue(value, forHTTPHeaderField:name)

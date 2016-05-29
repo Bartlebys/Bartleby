@@ -84,8 +84,6 @@ public class Registry: BXDocument, SuperIterable {
         }
     }
 
-    // A unique session identifier that changes each time the document is opened.
-    public let sessionUID: String=Bartleby.createUID()
 
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false

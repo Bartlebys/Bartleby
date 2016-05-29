@@ -24,14 +24,14 @@ extension BartlebyDocument {
 
      # API
 
-     + Trigger getTriggerSuccessors(spaceUID,lastIndex=-1)
-     + SSE /triggers/spaceUID/ (Auth required)
+     + Trigger getTriggerSuccessors(spaceUID,lastIndex=-1) (ACL)
+     + SSE /triggers/spaceUID/ (ACL)
 
      # SSE Encoding
 
      To insure good performance we encode the triggers for SSE usage.
      ```
-     [<index>==-1,<sessionUID>,<senderUID>,<spaceUID>,<collectionName>,UID1, UID2,...]
+     [<index>==-1,<senderUID>,<spaceUID>,<collectionName>,UID1, UID2,...]
      ```
 
      # Trigger.upserted or Trigger.deleted are also encoded
@@ -61,23 +61,23 @@ extension BartlebyDocument {
 
     // MARK: -
 
-    public func getTriggerSuccessors(lastIndex: Int) {
+    public func getTriggerAfter(lastIndex: Int) {
         // Grab all the triggers > lastIndex
         // AND Call triggersHasBeenReceived(...)
     }
 
-    public func getTriggersForIndexes(range: Range<Int>) {
+    public func getTriggersForIndexes(set: Set<Int>) {
         // Grab the triggers for a given range.
         // And Call triggersHasBeenReceived(...)
     }
+
+
 
     public func analyzeConsistency() {
         // Check self.registryMetadata.triggersIndexes
         // If there are holes call getTriggersForIndexes()
         // PREVENT UNLIMITED LOOP ?
     }
-
-
 
 
     public func triggersHasBeenReceived(triggers: [Trigger]) {
@@ -90,7 +90,7 @@ extension BartlebyDocument {
 
                 // If the api is Reachable
 
-                if (trigger.sessionUID != self.sessionUID) {
+                //if (trigger.sessionUID != self.sessionUID) {
 
                     // Decode
 
@@ -107,10 +107,7 @@ extension BartlebyDocument {
 
                     // This approach is conflict free.
 
-                } else {
-                    // It is a data larsen.
-                    bprint("Trigger larsen \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
-                }
+               // }
 
         }
     }
@@ -138,7 +135,7 @@ extension BartlebyDocument {
                 self.registryMetadata.triggersIndexes.append(trigger.index)
             }
         } else {
-            // Should never occur (Dev purposes
+            // Should never occur (Dev purposes)
             bprint("Trigger index is <0 \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
         }
     }
