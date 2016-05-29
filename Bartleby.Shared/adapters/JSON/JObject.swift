@@ -48,7 +48,6 @@ func ==(lhs: JObject, rhs: JObject) -> Bool {
         return "JObject"
     }
 
-
     internal var _runTimeTypeName: String?
 
     // The runTypeName is used when deserializing the instance.

@@ -66,17 +66,10 @@ import ObjectMapper
 
 
     /**
-    Commit all the changes in one bunch
-    Marking commit on each item will toggle hasChanged flag.
+    Those item are not committable.
     */
-    public func commitChanges() {
-        let changedItems=self.items.filter { $0.toBeCommitted == true }
-        bprint("\(changedItems.count) \( changedItems.count>1 ? "triggers" : "trigger" )  has changed in TriggersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
-        for changed in changedItems{
-            UpdateTrigger.commit(changed, inDataSpace:self.spaceUID)
-        }
-
-    }
+    public func commitChanges() {}
+    
 
     required public init() {
         super.init()
@@ -154,24 +147,6 @@ import ObjectMapper
         if let item=item as? Trigger{
 
 
-            if let undoManager = self.undoManager{
-                // Has an edit occurred already in this event?
-                if undoManager.groupingLevel > 0 {
-                    // Close the last group
-                    undoManager.endUndoGrouping()
-                    // Open a new group
-                    undoManager.beginUndoGrouping()
-                }
-            }
-
-            // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
-                undoManager.prepareWithInvocationTarget(self).removeObjectFromItemsAtIndex(index)
-                if !undoManager.undoing {
-                    undoManager.setActionName(NSLocalizedString("AddTrigger", comment: "AddTrigger undo action"))
-                }
-            }
-            
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
                 // Add it to the array controller's content array
@@ -199,10 +174,6 @@ import ObjectMapper
             #endif
 
 
-            if item.committed==false{
-               CreateTrigger.commit(item, inDataSpace:self.spaceUID)
-            }
-
         }else{
            
         }
@@ -216,19 +187,6 @@ import ObjectMapper
     public func removeObjectFromItemsAtIndex(index: Int) {
         if let item : Trigger = items[index] {
 
-            // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
-                // We don't want to introduce a retain cycle
-                // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
-                // That's why we have added an registerUndo extension on NSUndoManager
-                undoManager.registerUndo({ () -> Void in
-                   self.insertObject(item, inItemsAtIndex: index)
-                })
-                if !undoManager.undoing {
-                    undoManager.setActionName(NSLocalizedString("RemoveTrigger", comment: "Remove Trigger undo action"))
-                }
-            }
-            
             // Unregister the item
             Registry.unRegister(item)
 
@@ -246,8 +204,6 @@ import ObjectMapper
             #endif
 
         
-            DeleteTrigger.commit(item.UID,fromDataSpace:self.spaceUID)  
-
 
         }
     }

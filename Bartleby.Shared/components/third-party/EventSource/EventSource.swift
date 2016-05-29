@@ -8,22 +8,23 @@
 
 import Foundation
 
-enum EventSourceState {
+public enum EventSourceState {
     case Connecting
     case Open
     case Closed
 }
 
 public class EventSource: NSObject, NSURLSessionDataDelegate {
+    static let DefaultsKey = "com.inaka.eventSource.lastEventId"
 
     let url: NSURL
-    private let lastEventIDKey = "com.inaka.eventSource.lastEventId"
+    private let lastEventIDKey: String
     private let receivedString: NSString?
     private var onOpenCallback: (Void -> Void)?
     private var onErrorCallback: (NSError? -> Void)?
     private var onMessageCallback: ((id: String?, event: String?, data: String?) -> Void)?
-    private(set) var readyState: EventSourceState
-    private(set) var retryTime = 3000
+    public private(set) var readyState: EventSourceState
+    public private(set) var retryTime = 3000
     private var eventListeners = Dictionary<String, (id: String?, event: String?, data: String?) -> Void>()
     private var headers: Dictionary<String, String>
     internal var urlSession: NSURLSession?
@@ -31,6 +32,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
     private var operationQueue: NSOperationQueue
     private var errorBeforeSetErrorCallBack: NSError?
     internal let receivedDataBuffer: NSMutableData
+    private let uniqueIdentifier: String
 
     var event = Dictionary<String, String>()
 
@@ -44,15 +46,23 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         self.receivedString = nil
         self.receivedDataBuffer = NSMutableData()
 
+
+        let port = self.url.port?.stringValue ?? ""
+        let relativePath = self.url.relativePath ?? ""
+        let host = self.url.host ?? ""
+
+        self.uniqueIdentifier = "\(self.url.scheme).\(host).\(port).\(relativePath)"
+        self.lastEventIDKey = "\(EventSource.DefaultsKey).\(self.uniqueIdentifier)"
+
         super.init()
         self.connect()
     }
 
-//Mark: Connect
+    //Mark: Connect
 
     func connect() {
         var additionalHeaders = self.headers
-        if let eventID = lastEventID {
+        if let eventID = self.lastEventID {
             additionalHeaders["Last-Event-Id"] = eventID
         }
 
@@ -64,25 +74,37 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         configuration.timeoutIntervalForResource = NSTimeInterval(INT_MAX)
         configuration.HTTPAdditionalHeaders = additionalHeaders
 
-        readyState = EventSourceState.Connecting
-        urlSession = newSession(configuration)
-        task = urlSession!.dataTaskWithURL(self.url)
+        self.readyState = EventSourceState.Connecting
+        self.urlSession = newSession(configuration)
+        self.task = urlSession!.dataTaskWithURL(self.url)
 
-        task!.resume()
+        self.task!.resume()
     }
 
     internal func newSession(configuration: NSURLSessionConfiguration) -> NSURLSession {
         return NSURLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }
 
-//Mark: Close
+    //Mark: Close
 
     public func close() {
-        readyState = EventSourceState.Closed
-        urlSession?.invalidateAndCancel()
+        self.readyState = EventSourceState.Closed
+        self.urlSession?.invalidateAndCancel()
     }
 
-//Mark: EventListeners
+    private func receivedMessageToClose(httpResponse: NSHTTPURLResponse?) -> Bool {
+        guard let response = httpResponse  else {
+            return false
+        }
+
+        if(response.statusCode == 204) {
+            self.close()
+            return true
+        }
+        return false
+    }
+
+    //Mark: EventListeners
 
     public func onOpen(onOpenCallback: Void -> Void) {
         self.onOpenCallback = onOpenCallback
@@ -105,22 +127,30 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         self.eventListeners[event] = handler
     }
 
-//MARK: NSURLSessionDataDelegate
+    //MARK: NSURLSessionDataDelegate
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        if readyState != EventSourceState.Open {
+        if self.receivedMessageToClose(dataTask.response as? NSHTTPURLResponse) {
+            return
+        }
+
+        if self.readyState != EventSourceState.Open {
             return
         }
 
         self.receivedDataBuffer.appendData(data)
         let eventStream = extractEventsFromBuffer()
-        parseEventStream(eventStream)
+        self.parseEventStream(eventStream)
     }
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: ((NSURLSessionResponseDisposition) -> Void)) {
         completionHandler(NSURLSessionResponseDisposition.Allow)
 
-        readyState = EventSourceState.Open
+        if self.receivedMessageToClose(dataTask.response as? NSHTTPURLResponse) {
+            return
+        }
+
+        self.readyState = EventSourceState.Open
         if(self.onOpenCallback != nil) {
             dispatch_async(dispatch_get_main_queue()) {
                 self.onOpenCallback!()
@@ -129,7 +159,11 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
     }
 
     public func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        readyState = EventSourceState.Closed
+        self.readyState = EventSourceState.Closed
+
+        if self.receivedMessageToClose(task.response as? NSHTTPURLResponse) {
+            return
+        }
 
         if(error == nil || error!.code != -999) {
             let nanoseconds = Double(self.retryTime) / 1000.0 * Double(NSEC_PER_SEC)
@@ -148,31 +182,31 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         }
     }
 
-//MARK: Helpers
+    //MARK: Helpers
 
     private func extractEventsFromBuffer() -> [String] {
-        let delimiter = "\n\n".dataUsingEncoding(Default.STRING_ENCODING)!
+        let delimiter = "\n\n".dataUsingEncoding(NSUTF8StringEncoding)!
         var events = [String]()
 
         // Find first occurrence of delimiter
         var searchRange = NSMakeRange(0, receivedDataBuffer.length)
-        var foundRange = receivedDataBuffer.rangeOfData(delimiter, options: [], range: searchRange)
+        var foundRange = receivedDataBuffer.rangeOfData(delimiter, options: NSDataSearchOptions(), range: searchRange)
         while foundRange.location != NSNotFound {
             // Append event
             if foundRange.location > searchRange.location {
                 let dataChunk = receivedDataBuffer.subdataWithRange(
                     NSMakeRange(searchRange.location, foundRange.location - searchRange.location)
                 )
-                events.append(NSString(data: dataChunk, encoding: Default.STRING_ENCODING) as! String)
+                events.append(NSString(data: dataChunk, encoding: NSUTF8StringEncoding) as! String)
             }
             // Search for next occurrence of delimiter
             searchRange.location = foundRange.location + foundRange.length
             searchRange.length = receivedDataBuffer.length - searchRange.location
-            foundRange = receivedDataBuffer.rangeOfData(delimiter, options: [], range: searchRange)
+            foundRange = receivedDataBuffer.rangeOfData(delimiter, options: NSDataSearchOptions(), range: searchRange)
         }
 
         // Remove the found events from the buffer
-        receivedDataBuffer.replaceBytesInRange(NSMakeRange(0, searchRange.location), withBytes: nil, length: 0)
+        self.receivedDataBuffer.replaceBytesInRange(NSMakeRange(0, searchRange.location), withBytes: nil, length: 0)
 
         return events
     }
@@ -189,7 +223,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
                 continue
             }
 
-            if event.rangeOfString("retry:") != nil {
+            if (event as NSString).containsString("retry:") {
                 if let reconnectTime = parseRetryTime(event) {
                     self.retryTime = reconnectTime
                 }
@@ -282,7 +316,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
     class public func basicAuth(username: String, password: String) -> String {
         let authString = "\(username):\(password)"
-        let authData = authString.dataUsingEncoding(Default.STRING_ENCODING)
+        let authData = authString.dataUsingEncoding(NSUTF8StringEncoding)
         let base64String = authData!.base64EncodedStringWithOptions([])
 
         return "Basic \(base64String)"

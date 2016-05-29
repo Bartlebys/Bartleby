@@ -26,7 +26,6 @@ extension BartlebyDocument {
 
      + Trigger getTriggerSuccessors(spaceUID,lastIndex=-1) (ACL)
      + SSE /triggers/spaceUID/ (ACL)
-
      # SSE Encoding
 
      To insure good performance we encode the triggers for SSE usage.
@@ -64,6 +63,9 @@ extension BartlebyDocument {
     public func getTriggerAfter(lastIndex: Int) {
         // Grab all the triggers > lastIndex
         // AND Call triggersHasBeenReceived(...)
+
+
+
     }
 
     public func getTriggersForIndexes(set: Set<Int>) {
@@ -82,7 +84,10 @@ extension BartlebyDocument {
 
     public func triggersHasBeenReceived(triggers: [Trigger]) {
         for trigger in triggers {
-
+            if let _ = registryMetadata.triggersIndexes.indexOf(trigger.index) {
+                // we have already integrated this trigger.
+                // It is ours.
+            } else {
                 // Mark the trigger as Incoming
                 trigger.direction = .Incoming
                 self.triggers.add(trigger)
@@ -90,25 +95,25 @@ extension BartlebyDocument {
 
                 // If the api is Reachable
 
-                //if (trigger.sessionUID != self.sessionUID) {
+                // We will integrate all the trigger even the trigger we have sent.
+                // What about filterIN on user.Password?
 
-                    // Decode
+                // Decode
 
-                    // Add to the GET_triggers taskGroup
+                // Add to the GET_triggers taskGroup
 
-                    // 1. GET all The assets
-                    // 2. Upsert the Grabbed Instance and DELETE the assets.
-                    // 3. Call triggerHasBeenSent(..)
-                    // 4. Call analyzeConsistency()
+                // 1. GET all The assets
+                // 2. Upsert the Grabbed Instance and DELETE the assets.
+                // 3. Call triggerHasBeenSent(..)
+                // 4. Call analyzeConsistency()
 
-                    // Those operation are resilient
-                    // There is no transactionnal guarantees at all
-                    // Any exectution is conclusive and partial errors are ignored.
+                // Those operation are resilient
+                // There is no transactionnal guarantees at all
+                // Any exectution is conclusive and partial errors are ignored.
 
-                    // This approach is conflict free.
+                // This approach is conflict free.
 
-               // }
-
+            }
         }
     }
 
@@ -139,6 +144,5 @@ extension BartlebyDocument {
             bprint("Trigger index is <0 \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
         }
     }
-
 
 }

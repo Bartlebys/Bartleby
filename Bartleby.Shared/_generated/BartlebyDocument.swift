@@ -386,7 +386,7 @@ public class BartlebyDocument : JDocument {
         triggerDefinition.collectionName = Trigger.collectionName
         triggerDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         triggerDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        triggerDefinition.allowDistantPersistency = true
+        triggerDefinition.allowDistantPersistency = false
         triggerDefinition.inMemory = false
         
 
