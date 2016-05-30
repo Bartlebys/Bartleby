@@ -1,16 +1,28 @@
 //
 //  TestsConfiguration.swift
-//  BartlebyKit
+//  bsync
 //
-//  Created by Benoit Pereira da silva on 08/03/2016.
-//
+//  Created by Benoit Pereira da silva on 29/12/2015.
+//  Copyright © 2015 Benoit Pereira da silva. All rights reserved.
 //
 
 import Foundation
-import BartlebyKit
+import XCTest
 
+enum RemoveAssets {
+    case Always
+    case OnSuccess
+    case Never
+}
+
+
+#if !USE_EMBEDDED_MODULES
+    import BartlebyKit
+#endif
+
+
+// A shared configuration Model
 public class TestsConfiguration: BartlebyConfiguration {
-
     // The cryptographic key used to encrypt/decrypt the data
     public static var KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
 
@@ -26,8 +38,8 @@ public class TestsConfiguration: BartlebyConfiguration {
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
 
-    // CryptoDelegate should normally be set to false
-    public static var DISABLE_DATA_CRYPTO: Bool { return true }
+    // Use NoCrypto as CryptoDelegate (should be false)
+    public static var DISABLE_DATA_CRYPTO: Bool=false
 
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
@@ -50,7 +62,6 @@ public class TestsConfiguration: BartlebyConfiguration {
 
 
     //MARK: - Variable base URL
-
 
     enum Environment {
         case Local
@@ -76,9 +87,12 @@ public class TestsConfiguration: BartlebyConfiguration {
         }
     }
 
+    public static let TIME_OUT_DURATION = 200.0
 
-    public static let TIME_OUT_DURATION = 5.0
     public static let LONG_TIME_OUT_DURATION = 1000.0
 
-    public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "BartlebyKitTests/"
+    public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncTests/"
+
+    static let REMOVE_ASSET_AFTER_TESTS = RemoveAssets.OnSuccess
+
 }

@@ -12,6 +12,8 @@
 		5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
 		5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */; };
+		5BE49D0B1D019A6900FD8EA4 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE49D091D019A6900FD8EA4 /* TestCase.swift */; };
+		5BE49D0C1D019A6900FD8EA4 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE49D0A1D019A6900FD8EA4 /* TestsConfiguration.swift */; };
 		5BFDA6FB1CC279AB002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */; };
 		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; };
 		5BFDA6FF1CC27A05002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */; };
@@ -169,7 +171,6 @@
 		E592B7A01CFC21A4000F3301 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B79E1CFC21A4000F3301 /* Permission.swift */; };
 		E592B7A21CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */; };
 		E592B7A31CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */; };
-		E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */; };
 		E5959C071CA6702200557BDB /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
 		E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */; };
 		E5959C091CA6702200557BDB /* AuthCookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */; };
@@ -341,6 +342,8 @@
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
 		5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift; sourceTree = "<group>"; };
 		5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
+		5BE49D091D019A6900FD8EA4 /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
+		5BE49D0A1D019A6900FD8EA4 /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../Debug-iphoneos/Alamofire.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,7 +375,6 @@
 		E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCreationWithTheSameMailInDifferentSpaceTests.swift; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
-		E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -530,6 +532,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5B4869881CF8A3A900960171 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				5BE49D091D019A6900FD8EA4 /* TestCase.swift */,
+				5BE49D0A1D019A6900FD8EA4 /* TestsConfiguration.swift */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
 		5BBF7D431CC8E4AF00F2237B /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,7 +635,6 @@
 				5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */,
 				5BDEF70C1C9FF49200D9FB70 /* Invocations */,
 				E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */,
-				E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
 				E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */,
 			);
@@ -763,6 +773,7 @@
 				E5B7759B1CDCDDF2007261E1 /* extensions */,
 				E5B7759F1CDCDDF2007261E1 /* operations */,
 				E5E4FB721CFB037E001D1F0F /* sse */,
+				5B4869881CF8A3A900960171 /* tests */,
 				E5B775A41CDCDDF2007261E1 /* tools */,
 			);
 			name = Bartleby.Shared;
@@ -1369,10 +1380,11 @@
 				E5959C071CA6702200557BDB /* LockerTests.swift in Sources */,
 				5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */,
 				5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */,
+				5BE49D0B1D019A6900FD8EA4 /* TestCase.swift in Sources */,
 				5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */,
 				E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */,
 				E5BB0D3F1CEF904D0054C23A /* DocumentTests.swift in Sources */,
-				E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */,
+				5BE49D0C1D019A6900FD8EA4 /* TestsConfiguration.swift in Sources */,
 				E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */,
 				E5959C0A1CA6702200557BDB /* AccessControlTests.swift in Sources */,
 				E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
