@@ -8,19 +8,19 @@
 
 import XCTest
 
-class BsyncAdminTreeTests: XCTestCase {
+class BsyncAdminTreeTests: TestCase {
 
     private static let _spaceUID = Bartleby.createUID()
     private static let _user = User()
     private static let _treeName = Bartleby.randomStringWithLength(10)
-    private static let _context = BsyncContext(sourceURL: NSURL(fileURLWithPath: TestsConfiguration.ASSET_PATH + _treeName + "/"),
+    private static let _context = BsyncContext(sourceURL: NSURL(fileURLWithPath: assetPath + _treeName + "/"),
                                         andDestinationUrl: TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/" + _treeName),
                                         restrictedTo: nil,
                                         autoCreateTrees: false)
     private let _admin = BsyncAdmin()
     
     override static func setUp() {
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        super.setUp()
         
         _user.creatorUID = _user.UID
         self._context.credentials = BsyncCredentials()

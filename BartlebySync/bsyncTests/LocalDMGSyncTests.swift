@@ -8,7 +8,7 @@
 
 import XCTest
 
-class LocalDMGSyncTests: XCTestCase {
+class LocalDMGSyncTests: TestCase {
     
     
     private static let _diskManager = BsyncImageDiskManager()

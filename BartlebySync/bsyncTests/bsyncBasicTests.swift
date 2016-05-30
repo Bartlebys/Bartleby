@@ -8,7 +8,7 @@
 
 import XCTest
 
-class bsyncBasicTests: XCTestCase {
+class bsyncBasicTests: TestCase {
 
     func test001_Create_invalid_directivesA() {
         let directives=BsyncDirectives.upStreamDirectivesWithDistantURL(NSURL(), localPath: "")

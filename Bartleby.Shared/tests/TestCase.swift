@@ -39,7 +39,10 @@ class TestCase: XCTestCase {
     
     override class func setUp() {
         super.setUp()
+
         XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
+        
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     override static func tearDown() {

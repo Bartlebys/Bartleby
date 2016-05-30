@@ -21,7 +21,7 @@ class BsyncAdminUpDownSyncTestsNoCrypto: BsyncAdminUpDownSyncTests {
     }
 }
 
-class BsyncAdminUpDownSyncTests: XCTestCase {
+class BsyncAdminUpDownSyncTests: TestCase {
     private static var _spaceUID = ""
     private static var _password = ""
     private static var _user: User?
@@ -44,12 +44,12 @@ class BsyncAdminUpDownSyncTests: XCTestCase {
     private static var _downFilePath = ""
 
     override class func setUp() {
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        super.setUp()
 
         _spaceUID = Bartleby.createUID()
         _password = Bartleby.randomStringWithLength(6)
 
-        _folderPath = TestsConfiguration.ASSET_PATH + _treeName + "/"
+        _folderPath = assetPath + _treeName + "/"
         _upFolderPath = _folderPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent = Bartleby.randomStringWithLength(20)

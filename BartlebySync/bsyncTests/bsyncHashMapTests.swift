@@ -8,7 +8,7 @@
 
 import XCTest
 
-class bsyncHashMapTests: XCTestCase {
+class bsyncHashMapTests: TestCase {
     private var _sourceHashMap, _destinationHashMap: HashMap!
     private var _deltaPathMap: DeltaPathMap!
 
@@ -22,11 +22,11 @@ class bsyncHashMapTests: XCTestCase {
     }
 
     override func tearDown() {
+        super.tearDown()
+
         _sourceHashMap = nil
         _destinationHashMap = nil
         _deltaPathMap = nil
-
-        super.tearDown()
     }
 
     // MARK: Basic hash map

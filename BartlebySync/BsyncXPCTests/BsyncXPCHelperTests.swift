@@ -14,7 +14,7 @@ class TestContext: IdentifiableCardContext {
     var name: String = Bartleby.randomStringWithLength(6)
     
 }
-class BsyncXPCHelperTests: XCTestCase {
+class BsyncXPCHelperTests: TestCase {
     let fm = BFileManager()
     
     func test_touch() {
@@ -49,7 +49,7 @@ class BsyncXPCHelperTests: XCTestCase {
         
         let helper = BsyncXPCHelper()
         let context = TestContext()
-        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let folderPath = TestCase.assetPath + context.name + "/"
         let card = helper.cardFor(User(), context: context, folderPath: folderPath, isMaster: true)
         
         helper.createDMG(card, thenDo: { (whenDone) in
@@ -69,7 +69,7 @@ class BsyncXPCHelperTests: XCTestCase {
         user.creatorUID = user.UID
         let context = TestContext()
         print(context.name)
-        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let folderPath = TestCase.assetPath + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
         
@@ -97,7 +97,7 @@ class BsyncXPCHelperTests: XCTestCase {
         user.creatorUID = user.UID
         let context = TestContext()
         print(context.name)
-        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let folderPath = TestCase.assetPath + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: true)
         
@@ -131,7 +131,7 @@ class BsyncXPCHelperTests: XCTestCase {
         user.creatorUID = user.UID
         let context = TestContext()
         print(context.name)
-        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let folderPath = TestCase.assetPath + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
         
@@ -159,7 +159,7 @@ class BsyncXPCHelperTests: XCTestCase {
         user.creatorUID = user.UID
         let context = TestContext()
         print(context.name)
-        let folderPath = TestsConfiguration.ASSET_PATH + "BsyncXPCHelperTests/" + context.name + "/"
+        let folderPath = TestCase.assetPath + context.name + "/"
         let helper = BsyncXPCHelper()
         let card = helper.cardFor(user, context: context, folderPath: folderPath, isMaster: false)
         

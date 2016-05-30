@@ -9,7 +9,7 @@
 import XCTest
 import BartlebyKit
 
-class AccessControlTests: XCTestCase {
+class AccessControlTests: TestCase {
     private static let _spaceUID = Bartleby.createUID()
 
     private static let _creatorEmail="Creator@AccessControlTests"
@@ -27,11 +27,6 @@ class AccessControlTests: XCTestCase {
     private static let _thirdUserPassword=Bartleby.randomStringWithLength(6)
     private static var _thirdUserID: String="UNDEFINED"
     private static var _thirdUser: User?
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     // MARK: 0 - Initialization
 

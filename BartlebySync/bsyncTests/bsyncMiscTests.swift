@@ -8,49 +8,38 @@
 
 import XCTest
 
-class bsyncMiscTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    
-    // Void >Test to validate that the Test class can be compiled
-    func test000_void() {
-        let result=true
-        XCTAssertTrue(result)
-    }
-    
+class bsyncMiscTests: TestCase {
     
     func test001_DMG_create_attach_detach() {
         let expectation = expectationWithDescription("DMG_create_attach_detach_remove")
         let dm = BsyncImageDiskManager()
-        let fm = BFileManager()
-        let path = TestsConfiguration.ASSET_PATH + Bartleby.randomStringWithLength(6)
-        dm.createImageDisk(path, volumeName: "Project 1 Synchronized", size: "2g", password: "gugu", handlers: Handlers { (createDisc) in
-            if let imagePath = createDisc.getStringResult() where createDisc.success {
-                dm.attachVolume(from:imagePath, withPassword: "gugu", handlers: Handlers { (attach) in
-                    XCTAssert(attach.success, attach.message)
-                    dm.detachVolume("Project 1 Synchronized", handlers: Handlers { (detach) in
-                        XCTAssert(detach.success, detach.message)
-                        fm.removeItemAtPath(imagePath, handlers: Handlers { (remove) in
-                            XCTAssert(remove.success, remove.message)
+        let fm = NSFileManager.defaultManager()
+        let path = TestCase.assetPath + Bartleby.randomStringWithLength(6)
+        do {
+            try fm.createDirectoryAtPath(TestCase.assetPath, withIntermediateDirectories: true, attributes: nil)
+            dm.createImageDisk(path, volumeName: "Project 1 Synchronized", size: "2g", password: "gugu", handlers: Handlers { (createDisc) in
+                if let imagePath = createDisc.getStringResult() where createDisc.success {
+                    dm.attachVolume(from:imagePath, withPassword: "gugu", handlers: Handlers { (attach) in
+                        XCTAssert(attach.success, attach.message)
+                        dm.detachVolume("Project 1 Synchronized", handlers: Handlers { (detach) in
+                            XCTAssert(detach.success, detach.message)
                             expectation.fulfill()
+                            do {
+                                try fm.removeItemAtPath(imagePath)
+                            } catch {
+                                XCTFail("Error: \(error)")
+                            }
                             })
                         })
-                    })
-            } else {
-                XCTFail(createDisc.message)
-            }
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+                } else {
+                    XCTFail(createDisc.message)
+                }
+                })
+            
+            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        } catch {
+            XCTFail("Error: \(error)")
+        }
     }
     
     func test002_hash_sample_folder() {
@@ -63,7 +52,7 @@ class bsyncMiscTests: XCTestCase {
         
         let startTime = CFAbsoluteTimeGetCurrent()
         
-        let path = TestsConfiguration.ASSET_PATH + "bsyncMiscTests/"
+        let path = bsyncMiscTests.assetPath
         let fm = BFileManager()
         fm.createDirectoryAtPath(path + "subfolder/", handlers: Handlers { (create) in
             XCTAssert(create.success, create.message)
@@ -87,7 +76,7 @@ class bsyncMiscTests: XCTestCase {
                     XCTAssert(remove.success, remove.message)
                     })
                 })
-        })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }

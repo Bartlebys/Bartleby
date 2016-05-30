@@ -8,7 +8,7 @@
 
 import XCTest
 
-class BsyncXPCProtocolTests: XCTestCase {
+class BsyncXPCProtocolTests: TestCase {
     func test101_exist_create_write_read_list() {
         // Insert code here to initialize your application
         let connection = NSXPCConnection(serviceName: "fr.chaosmos.BsyncXPC")
@@ -17,7 +17,7 @@ class BsyncXPCProtocolTests: XCTestCase {
         
         if let xpc = connection.remoteObjectProxy as? BsyncXPCProtocol {
             
-            let folder = TestsConfiguration.ASSET_PATH + Bartleby.randomStringWithLength(6)
+            let folder = TestCase.assetPath + Bartleby.randomStringWithLength(6)
             
             // Checking no items (directory or file) exists
             let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")

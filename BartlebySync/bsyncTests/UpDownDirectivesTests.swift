@@ -17,14 +17,13 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 }
 
 
-class UpDownDirectivesTests: XCTestCase {
+class UpDownDirectivesTests: TestCase {
     
     private static var _spaceUID = ""
     private static var _password = ""
     private static var _user: User?
     
     private static var _treeName = ""
-    private static var _folderPath = ""
     private static var _upFolderPath = ""
     private static var _upFilePath = ""
     private static var _fileContent = ""
@@ -39,20 +38,19 @@ class UpDownDirectivesTests: XCTestCase {
     private static let _fm = BFileManager()
     
     override class func setUp() {
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        super.setUp()
         
         _spaceUID = Bartleby.createUID()
         _password = Bartleby.randomStringWithLength(6)
         
         _treeName = NSStringFromClass(self)
-        _folderPath = TestsConfiguration.ASSET_PATH + self.className() + "/"
-        _upFolderPath = _folderPath + "Up/" + _treeName + "/"
+        _upFolderPath = assetPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent = "martin" //Bartleby.randomStringWithLength(20)
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
         
-        _downFolderPath = _folderPath + "Down/" + _treeName + "/"
+        _downFolderPath = assetPath + "Down/" + _treeName + "/"
         _downFilePath = _downFolderPath + "file.txt"
         
         _upDirectivesPath = _upFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
@@ -62,8 +60,6 @@ class UpDownDirectivesTests: XCTestCase {
     // MARK: 0 - Initialization
     
     func test000_purgeCookiesForTheDomainAndFiles() {
-        let expectation = expectationWithDescription("Cleaning")
-        
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             for cookie in cookies {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
@@ -74,11 +70,12 @@ class UpDownDirectivesTests: XCTestCase {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
         
-        Bartleby.fileManager.removeItemAtPath(UpDownDirectivesTests._folderPath, handlers: Handlers { (_) in
-            expectation.fulfill()
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        let fm = NSFileManager.defaultManager()
+        do {
+            try fm.removeItemAtPath(UpDownDirectivesTests.assetPath)
+        } catch {
+            // Silent catch
+        }
     }
     
     // MARK: 1 - Create user

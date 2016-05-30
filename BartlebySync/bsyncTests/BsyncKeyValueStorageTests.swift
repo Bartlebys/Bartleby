@@ -8,17 +8,12 @@
 
 import XCTest
 
-class BsyncKeyValueStorageTests: XCTestCase {
+class BsyncKeyValueStorageTests: TestCase {
     private static let _spaceUID = Bartleby.createUID()
     private static var _userID = "UNDEFINED"
     private static let _kvsUrl = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
     let _kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
     let _fm = NSFileManager()
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     override func setUp() {
         super.setUp()
