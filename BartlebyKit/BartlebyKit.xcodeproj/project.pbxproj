@@ -1375,9 +1375,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5361CFD1CD8DD9E005855DC /* HandlersTests.swift in Sources */,
+				5B33945B1CFC893100204ACF /* TestsConfiguration.swift in Sources */,
 				5B5D0A081CDE1F48001FB281 /* BFileManagerTests.swift in Sources */,
 				E51029181CB68FC50040FC2C /* JObjectTests.swift in Sources */,
 				E5959C071CA6702200557BDB /* LockerTests.swift in Sources */,
+				5B33945D1CFC8A1A00204ACF /* TestCase.swift in Sources */,
 				5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */,
 				5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */,
 				5BE49D0B1D019A6900FD8EA4 /* TestCase.swift in Sources */,

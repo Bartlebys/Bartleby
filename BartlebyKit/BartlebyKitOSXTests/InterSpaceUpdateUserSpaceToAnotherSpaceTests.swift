@@ -10,18 +10,13 @@ import XCTest
 
 import BartlebyKit
 
-class InterSpaceUpdateUserSpaceToAnotherSpaceTests: XCTestCase {
+class InterSpaceUpdateUserSpaceToAnotherSpaceTests: TestCase {
     private static let _spaceA = Bartleby.createUID()
     private static let _spaceB = Bartleby.createUID()
     private static let _emailA="\(Bartleby.randomStringWithLength(5))@lylo.tv"
     private static let _passwordA=Bartleby.randomStringWithLength(6)
     private static var _userIDA: String="UNDEFINED"
     private static var _userA: User?
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     // MARK: 0 - Initialization
 

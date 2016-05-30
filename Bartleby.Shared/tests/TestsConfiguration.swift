@@ -15,7 +15,6 @@ enum RemoveAssets {
     case Never
 }
 
-
 #if !USE_EMBEDDED_MODULES
     import BartlebyKit
 #endif
@@ -90,8 +89,6 @@ public class TestsConfiguration: BartlebyConfiguration {
     public static let TIME_OUT_DURATION = 200.0
 
     public static let LONG_TIME_OUT_DURATION = 1000.0
-
-    public static let ASSET_PATH = Bartleby.getSearchPath(.DesktopDirectory)! + "bsyncTests/"
 
     static let REMOVE_ASSET_AFTER_TESTS = RemoveAssets.OnSuccess
 

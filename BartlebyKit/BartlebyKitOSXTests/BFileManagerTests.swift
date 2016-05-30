@@ -9,12 +9,11 @@
 import XCTest
 import BartlebyKit
 
-class BFileManagerTests: XCTestCase {
+class BFileManagerTests: TestCase {
     let fm = Bartleby.fileManager
-    let contextName = Bartleby.randomStringWithLength(6) + "/"
 
     func test101_writeString() {
-        let folder = TestsConfiguration.ASSET_PATH + contextName
+        let folder = TestCase.assetPath + Bartleby.randomStringWithLength(6) + "/"
 
         // Checking no items (directory or file) exists
         let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")

@@ -9,7 +9,7 @@
 import XCTest
 import BartlebyKit
 
-class InterSpaceTests: XCTestCase {
+class InterSpaceTests: TestCase {
     private static let _spaceUID1 = Bartleby.createUID()
     private static let _spaceUID2 = Bartleby.createUID()
     private static let _email1="email1@InterSpaceTests"
@@ -20,11 +20,6 @@ class InterSpaceTests: XCTestCase {
     private static var _userID2: String="UNDEFINED"
     private static var _user1: User?
     private static var _user2: User?
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     // MARK: 0 - Initialization
 

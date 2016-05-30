@@ -10,7 +10,7 @@
 import XCTest
 import BartlebyKit
 
-class BasicApiTests: XCTestCase {
+class BasicApiTests: TestCase {
     private static let _spaceUID = Bartleby.createUID()
 
     private static let _email="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
@@ -19,12 +19,6 @@ class BasicApiTests: XCTestCase {
     private static let _newPassword=Bartleby.randomStringWithLength(6)
     private static var _userID: String="UNDEFINED"
     private static var _createdUser: User?
-
-    override static func setUp() {
-        super.setUp()
-
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     // MARK: 0 - Initialization
 

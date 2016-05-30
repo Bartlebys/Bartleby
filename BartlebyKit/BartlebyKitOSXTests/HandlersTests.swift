@@ -9,11 +9,8 @@
 import XCTest
 import BartlebyKit
 
-class CompletionWithResultTests: XCTestCase {
+class CompletionWithResultTests: TestCase {
 
-    static override func setUp() {
-    }
-    
     // MARK: Generic result
     func  test101_generic_Result_mapping() {
         let handlers=Handlers(completionHandler: { (completion) in

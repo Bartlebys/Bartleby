@@ -10,7 +10,7 @@ import Foundation
 import XCTest
 import BartlebyKit
 
-class DocumentTests: XCTestCase {
+class DocumentTests: TestCase {
 
     func test_001_Create_A_Document_With_10_users() {
 

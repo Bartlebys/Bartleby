@@ -10,13 +10,8 @@ import XCTest
 
 import BartlebyKit
 
-class CryptoHelperTests: XCTestCase {
+class CryptoHelperTests: TestCase {
     private static let _cryptoHelper = CryptoHelper(key:TestsConfiguration.KEY, salt:TestsConfiguration.SHARED_SALT)
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     func testEncryptDataDecryptData() {
         // Given a buffer defined by a base64 string

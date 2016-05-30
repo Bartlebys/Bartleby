@@ -9,18 +9,13 @@
 import XCTest
 import BartlebyKit
 
-class AuthCookiesTests: XCTestCase {
+class AuthCookiesTests: TestCase {
     private static let _spaceUID = Bartleby.createUID()
 
     private static let _email="\(Bartleby.randomStringWithLength(6))@AuthCookiesTests"
     private static let _password=Bartleby.randomStringWithLength(6)
     private static var _userID: String="UNDEFINED"
     private static var _createdUser: User?
-
-    override static func setUp() {
-        super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-    }
 
     // MARK: - User Creation
 
