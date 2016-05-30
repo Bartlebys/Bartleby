@@ -136,9 +136,7 @@ import ObjectMapper
 		self.code <- ( map["code"] )
 		self.numberOfAttempt <- ( map["numberOfAttempt"] )
 		self.startDate <- ( map["startDate"], ISO8601DateTransform() )
-		self.startDate <- ( map["startDate"] )
 		self.endDate <- ( map["endDate"], ISO8601DateTransform() )
-		self.endDate <- ( map["endDate"] )
 		self.cake <- ( map["cake"] )
         self.unlockAutoCommitObserver()
     }

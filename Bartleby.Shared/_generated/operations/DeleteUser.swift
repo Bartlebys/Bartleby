@@ -49,7 +49,6 @@ import ObjectMapper
 		self._operation.status <- ( map["_operation.status"] )
 		self._operation.counter <- ( map["_operation.counter"] )
 		self._operation.creationDate <- ( map["_operation.creationDate"], ISO8601DateTransform() )
-		self._operation.creationDate <- ( map["_operation.creationDate"] )
 		self._operation.baseUrl <- ( map["_operation.baseUrl"], URLTransform() )
         self.unlockAutoCommitObserver()
     }

@@ -61,9 +61,7 @@ import ObjectMapper
 		self.spaceUID <- ( map["spaceUID"] )
 		self.counter <- ( map["counter"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-		self.creationDate <- ( map["creationDate"] )
 		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
-		self.lastInvocationDate <- ( map["lastInvocationDate"] )
         self.unlockAutoCommitObserver()
     }
 
