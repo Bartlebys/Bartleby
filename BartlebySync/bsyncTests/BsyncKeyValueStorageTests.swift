@@ -13,7 +13,6 @@ class BsyncKeyValueStorageTests: TestCase {
     private static var _userID = "UNDEFINED"
     private static let _kvsUrl = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
     let _kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
-    let _fm = NSFileManager()
 
     override func setUp() {
         super.setUp()

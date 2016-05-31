@@ -39,30 +39,36 @@ import Foundation
     
     public var computeTheHashMap: Bool=true
     public var automaticTreeCreation: Bool=false
-        
+    
     public required init() {
         super.init()
     }
     
-    // TODO: @md #test #bsync Test credential are not nil when using distant url (source or destination)
     public func areValid()->(valid: Bool, message: String) {
-        if self.sourceURL == nil || self.destinationURL == nil {
-            return (false, NSLocalizedString("The source and the destination must be set", comment: "The source and the destination must be set"))
-        }
-        if self.hashMapViewName != nil {
-            // We currently support only down streams with hashMapView
-            if let scheme=destinationURL?.scheme {
-                if (BsyncDirectives.distantSchemes.indexOf( scheme ) != nil) {
-                    return (false, NSLocalizedString("Hash map views must be restricted to down stream synchronisation", comment: "Hash map views must be restricted to down stream synchronisation"))
-                } else {
-                    // It's ok.
+        if let sourceURL = self.sourceURL, let destinationURL = self.destinationURL {
+            let destinationIsDistant = BsyncDirectives.distantSchemes.indexOf(destinationURL.scheme) != nil
+            let sourceIsDistant = BsyncDirectives.distantSchemes.indexOf(sourceURL.scheme) != nil
+            
+            if (sourceIsDistant || destinationIsDistant) {
+                if self.user == nil {
+                    return (false, NSLocalizedString("Distant directives need a user", comment: ""))
                 }
-            } else {
-                return (false, NSLocalizedString("No valid destination scheme", comment: "No valid destination scheme"))
+                if self.password == nil {
+                    return (false, NSLocalizedString("Distant directives need a password", comment: ""))
+                }
+                if self.salt == nil {
+                    return (false, NSLocalizedString("Distant directives need a shared salt", comment: ""))
+                }
             }
             
+            if (self.hashMapViewName != nil) && destinationIsDistant {
+                return (false, NSLocalizedString("Hash map view must be restricted when synchronizing to the final consumer", comment: ""))
+            }
+            
+        } else {
+            return (false, NSLocalizedString("The source and the destination must be set", comment: "The source and the destination must be set"))
         }
-        
+
         return (true, "")
     }
     
@@ -110,7 +116,7 @@ import Foundation
         directives.destinationURL = NSURL(fileURLWithPath: destinationPath)
         return directives
     }
-        
+    
     // MARK: Mappable
     
     required public init?(_ map: Map) {

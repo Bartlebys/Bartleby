@@ -14,69 +14,43 @@ class LocalSyncTests: TestCase {
     private static let _fileManager = NSFileManager()
     
     private static let _treeName = "LocalSyncTests"
-    private static let _folderPath = assetPath
-    private static let _sourceFolderPath = _folderPath + "Source/" + _treeName + "/"
+    private static let _sourceFolderPath = assetPath + "Source/" + _treeName + "/"
     private static let _sourceFilePath = _sourceFolderPath + "file.txt"
     private static let _fileContent = "dummy content"
     
-    private static let _destinationFolderPath = _folderPath + "Destination/" + _treeName + "/"
+    private static let _destinationFolderPath = assetPath + "Destination/" + _treeName + "/"
     private static let _destinationFilePath = _destinationFolderPath + "file.txt"
     
-    private static let _directivesPath = _sourceFolderPath + BsyncDirectives.DEFAULT_FILE_NAME
-            
+    private static var _directives = BsyncDirectives()
+    
     // MARK: 1 - Prepare folder and directives
     func test101_CreateFileInUpFolder() {
-        let expectation = expectationWithDescription("All files should be created")
-        let fm = BFileManager()
-        
-        // Remove whole folder
-        fm.removeItemAtPath(LocalSyncTests._folderPath, handlers: Handlers { (remove) in
-            // Create down folder
-            fm.createDirectoryAtPath(LocalSyncTests._destinationFolderPath, handlers: Handlers { (destinationFolderCreation) in
-                XCTAssert(destinationFolderCreation.success, destinationFolderCreation.message)
-                // Create up folder
-                fm.createDirectoryAtPath(LocalSyncTests._sourceFolderPath, handlers: Handlers { (sourceFolderCreation) in
-                    XCTAssertTrue(sourceFolderCreation.success, sourceFolderCreation.message)
-                    // Create file
-                    fm.writeString(LocalSyncTests._fileContent, path: LocalSyncTests._sourceFilePath, handlers: Handlers { (fileCreation) in
-                        XCTAssertTrue(fileCreation.success, fileCreation.message)
-                        expectation.fulfill()
-                        })
-                    })
-                })
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test102_CreateDirectives() {
-        let directives = BsyncDirectives.localDirectivesWithPath(LocalSyncTests._sourceFolderPath, destinationPath: LocalSyncTests._destinationFolderPath)
-        directives.automaticTreeCreation = true
-        
-        let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives, path: LocalSyncTests._directivesPath)
+            
+            // Create source folder
+            try _fm.createDirectoryAtPath(LocalSyncTests._sourceFolderPath, withIntermediateDirectories: true, attributes: nil)
+            // Create file
+            try LocalSyncTests._fileContent.writeToFile(LocalSyncTests._sourceFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            // Create destination folder
+            try _fm.createDirectoryAtPath(LocalSyncTests._destinationFolderPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
             XCTFail("\(error)")
         }
     }
     
+    func test102_CreateDirectives() {
+        LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(LocalSyncTests._sourceFolderPath, destinationPath: LocalSyncTests._destinationFolderPath)
+    }
     
     // MARK: Run synchronization
     func test201_RunSynchronisation() {
         let expectation = expectationWithDescription("Synchronize should complete")
         
-        do {
-            let admin = BsyncAdmin()
-            let directives = try admin.loadDirectives(LocalSyncTests._directivesPath)
-            admin.runDirectives(directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
-                expectation.fulfill()
-                XCTAssertTrue(completion.success, completion.message)
-                })
-            
-        } catch {
-            XCTFail("\(error)")
-        }
+        let admin = BsyncAdmin()
+        admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+            expectation.fulfill()
+            XCTAssertTrue(completion.success, completion.message)
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }

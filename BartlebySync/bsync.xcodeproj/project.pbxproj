@@ -273,6 +273,7 @@
 		5BE49D061D01988B00FD8EA4 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE49D031D01988B00FD8EA4 /* TestsConfiguration.swift */; };
 		5BE49D071D01988B00FD8EA4 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE49D031D01988B00FD8EA4 /* TestsConfiguration.swift */; };
 		5BE49D081D0198B000FD8EA4 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6A61CFDE53A00AC0173 /* TasksScheduler.swift */; };
+		5BE49D0E1D019FB300FD8EA4 /* DirectivesSerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE49D0D1D019FB300FD8EA4 /* DirectivesSerializationTests.swift */; };
 		5BF4DF811CC7EDE600965DC0 /* BsyncKeyValueStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413F1CC53898004B5F91 /* BsyncKeyValueStorageTests.swift */; };
 		5BFD56EC1CD20C140081FB64 /* LocalSyncTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */; };
 		E508E6BA1CFDE53A00AC0173 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E61D1CFDE53A00AC0173 /* BartlebyDocument.swift */; };
@@ -1001,6 +1002,7 @@
 		5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUIDCommand.swift; sourceTree = "<group>"; };
 		5BE49D021D01988B00FD8EA4 /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		5BE49D031D01988B00FD8EA4 /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
+		5BE49D0D1D019FB300FD8EA4 /* DirectivesSerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectivesSerializationTests.swift; sourceTree = "<group>"; };
 		5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSyncTests.swift; sourceTree = "<group>"; };
 		E508E61D1CFDE53A00AC0173 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E508E61F1CFDE53A00AC0173 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
@@ -1778,6 +1780,7 @@
 		E5C0CED31C36CCDD00F3B7B8 /* bsyncTests */ = {
 			isa = PBXGroup;
 			children = (
+				5BE49D0D1D019FB300FD8EA4 /* DirectivesSerializationTests.swift */,
 				5B48694F1CF5BA1B00960171 /* BsyncAdminTreeTests.swift */,
 				5BC8F16A1CB3A75900B00866 /* BsyncAdminUpDownSyncTests.swift */,
 				5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */,
@@ -2621,6 +2624,7 @@
 				E5B98E971CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */,
 				E508E7EB1CFDE53A00AC0173 /* JObject.swift in Sources */,
 				E508E7571CFDE53A00AC0173 /* DeletePermission.swift in Sources */,
+				5BE49D0E1D019FB300FD8EA4 /* DirectivesSerializationTests.swift in Sources */,
 				E508E76F1CFDE53A00AC0173 /* ReadGroupById.swift in Sources */,
 				E56A90A21C8DFF2C0043F90E /* bsyncBasicTests.swift in Sources */,
 				E508E8331CFDE53A00AC0173 /* Progression+Conveniences.swift in Sources */,

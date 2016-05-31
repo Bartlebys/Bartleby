@@ -29,6 +29,9 @@ class TestObserver: NSObject, XCTestObservation {
 
 class TestCase: XCTestCase {
     
+    static let fm = NSFileManager.defaultManager()
+    let _fm = TestCase.fm
+
     static var assetPath: String {
         get {
             return Bartleby.getSearchPath(.DesktopDirectory)! + NSStringFromClass(self) + "/"
@@ -39,15 +42,31 @@ class TestCase: XCTestCase {
     
     override class func setUp() {
         super.setUp()
+        
+        // Remove asset folder if it exists
+        do {
+            if fm.fileExistsAtPath(assetPath) {
+                try fm.removeItemAtPath(assetPath)
+            }
+            try fm.createDirectoryAtPath(assetPath, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            XCTFail("\(error)")
+        }
 
+        // Add test observer
         XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
         
+        // Configure Bartleby
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
     
     override static func tearDown() {
+        super.tearDown()
+        
+        // Remove test observer
         XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
-        let fm = NSFileManager()
+        
+        // Remove asset folder depending of the configuration
         let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
         if fm.fileExistsAtPath(assetPath) && remove != RemoveAssets.Never {
             if (remove == RemoveAssets.Always) || (_testObserver.hasSucceeded) {
@@ -58,6 +77,5 @@ class TestCase: XCTestCase {
                 }
             }
         }
-        
     }
 }
