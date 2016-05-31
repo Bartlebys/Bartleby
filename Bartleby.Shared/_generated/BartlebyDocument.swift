@@ -47,6 +47,7 @@ public class BartlebyDocument : JDocument {
 	public var lockers=LockersCollectionController()
 	public var groups=GroupsCollectionController()
 	public var operations=OperationsCollectionController()
+	public var permissions=PermissionsCollectionController()
 	public var triggers=TriggersCollectionController()
 
     // MARK: - OSX
@@ -178,6 +179,26 @@ public class BartlebyDocument : JDocument {
     }
         
 
+    public var permissionsArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            permissionsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the CollectionController
+            self.permissions.arrayController=permissionsArrayController
+            // Add observer
+            permissionsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
+            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey] as? Int{
+               if self.permissions.items.count > index{
+                   let selection=self.permissions.items[index]
+                   self.permissionsArrayController?.setSelectedObjects([selection])
+                }
+             }
+        }
+    }
+        
+
     public var triggersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
@@ -288,6 +309,20 @@ public class BartlebyDocument : JDocument {
     }
         
 
+    static public let kSelectedPermissionIndexKey="selectedPermissionIndexKey"
+    static public let PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION="PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION"
+    dynamic public var selectedPermission:Permission?{
+        didSet{
+            if let permission = selectedPermission {
+                if let index=permissions.items.indexOf(permission){
+                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey]=index
+                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
+                }
+            }
+        }
+    }
+        
+
     static public let kSelectedTriggerIndexKey="selectedTriggerIndexKey"
     static public let TRIGGER_SELECTED_INDEX_CHANGED_NOTIFICATION="TRIGGER_SELECTED_INDEX_CHANGED_NOTIFICATION"
     dynamic public var selectedTrigger:Trigger?{
@@ -380,6 +415,16 @@ public class BartlebyDocument : JDocument {
         operationDefinition.inMemory = false
         
 
+        let permissionDefinition = CollectionMetadatum()
+        permissionDefinition.proxy = self.permissions
+        // By default we group the observation via the rootObjectUID
+        permissionDefinition.collectionName = Permission.collectionName
+        permissionDefinition.observableViaUID = self.registryMetadata.rootObjectUID
+        permissionDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
+        permissionDefinition.allowDistantPersistency = true
+        permissionDefinition.inMemory = false
+        
+
         let triggerDefinition = CollectionMetadatum()
         triggerDefinition.proxy = self.triggers
         // By default we group the observation via the rootObjectUID
@@ -400,6 +445,7 @@ public class BartlebyDocument : JDocument {
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(groupDefinition)
 			try self.registryMetadata.configureSchema(operationDefinition)
+			try self.registryMetadata.configureSchema(permissionDefinition)
 			try self.registryMetadata.configureSchema(triggerDefinition)
 
         }catch RegistryError.DuplicatedCollectionName(let collectionName){
@@ -487,6 +533,15 @@ public class BartlebyDocument : JDocument {
             
 
             
+            if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
+                if let permission=self.permissionsArrayController?.selectedObjects.first as? Permission{
+                    self.selectedPermission=permission
+                    return
+                }
+            }
+            
+
+            
             if keyPath=="selectionIndexes" && self.triggersArrayController == object as? NSArrayController {
                 if let trigger=self.triggersArrayController?.selectedObjects.first as? Trigger{
                     self.selectedTrigger=trigger
@@ -545,6 +600,14 @@ public class BartlebyDocument : JDocument {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedOperation{
             self.operations.removeObject(selected)
+        }
+    }
+        
+
+    public func deleteSelectedPermission() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedPermission{
+            self.permissions.removeObject(selected)
         }
     }
         

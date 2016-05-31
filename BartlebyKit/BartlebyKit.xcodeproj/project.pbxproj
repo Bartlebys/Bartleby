@@ -149,6 +149,46 @@
 		E57A4C651CE8A34E0044106A /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBA1CE8A34E0044106A /* UpdateUser.swift */; };
 		E57A4C661CE8A34E0044106A /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */; };
 		E57A4C671CE8A34E0044106A /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */; };
+		E592B7711CFC1D8A000F3301 /* CreateTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7681CFC1D8A000F3301 /* CreateTrigger.swift */; };
+		E592B7721CFC1D8A000F3301 /* CreateTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7691CFC1D8A000F3301 /* CreateTriggers.swift */; };
+		E592B7731CFC1D8A000F3301 /* DeleteTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76A1CFC1D8A000F3301 /* DeleteTrigger.swift */; };
+		E592B7741CFC1D8A000F3301 /* DeleteTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76B1CFC1D8A000F3301 /* DeleteTriggers.swift */; };
+		E592B7751CFC1D8A000F3301 /* ReadTriggerById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76C1CFC1D8A000F3301 /* ReadTriggerById.swift */; };
+		E592B7761CFC1D8A000F3301 /* ReadTriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76D1CFC1D8A000F3301 /* ReadTriggersByIds.swift */; };
+		E592B7771CFC1D8A000F3301 /* ReadTriggersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76E1CFC1D8A000F3301 /* ReadTriggersByQuery.swift */; };
+		E592B7781CFC1D8A000F3301 /* UpdateTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76F1CFC1D8A000F3301 /* UpdateTrigger.swift */; };
+		E592B7791CFC1D8A000F3301 /* UpdateTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7701CFC1D8A000F3301 /* UpdateTriggers.swift */; };
+		E592B77A1CFC2176000F3301 /* CreateTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7681CFC1D8A000F3301 /* CreateTrigger.swift */; };
+		E592B77B1CFC2176000F3301 /* CreateTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7691CFC1D8A000F3301 /* CreateTriggers.swift */; };
+		E592B77C1CFC2176000F3301 /* DeleteTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76A1CFC1D8A000F3301 /* DeleteTrigger.swift */; };
+		E592B77D1CFC2176000F3301 /* DeleteTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76B1CFC1D8A000F3301 /* DeleteTriggers.swift */; };
+		E592B77E1CFC2176000F3301 /* ReadTriggerById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76C1CFC1D8A000F3301 /* ReadTriggerById.swift */; };
+		E592B77F1CFC2176000F3301 /* ReadTriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76D1CFC1D8A000F3301 /* ReadTriggersByIds.swift */; };
+		E592B7801CFC2176000F3301 /* ReadTriggersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76E1CFC1D8A000F3301 /* ReadTriggersByQuery.swift */; };
+		E592B7811CFC2176000F3301 /* UpdateTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B76F1CFC1D8A000F3301 /* UpdateTrigger.swift */; };
+		E592B7821CFC2176000F3301 /* UpdateTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7701CFC1D8A000F3301 /* UpdateTriggers.swift */; };
+		E592B78C1CFC2181000F3301 /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7831CFC2181000F3301 /* CreatePermission.swift */; };
+		E592B78D1CFC2181000F3301 /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7831CFC2181000F3301 /* CreatePermission.swift */; };
+		E592B78E1CFC2181000F3301 /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7841CFC2181000F3301 /* CreatePermissions.swift */; };
+		E592B78F1CFC2181000F3301 /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7841CFC2181000F3301 /* CreatePermissions.swift */; };
+		E592B7901CFC2181000F3301 /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7851CFC2181000F3301 /* DeletePermission.swift */; };
+		E592B7911CFC2181000F3301 /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7851CFC2181000F3301 /* DeletePermission.swift */; };
+		E592B7921CFC2181000F3301 /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7861CFC2181000F3301 /* DeletePermissions.swift */; };
+		E592B7931CFC2181000F3301 /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7861CFC2181000F3301 /* DeletePermissions.swift */; };
+		E592B7941CFC2181000F3301 /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7871CFC2181000F3301 /* ReadPermissionById.swift */; };
+		E592B7951CFC2181000F3301 /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7871CFC2181000F3301 /* ReadPermissionById.swift */; };
+		E592B7961CFC2181000F3301 /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7881CFC2181000F3301 /* ReadPermissionsByIds.swift */; };
+		E592B7971CFC2181000F3301 /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7881CFC2181000F3301 /* ReadPermissionsByIds.swift */; };
+		E592B7981CFC2181000F3301 /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7891CFC2181000F3301 /* ReadPermissionsByQuery.swift */; };
+		E592B7991CFC2181000F3301 /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7891CFC2181000F3301 /* ReadPermissionsByQuery.swift */; };
+		E592B79A1CFC2181000F3301 /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B78A1CFC2181000F3301 /* UpdatePermission.swift */; };
+		E592B79B1CFC2181000F3301 /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B78A1CFC2181000F3301 /* UpdatePermission.swift */; };
+		E592B79C1CFC2181000F3301 /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B78B1CFC2181000F3301 /* UpdatePermissions.swift */; };
+		E592B79D1CFC2181000F3301 /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B78B1CFC2181000F3301 /* UpdatePermissions.swift */; };
+		E592B79F1CFC21A4000F3301 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B79E1CFC21A4000F3301 /* Permission.swift */; };
+		E592B7A01CFC21A4000F3301 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B79E1CFC21A4000F3301 /* Permission.swift */; };
+		E592B7A21CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */; };
+		E592B7A31CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */; };
 		E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */; };
 		E5959C071CA6702200557BDB /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
 		E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */; };
@@ -271,7 +311,6 @@
 		E5BDC62F1CEF4C6A00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5BDC6301CEF4C6F00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
-		E5E4FB681CFAFF41001D1F0F /* PushTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB671CFAFF41001D1F0F /* PushTrigger.swift */; };
 		E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
 		E5E4FB6B1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
 		E5E4FB6D1CFB0205001D1F0F /* TriggersAfterIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB6C1CFB0205001D1F0F /* TriggersAfterIndex.swift */; };
@@ -405,6 +444,26 @@
 		E57A4BB11CE8A34E0044106A /* UpdateLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateLockers.swift; sourceTree = "<group>"; };
 		E57A4BBA1CE8A34E0044106A /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
+		E592B7681CFC1D8A000F3301 /* CreateTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTrigger.swift; sourceTree = "<group>"; };
+		E592B7691CFC1D8A000F3301 /* CreateTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTriggers.swift; sourceTree = "<group>"; };
+		E592B76A1CFC1D8A000F3301 /* DeleteTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTrigger.swift; sourceTree = "<group>"; };
+		E592B76B1CFC1D8A000F3301 /* DeleteTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTriggers.swift; sourceTree = "<group>"; };
+		E592B76C1CFC1D8A000F3301 /* ReadTriggerById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTriggerById.swift; sourceTree = "<group>"; };
+		E592B76D1CFC1D8A000F3301 /* ReadTriggersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTriggersByIds.swift; sourceTree = "<group>"; };
+		E592B76E1CFC1D8A000F3301 /* ReadTriggersByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTriggersByQuery.swift; sourceTree = "<group>"; };
+		E592B76F1CFC1D8A000F3301 /* UpdateTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTrigger.swift; sourceTree = "<group>"; };
+		E592B7701CFC1D8A000F3301 /* UpdateTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateTriggers.swift; sourceTree = "<group>"; };
+		E592B7831CFC2181000F3301 /* CreatePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermission.swift; sourceTree = "<group>"; };
+		E592B7841CFC2181000F3301 /* CreatePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermissions.swift; sourceTree = "<group>"; };
+		E592B7851CFC2181000F3301 /* DeletePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePermission.swift; sourceTree = "<group>"; };
+		E592B7861CFC2181000F3301 /* DeletePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePermissions.swift; sourceTree = "<group>"; };
+		E592B7871CFC2181000F3301 /* ReadPermissionById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionById.swift; sourceTree = "<group>"; };
+		E592B7881CFC2181000F3301 /* ReadPermissionsByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionsByIds.swift; sourceTree = "<group>"; };
+		E592B7891CFC2181000F3301 /* ReadPermissionsByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionsByQuery.swift; sourceTree = "<group>"; };
+		E592B78A1CFC2181000F3301 /* UpdatePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePermission.swift; sourceTree = "<group>"; };
+		E592B78B1CFC2181000F3301 /* UpdatePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePermissions.swift; sourceTree = "<group>"; };
+		E592B79E1CFC21A4000F3301 /* Permission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
+		E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionsCollectionController.swift; sourceTree = "<group>"; };
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
@@ -465,7 +524,6 @@
 		E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5E4FB671CFAFF41001D1F0F /* PushTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTrigger.swift; sourceTree = "<group>"; };
 		E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersByIds.swift; sourceTree = "<group>"; };
 		E5E4FB6C1CFB0205001D1F0F /* TriggersAfterIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersAfterIndex.swift; sourceTree = "<group>"; };
 		E5E4FB6F1CFB028A001D1F0F /* TriggersForIndexes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersForIndexes.swift; sourceTree = "<group>"; };
@@ -639,6 +697,7 @@
 		E57A4B641CE8A34E0044106A /* collectionControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */,
 				E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */,
 				E57A4B651CE8A34E0044106A /* GroupsCollectionController.swift */,
 				E57A4B661CE8A34E0044106A /* LockersCollectionController.swift */,
@@ -653,6 +712,7 @@
 		E57A4B6D1CE8A34E0044106A /* models */ = {
 			isa = PBXGroup;
 			children = (
+				E592B79E1CFC21A4000F3301 /* Permission.swift */,
 				E57A4B7B1CE8A34E0044106A /* User.swift */,
 				E57A4B731CE8A34E0044106A /* Operation.swift */,
 				E57A4B6F1CE8A34E0044106A /* Completion.swift */,
@@ -675,6 +735,24 @@
 		E57A4B7C1CE8A34E0044106A /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				E592B7831CFC2181000F3301 /* CreatePermission.swift */,
+				E592B7841CFC2181000F3301 /* CreatePermissions.swift */,
+				E592B7851CFC2181000F3301 /* DeletePermission.swift */,
+				E592B7861CFC2181000F3301 /* DeletePermissions.swift */,
+				E592B7871CFC2181000F3301 /* ReadPermissionById.swift */,
+				E592B7881CFC2181000F3301 /* ReadPermissionsByIds.swift */,
+				E592B7891CFC2181000F3301 /* ReadPermissionsByQuery.swift */,
+				E592B78A1CFC2181000F3301 /* UpdatePermission.swift */,
+				E592B78B1CFC2181000F3301 /* UpdatePermissions.swift */,
+				E592B7681CFC1D8A000F3301 /* CreateTrigger.swift */,
+				E592B7691CFC1D8A000F3301 /* CreateTriggers.swift */,
+				E592B76A1CFC1D8A000F3301 /* DeleteTrigger.swift */,
+				E592B76B1CFC1D8A000F3301 /* DeleteTriggers.swift */,
+				E592B76C1CFC1D8A000F3301 /* ReadTriggerById.swift */,
+				E592B76D1CFC1D8A000F3301 /* ReadTriggersByIds.swift */,
+				E592B76E1CFC1D8A000F3301 /* ReadTriggersByQuery.swift */,
+				E592B76F1CFC1D8A000F3301 /* UpdateTrigger.swift */,
+				E592B7701CFC1D8A000F3301 /* UpdateTriggers.swift */,
 				E57A4B7D1CE8A34E0044106A /* CreateGroup.swift */,
 				E57A4B7E1CE8A34E0044106A /* CreateGroups.swift */,
 				E57A4B7F1CE8A34E0044106A /* CreateLocker.swift */,
@@ -878,7 +956,6 @@
 				E5B775A01CDCDDF2007261E1 /* LoginUser.swift */,
 				E5B775A11CDCDDF2007261E1 /* LogoutUser.swift */,
 				E5B775A21CDCDDF2007261E1 /* VerifyLocker.swift */,
-				E5E4FB671CFAFF41001D1F0F /* PushTrigger.swift */,
 				E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */,
 				E5E4FB6C1CFB0205001D1F0F /* TriggersAfterIndex.swift */,
 				E5E4FB6F1CFB028A001D1F0F /* TriggersForIndexes.swift */,
@@ -1050,6 +1127,7 @@
 				E57A4BDC1CE8A34E0044106A /* Progression.swift in Sources */,
 				E57A4A861CE849600044106A /* ExternalReference+Resolution.swift in Sources */,
 				E57A4BD21CE8A34E0044106A /* ExternalReference.swift in Sources */,
+				E592B7941CFC2181000F3301 /* ReadPermissionById.swift in Sources */,
 				E57A4BEC1CE8A34E0044106A /* CreateGroups.swift in Sources */,
 				E5B776B91CDCDDF3007261E1 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5B7766F1CDCDDF2007261E1 /* EventSource.swift in Sources */,
@@ -1058,34 +1136,44 @@
 				E5B776AD1CDCDDF2007261E1 /* Serializable.swift in Sources */,
 				E5B776C71CDCDDF3007261E1 /* BFileManager.swift in Sources */,
 				E5B776611CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
+				E592B79C1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
 				E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */,
 				E5B776B71CDCDDF2007261E1 /* TasksScheduler.swift in Sources */,
 				E57A4BD61CE8A34E0044106A /* Locker.swift in Sources */,
 				E57A4C501CE8A34E0044106A /* UpdateLocker.swift in Sources */,
+				E592B7711CFC1D8A000F3301 /* CreateTrigger.swift in Sources */,
 				E57A4BDE1CE8A34E0044106A /* RegistryMetadata.swift in Sources */,
 				E57A4BD01CE8A34E0044106A /* Completion.swift in Sources */,
+				E592B7731CFC1D8A000F3301 /* DeleteTrigger.swift in Sources */,
 				E57A4C641CE8A34E0044106A /* UpdateUser.swift in Sources */,
 				E5B776A51CDCDDF2007261E1 /* HTTPResponse.swift in Sources */,
 				E57A4BC81CE8A34E0044106A /* TasksGroupsCollectionController.swift in Sources */,
 				E5B776C31CDCDDF3007261E1 /* VerifyLocker.swift in Sources */,
+				E592B7A21CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */,
 				E5B776951CDCDDF2007261E1 /* Handlers.swift in Sources */,
+				E592B7791CFC1D8A000F3301 /* UpdateTriggers.swift in Sources */,
 				E5B776B51CDCDDF2007261E1 /* PushOperationTask.swift in Sources */,
 				E57A4BCE1CE8A34E0044106A /* CollectionMetadatum.swift in Sources */,
+				E592B79F1CFC21A4000F3301 /* Permission.swift in Sources */,
 				E57A4BE01CE8A34E0044106A /* Tag.swift in Sources */,
 				E5B776651CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift in Sources */,
 				E5B7769F1CDCDDF2007261E1 /* ConcreteTask.swift in Sources */,
+				E592B7961CFC2181000F3301 /* ReadPermissionsByIds.swift in Sources */,
 				E57A4C081CE8A34E0044106A /* DeleteGroups.swift in Sources */,
 				E57A4C201CE8A34E0044106A /* DeleteUsers.swift in Sources */,
 				E57A4C061CE8A34E0044106A /* DeleteGroup.swift in Sources */,
+				E592B7741CFC1D8A000F3301 /* DeleteTriggers.swift in Sources */,
 				E5B776A31CDCDDF2007261E1 /* HTTPCommand.swift in Sources */,
 				E5B776871CDCDDF2007261E1 /* Progression+Conveniences.swift in Sources */,
 				E5B7767F1CDCDDF2007261E1 /* Completion+Conveniences.swift in Sources */,
 				E57A4C4C1CE8A34E0044106A /* UpdateGroup.swift in Sources */,
+				E592B7921CFC2181000F3301 /* DeletePermissions.swift in Sources */,
 				E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E57A4BC21CE8A34E0044106A /* OperationsCollectionController.swift in Sources */,
 				E509A0261CF58468007DEF8C /* JString.swift in Sources */,
 				E57A4BE21CE8A34E0044106A /* Task.swift in Sources */,
 				E57A4C041CE8A34E0044106A /* CreateUsers.swift in Sources */,
+				E592B7721CFC1D8A000F3301 /* CreateTriggers.swift in Sources */,
 				E5B776A71CDCDDF2007261E1 /* Identifiable.swift in Sources */,
 				E57A4BE41CE8A34E0044106A /* TasksGroup.swift in Sources */,
 				E5B776991CDCDDF2007261E1 /* Collectible.swift in Sources */,
@@ -1096,15 +1184,16 @@
 				E5B776831CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E57A4BC01CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
-				E5E4FB681CFAFF41001D1F0F /* PushTrigger.swift in Sources */,
 				E5B7768B1CDCDDF2007261E1 /* Registry+SecurityScopes.swift in Sources */,
 				E57A4BEA1CE8A34E0044106A /* CreateGroup.swift in Sources */,
 				E5B776A11CDCDDF2007261E1 /* CryptoDelegate.swift in Sources */,
+				E592B7751CFC1D8A000F3301 /* ReadTriggerById.swift in Sources */,
 				E5B776B31CDCDDF2007261E1 /* Registry.swift in Sources */,
 				E50140F91CE8B3BA00EDD9C3 /* Initializable.swift in Sources */,
 				E57A4C261CE8A34E0044106A /* ReadGroupsByQuery.swift in Sources */,
 				E537043F1CF876860099440D /* RelayingTask.swift in Sources */,
 				E5E4FB701CFB028A001D1F0F /* TriggersForIndexes.swift in Sources */,
+				E592B79A1CFC2181000F3301 /* UpdatePermission.swift in Sources */,
 				E57A4C4A1CE8A34E0044106A /* ReadUsersByQuery.swift in Sources */,
 				E5B776691CDCDDF2007261E1 /* ImageTransform.swift in Sources */,
 				E57A4C461CE8A34E0044106A /* ReadUserById.swift in Sources */,
@@ -1117,11 +1206,13 @@
 				E57A4BEE1CE8A34E0044106A /* CreateLocker.swift in Sources */,
 				E537043D1CF8767B0099440D /* ReactiveTask.swift in Sources */,
 				E57A4C2C1CE8A34E0044106A /* ReadLockersByQuery.swift in Sources */,
+				E592B7781CFC1D8A000F3301 /* UpdateTrigger.swift in Sources */,
 				E5B776811CDCDDF2007261E1 /* Completion+Result.swift in Sources */,
 				E5B776851CDCDDF2007261E1 /* NSNotification+Progression.swift in Sources */,
 				E57A4BD41CE8A34E0044106A /* Group.swift in Sources */,
 				E57A4C281CE8A34E0044106A /* ReadLockerById.swift in Sources */,
 				E5B7765F1CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */,
+				E592B7761CFC1D8A000F3301 /* ReadTriggersByIds.swift in Sources */,
 				E5B776CB1CDCDDF3007261E1 /* Pluralization.swift in Sources */,
 				E5B776CD1CDCDDF3007261E1 /* PString.swift in Sources */,
 				E57A4BCA1CE8A34E0044106A /* TriggersCollectionController.swift in Sources */,
@@ -1130,18 +1221,22 @@
 				E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B7765D1CDCDDF2007261E1 /* JDocument.swift in Sources */,
 				E57A4C1E1CE8A34E0044106A /* DeleteUser.swift in Sources */,
+				E592B7901CFC2181000F3301 /* DeletePermission.swift in Sources */,
 				E5B7767D1CDCDDF2007261E1 /* Default.swift in Sources */,
 				E5B776B11CDCDDF2007261E1 /* UserProtocol.swift in Sources */,
 				E57A4BBE1CE8A34E0044106A /* GroupsCollectionController.swift in Sources */,
+				E592B7981CFC2181000F3301 /* ReadPermissionsByQuery.swift in Sources */,
 				E5B7769D1CDCDDF2007261E1 /* CollectionMetadatumProtocol.swift in Sources */,
 				E51834C91CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E5B776891CDCDDF2007261E1 /* BartlebyDocument +Operations.swift in Sources */,
 				E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
 				E5B7767B1CDCDDF2007261E1 /* Consignee.swift in Sources */,
 				E57A4C4E1CE8A34E0044106A /* UpdateGroups.swift in Sources */,
+				E592B78C1CFC2181000F3301 /* CreatePermission.swift in Sources */,
 				E5AAC5501CEB16AF005C15E2 /* Task+Execution.swift in Sources */,
 				E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */,
 				E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */,
+				E592B7771CFC1D8A000F3301 /* ReadTriggersByQuery.swift in Sources */,
 				E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */,
 				E5B7766B1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
 				E5E4FB741CFB03B4001D1F0F /* SubscribeToTriggers.swift in Sources */,
@@ -1164,6 +1259,7 @@
 				E5B776971CDCDDF2007261E1 /* BartlebyFileIO.swift in Sources */,
 				E57A4BCC1CE8A34E0044106A /* UsersCollectionController.swift in Sources */,
 				E50140FF1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
+				E592B78E1CFC2181000F3301 /* CreatePermissions.swift in Sources */,
 				E57A4C661CE8A34E0044106A /* UpdateUsers.swift in Sources */,
 				E57A4C2A1CE8A34E0044106A /* ReadLockersByIds.swift in Sources */,
 				E5B776931CDCDDF2007261E1 /* Global.swift in Sources */,
@@ -1182,13 +1278,16 @@
 				E57A4BDD1CE8A34E0044106A /* Progression.swift in Sources */,
 				E57A4A871CE849600044106A /* ExternalReference+Resolution.swift in Sources */,
 				E57A4BD31CE8A34E0044106A /* ExternalReference.swift in Sources */,
+				E592B7951CFC2181000F3301 /* ReadPermissionById.swift in Sources */,
 				E57A4BED1CE8A34E0044106A /* CreateGroups.swift in Sources */,
 				E5B776BA1CDCDDF3007261E1 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5B776701CDCDDF2007261E1 /* EventSource.swift in Sources */,
+				E592B77D1CFC2176000F3301 /* DeleteTriggers.swift in Sources */,
 				E5B776581CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */,
 				E5B776C01CDCDDF3007261E1 /* LoginUser.swift in Sources */,
 				E5B776AE1CDCDDF2007261E1 /* Serializable.swift in Sources */,
 				E5B776C81CDCDDF3007261E1 /* BFileManager.swift in Sources */,
+				E592B79D1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
 				E5B776621CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
 				E53704441CF876CC0099440D /* TaskWithNotifications.swift in Sources */,
 				E5B776B81CDCDDF3007261E1 /* TasksScheduler.swift in Sources */,
@@ -1201,13 +1300,16 @@
 				E5B776A61CDCDDF2007261E1 /* HTTPResponse.swift in Sources */,
 				E57A4BC91CE8A34E0044106A /* TasksGroupsCollectionController.swift in Sources */,
 				E5B776C41CDCDDF3007261E1 /* VerifyLocker.swift in Sources */,
+				E592B7A31CFC21AE000F3301 /* PermissionsCollectionController.swift in Sources */,
 				E5B776961CDCDDF2007261E1 /* Handlers.swift in Sources */,
 				E5B776B61CDCDDF2007261E1 /* PushOperationTask.swift in Sources */,
 				E57A4BCF1CE8A34E0044106A /* CollectionMetadatum.swift in Sources */,
 				E57A4BE11CE8A34E0044106A /* Tag.swift in Sources */,
+				E592B7A01CFC21A4000F3301 /* Permission.swift in Sources */,
 				E5B776661CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift in Sources */,
 				E5B776A01CDCDDF2007261E1 /* ConcreteTask.swift in Sources */,
 				E57A4C091CE8A34E0044106A /* DeleteGroups.swift in Sources */,
+				E592B7971CFC2181000F3301 /* ReadPermissionsByIds.swift in Sources */,
 				E57A4C211CE8A34E0044106A /* DeleteUsers.swift in Sources */,
 				E50140FD1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */,
 				E57A4C071CE8A34E0044106A /* DeleteGroup.swift in Sources */,
@@ -1216,6 +1318,7 @@
 				E5B776801CDCDDF2007261E1 /* Completion+Conveniences.swift in Sources */,
 				E57A4C4D1CE8A34E0044106A /* UpdateGroup.swift in Sources */,
 				E5E4FB711CFB028A001D1F0F /* TriggersForIndexes.swift in Sources */,
+				E592B7931CFC2181000F3301 /* DeletePermissions.swift in Sources */,
 				E509A0271CF58468007DEF8C /* JString.swift in Sources */,
 				E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E57A4BC31CE8A34E0044106A /* OperationsCollectionController.swift in Sources */,
@@ -1224,19 +1327,24 @@
 				E5B776A81CDCDDF2007261E1 /* Identifiable.swift in Sources */,
 				E57A4BE51CE8A34E0044106A /* TasksGroup.swift in Sources */,
 				E5B7769A1CDCDDF2007261E1 /* Collectible.swift in Sources */,
+				E592B77E1CFC2176000F3301 /* ReadTriggerById.swift in Sources */,
+				E592B7821CFC2176000F3301 /* UpdateTriggers.swift in Sources */,
 				E5B776AC1CDCDDF2007261E1 /* RegistryMetadataProtocol.swift in Sources */,
 				E509A0231CF58468007DEF8C /* JData.swift in Sources */,
 				E5B776901CDCDDF2007261E1 /* Registry+URD.swift in Sources */,
 				E5B776681CDCDDF2007261E1 /* JSerializer.swift in Sources */,
 				E5B776841CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
+				E592B7801CFC2176000F3301 /* ReadTriggersByQuery.swift in Sources */,
 				E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E57A4BC11CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
 				E5B7768C1CDCDDF2007261E1 /* Registry+SecurityScopes.swift in Sources */,
 				E57A4BEB1CE8A34E0044106A /* CreateGroup.swift in Sources */,
 				E5B776A21CDCDDF2007261E1 /* CryptoDelegate.swift in Sources */,
+				E592B77F1CFC2176000F3301 /* ReadTriggersByIds.swift in Sources */,
 				E5B776B41CDCDDF2007261E1 /* Registry.swift in Sources */,
 				E5E4FB6B1CFB0042001D1F0F /* TriggersByIds.swift in Sources */,
 				E53704431CF876CC0099440D /* RelayingTask.swift in Sources */,
+				E592B79B1CFC2181000F3301 /* UpdatePermission.swift in Sources */,
 				E57A4C271CE8A34E0044106A /* ReadGroupsByQuery.swift in Sources */,
 				E57A4C4B1CE8A34E0044106A /* ReadUsersByQuery.swift in Sources */,
 				E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */,
@@ -1257,21 +1365,26 @@
 				E5B776601CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */,
 				E5B776CC1CDCDDF3007261E1 /* Pluralization.swift in Sources */,
 				E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */,
+				E592B77C1CFC2176000F3301 /* DeleteTrigger.swift in Sources */,
 				E57A4BCB1CE8A34E0044106A /* TriggersCollectionController.swift in Sources */,
 				E5E4FB6E1CFB0205001D1F0F /* TriggersAfterIndex.swift in Sources */,
 				E57A4C0D1CE8A34E0044106A /* DeleteLockers.swift in Sources */,
 				E5B776641CDCDDF2007261E1 /* JObject.swift in Sources */,
 				E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */,
 				E5B7765E1CDCDDF2007261E1 /* JDocument.swift in Sources */,
+				E592B7911CFC2181000F3301 /* DeletePermission.swift in Sources */,
 				E57A4C1F1CE8A34E0044106A /* DeleteUser.swift in Sources */,
 				E5B7767E1CDCDDF2007261E1 /* Default.swift in Sources */,
 				E5B776B21CDCDDF2007261E1 /* UserProtocol.swift in Sources */,
+				E592B7991CFC2181000F3301 /* ReadPermissionsByQuery.swift in Sources */,
 				E57A4BBF1CE8A34E0044106A /* GroupsCollectionController.swift in Sources */,
 				E5B7769E1CDCDDF2007261E1 /* CollectionMetadatumProtocol.swift in Sources */,
 				E51834CA1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E5B7768A1CDCDDF2007261E1 /* BartlebyDocument +Operations.swift in Sources */,
 				E51834C71CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
 				E5B7767C1CDCDDF2007261E1 /* Consignee.swift in Sources */,
+				E592B78D1CFC2181000F3301 /* CreatePermission.swift in Sources */,
+				E592B7811CFC2176000F3301 /* UpdateTrigger.swift in Sources */,
 				E57A4C4F1CE8A34E0044106A /* UpdateGroups.swift in Sources */,
 				E5AAC5511CEB16AF005C15E2 /* Task+Execution.swift in Sources */,
 				E5B776761CDCDDF2007261E1 /* Bartleby.swift in Sources */,
@@ -1292,10 +1405,13 @@
 				E5E4FB751CFB03B4001D1F0F /* SubscribeToTriggers.swift in Sources */,
 				E57A4C251CE8A34E0044106A /* ReadGroupsByIds.swift in Sources */,
 				E57A4C0B1CE8A34E0044106A /* DeleteLocker.swift in Sources */,
+				E592B77B1CFC2176000F3301 /* CreateTriggers.swift in Sources */,
 				E5B776981CDCDDF2007261E1 /* BartlebyFileIO.swift in Sources */,
 				E57A4BCD1CE8A34E0044106A /* UsersCollectionController.swift in Sources */,
 				E57A4C671CE8A34E0044106A /* UpdateUsers.swift in Sources */,
 				E57A4C2B1CE8A34E0044106A /* ReadLockersByIds.swift in Sources */,
+				E592B78F1CFC2181000F3301 /* CreatePermissions.swift in Sources */,
+				E592B77A1CFC2176000F3301 /* CreateTrigger.swift in Sources */,
 				E5B776941CDCDDF2007261E1 /* Global.swift in Sources */,
 				E50141001CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
 				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,

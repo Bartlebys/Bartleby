@@ -18,10 +18,16 @@ user.dynamicType.typeName()
 user.runTimeTypeName()
 
 do{
-    let deserializedObject=try JSerializer.deserialize(data)
+    let deserializedObject:User=try JSerializer.deserialize(data) as! User
+
+    print(deserializedObject.UID == user.UID)
+    print(deserializedObject == user )
+
 }catch{
     print(error)
 }
+
+
 
 
 let userExternalReference=ExternalReference(from:user)
@@ -39,6 +45,13 @@ if let userReference:User=userExternalReference.toLocalInstance(){
         print("\(userReference.email!)")
     }else{
         print("Not Matching UID")
+    }
+    if userReference==user{
+        print("OK! USER UID")
+        // Verify that it points to the good reference.
+        print("\(userReference.email!)")
+    }else{
+        print("Not USER UID")
     }
 
 }

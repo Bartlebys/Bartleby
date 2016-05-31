@@ -17,15 +17,20 @@ extension BartlebyDocument {
 
      OutGoing triggers are provisionned before transmission in document.triggers
      On successful transmission they are deleted (like operations)
-     Received triggers are immediately executed and deleted (local execution is resilient to fault, faults are ignored)
 
-     # CRUD on Triggers
-     Normal Users can use the "Create" an "Read" on triggers "Update" and "Delete" are reserved to SuperAdmin and Iss
+     # The standard CRUD
 
-     # API
+     Most of the standard CRUD stack can be used only by SuperAdmins.
+     The endpoints are blocked by server side ACL.
 
-     + Trigger getTriggerSuccessors(spaceUID,lastIndex=-1) (ACL)
-     + SSE /triggers/spaceUID/ (ACL)
+     ## Main API
+
+     - CreateTrigger
+     - TriggersByIds
+     - TriggersAfterIndex
+     - TriggersForIndexes
+
+
      # SSE Encoding
 
      To insure good performance we encode the triggers for SSE usage.
@@ -45,16 +50,19 @@ extension BartlebyDocument {
      On trigger incorporate a full bunch of consistent actions.
      You can encode a complete graph transformation within one trigger.
 
-     # Why do we use Upsert ?
+     # Why do we use Upsert?
 
      Because triggered information are transformed to get operations.
      A new instance or an updated instance can be grabbed the same way.
 
 
      # Trigger.index
-     The index is injected server side using a semaphore on insertion to guarantee its consistency.
-     self.registryMetadata.triggersIndexes permitts to detect the data Holes
 
+     The index is injected server side using a semaphore on insertion to guarantee its consistency.
+     self.registryMetadata.triggersIndexes permitts to detect the data holes
+
+     Consecutive Received triggers are immediately executed and deleted (local execution is resilient to fault, faults are ignored)
+     If there are holes we try to fill the gap.
 
      */
 
@@ -62,25 +70,22 @@ extension BartlebyDocument {
 
     public func getTriggerAfter(lastIndex: Int) {
         // Grab all the triggers > lastIndex
+        // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
-
-
 
     }
 
     public func getTriggersForIndexes(set: Set<Int>) {
         // Grab the triggers for a given range.
+        // TriggersForIndexes
         // And Call triggersHasBeenReceived(...)
     }
-
-
 
     public func analyzeConsistency() {
         // Check self.registryMetadata.triggersIndexes
         // If there are holes call getTriggersForIndexes()
         // PREVENT UNLIMITED LOOP ?
     }
-
 
     public func triggersHasBeenReceived(triggers: [Trigger]) {
         for trigger in triggers {
@@ -102,7 +107,7 @@ extension BartlebyDocument {
 
                 // Add to the GET_triggers taskGroup
 
-                // 1. GET all The assets
+                // 1. GET all The ressources
                 // 2. Upsert the Grabbed Instance and DELETE the assets.
                 // 3. Call triggerHasBeenSent(..)
                 // 4. Call analyzeConsistency()
@@ -118,15 +123,19 @@ extension BartlebyDocument {
     }
 
 
-
     /**
-     To be called when the trigger has been successufully sent.
+     Pushes a given trigger
 
-     - parameter trigger: the outgoing trigger
+     - parameter trigger: the trigger
      */
-    public func triggerHasBeenSent(trigger: Trigger) {
-        self.acknowledgeTrigger(trigger)
-        self.delete(trigger)
+    public func pushTrigger(trigger: Trigger) {
+        CreateTrigger.execute(trigger, inDataSpace: self.spaceUID, sucessHandler: { (context) in
+
+            self.acknowledgeTrigger(trigger)
+            self.delete(trigger)
+            }) { (context) in
+                //
+        }
     }
 
     /**

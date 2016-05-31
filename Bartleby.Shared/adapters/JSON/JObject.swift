@@ -13,13 +13,11 @@ import Foundation
 #endif
 
 
-
 // MARK: - Equatable
 
-func ==(lhs: JObject, rhs: JObject) -> Bool {
+public func ==(lhs: JObject, rhs: JObject) -> Bool {
     return lhs.UID==rhs.UID
 }
-
 
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)

@@ -12,9 +12,6 @@ import Foundation
 
 // MARK: - Equatable
 
-func ==(lhs: Identifiable, rhs: Identifiable) -> Bool {
-    return lhs.UID==rhs.UID
-}
 
 public protocol Identifiable {
 
