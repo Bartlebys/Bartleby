@@ -26,16 +26,16 @@ class UpDownDirectivesTests: TestCase {
     private static var _treeName = ""
     private static var _upFolderPath = ""
     private static var _upFilePath = ""
-    private static var _fileContent = ""
-    private static var _modifiedFileContent = ""
+    private static var _fileContent1 = ""
+    private static var _fileContent2 = ""
     private static var _upSubFolderPath = ""
-    
     
     private static var _distantTreeURL = NSURL()
     
     private static var _downFolderPath = ""
     private static var _downFilePath = ""
     
+    private static let _admin = BsyncAdmin()
     private static var _upDirectives = BsyncDirectives()
     private static var _downDirectives = BsyncDirectives()
     
@@ -48,8 +48,8 @@ class UpDownDirectivesTests: TestCase {
         _treeName = NSStringFromClass(self)
         _upFolderPath = assetPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
-        _fileContent = "martin"
-        _modifiedFileContent = Bartleby.randomStringWithLength(30)
+        _fileContent1 = "first synchronization content"
+        _fileContent2 = "second synchronization content"
         _upSubFolderPath = _upFolderPath + "sub/"
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
@@ -73,7 +73,7 @@ class UpDownDirectivesTests: TestCase {
     }
     
     // MARK: 1 - Create user
-    func test101_CreateUser() {
+    func test101_Create_user() {
         let expectation = expectationWithDescription("CreateUser should respond")
         
         let user=User()
@@ -93,19 +93,19 @@ class UpDownDirectivesTests: TestCase {
     }
     
     // MARK: 2 - Prepare folder and directives
-    func test201_CreateFileInUpFolder() {
+    func test201_Create_file_in_up_folder() {
         do {
             // Create down folder
             try _fm.createDirectoryAtPath(UpDownDirectivesTests._downFolderPath, withIntermediateDirectories: true, attributes: nil)
             try _fm.createDirectoryAtPath(UpDownDirectivesTests._upFolderPath, withIntermediateDirectories: true, attributes: nil)
-            try UpDownDirectivesTests._fileContent.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            try UpDownDirectivesTests._fileContent1.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
             XCTFail("\(error)")
         }
     }
     
     
-    func test202_CreateDirectives_UpToDistant() {
+    func test202_Create_upstream_directives() {
         UpDownDirectivesTests._upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._upFolderPath)
         UpDownDirectivesTests._upDirectives.automaticTreeCreation = true
         // Credentials:
@@ -114,7 +114,7 @@ class UpDownDirectivesTests: TestCase {
         UpDownDirectivesTests._upDirectives.salt = TestsConfiguration.SHARED_SALT
     }
     
-    func test203_CreateDirectives_DistantToDown() {
+    func test203_Create_downstream_directives() {
         UpDownDirectivesTests._downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._downFolderPath)
         UpDownDirectivesTests._downDirectives.automaticTreeCreation = true
         
@@ -126,27 +126,22 @@ class UpDownDirectivesTests: TestCase {
     
     // MARK: 3 - Run synchronization
     func test301_RunDirectives_UpToDistant() {
-        
-        let admin = BsyncAdmin()
-        
         let expectation = expectationWithDescription("Synchronization should complete")
         
-        admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (sync) in
             expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
+            XCTAssertTrue(sync.success, sync.message)
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test302_RunDirectives_DistantToDown() {
-        let admin = BsyncAdmin()
-        
         let expectation = expectationWithDescription("Synchronization should complete")
         
-        admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (sync) in
             expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
+            XCTAssertTrue(sync.success, sync.message)
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
@@ -156,21 +151,60 @@ class UpDownDirectivesTests: TestCase {
     func test404_CheckFileHasBeenDownloaded() {
         do {
             let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
-            XCTAssertEqual(2, files.count)
-            XCTAssertEqual(".bsync", files[0])
-            XCTAssertEqual("file.txt", files[1])
+            XCTAssertEqual(files, [".bsync", "file.txt"])
             let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
-            XCTAssertEqual(content, UpDownDirectivesTests._fileContent)
+            XCTAssertEqual(content, UpDownDirectivesTests._fileContent1)
         } catch {
             XCTFail("\(error)")
         }
     }
     
-    // MARK: 5 - Edit upstream folder files
+    // MARK: 5 - Edit and synchronize
     func test501_Edit_existing_files() {
         do {
-            try UpDownDirectivesTests._modifiedFileContent.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
-            
+            try UpDownDirectivesTests._fileContent2.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func test502_Run_upstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test503_Run_downstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test504_Check_file_has_been_modified() {
+        do {
+            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            XCTAssertEqual(files, [".bsync", "file.txt"])
+            let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
+            XCTAssertEqual(content, UpDownDirectivesTests._fileContent2)
         } catch {
             XCTFail("\(error)")
         }

@@ -16,7 +16,8 @@ class LocalSyncTests: TestCase {
     private static let _treeName = "LocalSyncTests"
     private static let _sourceFolderPath = assetPath + "Source/" + _treeName + "/"
     private static let _sourceFilePath = _sourceFolderPath + "file.txt"
-    private static let _fileContent = "dummy content"
+    private static let _fileContent1 = "dummy content"
+    private static let _fileContent2 = "super content"
     
     private static let _destinationFolderPath = assetPath + "Destination/" + _treeName + "/"
     private static let _destinationFilePath = _destinationFolderPath + "file.txt"
@@ -24,13 +25,13 @@ class LocalSyncTests: TestCase {
     private static var _directives = BsyncDirectives()
     
     // MARK: 1 - Prepare folder and directives
-    func test101_CreateFileInUpFolder() {
+    func test101_Create_file_in_source_folder() {
         do {
             
             // Create source folder
             try _fm.createDirectoryAtPath(LocalSyncTests._sourceFolderPath, withIntermediateDirectories: true, attributes: nil)
             // Create file
-            try LocalSyncTests._fileContent.writeToFile(LocalSyncTests._sourceFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            try LocalSyncTests._fileContent1.writeToFile(LocalSyncTests._sourceFilePath, atomically: true, encoding: Default.STRING_ENCODING)
             // Create destination folder
             try _fm.createDirectoryAtPath(LocalSyncTests._destinationFolderPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
@@ -38,36 +39,60 @@ class LocalSyncTests: TestCase {
         }
     }
     
-    func test102_CreateDirectives() {
+    func test102_Create_directives() {
         LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(LocalSyncTests._sourceFolderPath, destinationPath: LocalSyncTests._destinationFolderPath)
     }
     
-    // MARK: Run synchronization
-    func test201_RunSynchronisation() {
+    // MARK: 2 - Run synchronization
+    func test201_Run_synchronization() {
         let expectation = expectationWithDescription("Synchronize should complete")
         
         let admin = BsyncAdmin()
-        admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (completion) in
+        admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (sync) in
             expectation.fulfill()
-            XCTAssertTrue(completion.success, completion.message)
+            XCTAssertTrue(sync.success, sync.message)
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test202_CheckFileHasBeenSynchronized() {
-        let expectation = expectationWithDescription("Read destination file")
-        let fm = BFileManager()
-        fm.readString(contentsOfFile: LocalSyncTests._destinationFilePath, handlers: Handlers { (read) in
+    func test202_Check_file_has_been_synchronized() {
+        do {
+            let content = try String(contentsOfFile: LocalSyncTests._destinationFilePath)
+            XCTAssertEqual(content, LocalSyncTests._fileContent1)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    // MARK: 3 - Edit file and synchronize
+    
+    func test301_Edit_existing_file() {
+        do {
+            try LocalSyncTests._fileContent2.writeToFile(LocalSyncTests._sourceFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func test302_Run_synchronization() {
+        let expectation = expectationWithDescription("Synchronize should complete")
+        
+        let admin = BsyncAdmin()
+        admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (sync) in
             expectation.fulfill()
-            if let content = read.getStringResult() where read.success {
-                XCTAssertEqual(content, LocalSyncTests._fileContent)
-            } else {
-                XCTFail(read.message)
-            }
-            
+            XCTAssertTrue(sync.success, sync.message)
             })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test303_Check_file_has_been_modified() {
+        do {
+            let content = try String(contentsOfFile: LocalSyncTests._destinationFilePath)
+            XCTAssertEqual(content, LocalSyncTests._fileContent2)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }

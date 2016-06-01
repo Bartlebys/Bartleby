@@ -557,7 +557,7 @@
         block(NO,0);
     }else{
         // URL
-        url=[url URLByAppendingPathComponent:[NSString stringWithFormat:@"/hashMap/tree/%@",identifier]];
+        url=[url URLByAppendingPathComponent:[NSString stringWithFormat:@"/hashMap/tree/%@", identifier]];
         
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_syncContext.credentials.user.spaceUID
@@ -590,6 +590,10 @@
                                                                              block(nil,PdSStatusErrorHashMapDeserialization);
                                                                          }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                              HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
+                                                                             NSLog(@"Distant hashmap:");
+                                                                             for (id key in responseDictionary) {
+                                                                                 NSLog(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
+                                                                             }
                                                                              block(hashMap,((NSHTTPURLResponse*)response).statusCode);
                                                                          }else{
                                                                              NSString*message=@"Hash map deserialization type miss match";

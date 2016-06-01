@@ -29,7 +29,6 @@ public class TestsConfiguration: BartlebyConfiguration {
 
     //MARK: - URLS
 
-
     static let trackAllApiCalls=true
 
     public static var API_BASE_URL=__BASE_URL

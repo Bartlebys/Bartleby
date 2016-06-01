@@ -21,6 +21,12 @@ class TestObserver: NSObject, XCTestObservation {
             return _failureCount == 0
         }
     }
+    
+    func testCaseWillStart(testCase: XCTestCase) {
+        if let name = testCase.name {
+            print("\n#### \(name) ####\n")
+        }
+    }
 
     func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         self._failureCount += 1

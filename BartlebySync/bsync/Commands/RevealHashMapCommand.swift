@@ -44,7 +44,6 @@ class RevealHashMapCommand: CommandBase {
             }
 
             if let path = hashMapPathOption.value, let salt = sharedSalt.value {
-
                 // Configure Bartleby without a specific URL
                 Bartleby.configuration.KEY = secretKey
                 Bartleby.configuration.SHARED_SALT = salt

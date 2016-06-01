@@ -96,7 +96,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         self->_messageCounter=0;
         self->_sanitizeAutomatically=YES;
         
-        
         if(self->_context.mode==SourceIsDistantDestinationIsDistant ){
             [NSException raise:@"TemporaryException"
                         format:@"SourceIsDistantDestinationIsDistant is currently not supported"];
@@ -222,25 +221,22 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     }
 }
 
-
 /**
  * Called by the delegate to conclude the operations
  */
 - (void)finalize{
-    // The creative commands will produce UNPREFIXING temp files
-    // The "unCreative" commands will be executed during finalization
-    [self _finalizeWithCommands:self->_allCommands];
-    
-    if(_sanitizeAutomatically){
-        [self _sanitize:@""];
-    }else{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // The creative commands will produce UNPREFIXING temp files
+        // The "unCreative" commands will be executed during finalization
+        [self _finalizeWithCommands:self->_allCommands];
         
-    }
-    
-    
-    
+        if(_sanitizeAutomatically){
+            [self _sanitize:@""];
+        }else{
+            
+        }
+    });
 }
-
 
 -(void)_sanitize:(NSString*)relativePath{
     if (self->_context.mode==SourceIsDistantDestinationIsLocal||
@@ -450,7 +446,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                }]];
             
             
-        }else{
+        } else {
             // It is a folder.
             // We donnot need any header
             
@@ -670,7 +666,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         
         
-        //NSLog(@"sortedCommand %@",sortedCommand);
+        NSLog(@"sortedCommand %@",sortedCommand);
         for (NSArray *cmd in sortedCommand) {
             NSString *destination=[cmd objectAtIndex:BDestination];
             NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];

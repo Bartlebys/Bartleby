@@ -111,6 +111,28 @@
 #pragma mark -
 
 /**
+ *  Destructive implementation that overrides the standard behavior by destroying the dstPath before to proceed to copy.
+ *
+ *  @param srcPath srcPath the source path
+ *  @param dstPath dstPath the destination path
+ *  @param error   error description
+ *
+ *  @return the result
+ */
+- (BOOL)copyItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
+    NSLog(@"Copy %@ to %@", srcPath, dstPath);
+    if([self fileExistsAtPath:dstPath]){
+        if(![self removeItemAtPath:dstPath
+                             error:error]){
+            return NO;
+        }
+    }
+    return [super copyItemAtPath:srcPath
+                          toPath:dstPath
+                           error:error];
+}
+
+/**
  *  Destructive implementation that Ooverrides the standard behavior by destroying the dstPath before to proceed to move.
  *
  *  @param srcPath srcPath the source path
@@ -120,6 +142,7 @@
  *  @return the result
  */
 - (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
+    NSLog(@"Move %@ to %@", srcPath, dstPath);
     if([self fileExistsAtPath:dstPath]){
         if(![self removeItemAtPath:dstPath
                              error:error]){
@@ -130,7 +153,6 @@
                           toPath:dstPath
                            error:error];
 }
-
 
 
 @end
