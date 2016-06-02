@@ -69,13 +69,15 @@ import ObjectMapper
     Commit all the changes in one bunch
     Marking commit on each item will toggle hasChanged flag.
     */
-    public func commitChanges() {
+    public func commitChanges() -> [String] {
+        var UIDS=[String]()
         let changedItems=self.items.filter { $0.toBeCommitted == true }
         bprint("\(changedItems.count) \( changedItems.count>1 ? "users" : "user" )  has changed in UsersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
+            UIDS.append(changed.UID)
             UpdateUser.commit(changed, inDataSpace:self.spaceUID)
         }
-
+        return UIDS
     }
 
     required public init() {

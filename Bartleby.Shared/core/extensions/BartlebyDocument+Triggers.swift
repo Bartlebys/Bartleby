@@ -35,15 +35,20 @@ extension BartlebyDocument {
 
      To insure good performance we encode the triggers for SSE usage.
      ```
-     [<index>==-1,<senderUID>,<spaceUID>,<collectionName>,UID1, UID2,...]
+     id: 1464885108
+     event: relay
+     data: {"i":7,"s":"<sender UID>","u":"2,users,<user UID>, <user UID>,1, groups,<group UID>","d":"1, users,<user UID>"}
+
      ```
 
      # Trigger.upserted or Trigger.deleted are also encoded
 
      ```
-     //An array of String encoding [collectionName,UID1, UID2,...]
+     //An array of String encoding
+     // size, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
      public var upserted: [String] = [String]()
-     //An array of String encoding [collectionName, UID1, UID2,...]
+     //An array of String encoding
+     // size, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
      public var deleted: [String] = [String]()
      ```
 
@@ -130,7 +135,6 @@ extension BartlebyDocument {
      */
     public func pushTrigger(trigger: Trigger) {
         CreateTrigger.execute(trigger, inDataSpace: self.spaceUID, sucessHandler: { (context) in
-
             self.acknowledgeTrigger(trigger)
             self.delete(trigger)
             }) { (context) in

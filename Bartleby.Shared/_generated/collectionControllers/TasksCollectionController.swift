@@ -68,7 +68,7 @@ import ObjectMapper
     /**
     Those item are not committable.
     */
-    public func commitChanges() {}
+    public func commitChanges() ->[String] { return [String]() }
     
 
     required public init() {

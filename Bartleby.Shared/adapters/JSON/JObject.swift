@@ -206,6 +206,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public func mapping(map: Map) {
         self.lockAutoCommitObserver()
+        self.defineUID()
         if map.mappingType == .ToJSON {
             // Store the universal type Name
             self._typeName=self.dynamicType.typeName()
@@ -226,6 +227,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public required init?(coder decoder: NSCoder) {
         super.init()
+        self.lockAutoCommitObserver()
+        self.defineUID()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
         self._typeName=self.dynamicType.typeName()
         self._typeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.TYPE_NAME_KEY)! as NSString)
@@ -234,6 +237,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
         self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
         self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
+        self.unlockAutoCommitObserver()
     }
 
     public func encodeWithCoder(coder: NSCoder) {

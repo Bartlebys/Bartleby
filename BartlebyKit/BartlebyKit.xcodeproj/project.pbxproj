@@ -197,6 +197,7 @@
 		E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
 		E5959C0F1CA6702800557BDB /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
 		E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */; };
+		E5A62F221CFF13E5008607D9 /* TriggersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A62F211CFF13E5008607D9 /* TriggersTests.swift */; };
 		E5AAC5501CEB16AF005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */; };
 		E5AAC5511CEB16AF005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */; };
 		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
@@ -465,6 +466,7 @@
 		E592B79E1CFC21A4000F3301 /* Permission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		E592B7A11CFC21AE000F3301 /* PermissionsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionsCollectionController.swift; sourceTree = "<group>"; };
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
+		E5A62F211CFF13E5008607D9 /* TriggersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersTests.swift; sourceTree = "<group>"; };
 		E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
@@ -657,6 +659,7 @@
 				E56C00581C8ED51D00BB6B19 /* TestsConfiguration.swift */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
 				E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */,
+				E5A62F211CFF13E5008607D9 /* TriggersTests.swift */,
 			);
 			path = BartlebyKitOSXTests;
 			sourceTree = "<group>";
@@ -1435,6 +1438,7 @@
 				E5959C061CA6699F00557BDB /* TestsConfiguration.swift in Sources */,
 				E53E2C3C1CA57E860079ED23 /* BasicApiTests.swift in Sources */,
 				E5959C0A1CA6702200557BDB /* AccessControlTests.swift in Sources */,
+				E5A62F221CFF13E5008607D9 /* TriggersTests.swift in Sources */,
 				E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
 				E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */,
 				5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */,

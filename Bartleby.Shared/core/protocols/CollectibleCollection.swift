@@ -89,9 +89,11 @@ public protocol CollectibleCollection: Collectible {
 public protocol Committable {
 
     /**
+
      Commits the changes in one bunch
+     - returns: an array of UID.
      */
-    func commitChanges()
+    func commitChanges() -> [String]
 
 }
 
