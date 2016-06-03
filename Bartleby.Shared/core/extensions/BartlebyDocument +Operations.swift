@@ -14,14 +14,15 @@ extension BartlebyDocument {
 
     // MARK: - Operations
 
-
-
     /**
      Commits the pending changes.
+     - throws: may throw on collection iteration
      */
     public func commitPendingChanges() throws {
+        var triggerUpsertString=""
         try self.iterateOnCollections { (collection) in
-            collection.commitChanges()
+            let UIDS=collection.commitChanges()
+            triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joinWithSeparator(",")
         }
     }
 
@@ -167,6 +168,6 @@ extension Registry {
             instance.distributed=true
         }
     }
-    
-    
+
+
 }

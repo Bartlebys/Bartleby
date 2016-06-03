@@ -37,19 +37,17 @@ extension BartlebyDocument {
      ```
      id: 1464885108
      event: relay
-     data: {"i":7,"s":"<sender UID>","u":"2,users,<user UID>, <user UID>,1, groups,<group UID>","d":"1, users,<user UID>"}
+     data: {"i":7,"s":"<sender UID>","u":"2,users,<user UID>, <user UID>,1, groups,<group UID>","d":"1, users,<user UID>]"}
 
      ```
 
      # Trigger.upserted or Trigger.deleted are also encoded
 
      ```
-     //An array of String encoding
-     // size, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
-     public var upserted: [String] = [String]()
-     //An array of String encoding
-     // size, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
-     public var deleted: [String] = [String]()
+     // Encoding of upserted :
+     // nbOfUIDS, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
+     //Encoding of deleted :
+     // nbOfUIDS, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
      ```
 
      On trigger incorporate a full bunch of consistent actions.
@@ -99,10 +97,6 @@ extension BartlebyDocument {
                 // It is ours.
             } else {
                 // Mark the trigger as Incoming
-                trigger.direction = .Incoming
-                self.triggers.add(trigger)
-
-
                 // If the api is Reachable
 
                 // We will integrate all the trigger even the trigger we have sent.
@@ -127,20 +121,6 @@ extension BartlebyDocument {
         }
     }
 
-
-    /**
-     Pushes a given trigger
-
-     - parameter trigger: the trigger
-     */
-    public func pushTrigger(trigger: Trigger) {
-        CreateTrigger.execute(trigger, inDataSpace: self.spaceUID, sucessHandler: { (context) in
-            self.acknowledgeTrigger(trigger)
-            self.delete(trigger)
-            }) { (context) in
-                //
-        }
-    }
 
     /**
      Acknowledge the trigger permits to detect data holes

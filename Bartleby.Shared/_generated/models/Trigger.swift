@@ -27,16 +27,8 @@ import ObjectMapper
 	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
-	//An array of String encoding [collectionName,UID1, UID2,...]
-	public var upserted:[String] = [String]()
-	//An array of String encoding [collectionName, UID1, UID2,...]
-	public var deleted:[String] = [String]()
-	//The direction of the trigger
-	public enum Direction:Int{
-		case Incoming
-		case Outgoing
-	}
-	public var direction:Direction = .Outgoing
+	//ClassName,UID1,UID2...
+	public var action:String = ""
 
 
     // MARK: Mappable
@@ -51,9 +43,7 @@ import ObjectMapper
 		self.index <- ( map["index"] )
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
-		self.upserted <- ( map["upserted"] )
-		self.deleted <- ( map["deleted"] )
-		self.direction <- ( map["direction"] )
+		self.action <- ( map["action"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -66,9 +56,7 @@ import ObjectMapper
 		self.index=decoder.decodeIntegerForKey("index") 
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
-		self.upserted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "upserted")! as! [String]
-		self.deleted=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "deleted")! as! [String]
-		self.direction=Trigger.Direction(rawValue:decoder.decodeIntegerForKey("direction") )! 
+		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
         self.unlockAutoCommitObserver()
     }
 
@@ -81,9 +69,7 @@ import ObjectMapper
 		if let spaceUID = self.spaceUID {
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
-		coder.encodeObject(self.upserted,forKey:"upserted")
-		coder.encodeObject(self.deleted,forKey:"deleted")
-		coder.encodeInteger(self.direction.rawValue ,forKey:"direction")
+		coder.encodeObject(self.action,forKey:"action")
     }
 
 

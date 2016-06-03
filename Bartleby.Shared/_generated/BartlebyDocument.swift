@@ -48,7 +48,6 @@ public class BartlebyDocument : JDocument {
 	public var groups=GroupsCollectionController()
 	public var operations=OperationsCollectionController()
 	public var permissions=PermissionsCollectionController()
-	public var triggers=TriggersCollectionController()
 
     // MARK: - OSX
  #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -199,26 +198,6 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    public var triggersArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            triggersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.triggers.arrayController=triggersArrayController
-            // Add observer
-            triggersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTriggerIndexKey] as? Int{
-               if self.triggers.items.count > index{
-                   let selection=self.triggers.items[index]
-                   self.triggersArrayController?.setSelectedObjects([selection])
-                }
-             }
-        }
-    }
-        
-
 
 
 #endif
@@ -323,20 +302,6 @@ public class BartlebyDocument : JDocument {
     }
         
 
-    static public let kSelectedTriggerIndexKey="selectedTriggerIndexKey"
-    static public let TRIGGER_SELECTED_INDEX_CHANGED_NOTIFICATION="TRIGGER_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedTrigger:Trigger?{
-        didSet{
-            if let trigger = selectedTrigger {
-                if let index=triggers.items.indexOf(trigger){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTriggerIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TRIGGER_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
-            }
-        }
-    }
-        
-
 
 
 
@@ -425,16 +390,6 @@ public class BartlebyDocument : JDocument {
         permissionDefinition.inMemory = false
         
 
-        let triggerDefinition = CollectionMetadatum()
-        triggerDefinition.proxy = self.triggers
-        // By default we group the observation via the rootObjectUID
-        triggerDefinition.collectionName = Trigger.collectionName
-        triggerDefinition.observableViaUID = self.registryMetadata.rootObjectUID
-        triggerDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        triggerDefinition.allowDistantPersistency = false
-        triggerDefinition.inMemory = false
-        
-
 
         // Proceed to configuration
         do{
@@ -446,7 +401,6 @@ public class BartlebyDocument : JDocument {
 			try self.registryMetadata.configureSchema(groupDefinition)
 			try self.registryMetadata.configureSchema(operationDefinition)
 			try self.registryMetadata.configureSchema(permissionDefinition)
-			try self.registryMetadata.configureSchema(triggerDefinition)
 
         }catch RegistryError.DuplicatedCollectionName(let collectionName){
             bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
@@ -541,15 +495,6 @@ public class BartlebyDocument : JDocument {
             }
             
 
-            
-            if keyPath=="selectionIndexes" && self.triggersArrayController == object as? NSArrayController {
-                if let trigger=self.triggersArrayController?.selectedObjects.first as? Trigger{
-                    self.selectedTrigger=trigger
-                    return
-                }
-            }
-            
-
         }
 
     }
@@ -608,14 +553,6 @@ public class BartlebyDocument : JDocument {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedPermission{
             self.permissions.removeObject(selected)
-        }
-    }
-        
-
-    public func deleteSelectedTrigger() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTrigger{
-            self.triggers.removeObject(selected)
         }
     }
         
