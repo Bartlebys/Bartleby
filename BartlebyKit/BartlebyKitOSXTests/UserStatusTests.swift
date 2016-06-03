@@ -29,22 +29,6 @@ class UserStatusTests: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
 
-    // MARK: 0 - Initialization
-
-    func test000_purgeCookiesForTheDomain() {
-        print("Using : \(TestsConfiguration.API_BASE_URL)")
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-            }
-        }
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
-        }
-    }
-
     // MARK: 1 - Users Creation
 
     func test101_createUser_Creator() {

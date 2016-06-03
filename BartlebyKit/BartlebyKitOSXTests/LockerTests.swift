@@ -52,23 +52,6 @@ class LockerTests: XCTestCase {
 
     }
 
-    // MARK: 0 - Init
-
-    func test000_purgeCookiesForTheDomain() {
-        print("Using : \(TestsConfiguration.API_BASE_URL)")
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-            }
-        }
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
-        }
-    }
-
-
     // MARK: 1 - Creation of users and a locker
 
     func test101_CreateUser_Creator() {

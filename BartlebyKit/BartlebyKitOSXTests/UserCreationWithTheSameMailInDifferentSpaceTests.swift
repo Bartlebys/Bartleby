@@ -26,21 +26,6 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
     }
 
-    func test000_purgeTheCookiesForTheDomain() {
-        print("Using : \(TestsConfiguration.API_BASE_URL)")
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-            }
-        }
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
-        }
-    }
-
-
     func test001_createUser1() {
         let expectation = expectationWithDescription("CreateUser should respond")
 

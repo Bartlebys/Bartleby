@@ -60,22 +60,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
         _downFilePath = _downFolderPath + "file.txt"
         
     }
-    
-    // MARK: 0 - Initialization
-    
-    func test001_purgeCookiesForTheDomainAndFiles() {
-
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-            }
-        }
         
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
-        }
-    }
-    
     // MARK: 1 - Create user
     func test101_CreateUser() {
         let expectation = expectationWithDescription("CreateUser should respond")

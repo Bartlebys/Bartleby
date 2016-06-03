@@ -21,7 +21,7 @@ class TestObserver: NSObject, XCTestObservation {
             return _failureCount == 0
         }
     }
-    
+
     func testCaseWillStart(testCase: XCTestCase) {
         if let name = testCase.name {
             print("\n#### \(name) ####\n")
@@ -33,8 +33,16 @@ class TestObserver: NSObject, XCTestObservation {
     }
 }
 
+/// This test class override XCTestCase to share common test behavior between
+/// Bartleby unit tests. It does the following:
+///
+/// - Provide a *assetPath* property creating a specific folder for the test case class
+/// - Remove this *assetPath* folder depending of the configuration (See TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
+/// - Configure Bartleby
+/// - Provide a helper method for creating users
+/// - Clean all created users during static tear down
 class TestCase: XCTestCase {
-    
+
     static let fm = NSFileManager.defaultManager()
     let _fm = TestCase.fm
 
@@ -43,12 +51,12 @@ class TestCase: XCTestCase {
             return Bartleby.getSearchPath(.DesktopDirectory)! + NSStringFromClass(self) + "/"
         }
     }
-    
+
     private static var _testObserver = TestObserver()
-    
+
     override class func setUp() {
         super.setUp()
-        
+
         // Remove asset folder if it exists
         do {
             if fm.fileExistsAtPath(assetPath) {
@@ -61,17 +69,28 @@ class TestCase: XCTestCase {
 
         // Add test observer
         XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
-        
+
         // Configure Bartleby
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+
+        // Purge cookie for the domain
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+            }
+        }
+
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
+        }
     }
-    
+
     override static func tearDown() {
         super.tearDown()
-        
+
         // Remove test observer
         XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
-        
+
         // Remove asset folder depending of the configuration
         let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
         if fm.fileExistsAtPath(assetPath) && remove != RemoveAssets.Never {

@@ -29,19 +29,6 @@ class BsyncAdminTreeTests: TestCase {
         self._context.credentials?.salt = TestsConfiguration.SHARED_SALT
     }
     
-    func test000_purgeCookiesForTheDomain() {
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-            }
-        }
-        
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
-        }
-    }
-    
-
 //    func test100_install() {
 //        let expectation = expectationWithDescription("install ok")
 //        
