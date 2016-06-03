@@ -88,15 +88,13 @@
     if(self.syncContext.autoCreateTrees){
         [self touchTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
             if(success){
-                NSString*message=@"Tree exists!";
-                printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                bprint(@"Tree exists!");
                 [self _synchronizeWithprogressBlock:progressBlock
                                  andCompletionBlock:completionBlock];
                 
             }else{
                 if (statusCode==404){
-                    NSString*message=@"Auto creation of tree";
-                    printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                    bprint(@"Auto creation of tree");
                     [self createTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
                         if(success){
                             // Recursive call
@@ -287,11 +285,11 @@
                                                                            withActionName:@"BartlebySyncCreateTree"
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
-        NSLog(@"BartlebySyncCreateTree: %@", baseUrl);
+        bprint(@"BartlebySyncCreateTree: %@", baseUrl);
         
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if(!error && response){
-                NSLog(@"=> %@", response);
+                bprint(@"=> %@", response);
                 NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                 if (HTTPStatusCode>=200 && HTTPStatusCode<=300){
                     block(YES, @"", HTTPStatusCode);
@@ -391,14 +389,14 @@
                                                                                 forMethod:@"POST"
                                                                                       and:baseUrl];
         
-        NSLog(@"BartlebySyncTouchTree: %@", baseUrl);
+        bprint(@"BartlebySyncTouchTree: %@", baseUrl);
 
 
     // TASK
     [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                          if(!error && response){
-                                                             NSLog(@"=> %@", response);
+                                                             bprint(@"=> %@", response);
                                                              NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (HTTPStatusCode>=200 && HTTPStatusCode<300){
                                                                  block(YES, @"", HTTPStatusCode);
@@ -507,18 +505,17 @@
                                               encoding:NSUTF8StringEncoding
                                                  error:&stringLoadingError];
     
-    NSLog(@"crypted hashmap: %@", hashMapCryptedString);
+    bprint(@"crypted hashmap: %@", hashMapCryptedString);
 
     if(!stringLoadingError){
         NSError*cryptoError=nil;
         
         NSString *hashMapJsonString = [[Bartleby cryptoDelegate] decryptString:hashMapCryptedString error:&cryptoError];
         if (cryptoError){
-            NSString *message = [[NSString alloc]initWithFormat:@"Get local hash map crypto error %@", cryptoError];
-            printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+            bprint(@"Get local hash map crypto error %@", cryptoError);
             return nil;
         } else {
-            NSLog(@"hashmap: %@", hashMapJsonString);
+            bprint(@"hashmap: %@", hashMapJsonString);
             NSData *data = [hashMapJsonString dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
@@ -532,13 +529,11 @@
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
-                    NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map type missmatch on deserialization %@",hashMapUrl];
-                    printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                    bprint(@"Get local hash map type missmatch on deserialization %@",hashMapUrl);
                 }
             }
             @catch (NSException *exception) {
-                NSString*message=[[NSString alloc]initWithFormat:@"get local hash map :%@",exception];
-                printf("Exception on %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                bprint(@"Exception on get local hash map :%@", exception);
             }
         }
     }
@@ -564,12 +559,12 @@
                                                                            withActionName:@"BartlebySyncGetHashMap"
                                                                                 forMethod:@"GET"
                                                                                       and:url];
-        NSLog(@"BartlebySyncGetHashMap: %@", url);
+        bprint(@"BartlebySyncGetHashMap: %@", url);
         
         // TASK
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                         NSLog(@"=> %@", response);
+                                                         bprint(@"=> %@", response);
                                                          if(!error && response){
                                                              double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                              if (httpStatusCode==200) {
@@ -590,9 +585,9 @@
                                                                              block(nil,PdSStatusErrorHashMapDeserialization);
                                                                          }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                              HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
-                                                                             NSLog(@"Distant hashmap:");
+                                                                             bprint(@"Distant hashmap:");
                                                                              for (id key in responseDictionary) {
-                                                                                 NSLog(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
+                                                                                 bprint(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
                                                                              }
                                                                              block(hashMap,((NSHTTPURLResponse*)response).statusCode);
                                                                          }else{

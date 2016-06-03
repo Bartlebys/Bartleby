@@ -8,18 +8,7 @@
 
 #import "PdSFileManager.h"
 
-#ifdef USE_BSYNC_XPC_OBJC
-#import "BsyncXPC-Swift.h"
-#else
-#ifdef USE_CLIENT_BSYNC_XPC_OBJC
-#import "ClientBsyncXPC-Swift.h"
-#else
-#ifdef USE_EMBEDDED_MODULES
 #import "bsync-Swift.h"
-#endif
-#endif
-#endif
-
 
 @implementation PdSFileManager
 
@@ -120,7 +109,7 @@
  *  @return the result
  */
 - (BOOL)copyItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
-    NSLog(@"Copy %@ to %@", srcPath, dstPath);
+    bprint(@"Copy %@ to %@", srcPath, dstPath);
     if([self fileExistsAtPath:dstPath]){
         if(![self removeItemAtPath:dstPath
                              error:error]){
@@ -142,7 +131,7 @@
  *  @return the result
  */
 - (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
-    NSLog(@"Move %@ to %@", srcPath, dstPath);
+    bprint(@"Move %@ to %@", srcPath, dstPath);
     if([self fileExistsAtPath:dstPath]){
         if(![self removeItemAtPath:dstPath
                              error:error]){

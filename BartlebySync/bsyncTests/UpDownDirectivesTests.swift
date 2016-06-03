@@ -209,4 +209,54 @@ class UpDownDirectivesTests: TestCase {
             XCTFail("\(error)")
         }
     }
+    
+    // MARK 9 - Cleaning
+    func test901_Remove_all_files() {
+        do {
+            try _fm.removeItemAtPath(UpDownDirectivesTests._upFilePath)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func test902_Run_upstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test903_Run_downstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test904_Check_file_has_been_modified() {
+        do {
+            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            XCTAssertEqual(files, [".bsync"])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
 }

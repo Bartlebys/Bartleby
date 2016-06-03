@@ -426,7 +426,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                    if (response){
                                                        NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                        NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
-                                                       printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                       bprint(@"%@", message);
                                                        if (httpStatusCode>=200 && httpStatusCode<300) {
                                                            [self _nextCommand];
                                                            return ;
@@ -434,7 +434,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                    }
                                                    if (data!=nil) {
                                                        NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                       printf("Fault on upload: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                       bprint(@"Fault on upload: %@", message);
                                                    }
                                                    
                                                    NSString *msg=@"No message";
@@ -458,8 +458,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                   
                                                                   if (response) {
                                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                                      NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
-                                                                      printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                      bprint(@"%@\nHTTP Status Code = %@", request.URL.absoluteString, @(httpStatusCode));
                                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
                                                                           [self _nextCommand];
                                                                           return ;
@@ -467,7 +466,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                   }
                                                                   if (data!=nil) {
                                                                       NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                      printf("Fault on distant folder creation: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                      bprint(@"Fault on distant folder creation: %@", message);
                                                                   }
                                                                   
                                                                   NSString *msg=@"No message";
@@ -553,7 +552,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                           NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
                                                                           NSDictionary*headers=[(NSHTTPURLResponse*)response allHeaderFields];
                                                                           NSString*message=[[NSString alloc]initWithFormat:@"Http Status code: %@\n%@",@(httpStatusCode),headers];
-                                                                          printf("Fault on download: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                          bprint(@"Fault on download: %@", message);
                                                                       }
                                                                       
                                                                       NSString *msg=@"No message";
@@ -584,14 +583,14 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
     NSDictionary *hashMapDict = [_context.finalHashMap dictionaryRepresentation];
     NSString *hashMapJsonString = [self _encodetoJson: hashMapDict];
-    NSLog(@"hashmap: %@", hashMapJsonString);
+    bprint(@"hashmap: %@", hashMapJsonString);
     NSError *cryptoError=nil;
     NSString *hashMapCryptedString = [[Bartleby cryptoDelegate] encryptString:hashMapJsonString error:&cryptoError];
     if(cryptoError){
         [self _interruptOnFault:[NSString stringWithFormat:@"CryptoError: %@", cryptoError]];
         return;
     }
-    NSLog(@"crypted hashmap: %@", hashMapCryptedString);
+    bprint(@"crypted hashmap: %@", hashMapCryptedString);
     
     if((self->_context.mode==SourceIsLocalDestinationIsDistant)||
        self->_context.mode==SourceIsDistantDestinationIsDistant){
@@ -621,8 +620,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                            completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                                if (response) {
                                                                    NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                                   NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
-                                                                   printf("%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                   bprint(@"%@\nHTTP Status Code = %@", request.URL.absoluteString, @(httpStatusCode));
                                                                    if (httpStatusCode>=200 && httpStatusCode<300) {
                                                                        [self _successFullEnd];
                                                                        return ;
@@ -630,7 +628,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                }
                                                                if (data!=nil) {
                                                                    NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                   printf("(!) Fault on finalization: %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                   bprint(@"(!) Fault on finalization: %@", message);
                                                                }
                                                                
                                                                NSString *msg=@"No message";
@@ -666,7 +664,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         
         
-        NSLog(@"sortedCommand %@",sortedCommand);
+        bprint(@"sortedCommand %@",sortedCommand);
         for (NSArray *cmd in sortedCommand) {
             NSString *destination=[cmd objectAtIndex:BDestination];
             NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];
@@ -747,7 +745,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         
         if(jsonHashMapError){
-            NSLog(@"%@",[jsonHashMapError description]);
+            bprint(@"%@",[jsonHashMapError description]);
             //[self _interruptOnFault:[jsonHashMapError description]];
             //return;
         }else{
@@ -915,7 +913,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 - (void)_interruptOnFault:(NSString*)faultMessage{
-    NSLog(@"INTERUPT ON FAULT: %@", faultMessage);
+    bprint(@"INTERUPT ON FAULT: %@", faultMessage);
 
     [self _progressMessage:@"INTERUPT ON FAULT %@",faultMessage];
     [self->_queue cancelAllOperations];
@@ -1101,7 +1099,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
    didSendBodyData:(int64_t)bytesSent
     totalBytesSent:(int64_t)totalBytesSent
 totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend{
-    NSLog(@"bytesSent %@",@(bytesSent));
+    bprint(@"bytesSent %@",@(bytesSent));
 }
 
 /* Sent as the last message related to a specific task.  Error may be

@@ -54,7 +54,7 @@
                                           includingPropertiesForKeys:keys
                                                              options:0
                                                         errorHandler:^BOOL(NSURL *url, NSError *error) {
-                                                            NSLog(@"ERROR when enumerating  %@ %@",url, [error localizedDescription]);
+                                                            bprint(@"ERROR when enumerating  %@ %@",url, [error localizedDescription]);
                                                             return YES;
                                                         }];
         
@@ -90,7 +90,7 @@
                                 progressBlock(crc32String,relativePath,i);
                             }
                         }else{
-                            NSLog(@"ERROR when reading crc32 from %@ %@",filePath,[crc32ReadingError localizedDescription]);
+                            bprint(@"ERROR when reading crc32 from %@ %@",filePath,[crc32ReadingError localizedDescription]);
                         }
                     }else{
                         if (dataBlock) {
@@ -184,7 +184,7 @@
     NSString*jsonCrypted=[[Bartleby cryptoDelegate] encryptString:json error:&cryptoError];
     
     if(cryptoError){
-        NSLog(@"String encryption error: %@", [cryptoError description]);
+        bprint(@"String encryption error: %@", [cryptoError description]);
     } else {
         
         // Un comment to debug
@@ -196,7 +196,7 @@
                         encoding:NSUTF8StringEncoding
                            error:&error];
         if(error){
-            NSLog(@"ERROR when writing hashmap to %@ %@", [error description],hashMapFileP);
+            bprint(@"ERROR when writing hashmap to %@ %@", [error description],hashMapFileP);
             
         }
     }
