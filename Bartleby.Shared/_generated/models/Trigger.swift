@@ -27,8 +27,10 @@ import ObjectMapper
 	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
-	//ClassName,UID1,UID2...
+	//The action name
 	public var action:String = ""
+	//A coma separated UIDS list
+	public var UIDS:String = ""
 
 
     // MARK: Mappable
@@ -44,6 +46,7 @@ import ObjectMapper
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.action <- ( map["action"] )
+		self.UIDS <- ( map["UIDS"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -57,6 +60,7 @@ import ObjectMapper
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
+		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
         self.unlockAutoCommitObserver()
     }
 
@@ -70,6 +74,7 @@ import ObjectMapper
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
 		coder.encodeObject(self.action,forKey:"action")
+		coder.encodeObject(self.UIDS,forKey:"UIDS")
     }
 
 

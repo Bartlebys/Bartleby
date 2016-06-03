@@ -25,7 +25,6 @@ extension BartlebyDocument {
 
      ## Main API
 
-     - CreateTrigger
      - TriggersByIds
      - TriggersAfterIndex
      - TriggersForIndexes
@@ -37,17 +36,12 @@ extension BartlebyDocument {
      ```
      id: 1464885108
      event: relay
-     data: {"i":7,"s":"<sender UID>","u":"2,users,<user UID>, <user UID>,1, groups,<group UID>","d":"1, users,<user UID>]"}
+     data: {"i":7,"s":"<sender UID>","a":"ReadUsers","i":"<user UID>, <user UID>"}
 
      ```
 
      # Trigger.upserted or Trigger.deleted are also encoded
 
-     ```
-     // Encoding of upserted :
-     // nbOfUIDS, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
-     //Encoding of deleted :
-     // nbOfUIDS, collectionName1,UID1, UID2,...size, collectionName2,UID1, UID2,...
      ```
 
      On trigger incorporate a full bunch of consistent actions.
@@ -108,7 +102,6 @@ extension BartlebyDocument {
 
                 // 1. GET all The ressources
                 // 2. Upsert the Grabbed Instance and DELETE the assets.
-                // 3. Call triggerHasBeenSent(..)
                 // 4. Call analyzeConsistency()
 
                 // Those operation are resilient
