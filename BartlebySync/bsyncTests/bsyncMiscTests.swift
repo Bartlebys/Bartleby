@@ -14,9 +14,9 @@ class bsyncMiscTests: TestCase {
         let expectation = expectationWithDescription("DMG_create_attach_detach_remove")
         let dm = BsyncImageDiskManager()
         let fm = NSFileManager.defaultManager()
-        let path = TestCase.assetPath + Bartleby.randomStringWithLength(6)
+        let path = bsyncMiscTests.assetPath + Bartleby.randomStringWithLength(6)
         do {
-            try fm.createDirectoryAtPath(TestCase.assetPath, withIntermediateDirectories: true, attributes: nil)
+            try fm.createDirectoryAtPath(bsyncMiscTests.assetPath, withIntermediateDirectories: true, attributes: nil)
             dm.createImageDisk(path, volumeName: "Project 1 Synchronized", size: "2g", password: "gugu", handlers: Handlers { (createDisc) in
                 if let imagePath = createDisc.getStringResult() where createDisc.success {
                     dm.attachVolume(from:imagePath, withPassword: "gugu", handlers: Handlers { (attach) in

@@ -13,7 +13,7 @@ class BFileManagerTests: TestCase {
     let fm = Bartleby.fileManager
 
     func test101_writeString() {
-        let folder = TestCase.assetPath + Bartleby.randomStringWithLength(6) + "/"
+        let folder = BFileManagerTests.assetPath + Bartleby.randomStringWithLength(6) + "/"
 
         // Checking no items (directory or file) exists
         let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")

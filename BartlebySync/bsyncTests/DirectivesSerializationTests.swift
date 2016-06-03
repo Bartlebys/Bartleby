@@ -12,6 +12,7 @@ class DirectivesSerializationTests: TestCase {
     private var _treeName = ""
     private var _localSourcePath = ""
     private var _localDestinationPath = ""
+    private var _directivesPath = ""
 
     private var _distantTreeURL = NSURL()
     
@@ -19,16 +20,15 @@ class DirectivesSerializationTests: TestCase {
         super.setUp()
         
         self._treeName = Bartleby.randomStringWithLength(6)
-        self._localSourcePath = TestCase.assetPath + self._treeName + "/Source"
-        self._localDestinationPath = TestCase.assetPath + self._treeName + "/Destination"
+        self._localSourcePath = DirectivesSerializationTests.assetPath + self._treeName + "/Source"
+        self._localDestinationPath = DirectivesSerializationTests.assetPath + self._treeName + "/Destination"
         self._distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(self._treeName)")
+        self._directivesPath = DirectivesSerializationTests.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
     }
 
     // MARK: 1 - Local
 
     func test101_Valid_local_directives_without_hashmapview() {
-        let directivesPath = TestCase.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
-        
         let directives1 = BsyncDirectives.localDirectivesWithPath(self._localSourcePath, destinationPath: self._localDestinationPath)
         directives1.automaticTreeCreation = true
         
@@ -41,8 +41,8 @@ class DirectivesSerializationTests: TestCase {
         
         let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives1, path: directivesPath)
-            let directives2 = try admin.loadDirectives(directivesPath)
+            try admin.saveDirectives(directives1, path: _directivesPath)
+            let directives2 = try admin.loadDirectives(_directivesPath)
             
             XCTAssert(directives2.areValid().valid)
             XCTAssertEqual(directives2.areValid().message, "")
@@ -62,8 +62,6 @@ class DirectivesSerializationTests: TestCase {
     }
  
     func test101_Valid_local_directives_with_hashmapview() {
-        let directivesPath = TestCase.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
-        
         let directives1 = BsyncDirectives.localDirectivesWithPath(self._localSourcePath, destinationPath: self._localDestinationPath)
         
         // Hash map view
@@ -77,8 +75,8 @@ class DirectivesSerializationTests: TestCase {
         
         let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives1, path: directivesPath)
-            let directives2 = try admin.loadDirectives(directivesPath)
+            try admin.saveDirectives(directives1, path: _directivesPath)
+            let directives2 = try admin.loadDirectives(_directivesPath)
             
             XCTAssert(directives2.areValid().valid)
             XCTAssertEqual(directives2.areValid().message, "")
@@ -112,7 +110,6 @@ class DirectivesSerializationTests: TestCase {
         let user = User()
         user.creatorUID = user.UID
         let password = Bartleby.randomStringWithLength(6)
-        let directivesPath = TestCase.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
         
         let directives1 = BsyncDirectives.upStreamDirectivesWithDistantURL(_distantTreeURL, localPath: self._localSourcePath)
         directives1.automaticTreeCreation = true
@@ -130,8 +127,8 @@ class DirectivesSerializationTests: TestCase {
         
         let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives1, path: directivesPath)
-            let directives2 = try admin.loadDirectives(directivesPath)
+            try admin.saveDirectives(directives1, path: _directivesPath)
+            let directives2 = try admin.loadDirectives(_directivesPath)
             
             XCTAssert(directives2.areValid().valid)
             XCTAssertEqual(directives2.areValid().message, "")
@@ -185,7 +182,6 @@ class DirectivesSerializationTests: TestCase {
         let user = User()
         user.creatorUID = user.UID
         let password = Bartleby.randomStringWithLength(6)
-        let directivesPath = TestCase.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
         
         let directives1 = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: self._localDestinationPath)
         directives1.automaticTreeCreation = true
@@ -203,8 +199,8 @@ class DirectivesSerializationTests: TestCase {
         
         let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives1, path: directivesPath)
-            let directives2 = try admin.loadDirectives(directivesPath)
+            try admin.saveDirectives(directives1, path: _directivesPath)
+            let directives2 = try admin.loadDirectives(_directivesPath)
             
             XCTAssert(directives2.areValid().valid)
             XCTAssertEqual(directives2.areValid().message, "")
@@ -228,7 +224,6 @@ class DirectivesSerializationTests: TestCase {
         let user = User()
         user.creatorUID = user.UID
         let password = Bartleby.randomStringWithLength(6)
-        let directivesPath = TestCase.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
         
         let directives1 = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: self._localDestinationPath)
         // Credentials:
@@ -247,8 +242,8 @@ class DirectivesSerializationTests: TestCase {
         
         let admin = BsyncAdmin()
         do {
-            try admin.saveDirectives(directives1, path: directivesPath)
-            let directives2 = try admin.loadDirectives(directivesPath)
+            try admin.saveDirectives(directives1, path: _directivesPath)
+            let directives2 = try admin.loadDirectives(_directivesPath)
             
             XCTAssert(directives2.areValid().valid)
             XCTAssertEqual(directives2.areValid().message, "")

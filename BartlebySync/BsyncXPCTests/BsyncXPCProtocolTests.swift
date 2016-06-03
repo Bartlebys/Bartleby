@@ -17,7 +17,7 @@ class BsyncXPCProtocolTests: TestCase {
         
         if let xpc = connection.remoteObjectProxy as? BsyncXPCProtocol {
             
-            let folder = TestCase.assetPath + Bartleby.randomStringWithLength(6)
+            let folder = BsyncXPCProtocolTests.assetPath + Bartleby.randomStringWithLength(6)
             
             // Checking no items (directory or file) exists
             let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")

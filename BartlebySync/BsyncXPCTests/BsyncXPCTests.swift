@@ -14,7 +14,7 @@ class BsyncXPCTests: TestCase {
     func test101_exist_create_write_read_list() {
         let xpc = BsyncXPC()
         let contextName = Bartleby.randomStringWithLength(6) + "/"
-        let folder = TestCase.assetPath + contextName
+        let folder = BsyncXPCTests.assetPath + contextName
         
         // Checking no items (directory or file) exists
         let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")
@@ -135,7 +135,7 @@ class BsyncXPCTests: TestCase {
         let expectation = expectationWithDescription("create attach detach")
         let xpc = BsyncXPC()
         let name = Bartleby.randomStringWithLength(6)
-        let path = TestCase.assetPath + name
+        let path = BsyncXPCTests.assetPath + name
         // Create disk
         xpc.createImageDisk(path, volumeName: name, size: "1g", password: nil, handlers: Handlers { (createDisk) in
             if let imagePath = createDisk.getStringResult() where createDisk.success {
@@ -158,7 +158,7 @@ class BsyncXPCTests: TestCase {
         let expectation = expectationWithDescription("create attach detach")
         let xpc = BsyncXPC()
         let name = Bartleby.randomStringWithLength(6)
-        let path = TestCase.assetPath + name
+        let path = BsyncXPCTests.assetPath + name
         let password = Bartleby.randomStringWithLength(6)
         // Create disk
         xpc.createImageDisk(path, volumeName: name, size: "1g", password: password, handlers: Handlers { (createDisk) in
