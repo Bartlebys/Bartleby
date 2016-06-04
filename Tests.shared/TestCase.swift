@@ -15,19 +15,19 @@ import XCTest
 
 class TestObserver: NSObject, XCTestObservation {
     private var _failureCount = 0
-    
+
     var hasSucceeded: Bool {
         get {
             return _failureCount == 0
         }
     }
-    
+
     func testCaseWillStart(testCase: XCTestCase) {
         if let name = testCase.name {
             print("\n#### \(name) ####\n")
         }
     }
-    
+
     func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         self._failureCount += 1
     }
@@ -42,24 +42,24 @@ class TestObserver: NSObject, XCTestObservation {
 /// - Provide a helper method for creating users
 /// - Clean all created users during static tear down
 class TestCase: XCTestCase {
-    
+
     static let fm = NSFileManager.defaultManager()
     let _fm = TestCase.fm
-    
-    static var _creator: User? = nil
-    static var _createdUsers = [User]()
-    
+
+    private static var _creator: User? = nil
+    private static var _createdUsers = [User]()
+
     static var assetPath: String {
         get {
             return Bartleby.getSearchPath(.DesktopDirectory)! + NSStringFromClass(self) + "/"
         }
     }
-    
+
     private static var _testObserver = TestObserver()
-    
+
     override class func setUp() {
         super.setUp()
-        
+
         // Remove asset folder if it exists
         do {
             if fm.fileExistsAtPath(assetPath) {
@@ -69,35 +69,35 @@ class TestCase: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
-        
+
         // Add test observer
         XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
-        
+
         // Configure Bartleby
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        
+
         // Purge cookie for the domain
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             for cookie in cookies {
                 NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
             }
         }
-        
+
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
-        
+
         // Make sur created users list is clean
         _createdUsers.removeAll()
         _creator = nil
     }
-    
+
     override static func tearDown() {
         super.tearDown()
-        
+
         // Remove test observer
         XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
-        
+
         // Remove asset folder depending of the configuration
         let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
         if fm.fileExistsAtPath(assetPath) && remove != RemoveAssets.Never {
@@ -109,13 +109,25 @@ class TestCase: XCTestCase {
                 }
             }
         }
-        
+
         // Clean stored users
         _creator = nil
         _createdUsers.removeAll()
     }
-    
-    func createUser(spaceUID: String, creator: User? = nil, email: String? = nil, handlers: Handlers) -> User {
+
+    /**
+     Helper to create user for the test class which will be stored statically
+     and automatically deleted when calling its counterpart deleteCreatedUsers()
+
+     - parameter spaceUID:  The space UID the user should be created into
+     - parameter creator:   The creator (if nil, the user will be auto created)
+     - parameter email:     Optional email (if nil, the random value will be kept)
+     - parameter autologin: Allow to login the user right after the creation
+     - parameter handlers:  The progress and completion handlers
+
+     - returns: A User instance
+     */
+    func createUser(spaceUID: String, creator: User? = nil, email: String? = nil, autologin: Bool = false, handlers: Handlers) -> User {
         let user = User()
         user.spaceUID = spaceUID
         if let creator = creator {
@@ -130,20 +142,36 @@ class TestCase: XCTestCase {
             user.verificationMethod = .ByEmail
             user.email = email
         }
-        
+
         TestCase._createdUsers.append(user)
-        
+
+        // Create user on the server
         CreateUser.execute(user, inDataSpace: spaceUID, sucessHandler: { (context) in
-            handlers.on(Completion.successState())
+            if autologin {
+                // Login if needed
+                user.login(withPassword: user.password, sucessHandler: {
+                    handlers.on(Completion.successState())
+
+                    }, failureHandler: { (context) in
+                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                })
+            } else {
+                handlers.on(Completion.successState())
+            }
         }) { (context) in
             handlers.on(Completion.failureStateFromJHTTPResponse(context))
-            
         }
-        
+
+        // The user is returned
         return user
-        
+
     }
-    
+
+    /**
+     Delete recursively the created users
+
+     - parameter handlers: The progress and completion handlers
+     */
     private func _deleteNextUser(handlers: Handlers) {
         if TestCase._createdUsers.isEmpty {
             // If all users have been deleted, it means that we're almost done, let log out the creator!
@@ -166,7 +194,12 @@ class TestCase: XCTestCase {
             })
         }
     }
-    
+
+    /**
+     Delete all users created with its counterpart createUser()
+
+     - parameter handlers: The progress and completion handlers
+     */
     func deleteCreatedUsers(handlers: Handlers) {
         if let creator = TestCase._creator {
             // Login the creator

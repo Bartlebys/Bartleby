@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import XCTest
 
 enum RemoveAssets {
     case Always

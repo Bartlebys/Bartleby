@@ -31,6 +31,7 @@ class AccessControlTests: TestCase {
         
         let user = self.createUser(AccessControlTests._spaceUID,
                                    email: AccessControlTests._creatorEmail,
+                                   autologin: true,
                                    handlers: Handlers { (create) in
                                     expectation.fulfill()
                                     XCTAssert(create.success, create.message)
@@ -44,30 +45,8 @@ class AccessControlTests: TestCase {
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test102_Login_Creator() {
-        let expectation = expectationWithDescription("LoginUser should respond")
-        if let creator = AccessControlTests._creatorUser {
-            creator.login(withPassword: creator.password,
-                          sucessHandler: {
-                            expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-                                XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
-                            } else {
-                                XCTFail("Auth requires a cookie")
-                            }
-            }) { (context) -> () in
-                expectation.fulfill()
-                XCTFail("\(context)")
-            }
-            
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-        } else {
-            XCTFail("Invalid user")
-        }
-    }
-    
     func test103_CreateUser_OtherUser() {
-        if let creator = AccessControlTests._creator {
+        if let creator = AccessControlTests._creatorUser {
             let expectation = expectationWithDescription("CreateUser should respond")
             
             let user = self.createUser(AccessControlTests._spaceUID,
@@ -89,7 +68,7 @@ class AccessControlTests: TestCase {
     }
     
     func test104_CreateUser_ThirdUser() {
-        if let creator = AccessControlTests._creator {
+        if let creator = AccessControlTests._creatorUser {
             let expectation = expectationWithDescription("CreateUser should respond")
             
             let user = self.createUser(AccessControlTests._spaceUID,
