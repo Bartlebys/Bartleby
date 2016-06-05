@@ -57,6 +57,10 @@ public class HTTPManager: NSObject {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("bartleby", forHTTPHeaderField: Bartleby.versionString+"; "+Bartleby.deviceIdentifier)
         request.addValue("runUID", forHTTPHeaderField: Bartleby.runUID)
+        if Bartleby.ephemeral {
+            request.addValue("true", forHTTPHeaderField: "ephemeral")
+        }
+
         if let additionnalHeaders=HTTPManager.additionnalHeaders {
             for (name, value) in additionnalHeaders {
                 request.addValue(value, forHTTPHeaderField:name)
