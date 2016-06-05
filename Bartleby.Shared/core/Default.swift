@@ -29,6 +29,9 @@ public protocol BartlebyConfiguration {
     // Use NoCrypto as CryptoDelegate
     static var DISABLE_DATA_CRYPTO: Bool { get }
 
+    //If set to true the created instances will be remove on maintenance Purge
+    static var EPHEMERAL_MODE: Bool { get set }
+
     // Consignation
     static var API_CALL_TRACKING_IS_ENABLED: Bool { get set }
     static var BPRINT_API_TRACKED_CALLS: Bool { get set }
@@ -72,10 +75,12 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool { return false }
 
+    //If set to true the created instances will be remove on maintenance Purge
+    public static var EPHEMERAL_MODE=false
+
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
     public static var BPRINT_API_TRACKED_CALLS: Bool=true
-
 
     // Should we save the password by Default ?
     public static var SAVE_PASSWORD_DEFAULT_VALUE: Bool=false

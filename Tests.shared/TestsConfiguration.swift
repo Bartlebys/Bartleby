@@ -38,6 +38,9 @@ public class TestsConfiguration: BartlebyConfiguration {
     // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool=false
 
+    //If set to true the created instances will be remove on maintenance Purge
+    public static var EPHEMERAL_MODE=true
+
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
     public static var BPRINT_API_TRACKED_CALLS: Bool=true

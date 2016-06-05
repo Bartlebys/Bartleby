@@ -42,7 +42,7 @@ public class  Bartleby: Consignee {
         }
     }
 
-    //
+    //The default serializer
     static public var defaultSerializer: Serializer.Type=JSerializer.self
 
 
@@ -65,6 +65,7 @@ public class  Bartleby: Consignee {
     }
 
 
+
     #if os(OSX)
     /// The unique device identifier. We use Eth0 on OSX
     public static let deviceIdentifier: String = Bartleby._MACAddressEN0()
@@ -72,6 +73,7 @@ public class  Bartleby: Consignee {
      /// The unique device identifier. We use the Identifier for vendor on iOS
     public static let deviceIdentifier: String = UIDevice.currentDevice().identifierForVendor.UUIDString ?? Bartleby.createUID()
     #endif
+
     // A unique run identifier that changes each time Bartleby is launched
     public static let runUID: String=Bartleby.createUID()
 
@@ -84,6 +86,10 @@ public class  Bartleby: Consignee {
         self._registries=[String:Registry]()
     }
 
+    /**
+     * When using ephemeralMode on registration Instance are marked ephemeral
+     */
+    public static var ephemeral=false
 
     /**
      Should be called on Init of the Document.
@@ -100,6 +106,9 @@ public class  Bartleby: Consignee {
 
         // Store the configuration
         Bartleby.configuration=configuration
+
+        // Ephemeral mode.
+        Bartleby.ephemeral=configuration.EPHEMERAL_MODE
 
         // Enable Bprint?
         Bartleby._enableBPrint=configuration.ENABLE_BPRINT
@@ -425,6 +434,20 @@ public class  Bartleby: Consignee {
         return addressBytes.joinWithSeparator(separator)
     }
 
+
+    // MARK: - Maintenance
+
+
+    public func destroyLocalEphemeralInstances() {
+        for (dataSpaceUID, registry) in _registries {
+            bprint("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
+            registry.superIterate({ (element) in
+                if element.ephemeral {
+                    registry.delete(element)
+                }
+            })
+        }
+    }
 
 
 }

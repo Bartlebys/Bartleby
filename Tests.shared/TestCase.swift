@@ -87,7 +87,7 @@ class TestCase: XCTestCase {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
 
-        // Make sur created users list is clean
+        // Make sure created users list is clean
         _createdUsers.removeAll()
         _creator = nil
     }
@@ -113,6 +113,7 @@ class TestCase: XCTestCase {
         // Clean stored users
         _creator = nil
         _createdUsers.removeAll()
+
     }
 
     /**

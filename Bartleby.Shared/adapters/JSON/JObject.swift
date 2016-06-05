@@ -66,6 +66,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
+    public var ephemeral: Bool=false
+
     /**
      If the auto commit observer flag is set to true then _shouldBeCommitted is turned to true.
      */
@@ -148,6 +150,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // This  id is always  created locally and used as primary index by MONGODB
     private var _id: String=Default.NO_UID {
         didSet {
+            // tag ephemeral instance
+            if Bartleby.ephemeral {
+                self.ephemeral=true
+            }
+            // And register.
             Registry.register(self)
         }
     }
@@ -218,6 +225,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.creatorUID <- map["creatorUID"]
         self.summary <- map["summary"]
         self._shouldBeCommitted <- map["_toBeCommitted"]
+        self.ephemeral <- map["ephemeral"]
         self.unlockAutoCommitObserver()
     }
 
@@ -237,6 +245,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
         self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
         self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
+        self.ephemeral=decoder.decodeBoolForKey("ephemeral")
         self.unlockAutoCommitObserver()
     }
 
@@ -251,6 +260,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             coder.encodeObject(summary, forKey:"summary")
         }
         coder.encodeBool(self._shouldBeCommitted, forKey: "_toBeCommitted")
+        coder.encodeBool(self.ephemeral, forKey: "ephemeral")
      }
 
 

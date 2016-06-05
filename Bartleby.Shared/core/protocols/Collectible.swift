@@ -28,6 +28,10 @@ public protocol Collectible: Initializable, Identifiable, Serializable, Universa
     // A summary that can be used for example by ExternalReferences to describe the instance
     var summary: String? { get set }
 
+    // If set to true the instance is cleanup during cleanup routine.
+    // suitable for unit test instances, or other temporary elements
+    var ephemeral: Bool { get set }
+
     // The name of its holding collection e.g: projects for the class Project
     // This name will be used to identify the collection in the Registry
     static var collectionName: String { get }
