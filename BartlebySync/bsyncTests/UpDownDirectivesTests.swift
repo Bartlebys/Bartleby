@@ -19,87 +19,70 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 class UpDownDirectivesTests: SyncTestCase {
     
-    private static var _spaceUID = ""
-    private static var _user: User?
+    private var _treeName = ""
+    private var _upFolderPath = ""
+    private var _upFilePath = ""
+    private var _fileContent1 = ""
+    private var _fileContent2 = ""
     
-    private static var _treeName = ""
-    private static var _upFolderPath = ""
-    private static var _upFilePath = ""
-    private static var _fileContent1 = ""
-    private static var _fileContent2 = ""
+    private var _distantTreeURL = NSURL()
     
-    private static var _distantTreeURL = NSURL()
-    
-    private static var _downFolderPath = ""
-    private static var _downFilePath = ""
+    private var _downFolderPath = ""
+    private var _downFilePath = ""
     
     private static var _upDirectives = BsyncDirectives()
     private static var _downDirectives = BsyncDirectives()
     
-    override class func setUp() {
+    override func setUp() {
         super.setUp()
         
-        _spaceUID = Bartleby.createUID()
-        
-        _treeName = NSStringFromClass(self)
-
         _upFolderPath = assetPath + "Up/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent1 = "first synchronization content"
         _fileContent2 = "second synchronization content"
         
-        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
+        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(testName)")
         
         _downFolderPath = assetPath + "Down/"
         _downFilePath = _downFolderPath + "file.txt"
     }
     
-    // MARK: 1 - Create user and directives
-    func test101_Create_user() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+    // MARK: 1 - Setup
+    func test101_Create_user_and_directives() {
+        let expectation = expectationWithDescription("Create user")
         
-        let user=User()
-        user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
-        user.spaceUID = UpDownDirectivesTests._spaceUID
-        UpDownDirectivesTests._user = user
-        
-        CreateUser.execute(user, inDataSpace: UpDownDirectivesTests._spaceUID, sucessHandler: { (context) in
+        let user = createUser(spaceUID, handlers: Handlers { (creation) in
+            XCTAssert(creation.success, creation.message)
             expectation.fulfill()
-        }) { (context) in
-            expectation.fulfill()
-            XCTFail("\(context)")
-        }
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test102_Create_upstream_directives() {
-        UpDownDirectivesTests._upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._upFolderPath)
-        UpDownDirectivesTests._upDirectives.automaticTreeCreation = true
+        
+        // Create upstream directives
+        let upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(_distantTreeURL, localPath: _upFolderPath)
+        upDirectives.automaticTreeCreation = true
         // Credentials:
-        UpDownDirectivesTests._upDirectives.user = UpDownDirectivesTests._user
-        UpDownDirectivesTests._upDirectives.password = UpDownDirectivesTests._user?.password
-        UpDownDirectivesTests._upDirectives.salt = TestsConfiguration.SHARED_SALT
-        // Create up folder
-        do {
-            try _fm.createDirectoryAtPath(UpDownDirectivesTests._upFolderPath, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            XCTFail("\(error)")
-            
-        }
-    }
-    
-    func test103_Create_downstream_directives() {
-        UpDownDirectivesTests._downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(UpDownDirectivesTests._distantTreeURL, localPath: UpDownDirectivesTests._downFolderPath)
-        UpDownDirectivesTests._downDirectives.automaticTreeCreation = true
+        upDirectives.user = user
+        upDirectives.password = user.password
+        upDirectives.salt = TestsConfiguration.SHARED_SALT
+        
+        UpDownDirectivesTests._upDirectives = upDirectives
+        
+        // Create downstream directives
+        let downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: _downFolderPath)
+        downDirectives.automaticTreeCreation = true
         
         // Credentials:
-        UpDownDirectivesTests._downDirectives.user = UpDownDirectivesTests._user
-        UpDownDirectivesTests._downDirectives.password = UpDownDirectivesTests._user?.password
-        UpDownDirectivesTests._downDirectives.salt = TestsConfiguration.SHARED_SALT
-        // Create down folder
+        downDirectives.user = user
+        downDirectives.password = user.password
+        downDirectives.salt = TestsConfiguration.SHARED_SALT
+        
+        UpDownDirectivesTests._downDirectives = downDirectives
+        
+        // Create folders
         do {
-            try _fm.createDirectoryAtPath(UpDownDirectivesTests._downFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectoryAtPath(_upFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectoryAtPath(_downFolderPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
             XCTFail("\(error)")
             
@@ -110,7 +93,7 @@ class UpDownDirectivesTests: SyncTestCase {
     func test201_Create_file_in_up_folder() {
         do {
             // Create file in up folder
-            try UpDownDirectivesTests._fileContent1.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            try _fileContent1.writeToFile(_upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
             XCTFail("\(error)")
         }
@@ -129,10 +112,10 @@ class UpDownDirectivesTests: SyncTestCase {
     
     func test203_Check_file_has_been_created_in_down_folder() {
         do {
-            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
             XCTAssertEqual(files, [".bsync", "file.txt"])
-            let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
-            XCTAssertEqual(content, UpDownDirectivesTests._fileContent1)
+            let content = try String(contentsOfFile: _downFilePath)
+            XCTAssertEqual(content, _fileContent1)
         } catch {
             XCTFail("\(error)")
         }
@@ -141,7 +124,7 @@ class UpDownDirectivesTests: SyncTestCase {
     // MARK: 3 - Edit and synchronize
     func test301_Edit_existing_file() {
         do {
-            try UpDownDirectivesTests._fileContent2.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            try _fileContent2.writeToFile(_upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
             XCTFail("\(error)")
         }
@@ -160,27 +143,26 @@ class UpDownDirectivesTests: SyncTestCase {
     
     func test303_Check_file_has_been_modified() {
         do {
-            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
             XCTAssertEqual(files, [".bsync", "file.txt"])
-            let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
-            XCTAssertEqual(content, UpDownDirectivesTests._fileContent2)
+            let content = try String(contentsOfFile: _downFilePath)
+            XCTAssertEqual(content, _fileContent2)
         } catch {
             XCTFail("\(error)")
         }
     }
     
     // MARK 6 - Add files in subfolder and synchronize
-    private static let _upSubFolderPath = _upFolderPath + "sub/"
-    private static let _downSubFolderPath = _downFolderPath + "sub/"
     private let _subFileCount = 4
     private let _subFileContent = "sub file content"
     
     func test601_Add_files_in_subfolder() {
         do {
-            try _fm.createDirectoryAtPath(UpDownDirectivesTests._upSubFolderPath, withIntermediateDirectories: true, attributes: nil)
+            let subFolderPath = _upFolderPath + "sub/"
+            try _fm.createDirectoryAtPath(subFolderPath, withIntermediateDirectories: true, attributes: nil)
             
             for i in 1..._subFileCount {
-                let filePath = UpDownDirectivesTests._upSubFolderPath + "file\(i).txt"
+                let filePath = subFolderPath + "file\(i).txt"
                 let content = _subFileContent + "\(i)"
                 try content.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
             }
@@ -203,18 +185,19 @@ class UpDownDirectivesTests: SyncTestCase {
     func test604_Check_files_have_been_created() {
         do {
             // Check root folder
-            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
             XCTAssertEqual(files, [".bsync", "file.txt", "sub"])
             // Check root file content
-            let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
-            XCTAssertEqual(content, UpDownDirectivesTests._fileContent2)
+            let content = try String(contentsOfFile: _downFilePath)
+            XCTAssertEqual(content, _fileContent2)
             // Check subfolder
-            let subFiles = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downSubFolderPath)
+            let subFolderPath = _downFolderPath + "sub/"
+            let subFiles = try _fm.contentsOfDirectoryAtPath(subFolderPath)
             XCTAssertEqual(subFiles.count, _subFileCount)
             
             for i in 1..._subFileCount {
                 XCTAssertEqual(subFiles[i - 1], "file\(i).txt")
-                let subContent = try String(contentsOfFile: UpDownDirectivesTests._downSubFolderPath + subFiles[i - 1])
+                let subContent = try String(contentsOfFile: subFolderPath + subFiles[i - 1])
                 XCTAssertEqual(subContent, _subFileContent + "\(i)")
             }
         } catch {
@@ -225,8 +208,8 @@ class UpDownDirectivesTests: SyncTestCase {
     // MARK 9 - Cleaning
     func test901_Remove_all_files() {
         do {
-            try _fm.removeItemAtPath(UpDownDirectivesTests._upFilePath)
-            try _fm.removeItemAtPath(UpDownDirectivesTests._upSubFolderPath)
+            try _fm.removeItemAtPath(_upFilePath)
+            try _fm.removeItemAtPath(_upFolderPath + "sub/")
         } catch {
             XCTFail("\(error)")
         }
@@ -245,7 +228,7 @@ class UpDownDirectivesTests: SyncTestCase {
     
     func test903_Check_file_has_been_modified() {
         do {
-            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
             XCTAssertEqual(files, [".bsync"])
         } catch {
             XCTFail("\(error)")

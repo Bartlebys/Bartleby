@@ -46,20 +46,28 @@ class TestCase: XCTestCase {
     static let fm = NSFileManager.defaultManager()
     let _fm = TestCase.fm
 
+    static var testName = ""
+    var testName = ""
+    
+    static var assetPath = ""
+    var assetPath: String = ""
+    
+    static var spaceUID = ""
+    var spaceUID = ""
+
     private static var _creator: User? = nil
     private static var _createdUsers = [User]()
-
-    static var assetPath: String {
-        get {
-            return Bartleby.getSearchPath(.DesktopDirectory)! + NSStringFromClass(self) + "/"
-        }
-    }
 
     private static var _testObserver = TestObserver()
 
     override class func setUp() {
         super.setUp()
 
+        // Initialize test case variable
+        testName = NSStringFromClass(self)
+        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
+        spaceUID = Bartleby.createUID()
+        
         // Remove asset folder if it exists
         do {
             if fm.fileExistsAtPath(assetPath) {
@@ -116,6 +124,12 @@ class TestCase: XCTestCase {
 
     }
 
+    override func setUp() {
+        testName = TestCase.testName
+        assetPath = TestCase.assetPath
+        spaceUID = TestCase.spaceUID
+    }
+    
     /**
      Helper to create user for the test class which will be stored statically
      and automatically deleted when calling its counterpart deleteCreatedUsers()
