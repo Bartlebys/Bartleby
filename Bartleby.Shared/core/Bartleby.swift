@@ -309,10 +309,10 @@ public class  Bartleby: Consignee {
 
      - parameter matching: the filter closure
      */
-    public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool){
+    public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool,fileName:String?){
         let log=Bartleby.bprintEntries(matching)
         let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartleby/logs/")
-        let filePath=folderPath+"\(CFAbsoluteTimeGetCurrent()).txt"
+        let filePath=folderPath+"\(fileName ?? "" )\(CFAbsoluteTimeGetCurrent()).txt"
 
         let fileCreationHandler=Handlers { (folderCreation) in
             if folderCreation.success {
