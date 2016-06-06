@@ -95,8 +95,8 @@ import ObjectMapper
 				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
 				    let pathURL=baseURL.URLByAppendingPathComponent("permissionsByQuery")
 				    let dictionary:Dictionary<String, AnyObject>?=Mapper().toJSON(parameters)
-				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadPermissionsByQuery" ,forMethod:"POST", and: pathURL)
-				    let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
+				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadPermissionsByQuery" ,forMethod:"GET", and: pathURL)
+				    let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
 				    r.responseJSON{ response in
 					    let request=response.request
 				        let result=response.result
