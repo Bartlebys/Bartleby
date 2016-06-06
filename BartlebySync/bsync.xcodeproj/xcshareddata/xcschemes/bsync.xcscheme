@@ -38,6 +38,44 @@
                BlueprintName = "bsyncTests"
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BsyncAdminTreeTests">
+               </Test>
+               <Test
+                  Identifier = "BsyncAdminUpDownSyncTests">
+               </Test>
+               <Test
+                  Identifier = "BsyncAdminUpDownSyncTestsNoCrypto">
+               </Test>
+               <Test
+                  Identifier = "BsyncKeyValueStorageTests">
+               </Test>
+               <Test
+                  Identifier = "DirectivesSerializationTests">
+               </Test>
+               <Test
+                  Identifier = "LocalDMGSyncTests">
+               </Test>
+               <Test
+                  Identifier = "LocalSyncTests">
+               </Test>
+               <Test
+                  Identifier = "TestCase">
+               </Test>
+               <Test
+                  Identifier = "UpDownDirectivesTestsNoCrypto">
+               </Test>
+               <Test
+                  Identifier = "bsyncBasicTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncHashMapTests">
+               </Test>
+               <Test
+                  Identifier = "bsyncMiscTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

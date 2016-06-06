@@ -81,10 +81,14 @@ class UpDownDirectivesTests: TestCase {
     // MARK: 2 - Prepare folder and directives
     func test201_Create_file_in_up_folder() {
         do {
+            // Create up folder
+            try _fm.createDirectoryAtPath(UpDownDirectivesTests._upFolderPath, withIntermediateDirectories: true, attributes: nil)
+            // Create file in up folder
+            try UpDownDirectivesTests._fileContent1.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
+            print("path:", UpDownDirectivesTests._upFilePath)
+            print("content:", UpDownDirectivesTests._fileContent1)
             // Create down folder
             try _fm.createDirectoryAtPath(UpDownDirectivesTests._downFolderPath, withIntermediateDirectories: true, attributes: nil)
-            try _fm.createDirectoryAtPath(UpDownDirectivesTests._upFolderPath, withIntermediateDirectories: true, attributes: nil)
-            try UpDownDirectivesTests._fileContent1.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
             XCTFail("\(error)")
         }
