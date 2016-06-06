@@ -42,14 +42,15 @@ class UpDownDirectivesTests: SyncTestCase {
         _spaceUID = Bartleby.createUID()
         
         _treeName = NSStringFromClass(self)
-        _upFolderPath = assetPath + "Up/" + _treeName + "/"
+
+        _upFolderPath = assetPath + "Up/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent1 = "first synchronization content"
         _fileContent2 = "second synchronization content"
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
         
-        _downFolderPath = assetPath + "Down/" + _treeName + "/"
+        _downFolderPath = assetPath + "Down/"
         _downFilePath = _downFolderPath + "file.txt"
     }
     
@@ -138,7 +139,7 @@ class UpDownDirectivesTests: SyncTestCase {
     }
     
     // MARK: 3 - Edit and synchronize
-    func test301_Edit_existing_files() {
+    func test301_Edit_existing_file() {
         do {
             try UpDownDirectivesTests._fileContent2.writeToFile(UpDownDirectivesTests._upFilePath, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
