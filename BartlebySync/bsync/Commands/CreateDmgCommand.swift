@@ -10,24 +10,23 @@
 import Cocoa
 
 class CreateDmgCommand: CommandBase {
-
-
+    
+    
     required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
-
+        
         let path = StringOption(shortFlag: "f", longFlag: "folder", required: true,
-            helpMessage: "Path to the folder in wich we will save the image disk.")
+                                helpMessage: "Path to the folder in wich we will save the image disk.")
         let volumeName = StringOption(shortFlag: "n", longFlag: "name", required: true,
-            helpMessage: "Name of the volume")
+                                      helpMessage: "Name of the volume")
         let size = StringOption(shortFlag: "s", longFlag: "size", required: true,
-            helpMessage: "Size of the volume: 10g 100m ")
+                                helpMessage: "Size of the volume: 10g 100m ")
         let help = BoolOption(shortFlag: "h", longFlag: "help",
-            helpMessage: "Prints a help message.")
+                              helpMessage: "Prints a help message.")
         let password = StringOption(shortFlag: "p", longFlag: "password",
-            helpMessage: "Set a password if you want to create a crypted disk image")
-        cli.addOptions(path, help, volumeName, size, password)
-        do {
-            try cli.parse()
+                                    helpMessage: "Set a password if you want to create a crypted disk image")
+        addOptions(path, help, volumeName, size, password)
+        if parse() {
             let dmgManager=BsyncImageDiskManager()
             
             if let path = path.value, let name = volumeName.value, let size = size.value {
@@ -40,13 +39,6 @@ class CreateDmgCommand: CommandBase {
             } else {
                 self.on(Completion.failureState("Error unwrapping option", statusCode: .Undefined))
             }
-
-
-        } catch {
-            self.on(Completion.failureState("\(error)", statusCode: .Bad_Request))
         }
     }
-
-
-
 }

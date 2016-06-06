@@ -23,10 +23,9 @@ class CreateHashMapCommand: CommandBase {
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
 
-        cli.addOptions(folderPath, help, verbosity)
+        addOptions(folderPath, help, verbosity)
 
-        do {
-            try cli.parse()
+        if parse() {
             self.isVerbose=verbosity.value
             if let path=folderPath.value {
                 var analyzer=BsyncLocalAnalyzer()
@@ -35,10 +34,6 @@ class CreateHashMapCommand: CommandBase {
                 print("Invalid folder path \(folderPath.value)")
                 exit(EX__BASE)
             }
-        } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
         }
     }
-
 }

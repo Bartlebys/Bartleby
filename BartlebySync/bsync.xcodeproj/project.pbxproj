@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B0514011CC674E1008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		5B0D4B951D058644009CBD93 /* CryptedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D4B941D058644009CBD93 /* CryptedCommand.swift */; };
 		5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */; };
 		5B4869501CF5BA1B00960171 /* BsyncAdminTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B48694F1CF5BA1B00960171 /* BsyncAdminTreeTests.swift */; };
 		5B5D08FF1CDC8D92001FB281 /* BsyncXPCHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D08FE1CDC8D92001FB281 /* BsyncXPCHelperTests.swift */; };
@@ -980,6 +981,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5B0D4B941D058644009CBD93 /* CryptedCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedCommand.swift; sourceTree = "<group>"; };
 		5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealHashMapCommand.swift; sourceTree = "<group>"; };
 		5B48694F1CF5BA1B00960171 /* BsyncAdminTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncAdminTreeTests.swift; sourceTree = "<group>"; };
 		5B5D08FC1CDC8D91001FB281 /* BsyncXPCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncXPCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1648,6 +1650,8 @@
 		E552B7AB1C3D4E49001CD53B /* Commands */ = {
 			isa = PBXGroup;
 			children = (
+				E54594121C3E7DD7000576AD /* CommandBase.swift */,
+				5B0D4B941D058644009CBD93 /* CryptedCommand.swift */,
 				5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */,
 				5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
@@ -1661,7 +1665,6 @@
 				E585044C1C3FA12000E2F64A /* LoginCommand.swift */,
 				E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */,
 				E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */,
-				E54594121C3E7DD7000576AD /* CommandBase.swift */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -2537,6 +2540,7 @@
 				E508E6FE1CFDE53A00AC0173 /* Permission.swift in Sources */,
 				E5B98EB71CC0E6CD00A7ECD1 /* TransformOf.swift in Sources */,
 				E508E7CA1CFDE53A00AC0173 /* UpdateUser.swift in Sources */,
+				5B0D4B951D058644009CBD93 /* CryptedCommand.swift in Sources */,
 				E53E275B1CA572940079ED23 /* Response.swift in Sources */,
 				E508E7EE1CFDE53A00AC0173 /* JSerializer.swift in Sources */,
 				E508E89E1CFDE53A00AC0173 /* ReactiveTask.swift in Sources */,

@@ -38,9 +38,8 @@ class RunDirectivesCommand: CommandBase {
         let help = BoolOption(shortFlag: "h", longFlag: "help",
                               helpMessage: "Prints a help message.")
         
-        cli.addOptions(filePath, secretKey, sharedSalt, help)
-        do {
-            try cli.parse()
+        addOptions(filePath, secretKey, sharedSalt, help)
+        if parse() {
             if let api = api.value, let url = NSURL(string: api) {
                 Bartleby.configuration.API_BASE_URL = url
             }
@@ -52,16 +51,16 @@ class RunDirectivesCommand: CommandBase {
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
                 let admin = BsyncAdmin()
-                
-                let directives = try admin.loadDirectives(filePath)
-                admin.runDirectives(directives, sharedSalt: salt, handlers: self)
+             
+                do {
+                    let directives = try admin.loadDirectives(filePath)
+                    admin.runDirectives(directives, sharedSalt: salt, handlers: self)
+                } catch {
+                    self.on(Completion.failureStateFromError(error))
+                }
             } else {
                 self.on(Completion.failureState("Unwrapping error", statusCode: .Undefined))
             }
-            
-        } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
         }
     }
 }

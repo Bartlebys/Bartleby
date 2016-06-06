@@ -28,19 +28,14 @@ class RevealDirectivesCommand: CommandBase {
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
 
-        cli.addOptions(filePath, secretKey, sharedSalt, help, verbosity)
-        do {
-            try cli.parse()
+        addOptions(filePath, secretKey, sharedSalt, help, verbosity)
+        if parse() {
             self.isVerbose=verbosity.value
             let key = secretKey.value!
             let salt = sharedSalt.value!
 
 
             RevealDirectivesCommand.revealDirectives(filePath.value!, secretKey: key, sharedSalt: salt, verbose: verbosity.value)
-
-        } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
         }
     }
 

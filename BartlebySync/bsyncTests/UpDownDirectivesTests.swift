@@ -20,7 +20,6 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 class UpDownDirectivesTests: TestCase {
     
     private static var _spaceUID = ""
-    private static var _password = ""
     private static var _user: User?
     
     private static var _treeName = ""
@@ -28,7 +27,6 @@ class UpDownDirectivesTests: TestCase {
     private static var _upFilePath = ""
     private static var _fileContent1 = ""
     private static var _fileContent2 = ""
-    private static var _upSubFolderPath = ""
     
     private static var _distantTreeURL = NSURL()
     
@@ -43,14 +41,12 @@ class UpDownDirectivesTests: TestCase {
         super.setUp()
         
         _spaceUID = Bartleby.createUID()
-        _password = Bartleby.randomStringWithLength(6)
         
         _treeName = NSStringFromClass(self)
         _upFolderPath = assetPath + "Up/" + _treeName + "/"
         _upFilePath = _upFolderPath + "file.txt"
         _fileContent1 = "first synchronization content"
         _fileContent2 = "second synchronization content"
-        _upSubFolderPath = _upFolderPath + "sub/"
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(_treeName)")
         
@@ -64,7 +60,6 @@ class UpDownDirectivesTests: TestCase {
         
         let user=User()
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
-        user.password = UpDownDirectivesTests._password
         user.spaceUID = UpDownDirectivesTests._spaceUID
         UpDownDirectivesTests._user = user
         
@@ -100,7 +95,7 @@ class UpDownDirectivesTests: TestCase {
         UpDownDirectivesTests._upDirectives.automaticTreeCreation = true
         // Credentials:
         UpDownDirectivesTests._upDirectives.user = UpDownDirectivesTests._user
-        UpDownDirectivesTests._upDirectives.password = UpDownDirectivesTests._password
+        UpDownDirectivesTests._upDirectives.password = UpDownDirectivesTests._user?.password
         UpDownDirectivesTests._upDirectives.salt = TestsConfiguration.SHARED_SALT
     }
     
@@ -110,7 +105,7 @@ class UpDownDirectivesTests: TestCase {
         
         // Credentials:
         UpDownDirectivesTests._downDirectives.user = UpDownDirectivesTests._user
-        UpDownDirectivesTests._downDirectives.password = UpDownDirectivesTests._password
+        UpDownDirectivesTests._downDirectives.password = UpDownDirectivesTests._user?.password
         UpDownDirectivesTests._downDirectives.salt = TestsConfiguration.SHARED_SALT
     }
     

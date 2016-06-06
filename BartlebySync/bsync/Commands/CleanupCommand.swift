@@ -10,35 +10,30 @@
 import Foundation
 
 class CleanupCommand: CommandBase {
-
+    
     required init(completionHandler: CompletionHandler?){
         super.init(completionHandler: completionHandler)
-
+        
         let folderPath = StringOption(shortFlag: "p", longFlag: "path", required: true,
-            helpMessage: "Path to the folder to be clean.")
+                                      helpMessage: "Path to the folder to be clean.")
         let help = BoolOption(shortFlag: "h", longFlag: "help",
-            helpMessage: "Prints a help message.")
+                              helpMessage: "Prints a help message.")
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
-            helpMessage: "Print verbose messages.\n\n")
-        cli.addOptions(folderPath, help, verbosity)
-        do {
-            try cli.parse()
+                                   helpMessage: "Print verbose messages.\n\n")
+        addOptions(folderPath, help, verbosity)
+        if parse() {
             self.isVerbose=verbosity.value
-                do {
-                    let messages=try BsyncAdmin.cleanupFolder(folderPath.value!)
-                    for message in messages {
-                        self.printVerbose(message)
-                    }
-                    exit(EX_OK)
-                } catch {
-                    print("\(error)")
-                    exit(EX__BASE)
+            do {
+                let messages=try BsyncAdmin.cleanupFolder(folderPath.value!)
+                for message in messages {
+                    self.printVerbose(message)
                 }
-        } catch {
-            cli.printUsage(error)
-            exit(EX_USAGE)
+                exit(EX_OK)
+            } catch {
+                self.on(Completion.failureStateFromError(error))
+            }
         }
     }
-
-
+    
+    
 }

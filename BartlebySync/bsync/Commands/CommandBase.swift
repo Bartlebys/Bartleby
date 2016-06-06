@@ -9,17 +9,35 @@
 import Foundation
 
 
+/// Base command implementing common behavior for all bsync commands
 public class CommandBase: Handlers {
 
 
     public var isVerbose=true
 
-    let cli = CommandLine()
+    private let _cli = CommandLine()
 
     public required init(completionHandler: CompletionHandler?) {
         super.init(completionHandler: completionHandler)
     }
-
+    
+    func addOptions(options: Option...) {
+        for o in options {
+            _cli.addOption(o)
+        }
+    }
+    
+    func parse() -> Bool {
+        do {
+            try _cli.parse()
+            return true
+        } catch {
+            _cli.printUsage()
+            exit(EX_USAGE)
+            return false
+            
+        }
+    }
 
     func printVerbose(string: String) {
         if isVerbose {
