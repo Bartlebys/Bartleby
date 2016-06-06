@@ -95,6 +95,10 @@ public class Registry: BXDocument, SuperIterable {
     internal var _activeSecurityBookmarks=[NSURL]()
 
 
+    // SSE server sent event source
+    internal var _SSE:EventSource?
+
+
     // MARK : - Universal Type management.
 
     private static var _associatedTypesMap=[String:String]()
@@ -362,6 +366,15 @@ public class Registry: BXDocument, SuperIterable {
 
                 }
             }
+
+            let bprintString=Bartleby.getBprintEntries({ (entry) -> Bool in
+                return true // all the entries
+            })
+
+            let logs=NSFileWrapper(regularFileWithContents:bprintString.dataUsingEncoding(NSUTF8StringEncoding)!)
+            logs.preferredFilename="last-session-logs.txt"
+            fileWrapper.addFileWrapper(logs)
+
         }
         return fileWrapper
     }
