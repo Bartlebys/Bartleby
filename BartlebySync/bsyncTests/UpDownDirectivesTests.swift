@@ -209,7 +209,10 @@ class UpDownDirectivesTests: SyncTestCase {
     func test901_Remove_all_files() {
         do {
             try _fm.removeItemAtPath(_upFilePath)
-            try _fm.removeItemAtPath(_upFolderPath + "sub/")
+            let subFolderPath = _upFolderPath + "sub/"
+            if _fm.fileExistsAtPath(subFolderPath) {
+                try _fm.removeItemAtPath(subFolderPath)
+            }
         } catch {
             XCTFail("\(error)")
         }
@@ -233,6 +236,17 @@ class UpDownDirectivesTests: SyncTestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+    
+    func test904_Delete_user() {
+        let expectation = expectationWithDescription("Delete user")
+        
+        deleteCreatedUsers(Handlers { (deletion) in
+            expectation.fulfill()
+            XCTAssert(deletion.success, deletion.message)
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
 }
