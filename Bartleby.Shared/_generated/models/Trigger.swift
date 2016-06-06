@@ -27,6 +27,8 @@ import ObjectMapper
 	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
+	//The orgin action that has initiated the trigger
+	public var origin:String = ""
 	//The action name
 	public var action:String = ""
 	//A coma separated UIDS list
@@ -45,6 +47,7 @@ import ObjectMapper
 		self.index <- ( map["index"] )
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
+		self.origin <- ( map["origin"] )
 		self.action <- ( map["action"] )
 		self.UIDS <- ( map["UIDS"] )
         self.unlockAutoCommitObserver()
@@ -59,6 +62,7 @@ import ObjectMapper
 		self.index=decoder.decodeIntegerForKey("index") 
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
+		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey: "origin")! as NSString)
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
 		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
         self.unlockAutoCommitObserver()
@@ -73,6 +77,7 @@ import ObjectMapper
 		if let spaceUID = self.spaceUID {
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
+		coder.encodeObject(self.origin,forKey:"origin")
 		coder.encodeObject(self.action,forKey:"action")
 		coder.encodeObject(self.UIDS,forKey:"UIDS")
     }
