@@ -180,12 +180,12 @@ class UpDownDirectivesTests: SyncTestCase {
             XCTFail("\(error)")
         }
     }
-
-    // MARK 6 - Add files in subfolder and synchronize
+    
+    // MARK 5 - Add files in subfolder and synchronize
     private let _subFileCount = 4
     private let _subFileContent = "sub file content"
     
-    func test601_Add_files_in_subfolder() {
+    func test501_Add_files_in_subfolder() {
         do {
             let subFolderPath = _upFolderPath + "sub/"
             try _fm.createDirectoryAtPath(subFolderPath, withIntermediateDirectories: true, attributes: nil)
@@ -200,7 +200,7 @@ class UpDownDirectivesTests: SyncTestCase {
         }
     }
     
-    func test602_Run_synchronization() {
+    func test502_Run_synchronization() {
         let expectation = expectationWithDescription("Synchronization should complete")
         
         self.runUpDownSynchronization(UpDownDirectivesTests._upDirectives, downDirectives: UpDownDirectivesTests._downDirectives, handlers: Handlers { (sync) in
@@ -211,7 +211,7 @@ class UpDownDirectivesTests: SyncTestCase {
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test604_Check_files_have_been_created() {
+    func test504_Check_files_have_been_created() {
         do {
             // Check root folder
             let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
@@ -234,10 +234,47 @@ class UpDownDirectivesTests: SyncTestCase {
         }
     }
     
+    // MARK 6 - Move and copy
+    func test501_Move_and_copy_existing_file() {
+        do {
+            try _fm.moveItemAtPath(_upFolderPath + _newFileName, toPath: _upFolderPath + _fileName)
+            try _fm.copyItemAtPath(_upFolderPath + _fileName, toPath: _upFolderPath + "sub/" + _fileName)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func test602_Run_synchronization() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        self.runUpDownSynchronization(UpDownDirectivesTests._upDirectives, downDirectives: UpDownDirectivesTests._downDirectives, handlers: Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test603_Check_files_have_been_created() {
+        do {
+            // Check root folder
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
+            XCTAssertEqual(files, [".bsync", "file.txt", "sub"])
+            // Check root file content
+            let content1 = try String(contentsOfFile: _downFolderPath + _fileName)
+            XCTAssertEqual(content1, _fileContent2)
+            // Check copied file content
+            let content2 = try String(contentsOfFile: _downFolderPath + "sub/" + _fileName)
+            XCTAssertEqual(content2, _fileContent2)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     // MARK 9 - Cleaning
     func test901_Remove_all_files() {
         do {
-            try _fm.removeItemAtPath(_upFolderPath + _newFileName)
+            try _fm.removeItemAtPath(_upFolderPath + _fileName)
             let subFolderPath = _upFolderPath + "sub/"
             if _fm.fileExistsAtPath(subFolderPath) {
                 try _fm.removeItemAtPath(subFolderPath)
