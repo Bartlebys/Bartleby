@@ -31,7 +31,6 @@ public class ShowSummary: Task, ConcreteTask {
     public static let largeGraphSize=99
 
 
-
     private static var _startTimer: CFAbsoluteTime=CFAbsoluteTimeGetCurrent()
 
 
@@ -64,9 +63,9 @@ public class ShowSummary: Task, ConcreteTask {
             if let object: JObject = try? self.arguments() as JObject {
                 if let summary = object.summary {
                     ShowSummary.counter += 1
-                    print("\(ShowSummary.counter)# \(summary)")
+                    bprint("\(ShowSummary.counter)# \(summary)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                 } else {
-                    print("NO SUMMARY \(object.UID)")
+                    bprint("NO SUMMARY \(object.UID)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                 }
             }
 
@@ -79,8 +78,7 @@ public class ShowSummary: Task, ConcreteTask {
 
                 let max: UInt32 = 100/ShowSummary.randomPausePercentProbability
                 if Int(arc4random_uniform(max)) == 1 {
-                    print("Pausing")
-
+                    bprint("Pausing", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                     if let groupRef: ExternalReference=self.group {
                         if let realGroup: TasksGroup = groupRef.toLocalInstance() {
                             realGroup.pause()
@@ -90,12 +88,12 @@ public class ShowSummary: Task, ConcreteTask {
                     // Pause for 1 or 2 seconds
                     Bartleby.executeAfter(Double(arc4random_uniform(1)+1), closure: {
                         do {
-                            print("Resuming")
+                            bprint("Resuming", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             if let group: TasksGroup=self.group!.toLocalInstance() {
                                 try group.start()
                             }
                         } catch {
-                            print("ERROR\(error)")
+                            bprint("ERROR\(error)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                         }
                     })
 
@@ -111,14 +109,23 @@ public class ShowSummary: Task, ConcreteTask {
 
 class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
 
+
     override static func setUp() {
         super.setUp()
        // Bartleby.sharedInstance.hardCoreCleanupForUnitTests()
     }
 
-    override func tearDown() {
+    override static func tearDown() {
         super.tearDown()
+        /*
+        Bartleby.dumpBprintEntries({ (entry) -> Bool in
+             return entry.category==TasksScheduler.BPRINT_CATEGORY
+            }, fileName: "TaskScheduler entries")
+ */
     }
+
+
+
 
     func test_001_graph_exec_completion_Background() {
         _graph_exec_completion_routine(TasksGroup.Priority.Background, useRandomPause: false, numberOfSequTask:ShowSummary.smallGraphSize, testMode:GraphTestMode.Flat)
@@ -237,7 +244,6 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
 
             let document=BartlebyDocument()
-            //Bartleby.startBufferingBprint()
 
             ShowSummary.randomPause=useRandomPause
             ShowSummary.executionCounter=0
@@ -258,11 +264,12 @@ class TasksGroupCompletionPriorityAndPausesTests: XCTestCase {
                     let taskCount=group.totalTaskCount()
                         XCTAssert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
                         XCTAssert(ShowSummary.executionCounter==numberOfSequTask, "Execution counter should be consistent \(ShowSummary.executionCounter)")
-                        Bartleby.stopBufferingBprint()
-                        print("FULLFILLING \(group.UID)")
+
+                        bprint("\n\nFULLFILLING \(group.UID)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                         let elapsed=ShowSummary.stopMeasuring()
-                        print ("Elapsed time : \(elapsed)")
+                        bprint("Elapsed time : \(elapsed)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                         expectation.fulfill()
+                        bprint("-------------------------\n", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                 })
 
 

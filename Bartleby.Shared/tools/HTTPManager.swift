@@ -75,7 +75,7 @@ public class HTTPManager: NSObject {
     static public func mutableRequestWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
         let request=NSMutableURLRequest(URL: url)
         request.HTTPMethod=method
-        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: spaceUID, withActionName: actionName, forMethod: method)
+        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: spaceUID, withActionName: actionName)
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
         }
@@ -95,7 +95,7 @@ public class HTTPManager: NSObject {
 
      - returns: the http Headers
      */
-    static public func httpHeadersWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String)->[String:String]{
+    static public func httpHeadersWithToken(inDataSpace spaceUID: String, withActionName actionName: String)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
         // We prefer to Inject the token and spaceUID within the HTTP headers.

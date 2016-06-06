@@ -11,6 +11,11 @@ import Foundation
 
 extension BartlebyDocument {
 
+
+
+    // MARK: - LifeCycle
+
+
     /*
 
      # Triggers Life Cycle
@@ -63,7 +68,7 @@ extension BartlebyDocument {
 
      */
 
-    // MARK: -
+    // MARK: - API
 
     public func getTriggerAfter(lastIndex: Int) {
         // Grab all the triggers > lastIndex
@@ -129,6 +134,34 @@ extension BartlebyDocument {
             // Should never occur (Dev purposes)
             bprint("Trigger index is <0 \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
         }
+    }
+
+
+    // MARK: - SSE
+
+
+    func sse()->EventSource{
+        if let SSE=self._SSE{
+            return SSE
+        }else{
+            let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+            let lastIndex=0
+            let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers/?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&showDetails==false").absoluteString
+            let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
+            self._SSE=EventSource(url:stringURL,headers:headers)
+            return self._SSE!
+        }
+    }
+
+
+
+    func connectToSSE() throws {
+        self.sse().connect()
+    }
+
+
+    func closeSSE() throws {
+        self.sse().close()
     }
 
 }

@@ -68,12 +68,19 @@ public  func == <T:Equatable> (lhs: [T]?, rhs: [T]?) -> Bool {
 
 public var DEFAULT_BPRINT_CATEGORY: String=""
 
-protocol BprintCategorizable {
+public protocol BprintCategorizable {
     static var BPRINT_CATEGORY: String { get }
 }
 
 
 
+/**
+ Returns a category for bprint
+
+ - parameter subject: the subject to classify
+
+ - returns: a string representing the category
+ */
 public func bprintCategoryFor(subject: AnyObject) -> String {
     if let s = subject as? Collectible {
         return s.d_collectionName
