@@ -59,7 +59,10 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
             trackingStack.append((result:result, context:context))
         }
         if bprintTrackedEntries == true {
-            bprint("\(result)\n\(context)", file:#file, function:#function, line:#line)
+            PString.ltrim(<#T##string: String##String#>)
+            let resultString="\(result)".stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let contextString="\(context)".stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            bprint("Result:\(resultString)|Context:\(contextString)", file:#file, function:#function, line:#line)
         }
     }
 

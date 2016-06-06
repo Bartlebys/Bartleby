@@ -122,6 +122,12 @@ class TestCase: XCTestCase {
         _creator = nil
         _createdUsers.removeAll()
 
+        Bartleby.dumpBprintEntries({ (entry) -> Bool in
+            return true
+            }, fileName: NSStringFromClass(self.self as AnyClass))
+
+        Bartleby.cleanUpBprintEntries()
+
     }
 
     override func setUp() {
