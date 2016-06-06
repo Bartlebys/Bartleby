@@ -195,10 +195,84 @@ class UpDownDirectivesTests: TestCase {
         }
     }
     
+    // MARK 6 - Add files in subfolder and synchronize
+    private static let _upSubFolderPath = _upFolderPath + "sub/"
+    private static let _downSubFolderPath = _downFolderPath + "sub/"
+    private let _subFileCount = 4
+    private let _subFileContent = "sub file content"
+    
+    func test601_Add_files_in_subfolder() {
+        do {
+            try _fm.createDirectoryAtPath(UpDownDirectivesTests._upSubFolderPath, withIntermediateDirectories: true, attributes: nil)
+            
+            for i in 1..._subFileCount {
+                let filePath = UpDownDirectivesTests._upSubFolderPath + "file\(i).txt"
+                let content = _subFileContent + "\(i)"
+                try content.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func test602_Run_upstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test603_Run_downstream_directives() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        let handlers = Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+        }
+        handlers.appendProgressHandler { (progress) in
+            print(progress.message)
+        }
+        
+        UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test604_Check_files_have_been_created() {
+        do {
+            // Check root folder
+            let files = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downFolderPath)
+            XCTAssertEqual(files, [".bsync", "file.txt", "sub"])
+            // Check root file content
+            let content = try String(contentsOfFile: UpDownDirectivesTests._downFilePath)
+            XCTAssertEqual(content, UpDownDirectivesTests._fileContent2)
+            // Check subfolder
+            let subFiles = try _fm.contentsOfDirectoryAtPath(UpDownDirectivesTests._downSubFolderPath)
+            XCTAssertEqual(subFiles.count, _subFileCount)
+            
+            for i in 1..._subFileCount {
+                XCTAssertEqual(subFiles[i - 1], "file\(i).txt")
+                let subContent = try String(contentsOfFile: UpDownDirectivesTests._downSubFolderPath + subFiles[i - 1])
+                XCTAssertEqual(subContent, _subFileContent + "\(i)")
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     // MARK 9 - Cleaning
     func test901_Remove_all_files() {
         do {
             try _fm.removeItemAtPath(UpDownDirectivesTests._upFilePath)
+            try _fm.removeItemAtPath(UpDownDirectivesTests._upSubFolderPath)
         } catch {
             XCTFail("\(error)")
         }
@@ -243,5 +317,5 @@ class UpDownDirectivesTests: TestCase {
             XCTFail("\(error)")
         }
     }
-
+    
 }
