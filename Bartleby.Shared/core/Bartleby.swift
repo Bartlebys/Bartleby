@@ -115,7 +115,7 @@ public class  Bartleby: Consignee {
         self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
         self.bprintTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
 
-        bprint("Bartleby Start time : \(Bartleby._startTime)", file:#file, function:#function, line:#line)
+        bprint("Bartleby Start time : \(Bartleby.startTime)", file:#file, function:#function, line:#line)
 
         // Configure the HTTP Manager
         HTTPManager.configure()
@@ -225,10 +225,12 @@ public class  Bartleby: Consignee {
 
     // MARK: - bprint
     private static var _enableBPrint: Bool=false
-    private static var _printCounter: Int=0
-    private static let _startTime=CFAbsoluteTimeGetCurrent()
+    public static let startTime=CFAbsoluteTimeGetCurrent()
     private static var _bufferingBprint=false
     private static var _printingBuffer=[String]()
+
+    public static var bprintEntries=[BprintEntry]()
+
 
 
     public static func startBufferingBprint() {
@@ -249,10 +251,6 @@ public class  Bartleby: Consignee {
     }
 
 
-    // @bpds we should relay to ASL (including Rank and Micro time info)
-    // https://github.com/emaloney/CleanroomASL#about-the-apple-system-log
-    // http://ericasadun.com/2015/05/22/swift-logging/
-
 
     /**
      Print indirection with guided contextual info
@@ -267,37 +265,65 @@ public class  Bartleby: Consignee {
      */
     public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String) {
         if(self._enableBPrint) {
-            func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
-                    var s="\(number)"
-                    while s.characters.count < numberOfDigit {
-                        if left {
-                            s=char+s
-                        } else {
-                            s=s+char
-                        }
-                    }
-                    return s
-                }
-                func extractFileName(s: String) -> String {
-                    let components=s.componentsSeparatedByString("/")
-                    if components.count>0 {
-                        return components.last!
-                    }
-                    return ""
-                }
-                Bartleby._printCounter += 1
-                let elapsed=CFAbsoluteTimeGetCurrent()-_startTime
-                let ft: Int=Int(floor(elapsed))
-                let micro=Int((elapsed-Double(ft))*1000)
-                let s="\(padded(Bartleby._printCounter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
+                let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
+                let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed)
+                Bartleby.bprintEntries.append(entry)
                 if _bufferingBprint {
-                    _printingBuffer.append(s)
+                    _printingBuffer.append(entry.description)
                 } else {
-                    print(s)
+                    print(entry.description)
                 }
         }
 
     }
+
+
+    /**
+     Returns a printable string for the bprint entries matching a specific criteria
+
+     - parameter matching: the filter closure
+
+     - returns: a dump of the entries
+     */
+    public static func bprintEntries(@noescape matching:(entry: BprintEntry) -> Bool )->String{
+        let entries=Bartleby.bprintEntries.filter { (entry) -> Bool in
+            return matching(entry: entry)
+        }
+        var infos=""
+        for entry in entries{
+            infos += "\(entry)\n"
+        }
+        return infos
+    }
+
+
+    /**
+     Cleans uo all the entries
+     */
+    public static func cleanUpBprintEntries(){
+        Bartleby.bprintEntries.removeAll()
+    }
+
+    /**
+     Dumps the bprint entries to a file.
+
+     - parameter matching: the filter closure
+     */
+    public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool){
+        let log=Bartleby.bprintEntries(matching)
+        let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartleby/logs/")
+        let filePath=folderPath+"\(CFAbsoluteTimeGetCurrent()).txt"
+
+        let fileCreationHandler=Handlers { (folderCreation) in
+            if folderCreation.success {
+                Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())
+            }
+        }
+
+        Bartleby.fileManager.createDirectoryAtPath(folderPath, handlers:fileCreationHandler)
+    }
+
+
 
     /**
      Reacts to a todo
@@ -451,3 +477,51 @@ public class  Bartleby: Consignee {
 
 
 }
+
+
+
+// MARK: - BprintEntry
+
+/**
+ *  A struct to insure temporary persistency of a BprintEntry
+ */
+public struct BprintEntry:CustomStringConvertible{
+
+    public var counter: Int
+    public var message: AnyObject
+    public var file: String
+    public var function: String
+    public var line: Int
+    public var category: String
+    public var elapsed:CFAbsoluteTime
+
+    public var description: String {
+
+        func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
+            var s="\(number)"
+            while s.characters.count < numberOfDigit {
+                if left {
+                    s=char+s
+                } else {
+                    s=s+char
+                }
+            }
+            return s
+        }
+
+        func extractFileName(s: String) -> String {
+            let components=s.componentsSeparatedByString("/")
+            if components.count>0 {
+                return components.last!
+            }
+            return ""
+        }
+
+        let ft: Int=Int(floor(elapsed))
+        let micro=Int((elapsed-Double(ft))*1000)
+        let s="\(padded(counter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
+
+        return  s
+    }
+}
+
