@@ -30,7 +30,9 @@ public class HTTPManager: NSObject {
 
     private static var _hasBeenConfigured=false
 
-
+    /**
+     Configure the Manager
+     */
     static public func configure()->() {
         if _hasBeenConfigured == false {
             let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -39,6 +41,8 @@ public class HTTPManager: NSObject {
         }
     }
 
+
+    // MARK: - Requests
 
     /**
      Returns a mutable request without a salted token.
@@ -51,20 +55,9 @@ public class HTTPManager: NSObject {
     static public func mutableRequestWithHeaders(method: String, url: NSURL) -> NSMutableURLRequest {
         let request=NSMutableURLRequest(URL: url)
         request.HTTPMethod=method
-        request.addValue(HTTPManager.deviceIdentifier, forHTTPHeaderField: "Device-Identifier")
-        request.addValue(HTTPManager.userAgent, forHTTPHeaderField: "User-Agent" )
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("bartleby", forHTTPHeaderField: Bartleby.versionString+"; "+Bartleby.deviceIdentifier)
-        request.addValue("runUID", forHTTPHeaderField: Bartleby.runUID)
-        if Bartleby.ephemeral {
-            request.addValue("true", forHTTPHeaderField: "ephemeral")
-        }
-
-        if let additionnalHeaders=HTTPManager.additionnalHeaders {
-            for (name, value) in additionnalHeaders {
-                request.addValue(value, forHTTPHeaderField:name)
-            }
+        let headers=HTTPManager.baseHttpHeaders()
+        for (k,v) in headers{
+            request.addValue(v, forHTTPHeaderField: k)
         }
         return request
     }
@@ -80,15 +73,71 @@ public class HTTPManager: NSObject {
      - returns: the mutable
      */
     static public func mutableRequestWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
-        let r=HTTPManager.mutableRequestWithHeaders(method, url: url)
+        let request=NSMutableURLRequest(URL: url)
+        request.HTTPMethod=method
+        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: spaceUID, withActionName: actionName, forMethod: method)
+        for (k,v) in headers{
+            request.addValue(v, forHTTPHeaderField: k)
+        }
+        return request
+    }
+
+    // MARK: - HTTP Headers
+
+
+    /**
+     Returns the Http Headers
+
+     - parameter spaceUID:   the space UID of the targetted DataSpace
+     - parameter actionName: the actionName
+     - parameter method:     the HTTP method (POST,GET, PATCH, DELETE, PUT)
+     - parameter url:        the url.
+
+     - returns: the http Headers
+     */
+    static public func httpHeadersWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String)->[String:String]{
+        var headers=HTTPManager.baseHttpHeaders()
+
         // We prefer to Inject the token and spaceUID within the HTTP headers.
         // Note It is also possible to pass them as query strings.
         let tokenKey=HTTPManager.salt("\(actionName)#\(spaceUID)")
         let tokenValue=HTTPManager.salt(tokenKey)
-        r.addValue(tokenValue, forHTTPHeaderField: tokenKey)
-        r.addValue(spaceUID, forHTTPHeaderField:HTTPManager.SPACE_UID_KEY)
-        return r
+
+        headers[HTTPManager.SPACE_UID_KEY]=spaceUID
+        headers[tokenKey]=tokenValue
+
+        return headers
     }
+
+
+    /**
+     Returns a bunch of HTTP Header to be used in any Bartleby Http call
+
+     - returns: the headers
+     */
+    static public func baseHttpHeaders()->[String:String]{
+        var headers=[String:String]()
+        // Add the additionnal Headers.
+        // To prevent overloads we do this first.
+        if let additionnalHeaders=HTTPManager.additionnalHeaders {
+            for (key, value) in additionnalHeaders {
+                headers[key]=value
+            }
+        }
+        headers["Device-Identifier"]=HTTPManager.deviceIdentifier
+        headers["User-Agent"]=HTTPManager.userAgent
+        headers["Accept"]="application/json"
+        headers["Content-Type"]="application/json"
+        headers["bartleby"]=Bartleby.versionString+"; "+Bartleby.deviceIdentifier
+        headers["runUID"]=Bartleby.runUID
+        if Bartleby.ephemeral {
+             headers["ephemeral"]="true"
+        }
+
+        return headers
+    }
+
+    // MARK: - API
 
     /**
      Use this method to test if a server is Reachable
