@@ -226,29 +226,7 @@ public class  Bartleby: Consignee {
     // MARK: - bprint
     private static var _enableBPrint: Bool=false
     public static let startTime=CFAbsoluteTimeGetCurrent()
-    private static var _bufferingBprint=false
-    private static var _printingBuffer=[String]()
-
     public static var bprintEntries=[BprintEntry]()
-
-
-
-    public static func startBufferingBprint() {
-        _bufferingBprint=true
-        _printingBuffer=[String]()
-        print("# Buffering Bprint calls...")
-    }
-
-    public static func stopBufferingBprint() {
-        if _bufferingBprint==true {
-            print("# Bprint dump")
-            _bufferingBprint=false
-            for s in _printingBuffer {
-                print (s)
-            }
-            _printingBuffer=[String]()
-        }
-    }
 
 
 
@@ -265,14 +243,10 @@ public class  Bartleby: Consignee {
      */
     public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String) {
         if(self._enableBPrint) {
-                let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
-                let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed)
-                Bartleby.bprintEntries.append(entry)
-                if _bufferingBprint {
-                    _printingBuffer.append(entry.description)
-                } else {
-                    print(entry.description)
-                }
+            let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
+            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed)
+            Bartleby.bprintEntries.append(entry)
+            print(entry)
         }
 
     }
@@ -285,13 +259,15 @@ public class  Bartleby: Consignee {
 
      - returns: a dump of the entries
      */
-    public static func bprintEntries(@noescape matching:(entry: BprintEntry) -> Bool )->String{
+    public static func getBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool )->String{
         let entries=Bartleby.bprintEntries.filter { (entry) -> Bool in
             return matching(entry: entry)
         }
         var infos=""
+        var counter = 0
         for entry in entries{
-            infos += "\(entry)\n"
+            infos += "\(counter)# \(entry)\n"
+            counter += 1
         }
         return infos
     }
@@ -306,11 +282,41 @@ public class  Bartleby: Consignee {
 
     /**
      Dumps the bprint entries to a file.
+     
+     Samples
+     ```
+     // Writes logs in ~/Library/Application\ Support/Bartleby/logs
+     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
+     return true // all the Entries
+     }, fileName: "All")
+
+     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
+     return entry.file=="TransformTests.swift"
+     },fileName:"TransformTests.swift")
+
+
+
+     Bartleby.dumpBprintEntries({ (entry) -> Bool in
+     return true // all the Entries
+     }, fileName: "Tests_zorro")
+
+
+
+     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
+     // Entries matching default category
+     return entry.category==Default.BPRINT_CATEGORY
+     },fileName:"Default")
+
+
+     // Clean up the entries
+     Bartleby.cleanUpBprintEntries()
+     ```
+
 
      - parameter matching: the filter closure
      */
     public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool,fileName:String?){
-        let log=Bartleby.bprintEntries(matching)
+        let log=Bartleby.getBprintEntries(matching)
         let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartleby/logs/")
         let filePath=folderPath+"\(fileName ?? "" )\(CFAbsoluteTimeGetCurrent()).txt"
 
@@ -410,7 +416,7 @@ public class  Bartleby: Consignee {
 
 
 
-    // MARK: -
+    // MARK: - Identification
 
 
     private static var __MACAddressEN0: String?
@@ -462,7 +468,6 @@ public class  Bartleby: Consignee {
 
 
     // MARK: - Maintenance
-
 
     public func destroyLocalEphemeralInstances() {
         for (dataSpaceUID, registry) in _registries {
