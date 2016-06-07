@@ -65,7 +65,8 @@ class TestCase: XCTestCase {
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
-        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
+        //        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
+        assetPath = testName + "/"
         spaceUID = Bartleby.createUID()
         
         // Remove asset folder if it exists
