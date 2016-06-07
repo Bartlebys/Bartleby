@@ -72,7 +72,8 @@ class TestCase: XCTestCase {
         print("    \(testName)")
         print("==========================================================\n")
 
-        assetPath = NSTemporaryDirectory() + testName + "/"
+//        assetPath = NSTemporaryDirectory() + testName + "/"
+        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
         bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
         spaceUID = Bartleby.createUID()
         
