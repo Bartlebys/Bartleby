@@ -264,7 +264,7 @@ public class  Bartleby: Consignee {
             return matching(entry: entry)
         }
         var infos=""
-        var counter = 0
+        var counter = 1
         for entry in entries{
             infos += "\(counter)# \(entry)\n"
             counter += 1

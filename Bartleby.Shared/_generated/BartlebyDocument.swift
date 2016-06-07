@@ -415,11 +415,16 @@ public class BartlebyDocument : JDocument {
         }
     }
 
-// MARK: - OSX specific
+    override public func registryDidLoad() {
+        super.registryDidLoad()
+        self.connectToSSE()
+    }
+
+    // MARK: - OSX specific
 
  #if os(OSX) && !USE_EMBEDDED_MODULES
 
-// MARK: KVO
+    // MARK: KVO
 
     override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         guard context == &_KVOContext else {
