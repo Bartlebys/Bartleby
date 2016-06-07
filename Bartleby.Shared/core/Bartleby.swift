@@ -240,15 +240,15 @@ public class  Bartleby: Consignee {
      - parameter line:  the line
      - parameter function : the function name
      - parameter category: a categorizer string
+     - parameter decorative: if set to true only the message will be displayed.
      */
-    public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String) {
+    public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
-            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed)
+            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:false)
             Bartleby.bprintEntries.append(entry)
             print(entry)
         }
-
     }
 
 
@@ -510,8 +510,13 @@ public struct BprintEntry:CustomStringConvertible{
     public var line: Int
     public var category: String
     public var elapsed:CFAbsoluteTime
+    public var decorative:Bool=false
 
     public var description: String {
+
+        if decorative {
+            return "\(message)"
+        }
 
         func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
             var s="\(number)"
