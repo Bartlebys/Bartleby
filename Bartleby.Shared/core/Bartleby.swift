@@ -232,7 +232,7 @@ public class  Bartleby: Consignee {
 
     /**
      Print indirection with guided contextual info
-     Usage : bprint("<Message>",file:#file,function:#function,line:#line,category:DEFAULT.BPRINT_CATEGORY")
+     Usage : bprint("<Message>",file:#file,function:#function,line:#line,category:DEFAULT.BPRINT_CATEGORY")'
      You can create code snippet
 
      - parameter message: the message
@@ -317,16 +317,27 @@ public class  Bartleby: Consignee {
      */
     public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool,fileName:String?){
         let log=Bartleby.getBprintEntries(matching)
-        let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartleby/logs/")
-        let filePath=folderPath+"\(fileName ?? "" )\(CFAbsoluteTimeGetCurrent()).txt"
-
-        let fileCreationHandler=Handlers { (folderCreation) in
-            if folderCreation.success {
-                Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())
-            }
+        let date=NSDate()
+        let df=NSDateFormatter()
+        df.dateFormat = "yyyy-MM-dd-HH-mm"
+        let dateFolder = df.stringFromDate(date)
+        var id = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleIdentifier")
+        if id == nil{
+            id=NSBundle.mainBundle().executableURL?.lastPathComponent
         }
+        let groupFolder = (id ?? "Shared")!
 
-        Bartleby.fileManager.createDirectoryAtPath(folderPath, handlers:fileCreationHandler)
+        let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartlebys/logs/\(groupFolder)/\(dateFolder)/")
+        let filePath=folderPath+"\(fileName ?? "" ).txt"
+
+        dispatch_async(GlobalQueue.Background.get()) {
+            let fileCreationHandler=Handlers { (folderCreation) in
+                if folderCreation.success {
+                    Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())
+                }
+            }
+            Bartleby.fileManager.createDirectoryAtPath(folderPath, handlers:fileCreationHandler)
+        }
     }
 
 

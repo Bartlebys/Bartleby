@@ -367,12 +367,13 @@ public class Registry: BXDocument, SuperIterable {
                 }
             }
 
+            // Stores the last logs in a file.
             let bprintString=Bartleby.getBprintEntries({ (entry) -> Bool in
                 return true // all the entries
             })
 
             let logs=NSFileWrapper(regularFileWithContents:bprintString.dataUsingEncoding(NSUTF8StringEncoding)!)
-            logs.preferredFilename="last-session-logs.txt"
+            logs.preferredFilename="lastLogs.txt"
             fileWrapper.addFileWrapper(logs)
 
         }
