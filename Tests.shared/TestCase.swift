@@ -63,10 +63,17 @@ class TestCase: XCTestCase {
     override class func setUp() {
         super.setUp()
 
+        // Configure Bartleby
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        
         // Initialize test case variable
         testName = NSStringFromClass(self)
-        //        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
-        assetPath = testName + "/"
+        print("\n==========================================================")
+        print("    \(testName)")
+        print("==========================================================\n")
+
+        assetPath = NSTemporaryDirectory() + testName + "/"
+        bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
         spaceUID = Bartleby.createUID()
         
         // Remove asset folder if it exists
@@ -81,9 +88,6 @@ class TestCase: XCTestCase {
 
         // Add test observer
         XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
-
-        // Configure Bartleby
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
 
         // Purge cookie for the domain
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {

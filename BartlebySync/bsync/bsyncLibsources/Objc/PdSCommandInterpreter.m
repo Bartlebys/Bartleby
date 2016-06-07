@@ -425,8 +425,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                    if (response){
                                                        NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                       NSString*message=[[NSString alloc]initWithFormat:@"%@\nHTTP Status Code = %@",request.URL.absoluteString,@(httpStatusCode)];
-                                                       bprint(@"%@", message);
+                                                       bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
                                                        if (httpStatusCode>=200 && httpStatusCode<300) {
                                                            [self _nextCommand];
                                                            return ;
@@ -458,7 +457,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                   
                                                                   if (response) {
                                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                                      bprint(@"%@\nHTTP Status Code = %@", request.URL.absoluteString, @(httpStatusCode));
+                                                                      bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
                                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
                                                                           [self _nextCommand];
                                                                           return ;

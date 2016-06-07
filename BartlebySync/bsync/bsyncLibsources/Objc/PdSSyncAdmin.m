@@ -583,16 +583,15 @@
                                                                              NSString*message=@"Hash map JSON deserialization error";
                                                                              bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
                                                                              block(nil,PdSStatusErrorHashMapDeserialization);
-                                                                         }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
+                                                                         } else if ( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                              HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
                                                                              bprint(@"Distant hashmap:");
                                                                              for (id key in responseDictionary) {
                                                                                  bprint(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
                                                                              }
                                                                              block(hashMap,((NSHTTPURLResponse*)response).statusCode);
-                                                                         }else{
-                                                                             NSString*message=@"Hash map deserialization type miss match";
-                                                                             bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                         } else {
+                                                                             bprint(@"Hash map deserialization type miss match");
                                                                              block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
                                                                          }
                                                                      }

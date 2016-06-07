@@ -43,9 +43,6 @@
                   Identifier = "BsyncAdminTreeTests">
                </Test>
                <Test
-                  Identifier = "BsyncAdminUpDownSyncTests">
-               </Test>
-               <Test
                   Identifier = "BsyncAdminUpDownSyncTestsNoCrypto">
                </Test>
                <Test
@@ -67,40 +64,7 @@
                   Identifier = "TestCase">
                </Test>
                <Test
-                  Identifier = "UpDownDirectivesTests/test301_Edit_existing_file()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test302_Run_synchronization()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test303_Check_file_has_been_modified()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test401_Move_existing_file()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test402_Run_synchronization()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test403_Check_file_has_been_moved()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test501_Add_files_in_subfolder()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test501_Move_and_copy_existing_file()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test502_Run_synchronization()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test504_Check_files_have_been_created()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test602_Run_synchronization()">
-               </Test>
-               <Test
-                  Identifier = "UpDownDirectivesTests/test603_Check_files_have_been_created()">
+                  Identifier = "UpDownDirectivesTests">
                </Test>
                <Test
                   Identifier = "UpDownDirectivesTestsNoCrypto">
