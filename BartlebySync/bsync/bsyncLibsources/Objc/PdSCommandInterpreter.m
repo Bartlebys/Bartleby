@@ -709,10 +709,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSString *source=[cmd objectAtIndex:BSource];
             if (![_fileManager fileExistsAtPath:source]){
                 // If we encounter a problem of dependency
-                // (order of operation e.g a move before a dependant copy)
+                // (order of operation e.g a move before a dependent copy)
                 // We store the command for a second pass.
+                 // And we defer the command interpretation.
                 [secondPass addObject:cmd];
-                // So we skyp the command interpretation.
+
             }else{
                 if(command==BMove){
                     [self _runMove:source
@@ -732,7 +733,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         }
 
-        // Second pass to deal with dependent commands.
+        // Second pass to deal with defered commands.
         for (NSArray*cmd in secondPass) {
             NSString *source=[cmd objectAtIndex:BSource];
             NSString *destination=[cmd objectAtIndex:BDestination];
@@ -762,6 +763,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         if(jsonHashMapError){
             bprint(@"%@",[jsonHashMapError description]);
+            // @md this is not normal (we should interrupt if there is a hash map issue;
+            // May be we should delete then -> write the Hashmap to perform securely
             //[self _interruptOnFault:[jsonHashMapError description]];
             //return;
         }else{
