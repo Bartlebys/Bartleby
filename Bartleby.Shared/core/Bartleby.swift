@@ -535,7 +535,7 @@ public struct BprintEntry:CustomStringConvertible{
 
         let ft: Int=Int(floor(elapsed))
         let micro=Int((elapsed-Double(ft))*1000)
-        let s="\(padded(counter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) : \(message)  {\(extractFileName(file))(\(line)).\(function)}"
+        let s="\(padded(counter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) \(extractFileName(file))/\(function)#\(line) : \(message)"
 
         return  s
     }
