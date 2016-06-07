@@ -66,7 +66,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
                 resultString=resultString.stringByReplacingOccurrencesOfString("\n", withString:"")
             }
             let contextString="\(context)"
-            bprint("Result:\(resultString)|Context:\(contextString)", file:#file, function:#function, line:#line)
+            bprint("Context:\(contextString)", file:#file, function:#function, line:#line)
         }
     }
 
