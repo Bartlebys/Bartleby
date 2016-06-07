@@ -647,9 +647,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // Creation and Update will be done before Moves, Copies and Updates
         // BCreate   = 0
         // BUpdate   = 1
-        // BMove     = 2
-        // BCopy     = 3
-        // BDelete   = 4 
+        // BCopy     = 2
+        // BMove     = 3
+        // BDelete   = 4
         
         NSArray*sortedCommand=[commands sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSArray*a1=(NSArray*)obj1;
@@ -773,10 +773,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                               toLocalUrl:_context.destinationBaseUrl
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
+
         NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath:destination
                                                                    toLocalUrl:_context.destinationBaseUrl
                                                                    withTreeId:_context.destinationTreeId
-                                                                    addPrefix:YES];
+                                                                    addPrefix:NO];
         
         NSError*error=nil;
         
