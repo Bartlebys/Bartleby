@@ -650,6 +650,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // BCopy     = 2
         // BMove     = 3
         // BDelete   = 4
+
+
+        NSMutableArray*secondPass=[NSMutableArray array];
         
         NSArray*sortedCommand=[commands sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSArray*a1=(NSArray*)obj1;
@@ -668,21 +671,21 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSString *destination=[cmd objectAtIndex:BDestination];
             NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];
             BOOL isAFolder=[[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
-            
-            NSString*destinationPrefixedFilePath=[self _absoluteLocalPathFromRelativePath:destination
-                                                                               toLocalUrl:_context.destinationBaseUrl
-                                                                               withTreeId:_context.destinationTreeId
-                                                                                addPrefix:YES];
-            
-            NSString*destinationFileWithoutPrefix=[self _absoluteLocalPathFromRelativePath:destination
-                                                                                toLocalUrl:_context.destinationBaseUrl
-                                                                                withTreeId:_context.destinationTreeId
-                                                                                 addPrefix:NO];
-            
+
             
             if(command==BCreate || command==BUpdate){
                 if(!isAFolder){
-                    
+
+                    NSString*destinationPrefixedFilePath=[self _absoluteLocalPathFromRelativePath:destination
+                                                                                       toLocalUrl:_context.destinationBaseUrl
+                                                                                       withTreeId:_context.destinationTreeId
+                                                                                        addPrefix:YES];
+
+                    NSString*destinationFileWithoutPrefix=[self _absoluteLocalPathFromRelativePath:destination
+                                                                                        toLocalUrl:_context.destinationBaseUrl
+                                                                                        withTreeId:_context.destinationTreeId
+                                                                                         addPrefix:NO];
+
                     [_fileManager createRecursivelyRequiredFolderForPath:destinationFileWithoutPrefix];
                     
                     NSError*error=nil;
@@ -691,7 +694,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                     [_fileManager moveItemAtPath:destinationPrefixedFilePath
                                           toPath:destinationFileWithoutPrefix
                                            error:&error];
-                    
                     
                     if(error){
                         [self _progressMessage:@"Error during local finalization on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",destinationPrefixedFilePath,destinationFileWithoutPrefix,[error description]];
@@ -702,26 +704,50 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 continue;
                 
             }
-            
-            if(command==BMove){
-                NSString *source=[cmd objectAtIndex:BSource];
-                [self _runMove:source
-                   destination:destination];
-            }
-            
-            if(command==BCopy){
-                NSString *source=[cmd objectAtIndex:BSource];
-                [self _runCopy:source
-                   destination:destination];
+
+
+            NSString *source=[cmd objectAtIndex:BSource];
+            if (![_fileManager fileExistsAtPath:source]){
+                // If we encounter a problem of dependency
+                // (order of operation e.g a move before a dependant copy)
+                // We store the command for a second pass.
+                [secondPass addObject:cmd];
+                // So we skyp the command interpretation.
+            }else{
+                if(command==BMove){
+                    [self _runMove:source
+                       destination:destination];
+                }
+
+                if(command==BCopy){
+                    NSString *source=[cmd objectAtIndex:BSource];
+                    [self _runCopy:source
+                       destination:destination];
+                }
             }
             
             if(command==BDelete){
                 [self _runDelete:destination];
             }
-            
-            
+
         }
-        
+
+        // Second pass to deal with dependent commands.
+        for (NSArray*cmd in secondPass) {
+            NSString *source=[cmd objectAtIndex:BSource];
+            NSString *destination=[cmd objectAtIndex:BDestination];
+            NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];
+            if(command==BMove){
+                [self _runMove:source
+                   destination:destination];
+            }
+            if(command==BCopy){
+                [self _runCopy:source
+                   destination:destination];
+            }
+
+        }
+
         // Write the Hash Map
         NSString*relativePathOfHashMapFile=[_context.destinationTreeId stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
         NSURL *hashMapFileUrl=[_context.destinationBaseUrl URLByAppendingPathComponent:relativePathOfHashMapFile];
@@ -733,16 +759,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                       atomically:YES
                         encoding:NSUTF8StringEncoding error:&jsonHashMapError];
         
-        /**
-         // CURIOUS THE URL PRODUCES SOME ERRORS
-         
-         [jsonHashMap writeToURL:hashMapFileUrl
-         atomically:YES
-         encoding:NSUTF8StringEncoding
-         error:&jsonHashMapError];
-         */
-        
-        
+
         if(jsonHashMapError){
             bprint(@"%@",[jsonHashMapError description]);
             //[self _interruptOnFault:[jsonHashMapError description]];
@@ -753,9 +770,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                 object:self];
         }
         
-        
-        
     }
+}
+
+
+- (void)__run_cmd_copy_or_move:(NSArray*)cmd{
+
+
 }
 
 
