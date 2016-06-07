@@ -62,7 +62,7 @@
         int i=0;
         while ((file = [dirEnum nextObject])) {
             
-            NSString *filePath=[file path];
+            NSString *filePath=[[file URLByResolvingSymlinksInPath] path];
             NSNumber *isDirectory;
             [file getResourceValue:&isDirectory
                             forKey:NSURLIsDirectoryKey
