@@ -645,11 +645,11 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
         // SORT THE COMMANDS By BsyncCommand value order
         // Creation and Update will be done before Moves, Copies and Updates
-        // BCreate   = 0 ,
-        // BUpdate   = 1 ,
-        // BMove     = 2 ,
-        // BCopy     = 3 ,
-        // BDelete   = 4
+        //  BCreate   = 0
+        // BUpdate   = 1
+        // BCopy     = 2
+        // BMove     = 3
+        // BDelete   = 4 
         
         NSArray*sortedCommand=[commands sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSArray*a1=(NSArray*)obj1;

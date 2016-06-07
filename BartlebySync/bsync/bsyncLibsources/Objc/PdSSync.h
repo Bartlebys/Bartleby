@@ -24,8 +24,8 @@ typedef NS_ENUM (NSUInteger,
                   BsyncCommand) {
     BCreate   = 0 , // W destination and source
     BUpdate   = 1 , // W destination and source
-    BMove     = 2 , // R source W destination
-    BCopy     = 3 , // R source W destination
+    BCopy     = 2 , // R source W destination
+    BMove     = 3 , // R source W destination
     BDelete   = 4   // W source
 } ;
 
