@@ -235,7 +235,7 @@ class UpDownDirectivesTests: SyncTestCase {
     }
     
     // MARK 6 - Move and copy
-    func test501_Move_and_copy_existing_file() {
+    func test601_Move_and_copy_existing_file() {
         do {
             try _fm.moveItemAtPath(_upFolderPath + _newFileName, toPath: _upFolderPath + _fileName)
             try _fm.copyItemAtPath(_upFolderPath + _fileName, toPath: _upFolderPath + "sub/" + _fileName)
