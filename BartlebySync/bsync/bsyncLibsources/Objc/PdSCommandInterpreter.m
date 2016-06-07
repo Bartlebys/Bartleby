@@ -774,13 +774,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 }
 
 
-- (void)__run_cmd_copy_or_move:(NSArray*)cmd{
-
-
-}
-
-
-
 #pragma  mark  Copy
 
 -(void)_runCopy:(NSString*)source destination:(NSString*)destination{
