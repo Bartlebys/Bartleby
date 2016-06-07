@@ -770,7 +770,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // COPY LOCALLY
         
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
-                                                              toLocalUrl:_context.sourceBaseUrl
+                                                              toLocalUrl:_context.destinationBaseUrl
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
         NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath:destination
