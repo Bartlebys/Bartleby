@@ -130,7 +130,7 @@ class TestCase: XCTestCase {
 
         Bartleby.dumpBprintEntries({ (entry) -> Bool in
             return true
-            }, fileName: NSStringFromClass(self.self as AnyClass))
+            }, fileName: NSStringFromClass(self))
 
         Bartleby.cleanUpBprintEntries()
 
