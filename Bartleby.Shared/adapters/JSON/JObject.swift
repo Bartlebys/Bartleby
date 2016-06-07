@@ -196,8 +196,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             if self is Descriptible {
                 return (self as! Descriptible).toString()
             }
-            if let j=Mapper().toJSONString(self, prettyPrint:true) {
-                return "\n\(j)"
+            if let j=Mapper().toJSONString(self, prettyPrint:false) {
+                return "\(j)"
             } else {
                 return "Void JObject"
             }
