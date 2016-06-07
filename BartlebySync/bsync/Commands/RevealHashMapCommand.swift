@@ -13,20 +13,20 @@ class RevealHashMapCommand: CryptedCommand {
         super.init(completionHandler: completionHandler)
         
         
-        let hashMapPathOption = StringOption(shortFlag: "f", longFlag: "file", required: true,
+        let hashMapPathOption = StringOption(shortFlag: "f", longFlag: "file", required: false,
                                              helpMessage: "Path to the hashmap file.")
+        let hashMapURLOption = StringOption(shortFlag: "u", longFlag: "url", required: false, helpMessage: "URL to the hashmap")
         
-        addOptions(hashMapPathOption)
+        addOptions(hashMapPathOption, hashMapURLOption)
         if parse() {
-            if let path = hashMapPathOption.value {
-                // Configure Bartleby without a specific URL
-                Bartleby.configuration.KEY = secretKey
-                Bartleby.configuration.SHARED_SALT = sharedSalt
-                Bartleby.configuration.ENABLE_BPRINT = false
-                Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                
+            // Configure Bartleby without a specific URL
+            Bartleby.configuration.KEY = secretKey
+            Bartleby.configuration.SHARED_SALT = sharedSalt
+            Bartleby.configuration.ENABLE_BPRINT = false
+            Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+            
+            func printHashMap(cryptedHashMap: String) {
                 do {
-                    let cryptedHashMap = try String(contentsOfFile: path)
                     let hashmap = try Bartleby.cryptoDelegate.decryptString(cryptedHashMap)
                     print(hashmap)
                     self.on(Completion.successState())
@@ -34,6 +34,27 @@ class RevealHashMapCommand: CryptedCommand {
                     self.on(Completion.failureStateFromError(error))
                 }
             }
+            
+            do {
+                if let path = hashMapPathOption.value {
+                    let cryptedHashMap = try String(contentsOfFile: path)
+                    printHashMap(cryptedHashMap)
+                } else if let urlString = hashMapURLOption.value {
+                    let r = request(.GET, urlString)
+                    r.responseString(completionHandler: { (response) in
+                        if let cryptedHashMap = response.result.value {
+                            printHashMap(cryptedHashMap)
+                        } else {
+                            self.on(Completion.failureState("Error when retrieving the file", statusCode: .Undefined))
+                        }
+                    })
+                } else {
+                    self.on(Completion.failureState("You must specify a file path or a valid URL to the hashmap", statusCode: .Undefined))
+                }
+            } catch {
+                self.on(Completion.failureStateFromError(error))
+            }
+            
         }
     }
 }

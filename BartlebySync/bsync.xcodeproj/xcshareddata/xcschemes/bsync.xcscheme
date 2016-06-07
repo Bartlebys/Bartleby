@@ -244,6 +244,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/dev/YouDub/YouDubAPI/files/bsyncTests.UpDownDirectivesTests/.bsync/hashmap"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--url https://dev.repository.lylo.tv/bsyncTests.UpDownDirectivesTests/.bsync/hashmap"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
