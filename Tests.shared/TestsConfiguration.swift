@@ -41,6 +41,9 @@ public class TestsConfiguration: BartlebyConfiguration {
     //If set to true the created instances will be remove on maintenance Purge
     public static var EPHEMERAL_MODE=true
 
+    //Should the app try to be online by default
+    public static var ONLINE_BY_DEFAULT=true
+
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
     public static var BPRINT_API_TRACKED_CALLS: Bool=true

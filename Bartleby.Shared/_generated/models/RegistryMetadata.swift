@@ -31,6 +31,8 @@ import ObjectMapper
 	dynamic public var collaborationServerURL:NSURL?
 	//A collection of CollectionMetadatum
 	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	//is the user performing Online
+	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 	//The State dictionary to insure registry persistency 
 	public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
@@ -59,6 +61,7 @@ import ObjectMapper
 		self.rootObjectUID <- ( map["rootObjectUID"] )
 		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 		self.collectionsMetadata <- ( map["collectionsMetadata"] )
+		self.online <- ( map["online"] )
 		self.stateDictionary <- ( map["stateDictionary"] )
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
@@ -79,6 +82,7 @@ import ObjectMapper
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
+		self.online=decoder.decodeBoolForKey("online") 
 		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
@@ -99,6 +103,7 @@ import ObjectMapper
 			coder.encodeObject(collaborationServerURL,forKey:"collaborationServerURL")
 		}
 		coder.encodeObject(self.collectionsMetadata,forKey:"collectionsMetadata")
+		coder.encodeBool(self.online,forKey:"online")
 		coder.encodeObject(self.stateDictionary,forKey:"stateDictionary")
 		coder.encodeObject(self.URLBookmarkData,forKey:"URLBookmarkData")
 		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")

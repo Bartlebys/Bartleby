@@ -32,6 +32,9 @@ public protocol BartlebyConfiguration {
     //If set to true the created instances will be remove on maintenance Purge
     static var EPHEMERAL_MODE: Bool { get set }
 
+    //Should the app try to be online by default
+    static var ONLINE_BY_DEFAULT: Bool { get set }
+
     // Consignation
     static var API_CALL_TRACKING_IS_ENABLED: Bool { get set }
     static var BPRINT_API_TRACKED_CALLS: Bool { get set }
@@ -77,6 +80,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     //If set to true the created instances will be remove on maintenance Purge
     public static var EPHEMERAL_MODE=false
+
+    //Should the app try to be online by default
+    public static var ONLINE_BY_DEFAULT=true
 
     // Consignation
     public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
