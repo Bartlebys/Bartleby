@@ -105,7 +105,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     
     // MARK: 4 - Run synchronization
     
-    func test402_RunDirectives_UpToDistant() {
+    func test401_RunDirectives_UpToDistant() {
         let expectation = expectationWithDescription("Synchronization should complete")
         
         
@@ -128,7 +128,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test403_RunDirectives_DistantToDown() {
+    func test402_RunDirectives_DistantToDown() {
         let expectation = expectationWithDescription("Synchronization should complete")
         
         
@@ -151,7 +151,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test404_CheckFileHasBeenDownloaded() {
+    func test403_CheckFileHasBeenDownloaded() {
         do {
             let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
             XCTAssertEqual(files, [".bsync", "file.txt"])
@@ -162,9 +162,101 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTFail("\(error)")
         }
     }
+
+    // MARK: 5 - Remove file
+    func test501_CreateFileInUpFolder() {
+        do {
+            try _fm.removeItemAtPath(_upFolderPath + _fileName)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
     
-    // MARk: 5 - Cleanup
-    func test501_deleteUser() {
+    // MARK: 6 - Run local analyser
+    
+    func test601_RunLocalAnalyser_UpPath() {
+        let expectation = expectationWithDescription("Local analyser should complete")
+        var analyzer = BsyncLocalAnalyzer()
+        
+        analyzer.createHashMapFromLocalPath(_upFolderPath, handlers: Handlers { (analyze) in
+            expectation.fulfill()
+            XCTAssert(analyze.success, analyze.message)
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test602_RunLocalAnalyser_DownPath() {
+        let expectation = expectationWithDescription("Local analyser should complete")
+        var analyzer = BsyncLocalAnalyzer()
+        
+        analyzer.createHashMapFromLocalPath(_downFolderPath, handlers: Handlers { (analyze) in
+            expectation.fulfill()
+            XCTAssert(analyze.success, analyze.message)
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    // MARK: 7 - Run synchronization
+    
+    func test701_RunDirectives_UpToDistant() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        
+        let context = BsyncContext(sourceURL: NSURL(fileURLWithPath: _upFolderPath, isDirectory: true),
+                                   andDestinationUrl: _distantTreeURL,
+                                   restrictedTo: nil,
+                                   autoCreateTrees: true)
+        context.credentials = BsyncCredentials()
+        context.credentials?.user = BsyncAdminUpDownSyncTests._user
+        context.credentials?.password = BsyncAdminUpDownSyncTests._user?.password
+        context.credentials?.salt = TestsConfiguration.SHARED_SALT
+        
+        let admin = BsyncAdmin()
+        
+        admin.synchronizeWithprogressBlock(context, handlers: Handlers { (sync) in
+            XCTAssertTrue(sync.success, sync.message)
+            expectation.fulfill()
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test702_RunDirectives_DistantToDown() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        
+        let context = BsyncContext(sourceURL: _distantTreeURL,
+                                   andDestinationUrl: NSURL(fileURLWithPath: _downFolderPath, isDirectory: true),
+                                   restrictedTo: nil,
+                                   autoCreateTrees: true)
+        context.credentials = BsyncCredentials()
+        context.credentials?.user = BsyncAdminUpDownSyncTests._user
+        context.credentials?.password = BsyncAdminUpDownSyncTests._user?.password
+        context.credentials?.salt = TestsConfiguration.SHARED_SALT
+        
+        let admin = BsyncAdmin()
+        
+        admin.synchronizeWithprogressBlock(	context, handlers: Handlers(completionHandler: { (c) in
+            XCTAssertTrue(c.success, c.message)
+            expectation.fulfill()
+        }))
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    func test703_Check_file_has_been_delete() {
+        do {
+            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
+            XCTAssertEqual(files, [".bsync"])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    // MARk: 9 - Cleanup
+    func test901_deleteUser() {
         let expectation = expectationWithDescription("Delete user")
         
         deleteCreatedUsers(Handlers { (deletion) in
