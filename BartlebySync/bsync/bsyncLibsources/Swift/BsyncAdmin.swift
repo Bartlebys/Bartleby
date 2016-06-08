@@ -260,13 +260,13 @@ public enum BsyncAdminError: ErrorType {
                 switch context.mode() {
                 case BsyncMode.SourceIsLocalDestinationIsDistant:
                     if let sourcePath = sourceURL.path {
-                        analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers { (result) in
+                        analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers(completionHandler: { (result) in
                             if result.success {
                                 self.synchronize(context, handlers: handlers)
                             } else {
                                 handlers.on(result)
                             }
-                            })
+                            }, progressionHandler: handlers.notify))
                     } else {
                         handlers.on(Completion.failureState("Bad source URL: \(sourceURL)", statusCode: .Bad_Request))
                     }

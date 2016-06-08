@@ -515,7 +515,7 @@
             bprint(@"Get local hash map crypto error %@", cryptoError);
             return nil;
         } else {
-            bprint(@"hashmap: %@", hashMapJsonString);
+            bprint(@"hashmap:\n%@", hashMapJsonString);
             NSData *data = [hashMapJsonString dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
@@ -580,8 +580,7 @@
                                                                                                                                             options:0
                                                                                                                                               error:&parseError];
                                                                          if(parseError){
-                                                                             NSString*message=@"Hash map JSON deserialization error";
-                                                                             bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                             bprint(@"Hash map JSON deserialization error");
                                                                              block(nil,PdSStatusErrorHashMapDeserialization);
                                                                          } else if ( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                              HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
@@ -596,8 +595,7 @@
                                                                          }
                                                                      }
                                                                      @catch (NSException *exception) {
-                                                                         NSString*message=[[NSString alloc]initWithFormat:@"%@",exception];
-                                                                         bprint(@"Exception on get distant hash map %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                         bprint(@"Exception on get distant hash map %@", exception);
                                                                          block(nil,PdSStatusErrorHashMapFailure);
                                                                      }
                                                                  }
@@ -606,14 +604,13 @@
                                                              }else{
                                                                  if (data!=nil) {
                                                                      NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                     bprint(@"Fault on get distant hash map  : %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     bprint(@"Fault on get distant hash map: %@", message);
                                                                  }
                                                                  block(nil,httpStatusCode);
                                                              }
                                                              
                                                          }else{
-                                                             NSString*message=[[NSString alloc]initWithFormat:@"get distant hash map :%@",error];
-                                                             bprint(@"Error on %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                             bprint(@"Error on get distant hash map :%@",error);
                                                              block(nil,0);
                                                          }
                                                      }]];
@@ -701,8 +698,7 @@
         NSError*cryptoError=nil;
         string = [[Bartleby cryptoDelegate] decryptString:string error:&cryptoError];
         if (cryptoError){
-            NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map view crypto error %@",cryptoError];
-            bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+            bprint(@"Get local hash map view crypto error %@", cryptoError);
             return nil;
         }else{
             NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
@@ -718,13 +714,11 @@
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
-                    NSString*message=[[NSString alloc]initWithFormat:@"Get local hash map view type missmatch on deserialization %@",hashMapUrl];
-                    bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                    bprint(@"Get local hash map view type missmatch on deserialization %@", hashMapUrl);
                 }
             }
             @catch (NSException *exception) {
-                NSString*message=[[NSString alloc]initWithFormat:@"get local hash map view:%@",exception];
-                bprint(@"Exception on %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                bprint(@"Exception on get local hash map view:%@", exception);
             }
         }
     }
@@ -777,21 +771,18 @@
                                                                                                                                             options:0
                                                                                                                                               error:&parseError];
                                                                          if(parseError){
-                                                                             NSString*message=@"Hash map JSON deserialization error";
-                                                                             bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                             bprint(@"Hash map JSON deserialization error");
                                                                              block(nil,PdSStatusErrorHashMapDeserialization);
                                                                          }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                              HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
                                                                              block(hashMap,((NSHTTPURLResponse*)response).statusCode);
                                                                          }else{
-                                                                             NSString*message=@"Hash map deserialization type miss match";
-                                                                             bprint(@"%s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                             bprint(@"Hash map deserialization type miss match");
                                                                              block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
                                                                          }
                                                                      }
                                                                      @catch (NSException *exception) {
-                                                                         NSString*message=[[NSString alloc]initWithFormat:@"%@",exception];
-                                                                         bprint(@"Exception on get distant hash map %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                         bprint(@"Exception on get distant hash map %@", exception);
                                                                          block(nil,PdSStatusErrorHashMapFailure);
                                                                      }
                                                                  }
@@ -800,14 +791,13 @@
                                                              }else{
                                                                  if (data!=nil) {
                                                                      NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                     bprint(@"Fault on get distant hash map  : %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                                     bprint(@"Fault on get distant hash map: %@", message);
                                                                  }
                                                                  block(nil,httpStatusCode);
                                                              }
                                                              
                                                          }else{
-                                                             NSString*message=[[NSString alloc]initWithFormat:@"get distant hash map :%@",error];
-                                                             bprint(@"Error on %s\n",[message cStringUsingEncoding:NSUTF8StringEncoding]);
+                                                             bprint(@"Error on get distant hash map :%@",error);
                                                              block(nil,0);
                                                          }
                                                      }]];
