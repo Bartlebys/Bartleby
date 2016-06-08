@@ -28,7 +28,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
     private var eventListeners = Dictionary<String, (id: String?, event: String?, data: String?) -> Void>()
     private var headers: Dictionary<String, String>
     internal var urlSession: NSURLSession?
-    internal var task: NSURLSessionDataTask?
+    internal var task : NSURLSessionDataTask?
     private var operationQueue: NSOperationQueue
     private var errorBeforeSetErrorCallBack: NSError?
     internal let receivedDataBuffer: NSMutableData
@@ -54,7 +54,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         self.uniqueIdentifier = "\(self.url.scheme).\(host).\(port).\(relativePath)"
         self.lastEventIDKey = "\(EventSource.DefaultsKey).\(self.uniqueIdentifier)"
 
-        super.init()
+        super.init();
         self.connect()
     }
 
@@ -76,7 +76,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
         self.readyState = EventSourceState.Connecting
         self.urlSession = newSession(configuration)
-        self.task = urlSession!.dataTaskWithURL(self.url)
+        self.task = urlSession!.dataTaskWithURL(self.url);
 
         self.task!.resume()
     }
@@ -115,7 +115,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
         if let errorBeforeSet = self.errorBeforeSetErrorCallBack {
             self.onErrorCallback!(errorBeforeSet)
-            self.errorBeforeSetErrorCallBack = nil
+            self.errorBeforeSetErrorCallBack = nil;
         }
     }
 
@@ -137,10 +137,12 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         if self.readyState != EventSourceState.Open {
             return
         }
+        dispatch_async(dispatch_get_main_queue()) { 
+            self.receivedDataBuffer.appendData(data)
+            let eventStream = self.extractEventsFromBuffer()
+            self.parseEventStream(eventStream)
+        }
 
-        self.receivedDataBuffer.appendData(data)
-        let eventStream = extractEventsFromBuffer()
-        self.parseEventStream(eventStream)
     }
 
     public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: ((NSURLSessionResponseDisposition) -> Void)) {
@@ -167,7 +169,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
         if(error == nil || error!.code != -999) {
             let nanoseconds = Double(self.retryTime) / 1000.0 * Double(NSEC_PER_SEC)
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(nanoseconds))
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(nanoseconds));
             dispatch_after(delayTime, dispatch_get_main_queue()) {
                 self.connect()
             }
@@ -176,7 +178,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         dispatch_async(dispatch_get_main_queue()) {
             if let errorCallback = self.onErrorCallback {
                 errorCallback(error)
-            } else {
+            }else {
                 self.errorBeforeSetErrorCallBack = error
             }
         }
@@ -206,7 +208,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         }
 
         // Remove the found events from the buffer
-        self.receivedDataBuffer.replaceBytesInRange(NSMakeRange(0, searchRange.location), withBytes: nil, length: 0)
+        self.receivedDataBuffer.replaceBytesInRange(NSMakeRange(0,searchRange.location), withBytes: nil, length: 0)
 
         return events
     }
@@ -238,16 +240,13 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
 
             if parsedEvent.event == nil {
                 if let data = parsedEvent.data, onMessage = self.onMessageCallback {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        onMessage(id: self.lastEventID, event: "message", data: data)
-                    }
+                    onMessage(id: self.lastEventID, event: "message", data: data)
+
                 }
             }
 
             if let event = parsedEvent.event, data = parsedEvent.data, eventHandler = self.eventListeners[event] {
-                dispatch_async(dispatch_get_main_queue()) {
                     eventHandler(id: self.lastEventID, event: event, data: data)
-                }
             }
         }
     }
@@ -279,7 +278,7 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
                 var key: NSString?, value: NSString?
                 let scanner = NSScanner(string: line)
                 scanner.scanUpToString(":", intoString: &key)
-                scanner.scanString(":", intoString: nil)
+                scanner.scanString(":",intoString: nil)
                 scanner.scanUpToString("\n", intoString: &value)
 
                 if (key != nil && value != nil) {
@@ -309,16 +308,16 @@ public class EventSource: NSObject, NSURLSessionDataDelegate {
         }
         return reconnectTime
     }
-
+    
     private func trim(string: String) -> String {
         return string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
     }
-
+    
     class public func basicAuth(username: String, password: String) -> String {
         let authString = "\(username):\(password)"
         let authData = authString.dataUsingEncoding(NSUTF8StringEncoding)
         let base64String = authData!.base64EncodedStringWithOptions([])
-
+        
         return "Basic \(base64String)"
     }
 }
