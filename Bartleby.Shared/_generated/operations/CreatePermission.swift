@@ -214,7 +214,7 @@ inDataSpace spaceUID:String,
                 parameters["permission"]=Mapper<Permission>().toJSON(permission)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"CreatePermission" ,forMethod:"POST", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
-                r.responseString{ response in
+                r.responseJSON{ response in
 
                     // Store the response
                     let request=response.request
@@ -248,6 +248,18 @@ inDataSpace spaceUID:String,
                     }else{
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
+                                // Acknowledge the trigger and log QA issue
+                                if let dictionary = result.value as? Dictionary< String,AnyObject > {
+                                    if let index=dictionary["triggerIndex"] as? NSNumber{
+                                        if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
+                                            document.acknowledgeTriggerIndex(index.integerValue)
+                                        }
+                                    }else{
+                                        bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                                    }
+                                }else{
+                                    bprint("QA Trigger index dictionary is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                                }
                                 success(context:context)
                             }else{
                                 // Bartlby does not currenlty discriminate status codes 100 & 101

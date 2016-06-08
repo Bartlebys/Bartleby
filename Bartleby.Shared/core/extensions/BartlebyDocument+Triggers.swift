@@ -136,6 +136,7 @@ extension BartlebyDocument {
     public func acknowledgeTriggerIndex(index:Int) {
         if index>0{
             if registryMetadata.triggersIndexes.indexOf(index) == nil {
+                bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                 self.registryMetadata.triggersIndexes.append(index)
             }
         }else{
