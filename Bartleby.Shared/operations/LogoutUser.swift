@@ -48,7 +48,7 @@ public class LogoutUser: JObject {
                                     comment: "Unsuccessfull attempt"),
                                 body: NSLocalizedString("authentication logout",
                                     comment: "authentication logout failure description")+" | \(result.value)",
-                                trigger: { (selectedIndex) -> () in
+                                transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
                             failure(context:context)
@@ -66,7 +66,7 @@ public class LogoutUser: JObject {
                                             comment: "Unsuccessfull attempt"),
                                         body: NSLocalizedString("termination of session",
                                             comment: "termination of session failure description | \(result.value)"),
-                                        trigger: { (selectedIndex) -> () in
+                                        transmit: { (selectedIndex) -> () in
                                     })
                                     reactions.append(failureReaction)
                                     failure(context:context)

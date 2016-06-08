@@ -144,7 +144,7 @@ public class VerifyLocker: JObject {
                     title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                         comment: "Unsuccessfull attempt"),
                     body:"\(m) httpStatus code = \(response?.statusCode ?? 0 ) | \(result.value)" ,
-                    trigger: { (selectedIndex) -> () in
+                    transmit: { (selectedIndex) -> () in
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
@@ -160,7 +160,7 @@ public class VerifyLocker: JObject {
                                 title: NSLocalizedString("Deserialization issue",
                                     comment: "Deserialization issue"),
                                 body:"(result.value)",
-                                trigger: { (selectedIndex) -> () in
+                                transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
                             failure(context:context)
@@ -176,7 +176,7 @@ public class VerifyLocker: JObject {
                             title: NSLocalizedString("Unsuccessfull attempt",
                                 comment: "Unsuccessfull attempt"),
                             body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
-                            trigger: { (selectedIndex) -> () in
+                            transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)

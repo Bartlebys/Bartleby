@@ -196,13 +196,13 @@ public class AbstractConsignee: NSObject {
 
         // Adaptive Message
         // The final behaviour is determined by the Consignee but
-        // When the reaction will be completed the trigger will be called if there is one
-        case DispatchAdaptiveMessage(context:Consignable, title:String, body:String, trigger:(selectedIndex:UInt)->())
+        // When the reaction will be completed the transmit will be called 
+        case DispatchAdaptiveMessage(context:Consignable, title:String, body:String, transmit:(selectedIndex:UInt)->())
 
         //Explicit calls
 
         // Explicit interactive message
-        case PresentInteractiveMessage(title:String, body:String, trigger:(selectedIndex:UInt)->())
+        case PresentInteractiveMessage(title:String, body:String, transmit:(selectedIndex:UInt)->())
 
         // Explicit volatile message
         case PresentVolatileMessage(title:String, body:String)

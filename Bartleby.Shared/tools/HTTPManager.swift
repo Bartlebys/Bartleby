@@ -174,7 +174,7 @@ public class HTTPManager: NSObject {
                     comment: "Server is not reachable"),
                 body: NSLocalizedString("Please Check your connection or your configuration!",
                     comment: "Please Check your connection or your configuration!"),
-                trigger: { (selectedIndex) -> () in
+                transmit: { (selectedIndex) -> () in
                     bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
@@ -236,7 +236,7 @@ public class HTTPManager: NSObject {
                     comment: "Forbidden"),
                 body: NSLocalizedString("Credentials are not valid",
                     comment: "Credentials are not valid"),
-                trigger: { (selectedIndex) -> () in
+                transmit: { (selectedIndex) -> () in
                     bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 

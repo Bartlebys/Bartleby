@@ -53,7 +53,7 @@ import Foundation
                     context: context,
                     title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                     body:NSLocalizedString("Explicit Failure", comment: "Explicit Failure"),
-                    trigger: { (selectedIndex) -> () in
+                    transmit: { (selectedIndex) -> () in
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
@@ -68,7 +68,7 @@ import Foundation
                                 title: NSLocalizedString("Deserialization issue",
                                     comment: "Deserialization issue"),
                                 body:"(result.value)",
-                                trigger: { (selectedIndex) -> () in
+                                transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
                             failure(context:context)
@@ -81,7 +81,7 @@ import Foundation
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                             body:NSLocalizedString("Implicit Failure", comment: "Implicit Failure"),
-                            trigger: { (selectedIndex) -> () in
+                            transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)

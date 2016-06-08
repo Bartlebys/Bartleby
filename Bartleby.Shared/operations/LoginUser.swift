@@ -54,7 +54,7 @@ public class LoginUser: JObject {
                     title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                         comment: "Unsuccessfull attempt"),
                     body:"\(m) httpStatus code = \(response?.statusCode ?? 0 )" ,
-                    trigger: { (selectedIndex) -> () in
+                    transmit: { (selectedIndex) -> () in
                 })
                 reactions.append(failureReaction)
                 failure(context:context)
@@ -73,7 +73,7 @@ public class LoginUser: JObject {
                             title: NSLocalizedString("Unsuccessfull attempt",
                                 comment: "Unsuccessfull attempt"),
                             body:"\(m) httpStatus code = \(statusCode)" ,
-                            trigger: { (selectedIndex) -> () in
+                            transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)

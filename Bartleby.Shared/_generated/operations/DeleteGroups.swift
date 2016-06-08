@@ -240,7 +240,7 @@ fromDataSpace spaceUID:String,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
                             body:"\(m) \n \(response)" ,
-                            trigger:{ (selectedIndex) -> () in
+                            transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context:context)
@@ -260,7 +260,7 @@ fromDataSpace spaceUID:String,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
                                     body: "\(m) \n \(response)",
-                                    trigger:{ (selectedIndex) -> () in
+                                    transmit:{ (selectedIndex) -> () in
                                     })
                                 reactions.append(failureReaction)
                                 failure(context:context)

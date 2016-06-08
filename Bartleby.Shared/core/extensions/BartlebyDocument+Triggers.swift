@@ -122,19 +122,27 @@ extension BartlebyDocument {
     /**
      Acknowledge the trigger permits to detect data holes
 
-     - parameter trigger: the trigger
+     - parameter transmit: the trigger
      */
     public func acknowledgeTrigger(trigger: Trigger) {
-        if trigger.index>=0 {
-            if registryMetadata.triggersIndexes.indexOf(trigger.index) == nil {
-                self.registryMetadata.triggersIndexes.append(trigger.index)
-            }
-        } else {
-            // Should never occur (Dev purposes)
-            bprint("Trigger index is <0 \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(trigger))
-        }
+        self.acknowledgeTriggerIndex(trigger.index)
     }
 
+    /**
+     Acknowledge trigger index
+
+     - parameter index: the index
+     */
+    public func acknowledgeTriggerIndex(index:Int) {
+        if index>0{
+            if registryMetadata.triggersIndexes.indexOf(index) == nil {
+                self.registryMetadata.triggersIndexes.append(index)
+            }
+        }else{
+            bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+
+        }
+    }
 
 
 
