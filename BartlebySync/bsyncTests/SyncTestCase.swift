@@ -43,14 +43,14 @@ class SyncTestCase : TestCase {
         handler.on(Completion.successState())
     }
     
-    func test101_preparation() {
+    func test001_preparation() {
         prepareSync()
     }
     
     let _fileName = "file.txt"
     let _fileContent1 = "first synchronization content"
     
-    func test201_Add_single_file() {
+    func test002_Add_single_file() {
         do {
             // Create file in up folder
             try _fileContent1.writeToFile(_sourceFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
@@ -86,7 +86,7 @@ class SyncTestCase : TestCase {
    
     let _fileContent2 = "second synchronization content"
 
-    func test301_Edit_existing_file() {
+    func test003_Edit_existing_file() {
         do {
             try _fileContent2.writeToFile(_sourceFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
             
@@ -120,7 +120,7 @@ class SyncTestCase : TestCase {
     
     let _newFileName = "newfile.txt"
 
-    func test401_Move_existing_file() {
+    func test004_Move_existing_file() {
         do {
             try _fm.moveItemAtPath(_sourceFolderPath + _fileName, toPath: _sourceFolderPath + _newFileName)
             
@@ -153,7 +153,7 @@ class SyncTestCase : TestCase {
         }
     }
     
-    func test501_Add_files_in_subfolder() {
+    func test005_Add_files_in_subfolder() {
         do {
             let _subFileCount = 4
             let _subFileContent = "sub file content"
@@ -206,7 +206,7 @@ class SyncTestCase : TestCase {
         }
     }
     
-    func test601_Move_and_copy_existing_file() {
+    func test006_Move_and_copy_existing_file() {
         do {
             try _fm.moveItemAtPath(_sourceFolderPath + _newFileName, toPath: _sourceFolderPath + _fileName)
             try _fm.copyItemAtPath(_sourceFolderPath + _fileName, toPath: _sourceFolderPath + "sub/" + _fileName)
@@ -244,7 +244,7 @@ class SyncTestCase : TestCase {
     }
     
     // MARK 9 - Cleaning
-    func test901_Remove_all_files() {
+    func test009_Remove_all_files() {
         do {
             try _fm.removeItemAtPath(_sourceFolderPath + _fileName)
             let subFolderPath = _sourceFolderPath + "sub/"
