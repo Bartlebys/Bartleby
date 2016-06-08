@@ -68,9 +68,11 @@ class TestCase: XCTestCase {
         
         // Initialize test case variable
         testName = NSStringFromClass(self)
-        print("\n==========================================================")
-        print("    \(testName)")
-        print("==========================================================\n")
+        bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        bprint("    \(testName)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        bprint("    on \(TestsConfiguration.API_BASE_URL)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        bprint("==========================================================\n",file:#file,function:#function,line:#line,category:testName,decorative:true)
+
 
 //        assetPath = NSTemporaryDirectory() + testName + "/"
         assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"

@@ -245,7 +245,7 @@ public class  Bartleby: Consignee {
     public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
-            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:false)
+            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
             Bartleby.bprintEntries.append(entry)
             print(entry)
         }

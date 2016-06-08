@@ -100,8 +100,8 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY) {
-    Bartleby.bprint(message, file: file, function: function, line: line, category:category)
+public func bprint(message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
+    Bartleby.bprint(message, file: file, function: function, line: line, category:category,decorative: decorative)
 }
 
 
