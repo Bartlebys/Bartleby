@@ -15,8 +15,8 @@ class LocalSyncTests: SyncTestCase {
     override func setUp() {
         super.setUp()
         
-        sourceFolderPath = assetPath + "Up/tree/"
-        destinationFolderPath = assetPath + "Down/tree/"
+        sourceFolderPath = assetPath + "Src/tree/"
+        destinationFolderPath = assetPath + "Dst/tree/"
     }
     
     static private let _admin = BsyncAdmin()

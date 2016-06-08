@@ -27,8 +27,8 @@ class UpDownDirectivesTests: SyncTestCase {
     override func setUp() {
         super.setUp()
         
-        sourceFolderPath = assetPath + "Up/"
-        destinationFolderPath = assetPath + "Down/"
+        sourceFolderPath = assetPath + "Src/"
+        destinationFolderPath = assetPath + "Dst/"
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(testName)")
     }

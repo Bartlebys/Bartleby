@@ -185,14 +185,6 @@ class SyncTestCase : TestCase {
                 
                 // Check result is correct
                 do {
-                    // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
-                        return !filename.hasPrefix(".")
-                    })
-                    XCTAssertEqual(files, ["newfile.txt", "sub"])
-                    // Check root file content
-                    let content = try String(contentsOfFile: self.destinationFolderPath + self._newFileName)
-                    XCTAssertEqual(content, self._fileContent2)
                     // Check subfolder
                     let subFolderPath = self.destinationFolderPath + "sub/"
                     let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
