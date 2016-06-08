@@ -114,8 +114,8 @@ class TestCase: XCTestCase {
 
         // Remove asset folder depending of the configuration
         let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
-        if fm.fileExistsAtPath(assetPath) && remove != RemoveAssets.Never {
-            if (remove == RemoveAssets.Always) || (_testObserver.hasSucceeded) {
+        if fm.fileExistsAtPath(assetPath) && remove != .Never {
+            if (remove == .Always) || (_testObserver.hasSucceeded) {
                 do {
                     try fm.removeItemAtPath(self.assetPath)
                 } catch {
