@@ -763,10 +763,6 @@
 		E508E8CB1CFDE53A00AC0173 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B11CFDE53A00AC0173 /* VerifyLocker.swift */; };
 		E508E8CC1CFDE53A00AC0173 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B11CFDE53A00AC0173 /* VerifyLocker.swift */; };
 		E508E8CD1CFDE53A00AC0173 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B11CFDE53A00AC0173 /* VerifyLocker.swift */; };
-		E508E8D21CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */; };
-		E508E8D31CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */; };
-		E508E8D41CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */; };
-		E508E8D51CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */; };
 		E508E8D61CFDE53A00AC0173 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B61CFDE53A00AC0173 /* BFileManager.swift */; };
 		E508E8D71CFDE53A00AC0173 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B61CFDE53A00AC0173 /* BFileManager.swift */; };
 		E508E8D81CFDE53A00AC0173 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E6B61CFDE53A00AC0173 /* BFileManager.swift */; };
@@ -1129,7 +1125,6 @@
 		E508E6B01CFDE53A00AC0173 /* TriggersForIndexes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersForIndexes.swift; sourceTree = "<group>"; };
 		E508E6B11CFDE53A00AC0173 /* VerifyLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyLocker.swift; sourceTree = "<group>"; };
 		E508E6B21CFDE53A00AC0173 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeToTriggers.swift; sourceTree = "<group>"; };
 		E508E6B61CFDE53A00AC0173 /* BFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManager.swift; sourceTree = "<group>"; };
 		E508E6B71CFDE53A00AC0173 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E508E6B81CFDE53A00AC0173 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
@@ -1311,7 +1306,6 @@
 				E508E6A71CFDE53A00AC0173 /* demos */,
 				E508E6A81CFDE53A00AC0173 /* extensions */,
 				E508E6AB1CFDE53A00AC0173 /* operations */,
-				E508E6B31CFDE53A00AC0173 /* sse */,
 				E508E6B51CFDE53A00AC0173 /* tools */,
 			);
 			name = Bartleby.Shared;
@@ -1568,14 +1562,6 @@
 				E508E6B11CFDE53A00AC0173 /* VerifyLocker.swift */,
 			);
 			path = operations;
-			sourceTree = "<group>";
-		};
-		E508E6B31CFDE53A00AC0173 /* sse */ = {
-			isa = PBXGroup;
-			children = (
-				E508E6B41CFDE53A00AC0173 /* SubscribeToTriggers.swift */,
-			);
-			path = sse;
 			sourceTree = "<group>";
 		};
 		E508E6B51CFDE53A00AC0173 /* tools */ = {
@@ -2062,7 +2048,6 @@
 				5B5D09421CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09E61CDC9233001FB281 /* CryptoHelper.swift in Sources */,
 				E508E6E11CFDE53A00AC0173 /* CollectionMetadatum.swift in Sources */,
-				E508E8D51CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */,
 				5B5D09E31CDC9233001FB281 /* CryptedKeyValueStorage.swift in Sources */,
 				E508E7891CFDE53A00AC0173 /* ReadPermissionById.swift in Sources */,
 				5B5D095F1CDC91E3001FB281 /* (null) in Sources */,
@@ -2433,7 +2418,6 @@
 				E508E7221CFDE53A00AC0173 /* CreateGroups.swift in Sources */,
 				E508E70A1CFDE53A00AC0173 /* Tag.swift in Sources */,
 				E53E28DF1CA572E20079ED23 /* BsyncCredentials.swift in Sources */,
-				E508E8D21CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */,
 				E508E8421CFDE53A00AC0173 /* TasksGroup+Execution.swift in Sources */,
 				E508E84E1CFDE53A00AC0173 /* BartlebyFileIO.swift in Sources */,
 				E508E6F21CFDE53A00AC0173 /* JString.swift in Sources */,
@@ -2779,7 +2763,6 @@
 				5B8E5D601C8D7FCD002CFA03 /* Stream.swift in Sources */,
 				E508E8631CFDE53A00AC0173 /* CryptoDelegate.swift in Sources */,
 				5B8E5D5C1C8D7FCD002CFA03 /* Response.swift in Sources */,
-				E508E8D31CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */,
 				E508E8071CFDE53A00AC0173 /* CompletionStatus.swift in Sources */,
 				E508E8D71CFDE53A00AC0173 /* BFileManager.swift in Sources */,
 				5B8E5D591C8D7FCD002CFA03 /* Notifications.swift in Sources */,
@@ -2833,7 +2816,6 @@
 				E508E75C1CFDE53A00AC0173 /* DeletePermissions.swift in Sources */,
 				E508E8701CFDE53A00AC0173 /* HTTPCommand.swift in Sources */,
 				E508E6EC1CFDE53A00AC0173 /* Group.swift in Sources */,
-				E508E8D41CFDE53A00AC0173 /* SubscribeToTriggers.swift in Sources */,
 				E508E87C1CFDE53A00AC0173 /* Initializable.swift in Sources */,
 				E508E8581CFDE53A00AC0173 /* CollectibleCollection.swift in Sources */,
 				E508E8301CFDE53A00AC0173 /* NSNotification+Progression.swift in Sources */,

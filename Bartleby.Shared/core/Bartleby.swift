@@ -71,7 +71,7 @@ public class  Bartleby: Consignee {
     public static let deviceIdentifier: String = Bartleby._MACAddressEN0()
     #else
      /// The unique device identifier. We use the Identifier for vendor on iOS
-    public static let deviceIdentifier: String = UIDevice.currentDevice().identifierForVendor.UUIDString ?? Bartleby.createUID()
+    public static let deviceIdentifier: String = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? Bartleby.createUID()
     #endif
 
     // A unique run identifier that changes each time Bartleby is launched
@@ -513,7 +513,7 @@ public struct BprintEntry:CustomStringConvertible{
     public var decorative:Bool=false
 
     public var description: String {
-
+  
         if decorative {
             return "\(message)"
         }

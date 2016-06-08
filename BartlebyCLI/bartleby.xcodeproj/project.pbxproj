@@ -130,7 +130,6 @@
 		E508EA071CFDE5FE00AC0173 /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E97A1CFDE5FE00AC0173 /* TriggersByIds.swift */; };
 		E508EA081CFDE5FE00AC0173 /* TriggersForIndexes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E97B1CFDE5FE00AC0173 /* TriggersForIndexes.swift */; };
 		E508EA091CFDE5FE00AC0173 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E97C1CFDE5FE00AC0173 /* VerifyLocker.swift */; };
-		E508EA0B1CFDE5FE00AC0173 /* SubscribeToTriggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E97F1CFDE5FE00AC0173 /* SubscribeToTriggers.swift */; };
 		E508EA0C1CFDE5FE00AC0173 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9811CFDE5FE00AC0173 /* BFileManager.swift */; };
 		E508EA0D1CFDE5FE00AC0173 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9821CFDE5FE00AC0173 /* HTTPManager.swift */; };
 		E508EA0E1CFDE5FE00AC0173 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9831CFDE5FE00AC0173 /* Pluralization.swift */; };
@@ -317,7 +316,6 @@
 		E508E97B1CFDE5FE00AC0173 /* TriggersForIndexes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersForIndexes.swift; sourceTree = "<group>"; };
 		E508E97C1CFDE5FE00AC0173 /* VerifyLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyLocker.swift; sourceTree = "<group>"; };
 		E508E97D1CFDE5FE00AC0173 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		E508E97F1CFDE5FE00AC0173 /* SubscribeToTriggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeToTriggers.swift; sourceTree = "<group>"; };
 		E508E9811CFDE5FE00AC0173 /* BFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManager.swift; sourceTree = "<group>"; };
 		E508E9821CFDE5FE00AC0173 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E508E9831CFDE5FE00AC0173 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
@@ -402,7 +400,6 @@
 				E508E9731CFDE5FE00AC0173 /* extensions */,
 				E508E9761CFDE5FE00AC0173 /* operations */,
 				E508E97D1CFDE5FE00AC0173 /* README.md */,
-				E508E97E1CFDE5FE00AC0173 /* sse */,
 				E508E9801CFDE5FE00AC0173 /* tools */,
 			);
 			name = Bartleby.Shared;
@@ -661,14 +658,6 @@
 			path = operations;
 			sourceTree = "<group>";
 		};
-		E508E97E1CFDE5FE00AC0173 /* sse */ = {
-			isa = PBXGroup;
-			children = (
-				E508E97F1CFDE5FE00AC0173 /* SubscribeToTriggers.swift */,
-			);
-			path = sse;
-			sourceTree = "<group>";
-		};
 		E508E9801CFDE5FE00AC0173 /* tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -900,7 +889,6 @@
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
 				E508E9961CFDE5FE00AC0173 /* Permission.swift in Sources */,
 				E508E9EE1CFDE5FE00AC0173 /* ConcreteTask.swift in Sources */,
-				E508EA0B1CFDE5FE00AC0173 /* SubscribeToTriggers.swift in Sources */,
 				E508EA021CFDE5FE00AC0173 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
 				E508E9E61CFDE5FE00AC0173 /* Task+Execution.swift in Sources */,

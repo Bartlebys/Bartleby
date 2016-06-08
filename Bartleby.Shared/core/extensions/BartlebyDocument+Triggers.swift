@@ -136,45 +136,6 @@ extension BartlebyDocument {
     }
 
 
-    // MARK: - SSE
 
-
-    var sse:EventSource{
-        get{
-            if let SSE=self._SSE{
-                return SSE
-            }else{
-                let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-                let lastIndex=0
-                let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers/?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&showDetails==false").absoluteString
-                let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
-                self._SSE=EventSource(url:stringURL,headers:headers)
-                return self._SSE!
-            }
-        }
-    }
-
-
-
-    public func connectToSSE() {
-        self.sse.connect()
-        self.sse.addEventListener("relay") { (id, event, data) in
-           bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
-            // ACKNOWLEDGE
-        }
-    }
-
-
-
-    public func closeSSE() {
-        self.sse.close()
-        self._SSE=nil
-    }
-
-
-    public func reconnectSSE() -> () {
-        self.closeSSE()
-        self.connectToSSE()
-    }
 
 }
