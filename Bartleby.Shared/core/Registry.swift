@@ -84,19 +84,6 @@ public class Registry: BXDocument, SuperIterable {
         }
     }
 
-    public var online:Bool=false{
-        willSet{
-            if newValue==true && online==false{
-                self.connectToSSE()
-            }
-            if newValue==false && online==true{
-                self.closeSSE()
-            }
-        }
-        didSet{
-            self.registryMetadata.online=online
-        }
-    }
 
 
     // Set to true when the data has been loaded once or more.
@@ -107,10 +94,6 @@ public class Registry: BXDocument, SuperIterable {
 
     /// We store the URL of the active security bookmarks
     internal var _activeSecurityBookmarks=[NSURL]()
-
-
-    // SSE server sent event source
-    internal var _SSE:EventSource?
 
 
     // MARK : - Universal Type management.
@@ -547,45 +530,56 @@ public class Registry: BXDocument, SuperIterable {
     // MARK: - SSE
 
 
-    var sse:EventSource{
-        get{
-            if let SSE=self._SSE{
-                return SSE
-            }else{
-                let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-                let lastIndex=0
-                let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers/?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&showDetails==false").absoluteString
-                let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
-                self._SSE=EventSource(url:stringURL,headers:headers)
-                return self._SSE!
+    // SSE server sent event source
+    private var _SSE:EventSource?
+
+
+    /// The online flag
+    public var online:Bool=false{
+        willSet{
+            // Transition on line
+            if newValue==true && online==false{
+                bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
+                self._connectToSSE()
             }
+            // Transition off line
+            if newValue==false && online==true{
+                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
+                self._closeSSE()
+            }
+
+            if newValue==online{
+                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
+            }
+        }
+        didSet{
+            self.registryMetadata.online=online
         }
     }
 
 
+    // LOGIN
 
-    public func connectToSSE() {
-        self.sse.connect()
-        self.sse.addEventListener("relay") { (id, event, data) in
-            bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+
+    private func _connectToSSE() {
+        bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
+        let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+        let lastIndex=0
+        let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&showDetails==false")
+        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
+        self._SSE=EventSource(url:stringURL,headers:headers)
+        self._SSE!.addEventListener("relay") { (id, event, data) in
+            bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
             // ACKNOWLEDGE
         }
     }
 
-
-
-    public  func closeSSE() {
-        self.sse.close()
-        self._SSE=nil
+    private  func _closeSSE() {
+        if let sse=self._SSE{
+            sse.close()
+            self._SSE=nil
+        }
     }
-
-
-    public  func reconnectSSE() -> () {
-        self.closeSSE()
-        self.connectToSSE()
-    }
-
-
 
 
 }

@@ -415,11 +415,6 @@ public class BartlebyDocument : JDocument {
         }
     }
 
-    override public func registryDidLoad() {
-        super.registryDidLoad()
-        self.connectToSSE()
-    }
-
     // MARK: - OSX specific
 
  #if os(OSX) && !USE_EMBEDDED_MODULES
