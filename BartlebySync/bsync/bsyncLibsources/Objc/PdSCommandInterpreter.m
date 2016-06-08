@@ -780,21 +780,29 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 #pragma  mark  Copy
 
 -(void)_runCopy:(NSString*)source destination:(NSString*)destination{
-    if((self->_context.mode==SourceIsLocalDestinationIsDistant)){
+    BsyncMode mode = self.context.mode;
+    if (mode == SourceIsLocalDestinationIsDistant) {
         //DONE DURING FINALIZATION
-    }else if (self->_context.mode==SourceIsDistantDestinationIsLocal||
-              self->_context.mode==SourceIsLocalDestinationIsLocal){
+    } else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
+        // CURRENTLY NOT SUPPORTED
+    } else {
         // COPY LOCALLY
+       NSURL *sourceBaseUrl = _context.sourceBaseUrl;
         
-        NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
-                                                              toLocalUrl:_context.destinationBaseUrl
-                                                              withTreeId:_context.destinationTreeId
-                                                               addPrefix:NO];
+        if (mode == SourceIsDistantDestinationIsLocal) {
+            // If source is distant, we rather copy the existing file from the local destination
+            sourceBaseUrl = _context.destinationBaseUrl;
+        }
+        
+        NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
+                                                              toLocalUrl: sourceBaseUrl
+                                                              withTreeId: _context.destinationTreeId
+                                                               addPrefix: NO];
 
-        NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath:destination
-                                                                   toLocalUrl:_context.destinationBaseUrl
-                                                                   withTreeId:_context.destinationTreeId
-                                                                    addPrefix:NO];
+        NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath: destination
+                                                                   toLocalUrl: _context.destinationBaseUrl
+                                                                   withTreeId: _context.destinationTreeId
+                                                                    addPrefix: YES];
         
         NSError*error=nil;
         
@@ -811,9 +819,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             }
             [self _interruptOnFault:[error description]];
         }
-        
-    }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
     }
 }
 
