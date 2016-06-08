@@ -278,7 +278,7 @@ class SyncTestCase : TestCase {
         }
     }
     
-    func test902_Dispose_sync() {
+    func test999_Dispose_sync() {
         disposeSync()
     }
 }

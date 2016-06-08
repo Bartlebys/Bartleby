@@ -698,7 +698,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                            error:&error];
                     
                     if(error){
-                        [self _progressMessage:@"Error during local finalization on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",destinationPrefixedFilePath,destinationFileWithoutPrefix,[error description]];
+                        NSString*message = [NSString stringWithFormat: @"Error during local finalization on moveItemAtPath\n\t- Src: %@\n\t- Dst: %@\n\t- Error: %@ ", destinationPrefixedFilePath, destinationFileWithoutPrefix,[error localizedDescription]];
+                        bprint(@"%@", message)
+                        [self _progressMessage:message];
                         [self _interruptOnFault:[error description]];
                         return;
                     }

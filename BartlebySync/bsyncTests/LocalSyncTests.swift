@@ -27,9 +27,6 @@ class LocalSyncTests: SyncTestCase {
     }
     
     override func sync(handlers: Handlers) {
-        handlers.appendProgressHandler { (progression) in
-            bprint(progression.message, file: #file, function: #function, line: #line)
-        }
         LocalSyncTests._admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
     }
 }
