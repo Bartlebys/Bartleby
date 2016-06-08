@@ -144,6 +144,10 @@ class TestCase: XCTestCase {
         spaceUID = TestCase.spaceUID
     }
     
+    func waitForExpectations(timeout: NSTimeInterval = TestsConfiguration.TIME_OUT_DURATION) {
+        waitForExpectationsWithTimeout(timeout, handler: nil)
+    }
+    
     /**
      Helper to create user for the test class which will be stored statically
      and automatically deleted when calling its counterpart deleteCreatedUsers()

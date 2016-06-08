@@ -27,28 +27,26 @@ class UpDownDirectivesTests: SyncTestCase {
     override func setUp() {
         super.setUp()
         
-        _sourceFolderPath = assetPath + "Up/"
-        _destinationFolderPath = assetPath + "Down/"
+        sourceFolderPath = assetPath + "Up/"
+        destinationFolderPath = assetPath + "Down/"
         
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(testName)")
     }
     
     static private let _admin = BsyncAdmin()
     
-    override func prepareSync() {
-        super.prepareSync()
-        
-        let expectation = expectationWithDescription("Create user")
-        
+    override func prepareSync(handlers: Handlers) {
+        // Create user
         let user = createUser(spaceUID, handlers: Handlers { (creation) in
-            XCTAssert(creation.success, creation.message)
-            expectation.fulfill()
+            if creation.success {
+                super.prepareSync(handlers)
+            } else {
+                handlers.on(creation)
+            }
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-        
         // Create upstream directives
-        let upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(_distantTreeURL, localPath: _sourceFolderPath)
+        let upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(_distantTreeURL, localPath: sourceFolderPath)
         upDirectives.automaticTreeCreation = true
         // Credentials:
         upDirectives.user = user
@@ -58,7 +56,7 @@ class UpDownDirectivesTests: SyncTestCase {
         UpDownDirectivesTests._upDirectives = upDirectives
         
         // Create downstream directives
-        let downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: _destinationFolderPath)
+        let downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: destinationFolderPath)
         downDirectives.automaticTreeCreation = true
         
         // Credentials:
@@ -79,14 +77,13 @@ class UpDownDirectivesTests: SyncTestCase {
             })
     }
     
-    override func disposeSync() {
-        let expectation = expectationWithDescription("Delete user")
-        
+    override func disposeSync(handlers: Handlers) {
         deleteCreatedUsers(Handlers { (deletion) in
-            expectation.fulfill()
-            XCTAssert(deletion.success, deletion.message)
+            if deletion.success {
+                super.disposeSync(handlers)
+            } else {
+                handlers.on(deletion)
+            }
             })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

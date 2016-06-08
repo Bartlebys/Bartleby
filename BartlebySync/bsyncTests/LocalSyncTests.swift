@@ -15,15 +15,15 @@ class LocalSyncTests: SyncTestCase {
     override func setUp() {
         super.setUp()
         
-        _sourceFolderPath = assetPath + "Up/tree/"
-        _destinationFolderPath = assetPath + "Down/tree/"
+        sourceFolderPath = assetPath + "Up/tree/"
+        destinationFolderPath = assetPath + "Down/tree/"
     }
     
     static private let _admin = BsyncAdmin()
     
-    override func prepareSync() {
-        super.prepareSync()
-        LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(_sourceFolderPath, destinationPath: _destinationFolderPath)
+    override func prepareSync(handlers: Handlers) {
+        LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(sourceFolderPath, destinationPath: destinationFolderPath)
+        super.prepareSync(handlers)
     }
     
     override func sync(handlers: Handlers) {

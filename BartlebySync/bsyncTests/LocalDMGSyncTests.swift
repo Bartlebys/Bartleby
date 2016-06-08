@@ -6,174 +6,107 @@
 //  Copyright © 2016 Benoit Pereira da silva. All rights reserved.
 //
 
-import XCTest
-
-class LocalDMGSyncTests: TestCase {
+class LocalDMGSyncTests: LocalSyncTests {
     
+    private let _diskManager = BsyncImageDiskManager()
+    private let _dmgSize = "2g"
     
-    private static let _diskManager = BsyncImageDiskManager()
-    private static let _fileManager = BFileManager()
+    private var _masterDMGName = ""
+    private var _masterDMGPath = ""
+    private var _masterDMGFullPath = ""
+    private let _masterDMGPassword = "12345"
+    private var _masterVolumePath = ""
+    private var _masterVolumeURL = NSURL()
     
-    private static let _dmgSize = "2g"
+    private var _slaveDMGName = ""
+    private var _slaveDMGPath = ""
+    private var _slaveDMGFullPath = ""
+    private let _slaveDMGPassword = "67890"
+    private var _slaveVolumePath = ""
+    private var _slaveVolumeURL = NSURL()
     
-    private static let _masterDMGName = Bartleby.randomStringWithLength(6)
-    private static let _masterDMGPath = NSTemporaryDirectory() + _masterDMGName
-    private static let _masterDMGFullPath = _masterDMGPath + ".sparseimage"
-    private static let _masterDMGPassword = Bartleby.randomStringWithLength(6)
-    private static let _masterVolumePath = "/Volumes/" + _masterDMGName + "/"
-    private static let _masterVolumeURL = NSURL(fileURLWithPath: _masterVolumePath)
+    override func setUp() {
+        super.setUp();
+        
+        self._masterDMGName = testName + "_master"
+        self._masterDMGPath = assetPath + self._masterDMGName
+        self._masterDMGFullPath = self._masterDMGPath + ".sparseimage"
+        self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"
+        self._masterVolumeURL = NSURL(fileURLWithPath: self._masterVolumePath)
+        
+        
+        self.sourceFolderPath = self._masterVolumePath
+        
+        self._slaveDMGName = testName + "_slave"
+        self._slaveDMGPath = assetPath + self._slaveDMGName
+        self._slaveDMGFullPath = self._slaveDMGPath + ".sparseimage"
+        self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"
+        self._slaveVolumeURL = NSURL(fileURLWithPath: self._slaveVolumePath)
+        
+        destinationFolderPath = self._slaveVolumePath
+        
+    }
     
-    private static let _slaveDMGName = Bartleby.randomStringWithLength(6)
-    private static let _slaveDMGPath = NSTemporaryDirectory() + _slaveDMGName
-    private static let _slaveDMGFullPath = _slaveDMGPath + ".sparseimage"
-    private static let _slaveDMGPassword = Bartleby.randomStringWithLength(6)
-    private static let _slaveVolumePath = "/Volumes/" + _slaveDMGName + "/"
-    private static let _slaveVolumeURL = NSURL(fileURLWithPath: _slaveVolumePath)
-    
-    private static let _directivesPath = _masterVolumePath + BsyncDirectives.DEFAULT_FILE_NAME
-    
-    private static let _filePath = _masterVolumePath + "test.txt"
-    private static let _fileContent = Bartleby.randomStringWithLength(20)
-    
-    // MARK: Master DMG creation, attach and directive creation
-    func test001_CreateMasterDMG() {
-        let expectation = expectationWithDescription("Create image")
-        LocalDMGSyncTests._diskManager.createImageDisk(LocalDMGSyncTests._masterDMGPath,
-                                                       volumeName: LocalDMGSyncTests._masterDMGName,
-                                                       size: LocalDMGSyncTests._dmgSize,
-                                                       password: LocalDMGSyncTests._masterDMGPassword,
-                                                       handlers: Handlers { (createDisk) in
-                                                        expectation.fulfill()
-                                                        if let dmg = createDisk.getStringResult() where createDisk.success {
-                                                            XCTAssertEqual(LocalDMGSyncTests._masterDMGFullPath, dmg)
-                                                        } else {
-                                                            XCTFail(createDisk.message)
-                                                        }
+    override func prepareSync(handlers: Handlers) {
+        // Create master DMG
+        self._diskManager.createImageDisk(_masterDMGPath, volumeName: _masterDMGName, size: self._dmgSize, password: self._masterDMGPassword, handlers: Handlers { (createMaster) in
+            if createMaster.success {
+                // Attach master DMG
+                self._diskManager.attachVolume(from: self._masterDMGFullPath, withPassword: self._masterDMGPassword, handlers: Handlers { (attachMaster) in
+                    if attachMaster.success {
+                        // Create slave DMG
+                        self._diskManager.createImageDisk(self._slaveDMGPath, volumeName: self._slaveDMGName, size: self._dmgSize, password: self._slaveDMGPassword, handlers: Handlers { (createSlave) in
+                            if createSlave.success {
+                                // Attache slave DMG
+                                self._diskManager.attachVolume(from: self._slaveDMGFullPath, withPassword: self._slaveDMGPassword, handlers: Handlers { (attachSlave) in
+                                    if attachSlave.success {
+                                        super.prepareSync(handlers)
+                                    } else {
+                                        handlers.on(attachSlave)
+                                    }
+                                    })
+                            } else {
+                                handlers.on(createSlave)
+                            }
+                            })
+                        
+                    } else {
+                        handlers.on(attachMaster)
+                    }
+                    })
+            } else {
+                handlers.on(createMaster)
+            }
             })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func test002_AttachMasterDMG() {
-        let expectation = expectationWithDescription("Image attachment")
-        LocalDMGSyncTests._diskManager.attachVolume(from: LocalDMGSyncTests._masterDMGFullPath, withPassword: LocalDMGSyncTests._masterDMGPassword, handlers: Handlers { (attach) in
-            XCTAssert(attach.success, attach.message)
-            expectation.fulfill()
+    override func disposeSync(handlers: Handlers) {
+        // Detach slave DMG
+        self._diskManager.detachVolume(self._slaveDMGName, handlers: Handlers { (detachSlave) in
+            if detachSlave.success {
+                // Remove slave DMG
+                do {
+                    try self._fm.removeItemAtPath(self._slaveDMGFullPath)
+                    // Detach master DMG
+                    self._diskManager.detachVolume(self._masterDMGName, handlers: Handlers { (detachMaster) in
+                        if detachMaster.success {
+                            // Remove master DMG
+                            do {
+                                try self._fm.removeItemAtPath(self._masterDMGFullPath)
+                                super.disposeSync(handlers)
+                            } catch {
+                                handlers.on(Completion.failureStateFromError(error))
+                            }
+                        } else {
+                            handlers.on(detachMaster)
+                        }
+                        })
+                } catch {
+                    handlers.on(Completion.failureStateFromError(error))
+                }
+            } else {
+                handlers.on(detachSlave)
+            }
             })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test003_CreateFileInDMG() {
-        let expectation = expectationWithDescription("File creation")
-        LocalDMGSyncTests._fileManager.writeString(LocalDMGSyncTests._fileContent,
-                                                   path: LocalDMGSyncTests._filePath,
-                                                   handlers: Handlers { (createFile) in
-                                                    XCTAssert(createFile.success, createFile.message)
-                                                    expectation.fulfill()
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    
-    
-    // MARK: Slave DMG creation, attach and directives creation
-    func test101_CreateSlaveDMG() {
-        let expectation = expectationWithDescription("Create image")
-        LocalDMGSyncTests._diskManager.createImageDisk(LocalDMGSyncTests._slaveDMGPath,
-                                                       volumeName: LocalDMGSyncTests._slaveDMGName,
-                                                       size: LocalDMGSyncTests._dmgSize,
-                                                       password: LocalDMGSyncTests._slaveDMGPassword,
-                                                       handlers: Handlers { (createDisk) in
-                                                        expectation.fulfill()
-                                                        if let dmg = createDisk.getStringResult() where createDisk.success {
-                                                            XCTAssertEqual(LocalDMGSyncTests._slaveDMGFullPath, dmg)
-                                                        } else {
-                                                            XCTFail(createDisk.message)
-                                                        }
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test102_AttachSlaveDMG() {
-        let expectation = expectationWithDescription("Image attachment")
-        LocalDMGSyncTests._diskManager.attachVolume(from: LocalDMGSyncTests._slaveDMGFullPath, withPassword: LocalDMGSyncTests._slaveDMGPassword, handlers: Handlers { (attach) in
-            XCTAssert(attach.success, attach.message)
-            expectation.fulfill()
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test103_CreateDirectives() {
-        let directives = BsyncDirectives.localDirectivesWithPath(LocalDMGSyncTests._masterDMGPath, destinationPath: LocalDMGSyncTests._slaveDMGPath)
-        let admin = BsyncAdmin()
-        do {
-            try admin.saveDirectives(directives, path: LocalDMGSyncTests._directivesPath)
-        } catch {
-            bprint("Error: \(error)", file: #file, function: #function, line: #line)
-        }
-    }
-    
-    
-    // MARK: Run synchronization
-    func test201_RunDirectives() {
-        let expectation = expectationWithDescription("Synchronize should complete")
-        
-        // TODO: @md #test #bsync Use BsyncDirectives
-        let context = BsyncContext(sourceURL: LocalDMGSyncTests._masterVolumeURL,
-                                   andDestinationUrl: LocalDMGSyncTests._slaveVolumeURL,
-                                   restrictedTo: nil)
-        let admin = BsyncAdmin()
-        admin.synchronize(context, handlers: Handlers(completionHandler: { (c) in
-            XCTAssertTrue(c.success, c.message)
-            expectation.fulfill()
-        }))
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    
-    // MARK: Cleanup
-    func test901_DetachSlaveDMG() {
-        let expectation = expectationWithDescription("Detach")
-        LocalDMGSyncTests._diskManager.detachVolume(LocalDMGSyncTests._slaveDMGName, handlers: Handlers { (detach) in
-            expectation.fulfill()
-            XCTAssert(detach.success, detach.message)
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test902_RemoveSlaveDMG() {
-        let expectation = expectationWithDescription("Remove")
-        LocalDMGSyncTests._fileManager.removeItemAtPath(LocalDMGSyncTests._slaveDMGFullPath, handlers: Handlers { (remove) in
-            XCTAssert(remove.success, remove.message)
-            expectation.fulfill()
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test903_DetachMasterDMG() {
-        let expectation = expectationWithDescription("Detach")
-        LocalDMGSyncTests._diskManager.detachVolume(LocalDMGSyncTests._masterDMGName, handlers: Handlers { (detach) in
-            expectation.fulfill()
-            XCTAssert(detach.success, detach.message)
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-    }
-    
-    func test904_RemoveMasterDMG() {
-        let expectation = expectationWithDescription("Remove")
-        LocalDMGSyncTests._fileManager.removeItemAtPath(LocalDMGSyncTests._masterDMGFullPath, handlers: Handlers { (remove) in
-            XCTAssert(remove.success, remove.message)
-            expectation.fulfill()
-            })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }
