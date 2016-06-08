@@ -22,6 +22,7 @@ class LocalSyncTests: SyncTestCase {
     static private let _admin = BsyncAdmin()
     
     override func prepareSync() {
+        super.prepareSync()
         LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(_sourceFolderPath, destinationPath: _destinationFolderPath)
     }
     
