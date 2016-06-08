@@ -8,7 +8,9 @@
 
 #import "PdSLocalAnalyzer.h"
 
+#ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
+#endif
 
 @interface PdSLocalAnalyzer(){
 }

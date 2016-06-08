@@ -8,8 +8,9 @@
 
 #import "PdSSyncAdmin.h"
 
+#ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
-
+#endif
 
 
 #define kRecursiveMaxNumberOfAttempts 2

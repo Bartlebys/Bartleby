@@ -1,5 +1,5 @@
 //
-//  bsync-Bridgind-Header.h
+//  bsync-Bridging-Header.h
 //  BsyncXPC
 //
 //  Created by Benoit Pereira da silva on 20/01/2016.
@@ -18,6 +18,7 @@
 #import "PdSSyncContext.h"
 #import "PdSSyncAdmin.h"
 #import "NSData+CRC.h"
+#import "PdSSync.h"
 
 // Required for CryptoHelper support
 #import <CommonCrypto/CommonCrypto.h>
