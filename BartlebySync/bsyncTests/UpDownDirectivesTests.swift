@@ -23,14 +23,21 @@ class UpDownDirectivesTests: SyncTestCase {
     
     private static var _upDirectives = BsyncDirectives()
     private static var _downDirectives = BsyncDirectives()
+    private static var _treeId = ""
+    
+    override class func setUp() {
+        super.setUp()
+        
+        _treeId = testName + Bartleby.createUID()
+    }
     
     override func setUp() {
         super.setUp()
         
-        sourceFolderPath = assetPath + "Src/"
-        destinationFolderPath = assetPath + "Dst/"
+        self.sourceFolderPath = self.assetPath + "Src/"
+        self.destinationFolderPath = self.assetPath + "Dst/"
         
-        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(testName)")
+        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(UpDownDirectivesTests._treeId)")
     }
     
     static private let _admin = BsyncAdmin()

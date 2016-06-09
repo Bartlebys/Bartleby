@@ -49,7 +49,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
         
         _downFolderPath = assetPath + "Down/"
     }
-        
+    
     // MARK: 1 - Create user
     func test101_CreateUser() {
         let expectation = expectationWithDescription("CreateUser should respond")

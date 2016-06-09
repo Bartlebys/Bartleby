@@ -700,7 +700,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                         NSString*message = [NSString stringWithFormat: @"Error during local finalization on moveItemAtPath\n\t- Src: %@\n\t- Dst: %@\n\t- Error: %@ ", destinationPrefixedFilePath, destinationFileWithoutPrefix,[error localizedDescription]];
                         bprint(@"%@", message)
                         [self _progressMessage:message];
-                        [self _interruptOnFault:[error description]];
+                        [self _interruptOnFault:[error localizedDescription]];
                         return;
                     }
                 }
@@ -768,7 +768,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         
 
         if(jsonHashMapError){
-            bprint(@"%@",[jsonHashMapError description]);
+            bprint(@"%@",[jsonHashMapError localizedDescription]);
             // @md this is not normal (we should interrupt if there is a hash map issue;
             // May be we should delete then -> write the Hashmap to perform securely
             //[self _interruptOnFault:[jsonHashMapError description]];
@@ -821,9 +821,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         if(error){
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
                 // NSFileManagerDelegate seems not to handle correctly this case
-                [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error description]];
+                [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
             }
-            [self _interruptOnFault:[error description]];
+            [self _interruptOnFault:[error localizedDescription]];
         }
     }
 }
@@ -854,8 +854,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                error:&error];
         if(error){
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
-                [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error description]];
-                [self _interruptOnFault:[error description]];
+                [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error localizedDescription]];
+                [self _interruptOnFault:[error localizedDescription]];
             }
         }
         
@@ -883,8 +883,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSError*error=nil;
             [_fileManager removeItemAtPath:absoluteDestination error:&error];
             if(error){
-                [self _progressMessage:@"Error on removeItemAtPath \nfrom %@ \n%@ ",absoluteDestination,[error description]];
-                [self _interruptOnFault:[error description]];
+                [self _progressMessage:@"Error on removeItemAtPath \nfrom %@ \n%@ ",absoluteDestination,[error localizedDescription]];
+                [self _interruptOnFault:[error localizedDescription]];
             }
         }
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){

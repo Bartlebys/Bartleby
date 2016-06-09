@@ -20,8 +20,8 @@ class SyncTestCase : TestCase {
         super.setUp()
         
         // Use the same folder for both source and destination folder
-        sourceFolderPath = assetPath
-        destinationFolderPath = assetPath
+        self.sourceFolderPath = self.assetPath
+        self.destinationFolderPath = self.assetPath
     }
     
     func prepareSync(handlers: Handlers) {
@@ -51,7 +51,7 @@ class SyncTestCase : TestCase {
         prepareSync(Handlers { (preparation) in
             expectation.fulfill()
             XCTAssert(preparation.success, preparation.message)
-        })
+            })
         
         waitForExpectations()
     }
@@ -92,15 +92,15 @@ class SyncTestCase : TestCase {
             XCTFail("\(error)")
         }
     }
-   
+    
     let _fileContent2 = "second synchronization content"
-
+    
     func test003_Edit_existing_file() {
         do {
             try _fileContent2.writeToFile(sourceFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
             
             let expectation = expectationWithDescription("Synchronization should complete")
-
+            
             // Perform synchronization
             sync(Handlers { (sync) in
                 expectation.fulfill()
@@ -118,17 +118,17 @@ class SyncTestCase : TestCase {
                 } catch {
                     XCTFail("\(error)")
                 }
-            })
+                })
             
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-
+            
         } catch {
             XCTFail("\(error)")
         }
     }
     
     let _newFileName = "newfile.txt"
-
+    
     func test004_Move_existing_file() {
         do {
             try _fm.moveItemAtPath(sourceFolderPath + _fileName, toPath: sourceFolderPath + _newFileName)
@@ -156,16 +156,17 @@ class SyncTestCase : TestCase {
             
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
             
-
+            
         } catch {
             XCTFail("\(error)")
         }
     }
     
+    private let _subFileCount = 4
+    private let _subFileContent = "sub file content"
+    
     func test005_Add_files_in_subfolder() {
         do {
-            let _subFileCount = 4
-            let _subFileContent = "sub file content"
             
             let subFolderPath = sourceFolderPath + "sub/"
             try _fm.createDirectoryAtPath(subFolderPath, withIntermediateDirectories: true, attributes: nil)
@@ -188,12 +189,12 @@ class SyncTestCase : TestCase {
                     // Check subfolder
                     let subFolderPath = self.destinationFolderPath + "sub/"
                     let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
-                    XCTAssertEqual(subFiles.count, _subFileCount)
+                    XCTAssertEqual(subFiles.count, self._subFileCount)
                     
-                    for i in 1..._subFileCount {
+                    for i in 1...self._subFileCount {
                         XCTAssertEqual(subFiles[i - 1], "file\(i).txt")
                         let subContent = try String(contentsOfFile: subFolderPath + subFiles[i - 1])
-                        XCTAssertEqual(subContent, _subFileContent + "\(i)")
+                        XCTAssertEqual(subContent, self._subFileContent + "\(i)")
                     }
                 } catch {
                     XCTFail("\(error)")
@@ -238,11 +239,53 @@ class SyncTestCase : TestCase {
                 })
             
             waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
-
+            
         } catch {
             XCTFail("\(error)")
         }
     }
+    
+    func test007_Doing_nothing() {
+        let expectation = expectationWithDescription("Synchronization should complete")
+        
+        // Perform synchronization
+        sync(Handlers { (sync) in
+            expectation.fulfill()
+            XCTAssertTrue(sync.success, sync.message)
+            
+            // Check result is correct
+            do {
+                // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
+                let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    return !filename.hasPrefix(".")
+                })
+                XCTAssertEqual(files, ["file.txt", "sub"])
+                // Check root file content
+                let content1 = try String(contentsOfFile: self.destinationFolderPath + self._fileName)
+                XCTAssertEqual(content1, self._fileContent2)
+                // Check copied file content
+                let content2 = try String(contentsOfFile: self.destinationFolderPath + "sub/" + self._fileName)
+                XCTAssertEqual(content2, self._fileContent2)
+                
+                let subFolderPath = self.destinationFolderPath + "sub/"
+                let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
+                
+                XCTAssertEqual(subFiles.count, self._subFileCount)
+                
+                for i in 1...self._subFileCount {
+                    XCTAssertEqual(subFiles[i - 1], "file\(i).txt")
+                    let subContent = try String(contentsOfFile: subFolderPath + subFiles[i - 1])
+                    XCTAssertEqual(subContent, self._subFileContent + "\(i)")
+                }
+            } catch {
+                XCTFail("\(error)")
+            }
+            })
+        
+        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+    }
+    
+    // TODO: func test008_Remove_one_file()
     
     // MARK 9 - Cleaning
     func test009_Remove_all_files() {
@@ -284,7 +327,7 @@ class SyncTestCase : TestCase {
         disposeSync(Handlers { (dispose) in
             expectation.fulfill()
             XCTAssert(dispose.success, dispose.message)
-        })
+            })
         
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
