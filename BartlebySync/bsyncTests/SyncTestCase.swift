@@ -270,11 +270,11 @@ class SyncTestCase : TestCase {
                 let subFolderPath = self.destinationFolderPath + "sub/"
                 let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
                 
-                XCTAssertEqual(subFiles.count, self._subFileCount)
+                XCTAssertEqual(subFiles.count, self._subFileCount + 1)
                 
                 for i in 1...self._subFileCount {
-                    XCTAssertEqual(subFiles[i - 1], "file\(i).txt")
-                    let subContent = try String(contentsOfFile: subFolderPath + subFiles[i - 1])
+                    XCTAssertEqual(subFiles[i], "file\(i).txt")
+                    let subContent = try String(contentsOfFile: subFolderPath + subFiles[i])
                     XCTAssertEqual(subContent, self._subFileContent + "\(i)")
                 }
             } catch {
