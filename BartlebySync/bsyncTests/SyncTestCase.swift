@@ -41,9 +41,28 @@ class SyncTestCase : TestCase {
         handlers.on(Completion.successState())
     }
     
-    func sync(let handler: Handlers) {
-        // Dummy sync doing nothing
-        handler.on(Completion.successState())
+    func sync(handlers: Handlers) {
+        // We don't perform sync, we just check the source and destination hashmap the same
+        var analyzer = BsyncLocalAnalyzer()
+        analyzer.recomputeHash = true
+        analyzer.saveHashInAFile = false
+        analyzer.createHashMapFromLocalPath(self.sourceFolderPath, handlers: Handlers { (computeSrc) in
+            if let srcHashmap = computeSrc.getDictionaryResult() where computeSrc.success {
+                analyzer.createHashMapFromLocalPath(self.destinationFolderPath, handlers: Handlers { (computeDst) in
+                    if let dstHashmap = computeDst.getDictionaryResult() where computeDst.success {
+                        if srcHashmap == dstHashmap {
+                            handlers.on(Completion.successState())
+                        } else {
+                            handlers.on(Completion.failureState("Different hashmap:\n\(srcHashmap)\n!=\n\(dstHashmap)", statusCode: .Undefined))
+                        }
+                    } else {
+                        handlers.on(computeDst)
+                    }
+                    })
+            } else {
+                handlers.on(computeSrc)
+            }
+        })
     }
     
     func test001_preparation() {

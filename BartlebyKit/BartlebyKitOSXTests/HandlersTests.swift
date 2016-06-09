@@ -67,4 +67,15 @@ class CompletionWithResultTests: TestCase {
         }
     }
 
+    // MARK: Dictionary result
+    func test401_dictionary_result_mapping() {
+        let completion = Completion.successState()
+        let dict1 = ["a.txt": "12345", "b.txt":"67890"]
+        completion.setDictionaryResult(dict1)
+        if let dict2: [String: String] = completion.getDictionaryResult() {
+            XCTAssertEqual(dict1, dict2)
+        } else {
+            XCTFail("Error getting the dictionary result")
+        }
+    }
 }

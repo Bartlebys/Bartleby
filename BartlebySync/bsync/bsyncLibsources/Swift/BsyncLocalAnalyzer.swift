@@ -43,8 +43,14 @@ public struct BsyncLocalAnalyzer {
                 self._localAnalyzer.createHashMapFromLocalFolder(folderPath, dataBlock: nil, progressBlock: { (hash: String, path: String, index: UInt) in
                     bprint("\(path): \(hash)", file: #file, function: #function, line: #line)
                     handlers.notify(Progression(currentTaskIndex: Int(index), message: "\(path): \(hash)"))
-                    }, andCompletionBlock: { (_: HashMap) in
-                        handlers.on(Completion.successState())
+                    }, andCompletionBlock: { (hashmap: HashMap) in
+                        if let hashmapDict = hashmap.dictionaryRepresentation()["pthToH"] as? [String: String] {
+                            let c = Completion.successState()
+                            c.setDictionaryResult(hashmapDict)
+                            handlers.on(c)
+                        } else {
+                            handlers.on(Completion.failureState("Bad hashmap: \(hashmap)", statusCode: .Undefined))
+                        }
                 })
             } else {
                 handlers.on(exists)

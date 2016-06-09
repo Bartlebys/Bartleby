@@ -71,7 +71,7 @@ public extension Completion {
     }
 
     // MARK: - Array of String result
-
+    
     func setStringArrayResult(stringArray: [String]) {
         do {
             self.data = try NSJSONSerialization.dataWithJSONObject(stringArray, options: .PrettyPrinted)
@@ -79,7 +79,7 @@ public extension Completion {
             self.data = nil
         }
     }
-
+    
     func getStringArrayResult() -> [String]? {
         if let data = self.data {
             do {
@@ -87,10 +87,32 @@ public extension Completion {
                     return stringArray
                 }
             } catch {
-
+                
             }
         }
         return  nil
     }
-
+    
+    // MARK: - Dictionary result
+    
+    func setDictionaryResult(dict: [String: String]) {
+        do {
+            self.data = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+        } catch {
+            self.data = nil
+        }
+    }
+    
+    func getDictionaryResult() -> [String: String]? {
+        if let data = self.data {
+            do {
+                if let dict = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: String] {
+                    return dict
+                }
+            } catch {
+                
+            }
+        }
+        return  nil
+    }
 }
