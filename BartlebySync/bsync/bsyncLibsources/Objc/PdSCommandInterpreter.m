@@ -666,14 +666,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             }
         }];
         
-        
-        
+
         bprint(@"sortedCommand %@",sortedCommand);
+
         for (NSArray *cmd in sortedCommand) {
             NSString *destination=[cmd objectAtIndex:BDestination];
             NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];
             BOOL isAFolder=[[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
-
             
             if(command==BCreate || command==BUpdate){
                 if(!isAFolder){
@@ -709,28 +708,31 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 
             }
 
+            if (command==BMove || command==BCopy){
+                NSString *source=[cmd objectAtIndex:BSource];
 
-            NSString *source=[cmd objectAtIndex:BSource];
-            if (![_fileManager fileExistsAtPath:source]){
-                // If we encounter a problem of dependency
-                // (order of operation e.g a move before a dependent copy)
-                // We store the command for a second pass.
-                 // And we defer the command interpretation.
-                [secondPass addObject:cmd];
+                if (![_fileManager fileExistsAtPath:source]){
+                    // If we encounter a problem of dependency
+                    // (order of operation e.g a move before a dependent copy)
+                    // We store the command for a second pass.
+                    // And we defer the command interpretation.
+                    [secondPass addObject:cmd];
 
-            }else{
-                if(command==BMove){
-                    [self _runMove:source
-                       destination:destination];
+                }else{
+                    if(command==BMove){
+                        [self _runMove:source
+                           destination:destination];
+                    }
+
+                    if(command==BCopy){
+                        NSString *source=[cmd objectAtIndex:BSource];
+                        [self _runCopy:source
+                           destination:destination];
+                    }
                 }
 
-                if(command==BCopy){
-                    NSString *source=[cmd objectAtIndex:BSource];
-                    [self _runCopy:source
-                       destination:destination];
-                }
             }
-            
+
             if(command==BDelete){
                 [self _runDelete:destination];
             }
