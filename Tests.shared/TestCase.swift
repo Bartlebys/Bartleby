@@ -48,10 +48,10 @@ class TestCase: XCTestCase {
 
     static var testName = ""
     var testName = ""
-    
+
     static var assetPath = ""
     var assetPath: String = ""
-    
+
     static var spaceUID = ""
     var spaceUID = ""
 
@@ -60,12 +60,23 @@ class TestCase: XCTestCase {
 
     private static var _testObserver = TestObserver()
 
+    /// MARK: Behaviour after test run
+
+    enum RemoveAssets {
+        case Always
+        case OnSuccess
+        case Never
+    }
+
+    static var removeAsset = RemoveAssets.OnSuccess
+
+
     override class func setUp() {
         super.setUp()
 
         // Configure Bartleby
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        
+
         // Initialize test case variable
         testName = NSStringFromClass(self)
         bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
@@ -74,11 +85,11 @@ class TestCase: XCTestCase {
         bprint("==========================================================\n",file:#file,function:#function,line:#line,category:testName,decorative:true)
 
 
-//        assetPath = NSTemporaryDirectory() + testName + "/"
+        //        assetPath = NSTemporaryDirectory() + testName + "/"
         assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
         bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
         spaceUID = Bartleby.createUID()
-        
+
         // Remove asset folder if it exists
         do {
             if fm.fileExistsAtPath(assetPath) {
@@ -115,9 +126,8 @@ class TestCase: XCTestCase {
         XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
 
         // Remove asset folder depending of the configuration
-        let remove = TestsConfiguration.REMOVE_ASSET_AFTER_TESTS
-        if fm.fileExistsAtPath(assetPath) && remove != .Never {
-            if (remove == .Always) || (_testObserver.hasSucceeded) {
+        if fm.fileExistsAtPath(assetPath) && removeAsset != .Never {
+            if (removeAsset == .Always) || (_testObserver.hasSucceeded) {
                 do {
                     try fm.removeItemAtPath(self.assetPath)
                 } catch {
@@ -143,11 +153,11 @@ class TestCase: XCTestCase {
         assetPath = TestCase.assetPath
         spaceUID = TestCase.spaceUID
     }
-    
+
     func waitForExpectations(timeout: NSTimeInterval = TestsConfiguration.TIME_OUT_DURATION) {
         waitForExpectationsWithTimeout(timeout, handler: nil)
     }
-    
+
     /**
      Helper to create user for the test class which will be stored statically
      and automatically deleted when calling its counterpart deleteCreatedUsers()

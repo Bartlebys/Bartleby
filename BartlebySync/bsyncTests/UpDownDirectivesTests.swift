@@ -18,30 +18,30 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 
 class UpDownDirectivesTests: SyncTestCase {
-    
+
     private var _distantTreeURL = NSURL()
-    
+
     private static var _upDirectives = BsyncDirectives()
     private static var _downDirectives = BsyncDirectives()
     private static var _treeId = ""
-    
+
     override class func setUp() {
         super.setUp()
-        
+
         _treeId = testName + Bartleby.createUID()
     }
-    
+
     override func setUp() {
         super.setUp()
-        
+
         self.sourceFolderPath = self.assetPath + "Src/"
         self.destinationFolderPath = self.assetPath + "Dst/"
-        
+
         _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(UpDownDirectivesTests._treeId)")
     }
-    
+
     static private let _admin = BsyncAdmin()
-    
+
     override func prepareSync(handlers: Handlers) {
         // Create user
         let user = createUser(spaceUID, handlers: Handlers { (creation) in
@@ -51,7 +51,7 @@ class UpDownDirectivesTests: SyncTestCase {
                 handlers.on(creation)
             }
             })
-        
+
         // Create upstream directives
         let upDirectives = BsyncDirectives.upStreamDirectivesWithDistantURL(_distantTreeURL, localPath: sourceFolderPath)
         upDirectives.automaticTreeCreation = true
@@ -59,31 +59,37 @@ class UpDownDirectivesTests: SyncTestCase {
         upDirectives.user = user
         upDirectives.password = user.password
         upDirectives.salt = TestsConfiguration.SHARED_SALT
-        
+
         UpDownDirectivesTests._upDirectives = upDirectives
-        
+
         // Create downstream directives
         let downDirectives = BsyncDirectives.downStreamDirectivesWithDistantURL(_distantTreeURL, localPath: destinationFolderPath)
         downDirectives.automaticTreeCreation = true
-        
+
         // Credentials:
         downDirectives.user = user
         downDirectives.password = user.password
         downDirectives.salt = TestsConfiguration.SHARED_SALT
-        
+
         UpDownDirectivesTests._downDirectives = downDirectives
     }
-    
+
     override func sync(handlers: Handlers) {
         UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (upSync) in
             if upSync.success {
-                UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: handlers)
+                UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (downSync) in
+                    if downSync.success {
+                        super.sync(handlers)
+                    } else {
+                        handlers.on(downSync)
+                    }
+                    })
             } else {
                 handlers.on(upSync)
             }
             })
     }
-    
+
     override func disposeSync(handlers: Handlers) {
         deleteCreatedUsers(Handlers { (deletion) in
             if deletion.success {

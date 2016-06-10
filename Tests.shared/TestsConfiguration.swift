@@ -87,15 +87,4 @@ public class TestsConfiguration: BartlebyConfiguration {
     public static let TIME_OUT_DURATION = 200.0
 
     public static let LONG_TIME_OUT_DURATION = 1000.0
-
-    /// MARK: Behaviour after test run
-
-    enum RemoveAssets {
-        case Always
-        case OnSuccess
-        case Never
-    }
-    
-    static let REMOVE_ASSET_AFTER_TESTS = RemoveAssets.OnSuccess
-
 }
