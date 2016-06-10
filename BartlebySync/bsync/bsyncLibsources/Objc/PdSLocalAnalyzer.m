@@ -150,7 +150,7 @@
                         ];
 
     for (NSString*exclusion in exclusions){
-        BOOL found = ([path rangeOfString:exclusion].length==0);
+        BOOL found = ([path rangeOfString:exclusion].length > 0);
         if( found){
             return true;
         }
