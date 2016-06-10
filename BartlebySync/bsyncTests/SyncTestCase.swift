@@ -50,11 +50,30 @@ class SyncTestCase : TestCase {
             if let srcHashmap = computeSrc.getDictionaryResult() where computeSrc.success {
                 analyzer.createHashMapFromLocalPath(self.destinationFolderPath, handlers: Handlers { (computeDst) in
                     if let dstHashmap = computeDst.getDictionaryResult() where computeDst.success {
+
+                        var diagnostic=""
+                        for (k,_) in srcHashmap{
+                            if dstHashmap[k] == nil{
+                                diagnostic += "\n\(k) do not exists in destination"
+                            }
+                            if srcHashmap[k] != dstHashmap[k]{
+                                diagnostic += "\n\(k) value is not matching \(srcHashmap[k])!=\(dstHashmap[k])"
+                            }
+                        }
+
+                        for (k,_) in dstHashmap{
+                            if srcHashmap[k] == nil{
+                                diagnostic += "\n\(k) do not exists in source"
+                            }
+                        }
+
+
                         if srcHashmap == dstHashmap {
                             handlers.on(Completion.successState())
                         } else {
-                            handlers.on(Completion.failureState("Different hashmap:\n\(srcHashmap)\n!=\n\(dstHashmap)", statusCode: .Undefined))
-                        }
+                            let completion=Completion.failureState("Different hashmap:\(diagnostic)", statusCode: .Undefined)
+                            handlers.on(completion)
+                            bprint(completion, file: #file, function: #function, line: #line, category: bprintCategoryFor(self))                        }
                     } else {
                         handlers.on(computeDst)
                     }
