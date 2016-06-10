@@ -27,8 +27,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     BOOL                            _sanitizeAutomatically;
     BOOL                            _hasBeenInterrupted;
     int                             _messageCounter;
-    
-    
+
+
 }
 
 @property (nonatomic,readonly)NSArray*bunchOfCommand;
@@ -67,7 +67,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                 context:(BsyncContext*)context
                                           progressBlock:(void(^)(uint taskIndex,double progress))progressBlock
                                      andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode,NSString*_Nonnull message))completionBlock{
-    
+
     return [[PdSCommandInterpreter alloc] initWithBunchOfCommand:bunchOfCommand
                                                          context:context
                                                    progressBlock:progressBlock
@@ -97,20 +97,20 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         self->_fileManager=[PdSFileManager sharedInstance];
         self->_messageCounter=0;
         self->_sanitizeAutomatically=YES;
-        
+
         if(self->_context.mode==SourceIsDistantDestinationIsDistant ){
             [NSException raise:@"TemporaryException"
                         format:@"SourceIsDistantDestinationIsDistant is currently not supported"];
         }
-        
-        
+
+
         if([context isValid] && _bunchOfCommand){
-            
+
             self.queue=[[NSOperationQueue alloc] init];
             self.queue.name=[NSString stringWithFormat:@"com.pereira-da-silva.PdSSync.CommandInterpreter.%@",@([self hash])];
             [self.queue setMaxConcurrentOperationCount:1];// Sequential
             [self _run];
-            
+
         }else{
             if(self->_completionBlock){
                 _completionBlock(NO, PdsStatusErrorInvalidArgument,@"sourceUrl && destinationUrl && bunchOfCommand && finalHashMap are required");
@@ -167,15 +167,15 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     if(_sanitizeAutomatically){
         [self _sanitize:@""];
     }
-    
+
     if([_bunchOfCommand count]>0){
         NSMutableArray*__block creativeCommands=[NSMutableArray array];
         _allCommands=[NSMutableArray array];
-        
+
         // First pass we dicriminate creative for un creative commands
         // Creative commands requires for example download or an upload.
         // Copy or move are "not creative" as we move or copy a existing resource
-        
+
         for (id encodedCommand in _bunchOfCommand) {
             NSArray*cmdAsAnArray=[self _encodedCommandToArray:encodedCommand];
             if (!_hasBeenInterrupted) {
@@ -191,7 +191,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 }
             }
         }
-        
+
         if (!_hasBeenInterrupted) {
             // Add all creational commands
             for (NSArray*cmd in creativeCommands) {
@@ -200,7 +200,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                     [self _runCommandFromArrayOfArgs:cmd];
                 }];
             }
-            
+
             [_queue addOperationWithBlock:^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterWillFinalize
                                                                     object:self];
@@ -213,7 +213,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 }
             }];
         }
-        
+
     }else{
         if(_sanitizeAutomatically){
             [self _sanitize:@""];
@@ -227,29 +227,27 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
  * Called by the delegate to conclude the operations
  */
 - (void)finalize{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // The creative commands will produce UNPREFIXING temp files
-        // The "unCreative" commands will be executed during finalization
-        [self _finalizeWithCommands:self->_allCommands];
-        
-        if(_sanitizeAutomatically){
-            [self _sanitize:@""];
-        }else{
-            
-        }
-    });
+    // The creative commands will produce UNPREFIXING temp files
+    // The "unCreative" commands will be executed during finalization
+    [self _finalizeWithCommands:self->_allCommands];
+
+    if(_sanitizeAutomatically){
+        [self _sanitize:@""];
+    }else{
+
+    }
 }
 
 -(void)_sanitize:(NSString*)relativePath{
     if (self->_context.mode==SourceIsDistantDestinationIsLocal||
         self->_context.mode==SourceIsLocalDestinationIsLocal){
-        
+
         // SANITIZE LOCALLY
         NSString *folderPath=[self _absoluteLocalPathFromRelativePath:relativePath
                                                            toLocalUrl:_context.destinationBaseUrl
                                                            withTreeId:_context.destinationTreeId
                                                             addPrefix:NO];
-        
+
         NSArray *keys = [NSArray arrayWithObject:NSURLIsDirectoryKey];
         NSDirectoryEnumerator *dirEnum =[_fileManager enumeratorAtURL:[NSURL URLWithString:folderPath]
                                            includingPropertiesForKeys:keys
@@ -267,10 +265,8 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                          error:&removeFileError];
             }
         }
-        
-        if(!removeFileError){
-            [self _nextCommand];
-        }else{
+
+        if(removeFileError){
             [self _interruptOnFault:@"Sanitizing error"];
         }
     }
@@ -388,101 +384,101 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 -(void)_runCreateOrUpdate:(NSString*)source destination:(NSString*)destination{
     if((self->_context.mode==SourceIsLocalDestinationIsDistant)){
-        
+
         // UPLOAD
         //_context.destinationBaseUrl;
-        
+
         NSURL *sourceURL=[_context.sourceBaseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"%@/%@",_context.sourceTreeId,source]];
         NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/uploadFileTo/tree/%@/?syncIdentifier=%@&destination=%@",
                               _context.destinationTreeId, _context.syncID, destination];
-        
+
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
-                                                                           withActionName:@"BartlebySyncUploadFileTo"
-                                                                                forMethod:@"POST"
-                                                                                      and:url];
+                                                                        withActionName:@"BartlebySyncUploadFileTo"
+                                                                             forMethod:@"POST"
+                                                                                   and:url];
 
-        
+
         NSString*lastChar=[source substringFromIndex:[source length]-1];
         if(![lastChar isEqualToString:@"/"]){
-            
+
             // It is a file
             // Add the "file" Headers
             // http://www.w3.org/Protocols/rfc2616/rfc2616-sec19.html#sec19.5.1
-            
-            
+
+
             NSString*cdvalue=[NSString stringWithFormat:@"attachment; name=\"%@\"; filename=\"%@\"", @"source", [sourceURL lastPathComponent]];
             [request setValue:cdvalue forHTTPHeaderField:@"Content-Disposition"];
-            
+
             NSString*mimeType=@"application/octet-stream";
             [request setValue:mimeType forHTTPHeaderField:@"Content-Type"];
             [request setValue:@"Keep-Alive" forHTTPHeaderField:@"Connection"];
-            
+
             [self _progressMessage:@"Uploading %@", [sourceURL path]];
-            
+
             // We use an upload task.
             [self addCurrentTaskAndResume:[[self urlSession] uploadTaskWithRequest:request
-                                                        fromFile:sourceURL
-                                               completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                   if (response){
-                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                       bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
-                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
-                                                           [self _nextCommand];
-                                                           return ;
-                                                       }
-                                                   }
-                                                   if (data!=nil) {
-                                                       NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                       bprint(@"Fault on upload: %@", message);
-                                                   }
-                                                   
-                                                   NSString *msg=@"No message";
-                                                   if (error) {
-                                                       msg=[NSString stringWithFormat:@"Error on file upload: %@",[self _stringFromError:error]];
-                                                   }
-                                                   [self _interruptOnFault:msg];
-                                                   
-                                               }]];
-            
-            
+                                                                          fromFile:sourceURL
+                                                                 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                                                     if (response){
+                                                                         NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
+                                                                         bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
+                                                                         if (httpStatusCode>=200 && httpStatusCode<300) {
+                                                                             [self _nextCommand];
+                                                                             return ;
+                                                                         }
+                                                                     }
+                                                                     if (data!=nil) {
+                                                                         NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                                                         bprint(@"Fault on upload: %@", message);
+                                                                     }
+
+                                                                     NSString *msg=@"No message";
+                                                                     if (error) {
+                                                                         msg=[NSString stringWithFormat:@"Error on file upload: %@",[self _stringFromError:error]];
+                                                                     }
+                                                                     [self _interruptOnFault:msg];
+
+                                                                 }]];
+
+
         } else {
             // It is a folder.
             // We donnot need any header
-            
+
             [self _progressMessage:@"Creation of distant folder %@", [sourceURL absoluteString]];
-            
+
             // We use a data task.
             [self addCurrentTaskAndResume:[[self urlSession] dataTaskWithRequest:request
-                                                              completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                                  
-                                                                  if (response) {
-                                                                      NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
-                                                                      bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
-                                                                      if (httpStatusCode>=200 && httpStatusCode<300) {
-                                                                          [self _nextCommand];
-                                                                          return ;
-                                                                      }
-                                                                  }
-                                                                  if (data!=nil) {
-                                                                      NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                      bprint(@"Fault on distant folder creation: %@", message);
-                                                                  }
-                                                                  
-                                                                  NSString *msg=@"No message";
-                                                                  if (error) {
-                                                                      msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[self _stringFromError:error]];
-                                                                  }
-                                                                  [self _interruptOnFault:msg];
-                                                              }]];
-            
+                                                               completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+
+                                                                   if (response) {
+                                                                       NSInteger httpStatusCode=[(NSHTTPURLResponse*)response statusCode];
+                                                                       bprint(@"%@ => %@", request.URL.absoluteString, @(httpStatusCode));
+                                                                       if (httpStatusCode>=200 && httpStatusCode<300) {
+                                                                           [self _nextCommand];
+                                                                           return ;
+                                                                       }
+                                                                   }
+                                                                   if (data!=nil) {
+                                                                       NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                                                       bprint(@"Fault on distant folder creation: %@", message);
+                                                                   }
+
+                                                                   NSString *msg=@"No message";
+                                                                   if (error) {
+                                                                       msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[self _stringFromError:error]];
+                                                                   }
+                                                                   [self _interruptOnFault:msg];
+                                                               }]];
+
         }
-        
-        
+
+
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal){
         // If it is a folder we gonna create it directly
-        
+
         BOOL isAFolder= [[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
         if(isAFolder){
             NSString*localFolderPath=[self _absoluteLocalPathFromRelativePath:destination
@@ -496,12 +492,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 [self _interruptOnFault:msg];
                 return;
             }
-            
+
         }else{
-            
-            
-            
-            
+
+
+
+
             // DOWNLOAD
             NSString*treeId=_context.sourceTreeId;
             // Decompose in a GET for the URI then a download task
@@ -510,28 +506,28 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                    treeId,
                                    [source stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]]
                                    ];
-            
+
             NSURL *url = [NSURL URLWithString:urlString];
-             
+
             // REQUEST
             NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
-                                                                               withActionName:@"BartlebySyncGetFile"
-                                                                                    forMethod:@"GET"
-                                                                                          and:url];
-            
-            
+                                                                            withActionName:@"BartlebySyncGetFile"
+                                                                                 forMethod:@"GET"
+                                                                                       and:url];
+
+
             [self _progressMessage:@"Downloading %@", url];
-            
-            
+
+
             // Prepare the destination
             NSString*__block p=[self _absoluteLocalPathFromRelativePath:destination
                                                              toLocalUrl:_context.destinationBaseUrl
                                                              withTreeId:_context.destinationTreeId
                                                               addPrefix:YES];
-            
-            
+
+
             [_fileManager createRecursivelyRequiredFolderForPath:p];
-            
+
             [self addCurrentTaskAndResume:[[self urlSession]downloadTaskWithRequest:request
                                                                   completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                                       if (!error){
@@ -555,21 +551,53 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                           NSString*message=[[NSString alloc]initWithFormat:@"Http Status code: %@\n%@",@(httpStatusCode),headers];
                                                                           bprint(@"Fault on download: %@", message);
                                                                       }
-                                                                      
+
                                                                       NSString *msg=@"No message";
                                                                       if (error) {
                                                                           msg=[NSString stringWithFormat:@"Error on distant folder creation: %@",[self _stringFromError:error]];
                                                                       }
                                                                       [self _interruptOnFault:msg];
-                                                                      
+
                                                                   }]];
         };
-        
-        
+
+
     }else if (self->_context.mode==SourceIsLocalDestinationIsLocal){
-        // It is a copy
-        [self _runCopy:source destination:destination];
+
+
+        // COPY LOCALLY
+        NSURL *sourceBaseUrl = _context.sourceBaseUrl;
+        NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
+                                                              toLocalUrl: sourceBaseUrl
+                                                              withTreeId: _context.sourceTreeId
+                                                               addPrefix: NO];
+
+        NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath: destination
+                                                                   toLocalUrl: _context.destinationBaseUrl
+                                                                   withTreeId: _context.destinationTreeId
+                                                                    addPrefix: YES];
+
+        [_fileManager createRecursivelyRequiredFolderForPath:absoluteDestination];
+
+        NSError*error=nil;
+
+        [_fileManager copyItemAtPath:absoluteSource
+                              toPath:absoluteDestination
+                               error:&error];
+
+
+        if(error){
+            if(![_fileManager fileExistsAtPath:absoluteDestination]){
+                // NSFileManagerDelegate seems not to handle correctly this case
+                [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
+            }
+            [self _interruptOnFault:[error localizedDescription]];
+        }
+
+
         [self _nextCommand];
+
+
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
         // CURRENTLY NOT SUPPORTED
     }
@@ -579,7 +607,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 - (void)_finalizeWithCommands:(NSArray*)commands{
-    
+
     [self _progressMessage:@"Finalizing %@ cmds", @([commands count])];
 
     NSDictionary *hashMapDict = [_context.finalHashMap dictionaryRepresentation];
@@ -592,28 +620,28 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         return;
     }
     bprint(@"crypted hashmap: %@", hashMapCryptedString);
-    
+
     if((self->_context.mode==SourceIsLocalDestinationIsDistant)||
        self->_context.mode==SourceIsDistantDestinationIsDistant){
-        
-        
+
+
         NSString *URLString =[[_context.destinationBaseUrl absoluteString] stringByAppendingFormat:@"/finalizeTransactionIn/tree/%@/",_context.destinationTreeId];
         NSDictionary *parameters = @{
                                      @"syncIdentifier": _context.syncID,
                                      @"commands":[self _encodetoJson:commands],
                                      @"hashMap":hashMapCryptedString
                                      };
-        
+
         NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-        
+
         NSURL*url = [NSURL URLWithString:URLString];
-        
+
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
-                                                                           withActionName:@"BartlebySyncFinalizeTransactionIn"
-                                                                                forMethod:@"POST"
-                                                                                      and:url];
-        
+                                                                        withActionName:@"BartlebySyncFinalizeTransactionIn"
+                                                                             forMethod:@"POST"
+                                                                                   and:url];
+
         [request setHTTPBody:jsonBodyData];
 
         // DATA TASK
@@ -631,20 +659,20 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                    NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                                                                    bprint(@"(!) Fault on finalization: %@", message);
                                                                }
-                                                               
+
                                                                NSString *msg=@"No message";
                                                                if (error) {
                                                                    msg=[NSString stringWithFormat:@"(!) Error on finalization: %@",[self _stringFromError:error]];
                                                                }
                                                                [self _interruptOnFault:msg];
                                                            }]];
-        
+
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal||
               self->_context.mode==SourceIsLocalDestinationIsLocal){
-        
+
         // EXECUTE CREATIVES COMMANDS
-        
-        
+
+
         // SORT THE COMMANDS By BsyncCommand value order
         // Creation and Update will be done before Moves, Copies and Updates
         // BCreate   = 0
@@ -655,7 +683,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
         NSMutableArray*secondPass=[NSMutableArray array];
-        
+
         NSArray*sortedCommand=[commands sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             NSArray*a1=(NSArray*)obj1;
             NSArray*a2=(NSArray*)obj2;
@@ -665,7 +693,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 return NSOrderedAscending;
             }
         }];
-        
+
 
         bprint(@"sortedCommand %@",sortedCommand);
 
@@ -673,9 +701,10 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSString *destination=[cmd objectAtIndex:BDestination];
             NSUInteger command=[[cmd objectAtIndex:BCommand] integerValue];
             BOOL isAFolder=[[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
-            
+
             if(command==BCreate || command==BUpdate){
                 if(!isAFolder){
+
 
                     NSString*destinationPrefixedFilePath=[self _absoluteLocalPathFromRelativePath:destination
                                                                                        toLocalUrl:_context.destinationBaseUrl
@@ -688,14 +717,14 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                                          addPrefix:NO];
 
                     [_fileManager createRecursivelyRequiredFolderForPath:destinationFileWithoutPrefix];
-                    
+
                     NSError*error=nil;
-                    
+
                     // UN PREFIX
                     [_fileManager moveItemAtPath:destinationPrefixedFilePath
                                           toPath:destinationFileWithoutPrefix
                                            error:&error];
-                    
+
                     if(error){
                         NSString*message = [NSString stringWithFormat: @"Error during local finalization on moveItemAtPath\n\t- Src: %@\n\t- Dst: %@\n\t- Error: %@ ", destinationPrefixedFilePath, destinationFileWithoutPrefix,[error localizedDescription]];
                         bprint(@"%@", message)
@@ -705,7 +734,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                     }
                 }
                 continue;
-                
+
             }
 
             if (command==BMove || command==BCopy){
@@ -758,14 +787,14 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // Write the Hash Map
         NSString*relativePathOfHashMapFile=[_context.destinationTreeId stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
         NSURL *hashMapFileUrl=[_context.destinationBaseUrl URLByAppendingPathComponent:relativePathOfHashMapFile];
-        
-        
-        
+
+
+
         NSError*jsonHashMapError=nil;
         [hashMapCryptedString writeToFile:[hashMapFileUrl path]
-                      atomically:YES
-                        encoding:NSUTF8StringEncoding error:&jsonHashMapError];
-        
+                               atomically:YES
+                                 encoding:NSUTF8StringEncoding error:&jsonHashMapError];
+
 
         if(jsonHashMapError){
             bprint(@"%@",[jsonHashMapError localizedDescription]);
@@ -778,7 +807,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             [[NSNotificationCenter defaultCenter] postNotificationName:PdSSyncInterpreterHasFinalized
                                                                 object:self];
         }
-        
+
     }
 }
 
@@ -793,13 +822,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         // CURRENTLY NOT SUPPORTED
     } else {
         // COPY LOCALLY
-       NSURL *sourceBaseUrl = _context.sourceBaseUrl;
-        
+        NSURL *sourceBaseUrl = _context.sourceBaseUrl;
+
         if (mode == SourceIsDistantDestinationIsLocal) {
             // If source is distant, we rather copy the existing file from the local destination
             sourceBaseUrl = _context.destinationBaseUrl;
         }
-        
+
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
                                                               toLocalUrl: sourceBaseUrl
                                                               withTreeId: _context.destinationTreeId
@@ -808,13 +837,16 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath: destination
                                                                    toLocalUrl: _context.destinationBaseUrl
                                                                    withTreeId: _context.destinationTreeId
-                                                                    addPrefix: YES];
-        
-        NSError*error=nil;
-        
-        
+                                                                    addPrefix: NO];
+
+
+
+
         [_fileManager createRecursivelyRequiredFolderForPath:absoluteDestination];
-        
+
+
+        NSError*error=nil;
+
         [_fileManager copyItemAtPath:absoluteSource
                               toPath:absoluteDestination
                                error:&error];
@@ -825,6 +857,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             }
             [self _interruptOnFault:[error localizedDescription]];
         }
+
     }
 }
 
@@ -836,18 +869,21 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         //DONE DURING FINALIZATION
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal||
               self->_context.mode==SourceIsLocalDestinationIsLocal){
+
         // MOVE LOCALLY
-        
+
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
                                                               toLocalUrl:_context.destinationBaseUrl
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
-        
+
         NSString*absoluteDestination=[self _absoluteLocalPathFromRelativePath:destination
                                                                    toLocalUrl:_context.destinationBaseUrl
                                                                    withTreeId:_context.destinationTreeId
                                                                     addPrefix:NO];
-        
+
+        [_fileManager createRecursivelyRequiredFolderForPath:absoluteDestination];
+
         NSError*error=nil;
         [_fileManager moveItemAtPath:absoluteSource
                               toPath:absoluteDestination
@@ -856,10 +892,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
                 [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error localizedDescription]];
                 [self _interruptOnFault:[error localizedDescription]];
-            }
-        }
-        
-        
+            }        }
+
+
     }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
         // CURRENTLY NOT SUPPORTED
     }
@@ -878,7 +913,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                    toLocalUrl:_context.destinationBaseUrl
                                                                    withTreeId:_context.destinationTreeId
                                                                     addPrefix:NO];
-        
+
         if([_fileManager fileExistsAtPath:absoluteDestination]){
             NSError*error=nil;
             [_fileManager removeItemAtPath:absoluteDestination error:&error];
@@ -903,7 +938,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     if([error debugDescription]){
         [result appendFormat:@" debugDescription : %@",[error debugDescription]];
     }
-    
+
     return result;
 }
 
@@ -951,17 +986,17 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 + (NSMutableArray*)commandsFromDeltaPathMap:(DeltaPathMap*)deltaPathMap{
-    
+
     /*
-     
+
      BCreate   = 0 , // W destination and source
      BUpdate   = 1 , // W destination and source
      BMove     = 2 , // R source W destination
      BCopy     = 3 , // R source W destination
      BDelete   = 4   // W source
-     
+
      */
-    
+
     NSMutableArray*commands=[NSMutableArray array];
     for (NSString*identifier in deltaPathMap.createdPaths) {
         [commands addObject:[PdSCommandInterpreter encodeCreate:identifier destination:identifier]];
@@ -1045,7 +1080,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
  * explicitly invalidated, in which case the error parameter will be nil.
  */
 - (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(nullable NSError *)error{
-    
+
 }
 
 /* If implemented, when a connection level authentication challenge
@@ -1059,7 +1094,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
  */
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition position, NSURLCredential * __nullable credential))completionHandler{
-    
+
 }
 
 /* If an application has received an
@@ -1071,7 +1106,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
  * result in invoking the completion handler.
  */
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
-    
+
 }
 
 
@@ -1108,7 +1143,7 @@ willPerformHTTPRedirection:(NSHTTPURLResponse *)response
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * __nullable credential))completionHandler{
-    
+
 }
 
 /* Sent if a task requires a new, unopened body stream.  This may be
@@ -1117,7 +1152,7 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
  */
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
  needNewBodyStream:(void (^)(NSInputStream * __nullable bodyStream))completionHandler{
-    
+
 }
 
 /* Sent periodically to notify the delegate of upload progress.  This
