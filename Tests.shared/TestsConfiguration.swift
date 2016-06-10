@@ -87,4 +87,7 @@ public class TestsConfiguration: BartlebyConfiguration {
     public static let TIME_OUT_DURATION = 200.0
 
     public static let LONG_TIME_OUT_DURATION = 1000.0
+
+
+    public static let ENABLE_TEST_OBSERVATION=false
 }

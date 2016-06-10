@@ -100,8 +100,10 @@ class TestCase: XCTestCase {
             XCTFail("\(error)")
         }
 
-        // Add test observer
-        XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
+        if TestsConfiguration.ENABLE_TEST_OBSERVATION{
+            // Add test observer
+            XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
+        }
 
         // Purge cookie for the domain
         if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
@@ -122,18 +124,21 @@ class TestCase: XCTestCase {
     override static func tearDown() {
         super.tearDown()
 
-        // Remove test observer
-        XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
+        if  TestsConfiguration.ENABLE_TEST_OBSERVATION{
+            // Remove test observer
+            XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
 
-        // Remove asset folder depending of the configuration
-        if fm.fileExistsAtPath(assetPath) && removeAsset != .Never {
-            if (removeAsset == .Always) || (_testObserver.hasSucceeded) {
-                do {
-                    try fm.removeItemAtPath(self.assetPath)
-                } catch {
-                    bprint("Error: \(error)", file: #file, function: #function, line: #line)
+            // Remove asset folder depending of the configuration
+            if fm.fileExistsAtPath(assetPath) && removeAsset != .Never {
+                if (removeAsset == .Always) || (_testObserver.hasSucceeded) {
+                    do {
+                        try fm.removeItemAtPath(self.assetPath)
+                    } catch {
+                        bprint("Error: \(error)", file: #file, function: #function, line: #line)
+                    }
                 }
             }
+
         }
 
         // Clean stored users
