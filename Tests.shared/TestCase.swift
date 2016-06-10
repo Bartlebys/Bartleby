@@ -261,4 +261,26 @@ class TestCase: XCTestCase {
             handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .Bad_Request))
         }
     }
+
+
+    /**
+     Writes a string to a given path.
+
+     - parameter string:                    the string
+     - parameter path:                      the path
+     - parameter createIntermediaryFolders: if set to true the intermediary folders are created
+
+     - throws: throws file issue
+     */
+    func writeStrinToPath(string:String,path:String,createIntermediaryFolders:Bool=true) throws -> () {
+        let fileURL=NSURL(fileURLWithPath:path)
+        if let folderURL=fileURL.URLByDeletingLastPathComponent{
+            if createIntermediaryFolders{
+                try self._fm.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: [:])
+            }
+            try string.writeToURL(fileURL, atomically: true, encoding: Default.STRING_ENCODING)
+        }
+    }
+
+
 }

@@ -26,6 +26,9 @@ class LocalDMGSyncTests: LocalSyncTests {
     private var _slaveVolumePath = ""
     private var _slaveVolumeURL = NSURL()
 
+
+    private static var _prefix=Bartleby.createUID()
+
     override class func setUp() {
         super.setUp()
         self._treeId = "synchronized_tests"
@@ -34,23 +37,22 @@ class LocalDMGSyncTests: LocalSyncTests {
     override func setUp() {
         super.setUp();
 
-        let prefix = Bartleby.createUID()
-        self._masterDMGName = prefix + "_master"
+        self._masterDMGName = LocalDMGSyncTests._prefix+"_Master"
         self._masterDMGPath = self.assetPath + self._masterDMGName
         self._masterDMGFullPath = self._masterDMGPath + ".sparseimage"
-        self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"+LocalDMGSyncTests._treeId+"/"
+        self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"
         self._masterVolumeURL = NSURL(fileURLWithPath: self._masterVolumePath)
         
         
-        self.sourceFolderPath = self._masterVolumePath
+        self.sourceFolderPath = self._masterVolumePath+LocalDMGSyncTests._treeId+"/"
         
-        self._slaveDMGName = prefix + "_slave"
+        self._slaveDMGName = LocalDMGSyncTests._prefix+"_Slave"
         self._slaveDMGPath = self.assetPath + self._slaveDMGName
         self._slaveDMGFullPath = self._slaveDMGPath + ".sparseimage"
-        self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"+LocalDMGSyncTests._treeId+"/"
+        self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"
         self._slaveVolumeURL = NSURL(fileURLWithPath: self._slaveVolumePath)
         
-        destinationFolderPath = self._slaveVolumePath
+        destinationFolderPath = self._slaveVolumePath+LocalDMGSyncTests._treeId+"/"
         
     }
     

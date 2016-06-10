@@ -100,7 +100,8 @@ class SyncTestCase : TestCase {
     func test002_Add_single_file() {
         do {
             // Create file in up folder
-            try _fileContent1.writeToFile(sourceFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
+
+            try self.writeStrinToPath(_fileContent1, path: sourceFolderPath + _fileName)
 
             let expectation = expectationWithDescription("Synchronization should complete")
 
@@ -135,7 +136,8 @@ class SyncTestCase : TestCase {
 
     func test003_Edit_existing_file() {
         do {
-            try _fileContent2.writeToFile(sourceFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
+
+            try self.writeStrinToPath(_fileContent2, path: sourceFolderPath + _fileName)
 
             let expectation = expectationWithDescription("Synchronization should complete")
 
@@ -212,7 +214,7 @@ class SyncTestCase : TestCase {
             for i in 1..._subFileCount {
                 let filePath = subFolderPath + "file\(i).txt"
                 let content = _subFileContent + "\(i)"
-                try content.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
+                try self.writeStrinToPath(content, path: filePath)
             }
 
             let expectation = expectationWithDescription("Synchronization should complete")
