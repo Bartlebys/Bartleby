@@ -142,16 +142,20 @@
 
 - (BOOL)_pathIsInTheExclusionList:(NSString*)path isDirectory:(BOOL)isDirectory{
     // Exclude directives
-    NSArray*exclusion=@[
+    NSArray*exclusions=@[
                         @".DS_Store",
                         @".fseventsd",
                         @".Trashes",
                         [BsyncDirectives DEFAULT_FILE_NAME]
                         ];
-    
-    NSString*lastSegment=(isDirectory ? [[path lastPathComponent] stringByAppendingString:@"/"]:[path lastPathComponent]);
-    BOOL found = ([exclusion indexOfObject:lastSegment] != NSNotFound );
-    return found;
+
+    for (NSString*exclusion in exclusions){
+        BOOL found = ([path rangeOfString:exclusion].length==0);
+        if( found){
+            return true;
+        }
+    }
+    return false;
 }
 
 
