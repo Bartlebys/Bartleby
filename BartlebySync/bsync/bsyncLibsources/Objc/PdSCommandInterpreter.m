@@ -213,7 +213,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 }
             }];
         }
-
     }else{
         if(_sanitizeAutomatically){
             [self _sanitize:@""];
@@ -368,11 +367,17 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
 - (void)_commandInProgress{
-    [_queue setSuspended:YES];
+    dispatch_barrier_sync(dispatch_get_main_queue(), ^{
+        [_queue setSuspended:YES];
+    });
 }
 
+
 - (void)_nextCommand{
-    [_queue setSuspended:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+         [_queue setSuspended:NO];
+    });
+
 }
 
 
@@ -477,6 +482,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
     }else if (self->_context.mode==SourceIsDistantDestinationIsLocal){
+
         // If it is a folder we gonna create it directly
 
         BOOL isAFolder= [[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
@@ -494,8 +500,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             }
 
         }else{
-
-
 
 
             // DOWNLOAD
@@ -519,7 +523,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             [self _progressMessage:@"Downloading %@", url];
 
 
-            // Prepare the destination
+            // Prepare the destination With a Sync Prefix
             NSString*__block p=[self _absoluteLocalPathFromRelativePath:destination
                                                              toLocalUrl:_context.destinationBaseUrl
                                                              withTreeId:_context.destinationTreeId
@@ -563,12 +567,16 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
     }else if (self->_context.mode==SourceIsLocalDestinationIsLocal){
+        // If it is a folder we gonna create it directly
 
+        BOOL isAFolder= [[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
 
-        // COPY LOCALLY
-        NSURL *sourceBaseUrl = _context.sourceBaseUrl;
+            
+
+        // Copy the destination file with a Sync Prefix
+
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
-                                                              toLocalUrl: sourceBaseUrl
+                                                              toLocalUrl:  _context.sourceBaseUrl
                                                               withTreeId: _context.sourceTreeId
                                                                addPrefix: NO];
 
@@ -579,19 +587,22 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         [_fileManager createRecursivelyRequiredFolderForPath:absoluteDestination];
 
-        NSError*error=nil;
+        if (!isAFolder){
+            NSError*error=nil;
 
-        [_fileManager copyItemAtPath:absoluteSource
-                              toPath:absoluteDestination
-                               error:&error];
+            [_fileManager copyItemAtPath:absoluteSource
+                                  toPath:absoluteDestination
+                                   error:&error];
 
 
-        if(error){
-            if(![_fileManager fileExistsAtPath:absoluteDestination]){
-                // NSFileManagerDelegate seems not to handle correctly this case
-                [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
+            if(error){
+                if(![_fileManager fileExistsAtPath:absoluteDestination]){
+                    // NSFileManagerDelegate seems not to handle correctly this case
+                    [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
+                }
+                [self _interruptOnFault:[error localizedDescription]];
             }
-            [self _interruptOnFault:[error localizedDescription]];
+
         }
 
 
@@ -741,8 +752,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 NSString *source=[cmd objectAtIndex:BSource];
 
                 if (![_fileManager fileExistsAtPath:source]){
-                    // If we encounter a problem of dependency
-                    // (order of operation e.g a move before a dependent copy)
+                    // If we encounter a problem of move / copy dependency
                     // We store the command for a second pass.
                     // And we defer the command interpretation.
                     [secondPass addObject:cmd];
@@ -759,7 +769,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                            destination:destination];
                     }
                 }
-
             }
 
             if(command==BDelete){
@@ -781,7 +790,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                 [self _runCopy:source
                    destination:destination];
             }
-
         }
 
         // Write the Hash Map
@@ -821,16 +829,10 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     } else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
         // CURRENTLY NOT SUPPORTED
     } else {
-        // COPY LOCALLY
-        NSURL *sourceBaseUrl = _context.sourceBaseUrl;
 
-        if (mode == SourceIsDistantDestinationIsLocal) {
-            // If source is distant, we rather copy the existing file from the local destination
-            sourceBaseUrl = _context.destinationBaseUrl;
-        }
 
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
-                                                              toLocalUrl: sourceBaseUrl
+                                                              toLocalUrl: _context.destinationBaseUrl// it is a terminal copy.
                                                               withTreeId: _context.destinationTreeId
                                                                addPrefix: NO];
 
@@ -838,9 +840,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                                                                    toLocalUrl: _context.destinationBaseUrl
                                                                    withTreeId: _context.destinationTreeId
                                                                     addPrefix: NO];
-
-
-
 
         [_fileManager createRecursivelyRequiredFolderForPath:absoluteDestination];
 
@@ -850,13 +849,14 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         [_fileManager copyItemAtPath:absoluteSource
                               toPath:absoluteDestination
                                error:&error];
+        /*
         if(error){
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
                 // NSFileManagerDelegate seems not to handle correctly this case
                 [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
             }
             [self _interruptOnFault:[error localizedDescription]];
-        }
+        }*/
 
     }
 }
@@ -865,15 +865,15 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 #pragma  mark  Move
 
 -(void)_runMove:(NSString*)source destination:(NSString*)destination{
-    if((self->_context.mode==SourceIsLocalDestinationIsDistant)){
+    BsyncMode mode = self.context.mode;
+    if (mode == SourceIsLocalDestinationIsDistant) {
         //DONE DURING FINALIZATION
-    }else if (self->_context.mode==SourceIsDistantDestinationIsLocal||
-              self->_context.mode==SourceIsLocalDestinationIsLocal){
-
+    } else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
+        // CURRENTLY NOT SUPPORTED
+    } else {
         // MOVE LOCALLY
-
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
-                                                              toLocalUrl:_context.destinationBaseUrl
+                                                              toLocalUrl:_context.destinationBaseUrl // it is a terminal copy.
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
 
@@ -888,15 +888,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         [_fileManager moveItemAtPath:absoluteSource
                               toPath:absoluteDestination
                                error:&error];
+        /*
         if(error){
             if(![_fileManager fileExistsAtPath:absoluteDestination]){
                 [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error localizedDescription]];
                 [self _interruptOnFault:[error localizedDescription]];
-            }        }
-
-
-    }else if (self->_context.mode==SourceIsDistantDestinationIsDistant){
-        // CURRENTLY NOT SUPPORTED
+            }
+        }*/
     }
 }
 
