@@ -12,9 +12,12 @@ class LocalSyncTests: SyncTestCase {
 
     private static var _directives = BsyncDirectives()
 
+    override class func setUp() {
+        super.setUp()
+    }
+
     override func setUp() {
         super.setUp()
-
         self.sourceFolderPath = self.assetPath + "Src/tree/"
         self.destinationFolderPath = self.assetPath + "Dst/tree/"
     }
