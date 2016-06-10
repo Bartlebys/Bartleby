@@ -207,7 +207,7 @@ class SyncTestCase : TestCase {
                 do {
                     // Check subfolder
                     let subFolderPath = self.destinationFolderPath + "sub/"
-                    let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
+                    let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath).sort()
                     XCTAssertEqual(subFiles.count, self._subFileCount)
 
                     for i in 1...self._subFileCount {
@@ -287,7 +287,7 @@ class SyncTestCase : TestCase {
                 XCTAssertEqual(content2, self._fileContent2)
 
                 let subFolderPath = self.destinationFolderPath + "sub/"
-                let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath)
+                let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath).sort()
 
                 XCTAssertEqual(subFiles.count, self._subFileCount + 1)
 

@@ -10,7 +10,8 @@ class LocalDMGSyncTests: LocalSyncTests {
     
     private let _diskManager = BsyncImageDiskManager()
     private let _dmgSize = "2g"
-    
+
+    private var _treeId = ""
     private var _masterDMGName = ""
     private var _masterDMGPath = ""
     private var _masterDMGFullPath = ""
@@ -27,9 +28,11 @@ class LocalDMGSyncTests: LocalSyncTests {
     
     override func setUp() {
         super.setUp();
+
+        self._treeId = self.testName + Bartleby.createUID()
         
-        self._masterDMGName = testName + "_master"
-        self._masterDMGPath = assetPath + self._masterDMGName
+        self._masterDMGName = self._treeId + "_master"
+        self._masterDMGPath = self.assetPath + self._masterDMGName
         self._masterDMGFullPath = self._masterDMGPath + ".sparseimage"
         self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"
         self._masterVolumeURL = NSURL(fileURLWithPath: self._masterVolumePath)
@@ -37,8 +40,8 @@ class LocalDMGSyncTests: LocalSyncTests {
         
         self.sourceFolderPath = self._masterVolumePath
         
-        self._slaveDMGName = testName + "_slave"
-        self._slaveDMGPath = assetPath + self._slaveDMGName
+        self._slaveDMGName = self._treeId + "_slave"
+        self._slaveDMGPath = self.assetPath + self._slaveDMGName
         self._slaveDMGFullPath = self._slaveDMGPath + ".sparseimage"
         self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"
         self._slaveVolumeURL = NSURL(fileURLWithPath: self._slaveVolumePath)
