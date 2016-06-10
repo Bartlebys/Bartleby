@@ -144,6 +144,8 @@
     // Exclude directives
     NSArray*exclusion=@[
                         @".DS_Store",
+                        @".fseventsd",
+                        @".Trashes",
                         [BsyncDirectives DEFAULT_FILE_NAME]
                         ];
     
