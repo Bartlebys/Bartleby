@@ -45,6 +45,8 @@ import ObjectMapper
 	public var lastTriggerIndex:Int = -1
 	//A collection of the trigger Indexes (used to detect data holes)
 	public var triggersIndexes:[Int] = [Int]()
+	//A collection of the trigger Indexes to be loaded as soon as possible
+	public var triggersIndexesHoles:[Int] = [Int]()
 
 
     // MARK: Mappable
@@ -68,6 +70,7 @@ import ObjectMapper
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
 		self.lastTriggerIndex <- ( map["lastTriggerIndex"] )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
+		self.triggersIndexesHoles <- ( map["triggersIndexesHoles"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -89,6 +92,7 @@ import ObjectMapper
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
 		self.lastTriggerIndex=decoder.decodeIntegerForKey("lastTriggerIndex") 
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
+		self.triggersIndexesHoles=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexesHoles")! as! [Int]
         self.unlockAutoCommitObserver()
     }
 
@@ -112,6 +116,7 @@ import ObjectMapper
 		}
 		coder.encodeInteger(self.lastTriggerIndex,forKey:"lastTriggerIndex")
 		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
+		coder.encodeObject(self.triggersIndexesHoles,forKey:"triggersIndexesHoles")
     }
 
 
