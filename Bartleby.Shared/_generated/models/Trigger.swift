@@ -29,6 +29,8 @@ import ObjectMapper
 	public var spaceUID:String?
 	//The orgin action that has initiated the trigger
 	public var origin:String = ""
+	//The server side creation date ( informative, use index for ranking)
+	public var creationDate:NSDate?
 	//The action name
 	public var action:String = ""
 	//A coma separated UIDS list
@@ -48,6 +50,7 @@ import ObjectMapper
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.origin <- ( map["origin"] )
+		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.action <- ( map["action"] )
 		self.UIDS <- ( map["UIDS"] )
         self.unlockAutoCommitObserver()
@@ -63,6 +66,7 @@ import ObjectMapper
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey: "origin")! as NSString)
+		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
 		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
         self.unlockAutoCommitObserver()
@@ -78,6 +82,9 @@ import ObjectMapper
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
 		coder.encodeObject(self.origin,forKey:"origin")
+		if let creationDate = self.creationDate {
+			coder.encodeObject(creationDate,forKey:"creationDate")
+		}
 		coder.encodeObject(self.action,forKey:"action")
 		coder.encodeObject(self.UIDS,forKey:"UIDS")
     }

@@ -832,7 +832,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath: source
-                                                              toLocalUrl: _context.destinationBaseUrl// it is a terminal copy.
+                                                              toLocalUrl: _context.destinationBaseUrl// it is a copy that occurs on the destination (!)
                                                               withTreeId: _context.destinationTreeId
                                                                addPrefix: NO];
 
@@ -873,7 +873,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
     } else {
         // MOVE LOCALLY
         NSString*absoluteSource=[self _absoluteLocalPathFromRelativePath:source
-                                                              toLocalUrl:_context.destinationBaseUrl // it is a terminal copy.
+                                                              toLocalUrl:_context.destinationBaseUrl // it is a move that occurs on the destination (!)
                                                               withTreeId:_context.destinationTreeId
                                                                addPrefix:NO];
 

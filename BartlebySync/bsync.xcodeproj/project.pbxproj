@@ -783,6 +783,14 @@
 		E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6F001CC8DE5100F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A74311C64F54D00A18FC4 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
+		E510E9A01D0EC38F00515179 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E510E9A11D0EC38F00515179 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E510E9A21D0EC38F00515179 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E510E9A31D0EC38F00515179 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E510E9A51D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E510E9A61D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E510E9A81D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
 		E52F948F1D01C25E005BDA2D /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F948D1D01C25E005BDA2D /* TestCase.swift */; };
 		E52F94901D01C25E005BDA2D /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F948D1D01C25E005BDA2D /* TestCase.swift */; };
 		E52F94911D01C25E005BDA2D /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */; };
@@ -1132,6 +1140,8 @@
 		E5091D9C1C4F8DB200E640A2 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		E50A6EFD1CC8DE4D00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncCredentials.swift; sourceTree = "<group>"; };
+		E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncHashMap.swift; sourceTree = "<group>"; };
+		E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BsyncHashMap+Filter.swift"; sourceTree = "<group>"; };
 		E52F948D1D01C25E005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
@@ -1625,6 +1635,8 @@
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
 				E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */,
 				E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */,
+				E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */,
+				E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */,
 				E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */,
 				5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */,
 				E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */,
@@ -2274,6 +2286,7 @@
 				5B5D09531CDC91E3001FB281 /* (null) in Sources */,
 				E508E78D1CFDE53A00AC0173 /* ReadPermissionsByIds.swift in Sources */,
 				5B5D09611CDC91E3001FB281 /* (null) in Sources */,
+				E510E9A31D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E508E7091CFDE53A00AC0173 /* RegistryMetadata.swift in Sources */,
 				E508E6D11CFDE53A00AC0173 /* TasksCollectionController.swift in Sources */,
 				5B5D09581CDC91E3001FB281 /* (null) in Sources */,
@@ -2330,6 +2343,7 @@
 				5B5D092E1CDC91C4001FB281 /* MultipartFormData.swift in Sources */,
 				5B5D09511CDC91E3001FB281 /* (null) in Sources */,
 				5B5D09791CDC91E3001FB281 /* (null) in Sources */,
+				E510E9A81D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E508E83D1CFDE53A00AC0173 /* Registry+URD.swift in Sources */,
 				5B5D09261CDC91B4001FB281 /* ISO8601DateTransform.swift in Sources */,
 				E508E7FD1CFDE53A00AC0173 /* NoCrypto.swift in Sources */,
@@ -2385,6 +2399,7 @@
 				E508E75A1CFDE53A00AC0173 /* DeletePermissions.swift in Sources */,
 				E53E28F11CA572E80079ED23 /* LogoutCommand.swift in Sources */,
 				E508E7A61CFDE53A00AC0173 /* ReadUsersByQuery.swift in Sources */,
+				E510E9A51D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E508E8021CFDE53A00AC0173 /* Bartleby.swift in Sources */,
 				E53E27531CA572940079ED23 /* Download.swift in Sources */,
 				5BB60F4B1CBFE3C500D23B4F /* CryptoHelper.swift in Sources */,
@@ -2490,6 +2505,7 @@
 				E508E80E1CFDE53A00AC0173 /* Consignee.swift in Sources */,
 				E508E8461CFDE53A00AC0173 /* Global.swift in Sources */,
 				E53E28DA1CA572D80079ED23 /* PdSLocalAnalyzer.m in Sources */,
+				E510E9A01D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E508E8D61CFDE53A00AC0173 /* BFileManager.swift in Sources */,
 				E53E27631CA572AB0079ED23 /* CommandLine.swift in Sources */,
 				E508E7661CFDE53A00AC0173 /* DeleteUser.swift in Sources */,
@@ -2645,6 +2661,7 @@
 				E508E8E31CFDE53A00AC0173 /* PString.swift in Sources */,
 				E5B98EA91CC0E6CD00A7ECD1 /* CustomDateFormatTransform.swift in Sources */,
 				5BE49D011D01985500FD8EA4 /* Task.swift in Sources */,
+				E510E9A11D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E508E7D71CFDE53A00AC0173 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E5B98EA31CC0E6CD00A7ECD1 /* Operators.swift in Sources */,
 				E508E74B1CFDE53A00AC0173 /* DeleteGroups.swift in Sources */,
@@ -2723,6 +2740,7 @@
 				E508E7B71CFDE53A00AC0173 /* UpdateLockers.swift in Sources */,
 				E508E7271CFDE53A00AC0173 /* CreateLocker.swift in Sources */,
 				E508E7CB1CFDE53A00AC0173 /* UpdateUser.swift in Sources */,
+				E510E9A61D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E508E8671CFDE53A00AC0173 /* Descriptible.swift in Sources */,
 				E508E7BF1CFDE53A00AC0173 /* UpdatePermissions.swift in Sources */,
 				E508E89F1CFDE53A00AC0173 /* ReactiveTask.swift in Sources */,
@@ -2807,6 +2825,7 @@
 				E508E8C01CFDE53A00AC0173 /* TriggersAfterIndex.swift in Sources */,
 				E508E7701CFDE53A00AC0173 /* ReadGroupById.swift in Sources */,
 				E508E8841CFDE53A00AC0173 /* Serializable.swift in Sources */,
+				E510E9A21D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E508E7801CFDE53A00AC0173 /* ReadLockersByIds.swift in Sources */,
 				E508E6C01CFDE53A00AC0173 /* GroupsCollectionController.swift in Sources */,
 				E508E8DC1CFDE53A00AC0173 /* HTTPManager.swift in Sources */,
@@ -2935,6 +2954,7 @@
 				E50A6EFF1CC8DE5000F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E55C92551CBF84ED008163F6 /* ServerTrustPolicy.swift in Sources */,
 				E508E72C1CFDE53A00AC0173 /* CreateLockers.swift in Sources */,
+				E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E508E8B01CFDE53A00AC0173 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E508E7781CFDE53A00AC0173 /* ReadGroupsByQuery.swift in Sources */,
 				E508E7E81CFDE53A00AC0173 /* JHTTPResponse.swift in Sources */,

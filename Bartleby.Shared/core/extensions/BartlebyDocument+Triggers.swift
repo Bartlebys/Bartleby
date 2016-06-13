@@ -40,7 +40,7 @@ extension BartlebyDocument {
      ```
      id: 1464885108
      event: relay
-     data: {"i":7,"s":"<sender UID>","a":"ReadUsers","i":"<user UID>, <user UID>"}
+     data: {"i":7,"s":"<sender UID>","a":"ReadUsers","u":"<user UID>, <user UID>"}
 
      ```
 
@@ -74,6 +74,8 @@ extension BartlebyDocument {
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
 
+
+
     }
 
     public func getTriggersForIndexes(set: Set<Int>) {
@@ -82,15 +84,42 @@ extension BartlebyDocument {
         // And Call triggersHasBeenReceived(...)
     }
 
-    public func analyzeConsistency() {
+
+    /**
+     Computes self.registryMetadata.triggersIndexesHoles
+     */
+    private func _analyzeConsistencyOfTriggerIndexes() {
         // Check self.registryMetadata.triggersIndexes
         // If there are holes call getTriggersForIndexes()
-        // PREVENT UNLIMITED LOOP ?
+        // PREVENT UNLIMITED CALLS.
+
+        let fromIndex =  self.registryMetadata.lastTriggerIndex >= 0 ? self.registryMetadata.lastTriggerIndex : 0
+        let toIndex = self.registryMetadata.triggersIndexes.count-1
+        if toIndex >= fromIndex{
+            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
+            var highestIndexValue = lowestValidIndexValue
+            for i in fromIndex ... toIndex{
+                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
+                if highestIndexValue < currentIndexValue{
+                    highestIndexValue = currentIndexValue
+                }
+            }
+            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
+                // There is at least one hole.
+                for value in lowestValidIndexValue ... highestIndexValue {
+                    if !self.registryMetadata.triggersIndexes.contains(value){
+                        if self.registryMetadata.triggersIndexesHoles.contains(value){
+                            self.registryMetadata.triggersIndexesHoles.append(value)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public func triggersHasBeenReceived(triggers: [Trigger]) {
         for trigger in triggers {
-            if let _ = registryMetadata.triggersIndexes.indexOf(trigger.index) {
+            if registryMetadata.triggersIndexes.contains(trigger.index) {
                 // we have already integrated this trigger.
                 // It is ours.
             } else {
@@ -135,13 +164,18 @@ extension BartlebyDocument {
      */
     public func acknowledgeTriggerIndex(index:Int) {
         if index>0{
-            if registryMetadata.triggersIndexes.indexOf(index) == nil {
+            if !registryMetadata.triggersIndexes.contains(index) {
                 bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                 self.registryMetadata.triggersIndexes.append(index)
+                // if It was in a data hole removit.
+                if let holeIdx=self.registryMetadata.triggersIndexesHoles.indexOf(index){
+                    self.registryMetadata.triggersIndexesHoles.removeAtIndex(holeIdx)
+                }
+                // Proceed to Indexes Consistency Analysis.
+                self._analyzeConsistencyOfTriggerIndexes()
             }
         }else{
             bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
-
         }
     }
 
