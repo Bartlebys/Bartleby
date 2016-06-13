@@ -149,6 +149,7 @@
 		E57A4C651CE8A34E0044106A /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBA1CE8A34E0044106A /* UpdateUser.swift */; };
 		E57A4C661CE8A34E0044106A /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */; };
 		E57A4C671CE8A34E0044106A /* UpdateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */; };
+		E590EB241D0EF8DC00150E0B /* UsersCreationLoadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */; };
 		E592B78C1CFC2181000F3301 /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7831CFC2181000F3301 /* CreatePermission.swift */; };
 		E592B78D1CFC2181000F3301 /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7831CFC2181000F3301 /* CreatePermission.swift */; };
 		E592B78E1CFC2181000F3301 /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7841CFC2181000F3301 /* CreatePermissions.swift */; };
@@ -423,6 +424,7 @@
 		E57A4BB11CE8A34E0044106A /* UpdateLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateLockers.swift; sourceTree = "<group>"; };
 		E57A4BBA1CE8A34E0044106A /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		E57A4BBB1CE8A34E0044106A /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
+		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E592B7831CFC2181000F3301 /* CreatePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermission.swift; sourceTree = "<group>"; };
 		E592B7841CFC2181000F3301 /* CreatePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermissions.swift; sourceTree = "<group>"; };
 		E592B7851CFC2181000F3301 /* DeletePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePermission.swift; sourceTree = "<group>"; };
@@ -629,6 +631,7 @@
 				5BC8F1671CB2BB2400B00866 /* InterSpace */,
 				5BC8F1661CB27B1600B00866 /* Business */,
 				E51029171CB68FC50040FC2C /* JObjectTests.swift */,
+				E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */,
 				E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */,
 				5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */,
 				5BDEF70C1C9FF49200D9FB70 /* Invocations */,
@@ -1377,6 +1380,7 @@
 				E595A2EA1CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
 				E5959C081CA6702200557BDB /* InterSpacetTests.swift in Sources */,
 				5B28D1521CAD3838002081D4 /* CryptoHelperTests.swift in Sources */,
+				E590EB241D0EF8DC00150E0B /* UsersCreationLoadTest.swift in Sources */,
 				E5959C0B1CA6702800557BDB /* SerializableInvocationsTests.swift in Sources */,
 				E5959C091CA6702200557BDB /* AuthCookiesTests.swift in Sources */,
 			);
