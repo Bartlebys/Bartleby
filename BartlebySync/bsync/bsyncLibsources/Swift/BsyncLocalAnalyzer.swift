@@ -44,17 +44,15 @@ public struct BsyncLocalAnalyzer {
                     bprint("\(path): \(hash)", file: #file, function: #function, line: #line)
                     handlers.notify(Progression(currentTaskIndex: Int(index), message: "\(path): \(hash)"))
                     }, andCompletionBlock: { (hashmap: HashMap) in
-                        if let hashmapDict = hashmap.dictionaryRepresentation()["pthToH"] as? [String: String] {
-                            let c = Completion.successState()
-                            c.setDictionaryResult(hashmapDict)
-                            handlers.on(c)
-                        } else {
-                            handlers.on(Completion.failureState("Bad hashmap: \(hashmap)", statusCode: .Undefined))
-                        }
+                        let completionState = Completion.successState()
+                        let bsyncHashMap=BsyncHashMap.fromHashMap(hashmap)
+                        completionState.setResult(bsyncHashMap)
+                        handlers.on(completionState)
                 })
             } else {
                 handlers.on(exists)
             }
-            })
+        })
     }
 }
+

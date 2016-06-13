@@ -69,6 +69,25 @@ class bsyncMiscTests: TestCase {
             
             analyzer.createHashMapFromLocalPath(path, handlers: Handlers { (analyze) in
                 XCTAssert(analyze.success, analyze.message)
+                if let hashMap:BsyncHashMap=analyze.getResult(){
+
+                    var counter=0
+                    let filtered=hashMap.filter({ (relativePath) -> Bool in
+                        counter += 1
+                        return (counter % 2 == 0)
+                    })
+
+                    if filtered.pathToHash.count < hashMap.pathToHash.count{
+
+                    }else{
+                         XCTFail("Filtered BsyncHashmap is inconsistent")
+                    }
+
+                    bprint("BsyncHashMap found \(hashMap)", file: #file, function: #function, line: #line, category: DEFAULT_BPRINT_CATEGORY, decorative: false)
+                }else{
+                    XCTFail("BsyncHashMap expected")
+                }
+
                 let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
                 print ("elapsed time \(elapsedTime)")
                 fm.removeItemAtPath(path, handlers: Handlers { (remove) in

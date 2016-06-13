@@ -701,9 +701,9 @@
 				E57A4B751CE8A34E0044106A /* Progression.swift */,
 				E57A4B761CE8A34E0044106A /* RegistryMetadata.swift */,
 				E57A4B771CE8A34E0044106A /* Tag.swift */,
+				E57A4B7A1CE8A34E0044106A /* Trigger.swift */,
 				E57A4B781CE8A34E0044106A /* Task.swift */,
 				E57A4B791CE8A34E0044106A /* TasksGroup.swift */,
-				E57A4B7A1CE8A34E0044106A /* Trigger.swift */,
 				E509A01F1CF58468007DEF8C /* JData.swift */,
 				E509A0211CF58468007DEF8C /* JString.swift */,
 			);
