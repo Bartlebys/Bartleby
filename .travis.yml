@@ -20,7 +20,7 @@ matrix:
 script:
   - ls -l Vendors/Alamofire
   - ls -l Vendors/ObjectMapper
-  - xcodebuild build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$SCHEME" -sdk $TRAVIS_XCODE_SDK
+  - xcodebuild -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$SCHEME" -sdk $TRAVIS_XCODE_SDK build test
 
 notifications:
   email: false
