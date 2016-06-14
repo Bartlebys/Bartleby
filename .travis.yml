@@ -10,14 +10,14 @@ matrix:
       xcode_sdk: iphonesimulator
     - env: SCHEME=bsync
       osx_image: xcode6.4
-      xcode_sdk: macosx10.9
+      xcode_sdk: macosx10.11
     - env: SCHEME=BsyncXPC
       osx_image: xcode6.4
-      xcode_sdk: macosx10.9
+      xcode_sdk: macosx10.11
     - env: SCHEME=bartleby
       osx_image: xcode7.3
       xcode_sdk: macosx10.11
-script: xctool build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$SCHEME" -sdk $TRAVIS_XCODE_SDK
+script: xcodebuild build -workspace $TRAVIS_XCODE_WORKSPACE -scheme "$SCHEME" -sdk $TRAVIS_XCODE_SDK
 
 notifications:
   email: false
