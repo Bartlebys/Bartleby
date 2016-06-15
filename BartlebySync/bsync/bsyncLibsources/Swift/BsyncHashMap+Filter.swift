@@ -23,6 +23,18 @@ extension BsyncHashMap{
         return instance
     }
 
+
+    /**
+     Transforms a BsyncHashMap to an Objc HashMap
+
+     - returns: the Objc HashMap
+     */
+    public func toHashMap()->HashMap{
+        var dictionary=[String:AnyObject]()
+        dictionary[pathToHashKey]=self.toJSON()
+        return HashMap.fromDictionary(dictionary)
+    }
+
     /**
      Returns a filtered BsyncHashMap
 
