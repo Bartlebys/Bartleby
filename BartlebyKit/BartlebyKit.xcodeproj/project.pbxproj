@@ -1719,7 +1719,6 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				ENABLE_TESTABILITY = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Support-Files/BartlebyKit-Bridging-Header.h";
@@ -1730,7 +1729,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				SWIFT_OBJC_BRIDGING_HEADER = "Support-Files/BartlebyKit-Bridging-Header.h";
 			};
