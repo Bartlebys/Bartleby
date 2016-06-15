@@ -4,25 +4,12 @@
 //
 //  Created by Benoit Pereira da silva on 05/05/2016.
 //
-//
 
 import Foundation
 
-
 extension BartlebyDocument {
 
-
-    // MARK: - LifeCycle
-
-
     /*
-
-     ## Main API
-
-     - TriggersByIds
-     - TriggersAfterIndex
-     - TriggersForIndexes
-
 
      # SSE Encoding
 
@@ -31,15 +18,9 @@ extension BartlebyDocument {
      id: 1464885108
      event: relay
      data: {"i":7,"s":"<sender UID>","a":"ReadUsers","u":"<user UID>, <user UID>"}
-
      ```
 
-     # Trigger.upserted or Trigger.deleted are also encoded
-
-     ```
-
-     On trigger incorporate a full bunch of consistent actions.
-     You can encode a complete graph transformation within one trigger.
+     On trigger incorporate an action on a given set of UIDS.
 
      # Why do we use Upsert?
 
@@ -59,7 +40,6 @@ extension BartlebyDocument {
 
     // MARK: - API
 
-
     /**
      Tries to load new triggers if some
      */
@@ -69,8 +49,8 @@ extension BartlebyDocument {
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
         TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
-                self._triggersHasBeenReceived(triggers)
-            }) { (context) in
+            self._triggersHasBeenReceived(triggers)
+        }) { (context) in
 
         }
     }
@@ -119,7 +99,7 @@ extension BartlebyDocument {
      - parameter index: the trigger index.
      */
     public func acknowledgeOwnedTriggerIndex(index:Int){
-        // We always add the index. 
+        // We always add the index.
         // Double insertion could be checked for QA.
         self.registryMetadata.ownedTriggersIndexes.append(index)
         self.acknowledgeTriggerIndex(index)
@@ -136,7 +116,7 @@ extension BartlebyDocument {
     }
 
     /**
-    Acknowledges the triggers indexes
+     Acknowledges the triggers indexes
 
      - parameter indexes: the triggers indexes
      */
@@ -193,9 +173,13 @@ extension BartlebyDocument {
     }
 
 
-
     // MARK: - Triggers storage
 
+    /**
+     Called on reception of triggers.
+
+     - parameter triggers: the collection of Trigger
+     */
     private func _triggersHasBeenReceived(triggers:[Trigger]) {
 
         self.acknowledgeTriggers(triggers)
@@ -210,28 +194,97 @@ extension BartlebyDocument {
         let integrableTriggers = self.registryMetadata.receivedTriggers.filter { (trigger) -> Bool in
             return integrableIndexRange ~= trigger.index
         }
-        self._loadDataFrom(integrableTriggers)
+
+        // Proceed to loading or direct insertion of triggers.
+
+        var shouldIntegrate=false
+        for trigger in integrableTriggers{
+            if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
+
+                if trigger.action.contains("Delete"){
+                    // it is a destructive action.
+                    self._triggeredData[trigger]=nil
+                    shouldIntegrate=true
+                }else{
+                    // It is creation action
+                    // Load data for un owned triggers only.
+                    self._loadDataFromCreative(trigger)
+                }
+            }
+        }
+
+        if shouldIntegrate{
+            self._attemptTointegratePendingData()
+        }
+    }  
+
+
+    // MARK: - Triggers Data Loading
+
+    /**
+     Load the data for the given trigger.
+
+     - parameter trigger: the trigger.
+     */
+    private func _loadDataFromCreative(trigger:Trigger){
+        
     }
 
+    /**
+     Called on data reception
 
-    // MARK: - Data Loading
+     - parameter trigger:   the concerned trigger
+     - parameter instances: the grabed instances.
+     */
+    private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
+        self._triggeredData[trigger]=instances
+        self._attemptTointegratePendingData()
+    }
 
-
-    private func _loadDataFrom(triggers: [Trigger]){
-        for trigger in triggers{
-            if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
-                // Load data for un owned triggers only.
-                self._loadDataFrom(trigger)
+    private func _attemptTointegratePendingData(){
+        let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
+            return lEntry.0.index < rEntry.0.index
+        }
+        for data  in sortedData{
+            let triggerIndex=data.0.index
+            // Test the continuity.
+            if triggerIndex == self.registryMetadata.lastIntegrableTriggerIndex+1{
+                self._integrate(data)
+            }else{
+                bprint("Integration is suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                break
             }
-
         }
     }
-    
-    
-    private func _loadDataFrom(trigger:Trigger){
 
+
+    /**
+     Integrates the triggered data in the registry.
+
+     - parameter triggeredData: the triggered data
+     */
+    private func _integrate(triggeredData:(Trigger,[Collectible]?)){
+        if triggeredData.1 == nil {
+            // It is a deletion.
+            let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
+            let collectionName="" // <= may be the collection could be in the triggers.
+            self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
+        }else{
+            let collectibleItems=triggeredData.1!
+            if collectibleItems.count>0{
+                self.upsert(collectibleItems)
+            }
+        }
+        // Update the last integrated trigger index.
+        self.registryMetadata.lastIntegratedTriggerIndex=triggeredData.0.index
+        
+        if let idx=self._triggeredData.indexOf({ (data) -> Bool in
+            return triggeredData.0.index == data.0.index
+        }){
+            // Remove the triggered data
+            self._triggeredData.removeAtIndex(idx)
+        }
     }
 
-
-
+    
 }

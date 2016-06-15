@@ -66,7 +66,8 @@ public class Registry: BXDocument, SuperIterable {
     public var registryMetadata=RegistryMetadata()
 
     // Triggered Data is used to store data before data integration
-    public var triggeredCollectibleObjects=[Int:[Collectible]]()
+    // If the trigger is destructive there is no collectible instances
+    internal var _triggeredData=[Trigger:[Collectible]?]()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -529,7 +530,6 @@ public class Registry: BXDocument, SuperIterable {
     }
 
 
-
     // MARK: - SSE
 
 
@@ -563,7 +563,9 @@ public class Registry: BXDocument, SuperIterable {
 
     // LOGIN
 
-
+    /**
+     Connect to SSE
+     */
     private func _connectToSSE() {
         bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
         let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
@@ -583,6 +585,7 @@ public class Registry: BXDocument, SuperIterable {
             self._SSE=nil
         }
     }
+
 
 }
 
