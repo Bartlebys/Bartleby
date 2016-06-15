@@ -12,8 +12,8 @@
 		5B6FD89C1CAEE42A00940EF7 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
 		5BBF7D451CC8E4E400F2237B /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		5BC8F1691CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */; };
-		5BFDA6FB1CC279AB002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */; };
-		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; };
+		5BFDA6FB1CC279AB002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		5BFDA6FF1CC27A05002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */; };
 		5BFDA7021CC27A87002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */; };
 		E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
