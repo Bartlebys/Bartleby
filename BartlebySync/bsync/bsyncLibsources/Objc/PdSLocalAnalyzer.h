@@ -47,12 +47,21 @@
 
 
 /**
- *  Saves the hashMap for a given folder
+ *  Saves the hashMap in a given folder
  *
  *  @param hashMap   the hashMap
- *  @param folderURL the folderURL
+ *  @param folderURL the folderPath
  */
 - (void)saveHashMap:(nonnull HashMap*)hashMap toFolder:(nonnull NSString*)folderPath;
+
+
+/**
+ *  Saves an hashMap to a given path
+ *
+ *  @param hashMap the hashMap
+ *  @param path    the path
+ */
+- (void)saveHashMap:(nonnull HashMap *)hashMap toPath:(nonnull NSString *)path;
 
 
 @end

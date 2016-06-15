@@ -175,37 +175,54 @@
 
 
 
+/**
+ *  Saves the hashMap in a given folder
+ *
+ *  @param hashMap   the hashMap
+ *  @param folderURL the folderPath
+ */
 - (void)saveHashMap:(nonnull HashMap*)hashMap toFolder:(nonnull NSString*)folderPath{
-    
+    NSString *hashMapFileP = [folderPath stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
+    [self saveHashMap:hashMap toPath:hashMapFileP];
+}
+
+
+/**
+ *  Saves an hashMap to a given path
+ *
+ *  @param hashMap the hashMap
+ *  @param path    the path
+ */
+- (void)saveHashMap:(nonnull HashMap *)hashMap toPath:(nonnull NSString *)path{
     PdSFileManager*fileManager=[PdSFileManager sharedInstance] ;
     // We gonna create the hashmap folder
-    NSString *hashMapFileP = [folderPath stringByAppendingFormat:@"/%@/%@",kBsyncMetadataFolder,kBsyncHashMashMapFileName];
-    [fileManager createRecursivelyRequiredFolderForPath:hashMapFileP];
-    
+
+    [fileManager createRecursivelyRequiredFolderForPath:path];
+
     // Let s write the serialized HashMap file
     NSDictionary*dictionaryHashMap=[hashMap dictionaryRepresentation];
     NSString*json=[self _encodetoJson:dictionaryHashMap];
-    
-    
+
+
     NSError *cryptoError = nil;
 
     NSString*jsonCrypted=[[Bartleby cryptoDelegate] encryptString:json error:&cryptoError];
-    
+
     if(cryptoError){
         bprint(@"String encryption error: %@", [cryptoError description]);
     } else {
-        
+
         // Un comment to debug
         // [(CryptoHelper*)[Bartleby cryptoDelegate] dumpDebug];
-        
+
         NSError*error;
-        [jsonCrypted writeToFile:hashMapFileP
+        [jsonCrypted writeToFile:path
                       atomically:YES
                         encoding:NSUTF8StringEncoding
                            error:&error];
         if(error){
-            bprint(@"ERROR when writing hashmap to %@ %@", [error description],hashMapFileP);
-            
+            bprint(@"ERROR when writing hashmap to %@ %@", [error description],path);
+
         }
     }
 }
