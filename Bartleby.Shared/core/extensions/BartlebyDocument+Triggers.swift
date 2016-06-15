@@ -17,16 +17,6 @@ extension BartlebyDocument {
 
     /*
 
-     # Triggers Life Cycle
-
-     OutGoing triggers are provisionned before transmission in document.triggers
-     On successful transmission they are deleted (like operations)
-
-     # The standard CRUD
-
-     Most of the standard CRUD stack can be used only by SuperAdmins.
-     The endpoints are blocked by server side ACL.
-
      ## Main API
 
      - TriggersByIds
@@ -69,87 +59,42 @@ extension BartlebyDocument {
 
     // MARK: - API
 
-    public func getTriggerAfter(lastIndex: Int) {
+
+    /**
+     Tries to load new triggers if some
+     */
+    public func loadNewTriggers() {
+
         // Grab all the triggers > lastIndex
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
+        TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
 
-
-
+        }
     }
-
-    public func getTriggersForIndexes(set: Set<Int>) {
-        // Grab the triggers for a given range.
-        // TriggersForIndexes
-        // And Call triggersHasBeenReceived(...)
-    }
-
 
     /**
-     Computes self.registryMetadata.triggersIndexesHoles
+     Load  the pending triggers.
+
+     - parameter indexes: the indexes.
      */
-    private func _analyzeConsistencyOfTriggerIndexes() {
-        // Check self.registryMetadata.triggersIndexes
-        // If there are holes call getTriggersForIndexes()
-        // PREVENT UNLIMITED CALLS.
-
-        let fromIndex =  self.registryMetadata.lastTriggerIndex >= 0 ? self.registryMetadata.lastTriggerIndex : 0
-        let toIndex = self.registryMetadata.triggersIndexes.count-1
-        if toIndex >= fromIndex{
-            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
-            var highestIndexValue = lowestValidIndexValue
-            for i in fromIndex ... toIndex{
-                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
-                if highestIndexValue < currentIndexValue{
-                    highestIndexValue = currentIndexValue
-                }
-            }
-            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
-                // There is at least one hole.
-                for value in lowestValidIndexValue ... highestIndexValue {
-                    if !self.registryMetadata.triggersIndexes.contains(value){
-                        if self.registryMetadata.triggersIndexesHoles.contains(value){
-                            self.registryMetadata.triggersIndexesHoles.append(value)
-                        }
-                    }
-                }
+    public func loadPendingTriggers() {
+        if self.registryMetadata.triggersIndexesToLoad.count>0{
+            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:self.registryMetadata.triggersIndexesToLoad, sucessHandler: { (triggers) in
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
+                // WHAT TO DO ?
             }
         }
     }
 
-    public func triggersHasBeenReceived(triggers: [Trigger]) {
-        for trigger in triggers {
-            if registryMetadata.triggersIndexes.contains(trigger.index) {
-                // we have already integrated this trigger.
-                // It is ours.
-            } else {
-                // Mark the trigger as Incoming
-                // If the api is Reachable
 
-                // We will integrate all the trigger even the trigger we have sent.
-                // What about filterIN on user.Password?
-
-                // Decode
-
-                // Add to the GET_triggers taskGroup
-
-                // 1. GET all The ressources
-                // 2. Upsert the Grabbed Instance and DELETE the assets.
-                // 4. Call analyzeConsistency()
-
-                // Those operation are resilient
-                // There is no transactionnal guarantees at all
-                // Any exectution is conclusive and partial errors are ignored.
-
-                // This approach is conflict free.
-
-            }
-        }
-    }
-
+    // MARK: - Triggers Acknowledgement (indexes and data holes management)
 
     /**
-     Acknowledge the trigger permits to detect data holes
+     Acknowledge the trigger
 
      - parameter transmit: the trigger
      */
@@ -158,25 +103,133 @@ extension BartlebyDocument {
     }
 
     /**
+     Acknowledge the trigger permits to detect data holes
+
+     - parameter transmit: the trigger
+     */
+    public func acknowledgeTriggers(triggers: [Trigger]) {
+        let indexes=triggers.map {$0.index}
+        self.acknowledgeTriggerIndexes(indexes)
+    }
+
+
+    /**
+     Called by generative operation layer to discriminate owned triggers.
+
+     - parameter index: the trigger index.
+     */
+    public func acknowledgeOwnedTriggerIndex(index:Int){
+        // We always add the index. 
+        // Double insertion could be checked for QA.
+        self.registryMetadata.ownedTriggersIndexes.append(index)
+        self.acknowledgeTriggerIndex(index)
+    }
+
+    /**
      Acknowledge trigger index
 
      - parameter index: the index
      */
     public func acknowledgeTriggerIndex(index:Int) {
-        if index>0{
-            if !registryMetadata.triggersIndexes.contains(index) {
-                bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
-                self.registryMetadata.triggersIndexes.append(index)
-                // if It was in a data hole removit.
-                if let holeIdx=self.registryMetadata.triggersIndexesHoles.indexOf(index){
-                    self.registryMetadata.triggersIndexesHoles.removeAtIndex(holeIdx)
+        let indexes=[index]
+        self.acknowledgeTriggerIndexes(indexes)
+    }
+
+    /**
+    Acknowledges the triggers indexes
+
+     - parameter indexes: the triggers indexes
+     */
+    public func acknowledgeTriggerIndexes(indexes:[Int]) {
+        for index in indexes{
+            if index>0{
+                if !registryMetadata.triggersIndexes.contains(index) {
+                    bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                    self.registryMetadata.triggersIndexes.append(index)
+                    if let holeIdx=self.registryMetadata.triggersIndexesToLoad.indexOf(index){
+                        self.registryMetadata.triggersIndexesToLoad.removeAtIndex(holeIdx)
+                    }
                 }
-                // Proceed to Indexes Consistency Analysis.
-                self._analyzeConsistencyOfTriggerIndexes()
+            }else{
+                bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
             }
-        }else{
-            bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
         }
+        // Proceed to Indexes Consistency Analysis.
+        self._analyzeConsistencyOfTriggerIndexes()
+    }
+
+
+    /**
+     Analyze the consistency of the indexes and Computes :
+     - self.registryMetadata.triggersIndexesToLoad
+     - self.registryMetadata.lastIntegrableTriggerIndex
+     */
+    private func _analyzeConsistencyOfTriggerIndexes() {
+        let fromIndex =  self.registryMetadata.lastIntegratedTriggerIndex >= 0 ? self.registryMetadata.lastIntegratedTriggerIndex : 0
+        let toIndex = self.registryMetadata.triggersIndexes.count-1
+        if toIndex >= fromIndex{
+            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
+            var highestIndexValue = lowestValidIndexValue
+            for i in fromIndex ... toIndex{
+                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
+                if highestIndexValue < currentIndexValue{
+                    highestIndexValue = currentIndexValue
+                    self.registryMetadata.lastIntegrableTriggerIndex=currentIndexValue
+                }
+            }
+            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
+                // There is at least one hole.
+                for value in lowestValidIndexValue ... highestIndexValue {
+                    if !self.registryMetadata.triggersIndexes.contains(value){
+                        if self.registryMetadata.triggersIndexesToLoad.contains(value){
+                            self.registryMetadata.triggersIndexesToLoad.append(value)
+                        }
+                    }
+                }
+            }else{
+                // There is no data hole.
+            }
+        }
+    }
+
+
+
+    // MARK: - Triggers storage
+
+    private func _triggersHasBeenReceived(triggers:[Trigger]) {
+
+        self.acknowledgeTriggers(triggers)
+        self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
+        self.registryMetadata.receivedTriggers.sortInPlace { (lTrigger, rTrigger) -> Bool in
+            return lTrigger.index<rTrigger.index
+        }
+
+        // Determine the integrable triggers
+
+        let integrableIndexRange = self.registryMetadata.lastIntegratedTriggerIndex ... self.registryMetadata.lastIntegrableTriggerIndex
+        let integrableTriggers = self.registryMetadata.receivedTriggers.filter { (trigger) -> Bool in
+            return integrableIndexRange ~= trigger.index
+        }
+        self._loadDataFrom(integrableTriggers)
+    }
+
+
+    // MARK: - Data Loading
+
+
+    private func _loadDataFrom(triggers: [Trigger]){
+        for trigger in triggers{
+            if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
+                // Load data for un owned triggers only.
+                self._loadDataFrom(trigger)
+            }
+
+        }
+    }
+    
+    
+    private func _loadDataFrom(trigger:Trigger){
+
     }
 
 

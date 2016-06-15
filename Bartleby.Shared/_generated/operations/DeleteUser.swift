@@ -250,7 +250,7 @@ fromDataSpace spaceUID:String,
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
                                         if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
-                                            document.acknowledgeTriggerIndex(index.integerValue)
+                                            document.acknowledgeOwnedTriggerIndex(index.integerValue)
                                         }
                                     }else{
                                         bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))

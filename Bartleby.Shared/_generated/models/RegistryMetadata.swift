@@ -41,12 +41,18 @@ import ObjectMapper
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
 	public var assetsFolderURL:NSURL?
-	//Last trigger index received
-	public var lastTriggerIndex:Int = -1
-	//A collection of the trigger Indexes (used to detect data holes)
+	//The index of the last trigger that has been integrated
+	public var lastIntegratedTriggerIndex:Int = -1
+	//The index of the last trigger that can be integrated
+	public var lastIntegrableTriggerIndex:Int = -1
+	//A collection of trigger Indexes (used to detect data holes) the first entry should be equal to lastIntegratedTriggerIndex
 	public var triggersIndexes:[Int] = [Int]()
-	//A collection of the trigger Indexes to be loaded as soon as possible
-	public var triggersIndexesHoles:[Int] = [Int]()
+	// A collection of trigger indexes owned by the current user
+	public var ownedTriggersIndexes:[Int] = [Int]()
+	//A collection of trigger Indexes to be loaded as soon as possible
+	public var triggersIndexesToLoad:[Int] = [Int]()
+	//A collection of the triggers that are stored
+	public var receivedTriggers:[Trigger] = [Trigger]()
 
 
     // MARK: Mappable
@@ -68,9 +74,12 @@ import ObjectMapper
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
-		self.lastTriggerIndex <- ( map["lastTriggerIndex"] )
+		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
+		self.lastIntegrableTriggerIndex <- ( map["lastIntegrableTriggerIndex"] )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
-		self.triggersIndexesHoles <- ( map["triggersIndexesHoles"] )
+		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
+		self.triggersIndexesToLoad <- ( map["triggersIndexesToLoad"] )
+		self.receivedTriggers <- ( map["receivedTriggers"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -90,9 +99,12 @@ import ObjectMapper
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
-		self.lastTriggerIndex=decoder.decodeIntegerForKey("lastTriggerIndex") 
+		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
+		self.lastIntegrableTriggerIndex=decoder.decodeIntegerForKey("lastIntegrableTriggerIndex") 
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
-		self.triggersIndexesHoles=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexesHoles")! as! [Int]
+		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
+		self.triggersIndexesToLoad=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexesToLoad")! as! [Int]
+		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
         self.unlockAutoCommitObserver()
     }
 
@@ -114,9 +126,12 @@ import ObjectMapper
 		if let assetsFolderURL = self.assetsFolderURL {
 			coder.encodeObject(assetsFolderURL,forKey:"assetsFolderURL")
 		}
-		coder.encodeInteger(self.lastTriggerIndex,forKey:"lastTriggerIndex")
+		coder.encodeInteger(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
+		coder.encodeInteger(self.lastIntegrableTriggerIndex,forKey:"lastIntegrableTriggerIndex")
 		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
-		coder.encodeObject(self.triggersIndexesHoles,forKey:"triggersIndexesHoles")
+		coder.encodeObject(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
+		coder.encodeObject(self.triggersIndexesToLoad,forKey:"triggersIndexesToLoad")
+		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
     }
 
 

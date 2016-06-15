@@ -65,6 +65,9 @@ public class Registry: BXDocument, SuperIterable {
     // We use a  JRegistryMetadata
     public var registryMetadata=RegistryMetadata()
 
+    // Triggered Data is used to store data before data integration
+    public var triggeredCollectibleObjects=[Int:[Collectible]]()
+
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
     // A user can live in one data space only.
@@ -580,7 +583,6 @@ public class Registry: BXDocument, SuperIterable {
             self._SSE=nil
         }
     }
-
 
 }
 
