@@ -1,6 +1,5 @@
 # Bartleby's - Swift stack
 
-[![Build Status](https://travis-ci.org/Bartlebys/Bartleby.svg?branch=master)](https://travis-ci.org/Bartlebys/Bartleby)
 
 ## Components 
 
