@@ -23,8 +23,7 @@ class BsyncAdminUpDownSyncTestsNoCrypto: BsyncAdminUpDownSyncTests {
 
 class BsyncAdminUpDownSyncTests: TestCase {
     private static var _user: User?
-    
-    // tree created on the alternative server are not touchable ???
+
     class var _treeName: String {
         get {
             return "BsyncAdminUpDownSyncTests"

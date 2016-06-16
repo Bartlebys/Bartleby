@@ -27,8 +27,10 @@ import ObjectMapper
 	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
-	//The orgin action that has initiated the trigger
+	//The action that has initiated the trigger
 	public var origin:String = ""
+	//The targetted collection name
+	public var collectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
 	public var creationDate:NSDate?
 	//The action name
@@ -50,6 +52,7 @@ import ObjectMapper
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.origin <- ( map["origin"] )
+		self.collectionName <- ( map["collectionName"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.action <- ( map["action"] )
 		self.UIDS <- ( map["UIDS"] )
@@ -66,6 +69,7 @@ import ObjectMapper
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey: "origin")! as NSString)
+		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
 		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
@@ -82,6 +86,7 @@ import ObjectMapper
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
 		}
 		coder.encodeObject(self.origin,forKey:"origin")
+		coder.encodeObject(self.collectionName,forKey:"collectionName")
 		if let creationDate = self.creationDate {
 			coder.encodeObject(creationDate,forKey:"creationDate")
 		}

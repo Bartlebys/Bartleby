@@ -51,7 +51,7 @@ extension BartlebyDocument {
         TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
             self._triggersHasBeenReceived(triggers)
         }) { (context) in
-
+            // What to do on failure
         }
     }
 
@@ -208,7 +208,7 @@ extension BartlebyDocument {
                 }else{
                     // It is creation action
                     // Load data for un owned triggers only.
-                    self._loadDataFromCreative(trigger)
+                    self._loadDataFromCreativeAction(trigger)
                 }
             }
         }
@@ -226,8 +226,8 @@ extension BartlebyDocument {
 
      - parameter trigger: the trigger.
      */
-    private func _loadDataFromCreative(trigger:Trigger){
-        
+    private func _loadDataFromCreativeAction(trigger:Trigger){
+
     }
 
     /**
@@ -267,7 +267,7 @@ extension BartlebyDocument {
         if triggeredData.1 == nil {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
-            let collectionName="" // <= may be the collection could be in the triggers.
+            let collectionName=Trigger.collectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
             let collectibleItems=triggeredData.1!

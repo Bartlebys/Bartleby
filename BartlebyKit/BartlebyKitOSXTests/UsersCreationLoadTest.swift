@@ -54,7 +54,7 @@ class UsersCreationLoadTest: XCTestCase {
 
         func __create(){
             self._create_a_user { (completionState) in
-                if UsersCreationLoadTest.users.count<100{
+                if UsersCreationLoadTest.users.count<100 && UsersCreationLoadTest.users.count>0{
                     __login(UsersCreationLoadTest.users.last!)
                     __create()
                 }else{
