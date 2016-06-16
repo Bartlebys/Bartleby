@@ -50,3 +50,8 @@ PString.ltrim("*,    *   Hello    *    ",characterSet: NSCharacterSet(characters
 PString.ltrim(",A,B,C",characterSet: NSCharacterSet(charactersInString:","))
 
 //: [Go to externalReferences 
+
+let r = 0..<1
+r.count
+
+

@@ -20,7 +20,7 @@ extension RegistryMetadata:RegistryMetadataProtocol {
     public func configureSchema(metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {
             if m.collectionName == metadatum.collectionName {
-                throw RegistryMetadataError.DuplicatedCollectionName
+                throw RegistryMetadataError.DuplicatedCollectionName(name:m.collectionName)
             }
         }
         collectionsMetadata.append(metadatum)

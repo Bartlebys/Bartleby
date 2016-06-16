@@ -10,7 +10,7 @@ import Foundation
 
 
 public enum RegistryMetadataError: ErrorType {
-    case DuplicatedCollectionName
+    case DuplicatedCollectionName(name:String)
     case ErrorOfCasting
 }
 

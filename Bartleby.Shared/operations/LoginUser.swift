@@ -21,6 +21,7 @@ public class LoginUser: JObject {
                                  withPassword password: String,
                                  sucessHandler success:()->(),
                                  failureHandler failure:(context: JHTTPResponse)->()) {
+        
 
         let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("user/login")

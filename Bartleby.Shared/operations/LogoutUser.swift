@@ -76,5 +76,5 @@ public class LogoutUser: JObject {
                         //Let's react according to the context.
                         Bartleby.sharedInstance.perform(reactions, forContext: context)
         }
-				}
+    }
 }

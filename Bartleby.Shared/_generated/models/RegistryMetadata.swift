@@ -25,6 +25,16 @@ import ObjectMapper
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
 	public var currentUser:User?
+	//the identification method
+	public enum IdentificationMethod:String{
+		case Keys = "Keys"
+		case Cookies = "Cookies"
+	}
+	public var identificationMethod:IdentificationMethod = .Keys
+	//The current identification key (injected in HTTP headers)
+	public var identificationKey:String = ""
+	//The current identification value (injected in HTTP headers)
+	public var identificationValue:String = ""
 	//The rootObject UID
 	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
@@ -66,6 +76,9 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self.spaceUID <- ( map["spaceUID"] )
 		self.currentUser <- ( map["currentUser"] )
+		self.identificationMethod <- ( map["identificationMethod"] )
+		self.identificationKey <- ( map["identificationKey"] )
+		self.identificationValue <- ( map["identificationValue"] )
 		self.rootObjectUID <- ( map["rootObjectUID"] )
 		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 		self.collectionsMetadata <- ( map["collectionsMetadata"] )
@@ -91,6 +104,9 @@ import ObjectMapper
         self.lockAutoCommitObserver()
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.currentUser=decoder.decodeObjectOfClass(User.self, forKey: "currentUser") 
+		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "identificationMethod")! as NSString))! 
+		self.identificationKey=String(decoder.decodeObjectOfClass(NSString.self, forKey: "identificationKey")! as NSString)
+		self.identificationValue=String(decoder.decodeObjectOfClass(NSString.self, forKey: "identificationValue")! as NSString)
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
@@ -114,6 +130,9 @@ import ObjectMapper
 		if let currentUser = self.currentUser {
 			coder.encodeObject(currentUser,forKey:"currentUser")
 		}
+		coder.encodeObject(self.identificationMethod.rawValue ,forKey:"identificationMethod")
+		coder.encodeObject(self.identificationKey,forKey:"identificationKey")
+		coder.encodeObject(self.identificationValue,forKey:"identificationValue")
 		coder.encodeObject(self.rootObjectUID,forKey:"rootObjectUID")
 		if let collaborationServerURL = self.collaborationServerURL {
 			coder.encodeObject(collaborationServerURL,forKey:"collaborationServerURL")
