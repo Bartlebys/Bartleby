@@ -3,5 +3,7 @@
     <pages>
         <page name='Hello World?'/>
         <page name='UnversalTypesAndSerialization'/>
+        <page name='Ref-experiments'/>
+        <page name='Users'/>
     </pages>
 </playground>

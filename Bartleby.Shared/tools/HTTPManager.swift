@@ -104,6 +104,17 @@ public class HTTPManager: NSObject {
         let tokenValue=HTTPManager.salt(tokenKey)
 
         headers[HTTPManager.SPACE_UID_KEY]=spaceUID
+
+        // Injection of key based auth.
+        if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID){
+            if registry.registryMetadata.identificationMethod == .Key{
+                if  let _=registry.registryMetadata.identificationKey, idv=registry.registryMetadata.identificationValue {
+                    headers["kvid"]=idv
+                    bprint("injecting kvid \(idv) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                }
+            }
+
+        }
         headers[tokenKey]=tokenValue
 
         return headers

@@ -10,7 +10,7 @@ import XCTest
 import BartlebyKit
 
 class AccessControlTests: TestCase {
-    private static let _spaceUID = Bartleby.createUID()
+    private static let _spaceUID = TestCase.spaceUID
     
     private static let _creatorEmail="Creator@AccessControlTests"
     private static var _creatorUserID: String="UNDEFINED"

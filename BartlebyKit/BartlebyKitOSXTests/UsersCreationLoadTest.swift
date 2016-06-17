@@ -30,19 +30,20 @@ class UsersCreationLoadTest: TestCase {
     }
 
 
-    private func _create_a_user(completionHandler:(createdUser:User,completionState:Completion)->()){
+    private func _create_a_user(completionHandler:(createdUser:User,completionState:Completion)->(),idMethod:RegistryMetadata.IdentificationMethod){
 
         // We create one document per User.
-        let separateDocument=BartlebyDocument()
-        separateDocument.configureSchema()
-        Bartleby.sharedInstance.declare(separateDocument)
+        let document=BartlebyDocument()
+        document.configureSchema()
+        Bartleby.sharedInstance.declare(document)
+        document.registryMetadata.identificationMethod=idMethod
 
         let user=User()
         user.email=Bartleby.randomStringWithLength(6)+"@bartlebys.org"
         user.verificationMethod = .ByEmail
         user.creatorUID = user.UID // (!) Auto creation in this context (Check ACL)
         user.password=Bartleby.randomStringWithLength(6)
-        user.spaceUID=separateDocument.spaceUID
+        user.spaceUID=document.spaceUID
 
         CreateUser.execute(user,
                            inDataSpace:user.spaceUID,
@@ -55,35 +56,21 @@ class UsersCreationLoadTest: TestCase {
     }
 
 
-    private func _run_test_routine_implementation(expectation:XCTestExpectation){
+    private func _run_test_routine_implementation(expectation:XCTestExpectation,idMethod:RegistryMetadata.IdentificationMethod){
 
         UsersCreationLoadTest.expecationHasBeenFullFilled=false
         UsersCreationLoadTest.userCounter=0
 
-        /*
-        func __create(){
-            for _ in 1...UsersCreationLoadTest.simultaneousCreations{
-                self._create_a_user { (user, completionState) in
-                    if completionState.success{
-                        __login(user)
-                    }else{
-                        XCTFail("Failure on creation \(completionState)")
-                        __fullFill()
-                    }
-                }
-            }
-        }*/
 
-        func __create(){
-                self._create_a_user { (user, completionState) in
+        func __create(idMethod:RegistryMetadata.IdentificationMethod){
+                self._create_a_user ({ (user, completionState) in
                     if completionState.success{
                         __login(user)
                     }else{
                         XCTFail("Failure on creation [\(UsersCreationLoadTest.userCounter)]  \(completionState)")
                         __fullFill()
                     }
-                }
-            
+                },idMethod: idMethod)
         }
 
 
@@ -132,7 +119,7 @@ class UsersCreationLoadTest: TestCase {
                 __fullFill()
             }else{
                 dispatch_async(dispatch_get_main_queue(), { 
-                    __create()
+                    __create(idMethod)
                 })
 
             }
@@ -147,44 +134,72 @@ class UsersCreationLoadTest: TestCase {
         }
 
         // Call the first creation closure
-        __create()
+         __create(idMethod)
 
     }
 
     // MARK : Create multiple Users
 
 
-    func test_001_1X1() {
+    func test_001_1X1_key() {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = expectationWithDescription("Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation)
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Key)
         waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
-    func test_002_2X1() {
+    /**
+     We cannot use cookie on large amount of users (there is a limit)
+     And random failure may occcur.
+     We leave this little test to control that Explicit Cookie Identification works in basic context
+     */
+    func test_002_1X1_cookie() {
+        UsersCreationLoadTest.simultaneousCreations=1
+        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
+        let expectation = expectationWithDescription("Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Cookie)
+        waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
+    }
+
+    /**
+        We cannot use cookie on large amount of users (there is a limit)
+        And random failure may occcur.
+        We leave this little test to control that Explicit Cookie Identification works in basic context
+     */
+    func test_003_1X5_cookie() {
+        UsersCreationLoadTest.simultaneousCreations=1
+        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*5
+        let expectation = expectationWithDescription("Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Cookie)
+        waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
+    }
+
+
+
+    func test_004_2X1_key() {
         UsersCreationLoadTest.simultaneousCreations=2
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = expectationWithDescription("Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation)
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Key)
         waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
 
-    func test_003_10X10() {
+    func test_005_10X10_key() {
         UsersCreationLoadTest.simultaneousCreations=10
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*10
         let expectation = expectationWithDescription("Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation)
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Key)
         waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
 
-    func test_004_1X1() {
+    func test_006_1X1_key() {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = expectationWithDescription("test_004_1X1Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation)
+        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.Key)
         waitForExpectationsWithTimeout(TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 

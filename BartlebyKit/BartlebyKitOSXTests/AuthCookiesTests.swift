@@ -10,7 +10,7 @@ import XCTest
 import BartlebyKit
 
 class AuthCookiesTests: TestCase {
-    private static let _spaceUID = Bartleby.createUID()
+    private static let _spaceUID = TestCase.spaceUID
 
     private static let _email="\(Bartleby.randomStringWithLength(6))@AuthCookiesTests"
     private static let _password=Bartleby.randomStringWithLength(6)

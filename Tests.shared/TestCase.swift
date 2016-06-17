@@ -52,13 +52,16 @@ class TestCase: XCTestCase {
     static var assetPath = ""
     var assetPath: String = ""
 
-    static var spaceUID = ""
-    var spaceUID = ""
+    static let spaceUID:String = _document.spaceUID
+    let spaceUID:String = TestCase.spaceUID
 
     private static var _creator: User? = nil
     private static var _createdUsers = [User]()
 
     private static var _testObserver = TestObserver()
+
+    // We need a real local document to login.
+    private static let _document:BartlebyDocument=BartlebyDocument()
 
     /// MARK: Behaviour after test run
 
@@ -77,18 +80,21 @@ class TestCase: XCTestCase {
         // Configure Bartleby
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
 
+        TestCase._document.configureSchema()
+        Bartleby.sharedInstance.declare(TestCase._document)
+        TestCase._document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+
         // Initialize test case variable
         testName = NSStringFromClass(self)
         bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
         bprint("    \(testName)",file:#file,function:#function,line:#line,category:testName,decorative:true)
         bprint("    on \(TestsConfiguration.API_BASE_URL)",file:#file,function:#function,line:#line,category:testName,decorative:true)
-        bprint("==========================================================\n",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
 
 
         //        assetPath = NSTemporaryDirectory() + testName + "/"
         assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
         bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
-        spaceUID = Bartleby.createUID()
 
         // Remove asset folder if it exists
         do {
@@ -156,7 +162,6 @@ class TestCase: XCTestCase {
     override func setUp() {
         testName = TestCase.testName
         assetPath = TestCase.assetPath
-        spaceUID = TestCase.spaceUID
     }
 
     func waitForExpectations(timeout: NSTimeInterval = TestsConfiguration.TIME_OUT_DURATION) {

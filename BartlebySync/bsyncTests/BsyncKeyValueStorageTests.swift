@@ -9,7 +9,7 @@
 import XCTest
 
 class BsyncKeyValueStorageTests: TestCase {
-    private static let _spaceUID = Bartleby.createUID()
+    private static let _spaceUID = TestCase.spaceUID
     private static var _userID = "UNDEFINED"
     private static let _kvsUrl = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
     let _kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)

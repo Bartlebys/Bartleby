@@ -11,7 +11,7 @@ import XCTest
 import BartlebyKit
 
 class UserStatusTests: XCTestCase {
-    private static let _spaceUID = Bartleby.createUID()
+    private static let _spaceUID = Bartleby.createUID() /// To be revised BPDS
 
     private static var _creatorUser: User?
     private static var _creatorUserID: String="UNDEFINED"

@@ -316,6 +316,7 @@ public class  Bartleby: Consignee {
      - parameter matching: the filter closure
      */
     public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool,fileName:String?){
+
         let log=Bartleby.getBprintEntries(matching)
         let date=NSDate()
         let df=NSDateFormatter()

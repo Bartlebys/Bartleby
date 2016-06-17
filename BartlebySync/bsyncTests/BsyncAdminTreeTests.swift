@@ -10,7 +10,7 @@ import XCTest
 
 class BsyncAdminTreeTests: TestCase {
 
-    private static let _spaceUID = Bartleby.createUID()
+    private static let _spaceUID = TestCase.spaceUID
     private static let _user = User()
     private static let _treeName = Bartleby.randomStringWithLength(10)
     private static let _context = BsyncContext(sourceURL: NSURL(fileURLWithPath: assetPath + _treeName + "/"),

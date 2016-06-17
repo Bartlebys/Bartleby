@@ -11,7 +11,8 @@ import XCTest
 import BartlebyKit
 
 class BasicApiTests: TestCase {
-    private static let _spaceUID = Bartleby.createUID()
+
+    private static let _spaceUID = TestCase.spaceUID
 
     private static let _email="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
     private static let _newEmail="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
@@ -30,7 +31,7 @@ class BasicApiTests: TestCase {
         user.verificationMethod = .ByEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=BasicApiTests._password
-        user.spaceUID=BasicApiTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        user.spaceUID=BasicApiTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID 
         BasicApiTests._userID=user.UID // We store the UID for future deletion
 
         // Store the current user

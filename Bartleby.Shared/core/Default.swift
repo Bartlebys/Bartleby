@@ -20,7 +20,7 @@ public protocol BartlebyConfiguration {
     static var SHARED_SALT: String { get set }
 
     // Collaboration server base URL
-    // eg : https://demo.bartlebys.org/api/v1
+    // eg : https://demo.bartlebys.org/www/api/v1
     static var API_BASE_URL: NSURL { get set }
 
     // Bartleby Bprint
@@ -62,15 +62,15 @@ public protocol BartlebyConfiguration {
 public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // The key used to encrypt / decrypt
-    public static var KEY: String=""
+    public static var KEY: String="zHfAKvIb5DexA5hB18Jih92fKyv01niSMU38l8hPRddwduaJ_client"
 
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    public static var SHARED_SALT: String=""
+    public static var SHARED_SALT: String="rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
 
     // Collaboration server base URL
-    // eg : https://demo.bartlebys.org/api/v1
-    public static var API_BASE_URL: NSURL=NSURL()
+    // This bartlebys default ephemeral demo server (data are erased chronically)
+    public static var API_BASE_URL: NSURL = NSURL(string: "https://demo.bartlebys.org/www/api/v1")!
 
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
@@ -79,7 +79,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var DISABLE_DATA_CRYPTO: Bool { return false }
 
     //If set to true the created instances will be remove on maintenance Purge
-    public static var EPHEMERAL_MODE=false
+    public static var EPHEMERAL_MODE=true
 
     //Should the app try to be online by default
     public static var ONLINE_BY_DEFAULT=true
