@@ -12,7 +12,6 @@ import BartlebyKit
 
 class BasicApiTests: TestCase {
 
-    private static let _spaceUID = TestCase.spaceUID
 
     private static let _email="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
     private static let _newEmail="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
@@ -20,6 +19,10 @@ class BasicApiTests: TestCase {
     private static let _newPassword=Bartleby.randomStringWithLength(6)
     private static var _userID: String="UNDEFINED"
     private static var _createdUser: User?
+
+     override class func setUp() {
+        super.setUp()
+    }
 
     // MARK: 1 - User Creation
 
@@ -31,14 +34,14 @@ class BasicApiTests: TestCase {
         user.verificationMethod = .ByEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=BasicApiTests._password
-        user.spaceUID=BasicApiTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID 
+        user.spaceUID=TestCase.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         BasicApiTests._userID=user.UID // We store the UID for future deletion
 
         // Store the current user
         BasicApiTests._createdUser=user
 
         CreateUser.execute(user,
-                           inDataSpace:BasicApiTests._spaceUID,
+                           inDataSpace:TestCase.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -71,7 +74,7 @@ class BasicApiTests: TestCase {
 
     func test202_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: BasicApiTests._spaceUID,
+        LogoutUser.execute(fromDataSpace: TestCase.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -88,7 +91,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromDataSpace: BasicApiTests._spaceUID,
+        ReadUserById.execute(fromDataSpace: TestCase.spaceUID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -126,7 +129,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromDataSpace: BasicApiTests._spaceUID,
+        ReadUserById.execute(fromDataSpace: TestCase.spaceUID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -154,7 +157,7 @@ class BasicApiTests: TestCase {
         let p=ReadUsersByIdsParameters()
         p.ids=[BasicApiTests._userID]
 
-        ReadUsersByIds.execute(fromDataSpace: BasicApiTests._spaceUID, parameters: p,
+        ReadUsersByIds.execute(fromDataSpace: TestCase.spaceUID, parameters: p,
                                sucessHandler: { (users: [User]) -> () in
                                 expectation.fulfill()
 
@@ -180,7 +183,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromDataSpace:BasicApiTests._spaceUID,
+        ReadUserById.execute(fromDataSpace:TestCase.spaceUID,
                              userId:"Unexisting ID",
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -204,7 +207,7 @@ class BasicApiTests: TestCase {
         user.email=BasicApiTests._newEmail
 
         UpdateUser.execute(user,
-                           inDataSpace: BasicApiTests._spaceUID,
+                           inDataSpace: TestCase.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -218,7 +221,7 @@ class BasicApiTests: TestCase {
     func test502_checkUserHasBeenUpdated() {
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromDataSpace: BasicApiTests._spaceUID,
+        ReadUserById.execute(fromDataSpace: TestCase.spaceUID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -245,7 +248,7 @@ class BasicApiTests: TestCase {
         user.password=BasicApiTests._newPassword
 
         UpdateUser.execute(user,
-                           inDataSpace: BasicApiTests._spaceUID,
+                           inDataSpace: TestCase.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -258,7 +261,7 @@ class BasicApiTests: TestCase {
 
     func test504_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute( fromDataSpace:  BasicApiTests._spaceUID,
+        LogoutUser.execute( fromDataSpace:  TestCase.spaceUID,
                             sucessHandler: { () -> () in
                                 expectation.fulfill()
         }) { (context) -> () in
@@ -295,7 +298,7 @@ class BasicApiTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(BasicApiTests._userID,
-                           fromDataSpace:BasicApiTests._spaceUID,
+                           fromDataSpace:TestCase.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -309,7 +312,7 @@ class BasicApiTests: TestCase {
     func test602_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
         LogoutUser.execute(
-            fromDataSpace:BasicApiTests._spaceUID,
+            fromDataSpace:TestCase.spaceUID,
             sucessHandler: { () -> () in
                 expectation.fulfill()
         }) { (context) -> () in

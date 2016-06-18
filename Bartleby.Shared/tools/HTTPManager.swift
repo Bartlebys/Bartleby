@@ -16,17 +16,17 @@ public class HTTPManager: NSObject {
 
     static public let SPACE_UID_KEY="spaceUID"
 
-    static var deviceIdentifier: String=""
 
     static var baseURLApi: NSURL?
 
     static var userAgent: String {
         get {
-            return ""
+            //@todo  implement cross anything user agent
+            return "Bartleby\(Bartleby.versionString)/ (OS; Appversion; osVersion) (Apple; Mac)"
         }
     }
 
-    static var additionnalHeaders: [String:String]?
+
 
     private static var _hasBeenConfigured=false
 
@@ -102,20 +102,23 @@ public class HTTPManager: NSObject {
         // Note It is also possible to pass them as query strings.
         let tokenKey=HTTPManager.salt("\(actionName)#\(spaceUID)")
         let tokenValue=HTTPManager.salt(tokenKey)
+        headers[tokenKey]=tokenValue
 
+        // SpaceUID
         headers[HTTPManager.SPACE_UID_KEY]=spaceUID
 
-        // Injection of key based auth.
+        // Injection of key based auth if relevent.
         if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID){
             if registry.registryMetadata.identificationMethod == .Key{
-                if  let _=registry.registryMetadata.identificationKey, idv=registry.registryMetadata.identificationValue {
+                if  let idv=registry.registryMetadata.identificationValue {
                     headers["kvid"]=idv
-                    bprint("injecting kvid \(idv) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                }else{
+                     headers["kvid"]=Default.VOID_STRING
                 }
             }
 
         }
-        headers[tokenKey]=tokenValue
+
 
         return headers
     }
@@ -128,23 +131,15 @@ public class HTTPManager: NSObject {
      */
     static public func baseHttpHeaders()->[String:String]{
         var headers=[String:String]()
-        // Add the additionnal Headers.
-        // To prevent overloads we do this first.
-        if let additionnalHeaders=HTTPManager.additionnalHeaders {
-            for (key, value) in additionnalHeaders {
-                headers[key]=value
-            }
-        }
-        headers["Device-Identifier"]=HTTPManager.deviceIdentifier
+        headers["Device-Identifier"]=Bartleby.deviceIdentifier
         headers["User-Agent"]=HTTPManager.userAgent
         headers["Accept"]="application/json"
         headers["Content-Type"]="application/json"
-        headers["bartleby"]=Bartleby.versionString+"; "+Bartleby.deviceIdentifier
+        headers["bartleby"]=Bartleby.versionString
         headers["runUID"]=Bartleby.runUID
         if Bartleby.ephemeral {
              headers["ephemeral"]="true"
         }
-
         return headers
     }
 

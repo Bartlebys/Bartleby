@@ -70,13 +70,11 @@ public class LoginUser: JObject {
                                 if registry.registryMetadata.identificationMethod == .Key{
                                     if let kvids = result.value as? [String]{
                                         if kvids.count>=2{
-                                            registry.registryMetadata.identificationKey=kvids[0]
                                             registry.registryMetadata.identificationValue=kvids[1]
                                             bprint("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
                                         }
                                     }
                                 }
-
                             success()
                         } else {
                             // Bartlby does not currenlty discriminate status codes 100 & 101

@@ -31,8 +31,6 @@ import ObjectMapper
 		case Cookie = "Cookie"
 	}
 	public var identificationMethod:IdentificationMethod = .Key
-	//The current identification key (injected in HTTP headers)
-	public var identificationKey:String?
 	//The current identification value (injected in HTTP headers)
 	public var identificationValue:String?
 	//The rootObject UID
@@ -77,7 +75,6 @@ import ObjectMapper
 		self.spaceUID <- ( map["spaceUID"] )
 		self.currentUser <- ( map["currentUser"] )
 		self.identificationMethod <- ( map["identificationMethod"] )
-		self.identificationKey <- ( map["identificationKey"] )
 		self.identificationValue <- ( map["identificationValue"] )
 		self.rootObjectUID <- ( map["rootObjectUID"] )
 		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
@@ -105,7 +102,6 @@ import ObjectMapper
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.currentUser=decoder.decodeObjectOfClass(User.self, forKey: "currentUser") 
 		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "identificationMethod")! as NSString))! 
-		self.identificationKey=String(decoder.decodeObjectOfClass(NSString.self, forKey:"identificationKey") as NSString?)
 		self.identificationValue=String(decoder.decodeObjectOfClass(NSString.self, forKey:"identificationValue") as NSString?)
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
@@ -131,9 +127,6 @@ import ObjectMapper
 			coder.encodeObject(currentUser,forKey:"currentUser")
 		}
 		coder.encodeObject(self.identificationMethod.rawValue ,forKey:"identificationMethod")
-		if let identificationKey = self.identificationKey {
-			coder.encodeObject(identificationKey,forKey:"identificationKey")
-		}
 		if let identificationValue = self.identificationValue {
 			coder.encodeObject(identificationValue,forKey:"identificationValue")
 		}

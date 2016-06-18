@@ -16,6 +16,7 @@ class UsersCreationLoadTest: TestCase {
     static var simultaneousCreations:Int=1
     static var nbOfIteration:Int=simultaneousCreations*1
     static var expecationHasBeenFullFilled=false
+    
 
      static override func setUp() {
         super.setUp()
@@ -27,12 +28,15 @@ class UsersCreationLoadTest: TestCase {
             }
         }
 
+
+
     }
 
 
     private func _create_a_user(completionHandler:(createdUser:User,completionState:Completion)->(),idMethod:RegistryMetadata.IdentificationMethod){
 
-        // We create one document per User.
+        // We create one document per User (to permit to variate the identification method without side effect)
+        // You can for sure use one document for all the users 
         let document=BartlebyDocument()
         document.configureSchema()
         Bartleby.sharedInstance.declare(document)
