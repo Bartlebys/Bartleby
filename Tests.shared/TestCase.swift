@@ -52,7 +52,7 @@ class TestCase: XCTestCase {
     static var assetPath = ""
     var assetPath: String = ""
 
-    static let spaceUID:String = _document.spaceUID
+    static let spaceUID:String = document.spaceUID
     let spaceUID:String = TestCase.spaceUID
 
     private static var _creator: User? = nil
@@ -61,7 +61,16 @@ class TestCase: XCTestCase {
     private static var _testObserver = TestObserver()
 
     // We need a real local document to login.
-    private static let _document:BartlebyDocument=BartlebyDocument()
+    static var document:BartlebyDocument=BartlebyDocument(){
+        willSet{
+            Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        }
+        didSet{
+            document.configureSchema()
+            Bartleby.sharedInstance.declare(document)
+            document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        }
+    }
 
     /// MARK: Behaviour after test run
 
@@ -76,13 +85,6 @@ class TestCase: XCTestCase {
 
     override class func setUp() {
         super.setUp()
-
-        // Configure Bartleby
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
-
-        TestCase._document.configureSchema()
-        Bartleby.sharedInstance.declare(TestCase._document)
-        TestCase._document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
