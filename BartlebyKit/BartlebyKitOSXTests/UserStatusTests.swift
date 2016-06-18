@@ -11,7 +11,6 @@ import XCTest
 import BartlebyKit
 
 class UserStatusTests: XCTestCase {
-    private static let _spaceUID = Bartleby.createUID() /// To be revised BPDS
 
     private static var _creatorUser: User?
     private static var _creatorUserID: String="UNDEFINED"
@@ -23,11 +22,28 @@ class UserStatusTests: XCTestCase {
     private static let _suspendedUserEmail="SuspendedUser@UserStatusTests"
     private static let _suspendedUserPassword=Bartleby.randomStringWithLength(6)
 
-    override static func setUp() {
-        super.setUp()
 
+    // We need a real local document to login.
+    static let document:BartlebyDocument=BartlebyDocument()
+
+
+    override class func setUp() {
+        super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        UserStatusTests.document.configureSchema()
+        Bartleby.sharedInstance.declare(UserStatusTests.document)
+        UserStatusTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Cookie
+
+        // Purge cookie for the domain
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+            }
+        }
+        
     }
+
+
 
     // MARK: 1 - Users Creation
 
@@ -35,7 +51,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("CreateUser should respond")
 
         let user=User()
-        user.spaceUID=UserStatusTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        user.spaceUID=UserStatusTests.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.email=UserStatusTests._creatorUserEmail
         user.password=UserStatusTests._creatorUserPassword
@@ -45,7 +61,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
 
         CreateUser.execute(user,
-                           inDataSpace:UserStatusTests._spaceUID,
+                           inDataSpace:UserStatusTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -60,7 +76,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("CreateUser should respond")
 
         let user = User()
-        user.spaceUID = UserStatusTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        user.spaceUID = UserStatusTests.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         user.creatorUID = UserStatusTests._creatorUserID
         user.email = UserStatusTests._suspendedUserEmail
         user.password = UserStatusTests._suspendedUserPassword
@@ -70,7 +86,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._suspendedUserID = user.UID
 
         CreateUser.execute(user,
-                           inDataSpace:UserStatusTests._spaceUID,
+                           inDataSpace:UserStatusTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -144,7 +160,7 @@ class UserStatusTests: XCTestCase {
             user.status = .Suspended
 
             UpdateUser.execute(user,
-                               inDataSpace: UserStatusTests._spaceUID,
+                               inDataSpace: UserStatusTests.document.spaceUID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -160,7 +176,7 @@ class UserStatusTests: XCTestCase {
 
     func test399_Logout_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: UserStatusTests._spaceUID,
+        LogoutUser.execute(fromDataSpace: UserStatusTests.document.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -213,7 +229,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._suspendedUserID,
-                           fromDataSpace:UserStatusTests._spaceUID,
+                           fromDataSpace:UserStatusTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -229,7 +245,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._creatorUserID,
-                           fromDataSpace:UserStatusTests._spaceUID,
+                           fromDataSpace:UserStatusTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

@@ -24,13 +24,13 @@ public class LoginUser: JObject {
 
         let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("user/login")
-
         if let registry=Bartleby.sharedInstance.getRegistryByUID(user.spaceUID){
             
             // A valid registry is required for any authentication.
             // So you must create a Document and use its spaceUID before to login.
 
             let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID,"password":password, "identification":registry.registryMetadata.identificationMethod.rawValue]
+
             let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:user.spaceUID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON { response in

@@ -9,13 +9,33 @@
 import XCTest
 import BartlebyKit
 
-class AuthCookiesTests: TestCase {
-    private static let _spaceUID = TestCase.spaceUID
+class AuthCookiesTests: XCTestCase {
 
     private static let _email="\(Bartleby.randomStringWithLength(6))@AuthCookiesTests"
     private static let _password=Bartleby.randomStringWithLength(6)
     private static var _userID: String="UNDEFINED"
     private static var _createdUser: User?
+
+
+    // We need a real local document to login.
+    static let document:BartlebyDocument=BartlebyDocument()
+
+
+    override class func setUp() {
+        super.setUp()
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        AuthCookiesTests.document.configureSchema()
+        Bartleby.sharedInstance.declare(AuthCookiesTests.document)
+        AuthCookiesTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Cookie
+
+        // Purge cookie for the domain
+        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+            for cookie in cookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+            }
+        }
+
+    }
 
     // MARK: - User Creation
 
@@ -27,13 +47,13 @@ class AuthCookiesTests: TestCase {
         user.verificationMethod = .ByEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=AuthCookiesTests._password
-        user.spaceUID=AuthCookiesTests._spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        user.spaceUID=AuthCookiesTests.document.spaceUID//(!)
         AuthCookiesTests._userID=user.UID // We store the UID for future deletion
 
         // Store the current user
         AuthCookiesTests._createdUser=user
         CreateUser.execute(user,
-                           inDataSpace:AuthCookiesTests._spaceUID,
+                           inDataSpace:AuthCookiesTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -70,7 +90,7 @@ class AuthCookiesTests: TestCase {
 
     func test003_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: AuthCookiesTests._spaceUID,
+        LogoutUser.execute(fromDataSpace: AuthCookiesTests.document.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
@@ -113,7 +133,7 @@ class AuthCookiesTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(AuthCookiesTests._userID,
-                           fromDataSpace: AuthCookiesTests._spaceUID,
+                           fromDataSpace: AuthCookiesTests.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -126,7 +146,7 @@ class AuthCookiesTests: TestCase {
 
     func test009_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace:AuthCookiesTests._spaceUID,
+        LogoutUser.execute(fromDataSpace:AuthCookiesTests.document.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {

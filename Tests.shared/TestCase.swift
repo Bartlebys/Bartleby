@@ -52,25 +52,14 @@ class TestCase: XCTestCase {
     static var assetPath = ""
     var assetPath: String = ""
 
-    static let spaceUID:String = document.spaceUID
-    let spaceUID:String = TestCase.spaceUID
-
     private static var _creator: User? = nil
     private static var _createdUsers = [User]()
 
     private static var _testObserver = TestObserver()
 
     // We need a real local document to login.
-    static var document:BartlebyDocument=BartlebyDocument(){
-        willSet{
-            Bartleby.sharedInstance.configureWith(TestsConfiguration)
-        }
-        didSet{
-            document.configureSchema()
-            Bartleby.sharedInstance.declare(document)
-            document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
-        }
-    }
+    private static var _document:BartlebyDocument?
+    static var document=_document!
 
     /// MARK: Behaviour after test run
 
@@ -85,6 +74,14 @@ class TestCase: XCTestCase {
 
     override class func setUp() {
         super.setUp()
+
+
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        TestCase._document=BartlebyDocument()
+        TestCase.document.configureSchema()
+        Bartleby.sharedInstance.declare(TestCase.document)
+        // By default we use kvid auth.
+        TestCase.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
 
         // Initialize test case variable
         testName = NSStringFromClass(self)

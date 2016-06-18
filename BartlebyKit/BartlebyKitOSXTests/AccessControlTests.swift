@@ -10,7 +10,7 @@ import XCTest
 import BartlebyKit
 
 class AccessControlTests: TestCase {
-    private static let _spaceUID = TestCase.spaceUID
+
     
     private static let _creatorEmail="Creator@AccessControlTests"
     private static var _creatorUserID: String="UNDEFINED"
@@ -29,7 +29,7 @@ class AccessControlTests: TestCase {
     func test101_createUser_Creator() {
         let expectation = expectationWithDescription("CreateUser should respond")
         
-        let user = self.createUser(AccessControlTests._spaceUID,
+        let user = self.createUser(TestCase.document.spaceUID,
                                    email: AccessControlTests._creatorEmail,
                                    autologin: true,
                                    handlers: Handlers { (create) in
@@ -49,7 +49,7 @@ class AccessControlTests: TestCase {
         if let creator = AccessControlTests._creatorUser {
             let expectation = expectationWithDescription("CreateUser should respond")
             
-            let user = self.createUser(AccessControlTests._spaceUID,
+            let user = self.createUser(TestCase.document.spaceUID,
                                        creator: creator,
                                        email: AccessControlTests._otherUserEmail,
                                        handlers: Handlers { (create) in
@@ -71,7 +71,7 @@ class AccessControlTests: TestCase {
         if let creator = AccessControlTests._creatorUser {
             let expectation = expectationWithDescription("CreateUser should respond")
             
-            let user = self.createUser(AccessControlTests._spaceUID,
+            let user = self.createUser(TestCase.document.spaceUID,
                                        creator: creator,
                                        email: AccessControlTests._thirdUserEmail,
                                        handlers: Handlers { (create) in
@@ -93,7 +93,7 @@ class AccessControlTests: TestCase {
         
         let expectation = expectationWithDescription("ReadUserById replay")
         
-        ReadUserById.execute(fromDataSpace:AccessControlTests._spaceUID,
+        ReadUserById.execute(fromDataSpace:TestCase.document.spaceUID,
                              userId:AccessControlTests._otherUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -121,7 +121,7 @@ class AccessControlTests: TestCase {
             user.email=AccessControlTests._thirdUserNewEmail
             
             UpdateUser.execute(user,
-                               inDataSpace:AccessControlTests._spaceUID,
+                               inDataSpace:TestCase.document.spaceUID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -138,7 +138,7 @@ class AccessControlTests: TestCase {
     func test107_Check_ThirdUserEmail_HasBeenUpdated() {
         let expectation = expectationWithDescription("ReadUserById should respond")
         
-        ReadUserById.execute(fromDataSpace:AccessControlTests._spaceUID,
+        ReadUserById.execute(fromDataSpace:TestCase.document.spaceUID,
                              userId: AccessControlTests._thirdUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -166,7 +166,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute("unexisting id",
-                           fromDataSpace:  AccessControlTests._spaceUID,
+                           fromDataSpace:  TestCase.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("The user does not not exists its deletion should fail")
@@ -180,7 +180,7 @@ class AccessControlTests: TestCase {
     
     func test199_LogoutUser_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: AccessControlTests._spaceUID,
+        LogoutUser.execute(fromDataSpace: TestCase.document.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
@@ -201,12 +201,14 @@ class AccessControlTests: TestCase {
             user.login(withPassword: user.password,
                        sucessHandler: { () -> () in
                         expectation.fulfill()
-                        
-                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
-                            XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
-                        } else {
-                            XCTFail("Auth requires a cookie")
+                        if TestCase.document.registryMetadata.identificationMethod == .Cookie{
+                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                                XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
+                            } else {
+                                XCTFail("Auth requires a cookie")
+                            }
                         }
+
                         
             }) { (context) ->() in
                 expectation.fulfill()
@@ -222,7 +224,7 @@ class AccessControlTests: TestCase {
     func test202_ReadUserByID_Creator_byOtherUser_ShouldNotRetrievePassword() {
         let expectation = expectationWithDescription("ReadUserById should respond")
         
-        ReadUserById.execute(fromDataSpace:AccessControlTests._spaceUID,
+        ReadUserById.execute(fromDataSpace:TestCase.document.spaceUID,
                              userId:AccessControlTests._creatorUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -241,7 +243,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._creatorUserID,
-                           fromDataSpace: AccessControlTests._spaceUID,
+                           fromDataSpace: TestCase.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete its creator")
@@ -257,7 +259,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._thirdUserID,
-                           fromDataSpace: AccessControlTests._spaceUID,
+                           fromDataSpace: TestCase.document.spaceUID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete third user")
@@ -275,7 +277,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._creatorUser {
             user.email = "badmail@lylo.tv"
             
-            UpdateUser.execute(user, inDataSpace: AccessControlTests._spaceUID,
+            UpdateUser.execute(user, inDataSpace: TestCase.document.spaceUID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update the document owner")
@@ -298,7 +300,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._thirdUser {
             user.email = "otherbadmail@lylo.tv"
             
-            UpdateUser.execute(user, inDataSpace: AccessControlTests._spaceUID,
+            UpdateUser.execute(user, inDataSpace: TestCase.document.spaceUID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update third user")
@@ -317,7 +319,7 @@ class AccessControlTests: TestCase {
     
     func test299_LogoutUser_OtherUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: AccessControlTests._spaceUID,
+        LogoutUser.execute(fromDataSpace: TestCase.document.spaceUID,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             

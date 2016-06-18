@@ -134,12 +134,7 @@ extension Registry {
             let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             self.registryMetadata.URLBookmarkData[key]=stringifyedData
-
-            #if os(OSX)
-                self.updateChangeCount(NSDocumentChangeType.ChangeDone)
-            #else
-                self.updateChangeCount(UIDocumentChangeKind.Done)
-            #endif
+            self.hasChanged()
             return try getSecurityScopedURLFrom(url)
         }
         throw SecurityScopedBookMarkError.BookMarkFailed(message: "Invalid path Error for \(url)")
@@ -151,6 +146,17 @@ extension Registry {
         } else {
             return Default.NO_KEY
         }
+    }
+
+    /**
+     Universal change
+     */
+    public func hasChanged() -> () {
+        #if os(OSX)
+            self.updateChangeCount(NSDocumentChangeType.ChangeDone)
+        #else
+            self.updateChangeCount(UIDocumentChangeKind.Done)
+        #endif
     }
 
 

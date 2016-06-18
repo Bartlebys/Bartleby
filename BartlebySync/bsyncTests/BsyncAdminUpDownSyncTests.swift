@@ -53,7 +53,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     func test101_CreateUser() {
         let expectation = expectationWithDescription("CreateUser should respond")
         
-        let user = createUser(spaceUID, autologin: true, handlers: Handlers { (creation) in
+        let user = createUser(TestCase.document.spaceUID, autologin: true, handlers: Handlers { (creation) in
             expectation.fulfill()
             XCTAssert(creation.success, creation.message)
             })

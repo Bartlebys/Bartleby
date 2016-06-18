@@ -39,6 +39,26 @@
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E56C00451C8ED4A800BB6B19"
+               BuildableName = "BartlebyKitOSXTests.xctest"
+               BlueprintName = "BartlebyKitOSXTests"
+               ReferencedContainer = "container:../BartlebyKit/BartlebyKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E5C0CED11C36CCDD00F3B7B8"
+               BuildableName = "bsyncTests.xctest"
+               BlueprintName = "bsyncTests"
+               ReferencedContainer = "container:bsync.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

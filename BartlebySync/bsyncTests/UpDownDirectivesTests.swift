@@ -44,7 +44,7 @@ class UpDownDirectivesTests: SyncTestCase {
 
     override func prepareSync(handlers: Handlers) {
         // Create user
-        let user = createUser(spaceUID, handlers: Handlers { (creation) in
+        let user = createUser(TestCase.document.spaceUID, handlers: Handlers { (creation) in
             if creation.success {
                 super.prepareSync(handlers)
             } else {

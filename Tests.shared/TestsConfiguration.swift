@@ -84,7 +84,7 @@ public class TestsConfiguration: BartlebyConfiguration {
         }
     }
 
-    public static let TIME_OUT_DURATION = 30.0*1000.0
+    public static let TIME_OUT_DURATION = 360*1000.0
 
     public static let LONG_TIME_OUT_DURATION = 360.0*1000.0
 
