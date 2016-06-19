@@ -199,18 +199,21 @@ class TestCase: XCTestCase {
 
         // Create user on the server
         CreateUser.execute(user, inDataSpace: spaceUID, sucessHandler: { (context) in
+
             if autologin {
                 // Login if needed
                 user.login(withPassword: user.password, sucessHandler: {
                     handlers.on(Completion.successState())
 
                     }, failureHandler: { (context) in
+                        bprint("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
                         handlers.on(Completion.failureStateFromJHTTPResponse(context))
                 })
             } else {
                 handlers.on(Completion.successState())
             }
         }) { (context) in
+             bprint("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
             handlers.on(Completion.failureStateFromJHTTPResponse(context))
         }
 

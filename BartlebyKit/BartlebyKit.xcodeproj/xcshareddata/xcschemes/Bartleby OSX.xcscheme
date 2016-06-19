@@ -38,17 +38,6 @@
                BlueprintName = "BartlebyKitOSXTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "InterSpaceTests">
-               </Test>
-               <Test
-                  Identifier = "InterSpaceUpdateUserSpaceToAnotherSpaceTests">
-               </Test>
-               <Test
-                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">

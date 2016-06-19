@@ -11,14 +11,36 @@ import XCTest
 import BartlebyKit
 
 class InterSpaceUpdateUserSpaceToAnotherSpaceTests: TestCase {
-    private static let _spaceA = Bartleby.createUID()
-    private static let _spaceB = Bartleby.createUID()
+    
+    private static var _spaceA = Default.NO_UID
+    private static var _spaceB = Default.NO_UID
     private static let _emailA="\(Bartleby.randomStringWithLength(5))@lylo.tv"
     private static let _passwordA=Bartleby.randomStringWithLength(6)
-    private static var _userIDA: String="UNDEFINED"
+    private static var _userIDA: String = Default.NO_UID
     private static var _userA: User?
 
+    // We need a real local document to login.
+    static let document1:BartlebyDocument=BartlebyDocument()
+    static let document2:BartlebyDocument=BartlebyDocument()
+
     // MARK: 1 - User creation
+
+    override class func setUp() {
+        super.setUp()
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests.document1.configureSchema()
+        Bartleby.sharedInstance.declare(InterSpaceUpdateUserSpaceToAnotherSpaceTests.document1)
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests.document1.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceA = InterSpaceUpdateUserSpaceToAnotherSpaceTests.document1.spaceUID
+
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests.document2.configureSchema()
+        Bartleby.sharedInstance.declare(InterSpaceTests.document2)
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests.document2.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        InterSpaceUpdateUserSpaceToAnotherSpaceTests._spaceB = InterSpaceUpdateUserSpaceToAnotherSpaceTests.document2.spaceUID
+    }
+
+
 
     func test101_createUserA() {
         let expectation = expectationWithDescription("CreateUser should respond")

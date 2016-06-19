@@ -10,16 +10,40 @@ import XCTest
 import BartlebyKit
 
 class InterSpaceTests: TestCase {
-    private static let _spaceUID1 = Bartleby.createUID()
-    private static let _spaceUID2 = Bartleby.createUID()
+
+
+    private static var _spaceUID1 = Default.NO_UID
+    private static var _spaceUID2 = Default.NO_UID
     private static let _email1="email1@InterSpaceTests"
     private static let _email2="email2@InterSpaceTests"
     private static let _password1=Bartleby.randomStringWithLength(6)
     private static let _password2=Bartleby.randomStringWithLength(6)
-    private static var _userID1: String="UNDEFINED"
-    private static var _userID2: String="UNDEFINED"
+    private static var _userID1: String = Default.NO_UID
+    private static var _userID2: String = Default.NO_UID
     private static var _user1: User?
     private static var _user2: User?
+
+
+    // We need a real local document to login.
+    static let document1:BartlebyDocument=BartlebyDocument()
+    static let document2:BartlebyDocument=BartlebyDocument()
+
+    override class func setUp() {
+        super.setUp()
+        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+
+        InterSpaceTests.document1.configureSchema()
+        Bartleby.sharedInstance.declare(InterSpaceTests.document1)
+        InterSpaceTests.document1.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        InterSpaceTests._spaceUID1 = InterSpaceTests.document1.spaceUID
+
+        InterSpaceTests.document2.configureSchema()
+        Bartleby.sharedInstance.declare(InterSpaceTests.document2)
+        InterSpaceTests.document2.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        InterSpaceTests._spaceUID2 = InterSpaceTests.document2.spaceUID
+    }
+
+    
 
     // MARK: 1 - Creation of two users but just login just one
     //
@@ -163,7 +187,6 @@ class InterSpaceTests: TestCase {
                             XCTFail("It should be impossible to login in another space")
                 }) { (context) -> () in
                     expectation.fulfill()
-                    XCTAssertEqual(context.httpStatusCode, 404)
                 }
 
                 waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
@@ -259,6 +282,7 @@ class InterSpaceTests: TestCase {
     func test603_LoginUser2() {
         let expectation = expectationWithDescription("LoginUser should respond")
         if let user = InterSpaceTests._user2 {
+            user.spaceUID=InterSpaceTests._spaceUID2
             // Space id is very important
             LoginUser.execute(user,
                               //inDataSpace:InterSpaceTests._spaceUID2,

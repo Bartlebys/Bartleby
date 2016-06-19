@@ -10,21 +10,38 @@ import XCTest
 import BartlebyKit
 
 class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
-    private static let _spaceUID1 = Bartleby.createUID()
-    private static let _spaceUID2 = Bartleby.createUID()
+
+    private static var _spaceUID1 = Default.NO_UID
+    private static var _spaceUID2 = Default.NO_UID
     private static let _email1="user@lylo.tv"// Same mail
     private static let _email2="user@lylo.tv"
     private static let _password1=Bartleby.randomStringWithLength(6)// Different password
     private static let _password2=Bartleby.randomStringWithLength(6)
-    private static var _userID1: String="UNDEFINED"
-    private static var _userID2: String="UNDEFINED"
+    private static var _userID1: String = Default.NO_UID
+    private static var _userID2: String = Default.NO_UID
     private static var _createdUser1: User?
     private static var _createdUser2: User?
 
-    override static func setUp() {
+
+    // We need a real local document to login.
+    static let document1:BartlebyDocument=BartlebyDocument()
+    static let document2:BartlebyDocument=BartlebyDocument()
+
+    override class func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
+
+        UserCreationWithTheSameMailInDifferentSpaceTests.document1.configureSchema()
+        Bartleby.sharedInstance.declare(UserCreationWithTheSameMailInDifferentSpaceTests.document1)
+        UserCreationWithTheSameMailInDifferentSpaceTests.document1.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1 = UserCreationWithTheSameMailInDifferentSpaceTests.document1.spaceUID
+
+        UserCreationWithTheSameMailInDifferentSpaceTests.document2.configureSchema()
+        Bartleby.sharedInstance.declare(UserCreationWithTheSameMailInDifferentSpaceTests.document2)
+        UserCreationWithTheSameMailInDifferentSpaceTests.document2.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2 = UserCreationWithTheSameMailInDifferentSpaceTests.document2.spaceUID
     }
+
 
     func test001_createUser1() {
         let expectation = expectationWithDescription("CreateUser should respond")
