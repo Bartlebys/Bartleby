@@ -570,7 +570,7 @@ public class Registry: BXDocument, SuperIterable {
         bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
         let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
         let lastIndex=0
-        let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&showDetails==false")
+        let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&runUID=\(Bartleby.runUID)&showDetails==false")
         let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
         self._SSE=EventSource(url:stringURL,headers:headers)
         self._SSE!.addEventListener("relay") { (id, event, data) in

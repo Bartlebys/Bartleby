@@ -27,6 +27,8 @@ import ObjectMapper
 	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
+	//The UID of the instance of Bartleby client that has created the trigger.
+	public var runUID:String?
 	//The action that has initiated the trigger
 	public var origin:String = ""
 	//The targetted collection name
@@ -51,6 +53,7 @@ import ObjectMapper
 		self.index <- ( map["index"] )
 		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
+		self.runUID <- ( map["runUID"] )
 		self.origin <- ( map["origin"] )
 		self.collectionName <- ( map["collectionName"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
@@ -68,6 +71,7 @@ import ObjectMapper
 		self.index=decoder.decodeIntegerForKey("index") 
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
+		self.runUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"runUID") as NSString?)
 		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey: "origin")! as NSString)
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
@@ -84,6 +88,9 @@ import ObjectMapper
 		}
 		if let spaceUID = self.spaceUID {
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
+		}
+		if let runUID = self.runUID {
+			coder.encodeObject(runUID,forKey:"runUID")
 		}
 		coder.encodeObject(self.origin,forKey:"origin")
 		coder.encodeObject(self.collectionName,forKey:"collectionName")

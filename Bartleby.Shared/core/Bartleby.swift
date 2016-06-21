@@ -355,8 +355,8 @@ public class  Bartleby: Consignee {
         var randomString = ""
         for _ in (0 ..< len) {
             let length = UInt32 (signs.characters.count)
-            let rand = arc4random_uniform(length)
-            let idx = signs.startIndex.advancedBy(Int(rand))
+            let rand = Int(arc4random_uniform(length))
+            let idx = signs.startIndex.advancedBy(rand,limit:signs.endIndex)
             let c=signs.characters[idx]
             randomString.append(c)
         }
