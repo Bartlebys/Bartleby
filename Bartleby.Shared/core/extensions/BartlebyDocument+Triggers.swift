@@ -7,6 +7,11 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+    import ObjectMapper
+#endif
+
 extension BartlebyDocument {
 
     /*
@@ -200,7 +205,6 @@ extension BartlebyDocument {
         var shouldIntegrate=false
         for trigger in integrableTriggers{
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
-
                 if trigger.action.contains("Delete"){
                     // it is a destructive action.
                     self._triggeredData[trigger]=nil
@@ -228,7 +232,101 @@ extension BartlebyDocument {
      */
     private func _loadDataFromCreativeAction(trigger:Trigger){
 
+        /////////////////////////
+        // Request Interpreter 
+        ////////////////////////
+
+        let uids = trigger.UIDS.componentsSeparatedByString(",")
+        if (uids.count==0){
+            bprint("Trigger interpretation issue uids are void! \(trigger)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+            return
+        }
+
+        let multiple = uids.count > 1
+        let action = trigger.action
+        let entityName = Pluralization.singularize(trigger.collectionName).lowercaseString
+        let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+
+        let prototypeName = PString.ucfirst(entityName)
+        guard let prototypeClass = NSClassFromString(prototypeName) else{
+            bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+            return
+        }
+        guard let validatedPrototypeClass = prototypeClass as? protocol<Collectible,Mappable> else{
+            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+            return
+        }
+
+        var dictionary:Dictionary<String, AnyObject>=[:]
+        var pathURL = baseURL
+        if multiple{
+            let UID=uids.first!
+            pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
+        }else{
+             pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
+             dictionary["ids"]=uids
+        }
+        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
+        let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+
+
+        r.responseJSON { (response) in
+
+            /////////////////////////
+            // Result Handling
+            ////////////////////////
+
+            let request=response.request
+            let result=response.result
+            let response=response.response
+
+            if result.isFailure {
+                // ERROR
+                bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+
+            }else{
+                if let statusCode=response?.statusCode {
+                    if 200...299 ~= statusCode {
+
+                        /**
+                         Dynamic instantiation
+
+                         - parameter jsonDictionary: a json Dictionary to apply on a dynamic Prototype
+
+                         - returns: a Collectible instance
+                         */
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible{
+                             let prototype=validatedPrototypeClass.dynamicType.init()
+                            let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
+                            var instance=prototype
+                            instance.mapping(mapped)
+                           return instance
+                        }
+
+                        if multiple{
+                                // upsert a collection
+                                if let d=result.value as? [[String : AnyObject]]{
+                                    for jsonDictionary in d{
+                                        let instance=__instantiate(from: jsonDictionary)
+                                        self.upsert(instance)
+                                    }
+                                }
+                            }else{
+                               // Unique entity
+                                if let jsonDictionary=result.value as? [String : AnyObject]{
+                                    let instance=__instantiate(from: jsonDictionary)
+                                    self.upsert(instance)
+                                }
+                            }
+                    }else{
+                        // ERROR
+                        bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+                    }
+                }
+            }
+        }
     }
+
 
     /**
      Called on data reception

@@ -537,7 +537,7 @@ public class Registry: BXDocument, SuperIterable {
     private var _SSE:EventSource?
 
 
-    /// The online flag
+    /// The online flag is driving the SSE connection process.
     public var online:Bool=false{
         willSet{
             // Transition on line
