@@ -131,7 +131,6 @@ public class HTTPManager: NSObject {
      */
     static public func baseHttpHeaders()->[String:String]{
         var headers=[String:String]()
-        headers["Device-Identifier"]=Bartleby.deviceIdentifier
         headers["User-Agent"]=HTTPManager.userAgent
         headers["Accept"]="application/json"
         headers["Content-Type"]="application/json"

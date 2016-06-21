@@ -55,24 +55,12 @@ public class  Bartleby: Consignee {
     static let b_version = "1.0"
     static let b_release = "beta2"
 
-
-
     /// The version string of Bartleby framework
     public static var versionString: String {
         get {
             return "\(self.b_version).\(self.b_release)"
         }
     }
-
-
-
-    #if os(OSX)
-    /// The unique device identifier. We use Eth0 on OSX
-    public static let deviceIdentifier: String = Bartleby._MACAddressEN0()
-    #else
-     /// The unique device identifier. We use the Identifier for vendor on iOS
-    public static let deviceIdentifier: String = UIDevice.currentDevice().identifierForVendor?.UUIDString ?? Bartleby.createUID()
-    #endif
 
     // A unique run identifier that changes each time Bartleby is launched
     public static let runUID: String=Bartleby.createUID()
@@ -425,59 +413,6 @@ public class  Bartleby: Consignee {
         }
         return nil
     }
-
-
-
-    // MARK: - Identification
-
-
-    private static var __MACAddressEN0: String?
-
-    private static func _MACAddressEN0() -> String {
-        if __MACAddressEN0==nil {
-            __MACAddressEN0=_MACAddressForBSD("en0")
-        }
-        if __MACAddressEN0==nil {
-            __MACAddressEN0=createUID()
-        }
-        return __MACAddressEN0!
-    }
-
-
-    private static func _MACAddressForBSD(bsd: String) -> String? {
-        let MAC_ADDRESS_LENGTH = 6
-        let separator = ":"
-        var length: size_t = 0
-        var buffer: [CChar]
-        let BSDIndex = Int32(if_nametoindex(bsd))
-        if BSDIndex == 0 {
-            bprint("Error: could not find index for bsd name \(bsd)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
-            return nil
-        }
-        let bsdData = bsd.dataUsingEncoding(NSUTF8StringEncoding)!
-        var managementInfoBase = [CTL_NET, AF_ROUTE, 0, AF_LINK, NET_RT_IFLIST, BSDIndex]
-        if sysctl(&managementInfoBase, 6, nil, &length, nil, 0) < 0 {
-            bprint("Error: could not determine length of info data structure", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
-            return nil
-        }
-        buffer = [CChar](count: length, repeatedValue: 0)
-        if sysctl(&managementInfoBase, 6, &buffer, &length, nil, 0) < 0 {
-            bprint("Error: could not read info data structure", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
-            return nil
-        }
-        let infoData = NSData(bytes: buffer, length: length)
-        var interfaceMsgStruct = if_msghdr()
-        infoData.getBytes(&interfaceMsgStruct, length: sizeof(if_msghdr))
-        let socketStructStart = sizeof(if_msghdr) + 1
-        let socketStructData = infoData.subdataWithRange(NSMakeRange(socketStructStart, length - socketStructStart))
-        let rangeOfToken = socketStructData.rangeOfData(bsdData, options: NSDataSearchOptions(rawValue:0), range: NSMakeRange(0, socketStructData.length))
-        let macAddressData = socketStructData.subdataWithRange(NSMakeRange(rangeOfToken.location + 3, MAC_ADDRESS_LENGTH))
-        var macAddressDataBytes = [UInt8](count: MAC_ADDRESS_LENGTH, repeatedValue: 0)
-        macAddressData.getBytes(&macAddressDataBytes, length: MAC_ADDRESS_LENGTH)
-        let addressBytes = macAddressDataBytes.map({ String(format:"%02x", $0) })
-        return addressBytes.joinWithSeparator(separator)
-    }
-
 
     // MARK: - Maintenance
 
