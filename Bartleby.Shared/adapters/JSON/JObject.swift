@@ -20,6 +20,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 }
 
 
+public typealias BartlebyObjectProtocol = protocol<Mappable, Collectible, Supervisable, NSCopying, NSSecureCoding>
+
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 
 // Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
@@ -27,7 +29,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject, Mappable, Collectible, Supervisable, NSCopying, NSSecureCoding {
+@objc(JObject) public class JObject: NSObject,BartlebyObjectProtocol {
 
 
     // MARK: - Initializable
