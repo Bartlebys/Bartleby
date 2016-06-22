@@ -296,7 +296,7 @@ extension BartlebyDocument {
 
                          - returns: a Collectible instance or nil
                          */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible?{
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->BartlebyObjectProtocol?{
                             if let prototype=InitializablePrototypeClass.init() as? BartlebyObjectByMappable{
                                     prototype.patchFrom(jsonDictionary)
                                     return prototype
@@ -341,7 +341,7 @@ extension BartlebyDocument {
      - parameter trigger:   the concerned trigger
      - parameter instances: the grabed instances.
      */
-    private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
+    private func _dataReceivedFor(trigger:Trigger,instances:[BartlebyObjectProtocol]){
         self._triggeredData[trigger]=instances
         self._attemptTointegratePendingData()
     }
@@ -368,7 +368,7 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    private func _integrate(triggeredData:(Trigger,[Collectible]?)){
+    private func _integrate(triggeredData:(Trigger,[BartlebyObjectProtocol]?)){
         if triggeredData.1 == nil {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")

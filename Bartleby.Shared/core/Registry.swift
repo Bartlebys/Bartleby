@@ -67,7 +67,7 @@ public class Registry: BXDocument, SuperIterable {
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive there is no collectible instances
-    internal var _triggeredData=[Trigger:[Collectible]?]()
+    internal var _triggeredData=[Trigger:[BartlebyObjectProtocol]?]()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -285,7 +285,7 @@ public class Registry: BXDocument, SuperIterable {
     // MARK: - Collections Public API
 
     public func getCollection<T: CollectibleCollection>  () throws -> T {
-        guard var collection=self._collectionByName(T.collectionName) as? T else {
+        guard let collection=self._collectionByName(T.collectionName) as? T else {
             throw RegistryError.UnExistingCollection(collectionName: T.collectionName)
         }
         collection.undoManager=self.undoManager
@@ -509,7 +509,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter on: the closure
      */
-    public func superIterate(@noescape on:(element: protocol<Collectible, Supervisable>)->()) {
+    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()) {
         // We want to super superIterate on each collection
         for (_, collection) in _collections {
             collection.superIterate({ (element) in
