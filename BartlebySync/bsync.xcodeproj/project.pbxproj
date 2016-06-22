@@ -3203,6 +3203,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPC;
@@ -3222,6 +3223,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
 				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPC;
