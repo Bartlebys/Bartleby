@@ -107,11 +107,11 @@ public class Registry: BXDocument, SuperIterable {
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
-     Check [JDocument] (JDocument.swift) declareCollectibleTypes() for more detailled explanations.
+     Check [JDocument] (JDocument.swift) declareTypes() for more detailled explanations.
 
-     - parameter type: a Collectible type
+     - parameter type: a BartlebyObjectProtocol type
      */
-    public static func declareCollectibleType(type: Collectible.Type) {
+    public static func declareType(type: BartlebyObjectProtocol.Type) {
         let prototype=type.init()
         let name = prototype.runTimeTypeName()
         Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
@@ -140,7 +140,7 @@ public class Registry: BXDocument, SuperIterable {
     // to resolve externalReferences, cross reference, it simplify instance mobility from a registry to another, etc..
     // future implementation may include extension for lazy Storage
 
-    private static var _instancesByUID=Dictionary<String, Collectible>()
+    private static var _instancesByUID=Dictionary<String, BartlebyObjectProtocol>()
 
 
     // The number of registred object
@@ -155,7 +155,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter instance: the Identifiable instance
      */
-    public static func register<T: Collectible>(instance: T) {
+    public static func register<T: BartlebyObjectProtocol>(instance: T) {
         self._instancesByUID[instance.UID]=instance
     }
 
@@ -164,7 +164,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter instance: the collectible instance
      */
-    public static func unRegister<T: Collectible>(instance: T) {
+    public static func unRegister<T: BartlebyObjectProtocol>(instance: T) {
         self._instancesByUID.removeValueForKey(instance.UID)
     }
 
@@ -175,7 +175,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - returns: the instance
      */
-    public static func registredObjectByUID<T: Collectible>(UID: String) throws-> T {
+    public static func registredObjectByUID<T: BartlebyObjectProtocol>(UID: String) throws-> T {
         if let instance=self._instancesByUID[UID] as? T {
             return instance
         }
@@ -192,7 +192,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - returns: the instance
      */
-    static public func collectibleInstanceByUID(UID: String) -> Collectible? {
+    static public func collectibleInstanceByUID(UID: String) -> BartlebyObjectProtocol? {
         return self._instancesByUID[UID]
     }
 
@@ -284,7 +284,7 @@ public class Registry: BXDocument, SuperIterable {
 
     // MARK: - Collections Public API
 
-    public func getCollection<T: CollectibleCollection>  () throws -> T {
+    public func getCollection<T:CollectibleCollection>  () throws -> T {
         guard let collection=self._collectionByName(T.collectionName) as? T else {
             throw RegistryError.UnExistingCollection(collectionName: T.collectionName)
         }
@@ -302,7 +302,7 @@ public class Registry: BXDocument, SuperIterable {
     }
 
 
-    // Any call should always be casted to a CollectibleCollection
+    // Any call should always be casted to a BartlebyObjectProtocolCollection
     func _collectionByName(name: String) -> Collection? {
         return _collections[name]
     }
@@ -649,7 +649,7 @@ extension Registry {
 
      - parameter instances: the collectible instances
      */
-    public func markAsDistributed<T: Collectible>(inout instance: T) {
+    public func markAsDistributed<T: BartlebyObjectProtocol>(inout instance: T) {
         instance.distributed=true
     }
 
@@ -658,7 +658,7 @@ extension Registry {
 
      - parameter instances: the collectible instances
      */
-    public func markAsDistributed<T: Collectible>(inout instances: [T]) {
+    public func markAsDistributed<T: BartlebyObjectProtocol>(inout instances: [T]) {
         for var instance in instances {
             instance.distributed=true
         }

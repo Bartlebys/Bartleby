@@ -117,7 +117,7 @@ public func removeExternalReferenceWith(instanceUID: String, inout from external
     }
 }
 
-public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inout from collection: [T]) {
+public func deReferenceInstanceWithUID<T: BartlebyObjectProtocol>(instanceUID: String, inout from collection: [T]) {
     for (index, instance) in collection.enumerate().reverse() {
         if instance.UID==instanceUID {
             collection.removeAtIndex(index)
@@ -125,7 +125,7 @@ public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inou
     }
 }
 
-public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [ExternalReference] {
+public func instancesToExternalReferences<T: BartlebyObjectProtocol>(instances: [T]) -> [ExternalReference] {
     var externalReferences=[ExternalReference]()
     for instance in instances {
         externalReferences.append(ExternalReference(from:instance))
@@ -134,7 +134,7 @@ public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [Ex
 }
 
 
-public func instancesFromExternalReferences<T: Collectible>(externalReferences: [ExternalReference]) -> [T] {
+public func instancesFromExternalReferences<T: BartlebyObjectProtocol>(externalReferences: [ExternalReference]) -> [T] {
     var instances=[T]()
     for reference in externalReferences {
         if let instance: T=reference.toLocalInstance() {

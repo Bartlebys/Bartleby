@@ -43,7 +43,7 @@ extension ExternalReference {
 
      - returns: the ExternalReference
      */
-    public convenience init<T: Collectible>(from: T) {
+    public convenience init<T: BartlebyObjectProtocol>(from: T) {
         self.init()
         self.iUID=from.UID
         self.iTypeName=T.typeName()
@@ -57,7 +57,7 @@ extension ExternalReference {
 
      - parameter instanceCallBack: the closure that returns the instance.
      */
-    public func fetchInstance<T: Collectible>(of: T.Type, instanceCallBack:((instance: T?)->())) {
+    public func fetchInstance<T: BartlebyObjectProtocol>(of: T.Type, instanceCallBack:((instance: T?)->())) {
         if let fetched = try? Registry.registredObjectByUID(self.iUID) as T {
             // Return the fetched instance.
             instanceCallBack(instance:fetched)
@@ -76,7 +76,7 @@ extension ExternalReference {
 
      - returns: the local instance
      */
-    public func toLocalInstance<T: Collectible>() -> T? {
+    public func toLocalInstance<T: BartlebyObjectProtocol>() -> T? {
         return try? Registry.registredObjectByUID(self.iUID) as T
     }
 

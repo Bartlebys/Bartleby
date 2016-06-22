@@ -201,7 +201,7 @@ class SerializableInvocationsTests: XCTestCase {
         let user=User()
         user.email="bartleby@barltebys.org"
         let printer =  RePrintUserWithoutObjc(arguments:user)
-        Registry.declareCollectibleType(RePrintUserWithoutObjc)
+        Registry.declareType(RePrintUserWithoutObjc)
 
         let serializedInvocation=printer.serialize()
         do {
