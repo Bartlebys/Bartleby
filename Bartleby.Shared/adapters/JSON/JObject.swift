@@ -20,7 +20,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 }
 
 
-public typealias BartlebyObjectProtocol = protocol<Collectible, Supervisable, NSCopying, NSSecureCoding>
+
+// This current stack implements a large part of the BartlebyObjectProtocol 
+// by using ObjectMapper to perform JSON serialization/deserialization.
+public protocol BartlebyObjectByMappable :BartlebyObjectProtocol,Mappable{
+
+}
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 
@@ -29,7 +34,7 @@ public typealias BartlebyObjectProtocol = protocol<Collectible, Supervisable, NS
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject,BartlebyObjectProtocol,Mappable {
+@objc(JObject) public class JObject: NSObject,BartlebyObjectByMappable {
 
 
     // MARK: - Initializable
@@ -297,4 +302,10 @@ extension JObject:DictionaryRepresentation {
         self.defineUID()
         return Mapper().toJSON(self)
     }
+
+    public func patchFrom(dictionary:[String : AnyObject]){
+        let mapped=Map(mappingType: .FromJSON, JSONDictionary: dictionary)
+        self.mapping(mapped)
+    }
+
 }

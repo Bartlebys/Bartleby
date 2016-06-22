@@ -534,7 +534,7 @@ public class Registry: BXDocument, SuperIterable {
 
 
     // SSE server sent event source
-    private var _SSE:EventSource?
+    internal var _SSE:EventSource?
 
 
     /// The online flag is driving the SSE connection process.
@@ -566,7 +566,7 @@ public class Registry: BXDocument, SuperIterable {
     /**
      Connect to SSE
      */
-    private func _connectToSSE() {
+    internal func _connectToSSE() {
         bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
         let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
         let lastIndex=0
@@ -575,7 +575,53 @@ public class Registry: BXDocument, SuperIterable {
         self._SSE=EventSource(url:stringURL,headers:headers)
         self._SSE!.addEventListener("relay") { (id, event, data) in
             bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
-            // ACKNOWLEDGE
+
+            // Parse the Data
+            /*
+ 
+                identifier = Optional("1466598738")
+                event name = Optional("relay") event name
+                data = Optional("{\"i\":9,\"d\":\"NERBNjdFNzctMDZEOS00MkFELUFEQUItRjgxRTE3OTA4QURF\",\"r\":\"Rjk0OUE3MTgtQTZDQy00ODA3LUE0QzAtN0RDODExQjIzRUZC\",\"c\":\"users\",\"a\":\"ReadUserbyId\",\"u\":\"MTc3OUNGNjUtM0YzMS00OUY2LUI4MjItQ0JCMDEwNDU0NTU5\"}")
+             */
+
+            do {
+                if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
+                    if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                        if  let index:Int=JSONDictionary["i"] as? Int,
+                            let action:String=JSONDictionary["a"] as? String,
+                            let collectionName=JSONDictionary["c"] as? String,
+                            let uids=JSONDictionary["u"] as? String {
+
+                            let trigger=Trigger()
+
+                            // Mandatory Trigger Data
+                            trigger.index=index
+                            trigger.action=action
+                            trigger.collectionName=collectionName
+                            trigger.UIDS=uids
+
+                            // Optional data
+                            // That may be omitted on triggering
+                            trigger.spaceUID=JSONDictionary["d"] as? String
+                            trigger.runUID=JSONDictionary["r"] as? String
+                            trigger.senderUID=JSONDictionary["s"] as? String
+                            trigger.origin=JSONDictionary["o"] as? String
+
+                            if let documentSelf=self as? BartlebyDocument{
+                                var triggers=[Trigger]()
+                                triggers.append(trigger)
+                                documentSelf._triggersHasBeenReceived(triggers)
+                            }else{
+                                bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
+                            }
+
+                        }
+                    }
+                }
+
+            }catch{
+                bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+            }
         }
     }
 

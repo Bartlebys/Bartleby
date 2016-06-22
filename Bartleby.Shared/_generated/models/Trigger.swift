@@ -30,7 +30,7 @@ import ObjectMapper
 	//The UID of the instance of Bartleby client that has created the trigger.
 	public var runUID:String?
 	//The action that has initiated the trigger
-	public var origin:String = ""
+	public var origin:String?
 	//The targetted collection name
 	public var collectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
@@ -72,7 +72,7 @@ import ObjectMapper
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.runUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"runUID") as NSString?)
-		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey: "origin")! as NSString)
+		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey:"origin") as NSString?)
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
@@ -92,7 +92,9 @@ import ObjectMapper
 		if let runUID = self.runUID {
 			coder.encodeObject(runUID,forKey:"runUID")
 		}
-		coder.encodeObject(self.origin,forKey:"origin")
+		if let origin = self.origin {
+			coder.encodeObject(origin,forKey:"origin")
+		}
 		coder.encodeObject(self.collectionName,forKey:"collectionName")
 		if let creationDate = self.creationDate {
 			coder.encodeObject(creationDate,forKey:"creationDate")

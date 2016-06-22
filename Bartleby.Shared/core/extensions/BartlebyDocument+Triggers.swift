@@ -185,7 +185,7 @@ extension BartlebyDocument {
 
      - parameter triggers: the collection of Trigger
      */
-    private func _triggersHasBeenReceived(triggers:[Trigger]) {
+    internal func _triggersHasBeenReceived(triggers:[Trigger]) {
 
         self.acknowledgeTriggers(triggers)
         self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
@@ -248,18 +248,20 @@ extension BartlebyDocument {
         let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
 
         let prototypeName = PString.ucfirst(entityName)
-        guard let prototypeClass = NSClassFromString(prototypeName) else{
+        guard let PrototypeClass = NSClassFromString(prototypeName) else{
             bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
-        guard let validatedPrototypeClass = prototypeClass as? protocol<Collectible,Mappable> else{
-            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+
+        guard let InitializablePrototypeClass:Initializable.Type = PrototypeClass as? Initializable.Type else{
+            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
 
+
         var dictionary:Dictionary<String, AnyObject>=[:]
         var pathURL = baseURL
-        if multiple{
+        if !multiple{
             let UID=uids.first!
             pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
         }else{
@@ -269,12 +271,11 @@ extension BartlebyDocument {
         let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
         let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
 
-
         r.responseJSON { (response) in
 
-            /////////////////////////
-            // Result Handling
-            ////////////////////////
+            ////////////////////////////
+            // Dynamic Result Handling
+            ////////////////////////////
 
             let request=response.request
             let result=response.result
@@ -293,29 +294,35 @@ extension BartlebyDocument {
 
                          - parameter jsonDictionary: a json Dictionary to apply on a dynamic Prototype
 
-                         - returns: a Collectible instance
+                         - returns: a Collectible instance or nil
                          */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible{
-                             let prototype=validatedPrototypeClass.dynamicType.init()
-                            let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
-                            var instance=prototype
-                            instance.mapping(mapped)
-                           return instance
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible?{
+                            if let prototype=InitializablePrototypeClass.init() as? BartlebyObjectByMappable{
+                                    prototype.patchFrom(jsonDictionary)
+                                    return prototype
+                                }else{
+                                    bprint("Trigger result Casting failure \(jsonDictionary)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+                                    return nil
+                            }
+
                         }
 
                         if multiple{
                                 // upsert a collection
                                 if let d=result.value as? [[String : AnyObject]]{
                                     for jsonDictionary in d{
-                                        let instance=__instantiate(from: jsonDictionary)
-                                        self.upsert(instance)
+                                        if let instance=__instantiate(from: jsonDictionary){
+                                             self.upsert(instance)
+                                        }
+
                                     }
                                 }
                             }else{
                                // Unique entity
                                 if let jsonDictionary=result.value as? [String : AnyObject]{
-                                    let instance=__instantiate(from: jsonDictionary)
-                                    self.upsert(instance)
+                                    if let instance=__instantiate(from: jsonDictionary){
+                                        self.upsert(instance)
+                                    }
                                 }
                             }
                     }else{
@@ -383,6 +390,7 @@ extension BartlebyDocument {
             self._triggeredData.removeAtIndex(idx)
         }
     }
+
 
     
 }

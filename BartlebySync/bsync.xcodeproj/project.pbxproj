@@ -896,6 +896,10 @@
 		E56A90001C8DF5120043F90E /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
 		E5A557C91C8EC61E009A9A63 /* UpDownDirectivesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */; };
 		E5A557CA1C8EC84D009A9A63 /* bsyncMiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */; };
+		E5B78DA91D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */; };
+		E5B78DAA1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */; };
+		E5B78DAB1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */; };
+		E5B78DAC1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */; };
 		E5B98E961CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
 		E5B98E971CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
 		E5B98E981CC0E6CD00A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */; };
@@ -1196,6 +1200,7 @@
 		E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCredentialsCommand.swift; sourceTree = "<group>"; };
 		E59A14191C3BB43F009AC461 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
 		E5A557CB1C8EC9DF009A9A63 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObjectProtocol.swift; sourceTree = "<group>"; };
 		E5B98E871CC0E6CD00A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5B98E881CC0E6CD00A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E891CC0E6CD00A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -1512,6 +1517,7 @@
 		E508E68D1CFDE53A00AC0173 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E5B78DA81D1ADCF800457434 /* BartlebyObjectProtocol.swift */,
 				E508E68E1CFDE53A00AC0173 /* BartlebyFileIO.swift */,
 				E508E68F1CFDE53A00AC0173 /* Collectible.swift */,
 				E508E6901CFDE53A00AC0173 /* CollectibleCollection.swift */,
@@ -1949,7 +1955,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Benoit Pereira da silva";
 				TargetAttributes = {
 					5B5D08FB1CDC8D91001FB281 = {
@@ -1963,6 +1969,9 @@
 					};
 					E5FEE5BD1CBF5E5E006AFA2E = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = VDUR2YY5MS;
+						DevelopmentTeamName = "Lylo Media Group SA";
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -2193,6 +2202,7 @@
 				E508E76D1CFDE53A00AC0173 /* DeleteUsers.swift in Sources */,
 				5B5D093C1CDC91C4001FB281 /* Option.swift in Sources */,
 				5B5D09A21CDC91F9001FB281 /* (null) in Sources */,
+				E5B78DAC1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */,
 				5B5D09481CDC91E3001FB281 /* (null) in Sources */,
 				E508E74D1CFDE53A00AC0173 /* DeleteGroups.swift in Sources */,
 				5B5D09CA1CDC921E001FB281 /* (null) in Sources */,
@@ -2541,6 +2551,7 @@
 				E5B98EB71CC0E6CD00A7ECD1 /* TransformOf.swift in Sources */,
 				E508E7CA1CFDE53A00AC0173 /* UpdateUser.swift in Sources */,
 				5B0D4B951D058644009CBD93 /* CryptedCommand.swift in Sources */,
+				E5B78DA91D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */,
 				E53E275B1CA572940079ED23 /* Response.swift in Sources */,
 				E508E7EE1CFDE53A00AC0173 /* JSerializer.swift in Sources */,
 				E508E89E1CFDE53A00AC0173 /* ReactiveTask.swift in Sources */,
@@ -2654,6 +2665,7 @@
 				E508E8031CFDE53A00AC0173 /* Bartleby.swift in Sources */,
 				E508E8C31CFDE53A00AC0173 /* TriggersByIds.swift in Sources */,
 				E508E80B1CFDE53A00AC0173 /* Consignation.swift in Sources */,
+				E5B78DAA1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */,
 				E552B7AE1C3D4E49001CD53B /* DeltaPathMap.m in Sources */,
 				E508E75B1CFDE53A00AC0173 /* DeletePermissions.swift in Sources */,
 				E508E6E71CFDE53A00AC0173 /* ExternalReference.swift in Sources */,
@@ -2892,6 +2904,7 @@
 				E55C927F1CBF8998008163F6 /* BsyncDirectives.swift in Sources */,
 				E508E8201CFDE53A00AC0173 /* Completion+Conveniences.swift in Sources */,
 				E508E8381CFDE53A00AC0173 /* Registry+SecurityScopes.swift in Sources */,
+				E5B78DAB1D1ADCF800457434 /* BartlebyObjectProtocol.swift in Sources */,
 				E5B98EBF1CC0E6CD00A7ECD1 /* URLTransform.swift in Sources */,
 				E508E7A41CFDE53A00AC0173 /* ReadUsersByIds.swift in Sources */,
 				5BB60F401CBFE3C500D23B4F /* CryptedDataTransform.swift in Sources */,
@@ -3040,12 +3053,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
 		E5C0CEC91C36CC2900F3B7B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3063,7 +3078,6 @@
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3095,6 +3109,7 @@
 		E5C0CECA1C36CC2900F3B7B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -3112,7 +3127,6 @@
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3136,7 +3150,7 @@
 		E5C0CECC1C36CC2900F3B7B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				LD_RUNPATH_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
@@ -3150,7 +3164,7 @@
 		E5C0CECD1C36CC2900F3B7B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				LD_RUNPATH_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
@@ -3158,14 +3172,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
 		E5C0CED81C36CCDD00F3B7B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -3181,8 +3196,8 @@
 		E5C0CED91C36CCDD00F3B7B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -3192,14 +3207,17 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
 		E5FEE5C71CBF5E5E006AFA2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
@@ -3218,8 +3236,10 @@
 		E5FEE5C81CBF5E5E006AFA2E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = BsyncXPC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks @loader_path/../../../../Frameworks";
@@ -3231,6 +3251,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};

@@ -15,5 +15,7 @@ public protocol DictionaryRepresentation {
      - returns: the dictionary
      */
     func dictionaryRepresentation()->[String:AnyObject]
-    
+
+    func patchFrom(dictionary:[String : AnyObject])
+
 }
