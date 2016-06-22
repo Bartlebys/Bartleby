@@ -7,6 +7,10 @@
 //
 
 import Foundation
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+    import BartlebyKit
+#endif
 
 extension BsyncHashMap{
 
