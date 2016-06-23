@@ -38,6 +38,11 @@
                BlueprintName = "BartlebyKitOSXTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "DocumentTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
