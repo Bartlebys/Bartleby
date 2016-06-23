@@ -20,13 +20,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 }
 
 
-public typealias BartlebyObjectProtocol = protocol<Collectible, NSCopying, NSSecureCoding>
-
-// We use the Object Mapper to support JSON serialization / deserialization 
-// To implement the BartlebyObjectProtocol
-public typealias BartlebyObjectByMappable = protocol<BartlebyObjectProtocol,Mappable>
-
-
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 
 // Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
@@ -34,7 +27,7 @@ public typealias BartlebyObjectByMappable = protocol<BartlebyObjectProtocol,Mapp
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject,BartlebyObjectByMappable {
+@objc(JObject) public class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
 
     // MARK: - Initializable

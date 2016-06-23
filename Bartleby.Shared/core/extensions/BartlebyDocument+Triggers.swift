@@ -185,7 +185,7 @@ extension BartlebyDocument {
 
      - parameter triggers: the collection of Trigger
      */
-    private func _triggersHasBeenReceived(triggers:[Trigger]) {
+    internal func _triggersHasBeenReceived(triggers:[Trigger]) {
 
         self.acknowledgeTriggers(triggers)
         self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
@@ -252,14 +252,14 @@ extension BartlebyDocument {
             bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
-        guard let validatedPrototypeClass = prototypeClass as? BartlebyObjectByMappable.Type else{
+        guard let validatedPrototypeClass = prototypeClass as? Collectible.Type else{
             bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
 
         var dictionary:Dictionary<String, AnyObject>=[:]
         var pathURL = baseURL
-        if multiple{
+        if !multiple{
             let UID=uids.first!
             pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
         }else{
@@ -293,29 +293,34 @@ extension BartlebyDocument {
 
                          - parameter jsonDictionary: a json Dictionary to apply on a dynamic Prototype
 
-                         - returns: a Collectible instance
+                         - returns: a optionnal Collectible instance
                          */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->BartlebyObjectByMappable{
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible?{
                             let prototype=validatedPrototypeClass.init()
-                            let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
-                            var instance=prototype
-                            instance.mapping(mapped)
-                           return instance
+                            if var mappable=prototype as? Mappable{
+                                let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
+                                mappable.mapping(mapped)
+                                return mappable as? Collectible
+                            }
+                            return nil
                         }
 
                         if multiple{
                                 // upsert a collection
                                 if let d=result.value as? [[String : AnyObject]]{
                                     for jsonDictionary in d{
-                                        let instance=__instantiate(from: jsonDictionary)
-                                        self.upsert(instance)
+                                        if  let instance=__instantiate(from: jsonDictionary){
+                                            self.upsert(instance)
+                                        }
+
                                     }
                                 }
                             }else{
                                // Unique entity
                                 if let jsonDictionary=result.value as? [String : AnyObject]{
-                                    let instance=__instantiate(from: jsonDictionary)
-                                    self.upsert(instance)
+                                    if let instance=__instantiate(from: jsonDictionary){
+                                        self.upsert(instance)
+                                    }
                                 }
                             }
                     }else{
@@ -334,7 +339,7 @@ extension BartlebyDocument {
      - parameter trigger:   the concerned trigger
      - parameter instances: the grabed instances.
      */
-    private func _dataReceivedFor(trigger:Trigger,instances:[BartlebyObjectProtocol]){
+    private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
         self._triggeredData[trigger]=instances
         self._attemptTointegratePendingData()
     }
@@ -361,7 +366,7 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    private func _integrate(triggeredData:(Trigger,[BartlebyObjectProtocol]?)){
+    private func _integrate(triggeredData:(Trigger,[Collectible]?)){
         if triggeredData.1 == nil {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")

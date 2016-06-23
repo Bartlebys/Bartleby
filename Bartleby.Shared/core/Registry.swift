@@ -72,7 +72,7 @@ public class Registry: BXDocument, SuperIterable {
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive there is no collectible instances
-    internal var _triggeredData=[Trigger:[BartlebyObjectProtocol]?]()
+    internal var _triggeredData=[Trigger:[Collectible]?]()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -514,7 +514,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter on: the closure
      */
-    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()) {
+    public func superIterate(@noescape on:(element: Collectible)->()) {
         // We want to super superIterate on each collection
         for (_, collection) in _collections {
             collection.superIterate({ (element) in
@@ -580,7 +580,53 @@ public class Registry: BXDocument, SuperIterable {
         self._SSE=EventSource(url:stringURL,headers:headers)
         self._SSE!.addEventListener("relay") { (id, event, data) in
             bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
-            // ACKNOWLEDGE
+
+            // Parse the Data
+            /*
+ 
+                identifier = Optional("1466598738")
+                event name = Optional("relay") event name
+                data = Optional("{\"i\":9,\"d\":\"NERBNjdFNzctMDZEOS00MkFELUFEQUItRjgxRTE3OTA4QURF\",\"r\":\"Rjk0OUE3MTgtQTZDQy00ODA3LUE0QzAtN0RDODExQjIzRUZC\",\"c\":\"users\",\"a\":\"ReadUserbyId\",\"u\":\"MTc3OUNGNjUtM0YzMS00OUY2LUI4MjItQ0JCMDEwNDU0NTU5\"}")
+             */
+
+            do {
+                if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
+                    if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                        if  let index:Int=JSONDictionary["i"] as? Int,
+                            let action:String=JSONDictionary["a"] as? String,
+                            let collectionName=JSONDictionary["c"] as? String,
+                            let uids=JSONDictionary["u"] as? String {
+
+                            let trigger=Trigger()
+
+                            // Mandatory Trigger Data
+                            trigger.index=index
+                            trigger.action=action
+                            trigger.collectionName=collectionName
+                            trigger.UIDS=uids
+
+                            // Optional data
+                            // That may be omitted on triggering
+                            trigger.spaceUID=JSONDictionary["d"] as? String
+                            trigger.runUID=JSONDictionary["r"] as? String
+                            trigger.senderUID=JSONDictionary["s"] as? String
+                            trigger.origin=JSONDictionary["o"] as? String
+
+                            if let documentSelf=self as? BartlebyDocument{
+                                var triggers=[Trigger]()
+                                triggers.append(trigger)
+                                documentSelf._triggersHasBeenReceived(triggers)
+                            }else{
+                                bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
+                            }
+
+                        }
+                    }
+                }
+
+            }catch{
+                bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+            }
         }
     }
 

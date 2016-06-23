@@ -22,7 +22,7 @@ public typealias IterableCollectibleCollection = protocol<Collection, SequenceTy
 
 // Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
-public protocol CollectibleCollection: BartlebyObjectProtocol {
+public protocol CollectibleCollection: Collectible {
 
     // The undo manager (for automation)
     weak var undoManager: NSUndoManager? { get set }
@@ -44,7 +44,7 @@ public protocol CollectibleCollection: BartlebyObjectProtocol {
 
      - parameter item: the collectible item
      */
-    func add(item: BartlebyObjectProtocol)
+    func add(item: Collectible)
 
     /**
      Insert an item at a given index.
@@ -52,7 +52,7 @@ public protocol CollectibleCollection: BartlebyObjectProtocol {
      - parameter item:  the collectible item
      - parameter index: the insertion index
      */
-    func insertObject(item: BartlebyObjectProtocol, inItemsAtIndex index: Int)
+    func insertObject(item: Collectible, inItemsAtIndex index: Int)
 
 
     /**
@@ -69,7 +69,7 @@ public protocol CollectibleCollection: BartlebyObjectProtocol {
 
      - returns: true if the item has been removed
      */
-    func removeObject(item: BartlebyObjectProtocol) -> Bool
+    func removeObject(item: Collectible) -> Bool
 
 
     /**
@@ -107,7 +107,7 @@ public protocol SuperIterable {
 
      - returns: return value description
      */
-    func superIterate(@noescape on:(element:BartlebyObjectProtocol)->())
+    func superIterate(@noescape on:(element:Collectible)->())
 }
 
 

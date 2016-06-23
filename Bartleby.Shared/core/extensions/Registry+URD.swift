@@ -21,7 +21,7 @@ public extension Registry {
 
      - returns: success or failure flag
      */
-    public func upsert(instance: BartlebyObjectProtocol) -> Bool {
+    public func upsert(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.add(instance)
             return true
@@ -37,7 +37,7 @@ public extension Registry {
 
      - returns: success or failure flag
      */
-    public func upsert(instances: [BartlebyObjectProtocol]) -> Bool {
+    public func upsert(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
             result=result&&self.upsert(instance)
@@ -58,7 +58,7 @@ public extension Registry {
 
      - returns: success or failure flag
      */
-    public func delete(instance: BartlebyObjectProtocol) -> Bool {
+    public func delete(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             return collection.removeObject(instance)
         }
@@ -72,7 +72,7 @@ public extension Registry {
 
      - returns: success or failure flag
      */
-    public func delete(instances: [BartlebyObjectProtocol]) -> Bool {
+    public func delete(instances: [Collectible]) -> Bool {
         var result=true
         for instance in instances {
             result=result&&self.delete(instance)
