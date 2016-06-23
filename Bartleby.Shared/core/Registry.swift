@@ -52,7 +52,7 @@ func ==(lhs: Registry, rhs: Registry) -> Bool {
  Documents can be shared between iOS, tvOS and OSX.
 
  */
-public class Registry: BXDocument, SuperIterable {
+public class Registry: BXDocument {
 
 
     // A notification that is sent when the registry is fully loaded.
@@ -98,7 +98,7 @@ public class Registry: BXDocument, SuperIterable {
     public var hasBeenLoaded: Bool=false
 
     /// The underlining storage hashed by collection name
-    private var _collections=[String:Collection]()
+    internal var _collections=[String:Collection]()
 
     /// We store the URL of the active security bookmarks
     internal var _activeSecurityBookmarks=[NSURL]()
@@ -504,42 +504,10 @@ public class Registry: BXDocument, SuperIterable {
     }
 
 
-    // MARK : SuperIterable
-
-    /**
-     An iterator that permit dynamic approaches.
-     The Registry ignore the real types.
-     Currently we do not use SequenceType, Subscript, ...
-
-     - parameter on: the closure
-     */
-    public func superIterate(@noescape on:(element: Collectible)->()) {
-        // We want to super superIterate on each collection
-        for (_, collection) in _collections {
-            collection.superIterate({ (element) in
-                on(element: element)
-            })
-        }
-    }
-
-    /**
-     A collection iterator
-
-     - parameter on: the iteration closure
-     */
-    public func iterateOnCollections(@noescape on:(collection: Collection)->()) throws {
-        for (_, collection) in _collections {
-            on(collection: collection)
-        }
-    }
-
-
     // MARK: - SSE
 
-
     // SSE server sent event source
-    private var _SSE:EventSource?
-
+    internal var _sse:EventSource?
 
     /// The online flag is driving the SSE connection process.
     public var online:Bool=false{
@@ -576,16 +544,16 @@ public class Registry: BXDocument, SuperIterable {
         let lastIndex=self.registryMetadata.lastIntegratedTriggerIndex
         let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&runUID=\(Bartleby.runUID)&showDetails==false")
         let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
-        self._SSE=EventSource(url:stringURL,headers:headers)
-        self._SSE!.addEventListener("relay") { (id, event, data) in
+        self._sse=EventSource(url:stringURL,headers:headers)
+        self._sse!.addEventListener("relay") { (id, event, data) in
             bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
 
             // Parse the Data
             /*
- 
-                identifier = Optional("1466598738")
-                event name = Optional("relay") event name
-                data = Optional("{\"i\":9,\"d\":\"NERBNjdFNzctMDZEOS00MkFELUFEQUItRjgxRTE3OTA4QURF\",\"r\":\"Rjk0OUE3MTgtQTZDQy00ODA3LUE0QzAtN0RDODExQjIzRUZC\",\"c\":\"users\",\"a\":\"ReadUserbyId\",\"u\":\"MTc3OUNGNjUtM0YzMS00OUY2LUI4MjItQ0JCMDEwNDU0NTU5\"}")
+
+             identifier = Optional("1466598738")
+             event name = Optional("relay") event name
+             data = Optional("{\"i\":9,\"d\":\"NERBNjdFNzctMDZEOS00MkFELUFEQUItRjgxRTE3OTA4QURF\",\"r\":\"Rjk0OUE3MTgtQTZDQy00ODA3LUE0QzAtN0RDODExQjIzRUZC\",\"c\":\"users\",\"a\":\"ReadUserbyId\",\"u\":\"MTc3OUNGNjUtM0YzMS00OUY2LUI4MjItQ0JCMDEwNDU0NTU5\"}")
              */
 
             do {
@@ -628,45 +596,20 @@ public class Registry: BXDocument, SuperIterable {
             }
         }
     }
-
+    
     private  func _closeSSE() {
-        if let sse=self._SSE{
+        if let sse=self._sse{
             sse.close()
-            self._SSE=nil
+            self._sse=nil
         }
     }
-
 
 }
 
 
-// MARK: - Instance Distribution management
-
-extension Registry {
-
-    // MARK: markAsDistributed
-
-    /**
-     Marks the instance as distributed (on Push).
-
-     - parameter instances: the collectible instances
-     */
-    public func markAsDistributed<T: Collectible>(inout instance: T) {
-        instance.distributed=true
-    }
-
-    /**
-     Marks the instances as distributed  (on Push).
-
-     - parameter instances: the collectible instances
-     */
-    public func markAsDistributed<T: Collectible>(inout instances: [T]) {
-        for var instance in instances {
-            instance.distributed=true
-        }
-    }
 
 
 
-}
+
+
 

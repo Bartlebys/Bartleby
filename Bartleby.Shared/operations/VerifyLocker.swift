@@ -208,7 +208,7 @@ public class VerifyLocker: JObject {
             // Let find the current user
             if let spaceUID=locker.spaceUID {
                 // 1. Verify the data space consistency
-                if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
+                if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID) {
                     // 2. Verify the current user iUD
                     if let user=registry.registryMetadata.currentUser {
                         if user.UID == locker.userUID {

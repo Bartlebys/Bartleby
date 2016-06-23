@@ -20,7 +20,7 @@ public class LogoutUser: JObject {
                                              failureHandler failure:(context: JHTTPResponse)->()) {
                     let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
                     let pathURL=baseURL.URLByAppendingPathComponent("user/logout")
-                    if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID){
+                    if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
                         if registry.registryMetadata.identificationMethod == .Key{
                             // Delete the key
                             registry.registryMetadata.identificationValue=nil

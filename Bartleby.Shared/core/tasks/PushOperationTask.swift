@@ -53,8 +53,8 @@ import Foundation
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             // Clean up the successful task.
                             let spaceUID=operation.spaceUID
-                            if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
-                                registry.delete(operation)
+                            if let document=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
+                                document.delete(operation)
                                 bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             }
                             self.complete(completion)

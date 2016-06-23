@@ -12,6 +12,7 @@ import Foundation
 
 extension BartlebyDocument {
 
+
     // MARK: - Operations
 
     /**
@@ -138,6 +139,41 @@ extension BartlebyDocument {
         return operations
     }
 
+
+    /**
+     A collection iterator
+
+     - parameter on: the iteration closure
+     */
+    public func iterateOnCollections(@noescape on:(collection: Collection)->()) throws {
+        for (_, collection) in self._collections {
+            on(collection: collection)
+        }
+    }
+
+
+
+    // MARK: markAsDistributed
+
+    /**
+     Marks the instance as distributed (on Push).
+
+     - parameter instances: the collectible instances
+     */
+    public func markAsDistributed<T: Collectible>(inout instance: T) {
+        instance.distributed=true
+    }
+
+    /**
+     Marks the instances as distributed  (on Push).
+
+     - parameter instances: the collectible instances
+     */
+    public func markAsDistributed<T: Collectible>(inout instances: [T]) {
+        for var instance in instances {
+            instance.distributed=true
+        }
+    }
 
 }
 

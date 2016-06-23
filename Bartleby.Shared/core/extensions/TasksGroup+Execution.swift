@@ -183,7 +183,7 @@ public extension TasksGroup {
         } else if let lastTask: Task=self.lastChainedTask!.toLocalInstance() {
             try lastTask.addChildren(task)
         } else {
-            if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+            if let registry=Bartleby.sharedInstance.getDocumentByUID(self.spaceUID) {
                 let tasksCollection: TasksCollectionController = try registry.getCollection()
                 print(tasksCollection.items.count)
             }
@@ -201,7 +201,7 @@ public extension TasksGroup {
      - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
      */
     private func _insurePersistencyOfTask(task: Task) throws {
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(self.spaceUID) {
+        if let registry=Bartleby.sharedInstance.getDocumentByUID(self.spaceUID) {
             // Identify the task Creator.
             task.creatorUID=registry.currentUser.UID
             // Add the taksk to the peristent tasks.

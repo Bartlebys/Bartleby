@@ -108,7 +108,7 @@ public class HTTPManager: NSObject {
         headers[HTTPManager.SPACE_UID_KEY]=spaceUID
 
         // Injection of key based auth if relevent.
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID){
+        if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
             if registry.registryMetadata.identificationMethod == .Key{
                 if  let idv=registry.registryMetadata.identificationValue {
                     headers["kvid"]=idv

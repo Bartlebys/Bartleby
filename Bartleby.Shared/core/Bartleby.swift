@@ -137,18 +137,17 @@ public class  Bartleby: Consignee {
     /// Memory storage
     private var _registries: [String:Registry] = [String:Registry]()
 
+
     /**
-     Returns the registry if found
+     Returns a document by its UID
 
-     - parameter UID: the registry UID
+     - parameter UID: the uid
 
-     - returns: the registry or Nil
+     - returns: the document
      */
-    public func getRegistryByUID(UID: String) -> Registry? {
-        return _registries[UID]
+    public func getDocumentByUID(UID:String) -> BartlebyDocument?{
+        return _registries[UID] as? BartlebyDocument
     }
-
-
     /**
      Register a registry (each document has its own registry)
 
@@ -376,7 +375,7 @@ public class  Bartleby: Consignee {
      - returns: the
      */
     public func getCollaborationURLForSpaceUID(spaceUID: String) -> NSURL {
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(spaceUID) {
+        if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID) {
             if let collaborationServerURL=registry.registryMetadata.collaborationServerURL {
                 return collaborationServerURL
             }

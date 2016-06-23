@@ -56,7 +56,7 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
             super.invoke()
             if let jstring: ArgumentType = try? self.arguments() {
                 let spaceUID=jstring.string ?? Default.NO_UID
-                    if let document = Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument {
+                    if let document = Bartleby.sharedInstance.getDocumentByUID(spaceUID){
 
                         // #1 commit the pending Changes
                         do {

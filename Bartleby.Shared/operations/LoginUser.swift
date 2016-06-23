@@ -24,7 +24,7 @@ public class LoginUser: JObject {
 
         let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(user.spaceUID)
         let pathURL=baseURL.URLByAppendingPathComponent("user/login")
-        if let registry=Bartleby.sharedInstance.getRegistryByUID(user.spaceUID){
+        if let registry=Bartleby.sharedInstance.getDocumentByUID(user.spaceUID){
             
             // A valid registry is required for any authentication.
             // So you must create a Document and use its spaceUID before to login.

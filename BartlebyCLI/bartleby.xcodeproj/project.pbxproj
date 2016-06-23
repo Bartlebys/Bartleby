@@ -93,7 +93,7 @@
 		E508E9E21CFDE5FE00AC0173 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9501CFDE5FE00AC0173 /* NSNotification+Progression.swift */; };
 		E508E9E31CFDE5FE00AC0173 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9511CFDE5FE00AC0173 /* Progression+Conveniences.swift */; };
 		E508E9E41CFDE5FE00AC0173 /* Registry+SecurityScopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9521CFDE5FE00AC0173 /* Registry+SecurityScopes.swift */; };
-		E508E9E51CFDE5FE00AC0173 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9531CFDE5FE00AC0173 /* BartlebyDocument+LocalUpsertAndDelete.swift */; };
+		E508E9E51CFDE5FE00AC0173 /* Registry+LocalUpsertAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9531CFDE5FE00AC0173 /* Registry+LocalUpsertAndDelete.swift */; };
 		E508E9E61CFDE5FE00AC0173 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9541CFDE5FE00AC0173 /* Task+Execution.swift */; };
 		E508E9E71CFDE5FE00AC0173 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9551CFDE5FE00AC0173 /* TasksGroup+Execution.swift */; };
 		E508E9E81CFDE5FE00AC0173 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9561CFDE5FE00AC0173 /* Global.swift */; };
@@ -278,7 +278,7 @@
 		E508E9501CFDE5FE00AC0173 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
 		E508E9511CFDE5FE00AC0173 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
 		E508E9521CFDE5FE00AC0173 /* Registry+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SecurityScopes.swift"; sourceTree = "<group>"; };
-		E508E9531CFDE5FE00AC0173 /* BartlebyDocument+LocalUpsertAndDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+LocalUpsertAndDelete.swift"; sourceTree = "<group>"; };
+		E508E9531CFDE5FE00AC0173 /* Registry+LocalUpsertAndDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+LocalUpsertAndDelete.swift"; sourceTree = "<group>"; };
 		E508E9541CFDE5FE00AC0173 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E508E9551CFDE5FE00AC0173 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E508E9561CFDE5FE00AC0173 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
@@ -586,7 +586,7 @@
 				E508E9501CFDE5FE00AC0173 /* NSNotification+Progression.swift */,
 				E508E9511CFDE5FE00AC0173 /* Progression+Conveniences.swift */,
 				E508E9521CFDE5FE00AC0173 /* Registry+SecurityScopes.swift */,
-				E508E9531CFDE5FE00AC0173 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
+				E508E9531CFDE5FE00AC0173 /* Registry+LocalUpsertAndDelete.swift */,
 				E508E9541CFDE5FE00AC0173 /* Task+Execution.swift */,
 				E508E9551CFDE5FE00AC0173 /* TasksGroup+Execution.swift */,
 			);
@@ -962,7 +962,7 @@
 				E5B98E2D1CC0E63C00A7ECD1 /* URLTransform.swift in Sources */,
 				E5D086CE1C550E7500F0090E /* Option.swift in Sources */,
 				E5D0869A1C550E1900F0090E /* CryptedDataTransform.swift in Sources */,
-				E508E9E51CFDE5FE00AC0173 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
+				E508E9E51CFDE5FE00AC0173 /* Registry+LocalUpsertAndDelete.swift in Sources */,
 				E508E9921CFDE5FE00AC0173 /* JData.swift in Sources */,
 				E5B98E291CC0E63C00A7ECD1 /* EnumTransform.swift in Sources */,
 				E508E9C41CFDE5FE00AC0173 /* UpdateLockers.swift in Sources */,

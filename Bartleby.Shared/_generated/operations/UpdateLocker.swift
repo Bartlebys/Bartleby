@@ -122,26 +122,26 @@ import ObjectMapper
 
     func commit(){
         let context=Context(code:1710194365, caller: "UpdateLocker.commit")
-        if let registry = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._spaceUID) {
 
                 // Prepare the operation serialization
                 self.defineUID()
                 self._operation.defineUID()
                 self._operation.counter=0
                 self._operation.status=Operation.Status.Pending
-                self._operation.baseUrl=registry.registryMetadata.collaborationServerURL
+                self._operation.baseUrl=document.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
                 self._operation.spaceUID=self._spaceUID
                 self._operation.summary="UpdateLocker(\(self._locker.UID))"
 
-                if let currentUser=registry.registryMetadata.currentUser{
+                if let currentUser=document.registryMetadata.currentUser{
                     self._operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
 
                 // Provision the operation.
                 do{
-                    let ic:OperationsCollectionController = try registry.getCollection()
+                    let ic:OperationsCollectionController = try document.getCollection()
                     ic.add(self._operation, commit:false)
                 }catch{
                     Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
@@ -154,7 +154,7 @@ import ObjectMapper
         
                 self._locker.committed=true
         }else{
-            // This registry is not available there is nothing to do.
+            // This document is not available there is nothing to do.
             let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Structural error", comment: "Structural error"),
@@ -167,7 +167,7 @@ import ObjectMapper
 
     public func push(sucessHandler success:(context:JHTTPResponse)->(),
         failureHandler failure:(context:JHTTPResponse)->()){
-        if let _ = Bartleby.sharedInstance.getRegistryByUID(self._spaceUID) {
+        if let _ = Bartleby.sharedInstance.getDocumentByUID(self._spaceUID) {
             // The unitary operation are not always idempotent
             // so we do not want to push multiple times unintensionnaly.
             if  self._operation.status==Operation.Status.Pending ||
@@ -193,7 +193,7 @@ import ObjectMapper
                     }
                 )
             }else{
-                // This registry is not available there is nothing to do.
+                // This document is not available there is nothing to do.
                 let context=Context(code:807818168, caller: "UpdateLocker.push")
                 Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Push error", comment: "Push error"),
@@ -251,7 +251,7 @@ inDataSpace spaceUID:String,
                                 // Acknowledge the trigger and log QA issue
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
-                                        if let document=Bartleby.sharedInstance.getRegistryByUID(spaceUID) as? BartlebyDocument{
+                                        if let document=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
                                             document.acknowledgeOwnedTriggerIndex(index.integerValue)
                                         }
                                     }else{
