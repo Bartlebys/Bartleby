@@ -21,8 +21,8 @@
 		E50140FA1CE8B3BA00EDD9C3 /* Initializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F81CE8B3BA00EDD9C3 /* Initializable.swift */; };
 		E50140FC1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FB1CE8B3D400EDD9C3 /* Descriptible.swift */; };
 		E50140FD1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FB1CE8B3D400EDD9C3 /* Descriptible.swift */; };
-		E50140FF1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */; };
-		E50141001CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */; };
+		E50140FF1CE8B65100EDD9C3 /* DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DictionaryRepresentation.swift */; };
+		E50141001CE8B65100EDD9C3 /* DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140FE1CE8B65100EDD9C3 /* DictionaryRepresentation.swift */; };
 		E509A01A1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */; };
 		E509A01B1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */; };
 		E509A0221CF58468007DEF8C /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A01F1CF58468007DEF8C /* JData.swift */; };
@@ -348,7 +348,7 @@
 		E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E50140F81CE8B3BA00EDD9C3 /* Initializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Initializable.swift; sourceTree = "<group>"; };
 		E50140FB1CE8B3D400EDD9C3 /* Descriptible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Descriptible.swift; sourceTree = "<group>"; };
-		E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DicitionaryRepresentation.swift; sourceTree = "<group>"; };
+		E50140FE1CE8B65100EDD9C3 /* DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentation.swift; sourceTree = "<group>"; };
 		E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
 		E509A01F1CF58468007DEF8C /* JData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JData.swift; sourceTree = "<group>"; };
 		E509A0211CF58468007DEF8C /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
@@ -895,7 +895,7 @@
 				E5B775911CDCDDF2007261E1 /* Identifiable.swift */,
 				E5B775941CDCDDF2007261E1 /* Serializable.swift */,
 				E5B775951CDCDDF2007261E1 /* Serializer.swift */,
-				E50140FE1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift */,
+				E50140FE1CE8B65100EDD9C3 /* DictionaryRepresentation.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -1210,7 +1210,7 @@
 				E57A4C0A1CE8A34E0044106A /* DeleteLocker.swift in Sources */,
 				E5B776971CDCDDF2007261E1 /* BartlebyFileIO.swift in Sources */,
 				E57A4BCC1CE8A34E0044106A /* UsersCollectionController.swift in Sources */,
-				E50140FF1CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
+				E50140FF1CE8B65100EDD9C3 /* DictionaryRepresentation.swift in Sources */,
 				E592B78E1CFC2181000F3301 /* CreatePermissions.swift in Sources */,
 				E57A4C661CE8A34E0044106A /* UpdateUsers.swift in Sources */,
 				E57A4C2A1CE8A34E0044106A /* ReadLockersByIds.swift in Sources */,
@@ -1354,7 +1354,7 @@
 				E57A4C2B1CE8A34E0044106A /* ReadLockersByIds.swift in Sources */,
 				E592B78F1CFC2181000F3301 /* CreatePermissions.swift in Sources */,
 				E5B776941CDCDDF2007261E1 /* Global.swift in Sources */,
-				E50141001CE8B65100EDD9C3 /* DicitionaryRepresentation.swift in Sources */,
+				E50141001CE8B65100EDD9C3 /* DictionaryRepresentation.swift in Sources */,
 				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57A4C231CE8A34E0044106A /* ReadGroupById.swift in Sources */,
 			);

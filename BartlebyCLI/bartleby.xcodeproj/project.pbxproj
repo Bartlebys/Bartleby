@@ -105,7 +105,7 @@
 		E508E9EE1CFDE5FE00AC0173 /* ConcreteTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E95D1CFDE5FE00AC0173 /* ConcreteTask.swift */; };
 		E508E9EF1CFDE5FE00AC0173 /* CryptoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E95E1CFDE5FE00AC0173 /* CryptoDelegate.swift */; };
 		E508E9F01CFDE5FE00AC0173 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E95F1CFDE5FE00AC0173 /* Descriptible.swift */; };
-		E508E9F11CFDE5FE00AC0173 /* DicitionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9601CFDE5FE00AC0173 /* DicitionaryRepresentation.swift */; };
+		E508E9F11CFDE5FE00AC0173 /* DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9601CFDE5FE00AC0173 /* DictionaryRepresentation.swift */; };
 		E508E9F21CFDE5FE00AC0173 /* HTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9611CFDE5FE00AC0173 /* HTTPCommand.swift */; };
 		E508E9F31CFDE5FE00AC0173 /* HTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9621CFDE5FE00AC0173 /* HTTPResponse.swift */; };
 		E508E9F41CFDE5FE00AC0173 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508E9631CFDE5FE00AC0173 /* Identifiable.swift */; };
@@ -290,7 +290,7 @@
 		E508E95D1CFDE5FE00AC0173 /* ConcreteTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteTask.swift; sourceTree = "<group>"; };
 		E508E95E1CFDE5FE00AC0173 /* CryptoDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoDelegate.swift; sourceTree = "<group>"; };
 		E508E95F1CFDE5FE00AC0173 /* Descriptible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Descriptible.swift; sourceTree = "<group>"; };
-		E508E9601CFDE5FE00AC0173 /* DicitionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DicitionaryRepresentation.swift; sourceTree = "<group>"; };
+		E508E9601CFDE5FE00AC0173 /* DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentation.swift; sourceTree = "<group>"; };
 		E508E9611CFDE5FE00AC0173 /* HTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPCommand.swift; sourceTree = "<group>"; };
 		E508E9621CFDE5FE00AC0173 /* HTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPResponse.swift; sourceTree = "<group>"; };
 		E508E9631CFDE5FE00AC0173 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
@@ -603,7 +603,7 @@
 				E508E95D1CFDE5FE00AC0173 /* ConcreteTask.swift */,
 				E508E95E1CFDE5FE00AC0173 /* CryptoDelegate.swift */,
 				E508E95F1CFDE5FE00AC0173 /* Descriptible.swift */,
-				E508E9601CFDE5FE00AC0173 /* DicitionaryRepresentation.swift */,
+				E508E9601CFDE5FE00AC0173 /* DictionaryRepresentation.swift */,
 				E508E9611CFDE5FE00AC0173 /* HTTPCommand.swift */,
 				E508E9621CFDE5FE00AC0173 /* HTTPResponse.swift */,
 				E508E9631CFDE5FE00AC0173 /* Identifiable.swift */,
@@ -876,7 +876,7 @@
 				E508E9991CFDE5FE00AC0173 /* Tag.swift in Sources */,
 				E508E9B81CFDE5FE00AC0173 /* ReadPermissionById.swift in Sources */,
 				E508E98A1CFDE5FE00AC0173 /* TasksCollectionController.swift in Sources */,
-				E508E9F11CFDE5FE00AC0173 /* DicitionaryRepresentation.swift in Sources */,
+				E508E9F11CFDE5FE00AC0173 /* DictionaryRepresentation.swift in Sources */,
 				E508E9B51CFDE5FE00AC0173 /* ReadLockerById.swift in Sources */,
 				E508E9FC1CFDE5FE00AC0173 /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E508E9DB1CFDE5FE00AC0173 /* Default.swift in Sources */,
