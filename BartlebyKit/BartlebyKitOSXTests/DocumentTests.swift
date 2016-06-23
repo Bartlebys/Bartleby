@@ -27,7 +27,7 @@ class DocumentTests: TestCase {
         for i in 1...10 {
             let user=User()
             user.email="user\(i)@bartlebys.org"
-             DocumentTests._document.users.add(user)
+             DocumentTests._document.users.add(user,commit: false)
         }
 
         do {

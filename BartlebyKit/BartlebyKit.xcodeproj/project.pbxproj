@@ -792,11 +792,11 @@
 		E5B775611CDCDDF2007261E1 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				E5B775681CDCDDF2007261E1 /* JObject.swift */,
 				E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */,
 				E5B775651CDCDDF2007261E1 /* JDocument.swift */,
 				E5B775661CDCDDF2007261E1 /* JHTTPCommand.swift */,
 				E5B775671CDCDDF2007261E1 /* JHTTPResponse.swift */,
-				E5B775681CDCDDF2007261E1 /* JObject.swift */,
 				E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */,
 				E5B775691CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift */,
 				E5B7756A1CDCDDF2007261E1 /* JSerializer.swift */,
