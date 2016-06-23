@@ -11,7 +11,7 @@ import Foundation
 // MARK:- Local Instance(s) UD(s)
 
 
-public extension Registry {
+public extension BartlebyDocument {
 
     // MARK: Upsert
 

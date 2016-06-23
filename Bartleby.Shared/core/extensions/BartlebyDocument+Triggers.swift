@@ -19,13 +19,23 @@ extension BartlebyDocument {
      # SSE Encoding
 
      To insure good performance we encode the triggers for SSE usage.
-     ```
-     id: 1464885108
-     event: relay
-     data: {"i":7,"s":"<sender UID>","a":"ReadUsers","u":"<user UID>, <user UID>"}
-     ```
 
-     On trigger incorporate an action on a given set of UIDS.
+     ```
+     id: 1466684879     <- the Event ID
+     event: relay       <- the Event Name
+     data: {            <- the data
+     
+     "i":1,
+     "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
+     "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+     "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
+     "c":"users",                                               <- The collection name
+     "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+     "a":"ReadUserbyId",                                        <- action   : The action to be triggered
+     "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
+
+     }
+     ```
 
      # Why do we use Upsert?
 
@@ -35,13 +45,17 @@ extension BartlebyDocument {
 
      # Trigger.index
 
-     The index is injected server side using a semaphore on insertion to guarantee its consistency.
-     self.registryMetadata.triggersIndexes permitts to detect the data holes
+     The index is injected server side 
+     self.registryMetadata.triggersIndexes permits to detect the data holes
 
-     Consecutive Received triggers are immediately executed and deleted (local execution is resilient to fault, faults are ignored)
+     Data from Consecutive Received triggers are immediately integrated (local execution is resilient to fault, faults are ignored)
      If there are holes we try to fill the gap.
 
      */
+
+
+
+/*
 
     // MARK: - API
 
@@ -60,6 +74,7 @@ extension BartlebyDocument {
         }
     }
 
+
     /**
      Load  the pending triggers.
 
@@ -74,6 +89,8 @@ extension BartlebyDocument {
             }
         }
     }
+
+*/
 
 
     // MARK: - Triggers Acknowledgement (indexes and data holes management)
@@ -178,7 +195,8 @@ extension BartlebyDocument {
     }
 
 
-    // MARK: - Triggers storage
+    // MARK: - Triggers Receipts
+
 
     /**
      Called on reception of triggers.
@@ -202,13 +220,13 @@ extension BartlebyDocument {
 
         // Proceed to loading or direct insertion of triggers.
 
-        var shouldIntegrate=false
+        var shouldIntegrateImmediatly=false
         for trigger in integrableTriggers{
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
                 if trigger.action.contains("Delete"){
                     // it is a destructive action.
                     self._triggeredData[trigger]=nil
-                    shouldIntegrate=true
+                    shouldIntegrateImmediatly=true
                 }else{
                     // It is creation action
                     // Load data for un owned triggers only.
@@ -217,8 +235,8 @@ extension BartlebyDocument {
             }
         }
 
-        if shouldIntegrate{
-            self._attemptTointegratePendingData()
+        if shouldIntegrateImmediatly{
+            self._integrateContinuousPendingData()
         }
     }  
 
@@ -332,6 +350,7 @@ extension BartlebyDocument {
         }
     }
 
+   // MARK: - Local Data Integration
 
     /**
      Called on data reception
@@ -341,24 +360,31 @@ extension BartlebyDocument {
      */
     private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
         self._triggeredData[trigger]=instances
-        self._attemptTointegratePendingData()
+        self._integrateContinuousPendingData()
     }
 
-    private func _attemptTointegratePendingData(){
+
+
+    /**
+     Integrates the loaded data of continous triggers
+     Continuity of triggers is absolutely essential.
+     */
+    private func _integrateContinuousPendingData(){
         let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
             return lEntry.0.index < rEntry.0.index
         }
         for data  in sortedData{
             let triggerIndex=data.0.index
-            // Test the continuity.
+            // Integrate continuous data
             if triggerIndex == self.registryMetadata.lastIntegrableTriggerIndex+1{
                 self._integrate(data)
             }else{
-                bprint("Integration is suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
                 break
             }
         }
     }
+
 
 
     /**
@@ -388,6 +414,18 @@ extension BartlebyDocument {
             self._triggeredData.removeAtIndex(idx)
         }
     }
+
+
+
+    /**
+     Forces the data Integration to resolve inconsistencies.
+
+     - parameter triggerIndexes: The indexes that we want to ignore.
+     */
+    public func forceDataIntegration(ignore triggerIndexes:[Int]){
+
+    }
+
 
     
 }

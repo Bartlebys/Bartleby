@@ -83,6 +83,7 @@ public class Registry: BXDocument, SuperIterable {
         }
     }
 
+    /// The current document user
     public var currentUser: User {
         get {
             if let currentUser=self.registryMetadata.currentUser {
@@ -92,8 +93,6 @@ public class Registry: BXDocument, SuperIterable {
             }
         }
     }
-
-
 
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
@@ -574,7 +573,7 @@ public class Registry: BXDocument, SuperIterable {
     private func _connectToSSE() {
         bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
         let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-        let lastIndex=0
+        let lastIndex=self.registryMetadata.lastIntegratedTriggerIndex
         let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&runUID=\(Bartleby.runUID)&showDetails==false")
         let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
         self._SSE=EventSource(url:stringURL,headers:headers)
@@ -641,11 +640,9 @@ public class Registry: BXDocument, SuperIterable {
 }
 
 
-
 // MARK: - Instance Distribution management
 
 extension Registry {
-
 
     // MARK: markAsDistributed
 

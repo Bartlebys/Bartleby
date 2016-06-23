@@ -418,12 +418,16 @@ public class  Bartleby: Consignee {
 
     public func destroyLocalEphemeralInstances() {
         for (dataSpaceUID, registry) in _registries {
-            bprint("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
-            registry.superIterate({ (element) in
-                if element.ephemeral {
-                    registry.delete(element)
-                }
-            })
+            if  let document = registry as? BartlebyDocument{
+                bprint("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
+                document.superIterate({ (element) in
+                    if element.ephemeral {
+                        document.delete(element)
+                    }
+                })
+            }
+
+
         }
     }
 
