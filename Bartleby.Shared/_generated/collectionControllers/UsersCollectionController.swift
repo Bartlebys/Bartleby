@@ -58,7 +58,7 @@ import ObjectMapper
 
     - parameter on: the closure
     */
-    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()){
+    public func superIterate(@noescape on:(element: Collectible)->()){
         for item in self.items {
             on(element:item)
         }

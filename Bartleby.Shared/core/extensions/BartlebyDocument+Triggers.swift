@@ -252,9 +252,8 @@ extension BartlebyDocument {
             bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
-
-        guard let InitializablePrototypeClass:Initializable.Type = PrototypeClass as? Initializable.Type else{
-            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+        guard let validatedPrototypeClass = prototypeClass as? Collectible.Type else{
+            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
 
@@ -294,25 +293,24 @@ extension BartlebyDocument {
 
                          - parameter jsonDictionary: a json Dictionary to apply on a dynamic Prototype
 
-                         - returns: a Collectible instance or nil
+                         - returns: a optionnal Collectible instance
                          */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->BartlebyObjectProtocol?{
-                            if let prototype=InitializablePrototypeClass.init() as? BartlebyObjectByMappable{
-                                    prototype.patchFrom(jsonDictionary)
-                                    return prototype
-                                }else{
-                                    bprint("Trigger result Casting failure \(jsonDictionary)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-                                    return nil
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible?{
+                            let prototype=validatedPrototypeClass.init()
+                            if var mappable=prototype as? Mappable{
+                                let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
+                                mappable.mapping(mapped)
+                                return mappable as? Collectible
                             }
-
+                            return nil
                         }
 
                         if multiple{
                                 // upsert a collection
                                 if let d=result.value as? [[String : AnyObject]]{
                                     for jsonDictionary in d{
-                                        if let instance=__instantiate(from: jsonDictionary){
-                                             self.upsert(instance)
+                                        if  let instance=__instantiate(from: jsonDictionary){
+                                            self.upsert(instance)
                                         }
 
                                     }

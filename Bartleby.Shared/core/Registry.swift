@@ -15,6 +15,11 @@ import Foundation
     import UIKit
 #endif
 
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+#endif
+
+
 public enum RegistryError: ErrorType {
     case DuplicatedCollectionName(collectionName:String)
     case AttemptToLoadAnNonSupportedCollection(collectionName:String)
@@ -509,7 +514,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter on: the closure
      */
-    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()) {
+    public func superIterate(@noescape on:(element: Collectible)->()) {
         // We want to super superIterate on each collection
         for (_, collection) in _collections {
             collection.superIterate({ (element) in

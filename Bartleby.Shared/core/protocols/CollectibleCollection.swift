@@ -107,7 +107,7 @@ public protocol SuperIterable {
 
      - returns: return value description
      */
-    func superIterate(@noescape on:(element: BartlebyObjectProtocol)->())
+    func superIterate(@noescape on:(element:Collectible)->())
 }
 
 
