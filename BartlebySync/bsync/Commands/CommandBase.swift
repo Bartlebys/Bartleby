@@ -34,8 +34,6 @@ public class CommandBase: Handlers {
         } catch {
             _cli.printUsage()
             exit(EX_USAGE)
-            return false
-            
         }
     }
 
