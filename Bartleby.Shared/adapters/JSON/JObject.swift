@@ -295,4 +295,9 @@ extension JObject:DictionaryRepresentation {
         self.defineUID()
         return Mapper().toJSON(self)
     }
+
+    public func patchFrom(dictionaryRepresentation:[String:AnyObject]){
+        let mapped=Map(mappingType: .FromJSON, JSONDictionary: dictionaryRepresentation)
+        self.mapping(mapped)
+    }
 }

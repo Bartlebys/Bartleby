@@ -10,10 +10,18 @@ import Foundation
 
 public protocol DictionaryRepresentation {
     /**
-     Should return a dictionary composed of native members that can be serialized (!)
+     returns a dictionary
      
-     - returns: the dictionary
+     - returns: the dictionary representation
      */
     func dictionaryRepresentation()->[String:AnyObject]
+
+
+    /**
+     Applies the values stored in the dictionary representation to self.
+
+     - parameter dictionaryRepresentation: a dictionary
+     */
+    func patchFrom(dictionaryRepresentation:[String:AnyObject])
     
 }
