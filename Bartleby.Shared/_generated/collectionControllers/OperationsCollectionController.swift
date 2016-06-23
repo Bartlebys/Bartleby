@@ -58,7 +58,7 @@ import ObjectMapper
 
     - parameter on: the closure
     */
-    public func superIterate(@noescape on:(element: protocol<Collectible,Supervisable>)->()){
+    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()){
         for item in self.items {
             on(element:item)
         }
@@ -129,7 +129,7 @@ import ObjectMapper
 
     // MARK: Add
 
-    public func add(item:Collectible){
+    public func add(item:BartlebyObjectProtocol){
         #if os(OSX) && !USE_EMBEDDED_MODULES
         if let arrayController = self.arrayController{
             self.insertObject(item, inItemsAtIndex: arrayController.arrangedObjects.count)
@@ -143,7 +143,7 @@ import ObjectMapper
 
     // MARK: Insert
 
-    public func insertObject(item: Collectible, inItemsAtIndex index: Int) {
+    public func insertObject(item: BartlebyObjectProtocol, inItemsAtIndex index: Int) {
         if let item=item as? Operation{
 
 
@@ -208,7 +208,7 @@ import ObjectMapper
         }
     }
 
-    public func removeObject(item: Collectible)->Bool{
+    public func removeObject(item: BartlebyObjectProtocol)->Bool{
         var index=0
         for storedItem in items{
             if item.UID==storedItem.UID{

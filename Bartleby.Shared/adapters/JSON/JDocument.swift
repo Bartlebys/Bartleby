@@ -22,7 +22,7 @@ public class JDocument: Registry {
 
      **IMPORTANT** You Cannot use NSecureCoding for diverging classes
 
-     The role of declareCollectibleTypes() is to declare diverging members.
+     The role of declareTypes() is to declare diverging members.
      Or to produce an adaptation layer (from a type to another)
 
      ## Let's take an advanced example:
@@ -40,17 +40,17 @@ public class JDocument: Registry {
      To insure **cross product deserialization**
      Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
 
-     To associate those disymetric type you can add the class declareCollectibleTypes
+     To associate those disymetric type you can add the class declareTypes
      And implement typeName() and runTimeTypeName()
 
      ```
-     public class func declareCollectibleTypes() {
+     public class func declareTypes() {
         Registry.declareCollectibleType(Object)
         Registry.declareCollectibleType(Alias<Object>)
 
      ```
      */
-    public class func declareCollectibleTypes() {
+    public class func declareTypes() {
         /*
          Registry.declareCollectibleType(Object)
          Registry.declareCollectibleType(Alias<Object>)
@@ -60,7 +60,7 @@ public class JDocument: Registry {
     #if os(OSX)
     required public init() {
         super.init()
-        JDocument.declareCollectibleTypes()
+        JDocument.declareTypes()
     }
     #else
 
@@ -69,7 +69,7 @@ public class JDocument: Registry {
     public required init(fileURL url: NSURL) {
         self._fileURL = url
         super.init(fileUrl: url)
-        JDocument.declareCollectibleTypes()
+        JDocument.declareTypes()
     }
 
     #endif

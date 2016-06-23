@@ -31,8 +31,8 @@ public class BartlebyDocument : JDocument {
 
     // MARK - Universal Type Support
 
-    override public class func declareCollectibleTypes() {
-        super.declareCollectibleTypes()
+    override public class func declareTypes() {
+        super.declareTypes()
     }
 
     private var _KVOContext: Int = 0
@@ -567,12 +567,12 @@ public class BartlebyDocument : JDocument {
 
     required public init() {
         super.init()
-        BartlebyDocument.declareCollectibleTypes()    }
+        BartlebyDocument.declareTypes()    }
     #else
 
     public required init(fileURL url: NSURL) {
         super.init(fileURL: url)
-        BartlebyDocument.declareCollectibleTypes()    }
+        BartlebyDocument.declareTypes()    }
 
     #endif
 

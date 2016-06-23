@@ -13,7 +13,7 @@ import Foundation
 
 
 // Collectible items are identifiable and serializable
-public protocol Collectible: Initializable, Identifiable, Serializable, UniversalType {
+public protocol Collectible: Initializable, Identifiable, Serializable, Supervisable, UniversalType {
 
     // This flag is set to true on first commit.
     var committed: Bool { get set }

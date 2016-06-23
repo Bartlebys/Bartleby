@@ -252,7 +252,7 @@ extension BartlebyDocument {
             bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
-        guard let validatedPrototypeClass = prototypeClass as? protocol<Collectible,Mappable> else{
+        guard let validatedPrototypeClass = prototypeClass as? BartlebyObjectByMappable.Type else{
             bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
             return
         }
@@ -295,8 +295,8 @@ extension BartlebyDocument {
 
                          - returns: a Collectible instance
                          */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible{
-                             let prototype=validatedPrototypeClass.dynamicType.init()
+                        func __instantiate(from jsonDictionary:[String : AnyObject])->BartlebyObjectByMappable{
+                            let prototype=validatedPrototypeClass.init()
                             let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
                             var instance=prototype
                             instance.mapping(mapped)
@@ -334,7 +334,7 @@ extension BartlebyDocument {
      - parameter trigger:   the concerned trigger
      - parameter instances: the grabed instances.
      */
-    private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
+    private func _dataReceivedFor(trigger:Trigger,instances:[BartlebyObjectProtocol]){
         self._triggeredData[trigger]=instances
         self._attemptTointegratePendingData()
     }
@@ -361,7 +361,7 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    private func _integrate(triggeredData:(Trigger,[Collectible]?)){
+    private func _integrate(triggeredData:(Trigger,[BartlebyObjectProtocol]?)){
         if triggeredData.1 == nil {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")

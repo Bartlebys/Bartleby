@@ -15,6 +15,11 @@ import Foundation
     import UIKit
 #endif
 
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+#endif
+
+
 public enum RegistryError: ErrorType {
     case DuplicatedCollectionName(collectionName:String)
     case AttemptToLoadAnNonSupportedCollection(collectionName:String)
@@ -67,7 +72,7 @@ public class Registry: BXDocument, SuperIterable {
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive there is no collectible instances
-    internal var _triggeredData=[Trigger:[Collectible]?]()
+    internal var _triggeredData=[Trigger:[BartlebyObjectProtocol]?]()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -107,7 +112,7 @@ public class Registry: BXDocument, SuperIterable {
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
-     Check [JDocument] (JDocument.swift) declareCollectibleTypes() for more detailled explanations.
+     Check [JDocument] (JDocument.swift) declareTypes() for more detailled explanations.
 
      - parameter type: a Collectible type
      */
@@ -509,7 +514,7 @@ public class Registry: BXDocument, SuperIterable {
 
      - parameter on: the closure
      */
-    public func superIterate(@noescape on:(element: protocol<Collectible, Supervisable>)->()) {
+    public func superIterate(@noescape on:(element: BartlebyObjectProtocol)->()) {
         // We want to super superIterate on each collection
         for (_, collection) in _collections {
             collection.superIterate({ (element) in
