@@ -39,12 +39,22 @@ public protocol CollectibleCollection: Collectible {
     /// You can reference a tableview for automation
     weak var tableView: BXTableView? { get set }
 
+
+    /**
+     Update or create an item
+
+     - parameter item: the collectible item
+     */
+    func upsert(item: Collectible, commit:Bool)
+
+
     /**
      Adds an item
 
      - parameter item: the collectible item
      */
-    func add(item: Collectible)
+    func add(item: Collectible,commit:Bool)
+
 
     /**
      Insert an item at a given index.
@@ -52,7 +62,7 @@ public protocol CollectibleCollection: Collectible {
      - parameter item:  the collectible item
      - parameter index: the insertion index
      */
-    func insertObject(item: Collectible, inItemsAtIndex index: Int)
+    func insertObject(item: Collectible, inItemsAtIndex index: Int,commit:Bool)
 
 
     /**
@@ -60,7 +70,7 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter index: the index
      */
-    func removeObjectFromItemsAtIndex(index: Int)
+    func removeObjectFromItemsAtIndex(index: Int,commit:Bool)
 
     /**
      Remove the item
@@ -69,7 +79,7 @@ public protocol CollectibleCollection: Collectible {
 
      - returns: true if the item has been removed
      */
-    func removeObject(item: Collectible) -> Bool
+    func removeObject(item: Collectible,commit:Bool) -> Bool
 
 
     /**
@@ -79,7 +89,7 @@ public protocol CollectibleCollection: Collectible {
 
      - returns: true if the item has been removed
      */
-    func removeObjectWithID(id: String) -> Bool
+    func removeObjectWithID(id: String,commit:Bool) -> Bool
 
 }
 

@@ -113,11 +113,13 @@ protocol IdentifiableCardContext {
 
     public override func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
         userUID <- (map["userUID"], CryptedStringTransform())
         contextUID <- (map["contextUID"], CryptedStringTransform())
         imagePath <- (map["path"], CryptedStringTransform())
         volumeName <- (map["volumeName"], CryptedStringTransform())
         directivesRelativePath <- (map["directivesRelativePath"], CryptedStringTransform())
+        self.unlockAutoCommitObserver()
     }
 
     // MARK: NSecureCoding
@@ -134,11 +136,13 @@ protocol IdentifiableCardContext {
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder:decoder)
+        self.lockAutoCommitObserver()
         self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
         self.contextUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "contextUID")! as NSString)
         self.imagePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
         self.volumeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "volumeName")! as NSString)
         self.directivesRelativePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "directivesRelativePath")! as NSString)
+        self.unlockAutoCommitObserver()
     }
 
     public override static func supportsSecureCoding() -> Bool {

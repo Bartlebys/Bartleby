@@ -8,13 +8,15 @@
 
 import Foundation
 
-// MARK:- Local Instance(s) URD(s)
+// MARK:- Local Instance(s) UD(s)
+
+
 public extension Registry {
 
     // MARK: Upsert
 
     /**
-     Inserrt or updates a Collectible instance.
+     Inserts or updates a Collectible instance.
      Upsert : insert + update
 
      - parameter instance: the instance
@@ -23,8 +25,7 @@ public extension Registry {
      */
     public func upsert(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
-            collection.add(instance)
-            return true
+            collection.upsert(instance, commit:false)
         }
         return false
     }
@@ -60,7 +61,7 @@ public extension Registry {
      */
     public func delete(instance: Collectible) -> Bool {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
-            return collection.removeObject(instance)
+            return collection.removeObject(instance, commit:false)
         }
         return false
     }
@@ -91,7 +92,7 @@ public extension Registry {
      */
     public func deleteById(instanceUID: String, fromCollectionWithName: String) -> Bool {
         if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
-            return collection.removeObjectWithID(instanceUID)
+            return collection.removeObjectWithID(instanceUID, commit:false)
         }
         return false
     }

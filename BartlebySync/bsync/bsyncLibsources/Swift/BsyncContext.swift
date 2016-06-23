@@ -19,7 +19,6 @@ import Foundation
 @objc(BsyncContext) public class BsyncContext: PdSSyncContext, Mappable {
 
 
-
     // Can be used during long operation to relog
     // and to give to the ACL layer contextual information like defining the spaceUID
     var credentials: BsyncCredentials?

@@ -206,7 +206,7 @@ public extension TasksGroup {
             task.creatorUID=registry.currentUser.UID
             // Add the taksk to the peristent tasks.
             let persitentTasks: TasksCollectionController = try registry.getCollection()
-            persitentTasks.add(task)
+            persitentTasks.add(task,commit: false)
 
         } else {
             throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID:self.spaceUID)

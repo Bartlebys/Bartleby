@@ -126,11 +126,13 @@ import Foundation
     
     public override func mapping(map: Map) {
         super.mapping(map)
+        self.lockAutoCommitObserver()
         sourceURL <- (map["sourceURL"], URLTransform())
         destinationURL <- (map["destinationURL"], URLTransform())
         computeTheHashMap <- map["computeTheHashMap"]
         automaticTreeCreation <- map["automaticTreeCreation"]
         hashMapViewName <- (map["hashMapViewName"], CryptedStringTransform()) // Crypted to prevent discovery
+        self.unlockAutoCommitObserver()
     }
     
     
@@ -149,11 +151,13 @@ import Foundation
     
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        self.lockAutoCommitObserver()
         self.sourceURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"sourceURL") as NSURL?
         self.destinationURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"destinationURL") as NSURL?
         self.hashMapViewName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"hashMapViewName") as NSString?)
         self.computeTheHashMap=decoder.decodeBoolForKey("computeTheHashMap")
         self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")
+        self.unlockAutoCommitObserver()
     }
     
     // MARK: Identifiable

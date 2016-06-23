@@ -105,7 +105,7 @@ public class TasksScheduler: BprintCategorizable {
                 // Set up the group
                 group.name=groupNameForDocument
                 _groups[groupName+document.spaceUID]=group
-                document.tasksGroups.add(group)
+                document.tasksGroups.add(group,commit: true)
                 return group
             } else {
                 throw TasksSchedulerError.TaskGroupNotFound
@@ -257,7 +257,7 @@ public class TasksScheduler: BprintCategorizable {
 
         // Remove the group from the registry.
         if let document=group.document {
-            document.tasksGroups.removeObject(group)
+            document.tasksGroups.removeObject(group, commit: true)
         }
     }
 

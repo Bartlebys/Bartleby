@@ -504,7 +504,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedTask() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedTask{
-            self.tasks.removeObject(selected)
+            self.tasks.removeObject(selected, commit:true)
         }
     }
         
@@ -512,7 +512,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedTasksGroup() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedTasksGroup{
-            self.tasksGroups.removeObject(selected)
+            self.tasksGroups.removeObject(selected, commit:true)
         }
     }
         
@@ -520,7 +520,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedUser() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedUser{
-            self.users.removeObject(selected)
+            self.users.removeObject(selected, commit:true)
         }
     }
         
@@ -528,7 +528,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedLocker() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLocker{
-            self.lockers.removeObject(selected)
+            self.lockers.removeObject(selected, commit:true)
         }
     }
         
@@ -536,7 +536,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedGroup() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedGroup{
-            self.groups.removeObject(selected)
+            self.groups.removeObject(selected, commit:true)
         }
     }
         
@@ -544,7 +544,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedOperation() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedOperation{
-            self.operations.removeObject(selected)
+            self.operations.removeObject(selected, commit:true)
         }
     }
         
@@ -552,7 +552,7 @@ public class BartlebyDocument : JDocument {
     public func deleteSelectedPermission() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedPermission{
-            self.permissions.removeObject(selected)
+            self.permissions.removeObject(selected, commit:true)
         }
     }
         

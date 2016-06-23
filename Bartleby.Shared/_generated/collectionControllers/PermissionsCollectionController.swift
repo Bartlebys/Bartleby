@@ -87,6 +87,9 @@ import ObjectMapper
 
     dynamic public var items:[Permission]=[Permission]()
 
+    public func getCollectibleItems()->[Collectible]{
+        return items
+    }
 
     // MARK: Identifiable
 
@@ -136,23 +139,52 @@ import ObjectMapper
     }
 
 
+
+
+    // MARK: Upsert
+
+    public func upsert(item: Collectible, commit:Bool){
+
+        if let idx=items.indexOf({return $0.UID == item.UID}){
+            // it is an update
+            // we must patch it
+            let currentInstance=items[idx]
+            if commit==false{
+                // When upserting from a trigger
+                // We do not want to produce Larsen effect on data.
+                // So we lock the auto commit observer before applying the patch
+                // And we unlock the autoCommit Observer after the patch.
+                currentInstance.lockAutoCommitObserver()
+            }
+
+            let dictionary=item.dictionaryRepresentation()
+            currentInstance.patchFrom(dictionary)
+            if commit==false{
+                currentInstance.unlockAutoCommitObserver()
+            }
+        }else{
+            // It is a creation
+            self.add(item, commit:commit)
+        }
+    }
+
     // MARK: Add
 
-    public func add(item:Collectible){
+    public func add(item:Collectible, commit:Bool){
         #if os(OSX) && !USE_EMBEDDED_MODULES
         if let arrayController = self.arrayController{
-            self.insertObject(item, inItemsAtIndex: arrayController.arrangedObjects.count)
+            self.insertObject(item, inItemsAtIndex: arrayController.arrangedObjects.count, commit:commit)
         }else{
-            self.insertObject(item, inItemsAtIndex: items.count)
+            self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
         }
         #else
-        self.insertObject(item, inItemsAtIndex: items.count)
+        self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
         #endif
     }
 
     // MARK: Insert
 
-    public func insertObject(item: Collectible, inItemsAtIndex index: Int) {
+    public func insertObject(item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? Permission{
 
 
@@ -183,7 +215,7 @@ import ObjectMapper
             #endif
 
 
-            if item.committed==false{
+            if item.committed==false && commit==true{
                CreatePermission.commit(item, inDataSpace:self.spaceUID)
             }
 
@@ -197,7 +229,7 @@ import ObjectMapper
 
     // MARK: Remove
 
-    public func removeObjectFromItemsAtIndex(index: Int) {
+    public func removeObjectFromItemsAtIndex(index: Int, commit:Bool) {
         if let item : Permission = items[index] {
 
             // Unregister the item
@@ -217,17 +249,19 @@ import ObjectMapper
             #endif
 
         
-            DeletePermission.commit(item.UID,fromDataSpace:self.spaceUID)  
+            if commit==true{
+                DeletePermission.commit(item.UID,fromDataSpace:self.spaceUID) 
+            }
 
 
         }
     }
 
-    public func removeObject(item: Collectible)->Bool{
+    public func removeObject(item: Collectible, commit:Bool)->Bool{
         var index=0
         for storedItem in items{
             if item.UID==storedItem.UID{
-                self.removeObjectFromItemsAtIndex(index)
+                self.removeObjectFromItemsAtIndex(index, commit:commit)
                 return true
             }
             index += 1
@@ -235,11 +269,11 @@ import ObjectMapper
         return false
     }
 
-    public func removeObjectWithID(id:String)->Bool{
+    public func removeObjectWithID(id:String, commit:Bool)->Bool{
         var index=0
         for storedItem in items{
             if id==storedItem.UID{
-                self.removeObjectFromItemsAtIndex(index)
+                self.removeObjectFromItemsAtIndex(index, commit:commit)
                 return true
             }
             index += 1

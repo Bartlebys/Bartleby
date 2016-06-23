@@ -143,7 +143,7 @@ import ObjectMapper
                 // Provision the operation.
                 do{
                     let ic:OperationsCollectionController = try registry.getCollection()
-                    ic.add(self._operation)
+                    ic.add(self._operation, commit:false)
                 }catch{
                     Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
