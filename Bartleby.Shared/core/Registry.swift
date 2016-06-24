@@ -104,10 +104,19 @@ public class Registry: BXDocument {
     internal var _activeSecurityBookmarks=[NSURL]()
 
 
-    // MARK : - Universal Type management.
+    // MARK: Universal Type management.
 
     private static var _associatedTypesMap=[String:String]()
 
+    // MARK: URI
+
+    // The collection server base URL
+    public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+
+    // The EventSource URL for Server Sent Events
+    public dynamic lazy var sseURL:NSURL=self.baseURL.URLByAppendingPathComponent("SSETriggers?spaceUID=\(self.spaceUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails==false")
+
+    // MARK :
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
@@ -533,18 +542,16 @@ public class Registry: BXDocument {
     }
 
 
-    // LOGIN
-
     /**
      Connect to SSE
      */
     private func _connectToSSE() {
-        bprint("Creating the event source instance",file:#file,function:#function,line:#line,category: "SSE")
-        let baseUrl=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-        let lastIndex=self.registryMetadata.lastIntegratedTriggerIndex
-        let stringURL=baseUrl.URLByAppendingPathComponent("SSETriggers").absoluteString.stringByAppendingString("?spaceUID=\(self.spaceUID)&lastIndex=\(lastIndex)&runUID=\(Bartleby.runUID)&showDetails==false")
+
         let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
-        self._sse=EventSource(url:stringURL,headers:headers)
+        self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
+
+        bprint("Creating the event source instance: \(sseURL)",file:#file,function:#function,line:#line,category: "SSE")
+
         self._sse!.addEventListener("relay") { (id, event, data) in
             bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
 

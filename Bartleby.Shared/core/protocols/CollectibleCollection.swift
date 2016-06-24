@@ -15,10 +15,10 @@ import Cocoa
 // A collection without generic constraint.
 public typealias Collection=protocol< CollectibleCollection, SuperIterable, Committable>
 
-/// We add SequenceType Support
+// We add SequenceType Support to the collection Type.
 // 'SequenceType' can only be used as a generic constraint because it has Self or associated type requirements
+// So we use IterableCollectibleCollection for concrete  collection implementation and reference in the Registry `internal var _collections=[String:Collection]()`
 public typealias IterableCollectibleCollection = protocol<Collection, SequenceType>
-
 
 // Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
