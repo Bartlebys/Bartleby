@@ -31,7 +31,7 @@ import ObjectMapper
 		case Cookie = "Cookie"
 	}
 	public var identificationMethod:IdentificationMethod = .Key
-	//The current identification value (injected in HTTP headers)
+	//The current kvid identification value (injected in HTTP headers)
 	public var identificationValue:String?
 	//The rootObject UID
 	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
@@ -49,17 +49,15 @@ import ObjectMapper
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
 	public var assetsFolderURL:NSURL?
-	//The index of the last trigger that has been integrated
-	public var lastIntegratedTriggerIndex:Int = -1
-	//The index of the last trigger that can be integrated
-	public var lastIntegrableTriggerIndex:Int = -1
 	//A collection of trigger Indexes (used to detect data holes) the first entry should be equal to lastIntegratedTriggerIndex
 	public var triggersIndexes:[Int] = [Int]()
-	// A collection of trigger indexes owned by the current user
+	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
 	public var ownedTriggersIndexes:[Int] = [Int]()
-	//A collection of trigger Indexes to be loaded as soon as possible
-	public var triggersIndexesToLoad:[Int] = [Int]()
-	//A collection of the triggers that are stored
+	//A collection of trigger Indexes that are missings (data holes)
+	public var missingTriggersIndexes:[Int] = [Int]()
+	//The index of the last trigger that has been integrated
+	public var lastIntegratedTriggerIndex:Int = -1
+	//A collection Triggers that are temporarly stored before integration
 	public var receivedTriggers:[Trigger] = [Trigger]()
 
 
@@ -84,11 +82,10 @@ import ObjectMapper
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
-		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
-		self.lastIntegrableTriggerIndex <- ( map["lastIntegrableTriggerIndex"] )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
 		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
-		self.triggersIndexesToLoad <- ( map["triggersIndexesToLoad"] )
+		self.missingTriggersIndexes <- ( map["missingTriggersIndexes"] )
+		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
         self.unlockAutoCommitObserver()
     }
@@ -111,11 +108,10 @@ import ObjectMapper
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
-		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
-		self.lastIntegrableTriggerIndex=decoder.decodeIntegerForKey("lastIntegrableTriggerIndex") 
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
 		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
-		self.triggersIndexesToLoad=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexesToLoad")! as! [Int]
+		self.missingTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "missingTriggersIndexes")! as! [Int]
+		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
         self.unlockAutoCommitObserver()
     }
@@ -142,11 +138,10 @@ import ObjectMapper
 		if let assetsFolderURL = self.assetsFolderURL {
 			coder.encodeObject(assetsFolderURL,forKey:"assetsFolderURL")
 		}
-		coder.encodeInteger(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
-		coder.encodeInteger(self.lastIntegrableTriggerIndex,forKey:"lastIntegrableTriggerIndex")
 		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
 		coder.encodeObject(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
-		coder.encodeObject(self.triggersIndexesToLoad,forKey:"triggersIndexesToLoad")
+		coder.encodeObject(self.missingTriggersIndexes,forKey:"missingTriggersIndexes")
+		coder.encodeInteger(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
     }
 

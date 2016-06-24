@@ -12,129 +12,91 @@ import Foundation
     import ObjectMapper
 #endif
 
-extension BartlebyDocument {
-
-    /*
-
-     # SSE Encoding
-
-     To insure good performance we encode the triggers for SSE usage.
-
-     ```
-     id: 1466684879     <- the Event ID
-     event: relay       <- the Event Name
-     data: {            <- the data
-     
-     "i":1,
-     "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
-     "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
-     "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
-     "c":"users",                                               <- The collection name
-     "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
-     "a":"ReadUserbyId",                                        <- action   : The action to be triggered
-     "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
-
-     }
-     ```
-
-     # Why do we use Upsert?
-
-     Because triggered information are transformed to get operations.
-     A new instance or an updated instance can be grabbed the same way.
-
-
-     # Trigger.index
-
-     The index is injected server side 
-     self.registryMetadata.triggersIndexes permits to detect the data holes
-
-     Data from Consecutive Received triggers are immediately integrated (local execution is resilient to fault, faults are ignored)
-     If there are holes we try to fill the gap.
-
-     */
-
-
-
 /*
 
-    // MARK: - API
+ # Why do we always Upsert?
 
-    /**
-     Tries to load new triggers if some
-     */
-    public func loadNewTriggers() {
-
-        // Grab all the triggers > lastIndex
-        // TriggersAfterIndex
-        // AND Call triggersHasBeenReceived(...)
-        TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
-            self._triggersHasBeenReceived(triggers)
-        }) { (context) in
-            // What to do on failure
-        }
-    }
+ Because triggered information are transformed to get operations.
+ A new instance or an updated instance can be grabbed the same way.
 
 
-    /**
-     Load  the pending triggers.
+ # Trigger.index
 
-     - parameter indexes: the indexes.
-     */
-    public func loadPendingTriggers() {
-        if self.registryMetadata.triggersIndexesToLoad.count>0{
-            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:self.registryMetadata.triggersIndexesToLoad, sucessHandler: { (triggers) in
-                self._triggersHasBeenReceived(triggers)
-            }) { (context) in
-                // WHAT TO DO ?
-            }
-        }
-    }
+ The index is injected server side
+ self.registryMetadata.triggersIndexes permits to detect the data holes
+
+ Data from Consecutive Received triggers are immediately integrated (local execution is resilient to fault, faults are ignored)
+ If there are holes we try to fill the gap.
 
 */
 
+extension BartlebyDocument {
 
-    // MARK: - Triggers Acknowledgement (indexes and data holes management)
+    // MARK: - Triggers Receipts
 
-    /**
-     Acknowledge the trigger
-
-     - parameter transmit: the trigger
-     */
-    public func acknowledgeTrigger(trigger: Trigger) {
-        self.acknowledgeTriggerIndex(trigger.index)
-    }
 
     /**
-     Acknowledge the trigger permits to detect data holes
+     This is first step of the trigger life cycle.
 
-     - parameter transmit: the trigger
+     The Server Sent Event is decoded by the registry
+     or the Triggers are received via an EndPoint.
+     
+     Then this method is called.
+
+     - parameter triggers: the collection of Trigger
      */
-    public func acknowledgeTriggers(triggers: [Trigger]) {
+    internal func _triggersHasBeenReceived(triggers:[Trigger]) {
+
         let indexes=triggers.map {$0.index}
         self.acknowledgeTriggerIndexes(indexes)
+
+        self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
+        self.registryMetadata.receivedTriggers.sortInPlace { (lTrigger, rTrigger) -> Bool in
+            return lTrigger.index<rTrigger.index
+        }
+
+        // Proceed to loading or direct insertion of triggers.
+
+        var shouldTryToIntegrateImmediatly=false
+        for trigger in triggers{
+            if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
+                if trigger.action.contains("Delete"){
+                    // it is a destructive action.
+                    self._triggeredData[trigger]=nil
+                    shouldTryToIntegrateImmediatly=true
+                }else{
+                    // It is creation action
+                    // Load data for un owned triggers only.
+                    self._loadDataFrom(trigger)
+                }
+            }else{
+                bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+            }
+        }
+
+        if shouldTryToIntegrateImmediatly{
+            self._integrateContinuousPendingData()
+        }
     }
+
+    // MARK: - Triggers Indexes Acknowledgment
 
 
     /**
-     Called by generative operation layer to discriminate owned triggers.
+     Called by the generative Operation layer
+     it permitts to discriminate owned triggers from external triggers.
+     owned triggers should not be loaded.
 
      - parameter index: the trigger index.
      */
     public func acknowledgeOwnedTriggerIndex(index:Int){
-        // We always add the index.
-        // Double insertion could be checked for QA.
-        self.registryMetadata.ownedTriggersIndexes.append(index)
-        self.acknowledgeTriggerIndex(index)
-    }
-
-    /**
-     Acknowledge trigger index
-
-     - parameter index: the index
-     */
-    public func acknowledgeTriggerIndex(index:Int) {
-        let indexes=[index]
-        self.acknowledgeTriggerIndexes(indexes)
+        if !registryMetadata.triggersIndexes.contains(index) {
+            self.registryMetadata.ownedTriggersIndexes.append(index)
+            let indexes=[index]
+            self.acknowledgeTriggerIndexes(indexes)
+        }else{
+            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+        }
     }
 
     /**
@@ -148,9 +110,11 @@ extension BartlebyDocument {
                 if !registryMetadata.triggersIndexes.contains(index) {
                     bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                     self.registryMetadata.triggersIndexes.append(index)
-                    if let holeIdx=self.registryMetadata.triggersIndexesToLoad.indexOf(index){
-                        self.registryMetadata.triggersIndexesToLoad.removeAtIndex(holeIdx)
+                    if let holeIdx=self.registryMetadata.missingTriggersIndexes.indexOf(index){
+                        self.registryMetadata.missingTriggersIndexes.removeAtIndex(holeIdx)
                     }
+                }else{
+                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                 }
             }else{
                 bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
@@ -161,97 +125,20 @@ extension BartlebyDocument {
     }
 
 
-    /**
-     Analyze the consistency of the indexes and Computes :
-     - self.registryMetadata.triggersIndexesToLoad
-     - self.registryMetadata.lastIntegrableTriggerIndex
-     */
-    private func _analyzeConsistencyOfTriggerIndexes() {
-        let fromIndex =  self.registryMetadata.lastIntegratedTriggerIndex >= 0 ? self.registryMetadata.lastIntegratedTriggerIndex : 0
-        let toIndex = self.registryMetadata.triggersIndexes.count-1
-        if toIndex >= fromIndex{
-            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
-            var highestIndexValue = lowestValidIndexValue
-            for i in fromIndex ... toIndex{
-                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
-                if highestIndexValue < currentIndexValue{
-                    highestIndexValue = currentIndexValue
-                    self.registryMetadata.lastIntegrableTriggerIndex=currentIndexValue
-                }
-            }
-            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
-                // There is at least one hole.
-                for value in lowestValidIndexValue ... highestIndexValue {
-                    if !self.registryMetadata.triggersIndexes.contains(value){
-                        if self.registryMetadata.triggersIndexesToLoad.contains(value){
-                            self.registryMetadata.triggersIndexesToLoad.append(value)
-                        }
-                    }
-                }
-            }else{
-                // There is no data hole.
-            }
-        }
-    }
 
-
-    // MARK: - Triggers Receipts
-
-
-    /**
-     Called on reception of triggers.
-
-     - parameter triggers: the collection of Trigger
-     */
-    internal func _triggersHasBeenReceived(triggers:[Trigger]) {
-
-        self.acknowledgeTriggers(triggers)
-        self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
-        self.registryMetadata.receivedTriggers.sortInPlace { (lTrigger, rTrigger) -> Bool in
-            return lTrigger.index<rTrigger.index
-        }
-
-        // Determine the integrable triggers
-
-        let integrableIndexRange = self.registryMetadata.lastIntegratedTriggerIndex ... self.registryMetadata.lastIntegrableTriggerIndex
-        let integrableTriggers = self.registryMetadata.receivedTriggers.filter { (trigger) -> Bool in
-            return integrableIndexRange ~= trigger.index
-        }
-
-        // Proceed to loading or direct insertion of triggers.
-
-        var shouldIntegrateImmediatly=false
-        for trigger in integrableTriggers{
-            if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
-                if trigger.action.contains("Delete"){
-                    // it is a destructive action.
-                    self._triggeredData[trigger]=nil
-                    shouldIntegrateImmediatly=true
-                }else{
-                    // It is creation action
-                    // Load data for un owned triggers only.
-                    self._loadDataFromCreativeAction(trigger)
-                }
-            }
-        }
-
-        if shouldIntegrateImmediatly{
-            self._integrateContinuousPendingData()
-        }
-    }  
 
 
     // MARK: - Triggers Data Loading
 
     /**
-     Load the data for the given trigger.
+     Loads the data for the given trigger.
 
      - parameter trigger: the trigger.
      */
-    private func _loadDataFromCreativeAction(trigger:Trigger){
+    private func _loadDataFrom(trigger:Trigger){
 
         /////////////////////////
-        // Request Interpreter 
+        // Request Interpreter
         ////////////////////////
 
         let uids = trigger.UIDS.componentsSeparatedByString(",")
@@ -281,8 +168,8 @@ extension BartlebyDocument {
             let UID=uids.first!
             pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
         }else{
-             pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
-             dictionary["ids"]=uids
+            pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
+            dictionary["ids"]=uids
         }
         let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
         let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
@@ -324,23 +211,24 @@ extension BartlebyDocument {
                         }
 
                         if multiple{
-                                // upsert a collection
-                                if let d=result.value as? [[String : AnyObject]]{
-                                    for jsonDictionary in d{
-                                        if  let instance=__instantiate(from: jsonDictionary){
-                                            self.upsert(instance)
-                                        }
-
+                            // upsert a collection
+                            if let d=result.value as? [[String : AnyObject]]{
+                                var instances=[Collectible]()
+                                for jsonDictionary in d{
+                                    if  let instance=__instantiate(from: jsonDictionary){
+                                        instances.append(instance)
                                     }
                                 }
-                            }else{
-                               // Unique entity
-                                if let jsonDictionary=result.value as? [String : AnyObject]{
-                                    if let instance=__instantiate(from: jsonDictionary){
-                                        self.upsert(instance)
-                                    }
+                                self._dataReceivedFor(trigger, instances: instances)
+                            }
+                        }else{
+                            // Unique entity
+                            if let jsonDictionary=result.value as? [String : AnyObject]{
+                                if let instance=__instantiate(from: jsonDictionary){
+                                   self._dataReceivedFor(trigger, instances: [instance])
                                 }
                             }
+                        }
                     }else{
                         // ERROR
                         bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
@@ -350,7 +238,7 @@ extension BartlebyDocument {
         }
     }
 
-   // MARK: - Local Data Integration
+    // MARK: - Local Data Integration
 
     /**
      Called on data reception
@@ -376,7 +264,8 @@ extension BartlebyDocument {
         for data  in sortedData{
             let triggerIndex=data.0.index
             // Integrate continuous data
-            if triggerIndex == self.registryMetadata.lastIntegrableTriggerIndex+1{
+            let nextIntegrableIndex=self.registryMetadata.lastIntegratedTriggerIndex+1
+            if triggerIndex == nextIntegrableIndex{
                 self._integrate(data)
             }else{
                 bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
@@ -386,46 +275,143 @@ extension BartlebyDocument {
     }
 
 
-
     /**
      Integrates the triggered data in the registry.
 
      - parameter triggeredData: the triggered data
      */
     private func _integrate(triggeredData:(Trigger,[Collectible]?)){
+
+        // Integrate
         if triggeredData.1 == nil {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
             let collectionName=Trigger.collectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
+            // it is a creation or un update
             let collectibleItems=triggeredData.1!
             if collectibleItems.count>0{
                 self.upsert(collectibleItems)
             }
         }
+
         // Update the last integrated trigger index.
         self.registryMetadata.lastIntegratedTriggerIndex=triggeredData.0.index
-        
+        // Remove the trigger from the collection.
+        if let idx=self.registryMetadata.receivedTriggers.indexOf(triggeredData.0){
+            self.registryMetadata.receivedTriggers.removeAtIndex(idx)
+        }
+
+        //CleanUp the triggerData
         if let idx=self._triggeredData.indexOf({ (data) -> Bool in
             return triggeredData.0.index == data.0.index
         }){
             // Remove the triggered data
             self._triggeredData.removeAtIndex(idx)
         }
+
     }
 
+
+    // MARK: - Consistency
 
 
     /**
-     Forces the data Integration to resolve inconsistencies.
-
-     - parameter triggerIndexes: The indexes that we want to ignore.
+     Analyzes the consistency of the indexes and Computes :
+     - self.registryMetadata.missingTriggersIndexes
+     - self.registryMetadata.lastIntegrableTriggerIndex
      */
-    public func forceDataIntegration(ignore triggerIndexes:[Int]){
-
+    private func _analyzeConsistencyOfTriggerIndexes() {
+        let fromIndex =  self.registryMetadata.lastIntegratedTriggerIndex >= 0 ? self.registryMetadata.lastIntegratedTriggerIndex : 0
+        let toIndex = self.registryMetadata.triggersIndexes.count-1
+        if toIndex >= fromIndex{
+            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
+            var highestIndexValue = lowestValidIndexValue
+            for i in fromIndex ... toIndex{
+                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
+                if highestIndexValue < currentIndexValue{
+                    highestIndexValue = currentIndexValue
+                }
+            }
+            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
+                // There is at least one hole.
+                for value in lowestValidIndexValue ... highestIndexValue {
+                    if !self.registryMetadata.triggersIndexes.contains(value){
+                        if self.registryMetadata.missingTriggersIndexes.contains(value){
+                            self.registryMetadata.missingTriggersIndexes.append(value)
+                        }
+                    }
+                }
+            }else{
+                // There is no data hole.
+            }
+        }
     }
 
 
+    /**
+     Did we integrate all the pending data ?
+     - returns: Return true if all the triggers have been integrated
+     */
+    public func isDataUpToDate()->Bool{
+        return (self.registryMetadata.receivedTriggers.count == 0)
+    }
+
+    // MARK: - Recovery methods
+
+    /**
+     This method tries to fill the gap
+     */
+    public func grabMissingTriggerIndexes(){
+        if self.registryMetadata.missingTriggersIndexes.count>0{
+            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:self.registryMetadata.missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
+                // What to do in case of failure.
+                Bartleby.todo("What to do?", message: "")
+            }
+        }
+    }
+
+    /**
     
+     This method is the ultimate to fix a blocked / corrupted data.
+
+     Fixes the last lastIntegratedTriggerIndex to the highest value.
+     And integrates all the triggered data
+     */
+    public func forceDataIntegration(){
+        if let highestTrigger=self.registryMetadata.receivedTriggers.last{
+            self.registryMetadata.lastIntegratedTriggerIndex=highestTrigger.index
+        }
+        self.registryMetadata.missingTriggersIndexes=[Int]()
+
+        let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
+            return lEntry.0.index < rEntry.0.index
+        }
+        for data  in sortedData{
+            self._integrate(data)
+        }
+    }
+
+
+    // MARK: - API triggers on demand
+
+
+    /**
+     Tries to load new triggers if some
+     */
+    public func loadNewTriggers() {
+
+        // Grab all the triggers > lastIndex
+        // TriggersAfterIndex
+        // AND Call triggersHasBeenReceived(...)
+        TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
+            self._triggersHasBeenReceived(triggers)
+        }) { (context) in
+            // What to do on failure
+        }
+    }
+
 }

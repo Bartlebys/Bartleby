@@ -55,9 +55,6 @@ func ==(lhs: Registry, rhs: Registry) -> Bool {
 public class Registry: BXDocument {
 
 
-    // A notification that is sent when the registry is fully loaded.
-    static public let REGISTRY_DID_LOAD_NOTIFICATION="registryDidLoad"
-
     // The file extension for crypted data
     static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
 
@@ -71,7 +68,7 @@ public class Registry: BXDocument {
     public var registryMetadata=RegistryMetadata()
 
     // Triggered Data is used to store data before data integration
-    // If the trigger is destructive there is no collectible instances
+    // If the trigger is destructive the collectible collection is set to nil
     internal var _triggeredData=[Trigger:[Collectible]?]()
 
     // The spaceUID can be shared between multiple documents-registries
@@ -501,8 +498,6 @@ public class Registry: BXDocument {
      */
     public func registryDidLoad() {
         self.hasBeenLoaded=true
-        NSNotificationCenter.defaultCenter().postNotificationName(Registry.REGISTRY_DID_LOAD_NOTIFICATION, object: nil, userInfo: ["UID" : self.registryMetadata.UID])
-
     }
 
     /**
@@ -556,11 +551,27 @@ public class Registry: BXDocument {
             bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
 
             // Parse the Data
+            
             /*
 
-             identifier = Optional("1466598738")
-             event name = Optional("relay") event name
-             data = Optional("{\"i\":9,\"d\":\"NERBNjdFNzctMDZEOS00MkFELUFEQUItRjgxRTE3OTA4QURF\",\"r\":\"Rjk0OUE3MTgtQTZDQy00ODA3LUE0QzAtN0RDODExQjIzRUZC\",\"c\":\"users\",\"a\":\"ReadUserbyId\",\"u\":\"MTc3OUNGNjUtM0YzMS00OUY2LUI4MjItQ0JCMDEwNDU0NTU5\"}")
+
+             ```
+             id: 1466684879     <- the Event ID
+             event: relay       <- the Event Name
+             data: {            <- the data
+
+             "i":1,                                                     <- the trigger index 
+             "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
+             "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+             "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
+             "c":"users",                                               <- The collection name
+             "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+             "a":"ReadUserbyId",                                        <- action   : The action to be triggered
+             "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
+             
+             }
+             ```
+
              */
 
             do {
@@ -589,6 +600,7 @@ public class Registry: BXDocument {
                             if let documentSelf=self as? BartlebyDocument{
                                 var triggers=[Trigger]()
                                 triggers.append(trigger)
+                                // Uses BartlebyDocument+Triggers extension.
                                 documentSelf._triggersHasBeenReceived(triggers)
                             }else{
                                 bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
