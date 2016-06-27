@@ -80,6 +80,15 @@ public class Registry: BXDocument {
         }
     }
 
+    // We use the root object UID as observationUID
+    // You should have set up the rootObjectUID before any trigger emitted.
+    // The triggers are observable via this UID
+    public var observationUID:String{
+        get{
+            return self.registryMetadata.rootObjectUID
+        }
+    }
+
     /// The current document user
     public var currentUser: User {
         get {
@@ -111,7 +120,7 @@ public class Registry: BXDocument {
     public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
 
     // The EventSource URL for Server Sent Events
-    public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
+    public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.observationUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
     // MARK :
 
@@ -561,15 +570,14 @@ public class Registry: BXDocument {
                  data: {            <- the data
 
                  "i":1,                                                     <- the trigger index
-                 "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
+                 "o":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The observation UID
                  "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
-                 "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
+                 "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID
                  "c":"users",                                               <- The collection name
-                 "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+                 "n":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
                  "a":"ReadUserbyId",                                        <- action   : The action to be triggered
                  "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
 
-                 }
                  ```
 
                  */
@@ -577,24 +585,27 @@ public class Registry: BXDocument {
                     if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
                         if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                             if  let index:Int=JSONDictionary["i"] as? Int,
+                                let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,
                                 let collectionName=JSONDictionary["c"] as? String,
                                 let uids=JSONDictionary["u"] as? String {
 
                                 let trigger=Trigger()
+                                trigger.spaceUID=self.spaceUID
 
                                 // Mandatory Trigger Data
                                 trigger.index=index
+                                trigger.observationUID=observationUID
                                 trigger.action=action
                                 trigger.collectionName=collectionName
                                 trigger.UIDS=uids
 
                                 // Optional data
                                 // That may be omitted on triggering
-                                trigger.spaceUID=JSONDictionary["d"] as? String
+
                                 trigger.runUID=JSONDictionary["r"] as? String
                                 trigger.senderUID=JSONDictionary["s"] as? String
-                                trigger.origin=JSONDictionary["o"] as? String
+                                trigger.origin=JSONDictionary["n"] as? String
 
                                 if let documentSelf=self as? BartlebyDocument{
                                     var triggers=[Trigger]()

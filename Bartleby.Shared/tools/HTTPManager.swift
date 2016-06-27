@@ -116,10 +116,9 @@ public class HTTPManager: NSObject {
                      headers["kvid"]=Default.VOID_STRING
                 }
             }
-
+            // We add the observationUID
+            headers["observationUID"]=registry.observationUID
         }
-
-
         return headers
     }
 
@@ -143,6 +142,8 @@ public class HTTPManager: NSObject {
         }
         return headers
     }
+
+
 
     // MARK: - API
 

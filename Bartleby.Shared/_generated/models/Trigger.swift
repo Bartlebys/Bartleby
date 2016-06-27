@@ -23,10 +23,12 @@ import ObjectMapper
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
 	public var index:Int = -1
-	//The user.UID of the sender
-	public var senderUID:String?
 	//The dataSpace UID
 	public var spaceUID:String?
+	//The observation UID for a given document correspond  to the Registry.rootObjectUID
+	public var observationUID:String?
+	//The user.UID of the sender
+	public var senderUID:String?
 	//The UID of the instance of Bartleby client that has created the trigger.
 	public var runUID:String?
 	//The action that has initiated the trigger
@@ -51,8 +53,9 @@ import ObjectMapper
         super.mapping(map)
         self.lockAutoCommitObserver()
 		self.index <- ( map["index"] )
-		self.senderUID <- ( map["senderUID"] )
 		self.spaceUID <- ( map["spaceUID"] )
+		self.observationUID <- ( map["observationUID"] )
+		self.senderUID <- ( map["senderUID"] )
 		self.runUID <- ( map["runUID"] )
 		self.origin <- ( map["origin"] )
 		self.collectionName <- ( map["collectionName"] )
@@ -69,8 +72,9 @@ import ObjectMapper
         super.init(coder: decoder)
         self.lockAutoCommitObserver()
 		self.index=decoder.decodeIntegerForKey("index") 
-		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
+		self.observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observationUID") as NSString?)
+		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.runUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"runUID") as NSString?)
 		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey:"origin") as NSString?)
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
@@ -83,11 +87,14 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeInteger(self.index,forKey:"index")
-		if let senderUID = self.senderUID {
-			coder.encodeObject(senderUID,forKey:"senderUID")
-		}
 		if let spaceUID = self.spaceUID {
 			coder.encodeObject(spaceUID,forKey:"spaceUID")
+		}
+		if let observationUID = self.observationUID {
+			coder.encodeObject(observationUID,forKey:"observationUID")
+		}
+		if let senderUID = self.senderUID {
+			coder.encodeObject(senderUID,forKey:"senderUID")
 		}
 		if let runUID = self.runUID {
 			coder.encodeObject(runUID,forKey:"runUID")
