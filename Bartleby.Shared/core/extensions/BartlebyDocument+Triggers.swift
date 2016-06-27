@@ -398,7 +398,6 @@ extension BartlebyDocument {
 
     // MARK: - API triggers on demand
 
-
     /**
      Tries to load new triggers if some
      */

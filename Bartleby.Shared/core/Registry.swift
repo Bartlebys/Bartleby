@@ -504,9 +504,7 @@ public class Registry: BXDocument {
      Registry will save
      */
     public func registryWillSave() {
-
     }
-
 
     // MARK: - SSE
 
@@ -541,81 +539,91 @@ public class Registry: BXDocument {
      Connect to SSE
      */
     private func _connectToSSE() {
+        // The connection is restricted to identified users
+        // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
+        LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
 
-        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "")
-        self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
+            let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "SSETriggers")
+            self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
 
-        bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
+            bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
 
-        self._sse!.addEventListener("relay") { (id, event, data) in
-            bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+            self._sse!.addEventListener("relay") { (id, event, data) in
+                bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
 
-            // Parse the Data
-            
-            /*
+                // Parse the Data
 
+                /*
 
-             ```
-             id: 1466684879     <- the Event ID
-             event: relay       <- the Event Name
-             data: {            <- the data
+                 ```
+                 id: 1466684879     <- the Event ID
+                 event: relay       <- the Event Name
+                 data: {            <- the data
 
-             "i":1,                                                     <- the trigger index 
-             "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
-             "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
-             "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
-             "c":"users",                                               <- The collection name
-             "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
-             "a":"ReadUserbyId",                                        <- action   : The action to be triggered
-             "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
-             
-             }
-             ```
+                 "i":1,                                                     <- the trigger index
+                 "d":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The dataSpace spaceUID
+                 "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+                 "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID (optionnal)
+                 "c":"users",                                               <- The collection name
+                 "o":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+                 "a":"ReadUserbyId",                                        <- action   : The action to be triggered
+                 "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
 
-             */
+                 }
+                 ```
 
-            do {
-                if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
-                    if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-                        if  let index:Int=JSONDictionary["i"] as? Int,
-                            let action:String=JSONDictionary["a"] as? String,
-                            let collectionName=JSONDictionary["c"] as? String,
-                            let uids=JSONDictionary["u"] as? String {
+                 */
+                do {
+                    if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
+                        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                            if  let index:Int=JSONDictionary["i"] as? Int,
+                                let action:String=JSONDictionary["a"] as? String,
+                                let collectionName=JSONDictionary["c"] as? String,
+                                let uids=JSONDictionary["u"] as? String {
 
-                            let trigger=Trigger()
+                                let trigger=Trigger()
 
-                            // Mandatory Trigger Data
-                            trigger.index=index
-                            trigger.action=action
-                            trigger.collectionName=collectionName
-                            trigger.UIDS=uids
+                                // Mandatory Trigger Data
+                                trigger.index=index
+                                trigger.action=action
+                                trigger.collectionName=collectionName
+                                trigger.UIDS=uids
 
-                            // Optional data
-                            // That may be omitted on triggering
-                            trigger.spaceUID=JSONDictionary["d"] as? String
-                            trigger.runUID=JSONDictionary["r"] as? String
-                            trigger.senderUID=JSONDictionary["s"] as? String
-                            trigger.origin=JSONDictionary["o"] as? String
+                                // Optional data
+                                // That may be omitted on triggering
+                                trigger.spaceUID=JSONDictionary["d"] as? String
+                                trigger.runUID=JSONDictionary["r"] as? String
+                                trigger.senderUID=JSONDictionary["s"] as? String
+                                trigger.origin=JSONDictionary["o"] as? String
 
-                            if let documentSelf=self as? BartlebyDocument{
-                                var triggers=[Trigger]()
-                                triggers.append(trigger)
-                                // Uses BartlebyDocument+Triggers extension.
-                                documentSelf._triggersHasBeenReceived(triggers)
-                            }else{
-                                bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
+                                if let documentSelf=self as? BartlebyDocument{
+                                    var triggers=[Trigger]()
+                                    triggers.append(trigger)
+                                    // Uses BartlebyDocument+Triggers extension.
+                                    documentSelf._triggersHasBeenReceived(triggers)
+                                }else{
+                                    bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
+                                }
+                                
                             }
-
                         }
                     }
+                    
+                }catch{
+                    bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
                 }
-
-            }catch{
-                bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
             }
+
+            }) { (context) in
+                bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
+                self.registryMetadata.online=false
         }
+
     }
-    
+
+    /**
+     Closes the Server sent EventSource
+     */
     private  func _closeSSE() {
         if let sse=self._sse{
             sse.close()

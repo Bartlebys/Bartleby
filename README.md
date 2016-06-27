@@ -7,9 +7,6 @@
 + **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules.
 + **BartlebySync**: A file system Delta synchronizer module.
 
-## Contact 
-By mail: [bartleby]@bartlebys.org
-
 # Road Map 
 Bartleby Major version should increment each 12 / 24 months.
 
@@ -38,3 +35,6 @@ Delivery late 2017
 - sessions management ( discreet resume)
 - crypted chunk & server node encryption
 - optimized for multi-directionnal synchronization topologies
+
+## Contact 
+[Contact Benoit Pereira Da Silva] (https://pereira-da-silva.com/contact/)
