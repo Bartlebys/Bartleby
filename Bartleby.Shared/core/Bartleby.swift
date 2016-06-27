@@ -79,6 +79,8 @@ public class  Bartleby: Consignee {
      */
     public static var ephemeral=false
 
+    public static var requestCounter=0
+
     /**
      Should be called on Init of the Document.
      */

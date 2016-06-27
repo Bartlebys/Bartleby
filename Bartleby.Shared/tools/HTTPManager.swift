@@ -131,11 +131,13 @@ public class HTTPManager: NSObject {
      */
     static public func baseHttpHeaders()->[String:String]{
         var headers=[String:String]()
+        Bartleby.requestCounter += 1
         headers["User-Agent"]=HTTPManager.userAgent
         headers["Accept"]="application/json"
         headers["Content-Type"]="application/json"
         headers["bartleby"]=Bartleby.versionString
         headers["runUID"]=Bartleby.runUID
+        headers["requestCounter"]="\(Bartleby.requestCounter)" // Used for e.g to in Trigger UID = runUID.requestCounter
         if Bartleby.ephemeral {
              headers["ephemeral"]="true"
         }
