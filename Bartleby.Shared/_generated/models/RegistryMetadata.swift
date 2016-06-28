@@ -49,15 +49,13 @@ import ObjectMapper
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The url of the assets folder
 	public var assetsFolderURL:NSURL?
-	//A collection of trigger Indexes (used to detect data holes) the first entry should be equal to lastIntegratedTriggerIndex
+	//A collection of trigger Indexes (used to detect data holes)
 	public var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
 	public var ownedTriggersIndexes:[Int] = [Int]()
-	//A collection of trigger Indexes that are missings (data holes)
-	public var missingTriggersIndexes:[Int] = [Int]()
 	//The index of the last trigger that has been integrated
 	public var lastIntegratedTriggerIndex:Int = -1
-	//A collection Triggers that are temporarly stored before integration
+	//A collection Triggers that are temporarly stored before data integration
 	public var receivedTriggers:[Trigger] = [Trigger]()
 
 
@@ -84,7 +82,6 @@ import ObjectMapper
 		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
 		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
-		self.missingTriggersIndexes <- ( map["missingTriggersIndexes"] )
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
         self.unlockAutoCommitObserver()
@@ -110,7 +107,6 @@ import ObjectMapper
 		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
 		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
-		self.missingTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "missingTriggersIndexes")! as! [Int]
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
         self.unlockAutoCommitObserver()
@@ -140,7 +136,6 @@ import ObjectMapper
 		}
 		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
 		coder.encodeObject(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
-		coder.encodeObject(self.missingTriggersIndexes,forKey:"missingTriggersIndexes")
 		coder.encodeInteger(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
     }

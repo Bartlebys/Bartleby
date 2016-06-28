@@ -14,26 +14,15 @@ import Foundation
 
 /*
 
- # Why do we always Upsert?
-
- Because triggered information are transformed to get operations.
- A new instance or an updated instance can be grabbed the same way.
-
-
- # Trigger.index
-
- The index is injected server side
- self.registryMetadata.triggersIndexes permits to detect the data holes
-
- Data from Consecutive Received triggers are immediately integrated (local execution is resilient to fault, faults are ignored)
- If there are holes we try to fill the gap.
+ This extension implements the logic that loads and integrate consistently the data.
+ Data from Consecutive Received triggers are integrated.
+ 
+ We try to load the data as soon as possible.
 
 */
-
 extension BartlebyDocument {
 
     // MARK: - Triggers Receipts
-
 
     /**
      This is first step of the trigger life cycle.
@@ -75,7 +64,7 @@ extension BartlebyDocument {
         }
 
         if shouldTryToIntegrateImmediatly{
-            self._integrateContinuousPendingData()
+            self._integrateContiguousData()
         }
     }
 
@@ -85,7 +74,7 @@ extension BartlebyDocument {
     /**
      Called by the generative Operation layer
      it permitts to discriminate owned triggers from external triggers.
-     owned triggers should not be loaded.
+     Owned triggers should not be loaded!
 
      - parameter index: the trigger index.
      */
@@ -97,7 +86,9 @@ extension BartlebyDocument {
         }else{
             bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
         }
+        self._integrateContiguousData()
     }
+
 
     /**
      Acknowledges the triggers indexes
@@ -110,21 +101,14 @@ extension BartlebyDocument {
                 if !registryMetadata.triggersIndexes.contains(index) {
                     bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                     self.registryMetadata.triggersIndexes.append(index)
-                    if let holeIdx=self.registryMetadata.missingTriggersIndexes.indexOf(index){
-                        self.registryMetadata.missingTriggersIndexes.removeAtIndex(holeIdx)
-                    }
-                }else{
                     bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                 }
             }else{
                 bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
             }
+
         }
-        // Proceed to Indexes Consistency Analysis.
-        self._analyzeConsistencyOfTriggerIndexes()
     }
-
-
 
 
 
@@ -248,35 +232,63 @@ extension BartlebyDocument {
      */
     private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
         self._triggeredData[trigger]=instances
-        self._integrateContinuousPendingData()
+        self._integrateContiguousData()
     }
-
 
 
     /**
-     Integrates the loaded data of continous triggers
-     Continuity of triggers is absolutely essential.
+     Integrates the data and re-computes: lastIntegratedTriggerIndex, triggersIndexes
+     Continuity of triggers is required to insure data consistency.
      */
-    private func _integrateContinuousPendingData(){
-        let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
-            return lEntry.0.index < rEntry.0.index
-        }
-        for data  in sortedData{
-            let triggerIndex=data.0.index
-            // Integrate continuous data
-            let nextIntegrableIndex=self.registryMetadata.lastIntegratedTriggerIndex+1
-            if triggerIndex == nextIntegrableIndex{
-                self._integrate(data)
-            }else{
-                bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
-                break
+    private func _integrateContiguousData(){
+        dispatch_async(GlobalQueue.UserInitiated.get()) {
+            // Sort the triggered data
+            let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
+                return lEntry.0.index < rEntry.0.index
             }
+
+            // Integrate contigous data
+            var lastIntegratedTriggerIndex=self.registryMetadata.lastIntegratedTriggerIndex
+            for data  in sortedData{
+                let triggerIndex=data.0.index
+                // Integrate continuous data
+                if triggerIndex == lastIntegratedTriggerIndex + 1  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
+                    self._integrate(data)
+                    lastIntegratedTriggerIndex += 1
+                }else{
+                    //bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                    break
+                }
+            }
+
+            // Verify the continuity with currently ownedTriggersIndexes
+            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.maxElement(){
+
+                if lastIntegratedTriggerIndex < maxOwnedTriggerIndex{
+                    for index in lastIntegratedTriggerIndex...maxOwnedTriggerIndex{
+                        if index == lastIntegratedTriggerIndex + 1{
+                            lastIntegratedTriggerIndex += 1
+                        }else{
+                            break
+                        }
+                    }
+                }
+            }
+
+            // Update the lastIntegratedTriggerIndex
+            self.registryMetadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
+
+            // Remove the integrated Indexes
+            let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
+            self.registryMetadata.triggersIndexes=filteredIndexes
         }
     }
+
 
 
     /**
      Integrates the triggered data in the registry.
+     This method is called on GlobalQueue.UserInitiated.get() queue
 
      - parameter triggeredData: the triggered data
      */
@@ -296,8 +308,6 @@ extension BartlebyDocument {
             }
         }
 
-        // Update the last integrated trigger index.
-        self.registryMetadata.lastIntegratedTriggerIndex=triggeredData.0.index
         // Remove the trigger from the collection.
         if let idx=self.registryMetadata.receivedTriggers.indexOf(triggeredData.0){
             self.registryMetadata.receivedTriggers.removeAtIndex(idx)
@@ -313,49 +323,34 @@ extension BartlebyDocument {
 
     }
 
-
-    // MARK: - Consistency
-
-
-    /**
-     Analyzes the consistency of the indexes and Computes :
-     - self.registryMetadata.missingTriggersIndexes
-     - self.registryMetadata.lastIntegrableTriggerIndex
-     */
-    private func _analyzeConsistencyOfTriggerIndexes() {
-        let fromIndex =  self.registryMetadata.lastIntegratedTriggerIndex >= 0 ? self.registryMetadata.lastIntegratedTriggerIndex : 0
-        let toIndex = self.registryMetadata.triggersIndexes.count-1
-        if toIndex >= fromIndex{
-            let lowestValidIndexValue = self.registryMetadata.triggersIndexes[fromIndex]
-            var highestIndexValue = lowestValidIndexValue
-            for i in fromIndex ... toIndex{
-                let currentIndexValue = self.registryMetadata.triggersIndexes[i]
-                if highestIndexValue < currentIndexValue{
-                    highestIndexValue = currentIndexValue
-                }
-            }
-            if highestIndexValue > (self.registryMetadata.triggersIndexes.count - 1) {
-                // There is at least one hole.
-                for value in lowestValidIndexValue ... highestIndexValue {
-                    if !self.registryMetadata.triggersIndexes.contains(value){
-                        if self.registryMetadata.missingTriggersIndexes.contains(value){
-                            self.registryMetadata.missingTriggersIndexes.append(value)
-                        }
-                    }
-                }
-            }else{
-                // There is no data hole.
-            }
-        }
-    }
-
+    // MARK: -
 
     /**
      Did we integrate all the pending data ?
      - returns: Return true if all the triggers have been integrated
      */
     public func isDataUpToDate()->Bool{
-        return (self.registryMetadata.receivedTriggers.count == 0)
+        return (self.registryMetadata.receivedTriggers.count == 0 && self.missingContiguousTriggersIndexes().count==0)
+    }
+
+
+    /**
+     Returns missing contiguous indexes
+
+     - returns:
+     */
+    public func missingContiguousTriggersIndexes()->[Int]{
+        var missingIndexes=[Int]()
+        let triggersIndexes=self.registryMetadata.triggersIndexes
+        let nextIndexToBeIntegrated=self.registryMetadata.lastIntegratedTriggerIndex+1
+        if let maxIndex=triggersIndexes.maxElement(){
+            for index in  nextIndexToBeIntegrated ... maxIndex{
+                if !triggersIndexes.contains(index){
+                    missingIndexes.append(index)
+                }
+            }
+        }
+        return missingIndexes
     }
 
     // MARK: - Recovery methods
@@ -364,8 +359,10 @@ extension BartlebyDocument {
      This method tries to fill the gap
      */
     public func grabMissingTriggerIndexes(){
-        if self.registryMetadata.missingTriggersIndexes.count>0{
-            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:self.registryMetadata.missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
+        let missingTriggersIndexes=self.missingContiguousTriggersIndexes()
+        // Todo compute missingTriggersIndexes
+        if missingTriggersIndexes.count>0{
+            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
                 // What to do in case of failure.
@@ -377,15 +374,12 @@ extension BartlebyDocument {
     /**
     
      This method is the ultimate to fix a blocked / corrupted data.
+     It may be destructive.
 
      Fixes the last lastIntegratedTriggerIndex to the highest value.
      And integrates all the triggered data
      */
     public func forceDataIntegration(){
-        if let highestTrigger=self.registryMetadata.receivedTriggers.last{
-            self.registryMetadata.lastIntegratedTriggerIndex=highestTrigger.index
-        }
-        self.registryMetadata.missingTriggersIndexes=[Int]()
 
         let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
             return lEntry.0.index < rEntry.0.index
@@ -393,7 +387,18 @@ extension BartlebyDocument {
         for data  in sortedData{
             self._integrate(data)
         }
+        // Reinitialize
+        self.registryMetadata.triggersIndexes=[Int]()
+
+        // Set the lastIntegratedTriggerIndex to the highest possible value
+        let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
+        let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.maxElement() ?? 0
+        self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
+
     }
+
+
+
 
 
     // MARK: - API triggers on demand
