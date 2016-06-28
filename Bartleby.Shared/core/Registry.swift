@@ -690,4 +690,24 @@ public class Registry: BXDocument {
         }
     }
 
+    /**
+
+     - returns: a bunch information on the current Buffer.
+     */
+    public func getTriggerBufferInformations()->String{
+
+        var informations="#Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
+        if let document=self as? BartlebyDocument{
+            for (trigger,dictionary) in self._triggeredDataBuffer {
+                informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)  \n"
+            }
+            informations += document.missingContiguousTriggersIndexes().reduce("Missing indexes [", combine: { (string, index) -> String in
+                return "\(string),\(index)"
+            })
+            informations += "]\n"
+        }
+
+        return informations
+    }
+
 }
