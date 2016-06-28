@@ -79,12 +79,12 @@ extension BartlebyDocument {
      - parameter index: the trigger index.
      */
     public func acknowledgeOwnedTriggerIndex(index:Int){
-        if !registryMetadata.triggersIndexes.contains(index) {
+        if self.registryMetadata.triggersIndexes.contains(index) {
+            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+        }else{
             self.registryMetadata.ownedTriggersIndexes.append(index)
             let indexes=[index]
             self.acknowledgeTriggerIndexes(indexes)
-        }else{
-            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
         }
         self._integrateContiguousData()
     }
@@ -98,15 +98,15 @@ extension BartlebyDocument {
     public func acknowledgeTriggerIndexes(indexes:[Int]) {
         for index in indexes{
             if index>=0{
-                if !registryMetadata.triggersIndexes.contains(index) {
+                if registryMetadata.triggersIndexes.contains(index) {
+                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                }else{
                     bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                     self.registryMetadata.triggersIndexes.append(index)
-                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                 }
             }else{
                 bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
             }
-
         }
     }
 
