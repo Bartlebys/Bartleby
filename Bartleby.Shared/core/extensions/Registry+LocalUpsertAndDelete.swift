@@ -10,7 +10,7 @@ import Foundation
 
 // MARK:- Local Instance(s) UD(s)
 
-// All the upsert and delete are done on GlobalQueue.UserInitiated.get()
+// All the upsert and delete are done on GlobalQueue.Main.get()
 // like the data integration in BartlebyDocument+Trigger (_integrateContiguousData)
 public extension Registry {
 
@@ -23,7 +23,7 @@ public extension Registry {
      - parameter instance: the instance
      */
     public func upsert(instance: Collectible){
-        dispatch_async(GlobalQueue.UserInitiated.get()) {
+        dispatch_async(GlobalQueue.Main.get()) {
             if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
                 collection.upsert(instance, commit:false)
             }
@@ -55,7 +55,7 @@ public extension Registry {
 
      */
     public func delete(instance: Collectible){
-        dispatch_async(GlobalQueue.UserInitiated.get()) {
+        dispatch_async(GlobalQueue.Main.get()) {
             if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
                 collection.removeObject(instance, commit:false)
             }
@@ -82,7 +82,7 @@ public extension Registry {
 
      */
     public func deleteById(instanceUID: String, fromCollectionWithName: String) {
-        dispatch_async(GlobalQueue.UserInitiated.get()) {
+        dispatch_async(GlobalQueue.Main.get()) {
             if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
                 collection.removeObjectWithID(instanceUID, commit:false)
             }

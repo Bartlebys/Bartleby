@@ -51,7 +51,7 @@ extension BartlebyDocument {
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
                 if trigger.action.contains("Delete"){
                     // it is a destructive action.
-                    self._triggeredData[trigger]=nil
+                    self._triggeredDataBuffer[trigger]=[[String:AnyObject]]()
                     shouldTryToIntegrateImmediatly=true
                 }else{
                     // It is creation action
@@ -135,17 +135,6 @@ extension BartlebyDocument {
         let action = trigger.action
         let entityName = Pluralization.singularize(trigger.collectionName).lowercaseString
         let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-
-        let prototypeName = PString.ucfirst(entityName)
-        guard let prototypeClass = NSClassFromString(prototypeName) else{
-            bprint("Trigger interpretation prototype class not found \(prototypeName)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-            return
-        }
-        guard let validatedPrototypeClass = prototypeClass as? Collectible.Type else{
-            bprint("Trigger interpretation invalid prototype class \(prototypeName) should adopt protocol<Initializable,Mappable>", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-            return
-        }
-
         var dictionary:Dictionary<String, AnyObject>=[:]
         var pathURL = baseURL
         if !multiple{
@@ -176,43 +165,18 @@ extension BartlebyDocument {
             }else{
                 if let statusCode=response?.statusCode {
                     if 200...299 ~= statusCode {
-
-                        /**
-                         Dynamic instantiation
-
-                         - parameter jsonDictionary: a json Dictionary to apply on a dynamic Prototype
-
-                         - returns: a optionnal Collectible instance
-                         */
-                        func __instantiate(from jsonDictionary:[String : AnyObject])->Collectible?{
-                            let prototype=validatedPrototypeClass.init()
-                            if var mappable=prototype as? Mappable{
-                                let mapped=Map(mappingType: .FromJSON, JSONDictionary: jsonDictionary)
-                                mappable.mapping(mapped)
-                                return mappable as? Collectible
-                            }
-                            return nil
-                        }
-
                         if multiple{
                             // upsert a collection
-                            if let d=result.value as? [[String : AnyObject]]{
-                                var instances=[Collectible]()
-                                for jsonDictionary in d{
-                                    if  let instance=__instantiate(from: jsonDictionary){
-                                        instances.append(instance)
-                                    }
-                                }
-                                self._dataReceivedFor(trigger, instances: instances)
+                            if let dictionaries=result.value as? [[String : AnyObject]]{
+                                self._triggeredDataBuffer[trigger]=dictionaries
                             }
                         }else{
                             // Unique entity
                             if let jsonDictionary=result.value as? [String : AnyObject]{
-                                if let instance=__instantiate(from: jsonDictionary){
-                                   self._dataReceivedFor(trigger, instances: [instance])
-                                }
+                               self._triggeredDataBuffer[trigger]=[jsonDictionary]
                             }
                         }
+                        self._integrateContiguousData()
                     }else{
                         // ERROR
                         bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
@@ -225,25 +189,13 @@ extension BartlebyDocument {
     // MARK: - Local Data Integration
 
     /**
-     Called on data reception
-
-     - parameter trigger:   the concerned trigger
-     - parameter instances: the grabed instances.
-     */
-    private func _dataReceivedFor(trigger:Trigger,instances:[Collectible]){
-        self._triggeredData[trigger]=instances
-        self._integrateContiguousData()
-    }
-
-
-    /**
      Integrates the data and re-computes: lastIntegratedTriggerIndex, triggersIndexes
      Continuity of triggers is required to insure data consistency.
      */
     private func _integrateContiguousData(){
-        dispatch_async(GlobalQueue.UserInitiated.get()) {
+        dispatch_async(GlobalQueue.Main.get()) {
             // Sort the triggered data
-            let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
+            let sortedData=self._triggeredDataBuffer.sort { (lEntry, rEntry) -> Bool in
                 return lEntry.0.index < rEntry.0.index
             }
 
@@ -288,23 +240,32 @@ extension BartlebyDocument {
 
     /**
      Integrates the triggered data in the registry.
-     This method is called on GlobalQueue.UserInitiated.get() queue
+     This method is called on GlobalQueue.Main.get() queue
 
      - parameter triggeredData: the triggered data
      */
-    private func _integrate(triggeredData:(Trigger,[Collectible]?)){
-
+    private func _integrate(triggeredData:(Trigger,[[String : AnyObject]])){
         // Integrate
-        if triggeredData.1 == nil {
+        if triggeredData.1.count==0 {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
             let collectionName=Trigger.collectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
             // it is a creation or un update
-            let collectibleItems=triggeredData.1!
-            if collectibleItems.count>0{
-                self.upsert(collectibleItems)
+            let jsonDictionaries=triggeredData.1
+            var collectibleItems=[Collectible]()
+            do {
+                for jsonDictionary in jsonDictionaries{
+                    if let collectible = try Bartleby.defaultSerializer.deserializeFromDictionary(jsonDictionary) as? Collectible{
+                        collectibleItems.append(collectible)
+                    }
+                }
+                if collectibleItems.count>0{
+                    self.upsert(collectibleItems)
+                }
+            }catch{
+                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
             }
         }
 
@@ -314,11 +275,11 @@ extension BartlebyDocument {
         }
 
         //CleanUp the triggerData
-        if let idx=self._triggeredData.indexOf({ (data) -> Bool in
+        if let idx=self._triggeredDataBuffer.indexOf({ (data) -> Bool in
             return triggeredData.0.index == data.0.index
         }){
             // Remove the triggered data
-            self._triggeredData.removeAtIndex(idx)
+            self._triggeredDataBuffer.removeAtIndex(idx)
         }
 
     }
@@ -381,7 +342,7 @@ extension BartlebyDocument {
      */
     public func forceDataIntegration(){
 
-        let sortedData=self._triggeredData.sort { (lEntry, rEntry) -> Bool in
+        let sortedData=self._triggeredDataBuffer.sort { (lEntry, rEntry) -> Bool in
             return lEntry.0.index < rEntry.0.index
         }
         for data  in sortedData{
@@ -394,9 +355,7 @@ extension BartlebyDocument {
         let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
         let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.maxElement() ?? 0
         self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
-
     }
-
 
 
 

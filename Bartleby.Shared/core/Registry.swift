@@ -69,7 +69,8 @@ public class Registry: BXDocument {
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive the collectible collection is set to nil
-    internal var _triggeredData=[Trigger:[Collectible]?]()
+    // The key Trigger and the value any Collectible entity serialized to a dictionary representation
+    internal var _triggeredDataBuffer:[Trigger:[[String : AnyObject]]]=[Trigger:[[String : AnyObject]]]()
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace where user can live.
@@ -122,7 +123,10 @@ public class Registry: BXDocument {
     // The EventSource URL for Server Sent Events
     public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.observationUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
-    // MARK :
+    // MARK:
+
+
+
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
@@ -341,8 +345,9 @@ public class Registry: BXDocument {
         if var fileWrappers=fileWrapper.fileWrappers {
 
             // #1 Metadata
-
+            self.registryMetadata._triggeredDataBuffer=self._dataFrom_triggeredDataBuffer() // Save the triggered Data Buffer
             var metadataNSData=self.registryMetadata.serialize()
+
             metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
 
             // Remove the previous metadata
@@ -423,6 +428,9 @@ public class Registry: BXDocument {
                     // IMPORTANT we swap the UID
                     let newRegistryUID=self.registryMetadata.UID
                     Bartleby.sharedInstance.replace(registryProxyUID, by: newRegistryUID)
+
+                    // Setup the triggered data buffer
+                    self._setUp_triggeredDataBuffer(self.registryMetadata._triggeredDataBuffer)
                 }
             } else {
                 // ERROR
@@ -642,12 +650,44 @@ public class Registry: BXDocument {
         }
     }
 
+    // MARK: triggered data buffer serialization support 
+
+    // To insure persistency of non integrated data.    
+
+    private func _dataFrom_triggeredDataBuffer()->NSData?{
+        // We use a super dictionary to store the Trigger as JSON as key
+        // and the collectible items as value
+        var superDictionary=[String:[[String : AnyObject]]]()
+        for (trigger,dictionary) in self._triggeredDataBuffer{
+            if let k=trigger.toJSONString(){
+                superDictionary[k]=dictionary
+            }
+        }
+        do{
+            let data = try NSJSONSerialization.dataWithJSONObject(superDictionary, options:[])
+            return data
+        }catch{
+            bprint("Serialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+            return nil
+        }
+    }
+
+    private func _setUp_triggeredDataBuffer(from:NSData?){
+        if let data=from{
+            do{
+                if let superDictionary:[String:[[String : AnyObject]]] = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String:[[String : AnyObject]]]{
+                    for (jsonTrigger,dictionary) in superDictionary{
+                        if let trigger:Trigger = Mapper<Trigger>().map(jsonTrigger){
+                            self._triggeredDataBuffer[trigger]=dictionary
+                        }else{
+                             bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                        }
+                    }
+                }
+            }catch{
+                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+            }
+        }
+    }
+
 }
-
-
-
-
-
-
-
-
