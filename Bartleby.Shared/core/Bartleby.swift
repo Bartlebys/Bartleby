@@ -15,7 +15,9 @@ import Foundation
     import UIKit
 #endif
 
-
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+#endif
 
 //MARK: - Bartleby
 
@@ -214,15 +216,14 @@ public class  Bartleby: Consignee {
 
     // MARK: - bprint
     private static var _enableBPrint: Bool=false
+    public static let logSectionSeparator="[- | BARTLEBY_LOG_SECTION | -]\n"
     public static let startTime=CFAbsoluteTimeGetCurrent()
-    public static var bprintEntries=[BprintEntry]()
+    public static var bprintCollection=BprintCollection()
 
 
 
     /**
-     Print indirection with guided contextual info
-     Usage : bprint("<Message>",file:#file,function:#function,line:#line,category:DEFAULT.BPRINT_CATEGORY")'
-     You can create code snippet
+     Print indirection with contextual informations.
 
      - parameter message: the message
      - parameter file:  the file
@@ -234,8 +235,8 @@ public class  Bartleby: Consignee {
     public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
-            let entry=BprintEntry(counter: Bartleby.bprintEntries.count+1, message: message, file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
-            Bartleby.bprintEntries.append(entry)
+            let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
+            Bartleby.bprintCollection.entries.append(entry)
             print(entry)
         }
     }
@@ -249,7 +250,7 @@ public class  Bartleby: Consignee {
      - returns: a dump of the entries
      */
     public static func getBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool )->String{
-        let entries=Bartleby.bprintEntries.filter { (entry) -> Bool in
+        let entries=Bartleby.bprintCollection.entries.filter { (entry) -> Bool in
             return matching(entry: entry)
         }
         var infos=""
@@ -266,7 +267,7 @@ public class  Bartleby: Consignee {
      Cleans uo all the entries
      */
     public static func cleanUpBprintEntries(){
-        Bartleby.bprintEntries.removeAll()
+        Bartleby.bprintCollection.entries.removeAll()
     }
 
     /**
@@ -368,7 +369,6 @@ public class  Bartleby: Consignee {
 
     // MARK: - Paths & URL
 
-
     /**
      Call
 
@@ -439,19 +439,51 @@ public class  Bartleby: Consignee {
 
 // MARK: - BprintEntry
 
+
+public struct BprintCollection:Mappable{
+
+    public var entries=[BprintEntry]()
+
+
+    public init(){
+    }
+
+    // MARK: - Mappable
+
+    public init?(_ map: Map) {
+    }
+
+    public mutating func mapping(map: Map) {
+        self.entries <- map["entries"]
+    }
+
+}
+
 /**
  *  A struct to insure temporary persistency of a BprintEntry
  */
-public struct BprintEntry:CustomStringConvertible{
+public struct BprintEntry:CustomStringConvertible,Mappable{
 
-    public var counter: Int
-    public var message: AnyObject
-    public var file: String
-    public var function: String
-    public var line: Int
-    public var category: String
-    public var elapsed:CFAbsoluteTime
+    public var counter: Int=0
+    public var message: String=""
+    public var file: String=""
+    public var function: String=""
+    public var line: Int=0
+    public var category: String=""
+    public var elapsed:CFAbsoluteTime=0
     public var decorative:Bool=false
+    private var _runUID:String=Bartleby.runUID
+
+    public init(counter:Int,message: String, file: String, function: String, line: Int, category: String,elapsed:CFAbsoluteTime,decorative:Bool=false){
+        self.counter=counter
+        self.message=message
+        self.file=file
+        self.function=function
+        self.line=line
+        self.category=category
+        self.elapsed=elapsed
+        self.decorative=decorative
+    }
 
     public var description: String {
   
@@ -485,5 +517,25 @@ public struct BprintEntry:CustomStringConvertible{
 
         return  s
     }
+
+
+    // MARK: - Mappable
+
+    public init?(_ map: Map) {
+    }
+
+
+    public mutating func mapping(map: Map) {
+        self.counter <- map["counter"]
+        self.message <- map["message"]
+        self.file <- map["file"]
+        self.function <- map["function"]
+        self.line <- map["line"]
+        self.category <- map["line"]
+        self.elapsed <- map["elapsed"]
+        self.decorative <- map["decorative"]
+        self._runUID <- map["runUID"]
+    }
+    
 }
 

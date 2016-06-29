@@ -104,6 +104,9 @@ public class Registry: BXDocument {
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
 
+    private let _logsFileName="logs.txt"
+    private var _logs:String=""
+
     /// The underlining storage hashed by collection name
     internal var _collections=[String:Collection]()
 
@@ -392,14 +395,15 @@ public class Registry: BXDocument {
                 }
             }
 
-            // Stores the last logs in a file.
-            let bprintString=Bartleby.getBprintEntries({ (entry) -> Bool in
-                return true // all the entries
-            })
 
-            let logs=NSFileWrapper(regularFileWithContents:bprintString.dataUsingEncoding(NSUTF8StringEncoding)!)
-            logs.preferredFilename="lastLogs.txt"
+            // Stores the last logs in a file.
+
+            self._logs += "{\"runUID\":\"\(Bartleby.runUID)\",\"date\":\"\(NSDate())\"}\(Bartleby.logSectionSeparator)"
+            self._logs += Bartleby.bprintCollection.toJSONString() ?? ""
+            let logs=NSFileWrapper(regularFileWithContents: self._logs.dataUsingEncoding(NSUTF8StringEncoding)!)
+            logs.preferredFilename=self._logsFileName
             fileWrapper.addFileWrapper(logs)
+
 
         }
         return fileWrapper
@@ -436,6 +440,7 @@ public class Registry: BXDocument {
                 // ERROR
             }
 
+
             // #2 Collections
 
             for metadatum in self.registryMetadata.collectionsMetadata {
@@ -470,6 +475,16 @@ public class Registry: BXDocument {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
 
+            // 3 Logs 
+
+            if let wrapper=fileWrappers[self._logsFileName] {
+                if let logsData=wrapper.regularFileContents {
+                    self._logs=String(data: logsData,encoding: NSUTF8StringEncoding) ?? ""
+                }
+            } else {
+                // ERROR
+            }
+            
             dispatch_async(GlobalQueue.Main.get(), {
                 self.registryDidLoad()
             })
@@ -698,13 +713,37 @@ public class Registry: BXDocument {
 
         var informations="#Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
         if let document=self as? BartlebyDocument{
+            // Data buffer
             for (trigger,dictionary) in self._triggeredDataBuffer {
-                informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)  \n"
+                let s = try?NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
+                let n = (s?.length ?? 0)
+                informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)  \(n)\n"
             }
-            informations += document.missingContiguousTriggersIndexes().reduce("Missing indexes [", combine: { (string, index) -> String in
-                return "\(string),\(index)"
+
+            // Missing
+            let missing=document.missingContiguousTriggersIndexes()
+            informations += missing.reduce("Missing indexes (\(missing.count)): ", combine: { (string, index) -> String in
+                 return "\(string) \(index)"
             })
-            informations += "]\n"
+            informations += "\n"
+
+            // TriggerIndexes
+            let triggersIndexes=self.registryMetadata.triggersIndexes
+
+            informations += "Trigger Indexes (\(triggersIndexes.count)): "
+            informations += triggersIndexes.reduce("", combine: { (string, index) -> String in
+                return "\(string) \(index)"
+            })
+            informations += "\n"
+
+            // Owned Indexes
+            let ownedTriggersIndexes=self.registryMetadata.ownedTriggersIndexes
+
+            informations += "Owned Indexes (\(ownedTriggersIndexes.count)): "
+            informations += ownedTriggersIndexes.reduce("", combine: { (string, index) -> String in
+                return "\(string) \(index)"
+            })
+            informations += "\n"
         }
 
         return informations
