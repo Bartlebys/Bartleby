@@ -136,7 +136,7 @@ extension BartlebyDocument {
 
             let multiple = uids.count > 1
             let action = trigger.action
-            let entityName = Pluralization.singularize(trigger.collectionName).lowercaseString
+            let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercaseString
             let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
             var dictionary:Dictionary<String, AnyObject>=[:]
             var pathURL = baseURL
@@ -260,7 +260,7 @@ extension BartlebyDocument {
         if triggeredData.1.count==0 {
             // It is a deletion.
             let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
-            let collectionName=Trigger.collectionName
+            let collectionName=triggeredData.0.targetCollectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
             // it is a creation or un update

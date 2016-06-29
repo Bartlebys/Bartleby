@@ -34,7 +34,7 @@ import ObjectMapper
 	//The action that has initiated the trigger
 	public var origin:String?
 	//The targetted collection name
-	public var collectionName:String = ""
+	public var targetCollectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
 	public var creationDate:NSDate?
 	//The action name
@@ -58,7 +58,7 @@ import ObjectMapper
 		self.senderUID <- ( map["senderUID"] )
 		self.runUID <- ( map["runUID"] )
 		self.origin <- ( map["origin"] )
-		self.collectionName <- ( map["collectionName"] )
+		self.targetCollectionName <- ( map["targetCollectionName"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.action <- ( map["action"] )
 		self.UIDS <- ( map["UIDS"] )
@@ -77,7 +77,7 @@ import ObjectMapper
 		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
 		self.runUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"runUID") as NSString?)
 		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey:"origin") as NSString?)
-		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
+		self.targetCollectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "targetCollectionName")! as NSString)
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
 		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
@@ -102,7 +102,7 @@ import ObjectMapper
 		if let origin = self.origin {
 			coder.encodeObject(origin,forKey:"origin")
 		}
-		coder.encodeObject(self.collectionName,forKey:"collectionName")
+		coder.encodeObject(self.targetCollectionName,forKey:"targetCollectionName")
 		if let creationDate = self.creationDate {
 			coder.encodeObject(creationDate,forKey:"creationDate")
 		}

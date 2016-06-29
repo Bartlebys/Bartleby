@@ -348,7 +348,7 @@ public class Registry: BXDocument {
         if var fileWrappers=fileWrapper.fileWrappers {
 
             // #1 Metadata
-            self.registryMetadata._triggeredDataBuffer=self._dataFrom_triggeredDataBuffer() // Save the triggered Data Buffer
+            self.registryMetadata.triggeredDataBuffer=self._dataFrom_triggeredDataBuffer() // Save the triggered Data Buffer
             var metadataNSData=self.registryMetadata.serialize()
 
             metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
@@ -434,7 +434,7 @@ public class Registry: BXDocument {
                     Bartleby.sharedInstance.replace(registryProxyUID, by: newRegistryUID)
 
                     // Setup the triggered data buffer
-                    self._setUp_triggeredDataBuffer(self.registryMetadata._triggeredDataBuffer)
+                    self._setUp_triggeredDataBuffer(self.registryMetadata.triggeredDataBuffer)
                 }
             } else {
                 // ERROR
@@ -620,7 +620,7 @@ public class Registry: BXDocument {
                                 trigger.index=index
                                 trigger.observationUID=observationUID
                                 trigger.action=action
-                                trigger.collectionName=collectionName
+                                trigger.targetCollectionName=collectionName
                                 trigger.UIDS=uids
 
                                 // Optional data

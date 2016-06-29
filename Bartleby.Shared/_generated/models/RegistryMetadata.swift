@@ -58,7 +58,7 @@ import ObjectMapper
 	//A collection Triggers that are temporarly stored before data integration
 	public var receivedTriggers:[Trigger] = [Trigger]()
 	//The serialized version of loaded trigger data that are pending integration
-	public var _triggeredDataBuffer:NSData?
+	public var triggeredDataBuffer:NSData?
 
 
     // MARK: Mappable
@@ -86,7 +86,7 @@ import ObjectMapper
 		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
-		self._triggeredDataBuffer <- ( map["_triggeredDataBuffer"], Base64DataTransform() )
+		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
         self.unlockAutoCommitObserver()
     }
 
@@ -112,7 +112,7 @@ import ObjectMapper
 		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
-		self._triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"_triggeredDataBuffer") as NSData?
+		self.triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"triggeredDataBuffer") as NSData?
         self.unlockAutoCommitObserver()
     }
 
@@ -142,8 +142,8 @@ import ObjectMapper
 		coder.encodeObject(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
 		coder.encodeInteger(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
-		if let _triggeredDataBuffer = self._triggeredDataBuffer {
-			coder.encodeObject(_triggeredDataBuffer,forKey:"_triggeredDataBuffer")
+		if let triggeredDataBuffer = self.triggeredDataBuffer {
+			coder.encodeObject(triggeredDataBuffer,forKey:"triggeredDataBuffer")
 		}
     }
 
