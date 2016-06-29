@@ -126,6 +126,30 @@ public class Registry: BXDocument {
     // The EventSource URL for Server Sent Events
     public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.observationUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
+    /// The online flag is driving the connection process.
+    public var online:Bool=false{
+        willSet{
+            // Transition on line
+            if newValue==true && online==false{
+                self._connectToSSE()
+                self._restartTasksGroups()
+            }
+            // Transition off line
+            if newValue==false && online==true{
+                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
+                self._closeSSE()
+                self._pauseTasksGroups()
+            }
+            if newValue==online{
+                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
+            }
+        }
+        didSet{
+            self.registryMetadata.online=online
+        }
+    }
+
+
     // MARK:
 
 
@@ -395,7 +419,7 @@ public class Registry: BXDocument {
                 }
             }
 
-
+            
             // Stores the last logs in a file.
 
             self._logs += "{\"runUID\":\"\(Bartleby.runUID)\",\"date\":\"\(NSDate())\"}\(Bartleby.logSectionSeparator)"
@@ -475,7 +499,7 @@ public class Registry: BXDocument {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
 
-            // 3 Logs 
+            // 3 Logs
 
             if let wrapper=fileWrappers[self._logsFileName] {
                 if let logsData=wrapper.regularFileContents {
@@ -484,7 +508,7 @@ public class Registry: BXDocument {
             } else {
                 // ERROR
             }
-            
+
             dispatch_async(GlobalQueue.Main.get(), {
                 self.registryDidLoad()
             })
@@ -536,41 +560,56 @@ public class Registry: BXDocument {
      Registry will save
      */
     public func registryWillSave() {
+
     }
+
+    /**
+     Restarts the tasks Group
+     */
+    private func _restartTasksGroups(){
+        // Pause the taskGroup
+        if let document=self as? BartlebyDocument{
+            for taskGroup in document.tasksGroups{
+                if taskGroup.totalTaskCount()>0{
+                    // We reset to Paused to force the restart
+                    taskGroup.status=TasksGroup.Status.Paused
+                    do {
+                        bprint("Starting task Group \(taskGroup.UID)", file:#file, function:#function, line:#line)
+                        try taskGroup.start()
+                    } catch let e {
+                        bprint("Error while restarting taskGroup \(e)", file:#file, function:#function, line:#line)
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     Restarts the tasks Group
+     */
+    private func _pauseTasksGroups(){
+        // Pause the taskGroup
+        if let document=self as? BartlebyDocument{
+            for taskGroup in document.tasksGroups{
+                if taskGroup.totalTaskCount()>0{
+                    taskGroup.pause()
+                }
+            }
+        }
+    }
+
 
     // MARK: - SSE
 
     // SSE server sent event source
     internal var _sse:EventSource?
 
-    /// The online flag is driving the SSE connection process.
-    public var online:Bool=false{
-        willSet{
-            // Transition on line
-            if newValue==true && online==false{
-                bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
-                self._connectToSSE()
-            }
-            // Transition off line
-            if newValue==false && online==true{
-                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
-                self._closeSSE()
-            }
-
-            if newValue==online{
-                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
-            }
-        }
-        didSet{
-            self.registryMetadata.online=online
-        }
-    }
-
-
     /**
      Connect to SSE
      */
     private func _connectToSSE() {
+        bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
         // The connection is restricted to identified users
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
         LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
@@ -638,19 +677,19 @@ public class Registry: BXDocument {
                                 }else{
                                     bprint("Registry is not a BartlebyDocument",file:#file,function:#function,line:#line,category: "SSE")
                                 }
-                                
+
                             }
                         }
                     }
-                    
+
                 }catch{
                     bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
                 }
             }
 
-            }) { (context) in
-                bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
-                self.registryMetadata.online=false
+        }) { (context) in
+            bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
+            self.registryMetadata.online=false
         }
 
     }
@@ -665,9 +704,9 @@ public class Registry: BXDocument {
         }
     }
 
-    // MARK: triggered data buffer serialization support 
+    // MARK: triggered data buffer serialization support
 
-    // To insure persistency of non integrated data.    
+    // To insure persistency of non integrated data.
 
     private func _dataFrom_triggeredDataBuffer()->NSData?{
         // We use a super dictionary to store the Trigger as JSON as key
@@ -695,7 +734,7 @@ public class Registry: BXDocument {
                         if let trigger:Trigger = Mapper<Trigger>().map(jsonTrigger){
                             self._triggeredDataBuffer[trigger]=dictionary
                         }else{
-                             bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                            bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
                         }
                     }
                 }
@@ -723,32 +762,32 @@ public class Registry: BXDocument {
             // Missing
             let missing=document.missingContiguousTriggersIndexes()
             informations += missing.reduce("Missing indexes (\(missing.count)): ", combine: { (string, index) -> String in
-                 return "\(string) \(index)"
+                return "\(string) \(index)"
             })
             informations += "\n"
-
+            
             // TriggerIndexes
             let triggersIndexes=self.registryMetadata.triggersIndexes
-
+            
             informations += "Trigger Indexes (\(triggersIndexes.count)): "
             informations += triggersIndexes.reduce("", combine: { (string, index) -> String in
                 return "\(string) \(index)"
             })
             informations += "\n"
-
+            
             // Owned Indexes
             let ownedTriggersIndexes=self.registryMetadata.ownedTriggersIndexes
-
+            
             informations += "Owned Indexes (\(ownedTriggersIndexes.count)): "
             informations += ownedTriggersIndexes.reduce("", combine: { (string, index) -> String in
                 return "\(string) \(index)"
             })
             informations += "\n"
             informations += "Last integrated trigger Index = \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
-
+            
         }
-
+        
         return informations
     }
-
+    
 }
