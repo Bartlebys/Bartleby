@@ -121,89 +121,80 @@ extension BartlebyDocument {
      */
     private func _loadDataFrom(trigger:Trigger){
 
-        /////////////////////////
-        // Request Interpreter
-        ////////////////////////
-
-        let uids = trigger.UIDS.componentsSeparatedByString(",")
-        if (uids.count==0){
-            bprint("Trigger interpretation issue uids are void! \(trigger)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-            return
-        }
-
-        let multiple = uids.count > 1
-        let action = trigger.action
-        let entityName = Pluralization.singularize(trigger.collectionName).lowercaseString
-        let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
-        var dictionary:Dictionary<String, AnyObject>=[:]
-        var pathURL = baseURL
-        if !multiple{
-            let UID=uids.first!
-            pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
-        }else{
-            pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
-            dictionary["ids"]=uids
-        }
-        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
-        let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
-
-
-        r.responseJSON { (response) in
+        let alreadyLoaded=self._triggeredDataBuffer.contains({ $0.0.index == trigger.index })
+        if !alreadyLoaded {
 
             /////////////////////////
-            // Result Handling
+            // Request Interpreter
             ////////////////////////
 
-            let request=response.request
-            let result=response.result
-            let response=response.response
+            let uids = trigger.UIDS.componentsSeparatedByString(",")
+            if (uids.count==0){
+                bprint("Trigger interpretation issue uids are void! \(trigger)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+                return
+            }
 
-            if result.isFailure {
-                // ERROR
-                bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-
+            let multiple = uids.count > 1
+            let action = trigger.action
+            let entityName = Pluralization.singularize(trigger.collectionName).lowercaseString
+            let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+            var dictionary:Dictionary<String, AnyObject>=[:]
+            var pathURL = baseURL
+            if !multiple{
+                let UID=uids.first!
+                pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
             }else{
-                if let statusCode=response?.statusCode {
-                    if 200...299 ~= statusCode {
-                        if multiple{
-                            // upsert a collection
-                            if let dictionaries=result.value as? [[String : AnyObject]]{
-                                var replaced=false
-                                for (t,_) in self._triggeredDataBuffer{
-                                    if t.index==trigger.index{
-                                        self._triggeredDataBuffer[trigger]=dictionaries
-                                        replaced=true
-                                        break
+                pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
+                dictionary["ids"]=uids
+            }
+            let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
+            let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+
+            r.responseJSON { (response) in
+
+                /////////////////////////
+                // Result Handling
+                ////////////////////////
+
+                let request=response.request
+                let result=response.result
+                let response=response.response
+
+                if result.isFailure {
+                    // ERROR
+                    bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+
+                }else{
+                    if let statusCode=response?.statusCode {
+                        if 200...299 ~= statusCode {
+                            // In case of concurrent loading we prefer to test again if the trigger as not been already loaded
+                            let alreadyLoaded=self._triggeredDataBuffer.contains({ $0.0.index == trigger.index })
+                            if !alreadyLoaded{
+                                if multiple{
+                                    // upsert a collection
+                                    if let dictionaries=result.value as? [[String : AnyObject]]{
+
+                                            self._triggeredDataBuffer[trigger]=dictionaries
+
                                     }
-                                }
-                                if !replaced{
-                                    self._triggeredDataBuffer[trigger]=dictionaries
-                                }
-                            }
-                        }else{
-                            // Unique entity
-                            if let jsonDictionary=result.value as? [String : AnyObject]{
-                                var replaced=false
-                                for (t,_) in self._triggeredDataBuffer{
-                                    if t.index==trigger.index{
+                                }else{
+                                    // Unique entity
+                                    if let jsonDictionary=result.value as? [String : AnyObject]{
                                         self._triggeredDataBuffer[trigger]=[jsonDictionary]
-                                        replaced=true
-                                        break
                                     }
                                 }
-                                if !replaced{
-                                    self._triggeredDataBuffer[trigger]=[jsonDictionary]
-                                }
+                                self._integrateContiguousData()
+                            }else{
+                                // ERROR
+                                bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
                             }
+
                         }
-                        self._integrateContiguousData()
-                    }else{
-                        // ERROR
-                        bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
                     }
                 }
             }
         }
+
     }
 
     // MARK: - Local Data Integration
