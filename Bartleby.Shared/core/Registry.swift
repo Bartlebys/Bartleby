@@ -744,6 +744,8 @@ public class Registry: BXDocument {
                 return "\(string) \(index)"
             })
             informations += "\n"
+            informations += "Last integrated trigger Index = \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
+
         }
 
         return informations
