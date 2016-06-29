@@ -45,14 +45,11 @@ extension BartlebyDocument {
         }
 
         // Proceed to loading or direct insertion of triggers.
-
-        var shouldTryToIntegrateImmediatly=false
         for trigger in triggers{
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
                 if trigger.action.contains("Delete"){
                     // it is a destructive action.
                     self._triggeredDataBuffer[trigger]=[[String:AnyObject]]()
-                    shouldTryToIntegrateImmediatly=true
                 }else{
                     // It is creation action
                     // Load data for un owned triggers only.
@@ -63,9 +60,8 @@ extension BartlebyDocument {
             }
         }
 
-        if shouldTryToIntegrateImmediatly{
-            self._integrateContiguousData()
-        }
+        self._integrateContiguousData()
+
     }
 
     // MARK: - Triggers Indexes Acknowledgment
@@ -82,6 +78,10 @@ extension BartlebyDocument {
         if self.registryMetadata.triggersIndexes.contains(index) {
             bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
         }else{
+            // We want ownedTriggersIndexes to be sorted
+            self.registryMetadata.ownedTriggersIndexes.sortInPlace { (lIdx, rIdx) -> Bool in
+                return lIdx<rIdx
+            }
             self.registryMetadata.ownedTriggersIndexes.append(index)
             let indexes=[index]
             self.acknowledgeTriggerIndexes(indexes)
@@ -205,6 +205,7 @@ extension BartlebyDocument {
      */
     private func _integrateContiguousData(){
         dispatch_async(GlobalQueue.Main.get()) {
+
             // Sort the triggered data
             let sortedData=self._triggeredDataBuffer.sort { (lEntry, rEntry) -> Bool in
                 return lEntry.0.index < rEntry.0.index
@@ -215,9 +216,9 @@ extension BartlebyDocument {
             for data  in sortedData{
                 let triggerIndex=data.0.index
                 // Integrate continuous data
-                if triggerIndex == lastIntegratedTriggerIndex + 1  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
+                if triggerIndex == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
                     self._integrate(data)
-                    lastIntegratedTriggerIndex += 1
+                    lastIntegratedTriggerIndex = triggerIndex
                 }else{
                     //bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
                     break
@@ -225,14 +226,13 @@ extension BartlebyDocument {
             }
 
             // Verify the continuity with currently ownedTriggersIndexes
-            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.maxElement(){
-
-                if lastIntegratedTriggerIndex < maxOwnedTriggerIndex{
-                    for index in lastIntegratedTriggerIndex...maxOwnedTriggerIndex{
-                        if index == lastIntegratedTriggerIndex + 1{
-                            lastIntegratedTriggerIndex += 1
-                        }else{
-                            break
+            // ownedTriggersIndexes is sorted
+            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.maxElement(),
+                let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.minElement(){
+                if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
+                    for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
+                        if index == (lastIntegratedTriggerIndex+1) {
+                            lastIntegratedTriggerIndex = index
                         }
                     }
                 }
@@ -388,4 +388,4 @@ extension BartlebyDocument {
         }
     }
 
-}
+} 
