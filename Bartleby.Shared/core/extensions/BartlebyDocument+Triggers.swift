@@ -168,12 +168,32 @@ extension BartlebyDocument {
                         if multiple{
                             // upsert a collection
                             if let dictionaries=result.value as? [[String : AnyObject]]{
-                                self._triggeredDataBuffer[trigger]=dictionaries
+                                var replaced=false
+                                for (t,_) in self._triggeredDataBuffer{
+                                    if t.index==trigger.index{
+                                        self._triggeredDataBuffer[trigger]=dictionaries
+                                        replaced=true
+                                        break
+                                    }
+                                }
+                                if !replaced{
+                                    self._triggeredDataBuffer[trigger]=dictionaries
+                                }
                             }
                         }else{
                             // Unique entity
                             if let jsonDictionary=result.value as? [String : AnyObject]{
-                               self._triggeredDataBuffer[trigger]=[jsonDictionary]
+                                var replaced=false
+                                for (t,_) in self._triggeredDataBuffer{
+                                    if t.index==trigger.index{
+                                        self._triggeredDataBuffer[trigger]=[jsonDictionary]
+                                        replaced=true
+                                        break
+                                    }
+                                }
+                                if !replaced{
+                                    self._triggeredDataBuffer[trigger]=[jsonDictionary]
+                                }
                             }
                         }
                         self._integrateContiguousData()
