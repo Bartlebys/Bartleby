@@ -112,33 +112,6 @@ extension BartlebyDocument {
 
 
 
-    /**
-     Optimizes the operations
-     */
-    public func optimizeOperations() {
-        self.optimizeOperations(self.operations.items)
-    }
-
-    /**
-     Deletes, aggregates and generates operations to reduce the push and subscribe load.
-
-     - parameter operations: the operations
-
-     - returns: the reduced operations + a trigger
-     */
-    public func optimizeOperations(operations: [Operation]) -> [Operation] {
-        /*
-         var toBeDeleted=[Operation]()
-         var groups=[String:[Operation]]()
-         for operation in operations{
-
-         }*/
-
-        // TODO: @bpds Append a Trigger
-
-        return operations
-    }
-
 
     /**
      A collection iterator

@@ -518,7 +518,6 @@ public struct BprintEntry:CustomStringConvertible,Mappable{
         return  s
     }
 
-
     // MARK: - Mappable
 
     public init?(_ map: Map) {

@@ -419,7 +419,7 @@ public class Registry: BXDocument {
                 }
             }
 
-            
+
             // Stores the last logs in a file.
 
             self._logs += "{\"runUID\":\"\(Bartleby.runUID)\",\"date\":\"\(NSDate())\"}\(Bartleby.logSectionSeparator)"

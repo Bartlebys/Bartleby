@@ -49,8 +49,7 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
 
         /**
             #1 this task commit the pending tasks.
-            #2 Optimize the operations
-            #3 Append the Push operation tasks
+            #2 Append the Push operation tasks
          */
         public override func invoke() {
             super.invoke()
@@ -67,10 +66,7 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
                             self.complete(completion)
                         }
 
-                        // #2 Optimize the operations
-                        document.optimizeOperations()
-
-                        // #3 Append the operations tasks.
+                        // #2 Append the operations tasks.
                         do {
                             if let groupReference=self.group {
                                 if let group: TasksGroup=groupReference.toLocalInstance() {
