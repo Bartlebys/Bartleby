@@ -67,7 +67,7 @@ public class TestsConfiguration: BartlebyConfiguration {
         case Production
     }
 
-    static var currentEnvironment: Environment = .Development
+    static var currentEnvironment: Environment = .Alternative
 
     static private var __BASE_URL: NSURL {
         get {
@@ -77,7 +77,7 @@ public class TestsConfiguration: BartlebyConfiguration {
             case .Development:
                 return NSURL(string:"https://dev.api.lylo.tv/api/v1")!
             case .Alternative:
-                return NSURL(string: "https://pereira-da-silva.com/clients/lylo/www/api/v1")!
+                return NSURL(string: "https://demo.bartlebys.org/www/api/v1")!
             case .Production:
                 return NSURL(string:"https://api.lylo.tv/api/v1")!
             }
