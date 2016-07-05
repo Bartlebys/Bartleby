@@ -38,6 +38,17 @@
                BlueprintName = "BartlebyKitOSXTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "UsersCreationLoadTest/test_005A_10X10_key()">
+               </Test>
+               <Test
+                  Identifier = "UsersCreationLoadTest/test_005B_100X1_key()">
+               </Test>
+               <Test
+                  Identifier = "UsersCreationLoadTest/test_005C_1X100_key()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
