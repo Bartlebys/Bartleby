@@ -48,8 +48,15 @@ public func graph_exec_completion_routine(priority: TasksGroup.Priority, useRand
             try group.addTask(firstTask)
             print("Appending Completion Handler \(group.UID)")
             group.handlers.appendCompletionHandler({ (completion) in
-                let taskCount=group.totalTaskCount()
-                assert(taskCount==0, "All the task have been executed and the totalTaskCount == 0 ")
+                let runnableTaskCount=group.countTasks{ (task) -> Bool in
+                    return task.status == Task.Status.Runnable
+                }
+                let completedTaskCount=group.countTasks{ (task) -> Bool in
+                    return task.status == Task.Status.Completed
+                }
+
+                assert(runnableTaskCount==0, "All the task have been completed and the runnableTaskCount == 0 ")
+                assert(completedTaskCount==numberOfSequTask+1, "Completed task completedTaskCount == \(numberOfSequTask+1) ")
                 assert(ShowSummary.executionCounter==numberOfSequTask+1, "Execution counter should be consistent \(ShowSummary.executionCounter)")
                 //Bartleby.stopBufferingBprint()
                 bprint("FULLFILLING \(group.UID)", file:#file, function: #function, line: #line)
