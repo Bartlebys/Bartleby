@@ -1173,7 +1173,7 @@
 				E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */,
 			);
 			name = Tests.shared;
-			path = ../Tests.shared;
+			path = ../../Tests.shared;
 			sourceTree = "<group>";
 		};
 		E54B7D3E1D2B8A4C001F7AB3 /* Bartleby.Shared */ = {
@@ -1600,7 +1600,6 @@
 				5B5D09FF1CDC9EA5001FB281 /* bsync-Bridging-Header.h */,
 				E5CEF8591C3BC9EB00C36CBA /* Embedded-Modules */,
 				E5C0CEC61C36CC2900F3B7B8 /* bsync */,
-				E52F948C1D01C25E005BDA2D /* Tests.shared */,
 				E5C0CED31C36CCDD00F3B7B8 /* bsyncTests */,
 				E5FEE5BF1CBF5E5E006AFA2E /* BsyncXPC */,
 				E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */,
@@ -1629,6 +1628,7 @@
 				E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */,
 				E5C0CEC71C36CC2900F3B7B8 /* main.swift */,
 				E5091D9C1C4F8DB200E640A2 /* Configuration.swift */,
+				E52F948C1D01C25E005BDA2D /* Tests.shared */,
 			);
 			path = bsync;
 			sourceTree = "<group>";
