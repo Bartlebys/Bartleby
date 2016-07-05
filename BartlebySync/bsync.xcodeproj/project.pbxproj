@@ -649,10 +649,6 @@
 		E54B7FBE1D2B8A4C001F7AB3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCA1D2B8A4C001F7AB3 /* VerifyLocker.swift */; };
 		E54B7FBF1D2B8A4C001F7AB3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCA1D2B8A4C001F7AB3 /* VerifyLocker.swift */; };
 		E54B7FC01D2B8A4C001F7AB3 /* VerifyLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCA1D2B8A4C001F7AB3 /* VerifyLocker.swift */; };
-		E54B7FC11D2B8A4C001F7AB3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCB1D2B8A4C001F7AB3 /* README.md */; };
-		E54B7FC21D2B8A4C001F7AB3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCB1D2B8A4C001F7AB3 /* README.md */; };
-		E54B7FC31D2B8A4C001F7AB3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCB1D2B8A4C001F7AB3 /* README.md */; };
-		E54B7FC41D2B8A4C001F7AB3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCB1D2B8A4C001F7AB3 /* README.md */; };
 		E54B7FC51D2B8A4C001F7AB3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCD1D2B8A4C001F7AB3 /* BFileManager.swift */; };
 		E54B7FC61D2B8A4C001F7AB3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCD1D2B8A4C001F7AB3 /* BFileManager.swift */; };
 		E54B7FC71D2B8A4C001F7AB3 /* BFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7DCD1D2B8A4C001F7AB3 /* BFileManager.swift */; };
@@ -1907,7 +1903,6 @@
 				E54B7F381D2B8A4C001F7AB3 /* TasksGroup+Execution.swift in Sources */,
 				E54B7F9C1D2B8A4C001F7AB3 /* TaskWithNotifications.swift in Sources */,
 				E54B7BEB1D2B891D001F7AB3 /* CryptoHelper.swift in Sources */,
-				E54B7FC41D2B8A4C001F7AB3 /* README.md in Sources */,
 				E54B7F941D2B8A4C001F7AB3 /* ReactiveTask.swift in Sources */,
 				E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */,
 				E54B7EE81D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */,
@@ -2288,7 +2283,6 @@
 				E54B7F891D2B8A4C001F7AB3 /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E54B7F111D2B8A4C001F7AB3 /* Completion+Result.swift in Sources */,
 				5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */,
-				E54B7FC11D2B8A4C001F7AB3 /* README.md in Sources */,
 				E53E275F1CA572940079ED23 /* Stream.swift in Sources */,
 				E54B7E711D2B8A4C001F7AB3 /* ReadGroupById.swift in Sources */,
 			);
@@ -2350,7 +2344,6 @@
 				E54B80041D2B8AAD001F7AB3 /* KeyValueStorageCommand.swift in Sources */,
 				E54B7F6A1D2B8A4C001F7AB3 /* Identifiable.swift in Sources */,
 				E54B7FE81D2B8AA0001F7AB3 /* BsyncDirectives.swift in Sources */,
-				E54B7FC21D2B8A4C001F7AB3 /* README.md in Sources */,
 				E54B7E8E1D2B8A4C001F7AB3 /* ReadPermissionsByIds.swift in Sources */,
 				E54B7FAA1D2B8A4C001F7AB3 /* LoginUser.swift in Sources */,
 				E54B7F121D2B8A4C001F7AB3 /* Completion+Result.swift in Sources */,
@@ -2653,7 +2646,6 @@
 				E54B7EAF1D2B8A4C001F7AB3 /* UpdateLockers.swift in Sources */,
 				E54B7F8F1D2B8A4C001F7AB3 /* PushOperationTask.swift in Sources */,
 				E55C92511CBF84ED008163F6 /* Request.swift in Sources */,
-				E54B7FC31D2B8A4C001F7AB3 /* README.md in Sources */,
 				E54B7F971D2B8A4C001F7AB3 /* RelayingTask.swift in Sources */,
 				E54B7F171D2B8A4C001F7AB3 /* ExternalReference+Resolution.swift in Sources */,
 				E54B7F871D2B8A4C001F7AB3 /* Registry.swift in Sources */,
