@@ -291,9 +291,6 @@ public extension TasksGroup {
         }
         for taskRef in task.children {
             if let child: Task=taskRef.toLocalInstance() {
-                if matching(task: child) {
-                    counter += 1
-                }
                 self._countTasks(child, matching:matching, counter:&counter)
             }
         }
