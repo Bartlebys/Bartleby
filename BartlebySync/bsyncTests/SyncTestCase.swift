@@ -325,7 +325,7 @@ class SyncTestCase : TestCase {
         waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
-    // TODO: func test008_Remove_one_file()
+    // @bpds: func test008_Remove_one_file()
 
     // MARK 9 - Cleaning
     func test009_Remove_all_files() {

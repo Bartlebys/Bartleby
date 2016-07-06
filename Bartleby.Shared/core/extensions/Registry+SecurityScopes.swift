@@ -184,7 +184,6 @@ extension Registry {
                                                              options: NSURLBookmarkResolutionOptions.WithSecurityScope, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
                                                              bookmarkDataIsStale: &bookmarkIsStale)
                             #else
-                                //@bpds(#IOS) to be verified
                                 let securizedURL = try NSURL(byResolvingBookmarkData: data,
                                                              options: NSURLBookmarkResolutionOptions.WithoutUI, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
                                                              bookmarkDataIsStale: &bookmarkIsStale)
@@ -231,7 +230,6 @@ extension Registry {
                                                                includingResourceValuesForKeys:nil,
                                                                relativeToURL: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
             #else
-                //@bpds(#IOS) to be verified
                 let data = try fileURL.bookmarkDataWithOptions(NSURLBookmarkCreationOptions.SuitableForBookmarkFile,
                                                                includingResourceValuesForKeys: nil,
                                                                relativeToURL: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )

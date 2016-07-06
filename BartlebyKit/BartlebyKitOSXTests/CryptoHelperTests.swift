@@ -22,8 +22,6 @@ class CryptoHelperTests: TestCase {
                 // If we encrypt it
                 let encryptedData = try CryptoHelperTests._cryptoHelper.encryptData(data)
                 // we get an encrypted buffer
-                // Commented by bpds > @md this assertion is irrelevant.
-                //XCTAssertEqual(encryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn), "FacTvJN9YQVRqzW8mCuy4w==")
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)
                 // we get back our original buffer
@@ -69,8 +67,6 @@ class CryptoHelperTests: TestCase {
         do {
 
             // Let's convert the encrypted base64 string to an encrypted buffer
-            // if let encryptedData = NSData(base64EncodedString: encryptedString, options: [.IgnoreUnknownCharacters]) {
-            // BPDS > @md  No that's not correct !
             if let encryptedData = encryptedString.dataUsingEncoding(Default.STRING_ENCODING) {
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)

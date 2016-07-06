@@ -10,9 +10,6 @@
 // ExternalReferences to simplify cross implementation
 // Those type ExternalReferences are used to share signatures not implementation
 
-
-// TODO: @bpds X alias for watchOS & TvOS
-
 #if os(OSX)
     import AppKit
     public typealias BXView=NSView

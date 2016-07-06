@@ -60,7 +60,7 @@ class KeyValueStorageCommand: CryptedCommand {
                     notInteractive)
         
         if self.parse() {
-            // TODO: @bpds why?
+
             let key = secretKey + password.value!
             
             // Configure Bartleby without a specific URL

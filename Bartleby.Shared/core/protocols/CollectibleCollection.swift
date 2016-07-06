@@ -94,8 +94,6 @@ public protocol CollectibleCollection: Collectible {
 }
 
 
-// @bpds split files ?
-
 public protocol Committable {
 
     /**
