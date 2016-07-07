@@ -576,4 +576,20 @@ public class BartlebyDocument : JDocument {
 
     #endif
 
+    
+    // MARK : new User facility 
+    
+    public func newUser() -> User {
+        let user=User()
+        if let creator=self.registryMetadata.currentUser {
+            user.creatorUID = creator.UID
+            user.spaceUID = creator.spaceUID
+        }
+        self.users.add(user, commit:true)
+        return user
+    }
+        
+      
+        
+
 }
