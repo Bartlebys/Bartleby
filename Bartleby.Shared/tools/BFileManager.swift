@@ -9,10 +9,19 @@
 import Foundation
 
 
-@objc class BFileManager: NSObject,BartlebyFileIO {
+public class BFileManager: NSObject,BartlebyFileIO {
 
 
-    private let _queue=GlobalQueue.UserInitiated.get()
+    private var _queue=GlobalQueue.UserInitiated.get()
+
+    /**
+     Initialize the File manage on a specific queue.
+     - parameter onQueue: the dispatch queue
+     */
+    public convenience init(onQueue:dispatch_queue_t){
+        self.init()
+        self._queue=onQueue
+    }
 
     // MARK: - Local File system
 
@@ -26,7 +35,7 @@ import Foundation
 
      - returns: N/A
      */
-    func createDirectoryAtPath(path: String,
+    public func createDirectoryAtPath(path: String,
                                handlers: Handlers) {
         dispatch_async(self._queue) {
             do {
@@ -46,7 +55,7 @@ import Foundation
 
      - returns: N/A
      */
-    func readData( contentsOfFile path: String,
+    public func readData( contentsOfFile path: String,
                                   handlers: Handlers) {
         dispatch_async(self._queue) {
             do {
@@ -67,7 +76,7 @@ import Foundation
 
      - returns: N/A
      */
-    func writeData( data: NSData,
+    public func writeData( data: NSData,
                     path: String,
                     handlers: Handlers) {
         dispatch_async(self._queue) {
@@ -87,7 +96,7 @@ import Foundation
      - parameter path:     the file path
      - parameter handlers:            the progress and completion handlers
      */
-    func readString(contentsOfFile path: String,
+    public func readString(contentsOfFile path: String,
                                    handlers: Handlers) {
         dispatch_async(self._queue) {
             do {
@@ -117,7 +126,7 @@ import Foundation
 
      - returns: N/A
      */
-    func writeString( string: String,
+    public func writeString( string: String,
                       path: String,
                       handlers: Handlers) {
         dispatch_async(self._queue) {
@@ -138,7 +147,7 @@ import Foundation
 
      - returns:  N/A
      */
-    func itemExistsAtPath(path: String,
+    public func itemExistsAtPath(path: String,
                           handlers: Handlers) {
         dispatch_async(self._queue) {
             var isADirectory: ObjCBool = false
@@ -158,7 +167,7 @@ import Foundation
 
      - returns:  N/A
      */
-    func fileExistsAtPath(path: String,
+    public func fileExistsAtPath(path: String,
                           handlers: Handlers) {
         dispatch_async(self._queue) {
             var isADirectory: ObjCBool = false
@@ -182,7 +191,7 @@ import Foundation
 
      - returns:  N/A
      */
-    func directoryExistsAtPath(path: String,
+    public func directoryExistsAtPath(path: String,
                                handlers: Handlers) {
         dispatch_async(self._queue) {
             var isADirectory: ObjCBool = false
@@ -205,7 +214,7 @@ import Foundation
      - parameter path:     path
      - parameter handlers:            the progress and completion handlers
      */
-    func removeItemAtPath(path: String,
+    public func removeItemAtPath(path: String,
                           handlers: Handlers) {
         dispatch_async(self._queue) {
             do {
@@ -226,7 +235,7 @@ import Foundation
 
      - returns: N/A
      */
-    func copyItemAtPath(srcPath: String,
+    public func copyItemAtPath(srcPath: String,
                         toPath dstPath: String,
                                handlers: Handlers) {
         dispatch_async(self._queue) {
@@ -248,7 +257,7 @@ import Foundation
 
      - returns: N/A
      */
-    func moveItemAtPath(srcPath: String,
+    public func moveItemAtPath(srcPath: String,
                         toPath dstPath: String,
                                handlers: Handlers) {
         dispatch_async(self._queue) {
@@ -270,7 +279,7 @@ import Foundation
 
      - returns: N/A
      */
-    func contentsOfDirectoryAtPath(path: String,
+    public func contentsOfDirectoryAtPath(path: String,
                                    handlers: Handlers) {
         dispatch_async(self._queue) {
             do {

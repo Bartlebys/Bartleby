@@ -147,7 +147,7 @@ public func instancesFromExternalReferences<T: Collectible>(externalReferences: 
 
 
 
-enum GlobalQueue {
+public enum GlobalQueue {
 
     case Main
     case UserInteractive
@@ -155,7 +155,7 @@ enum GlobalQueue {
     case Utility
     case Background
 
-     func get() -> dispatch_queue_t {
+     public func get() -> dispatch_queue_t {
         switch self {
         case .Main:
             return dispatch_get_main_queue()
