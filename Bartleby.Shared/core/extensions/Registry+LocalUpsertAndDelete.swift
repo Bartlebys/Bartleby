@@ -26,6 +26,7 @@ public extension Registry {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.upsert(instance, commit:false)
         }
+        self.hasChanged()
     }
 
     /**
@@ -38,6 +39,7 @@ public extension Registry {
         for instance in instances {
             self.upsert(instance)
         }
+        self.hasChanged()
     }
 
     // MARK: read
@@ -56,6 +58,7 @@ public extension Registry {
         if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.removeObject(instance, commit:false)
         }
+        self.hasChanged()
 
     }
 
@@ -68,6 +71,7 @@ public extension Registry {
         for instance in instances {
             self.delete(instance)
         }
+        self.hasChanged()
     }
 
 
@@ -83,7 +87,7 @@ public extension Registry {
         if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
             collection.removeObjectWithID(instanceUID, commit:false)
         }
-
+        self.hasChanged()
     }
 
     /**
@@ -97,7 +101,7 @@ public extension Registry {
         for instanceUID in instancesUIDs {
             self.deleteById(instanceUID, fromCollectionWithName: fromCollectionWithName)
         }
-        
+        self.hasChanged()
     }
     
 }

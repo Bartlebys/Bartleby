@@ -54,6 +54,9 @@ public protocol BartlebyConfiguration {
     // Delay between chained operations
     static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double { get set }
 
+    // Should the registries metadata be crypted on export
+    static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool { get set }
+
 }
 
 
@@ -103,6 +106,8 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
 
+    // Should the registries metadata be crypted on export
+    public static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool = true
 
 
 }

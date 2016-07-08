@@ -148,17 +148,6 @@ extension Registry {
         }
     }
 
-    /**
-     Universal change
-     */
-    public func hasChanged() -> () {
-        #if os(OSX)
-            self.updateChangeCount(NSDocumentChangeType.ChangeDone)
-        #else
-            self.updateChangeCount(UIDocumentChangeKind.Done)
-        #endif
-    }
-
 
     /**
      Returns the URL on success

@@ -38,6 +38,8 @@
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E529CE2A1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E529CE2B1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
+		E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */; };
+		E529CE2E1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */; };
 		E537043D1CF8767B0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537043C1CF8767B0099440D /* ReactiveTask.swift */; };
 		E537043F1CF876860099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537043E1CF876860099440D /* RelayingTask.swift */; };
 		E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704401CF876BE0099440D /* TaskWithNotifications.swift */; };
@@ -364,6 +366,7 @@
 		E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E518343D1CA52F96006ED867 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+MetaDataImportExport.swift"; sourceTree = "<group>"; };
+		E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+AppFacilities.swift"; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
@@ -873,13 +876,14 @@
 				E5B7757F1CDCDDF2007261E1 /* NSNotification+Progression.swift */,
 				E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */,
 				E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */,
-				E5B775811CDCDDF2007261E1 /* BartlebyDocument+Operations.swift */,
-				E5B775831CDCDDF2007261E1 /* BartlebyDocument+Triggers.swift */,
 				E5B775841CDCDDF2007261E1 /* Registry+LocalUpsertAndDelete.swift */,
 				E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */,
 				E5B775821CDCDDF2007261E1 /* Registry+SecurityScopes.swift */,
 				E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */,
 				E57A4A851CE849600044106A /* ExternalReference+Resolution.swift */,
+				E5B775811CDCDDF2007261E1 /* BartlebyDocument+Operations.swift */,
+				E5B775831CDCDDF2007261E1 /* BartlebyDocument+Triggers.swift */,
+				E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1108,6 +1112,7 @@
 				E5B776C71CDCDDF3007261E1 /* BFileManager.swift in Sources */,
 				E5B776611CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
 				E592B79C1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
+				E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */,
 				E5B776B71CDCDDF2007261E1 /* TasksScheduler.swift in Sources */,
 				E57A4BD61CE8A34E0044106A /* Locker.swift in Sources */,
@@ -1250,6 +1255,7 @@
 				E5B776C81CDCDDF3007261E1 /* BFileManager.swift in Sources */,
 				E592B79D1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
 				E5B776621CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
+				E529CE2E1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E53704441CF876CC0099440D /* TaskWithNotifications.swift in Sources */,
 				E5B776B81CDCDDF3007261E1 /* TasksScheduler.swift in Sources */,
 				E57A4BD71CE8A34E0044106A /* Locker.swift in Sources */,

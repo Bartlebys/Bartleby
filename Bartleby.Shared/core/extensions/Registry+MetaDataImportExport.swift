@@ -8,6 +8,12 @@
 
 import Foundation
 
+#if os(OSX)
+    import AppKit
+#else
+    import UIKit
+#endif
+
 public extension Registry{
 
 
@@ -16,17 +22,19 @@ public extension Registry{
 
      - parameter path: the path
 
-     - returns: true on success.
+     - parameter crypted : should the file be crypted? ( true is highly recommanded)
+
      */
-    public func exportMetadataTo(path:String, handlers: Handlers) {
-        let directoryCreationHandlers=Handlers { (created) in
-            if created.success{
-                 // !!! implement the export logic
-            }else{
-               handlers.on(created)
-            }
+    public func exportMetadataTo(path:String,crypted:Bool, handlers: Handlers) {
+        do{
+            let data = try self._getSerializedMetadata(crypted)
+            Bartleby.fileManager.writeData(data, path: path, handlers: Handlers(completionHandler: { (dataWritten) in
+                handlers.on(dataWritten)
+            }))
+        }catch{
+            handlers.on(Completion.failureStateFromError(error))
         }
-        Bartleby.fileManager.createDirectoryAtPath(path, handlers: directoryCreationHandlers)
+
     }
 
     /**
@@ -34,18 +42,32 @@ public extension Registry{
 
      - parameter path: the import path
 
-     - parameter path:      the import path
      - parameter handlers: the handlers
+     
      */
-    public func importMetadataFrom(path:String,handlers: Handlers) {
-        let fileExistsHandlers=Handlers { (exists) in
-            if exists.success{
-                // !!! implement the import logic
+    public func importMetadataFrom(path:String,crypted:Bool,handlers: Handlers) {
+        let readDataHandler=Handlers { (dataCompletion) in
+            if var data=dataCompletion.data{
+                do{
+                    if crypted{
+                        data = try Bartleby.cryptoDelegate.decryptData(data)
+                    }
+                    if let newRegistryMetadata=try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
+                        self.registryMetadata=newRegistryMetadata
+                        self.hasChanged()
+                        handlers.on(Completion.successState())
+                    }else{
+                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: CompletionStatus.Expectation_Failed))
+                    }
+                }catch{
+                        handlers.on(Completion.failureStateFromError(error))
+                }
+
             }else{
-                handlers.on(exists)
+                handlers.on(dataCompletion)
             }
         }
-        Bartleby.fileManager.fileExistsAtPath(path, handlers: fileExistsHandlers)
+        Bartleby.fileManager.readData(contentsOfFile:path, handlers: readDataHandler)
     }
 
 
@@ -79,4 +101,8 @@ public extension Registry{
     }
 
 
+
+
+
+    
 }

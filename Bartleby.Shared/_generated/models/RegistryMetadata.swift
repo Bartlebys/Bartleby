@@ -47,8 +47,8 @@ import ObjectMapper
 	public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
 	//Save the password or not?
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
-	//The url of the assets folder
-	public var assetsFolderURL:NSURL?
+	//The preferred filename for this registry/document
+	public var preferredFileName:String?
 	//A collection of trigger Indexes (used to detect data holes)
 	public var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
@@ -81,7 +81,7 @@ import ObjectMapper
 		self.stateDictionary <- ( map["stateDictionary"] )
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
-		self.assetsFolderURL <- ( map["assetsFolderURL"], URLTransform() )
+		self.preferredFileName <- ( map["preferredFileName"] )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
 		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
@@ -107,7 +107,7 @@ import ObjectMapper
 		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
-		self.assetsFolderURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"assetsFolderURL") as NSURL?
+		self.preferredFileName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"preferredFileName") as NSString?)
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
 		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
@@ -135,8 +135,8 @@ import ObjectMapper
 		coder.encodeObject(self.stateDictionary,forKey:"stateDictionary")
 		coder.encodeObject(self.URLBookmarkData,forKey:"URLBookmarkData")
 		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")
-		if let assetsFolderURL = self.assetsFolderURL {
-			coder.encodeObject(assetsFolderURL,forKey:"assetsFolderURL")
+		if let preferredFileName = self.preferredFileName {
+			coder.encodeObject(preferredFileName,forKey:"preferredFileName")
 		}
 		coder.encodeObject(self.triggersIndexes,forKey:"triggersIndexes")
 		coder.encodeObject(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")

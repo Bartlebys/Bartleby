@@ -73,8 +73,8 @@ public class Registry: BXDocument {
     internal var _triggeredDataBuffer:[Trigger:[[String : AnyObject]]]=[Trigger:[[String : AnyObject]]]()
 
     // The spaceUID can be shared between multiple documents-registries
-    // It defines a dataSpace where user can live.
-    // A user can live in one data space only.
+    // It defines a dataSpace in wich a user can perform operations.
+    // A user can `live` in one data space only.
     public var spaceUID: String {
         get {
             return self.registryMetadata.spaceUID
@@ -149,11 +149,7 @@ public class Registry: BXDocument {
         }
     }
 
-
     // MARK:
-
-
-
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
@@ -358,6 +354,18 @@ public class Registry: BXDocument {
     }
 
 
+    /**
+     Universal change
+     */
+    public func hasChanged() -> () {
+        #if os(OSX)
+            self.updateChangeCount(NSDocumentChangeType.ChangeDone)
+        #else
+            self.updateChangeCount(UIDocumentChangeKind.Done)
+        #endif
+    }
+
+
     #if os(OSX)
 
 
@@ -371,8 +379,14 @@ public class Registry: BXDocument {
         let fileWrapper=NSFileWrapper(directoryWithFileWrappers:[:])
         if var fileWrappers=fileWrapper.fileWrappers {
 
+            // ##############
             // #1 Metadata
-            self.registryMetadata.triggeredDataBuffer=self._dataFrom_triggeredDataBuffer() // Save the triggered Data Buffer
+            // ##############
+
+            // Try to store a preferred filename
+            self.registryMetadata.preferredFileName=self.fileURL?.lastPathComponent
+            // Save the triggered Data Buffer
+            self.registryMetadata.triggeredDataBuffer=self._dataFrom_triggeredDataBuffer()
             var metadataNSData=self.registryMetadata.serialize()
 
             metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
@@ -385,7 +399,9 @@ public class Registry: BXDocument {
             metadataFileWrapper.preferredFilename=self._metadataFileName
             fileWrapper.addFileWrapper(metadataFileWrapper)
 
-            // 2# Collections
+            // ##############
+            // #2 Collections
+            // ##############
 
             for metadatum: CollectionMetadatum in self.registryMetadata.collectionsMetadata {
 
@@ -439,11 +455,13 @@ public class Registry: BXDocument {
 
             let registryProxyUID=self.spaceUID // May be a proxy
 
+
+            // ##############
             // #1 Metadata
+            // ##############
 
             if let wrapper=fileWrappers[_metadataFileName] {
                 if var metadataNSData=wrapper.regularFileContents {
-                    // We use a JSerializer not self.serializer that can be different.
                     metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
                     let r = try Bartleby.defaultSerializer.deserialize(metadataNSData)
                     if let registryMetadata=r as? RegistryMetadata {
@@ -465,7 +483,9 @@ public class Registry: BXDocument {
             }
 
 
+            // ##############
             // #2 Collections
+            // ##############
 
             for metadatum in self.registryMetadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
@@ -524,7 +544,7 @@ public class Registry: BXDocument {
 
     // SAVE content
     override public func contentsForType(typeName: String) throws -> AnyObject {
-    return ""
+        return ""
     }
 
     // READ content
