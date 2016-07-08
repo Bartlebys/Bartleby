@@ -36,6 +36,8 @@
 		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
 		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
+		E529CE2A1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
+		E529CE2B1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E537043D1CF8767B0099440D /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537043C1CF8767B0099440D /* ReactiveTask.swift */; };
 		E537043F1CF876860099440D /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E537043E1CF876860099440D /* RelayingTask.swift */; };
 		E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704401CF876BE0099440D /* TaskWithNotifications.swift */; };
@@ -361,6 +363,7 @@
 		E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
 		E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E518343D1CA52F96006ED867 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
+		E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+MetaDataImportExport.swift"; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
@@ -873,6 +876,7 @@
 				E5B775811CDCDDF2007261E1 /* BartlebyDocument+Operations.swift */,
 				E5B775831CDCDDF2007261E1 /* BartlebyDocument+Triggers.swift */,
 				E5B775841CDCDDF2007261E1 /* Registry+LocalUpsertAndDelete.swift */,
+				E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */,
 				E5B775821CDCDDF2007261E1 /* Registry+SecurityScopes.swift */,
 				E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */,
 				E57A4A851CE849600044106A /* ExternalReference+Resolution.swift */,
@@ -1128,6 +1132,7 @@
 				E57A4C061CE8A34E0044106A /* DeleteGroup.swift in Sources */,
 				E5B776A31CDCDDF2007261E1 /* HTTPCommand.swift in Sources */,
 				E5B776871CDCDDF2007261E1 /* Progression+Conveniences.swift in Sources */,
+				E529CE2A1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */,
 				E5B7767F1CDCDDF2007261E1 /* Completion+Conveniences.swift in Sources */,
 				E57A4C4C1CE8A34E0044106A /* UpdateGroup.swift in Sources */,
 				E592B7921CFC2181000F3301 /* DeletePermissions.swift in Sources */,
@@ -1269,6 +1274,7 @@
 				E57A4C211CE8A34E0044106A /* DeleteUsers.swift in Sources */,
 				E50140FD1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */,
 				E57A4C071CE8A34E0044106A /* DeleteGroup.swift in Sources */,
+				E529CE2B1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */,
 				E5B776A41CDCDDF2007261E1 /* HTTPCommand.swift in Sources */,
 				E5B776881CDCDDF2007261E1 /* Progression+Conveniences.swift in Sources */,
 				E5B776801CDCDDF2007261E1 /* Completion+Conveniences.swift in Sources */,
