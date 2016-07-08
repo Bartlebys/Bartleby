@@ -14,6 +14,8 @@ import Foundation
 
 public class JSerializer: Serializer {
 
+    public static var autoDecrypt=false
+
 
     /// The standard singleton shared instance
     public static let sharedInstance: JSerializer = {
@@ -33,10 +35,34 @@ public class JSerializer: Serializer {
      - returns: the deserialized instance
      */
     static public func deserialize(data: NSData) throws -> Serializable {
-        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+        return try JSerializer._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
+    }
+
+
+    /**
+     The concrete deserialization logic with auto decrypt logic.
+
+     - parameter data:        the data
+     - parameter autoDecrypt: should we try to autodecrypt ?
+
+     - throws: SerializableError and CryptoError
+
+     - returns: the serializable instance
+     */
+    static private func _deserializeFromData(data: NSData,autoDecrypt:Bool) throws -> Serializable{
+        do {
+            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
                 return try JSerializer.deserializeFromDictionary(JSONDictionary)
+            }
+            throw SerializableError.EnableToTransformDataToDictionary
+        }catch{
+            if (autoDecrypt){
+                let decrypted=try Bartleby.cryptoDelegate.decryptData(data)
+                return try JSerializer._deserializeFromData(data, autoDecrypt: false)
+            }else{
+                throw SerializableError.EnableToTransformDataToDictionary
+            }
         }
-        throw SerializableError.EnableToTransformDataToDictionary
     }
 
 
