@@ -30,6 +30,7 @@ public enum RegistryError: ErrorType {
     case RootObjectTypeMissMatch
     case InstanceNotFound
     case InstanceTypeMissMatch
+    case AttemptToSetUpRootObjectUIDMoreThanOnce
 }
 
 
@@ -72,6 +73,17 @@ public class Registry: BXDocument {
     // The key Trigger and the value any Collectible entity serialized to a dictionary representation
     internal var _triggeredDataBuffer:[Trigger:[[String : AnyObject]]]=[Trigger:[[String : AnyObject]]]()
 
+
+    // This is the Registry UID
+    // We use the root object UID as observationUID
+    // You should have set up the rootObjectUID before any trigger emitted.
+    // The triggers are observable via this UID
+    public var UID:String{
+        get{
+            return self.registryMetadata.rootObjectUID
+        }
+    }
+
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace in wich a user can perform operations.
     // A user can `live` in one data space only.
@@ -81,14 +93,6 @@ public class Registry: BXDocument {
         }
     }
 
-    // We use the root object UID as observationUID
-    // You should have set up the rootObjectUID before any trigger emitted.
-    // The triggers are observable via this UID
-    public var observationUID:String{
-        get{
-            return self.registryMetadata.rootObjectUID
-        }
-    }
 
     /// The current document user
     public var currentUser: User {
@@ -124,7 +128,7 @@ public class Registry: BXDocument {
     public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
 
     // The EventSource URL for Server Sent Events
-    public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.observationUID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
+    public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
     /// The online flag is driving the connection process.
     public var online:Bool=false{
@@ -150,6 +154,21 @@ public class Registry: BXDocument {
     }
 
     // MARK:
+
+    /**
+     Sets the root object UID.
+
+     - parameter UID: the UID
+
+     - throws: throws value description
+     */
+    public func setRootObjectUID(UID:String) throws {
+        if (self.registryMetadata.rootObjectUID==Default.NO_UID){
+            self.registryMetadata.rootObjectUID=UID
+        }else{
+            throw RegistryError.AttemptToSetUpRootObjectUIDMoreThanOnce
+        }
+    }
 
     /**
      Declares a collectible type with disymetric runTimeTypeName() and typeName()
@@ -235,7 +254,7 @@ public class Registry: BXDocument {
      Returns the instance by its UID
 
      - parameter UID: needle
-
+     î
      - returns: the instance
      */
     static public func collectibleInstanceByUID(UID: String) -> Collectible? {
@@ -279,7 +298,6 @@ public class Registry: BXDocument {
     }
 
     #endif
-
 
 
     //MARK: - Preparations

@@ -31,7 +31,7 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
     var currentUser: User? { get set }
 
     // Root Object UID defines the
-    var rootObjectUID: String { get set }
+    var rootObjectUID: String { get }
 
     // The state dictionary
     var stateDictionary: [String:AnyObject] { get set }
@@ -50,5 +50,6 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
 
     // The collaboration URL
     var collaborationServerURL: NSURL? { get set }
+
 
 }

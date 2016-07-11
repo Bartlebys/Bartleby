@@ -25,7 +25,7 @@ A dataspace is defined by a "spaceUID"
 ## Locker 
 
 A locker is a piece of data that allows to deliver data securely to one targeted user
-
+&
 - Owner = locker.creatorUID
 - What ? = locker.subjectUID
 - Who can unlock ? = locker.userUID
@@ -39,9 +39,9 @@ A locker is a piece of data that allows to deliver data securely to one targeted
 1# A distant locker can be accessed only by Authenticated users.
 2# A Locker can be "Created Updated Deleted" only by its creator. Locker.creatorUID
 3# A locker cannot be read distantly but only verifyed
-4# On successful verification the locker is returned with its cake :)
+4# On successful verification the locker is returned with its data gems :)
 
-The cake can be used : 
+The gems can be used : 
 + as a part of a crypto key chain for crypto operation
 + to deliver securely any sensistive string encoded data.
 

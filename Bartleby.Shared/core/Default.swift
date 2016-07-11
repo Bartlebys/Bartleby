@@ -138,7 +138,7 @@ public struct Default {
     static public let NO_MESSAGE: String="NO_MESSAGE"
     static public let NO_KEY: String="NO_KEY"
     static public let NO_PATH: String="NO_PATH"
-    static public let NO_CAKE: String="NO_CAKE"
+    static public let NO_GEM: String="NO_GEM"
     static public let NO_GROUP: String="NO_GROUP"
     static public let NO_INT_INDEX=Int.max
     static public let STRING_ENCODING = NSUTF8StringEncoding

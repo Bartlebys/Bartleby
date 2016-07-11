@@ -108,10 +108,10 @@ import ObjectMapper
 	    }
 	}
 
-	//This cake will be return on success
-	public var cake:String = "\(Default.NO_CAKE)"{	 
+	//Thoses data gems will be return on success
+	public var gems:String = "\(Default.NO_GEM)"{	 
 	    willSet { 
-	       if cake != newValue {
+	       if gems != newValue {
 	            self.provisionChanges() 
 	       } 
 	    }
@@ -137,7 +137,7 @@ import ObjectMapper
 		self.numberOfAttempt <- ( map["numberOfAttempt"] )
 		self.startDate <- ( map["startDate"], ISO8601DateTransform() )
 		self.endDate <- ( map["endDate"], ISO8601DateTransform() )
-		self.cake <- ( map["cake"] )
+		self.gems <- ( map["gems"] )
         self.unlockAutoCommitObserver()
     }
 
@@ -156,7 +156,7 @@ import ObjectMapper
 		self.numberOfAttempt=decoder.decodeIntegerForKey("numberOfAttempt") 
 		self.startDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "startDate")! as NSDate
 		self.endDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "endDate")! as NSDate
-		self.cake=String(decoder.decodeObjectOfClass(NSString.self, forKey: "cake")! as NSString)
+		self.gems=String(decoder.decodeObjectOfClass(NSString.self, forKey: "gems")! as NSString)
         self.unlockAutoCommitObserver()
     }
 
@@ -173,7 +173,7 @@ import ObjectMapper
 		coder.encodeInteger(self.numberOfAttempt,forKey:"numberOfAttempt")
 		coder.encodeObject(self.startDate,forKey:"startDate")
 		coder.encodeObject(self.endDate,forKey:"endDate")
-		coder.encodeObject(self.cake,forKey:"cake")
+		coder.encodeObject(self.gems,forKey:"gems")
     }
 
 

@@ -100,7 +100,7 @@ public class HTTPManager: NSObject {
 
         // We prefer to Inject the token and spaceUID within the HTTP headers.
         // Note It is also possible to pass them as query strings.
-        let tokenKey=HTTPManager.salt("\(actionName)#\(spaceUID)")
+        let tokenKey=HTTPManager.salt("\(actionName)#\(spaceUID)") 
         let tokenValue=HTTPManager.salt(tokenKey)
         headers[tokenKey]=tokenValue
 
@@ -117,7 +117,7 @@ public class HTTPManager: NSObject {
                 }
             }
             // We add the observationUID
-            headers["observationUID"]=registry.observationUID
+            headers["observationUID"]=registry.UID
         }
         return headers
     }
