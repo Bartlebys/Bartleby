@@ -31,6 +31,7 @@ public enum RegistryError: ErrorType {
     case InstanceNotFound
     case InstanceTypeMissMatch
     case AttemptToSetUpRootObjectUIDMoreThanOnce
+    case UnSupportedFileType(typeName:String)
 }
 
 
@@ -468,6 +469,16 @@ public class Registry: BXDocument {
     }
 
     // MARK: LOAD
+
+
+    /**
+     Standard Bundles loading
+
+     - parameter fileWrapper: the file wrapper
+     - parameter typeName:    the type name
+
+     - throws: misc exceptions
+     */
     override public func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
 

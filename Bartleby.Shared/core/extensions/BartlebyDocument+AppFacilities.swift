@@ -14,6 +14,10 @@ import Foundation
     import UIKit
 #endif
 
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+#endif
+
 
 
 extension BartlebyDocument {
@@ -29,11 +33,12 @@ extension BartlebyDocument {
 
      - parameter crypted: should the data be crypted?
      */
-    public func saveMetadata(crypted:Bool){
+    public func saveMetadata(crypted:Bool,handlers: Handlers){
         let savePanel = NSSavePanel()
         savePanel.canCreateDirectories = true
+        savePanel.nameFieldStringValue = self.fileURL?.lastPathComponent ?? "metadata"
         if crypted{
-            savePanel.allowedFileTypes=["data"]
+            savePanel.allowedFileTypes=["bart"]
         }else{
             savePanel.allowedFileTypes=["json"]
         }
@@ -41,12 +46,7 @@ extension BartlebyDocument {
             if result==NSFileHandlingPanelOKButton{
                 if let url = savePanel.URL {
                     if let filePath=url.path {
-                        self.exportMetadataTo(filePath,crypted: crypted, handlers:Handlers(completionHandler: { (exported) in
-                            if exported.success==false{
-                                bprint("Failure on metadata export \(exported)", file: #file, function: #function, line: #line, category:Default.BPRINT_CATEGORY, decorative: false)
-                            }
-                        })
-                        )
+                        self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
                     }
                 }
             }
@@ -58,11 +58,11 @@ extension BartlebyDocument {
 
      - parameter crypted: should the data be decrypted?
      */
-    public func loadMetadata(crypted:Bool){
+    public func loadMetadata(crypted:Bool,handlers: Handlers){
         let openPanel = NSOpenPanel()
         openPanel.canCreateDirectories = false
         if crypted{
-            openPanel.allowedFileTypes=["data"]
+            openPanel.allowedFileTypes=["bart"]
         }else{
             openPanel.allowedFileTypes=["json"]
         }
@@ -70,12 +70,7 @@ extension BartlebyDocument {
             if result==NSFileHandlingPanelOKButton{
                 if let url = openPanel.URL {
                     if let filePath=url.path {
-                    self.importMetadataFrom(filePath,crypted: crypted,handlers:Handlers(completionHandler: { (imported) in
-                            if imported.success==false{
-                                bprint("Failure on metadata imported \(imported)", file: #file, function: #function, line: #line, category:Default.BPRINT_CATEGORY, decorative: false)
-                            }
-                        })
-                        )
+                        self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
                     }
                 }
             }
@@ -86,8 +81,87 @@ extension BartlebyDocument {
     
     #endif
 
+    /**
+     Call the export Endpoint
+
+     - parameter handlers: the handlers
+     */
+    public func importCollectionsFromCollaborativeServer(handlers: Handlers){
+
+        let password=self.currentUser.password
+
+        self.currentUser.login(withPassword: password, sucessHandler: {
+
+            let pathURL=self.baseURL.URLByAppendingPathComponent("/Export")
+            let dictionary:Dictionary<String, AnyObject>=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
+
+            let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:self.spaceUID, withActionName:"Export", forMethod:"GET", and: pathURL)
+            let r: Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            r.responseJSON { response in
+
+                let result=response.result
+                let httpResponse=response.response
+
+                if result.isFailure {
+                    Completion.failureStateFromAlamofire(response)
+
+                } else {
+
+                    if let statusCode=httpResponse?.statusCode {
+                        if 200...299 ~= statusCode {
+                            var issues=[String]()
+                            if let dictionary=result.value as? [String:AnyObject]{
+                                if let collections=dictionary["collections"] as? [String:AnyObject] {
+                                    for (collectionName,collectionData) in collections{
+                                        if let proxy=self._collectionByName(collectionName) as? CollectibleCollection,
+                                            let collectionDictionary=collectionData as? [AnyObject]{
+                                            for itemRep in collectionDictionary{
+                                                if let itemRepDictionary = itemRep as? [String:AnyObject]{
+                                                    do {
+                                                        if let instance=try Bartleby.defaultSerializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
+                                                            if let user:User=instance as? User{
+                                                                 // We donnot want to expose the document current user
+                                                                if user.creatorUID != user.UID{
+                                                                    proxy.upsert(instance,commit:false)
+                                                                }
+                                                            }else{
+                                                                // We want to upsert any object
+                                                                proxy.upsert(instance,commit:false)
+                                                            }
 
 
+                                                        }
+                                                    }catch{
+                                                        issues.append("\(error)")
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if issues.count==0{
+                                handlers.on(Completion.successState())
+                            }else{
+                                handlers.on(Completion.failureState(issues.joinWithSeparator("\n"), statusCode: CompletionStatus.Expectation_Failed))
+                            }
+                        } else {
+                            var completionStatus=CompletionStatus.Undefined
+                            if let statusCode=httpResponse?.statusCode{
+                                completionStatus=CompletionStatus(rawValue:statusCode) ?? CompletionStatus.Undefined
+                            }
+                            handlers.on(Completion.failureState("\(result)", statusCode:completionStatus))
+                        }
+                    }
+                }
+            }
+
+            }) { (context) in
+
+                handlers.on(Completion.failureStateFromJHTTPResponse(context))
+        }
+
+    }
 
 
 }

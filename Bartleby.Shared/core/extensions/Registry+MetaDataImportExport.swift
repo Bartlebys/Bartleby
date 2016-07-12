@@ -53,7 +53,11 @@ public extension Registry{
                         data = try Bartleby.cryptoDelegate.decryptData(data)
                     }
                     if let newRegistryMetadata=try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
+                        let previousUID=self.UID
+                        Bartleby.sharedInstance.forget(previousUID)
                         self.registryMetadata=newRegistryMetadata
+                        Bartleby.sharedInstance.declare(self)
+
                         self.hasChanged()
                         handlers.on(Completion.successState())
                     }else{

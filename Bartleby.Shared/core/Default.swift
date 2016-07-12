@@ -106,7 +106,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
 
-    // Should the registries metadata be crypted on export
+    // Should the registries metadata be crypted on export (should be true)!
     public static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool = true
 
 

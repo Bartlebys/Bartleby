@@ -9,6 +9,7 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
     import ObjectMapper
+    import Alamofire
 #endif
 
 
@@ -87,8 +88,25 @@ public extension Completion {
     }
 
     public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
-                return Completion(success: false, message: messageFromStatus(context.httpStatusCode), statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
+        return Completion(success: false, message: messageFromStatus(context.httpStatusCode), statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
     }
+
+
+    public static func failureStateFromAlamofire<Value, Error:ErrorType>(response: Response<Value, Error>) -> Completion {
+        var completionStatus=CompletionStatus.Undefined
+        if let statusCode=response.response?.statusCode{
+            completionStatus=CompletionStatus(rawValue:statusCode) ?? CompletionStatus.Undefined
+        }
+        if let value=response.result.value{
+            return Completion(success: false, message: "\(value)", statusCode: completionStatus)
+        }else{
+            return Completion(success: false, message: "", statusCode: completionStatus)
+        }
+
+    }
+
+
+
 
     /**
      Returns self embedded in a progression Notification
