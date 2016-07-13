@@ -47,7 +47,7 @@ import BartlebyKit
             }
             self.complete(Completion.successState())
         } catch {
-            self.complete(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
+            self.complete(Completion.failureState("Argument type missmatch", statusCode: StatusOfCompletion.Precondition_Failed))
         }
     }
 }
@@ -88,7 +88,7 @@ public class RePrintUserWithoutObjc: Task, ConcreteTask {
             }
             self.complete(Completion.successState())
         } catch {
-            self.complete(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
+            self.complete(Completion.failureState("Argument type missmatch", statusCode: StatusOfCompletion.Precondition_Failed))
         }
     }
 }

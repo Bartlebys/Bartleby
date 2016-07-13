@@ -149,7 +149,7 @@ public class TasksScheduler: BprintCategorizable {
                                 if let invocableTask = task as? Invocable {
                                     invocableTask.invoke()
                                 } else {
-                                    let failureState=Completion.failureState("Task \(task.summary ?? task.UID) is not invocable", statusCode: CompletionStatus.Precondition_Failed)
+                                    let failureState=Completion.failureState("Task \(task.summary ?? task.UID) is not invocable", statusCode: StatusOfCompletion.Precondition_Failed)
                                     bprint(failureState, file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
                                     // Mark task completion
                                     task.complete(failureState)
@@ -157,7 +157,7 @@ public class TasksScheduler: BprintCategorizable {
                                     group.handlers.on(failureState)
                                 }
                             } else {
-                                let failureState=Completion.failureState("External reference of Task \(child.summary ?? child.iUID) not found", statusCode: CompletionStatus.Precondition_Failed)
+                                let failureState=Completion.failureState("External reference of Task \(child.summary ?? child.iUID) not found", statusCode: StatusOfCompletion.Precondition_Failed)
                                 bprint(failureState, file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
                                 group.handlers.on(failureState)
                             }
@@ -218,7 +218,7 @@ public class TasksScheduler: BprintCategorizable {
 
 
         } else {
-            group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: CompletionStatus.Not_Acceptable)
+            group.completionState = Completion.failureState("UnConsistent Tasks Group "+inconsistencyDetails, statusCode: StatusOfCompletion.Not_Acceptable)
         }
 
         if let completionState=group.completionState {

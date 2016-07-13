@@ -36,7 +36,7 @@ public extension Completion {
 
      - returns: a Completion state instance
      */
-    private convenience init(success: Bool, message: String="", statusCode: CompletionStatus = .Undefined, data: NSData? = nil) {
+    private convenience init(success: Bool, message: String="", statusCode: StatusOfCompletion  = .Undefined, data: NSData? = nil) {
         self.init()
         self.success = success
         self.message = message
@@ -60,13 +60,13 @@ public extension Completion {
 
      - returns: return value description
      */
-    public static func successState(message: String = "", statusCode: CompletionStatus = .OK, data: NSData? = nil) -> Completion {
+    public static func successState(message: String = "", statusCode: StatusOfCompletion  = .OK, data: NSData? = nil) -> Completion {
         return Completion(success:true, message: message, statusCode:statusCode, data: data)
     }
 
 
     public static func successStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
-        return Completion(success: true, message: messageFromStatus(context.httpStatusCode), statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
+        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .Undefined)
     }
 
 
@@ -75,7 +75,7 @@ public extension Completion {
 
      - returns: return value description
      */
-    public static func failureState(message: String, statusCode: CompletionStatus) -> Completion {
+    public static func failureState(message: String, statusCode: StatusOfCompletion ) -> Completion {
         return Completion(success:false, message:message, statusCode:statusCode)
     }
 
@@ -83,24 +83,24 @@ public extension Completion {
 
     public static func failureStateFromError(error: ErrorType) -> Completion {
         let nse = error as NSError
-        return Completion(success: false, message: nse.localizedDescription, statusCode: CompletionStatus(rawValue: nse.code) ?? .Undefined)
+        return Completion(success: false, message: nse.localizedDescription, statusCode: StatusOfCompletion (rawValue: nse.code) ?? .Undefined)
 
     }
 
     public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
-        return Completion(success: false, message: messageFromStatus(context.httpStatusCode), statusCode: CompletionStatus(rawValue: context.httpStatusCode) ?? .Undefined)
+        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .Undefined)
     }
 
 
     public static func failureStateFromAlamofire<Value, Error:ErrorType>(response: Response<Value, Error>) -> Completion {
-        var completionStatus=CompletionStatus.Undefined
+        var status = StatusOfCompletion .Undefined
         if let statusCode=response.response?.statusCode{
-            completionStatus=CompletionStatus(rawValue:statusCode) ?? CompletionStatus.Undefined
+            status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion .Undefined
         }
         if let value=response.result.value{
-            return Completion(success: false, message: "\(value)", statusCode: completionStatus)
+            return Completion(success: false, message: "\(value)", statusCode:status )
         }else{
-            return Completion(success: false, message: "", statusCode: completionStatus)
+            return Completion(success: false, message: "", statusCode: status )
         }
 
     }

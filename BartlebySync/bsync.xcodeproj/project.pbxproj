@@ -445,10 +445,10 @@
 		E54B7EF21D2B8A4C001F7AB3 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */; };
 		E54B7EF31D2B8A4C001F7AB3 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */; };
 		E54B7EF41D2B8A4C001F7AB3 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */; };
-		E54B7EF51D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */; };
-		E54B7EF61D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */; };
-		E54B7EF71D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */; };
-		E54B7EF81D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */; };
+		E54B7EF51D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */; };
+		E54B7EF61D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */; };
+		E54B7EF71D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */; };
+		E54B7EF81D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */; };
 		E54B7EF91D2B8A4C001F7AB3 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D941D2B8A4C001F7AB3 /* Consignation.swift */; };
 		E54B7EFA1D2B8A4C001F7AB3 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D941D2B8A4C001F7AB3 /* Consignation.swift */; };
 		E54B7EFB1D2B8A4C001F7AB3 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D941D2B8A4C001F7AB3 /* Consignation.swift */; };
@@ -953,7 +953,7 @@
 		E54B7D8D1D2B8A4C001F7AB3 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E54B7D901D2B8A4C001F7AB3 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionStatus.swift; sourceTree = "<group>"; };
+		E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E54B7D941D2B8A4C001F7AB3 /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E54B7D951D2B8A4C001F7AB3 /* Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignee.swift; sourceTree = "<group>"; };
 		E54B7D961D2B8A4C001F7AB3 /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
@@ -1345,7 +1345,7 @@
 			isa = PBXGroup;
 			children = (
 				E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */,
-				E54B7D931D2B8A4C001F7AB3 /* CompletionStatus.swift */,
+				E54B7D931D2B8A4C001F7AB3 /* StatusOfCompletion.swift */,
 				E54B7D941D2B8A4C001F7AB3 /* Consignation.swift */,
 				E54B7D951D2B8A4C001F7AB3 /* Consignee.swift */,
 				E54B7D961D2B8A4C001F7AB3 /* Default.swift */,
@@ -2066,7 +2066,7 @@
 				E54B7E281D2B8A4C001F7AB3 /* TasksGroup.swift in Sources */,
 				E54B7F241D2B8A4C001F7AB3 /* Progression+Conveniences.swift in Sources */,
 				E54B7E2C1D2B8A4C001F7AB3 /* Trigger.swift in Sources */,
-				E54B7EF81D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */,
+				E54B7EF81D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */,
 				E54B7F901D2B8A4C001F7AB3 /* PushOperationTask.swift in Sources */,
 				E54B7E541D2B8A4C001F7AB3 /* DeleteGroup.swift in Sources */,
 				E54B7EBC1D2B8A4C001F7AB3 /* UpdateUser.swift in Sources */,
@@ -2226,7 +2226,7 @@
 				E54B7EC11D2B8A4C001F7AB3 /* Base64DataTransform.swift in Sources */,
 				E54B7E151D2B8A4C001F7AB3 /* Progression.swift in Sources */,
 				E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */,
-				E54B7EF51D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */,
+				E54B7EF51D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */,
 				E53E28D91CA572D80079ED23 /* PdSFileManager.m in Sources */,
 				E54B7FC51D2B8A4C001F7AB3 /* BFileManager.swift in Sources */,
 				E5B98EB41CC0E6CD00A7ECD1 /* ISO8601DateTransform.swift in Sources */,
@@ -2424,7 +2424,7 @@
 				E54B7F661D2B8A4C001F7AB3 /* HTTPResponse.swift in Sources */,
 				E54B7E5A1D2B8A4C001F7AB3 /* DeleteLocker.swift in Sources */,
 				E54B7DEA1D2B8A4C001F7AB3 /* TasksGroupsCollectionController.swift in Sources */,
-				E54B7EF61D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */,
+				E54B7EF61D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */,
 				E54B7F261D2B8A4C001F7AB3 /* Registry+LocalUpsertAndDelete.swift in Sources */,
 				E54B7D001D2B8A22001F7AB3 /* FromJSON.swift in Sources */,
 				E54B7FD61D2B8A8C001F7AB3 /* PdSCommandInterpreter.m in Sources */,
@@ -2576,7 +2576,7 @@
 				E54B7E1B1D2B8A4C001F7AB3 /* RegistryMetadata.swift in Sources */,
 				E54B7E571D2B8A4C001F7AB3 /* DeleteGroups.swift in Sources */,
 				E54B7DDB1D2B8A4C001F7AB3 /* LockersCollectionController.swift in Sources */,
-				E54B7EF71D2B8A4C001F7AB3 /* CompletionStatus.swift in Sources */,
+				E54B7EF71D2B8A4C001F7AB3 /* StatusOfCompletion.swift in Sources */,
 				E5B98E9B1CC0E6CD00A7ECD1 /* Map.swift in Sources */,
 				5BB60F491CBFE3C500D23B4F /* CryptedStringTransform.swift in Sources */,
 				E54B7E3B1D2B8A4C001F7AB3 /* CreateLocker.swift in Sources */,

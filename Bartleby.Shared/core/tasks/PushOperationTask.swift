@@ -65,22 +65,22 @@ import Foundation
                             self.complete(completion)
                         })
                     } else {
-                        let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: CompletionStatus.Expectation_Failed)
+                        let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.Expectation_Failed)
                         bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                         self.complete(completion)
                     }
                 } else {
-                    let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: CompletionStatus.Expectation_Failed)
+                    let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.Expectation_Failed)
                     bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                     self.complete(completion)
                 }
             } else {
-                let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: CompletionStatus.Precondition_Failed)
+                let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.Precondition_Failed)
                 bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                 self.complete(completion)
             }
         } else {
-            let completion=Completion.failureState(NSLocalizedString( "Task operation Invocation argument type missmatch", tableName:"operations", comment:"Task operation Invocation argument type missmatch"), statusCode: CompletionStatus.Precondition_Failed)
+            let completion=Completion.failureState(NSLocalizedString( "Task operation Invocation argument type missmatch", tableName:"operations", comment:"Task operation Invocation argument type missmatch"), statusCode: StatusOfCompletion.Precondition_Failed)
             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
             self.complete(completion)
         }

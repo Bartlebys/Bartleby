@@ -58,7 +58,7 @@ convenience required public init(arguments: ArgumentType) {
             }
 
             }catch{
-                self.complete(Completion.failureState("Argument type missmatch", statusCode: CompletionStatus.Precondition_Failed))
+                self.complete(Completion.failureState("Argument type missmatch", statusCode: StatusOfCompletion.Precondition_Failed))
             }
         }
     }

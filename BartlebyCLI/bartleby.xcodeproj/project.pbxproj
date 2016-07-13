@@ -83,7 +83,7 @@
 		E54B7CC51D2B8960001F7AB3 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C3B1D2B8960001F7AB3 /* NoCrypto.swift */; };
 		E54B7CC61D2B8960001F7AB3 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C3E1D2B8960001F7AB3 /* EventSource.swift */; };
 		E54B7CC71D2B8960001F7AB3 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C401D2B8960001F7AB3 /* Bartleby.swift */; };
-		E54B7CC81D2B8960001F7AB3 /* CompletionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C411D2B8960001F7AB3 /* CompletionStatus.swift */; };
+		E54B7CC81D2B8960001F7AB3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C411D2B8960001F7AB3 /* StatusOfCompletion.swift */; };
 		E54B7CC91D2B8960001F7AB3 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C421D2B8960001F7AB3 /* Consignation.swift */; };
 		E54B7CCA1D2B8960001F7AB3 /* Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C431D2B8960001F7AB3 /* Consignee.swift */; };
 		E54B7CCB1D2B8960001F7AB3 /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7C441D2B8960001F7AB3 /* Default.swift */; };
@@ -271,7 +271,7 @@
 		E54B7C3B1D2B8960001F7AB3 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E54B7C3E1D2B8960001F7AB3 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E54B7C401D2B8960001F7AB3 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E54B7C411D2B8960001F7AB3 /* CompletionStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletionStatus.swift; sourceTree = "<group>"; };
+		E54B7C411D2B8960001F7AB3 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E54B7C421D2B8960001F7AB3 /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E54B7C431D2B8960001F7AB3 /* Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignee.swift; sourceTree = "<group>"; };
 		E54B7C441D2B8960001F7AB3 /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 			isa = PBXGroup;
 			children = (
 				E54B7C401D2B8960001F7AB3 /* Bartleby.swift */,
-				E54B7C411D2B8960001F7AB3 /* CompletionStatus.swift */,
+				E54B7C411D2B8960001F7AB3 /* StatusOfCompletion.swift */,
 				E54B7C421D2B8960001F7AB3 /* Consignation.swift */,
 				E54B7C431D2B8960001F7AB3 /* Consignee.swift */,
 				E54B7C441D2B8960001F7AB3 /* Default.swift */,
@@ -949,7 +949,7 @@
 				E54B7CC31D2B8960001F7AB3 /* RegistryMetadata+Protocol.swift in Sources */,
 				E54B7CC01D2B8960001F7AB3 /* JHTTPResponse.swift in Sources */,
 				E5CD99ED1C86D96E00C64569 /* Manager.swift in Sources */,
-				E54B7CC81D2B8960001F7AB3 /* CompletionStatus.swift in Sources */,
+				E54B7CC81D2B8960001F7AB3 /* StatusOfCompletion.swift in Sources */,
 				E54B7CC51D2B8960001F7AB3 /* NoCrypto.swift in Sources */,
 				E54B7C9A1D2B8960001F7AB3 /* CreateLockers.swift in Sources */,
 				E54B7C9D1D2B8960001F7AB3 /* CreateUser.swift in Sources */,

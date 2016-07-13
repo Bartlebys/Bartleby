@@ -579,13 +579,25 @@ public class BartlebyDocument : JDocument {
     
     // MARK : new User facility 
     
+    /**
+    * Creates a new user
+    * 
+    * you should override this method to customize default (name, email, ...)
+    * and call before returning :
+    *   if(user.creatorUID != user.UID){
+    *       // We don't want to add the current user to user list
+    *       self.users.add(user, commit:true)
+    *   }
+    */
     public func newUser() -> User {
         let user=User()
         if let creator=self.registryMetadata.currentUser {
             user.creatorUID = creator.UID
-            user.spaceUID = creator.spaceUID
+        }else{
+            // Autopoiesis.
+            user.creatorUID = user.UID
         }
-        self.users.add(user, commit:true)
+        user.spaceUID = self.registryMetadata.spaceUID
         return user
     }
         

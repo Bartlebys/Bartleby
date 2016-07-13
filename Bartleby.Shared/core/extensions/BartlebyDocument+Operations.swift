@@ -40,7 +40,7 @@ extension BartlebyDocument {
                 do {
                     try self._commitAndPushPendingOperations(handlers)
                 } catch {
-                    handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: CompletionStatus.Expectation_Failed))
+                    handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
                 }
                 }, failureHandler: { (context) in
                     handlers.on(Completion.failureStateFromJHTTPResponse(context))

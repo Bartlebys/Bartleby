@@ -61,7 +61,7 @@ public extension Registry{
                         self.hasChanged()
                         handlers.on(Completion.successState())
                     }else{
-                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: CompletionStatus.Expectation_Failed))
+                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: StatusOfCompletion.Expectation_Failed))
                     }
                 }catch{
                         handlers.on(Completion.failureStateFromError(error))

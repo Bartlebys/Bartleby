@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The status
-	public var statusCode:Int = CompletionStatus.Undefined.rawValue  {	 
+	public var statusCode:Int = StatusOfCompletion.Undefined.rawValue  {	 
 	    willSet { 
 	       if statusCode != newValue {
 	            self.provisionChanges() 

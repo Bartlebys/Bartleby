@@ -107,7 +107,7 @@ public extension TasksGroup {
                         invocableTask.invoke()
                     } else {
                         dispatch_async(GlobalQueue.Main.get(), {
-                            task.complete(Completion.failureState("Not invocable", statusCode: CompletionStatus.Precondition_Failed))
+                            task.complete(Completion.failureState("Not invocable", statusCode: StatusOfCompletion.Precondition_Failed))
                         })
                     }
                 }

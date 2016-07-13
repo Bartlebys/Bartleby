@@ -143,14 +143,14 @@ extension BartlebyDocument {
                             if issues.count==0{
                                 handlers.on(Completion.successState())
                             }else{
-                                handlers.on(Completion.failureState(issues.joinWithSeparator("\n"), statusCode: CompletionStatus.Expectation_Failed))
+                                handlers.on(Completion.failureState(issues.joinWithSeparator("\n"), statusCode: StatusOfCompletion.Expectation_Failed))
                             }
                         } else {
-                            var completionStatus=CompletionStatus.Undefined
+                            var status = StatusOfCompletion.Undefined
                             if let statusCode=httpResponse?.statusCode{
-                                completionStatus=CompletionStatus(rawValue:statusCode) ?? CompletionStatus.Undefined
+                                status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion.Undefined
                             }
-                            handlers.on(Completion.failureState("\(result)", statusCode:completionStatus))
+                            handlers.on(Completion.failureState("\(result)", statusCode:status ))
                         }
                     }
                 }

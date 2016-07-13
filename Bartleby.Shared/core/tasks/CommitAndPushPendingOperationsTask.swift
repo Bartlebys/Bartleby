@@ -61,7 +61,7 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
                         do {
                             try document.commitPendingChanges()
                         } catch {
-                            let completion=Completion.failureState(NSLocalizedString( "Unexpected Commit pending changes error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: CompletionStatus.Precondition_Failed)
+                            let completion=Completion.failureState(NSLocalizedString( "Unexpected Commit pending changes error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: StatusOfCompletion.Precondition_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             self.complete(completion)
                         }
@@ -81,29 +81,29 @@ public class  CommitAndPushPendingOperationsTask: Task, ConcreteTask {
                                     self.complete(completion)
                                 } else {
                                     // No valid group
-                                    let completion=Completion.failureState(NSLocalizedString( "No valid task group found external reference is missing", tableName:"operations", comment:"No valid task group found external reference is missing"), statusCode: CompletionStatus.Precondition_Failed)
+                                    let completion=Completion.failureState(NSLocalizedString( "No valid task group found external reference is missing", tableName:"operations", comment:"No valid task group found external reference is missing"), statusCode: StatusOfCompletion.Precondition_Failed)
                                     bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                                     self.complete(completion)
                                 }
                             } else {
                                 // No external reference
-                                let completion=Completion.failureState(NSLocalizedString( "No external reference for TaskGroup", tableName:"operations", comment:"No external reference for TaskGroup"), statusCode: CompletionStatus.Precondition_Failed)
+                                let completion=Completion.failureState(NSLocalizedString( "No external reference for TaskGroup", tableName:"operations", comment:"No external reference for TaskGroup"), statusCode: StatusOfCompletion.Precondition_Failed)
                                 bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                                 self.complete(completion)
                             }
                         } catch {
-                            let completion=Completion.failureState(NSLocalizedString( "Unexpected Operation task appending error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: CompletionStatus.Precondition_Failed)
+                            let completion=Completion.failureState(NSLocalizedString( "Unexpected Operation task appending error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: StatusOfCompletion.Precondition_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                             self.complete(completion)
                         }
 
                     } else {
-                        let completion=Completion.failureState(NSLocalizedString( "Document dataspace not found", tableName:"operations", comment:"Document dataspace not found"), statusCode: CompletionStatus.Precondition_Failed)
+                        let completion=Completion.failureState(NSLocalizedString( "Document dataspace not found", tableName:"operations", comment:"Document dataspace not found"), statusCode: StatusOfCompletion.Precondition_Failed)
                         bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                         self.complete(completion)
                 }
             } else {
-                let completion=Completion.failureState(NSLocalizedString( "Commit pending operations Invocation argument type missmatch", tableName:"operations", comment:"Task operation Invocation argument type missmatch"), statusCode: CompletionStatus.Precondition_Failed)
+                let completion=Completion.failureState(NSLocalizedString( "Commit pending operations Invocation argument type missmatch", tableName:"operations", comment:"Task operation Invocation argument type missmatch"), statusCode: StatusOfCompletion.Precondition_Failed)
                 bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
                 self.complete(completion)
             }
