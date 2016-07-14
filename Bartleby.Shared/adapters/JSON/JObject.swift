@@ -78,7 +78,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter newValue: the newValue
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
-        if self._autoCommitObserversAreLocked == false{
+        if self._supervisionIsEnabled == true {
 
             // Set up the commit flag
             self._shouldBeCommitted=true
@@ -123,15 +123,15 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // Prevent from autoCommit
     public func disableSupervision() {
-        self._autoCommitObserversAreLocked=true
+        self._supervisionIsEnabled=false
     }
 
     // AutCommnit is possible
     public func enableSupervision() {
-        self._autoCommitObserversAreLocked=false
+        self._supervisionIsEnabled=true
     }
 
-    private var _autoCommitObserversAreLocked: Bool = false
+    private var _supervisionIsEnabled: Bool = true
 
 
     //Collectible protocol: committed
@@ -316,7 +316,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      }
 
 
-
     public class func supportsSecureCoding() -> Bool {
         return true
     }
@@ -336,7 +335,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 }
-
 
 
 // MARK: - DictionaryRepresentation
