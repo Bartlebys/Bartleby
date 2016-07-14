@@ -23,9 +23,9 @@ import ObjectMapper
 
 	//the data
 	public var data:NSData? {	 
-	    willSet { 
-	       if data != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if data != oldValue {
+	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}

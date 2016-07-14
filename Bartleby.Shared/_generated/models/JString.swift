@@ -23,9 +23,9 @@ import ObjectMapper
 
 	//the embedded String
 	public var string:String? {	 
-	    willSet { 
-	       if string != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if string != oldValue {
+	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 
 	       } 
 	    }
 	}

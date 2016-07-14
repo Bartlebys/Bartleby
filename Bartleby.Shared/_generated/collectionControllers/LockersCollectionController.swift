@@ -85,7 +85,13 @@ import ObjectMapper
     }
 
 
-    dynamic public var items:[Locker]=[Locker]()
+    dynamic public var items:[Locker]=[Locker](){
+        didSet {
+            if items != oldValue {
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            }
+        }
+    }
 
     public func getCollectibleItems()->[Collectible]{
         return items

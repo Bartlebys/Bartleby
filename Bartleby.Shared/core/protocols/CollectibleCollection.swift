@@ -119,14 +119,40 @@ public protocol SuperIterable {
 }
 
 
+public typealias ObservationClosure = (key:String,oldValue:AnyObject?,newValue:AnyObject?)->()
+
 public protocol Supervisable {
 
     /// Shall we commit that instance during next autocommit?
     var toBeCommitted: Bool { get }
+
     /**
-     Mark that the instance requires to be committed if the auto commit observer is active
+     Tags the changed keys
+     And Mark that the instance requires to be committed if the auto commit observer is active
+     This mecanism can replace KVO if necessary.
+
+     - parameter key:      the key
+     - parameter oldValue: the oldValue
+     - parameter newValue: the newValue
      */
-    func provisionChanges()
+    func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?)
+
+
+    /**
+     Adds a closure observer
+
+     - parameter observer: the observer
+     - parameter closure:  the closure to be called.
+     */
+    func addChangesObserver(observer:Identifiable, closure:ObservationClosure)
+
+    /**
+     Remove the observer's closure
+
+     - parameter observer: the observer.
+     */
+    func removeChangesObserver(observer:Identifiable)
+
 
     /**
      Locks the auto commit observer

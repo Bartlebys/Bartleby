@@ -85,7 +85,13 @@ import ObjectMapper
     }
 
 
-    dynamic public var items:[User]=[User]()
+    dynamic public var items:[User]=[User](){
+        didSet {
+            if items != oldValue {
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            }
+        }
+    }
 
     public func getCollectibleItems()->[Collectible]{
         return items

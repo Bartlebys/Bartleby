@@ -80,7 +80,13 @@ import ObjectMapper
     }
 
 
-    dynamic public var items:[TasksGroup]=[TasksGroup]()
+    dynamic public var items:[TasksGroup]=[TasksGroup](){
+        didSet {
+            if items != oldValue {
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            }
+        }
+    }
 
     public func getCollectibleItems()->[Collectible]{
         return items

@@ -23,18 +23,18 @@ import ObjectMapper
 
 	//The UID of the referred instance
 	public var iUID:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if iUID != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if iUID != oldValue {
+	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
 	       } 
 	    }
 	}
 
 	//The typeName of the referred instance
 	public var iTypeName:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if iTypeName != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if iTypeName != oldValue {
+	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 
 	       } 
 	    }
 	}

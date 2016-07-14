@@ -23,36 +23,36 @@ import ObjectMapper
 
 	//Success if set to true
 	public var success:Bool = true  {	 
-	    willSet { 
-	       if success != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if success != oldValue {
+	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
 	       } 
 	    }
 	}
 
 	//The status
 	public var statusCode:Int = StatusOfCompletion.Undefined.rawValue  {	 
-	    willSet { 
-	       if statusCode != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if statusCode != oldValue {
+	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
 	       } 
 	    }
 	}
 
 	//The Message
 	public var message:String = ""{	 
-	    willSet { 
-	       if message != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if message != oldValue {
+	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
 	       } 
 	    }
 	}
 
 	//completion data
 	public var data:NSData? {	 
-	    willSet { 
-	       if data != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if data != oldValue {
+	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}

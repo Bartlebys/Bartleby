@@ -21,7 +21,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
-
 // Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
 // During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
@@ -29,14 +28,16 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 // This is due to the impossibility to link a FrameWork to an XPC services.
 @objc(JObject) public class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
-
     // MARK: - Initializable
 
     override required public init() {
         super.init()
     }
 
-    // MARK: - Collectible = Identifiable + Serializable + type and status management
+    // MARK: - Collectible = Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType
+
+
+    // MARK: UniversalType
 
     // Used to store the type name on serialization
     private var _typeName: String?
@@ -59,29 +60,71 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     /// The internal flag for auto commit
     private var _shouldBeCommitted: Bool = false
-    // Supervisable
-    public var toBeCommitted: Bool {
-        get {
-            return self._shouldBeCommitted
-        }
-    }
 
-    public var ephemeral: Bool=false
+
+    public var changedKeys=[String]()
+
+    // MARK: Supervisable
+
+    public var toBeCommitted: Bool { return self._shouldBeCommitted }
+
+    private var _observers=[String:ObservationClosure]()
 
     /**
-     If the auto commit observer flag is set to true then _shouldBeCommitted is turned to true.
+     Tags the changed keys
+     And Mark that the instance requires to be committed if the auto commit observer is active
+     - parameter key:      the key
+     - parameter oldValue: the oldValue
+     - parameter newValue: the newValue
      */
-    public func provisionChanges() {
+    public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
         if !self._lockAutoCommitObserver {
+            if !changedKeys.contains(key) {
+                changedKeys.append(key)
+            }
+            // Set up the commit flag
             self._shouldBeCommitted=true
+
+            // Invoke the closures
+            for (_,observationClosure) in self._observers{
+                observationClosure(key: key,oldValue: oldValue,newValue: newValue)
+            }
         }
     }
 
-    //
+
+    /**
+     Adds a closure observer
+
+     - parameter observer: the observer
+     - parameter closure:  the closure to be called.
+     */
+    public func addChangesObserver(observer:Identifiable, closure:ObservationClosure) {
+        _observers[observer.UID]=closure
+    }
+
+    /**
+     Remove the observer's closure
+
+     - parameter observer: the observer.
+     */
+    public func removeChangesObserver(observer:Identifiable) {
+        if let _=self._observers[observer.UID]{
+            self._observers.removeValueForKey(observer.UID)
+        }
+    }
+
+    deinit{
+        self._observers.removeAll()
+    }
+
+
+    // Prevent from autoCommit
     public func lockAutoCommitObserver() {
         self._lockAutoCommitObserver=true
     }
 
+    // AutCommnit is possible
     public func unlockAutoCommitObserver() {
         self._lockAutoCommitObserver=false
     }
@@ -104,9 +147,9 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)" {
-        willSet {
-            if creatorUID != newValue {
-                self.provisionChanges()
+        didSet{
+            if creatorUID != oldValue{
+                self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID)
             }
         }
     }
@@ -114,12 +157,29 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // The object summary can be used for example by externalReferences to describe the JObject instance.
     // If you want to disclose more information you can adopt the Descriptible protocol.
     public var summary: String? {
-        willSet {
-            if summary != newValue {
-                self.provisionChanges()
+        didSet{
+            if summary != oldValue{
+                self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary)
             }
         }
     }
+
+    // MARK: Collection Name
+
+    // Needs to be overriden to determine in wich collection the instances will be 'stored
+    class public var collectionName: String {
+        return "JObjects"
+    }
+
+    public var d_collectionName: String {
+        return JObject.collectionName
+    }
+
+
+    // An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.
+    // This flag allows for example to remove entities that have been for example created by unit-tests.
+    public var ephemeral: Bool=false
+
 
     // MARK: Serializable
 
@@ -145,7 +205,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         return self
     }
 
-    // MARK: -Identifiable
+    // MARK: Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
     private var _id: String=Default.NO_UID {
@@ -176,17 +236,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             return self._id
         }
     }
-
-
-    // Needs to be overriden to determine in wich collection the instances will be 'stored
-    class public var collectionName: String {
-        return "JObjects"
-    }
-
-    public var d_collectionName: String {
-        return JObject.collectionName
-    }
-
 
     // MARK: - CustomStringConvertible
 

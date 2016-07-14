@@ -23,45 +23,45 @@ import ObjectMapper
 
 	//Index of the task
 	public var currentTaskIndex:Int = 0  {	 
-	    willSet { 
-	       if currentTaskIndex != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if currentTaskIndex != oldValue {
+	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
 	       } 
 	    }
 	}
 
 	//Total number of tasks
 	public var totalTaskCount:Int = 0  {	 
-	    willSet { 
-	       if totalTaskCount != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if totalTaskCount != oldValue {
+	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
 	       } 
 	    }
 	}
 
 	//0 to 1
 	dynamic public var currentTaskProgress:Double = 0  {	 
-	    willSet { 
-	       if currentTaskProgress != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if currentTaskProgress != oldValue {
+	            self.provisionChanges(forKey: "currentTaskProgress",oldValue: oldValue,newValue: currentTaskProgress)  
 	       } 
 	    }
 	}
 
 	//The Message
 	dynamic public var message:String = ""{	 
-	    willSet { 
-	       if message != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if message != oldValue {
+	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
 	       } 
 	    }
 	}
 
 	//The associated data
 	public var data:NSData? {	 
-	    willSet { 
-	       if data != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if data != oldValue {
+	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}

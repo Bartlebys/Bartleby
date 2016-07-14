@@ -23,26 +23,26 @@ import ObjectMapper
 
 	//The call string e.g : DeleteOperation->call
 	public var callString:String? {	 
-	    willSet { 
-	       if callString != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if callString != oldValue {
+	            self.provisionChanges(forKey: "callString",oldValue: oldValue,newValue: callString) 
 	       } 
 	    }
 	}
 
 	//The level of the permission (check Bartleby's doc)
 	public var level:Int? {	 
-	    willSet { 
-	       if level != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if level != oldValue {
+	            self.provisionChanges(forKey: "level",oldValue: oldValue,newValue: level) 
 	       } 
 	    }
 	}
 
 	public var rule:[String] = [String]()  {	 
-	    willSet { 
-	       if rule != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if rule != oldValue {
+	            self.provisionChanges(forKey: "rule",oldValue: oldValue,newValue: rule)  
 	       } 
 	    }
 	}

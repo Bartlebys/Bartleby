@@ -23,27 +23,27 @@ import ObjectMapper
 
 	//The spaceUID is the data space UID.
 	public var spaceUID:String? {	 
-	    willSet { 
-	       if spaceUID != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if spaceUID != oldValue {
+	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
 	       } 
 	    }
 	}
 
 	//The subject UID you want to lock
 	public var subjectUID:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if subjectUID != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if subjectUID != oldValue {
+	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
 	       } 
 	    }
 	}
 
 	//The userUID that can unlock the locker
 	public var userUID:String = "\(Default.NO_UID)"{	 
-	    willSet { 
-	       if userUID != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if userUID != oldValue {
+	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
 	       } 
 	    }
 	}
@@ -54,9 +54,9 @@ import ObjectMapper
 		case Persistent = "Persistent"
 	}
 	public var mode:Mode = .AutoDestructive  {	 
-	    willSet { 
-	       if mode != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if mode != oldValue {
+	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
 	       } 
 	    }
 	}
@@ -67,52 +67,52 @@ import ObjectMapper
 		case Offline = "Offline"
 	}
 	public var verificationMethod:VerificationMethod = .Online  {	 
-	    willSet { 
-	       if verificationMethod != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if verificationMethod != oldValue {
+	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
 	       } 
 	    }
 	}
 
 	//This code should be crypted / decrypted
 	public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
-	    willSet { 
-	       if code != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if code != oldValue {
+	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
 	       } 
 	    }
 	}
 
 	//The number of attempts
 	public var numberOfAttempt:Int = 3  {	 
-	    willSet { 
-	       if numberOfAttempt != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if numberOfAttempt != oldValue {
+	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
 	       } 
 	    }
 	}
 
 	public var startDate:NSDate = NSDate.distantPast()  {	 
-	    willSet { 
-	       if startDate != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if startDate != oldValue {
+	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
 	       } 
 	    }
 	}
 
 	public var endDate:NSDate = NSDate.distantFuture()  {	 
-	    willSet { 
-	       if endDate != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if endDate != oldValue {
+	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
 	       } 
 	    }
 	}
 
 	//Thoses data gems will be return on success
 	public var gems:String = "\(Default.NO_GEM)"{	 
-	    willSet { 
-	       if gems != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if gems != oldValue {
+	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
 	       } 
 	    }
 	}

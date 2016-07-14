@@ -22,25 +22,25 @@ import ObjectMapper
     }
 
 	public var creationDate:String? {	 
-	    willSet { 
-	       if creationDate != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if creationDate != oldValue {
+	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
 	       } 
 	    }
 	}
 
 	public var color:String? {	 
-	    willSet { 
-	       if color != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if color != oldValue {
+	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
 	       } 
 	    }
 	}
 
 	public var icon:String? {	 
-	    willSet { 
-	       if icon != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if icon != oldValue {
+	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
 	       } 
 	    }
 	}

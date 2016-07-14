@@ -23,9 +23,9 @@ import ObjectMapper
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	public var spaceUID:String = "\(Bartleby.createUID())"{	 
-	    willSet { 
-	       if spaceUID != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if spaceUID != oldValue {
+	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
 	       } 
 	    }
 	}
@@ -37,61 +37,61 @@ import ObjectMapper
 		case ByEmail = "ByEmail"
 	}
 	public var verificationMethod:VerificationMethod = .ByPhoneNumber  {	 
-	    willSet { 
-	       if verificationMethod != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if verificationMethod != oldValue {
+	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
 	       } 
 	    }
 	}
 
 	public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
-	    willSet { 
-	       if firstname != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if firstname != oldValue {
+	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
 	       } 
 	    }
 	}
 
 	public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
-	    willSet { 
-	       if lastname != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if lastname != oldValue {
+	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
 	       } 
 	    }
 	}
 
 	//The user's email. Can be the secondary Identification source 
 	public var email:String? {	 
-	    willSet { 
-	       if email != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if email != oldValue {
+	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
 	       } 
 	    }
 	}
 
 	//The user's phone number. Can be the secondary Identification source 
 	public var phoneNumber:String? {	 
-	    willSet { 
-	       if phoneNumber != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if phoneNumber != oldValue {
+	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
 	       } 
 	    }
 	}
 
 	//The hashed version of the user password
 	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
-	    willSet { 
-	       if password != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if password != oldValue {
+	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
 	       } 
 	    }
 	}
 
 	//An activation code
 	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
-	    willSet { 
-	       if activationCode != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if activationCode != oldValue {
+	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
 	       } 
 	    }
 	}
@@ -103,36 +103,36 @@ import ObjectMapper
 		case Suspended = "suspended"
 	}
 	public var status:Status = .New  {	 
-	    willSet { 
-	       if status != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if status != oldValue {
+	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
 	       } 
 	    }
 	}
 
 	//The user Tags. External reference to Tags instances
 	public var tags:[ExternalReference] = [ExternalReference]()  {	 
-	    willSet { 
-	       if tags != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if tags != oldValue {
+	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
 	       } 
 	    }
 	}
 
 	//The user Groups. External reference to Group instances
 	public var groups:[ExternalReference] = [ExternalReference]()  {	 
-	    willSet { 
-	       if groups != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if groups != oldValue {
+	            self.provisionChanges(forKey: "groups",oldValue: oldValue,newValue: groups)  
 	       } 
 	    }
 	}
 
 	//Notes
 	public var notes:String? {	 
-	    willSet { 
-	       if notes != newValue {
-	            self.provisionChanges() 
+	    didSet { 
+	       if notes != oldValue {
+	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
 	       } 
 	    }
 	}

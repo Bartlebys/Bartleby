@@ -23,10 +23,7 @@ public enum SerializableError: ErrorType {
 /**
  *   Any object that is serializable can be serialized deserialized
  */
-public protocol Serializable {
-
-    //The class should be securely intializable with a simple init
-    init()
+public protocol Serializable:Initializable{
 
     /**
      Serialize the current object with its type
