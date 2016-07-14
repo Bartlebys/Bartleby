@@ -51,7 +51,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.index <- ( map["index"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.observationUID <- ( map["observationUID"] )
@@ -62,7 +62,7 @@ import ObjectMapper
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.action <- ( map["action"] )
 		self.UIDS <- ( map["UIDS"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -70,7 +70,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.index=decoder.decodeIntegerForKey("index") 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observationUID") as NSString?)
@@ -81,7 +81,7 @@ import ObjectMapper
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
 		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

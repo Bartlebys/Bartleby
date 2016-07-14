@@ -147,7 +147,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.spaceUID <- ( map["spaceUID"] )
 		self.verificationMethod <- ( map["verificationMethod"] )
 		self.firstname <- ( map["firstname"] )
@@ -160,7 +160,7 @@ import ObjectMapper
 		self.tags <- ( map["tags"] )
 		self.groups <- ( map["groups"] )
 		self.notes <- ( map["notes"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -168,7 +168,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
 		self.firstname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "firstname")! as NSString)
@@ -181,7 +181,7 @@ import ObjectMapper
 		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tags")! as! [ExternalReference]
 		self.groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "groups")! as! [ExternalReference]
 		self.notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

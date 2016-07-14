@@ -41,7 +41,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self._locker <- ( map["_locker"] )
 		self._spaceUID <- ( map["_spaceUID"] )
 		self._operation.spaceUID <- ( map["_operation.spaceUID"] )
@@ -50,7 +50,7 @@ import ObjectMapper
 		self._operation.counter <- ( map["_operation.counter"] )
 		self._operation.creationDate <- ( map["_operation.creationDate"], ISO8601DateTransform() )
 		self._operation.baseUrl <- ( map["_operation.baseUrl"], URLTransform() )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -58,7 +58,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self._locker=decoder.decodeObjectOfClass(Locker.self, forKey: "_locker")! 
 		self._spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
 		self._operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
@@ -67,7 +67,7 @@ import ObjectMapper
 		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
 		self._operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
 		self._operation.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"_operation.baseUrl") as NSURL?
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

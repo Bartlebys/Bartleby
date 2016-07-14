@@ -39,11 +39,11 @@ import Foundation
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         user <- (map["user"], CryptedSerializableTransform())
         password <- (map ["password"], CryptedStringTransform())
         salt <- (map ["salt"], CryptedStringTransform())
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -58,11 +58,11 @@ import Foundation
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         self.user=User(coder: decoder)
         self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey:"password") as NSString?)
         self.salt=String(decoder.decodeObjectOfClass(NSString.self, forKey:"salt") as NSString?)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 

@@ -34,18 +34,18 @@ import Foundation
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         self.pathToHash <- ( map["pathToHash"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     // MARK: NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         self.pathToHash=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "pathToHash") as! Dictionary<String,String>
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

@@ -55,11 +55,11 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.creationDate <- ( map["creationDate"] )
 		self.color <- ( map["color"] )
 		self.icon <- ( map["icon"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -67,11 +67,11 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.creationDate=String(decoder.decodeObjectOfClass(NSString.self, forKey:"creationDate") as NSString?)
 		self.color=String(decoder.decodeObjectOfClass(NSString.self, forKey:"color") as NSString?)
 		self.icon=String(decoder.decodeObjectOfClass(NSString.self, forKey:"icon") as NSString?)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

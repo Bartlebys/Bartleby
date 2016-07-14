@@ -40,9 +40,9 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.data <- ( map["data"], Base64DataTransform() )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -50,9 +50,9 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

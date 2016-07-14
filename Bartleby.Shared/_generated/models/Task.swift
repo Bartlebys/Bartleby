@@ -52,7 +52,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.group <- ( map["group"] )
 		self.status <- ( map["status"] )
 		self.parent <- ( map["parent"] )
@@ -61,7 +61,7 @@ import ObjectMapper
 		self.completionState <- ( map["completionState"] )
 		self.argumentsData <- ( map["argumentsData"], Base64DataTransform() )
 		self.resultData <- ( map["resultData"], Base64DataTransform() )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -69,7 +69,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.group=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "group") 
 		self.status=Task.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.parent=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "parent") 
@@ -78,7 +78,7 @@ import ObjectMapper
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.argumentsData=decoder.decodeObjectOfClass(NSData.self, forKey:"argumentsData") as NSData?
 		self.resultData=decoder.decodeObjectOfClass(NSData.self, forKey:"resultData") as NSData?
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

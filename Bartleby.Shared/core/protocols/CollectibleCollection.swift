@@ -119,7 +119,7 @@ public protocol SuperIterable {
 }
 
 
-public typealias ObservationClosure = (key:String,oldValue:AnyObject?,newValue:AnyObject?)->()
+public typealias SupervisionClosure = (key:String,oldValue:AnyObject?,newValue:AnyObject?)->()
 
 public protocol Supervisable {
 
@@ -144,7 +144,7 @@ public protocol Supervisable {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    func addChangesObserver(observer:Identifiable, closure:ObservationClosure)
+    func addChangesObserver(observer:Identifiable, closure:SupervisionClosure)
 
     /**
      Remove the observer's closure
@@ -157,10 +157,10 @@ public protocol Supervisable {
     /**
      Locks the auto commit observer
      */
-    func lockAutoCommitObserver()
+    func disableSupervision()
 
     /**
      Unlock the auto commit observer
      */
-    func unlockAutoCommitObserver()
+    func enableSupervision()
 }

@@ -53,7 +53,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.toDictionary <- ( map["toDictionary"] )
 		self.responseDictionary <- ( map["responseDictionary"] )
 		self.baseUrl <- ( map["baseUrl"], URLTransform() )
@@ -62,7 +62,7 @@ import ObjectMapper
 		self.counter <- ( map["counter"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -70,7 +70,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
 		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
 		self.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
@@ -79,7 +79,7 @@ import ObjectMapper
 		self.counter=decoder.decodeIntegerForKey("counter") 
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

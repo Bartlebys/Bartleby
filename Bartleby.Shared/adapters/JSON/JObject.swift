@@ -68,7 +68,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public var toBeCommitted: Bool { return self._shouldBeCommitted }
 
-    private var _observers=[String:ObservationClosure]()
+    private var _observers=[String:SupervisionClosure]()
 
     /**
      Tags the changed keys
@@ -78,16 +78,18 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter newValue: the newValue
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
-        if !self._lockAutoCommitObserver {
-            if !changedKeys.contains(key) {
-                changedKeys.append(key)
-            }
+        if self._autoCommitObserversAreLocked == false{
+
             // Set up the commit flag
             self._shouldBeCommitted=true
 
+            if !changedKeys.contains(key) {
+                changedKeys.append(key)
+            }
+
             // Invoke the closures
-            for (_,observationClosure) in self._observers{
-                observationClosure(key: key,oldValue: oldValue,newValue: newValue)
+            for (_,SupervisionClosure) in self._observers{
+                SupervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
             }
         }
     }
@@ -99,7 +101,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    public func addChangesObserver(observer:Identifiable, closure:ObservationClosure) {
+    public func addChangesObserver(observer:Identifiable, closure:SupervisionClosure) {
         _observers[observer.UID]=closure
     }
 
@@ -120,16 +122,16 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     // Prevent from autoCommit
-    public func lockAutoCommitObserver() {
-        self._lockAutoCommitObserver=true
+    public func disableSupervision() {
+        self._autoCommitObserversAreLocked=true
     }
 
     // AutCommnit is possible
-    public func unlockAutoCommitObserver() {
-        self._lockAutoCommitObserver=false
+    public func enableSupervision() {
+        self._autoCommitObserversAreLocked=false
     }
 
-    private var _lockAutoCommitObserver: Bool = false
+    private var _autoCommitObserversAreLocked: Bool = false
 
 
     //Collectible protocol: committed
@@ -137,6 +139,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         willSet {
             // The changes have been committed
            self._shouldBeCommitted=false
+           self.changedKeys.removeAll()
         }
         didSet {
         }
@@ -261,7 +264,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     public func mapping(map: Map) {
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         self.defineUID()
         if map.mappingType == .ToJSON {
             // Store the universal type Name
@@ -275,7 +278,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.summary <- map["summary"]
         self._shouldBeCommitted <- map["_toBeCommitted"]
         self.ephemeral <- map["ephemeral"]
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -284,7 +287,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public required init?(coder decoder: NSCoder) {
         super.init()
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
         self.defineUID()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
         self._typeName=self.dynamicType.typeName()
@@ -295,7 +298,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
         self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
         self.ephemeral=decoder.decodeBoolForKey("ephemeral")
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     public func encodeWithCoder(coder: NSCoder) {

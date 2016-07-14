@@ -47,13 +47,13 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.storage <- ( map["storage"] )
 		self.collectionName <- ( map["collectionName"] )
 		self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
 		self.inMemory <- ( map["inMemory"] )
 		self.observableViaUID <- ( map["observableViaUID"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -61,13 +61,13 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.storage=CollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
 		self.inMemory=decoder.decodeBoolForKey("inMemory") 
 		self.observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

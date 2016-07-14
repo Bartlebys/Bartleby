@@ -61,7 +61,7 @@ import ObjectMapper
 
     override public func mapping(map: Map) {
         super.mapping(map)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.status <- ( map["status"] )
 		self.priority <- ( map["priority"] )
 		self.spaceUID <- ( map["spaceUID"] )
@@ -70,7 +70,7 @@ import ObjectMapper
 		self.progressionState <- ( map["progressionState"] )
 		self.completionState <- ( map["completionState"] )
 		self.name <- ( map["name"] )
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
 
@@ -78,7 +78,7 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.lockAutoCommitObserver()
+        self.disableSupervision()
 		self.status=TasksGroup.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
@@ -87,7 +87,7 @@ import ObjectMapper
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState") 
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.name=String(decoder.decodeObjectOfClass(NSString.self, forKey: "name")! as NSString)
-        self.unlockAutoCommitObserver()
+        self.enableSupervision()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
