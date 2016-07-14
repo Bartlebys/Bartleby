@@ -208,8 +208,8 @@
 		E5B776681CDCDDF2007261E1 /* JSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756A1CDCDDF2007261E1 /* JSerializer.swift */; };
 		E5B776691CDCDDF2007261E1 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756B1CDCDDF2007261E1 /* ImageTransform.swift */; };
 		E5B7766A1CDCDDF2007261E1 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756B1CDCDDF2007261E1 /* ImageTransform.swift */; };
-		E5B7766B1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756C1CDCDDF2007261E1 /* XTypeAliases.swift */; };
-		E5B7766C1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756C1CDCDDF2007261E1 /* XTypeAliases.swift */; };
+		E5B7766B1CDCDDF2007261E1 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756C1CDCDDF2007261E1 /* UIX.swift */; };
+		E5B7766C1CDCDDF2007261E1 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756C1CDCDDF2007261E1 /* UIX.swift */; };
 		E5B7766D1CDCDDF2007261E1 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756F1CDCDDF2007261E1 /* NoCrypto.swift */; };
 		E5B7766E1CDCDDF2007261E1 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7756F1CDCDDF2007261E1 /* NoCrypto.swift */; };
 		E5B7766F1CDCDDF2007261E1 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775721CDCDDF2007261E1 /* EventSource.swift */; };
@@ -457,7 +457,7 @@
 		E5B775691CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Protocol.swift"; sourceTree = "<group>"; };
 		E5B7756A1CDCDDF2007261E1 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
 		E5B7756B1CDCDDF2007261E1 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
-		E5B7756C1CDCDDF2007261E1 /* XTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XTypeAliases.swift; sourceTree = "<group>"; };
+		E5B7756C1CDCDDF2007261E1 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E5B7756F1CDCDDF2007261E1 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E5B775721CDCDDF2007261E1 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E5B775761CDCDDF2007261E1 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
@@ -793,7 +793,7 @@
 			isa = PBXGroup;
 			children = (
 				E5B775611CDCDDF2007261E1 /* JSON */,
-				E5B7756C1CDCDDF2007261E1 /* XTypeAliases.swift */,
+				E5B7756C1CDCDDF2007261E1 /* UIX.swift */,
 			);
 			path = adapters;
 			sourceTree = "<group>";
@@ -1206,7 +1206,7 @@
 				E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */,
 				E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */,
 				E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */,
-				E5B7766B1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
+				E5B7766B1CDCDDF2007261E1 /* UIX.swift in Sources */,
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769B1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E57A4BE81CE8A34E0044106A /* User.swift in Sources */,
@@ -1350,7 +1350,7 @@
 				E57A4C4F1CE8A34E0044106A /* UpdateGroups.swift in Sources */,
 				E5AAC5511CEB16AF005C15E2 /* Task+Execution.swift in Sources */,
 				E5B776761CDCDDF2007261E1 /* Bartleby.swift in Sources */,
-				E5B7766C1CDCDDF2007261E1 /* XTypeAliases.swift in Sources */,
+				E5B7766C1CDCDDF2007261E1 /* UIX.swift in Sources */,
 				E57A4BE71CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769C1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E57A4BE91CE8A34E0044106A /* User.swift in Sources */,

@@ -429,10 +429,10 @@
 		E54B7EE21D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D891D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift */; };
 		E54B7EE31D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D891D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift */; };
 		E54B7EE41D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D891D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift */; };
-		E54B7EE51D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */; };
-		E54B7EE61D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */; };
-		E54B7EE71D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */; };
-		E54B7EE81D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */; };
+		E54B7EE51D2B8A4C001F7AB3 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */; };
+		E54B7EE61D2B8A4C001F7AB3 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */; };
+		E54B7EE71D2B8A4C001F7AB3 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */; };
+		E54B7EE81D2B8A4C001F7AB3 /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */; };
 		E54B7EE91D2B8A4C001F7AB3 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8D1D2B8A4C001F7AB3 /* NoCrypto.swift */; };
 		E54B7EEA1D2B8A4C001F7AB3 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8D1D2B8A4C001F7AB3 /* NoCrypto.swift */; };
 		E54B7EEB1D2B8A4C001F7AB3 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54B7D8D1D2B8A4C001F7AB3 /* NoCrypto.swift */; };
@@ -949,7 +949,7 @@
 		E54B7D871D2B8A4C001F7AB3 /* JObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObject.swift; sourceTree = "<group>"; };
 		E54B7D881D2B8A4C001F7AB3 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
 		E54B7D891D2B8A4C001F7AB3 /* RegistryMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Protocol.swift"; sourceTree = "<group>"; };
-		E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XTypeAliases.swift; sourceTree = "<group>"; };
+		E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E54B7D8D1D2B8A4C001F7AB3 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E54B7D901D2B8A4C001F7AB3 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E54B7D921D2B8A4C001F7AB3 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
@@ -1287,7 +1287,7 @@
 			isa = PBXGroup;
 			children = (
 				E54B7D801D2B8A4C001F7AB3 /* JSON */,
-				E54B7D8A1D2B8A4C001F7AB3 /* XTypeAliases.swift */,
+				E54B7D8A1D2B8A4C001F7AB3 /* UIX.swift */,
 			);
 			path = adapters;
 			sourceTree = "<group>";
@@ -1905,7 +1905,7 @@
 				E54B7BEB1D2B891D001F7AB3 /* CryptoHelper.swift in Sources */,
 				E54B7F941D2B8A4C001F7AB3 /* ReactiveTask.swift in Sources */,
 				E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */,
-				E54B7EE81D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */,
+				E54B7EE81D2B8A4C001F7AB3 /* UIX.swift in Sources */,
 				E54B7DF41D2B8A4C001F7AB3 /* CollectionMetadatum.swift in Sources */,
 				E54B7D391D2B8A34001F7AB3 /* ServerTrustPolicy.swift in Sources */,
 				E54B7EEC1D2B8A4C001F7AB3 /* NoCrypto.swift in Sources */,
@@ -2171,7 +2171,7 @@
 				E53E28E11CA572E20079ED23 /* BsyncImageDiskManager.swift in Sources */,
 				E54B7F9D1D2B8A4C001F7AB3 /* TasksScheduler.swift in Sources */,
 				E5B98EBA1CC0E6CD00A7ECD1 /* TransformType.swift in Sources */,
-				E54B7EE51D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */,
+				E54B7EE51D2B8A4C001F7AB3 /* UIX.swift in Sources */,
 				E54B7DED1D2B8A4C001F7AB3 /* UsersCollectionController.swift in Sources */,
 				E5B98EB11CC0E6CD00A7ECD1 /* EnumTransform.swift in Sources */,
 				E54B7EE91D2B8A4C001F7AB3 /* NoCrypto.swift in Sources */,
@@ -2350,7 +2350,7 @@
 				E54B7E061D2B8A4C001F7AB3 /* JString.swift in Sources */,
 				E54B7D2B1D2B8A34001F7AB3 /* Upload.swift in Sources */,
 				E54B7F021D2B8A4C001F7AB3 /* Default.swift in Sources */,
-				E54B7EE61D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */,
+				E54B7EE61D2B8A4C001F7AB3 /* UIX.swift in Sources */,
 				E54B7D2C1D2B8A34001F7AB3 /* Validation.swift in Sources */,
 				E54B7BE31D2B891C001F7AB3 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E54B7FEE1D2B8AA0001F7AB3 /* BsyncLocalAnalyzer.swift in Sources */,
@@ -2660,7 +2660,7 @@
 				E54B7E9F1D2B8A4C001F7AB3 /* ReadUsersByQuery.swift in Sources */,
 				E54B7F6F1D2B8A4C001F7AB3 /* Initializable.swift in Sources */,
 				E54B7EFB1D2B8A4C001F7AB3 /* Consignation.swift in Sources */,
-				E54B7EE71D2B8A4C001F7AB3 /* XTypeAliases.swift in Sources */,
+				E54B7EE71D2B8A4C001F7AB3 /* UIX.swift in Sources */,
 				E54B7E5B1D2B8A4C001F7AB3 /* DeleteLocker.swift in Sources */,
 				E55C92531CBF84ED008163F6 /* ResponseSerialization.swift in Sources */,
 				E55C92541CBF84ED008163F6 /* Result.swift in Sources */,
