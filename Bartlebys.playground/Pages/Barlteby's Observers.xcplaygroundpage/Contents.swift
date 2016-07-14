@@ -19,11 +19,6 @@ userA.addChangesObserver(spy) { (key, oldValue, newValue) in
 userA.firstname="Nina"
 userA.firstname="Jimmy"
 
-userA.disableSupervision()
-userA.firstname="Hubert"
-userA.enableSupervision()
-userA.firstname="Alfred"
-
 userA.removeChangesObserver(spy)
 userA.firstname="Zorro"
 
