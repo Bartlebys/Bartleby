@@ -84,7 +84,15 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             self._shouldBeCommitted=true
 
             if !changedKeys.contains(key) {
-                changedKeys.append(key)
+                if self is CollectibleCollection && key == "items"{
+                    changedKeys.append("\(NSDate())#\(key):changed")
+
+                }else if let collectibleNewValue = newValue as? Collectible{
+                    changedKeys.append("\(NSDate())#\(key):\(collectibleNewValue.UID)")
+                }else{
+                    changedKeys.append("\(NSDate())#\(key):\(oldValue)->\(newValue)")
+                }
+
             }
 
             // Invoke the closures
@@ -137,16 +145,21 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     //Collectible protocol: committed
     public var committed: Bool = false {
         willSet {
-            // The changes have been committed
-           self._shouldBeCommitted=false
-           self.changedKeys.removeAll()
+            if newValue==true{
+                // The changes have been committed
+                self._shouldBeCommitted=false
+                self.changedKeys.removeAll()
+            }
         }
         didSet {
         }
     }
 
     //Collectible protocol: distributed
-    public var distributed: Bool = false
+    public var distributed: Bool = false{
+        didSet{
+        }
+    }
 
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)" {
@@ -249,12 +262,25 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                 return (self as! Descriptible).toString()
             }
             if let j=Mapper().toJSONString(self, prettyPrint:false) {
-                return "\(j)"
+                return j
             } else {
-                return "Void JObject"
+                return "{}"
             }
         }
     }
+
+
+    // MARK: - ToJSON
+
+    public func toJSONString(prettyPrint:Bool)->String{
+        if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
+            return j
+        } else {
+            return "{}"
+        }
+    }
+
+
 
     // MARK: - Mappable
 
@@ -278,6 +304,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.summary <- map["summary"]
         self._shouldBeCommitted <- map["_toBeCommitted"]
         self.ephemeral <- map["ephemeral"]
+        self.changedKeys <- map["changedKeys"]
         self.enableSupervision()
     }
 
@@ -291,7 +318,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.defineUID()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
         self._typeName=self.dynamicType.typeName()
-        self._typeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.TYPE_NAME_KEY)! as NSString)
         self.committed=decoder.decodeBoolForKey("committed")
         self.distributed=decoder.decodeBoolForKey("distributed")
         self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)

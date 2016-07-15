@@ -13,7 +13,7 @@ import Foundation
 
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType {
+public protocol Collectible:  Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType,JSONString {
 
     // This flag is set to true on first commit.
     var committed: Bool { get set }
@@ -38,4 +38,9 @@ public protocol Collectible:  Identifiable, Serializable, Supervisable,Dictionar
 
     // An accessor to the static collectionName
     var d_collectionName: String { get }
+}
+
+
+public protocol JSONString{
+   func toJSONString(prettyPrint:Bool)->String
 }

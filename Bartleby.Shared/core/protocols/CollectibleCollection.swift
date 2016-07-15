@@ -18,7 +18,7 @@ public typealias Collection=protocol< CollectibleCollection, SuperIterable, Comm
 // We add SequenceType Support to the collection Type.
 // 'SequenceType' can only be used as a generic constraint because it has Self or associated type requirements
 // So we use IterableCollectibleCollection for concrete  collection implementation and reference in the Registry `internal var _collections=[String:Collection]()`
-public typealias IterableCollectibleCollection = protocol<Collection, SequenceType>
+public typealias IterableCollectibleCollection = protocol<Collection,CollectionType>
 
 // Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
@@ -90,6 +90,12 @@ public protocol CollectibleCollection: Collectible {
      - returns: true if the item has been removed
      */
     func removeObjectWithID(id: String,commit:Bool) -> Bool
+
+
+    func itemAtIndex(index:Int)->Collectible
+
+    var count:Int { get }
+
 
 }
 

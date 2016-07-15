@@ -51,6 +51,27 @@ import ObjectMapper
         }
     }
 
+
+    public subscript(index: Int) -> Locker {
+        return self.items[index]
+    }
+
+    public func itemAtIndex(index:Int)->Collectible{
+        return self[index]
+    }
+
+    public var startIndex:Int {
+        return 0
+    }
+
+    public var endIndex:Int {
+        return self.items.count
+    }
+
+    public var count:Int {
+        return self.items.count
+    }
+
     /**
     An iterator that permit dynamic approaches.
     The Registry ignore the real types.
@@ -91,10 +112,6 @@ import ObjectMapper
                 self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
             }
         }
-    }
-
-    public func getCollectibleItems()->[Collectible]{
-        return items
     }
 
     // MARK: Identifiable

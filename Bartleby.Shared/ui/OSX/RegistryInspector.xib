@@ -1,21 +1,110 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6233" systemVersion="14A329f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6233"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="RegistryInspector" customModule="BartlebyKit">
+            <connections>
+                <outlet property="globalTabView" destination="2rc-pm-P9A" id="nWj-YL-uLb"/>
+                <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
+                <outlet property="logsViewController" destination="nOf-ae-T3T" id="D3V-HH-DOd"/>
+                <outlet property="metadataViewController" destination="rfH-0e-52M" id="89o-0t-KMq"/>
+                <outlet property="operationsViewController" destination="GD2-9q-5MM" id="1ra-8l-AWy"/>
+                <outlet property="scopeSegmentedControl" destination="blX-Ao-gTK" id="TdQ-Td-b6W"/>
+                <outlet property="triggersViewController" destination="uty-kP-o11" id="KDF-89-u9d"/>
+                <outlet property="userViewController" destination="X8g-Qj-Bzq" id="Uwm-MZ-WtN"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="contentRect" x="196" y="240" width="889" height="523"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="889" height="523"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <tabView type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="2rc-pm-P9A">
+                        <rect key="frame" x="0.0" y="0.0" width="889" height="523"/>
+                        <font key="font" metaFont="system"/>
+                        <tabViewItems/>
+                        <connections>
+                            <binding destination="-2" name="selectedIndex" keyPath="self.scopeSegmentedControl.selectedSegment" id="1nv-Ko-OuG"/>
+                        </connections>
+                    </tabView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="2rc-pm-P9A" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" id="bHF-fm-u9p"/>
+                    <constraint firstItem="2rc-pm-P9A" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" id="gIm-Fb-xnd"/>
+                    <constraint firstAttribute="bottom" secondItem="2rc-pm-P9A" secondAttribute="bottom" id="oDG-Zy-JRc"/>
+                    <constraint firstAttribute="trailing" secondItem="2rc-pm-P9A" secondAttribute="trailing" id="yZY-Dj-cFa"/>
+                </constraints>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="C6E86470-B4C8-40A2-BEAC-DA620E331578" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="V1X-Ll-rfj">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="ED72EB41-7D0A-4E56-91F3-A8709651442E" label="" paletteLabel="" id="Nl4-0i-Klz">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="104" height="24"/>
+                        <size key="maxSize" width="500" height="26"/>
+                        <segmentedControl key="view" verticalHuggingPriority="750" id="blX-Ao-gTK">
+                            <rect key="frame" x="0.0" y="14" width="500" height="26"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="j6S-ES-j9y">
+                                <font key="font" metaFont="system"/>
+                                <segments>
+                                    <segment label="Registry" selected="YES"/>
+                                    <segment label="Metadata" tag="1"/>
+                                    <segment label="User"/>
+                                    <segment label="Operations"/>
+                                    <segment label="Logs"/>
+                                    <segment label="Triggers"/>
+                                </segments>
+                            </segmentedCell>
+                            <connections>
+                                <binding destination="-2" name="selectedIndex" keyPath="self.selectedIndex" id="uiJ-n5-hZb"/>
+                            </connections>
+                        </segmentedControl>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Di3-Zl-25a"/>
+                    <toolbarItem implicitItemIdentifier="A816ED48-2E93-4409-88AC-6AD93CB9ADCD" label="Open Web Stack" paletteLabel="Open Web Stack" image="1030-globe" id="38o-ZK-TuO">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="127" height="25"/>
+                        <size key="maxSize" width="127" height="25"/>
+                        <button key="view" verticalHuggingPriority="750" id="Jwx-XM-OUn">
+                            <rect key="frame" x="0.0" y="14" width="127" height="25"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="1030-globe" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="o6e-Mq-oho">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="openWebStack:" target="-2" id="WHo-5r-yQN"/>
+                            </connections>
+                        </button>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="Di3-Zl-25a"/>
+                    <toolbarItem reference="Nl4-0i-Klz"/>
+                    <toolbarItem reference="Di3-Zl-25a"/>
+                    <toolbarItem reference="38o-ZK-TuO"/>
+                </defaultToolbarItems>
+            </toolbar>
+            <point key="canvasLocation" x="645.5" y="452.5"/>
         </window>
+        <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="rfH-0e-52M" customClass="MetadataViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="X8g-Qj-Bzq" customClass="UserViewController" customModule="BartlebyKit"/>
+        <viewController id="GD2-9q-5MM" customClass="OperationsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="uty-kP-o11" customClass="TriggersViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="KHZ-23-Z0f"/>
     </objects>
+    <resources>
+        <image name="1030-globe" width="22" height="28"/>
+    </resources>
 </document>

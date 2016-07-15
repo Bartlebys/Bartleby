@@ -23,7 +23,7 @@ public extension Registry {
      - parameter instance: the instance
      */
     public func upsert(instance: Collectible){
-        if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
+        if let collection=self.collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.upsert(instance, commit:false)
         }
         self.hasChanged()
@@ -55,7 +55,7 @@ public extension Registry {
 
      */
     public func delete(instance: Collectible){
-        if let collection=self._collectionByName(instance.d_collectionName) as? CollectibleCollection {
+        if let collection=self.collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.removeObject(instance, commit:false)
         }
         self.hasChanged()
@@ -84,7 +84,7 @@ public extension Registry {
      */
     public func deleteById(instanceUID: String, fromCollectionWithName: String) {
 
-        if let collection=self._collectionByName(fromCollectionWithName) as? CollectibleCollection {
+        if let collection=self.collectionByName(fromCollectionWithName) as? CollectibleCollection {
             collection.removeObjectWithID(instanceUID, commit:false)
         }
         self.hasChanged()

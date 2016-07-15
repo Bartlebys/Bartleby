@@ -36,6 +36,18 @@
 		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
 		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
+		E523D1421D38E54600BAFEDF /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1401D38E54600BAFEDF /* InspectorViewController.swift */; };
+		E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1411D38E54600BAFEDF /* InspectorViewController.xib */; };
+		E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1461D38EECE00BAFEDF /* LogsViewController.swift */; };
+		E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1471D38EECE00BAFEDF /* LogsViewController.xib */; };
+		E523D14C1D38EFB900BAFEDF /* MetadataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */; };
+		E523D14D1D38EFB900BAFEDF /* MetadataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */; };
+		E523D1501D38EFDA00BAFEDF /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */; };
+		E523D1511D38EFDA00BAFEDF /* UserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */; };
+		E523D1541D38EFF900BAFEDF /* OperationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */; };
+		E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */; };
+		E523D1581D38F00B00BAFEDF /* TriggersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */; };
+		E523D1591D38F00B00BAFEDF /* TriggersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */; };
 		E529CE2A1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E529CE2B1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */; };
@@ -169,6 +181,7 @@
 		E5AAC5511CEB16AF005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */; };
 		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
 		E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
+		E5AF5B601D37E5CC00435642 /* RegistryInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */; };
 		E5B127C91D1C269200D61261 /* Registry+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */; };
 		E5B127CA1D1C26C800D61261 /* Registry+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
@@ -190,6 +203,8 @@
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5B4ED3E1D37F5E7000A239A /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5AF5B5B1D37DEDC00435642 /* Media.xcassets */; };
+		E5B4ED3F1D37F5ED000A239A /* RegistryInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */; };
 		E5B776571CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */; };
 		E5B776581CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */; };
 		E5B776591CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */; };
@@ -327,15 +342,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E53E875F1C860E6300CC6465 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -365,6 +371,18 @@
 		E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
 		E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E518343D1CA52F96006ED867 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
+		E523D1401D38E54600BAFEDF /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		E523D1411D38E54600BAFEDF /* InspectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorViewController.xib; sourceTree = "<group>"; };
+		E523D1461D38EECE00BAFEDF /* LogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsViewController.swift; sourceTree = "<group>"; };
+		E523D1471D38EECE00BAFEDF /* LogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogsViewController.xib; sourceTree = "<group>"; };
+		E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataViewController.swift; sourceTree = "<group>"; };
+		E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataViewController.xib; sourceTree = "<group>"; };
+		E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserViewController.xib; sourceTree = "<group>"; };
+		E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsViewController.swift; sourceTree = "<group>"; };
+		E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OperationsViewController.xib; sourceTree = "<group>"; };
+		E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersViewController.swift; sourceTree = "<group>"; };
+		E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TriggersViewController.xib; sourceTree = "<group>"; };
 		E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+MetaDataImportExport.swift"; sourceTree = "<group>"; };
 		E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+AppFacilities.swift"; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
@@ -447,6 +465,9 @@
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
+		E5AF5B5B1D37DEDC00435642 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryInspector.swift; sourceTree = "<group>"; };
+		E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistryInspector.xib; sourceTree = "<group>"; };
 		E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SuperIterable.swift"; sourceTree = "<group>"; };
 		E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
@@ -774,6 +795,36 @@
 			name = "Support-files";
 			sourceTree = "<group>";
 		};
+		E5AF5B551D37D9C800435642 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				E5AF5B5A1D37DEDC00435642 /* OSX */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		E5AF5B5A1D37DEDC00435642 /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				E5AF5B5B1D37DEDC00435642 /* Media.xcassets */,
+				E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */,
+				E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */,
+				E523D1401D38E54600BAFEDF /* InspectorViewController.swift */,
+				E523D1411D38E54600BAFEDF /* InspectorViewController.xib */,
+				E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */,
+				E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */,
+				E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */,
+				E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */,
+				E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */,
+				E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */,
+				E523D1461D38EECE00BAFEDF /* LogsViewController.swift */,
+				E523D1471D38EECE00BAFEDF /* LogsViewController.xib */,
+				E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */,
+				E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
 		E5B775041CDCDDF2007261E1 /* Bartleby.Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -784,6 +835,7 @@
 				E5B7759B1CDCDDF2007261E1 /* extensions */,
 				E5B7759F1CDCDDF2007261E1 /* operations */,
 				E5B775A41CDCDDF2007261E1 /* tools */,
+				E5AF5B551D37D9C800435642 /* ui */,
 			);
 			name = Bartleby.Shared;
 			path = ../Bartleby.Shared;
@@ -987,7 +1039,7 @@
 				E54999531C3A7D0100C52A9D /* Sources */,
 				E54999541C3A7D0100C52A9D /* Frameworks */,
 				E54999551C3A7D0100C52A9D /* Headers */,
-				E53E875F1C860E6300CC6465 /* CopyFiles */,
+				E5B4ED2E1D37F0CB000A239A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1089,6 +1141,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5B4ED2E1D37F0CB000A239A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5B4ED3F1D37F5ED000A239A /* RegistryInspector.xib in Resources */,
+				E523D1591D38F00B00BAFEDF /* TriggersViewController.xib in Resources */,
+				E523D1511D38EFDA00BAFEDF /* UserViewController.xib in Resources */,
+				E523D14D1D38EFB900BAFEDF /* MetadataViewController.xib in Resources */,
+				E5B4ED3E1D37F5E7000A239A /* Media.xcassets in Resources */,
+				E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */,
+				E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */,
+				E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1096,6 +1163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E523D1541D38EFF900BAFEDF /* OperationsViewController.swift in Sources */,
 				E5B776AF1CDCDDF2007261E1 /* Serializer.swift in Sources */,
 				E5B776771CDCDDF2007261E1 /* StatusOfCompletion.swift in Sources */,
 				E5B776C91CDCDDF3007261E1 /* HTTPManager.swift in Sources */,
@@ -1111,6 +1179,7 @@
 				E5B776AD1CDCDDF2007261E1 /* Serializable.swift in Sources */,
 				E5B776C71CDCDDF3007261E1 /* BFileManager.swift in Sources */,
 				E5B776611CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
+				E5AF5B601D37E5CC00435642 /* RegistryInspector.swift in Sources */,
 				E592B79C1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
 				E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */,
@@ -1155,6 +1224,7 @@
 				E5B776671CDCDDF2007261E1 /* JSerializer.swift in Sources */,
 				E509A0221CF58468007DEF8C /* JData.swift in Sources */,
 				E5B776831CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
+				E523D1581D38F00B00BAFEDF /* TriggersViewController.swift in Sources */,
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E57A4BC01CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
 				E5B7768B1CDCDDF2007261E1 /* Registry+SecurityScopes.swift in Sources */,
@@ -1181,6 +1251,8 @@
 				E5B776811CDCDDF2007261E1 /* Completion+Result.swift in Sources */,
 				E5B776851CDCDDF2007261E1 /* NSNotification+Progression.swift in Sources */,
 				E57A4BD41CE8A34E0044106A /* Group.swift in Sources */,
+				E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */,
+				E523D14C1D38EFB900BAFEDF /* MetadataViewController.swift in Sources */,
 				E57A4C281CE8A34E0044106A /* ReadLockerById.swift in Sources */,
 				E5B7765F1CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */,
 				E5B776CB1CDCDDF3007261E1 /* Pluralization.swift in Sources */,
@@ -1205,11 +1277,13 @@
 				E5AAC5501CEB16AF005C15E2 /* Task+Execution.swift in Sources */,
 				E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */,
 				E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */,
+				E523D1421D38E54600BAFEDF /* InspectorViewController.swift in Sources */,
 				E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */,
 				E5B7766B1CDCDDF2007261E1 /* UIX.swift in Sources */,
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769B1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E57A4BE81CE8A34E0044106A /* User.swift in Sources */,
+				E523D1501D38EFDA00BAFEDF /* UserViewController.swift in Sources */,
 				E5B776791CDCDDF2007261E1 /* Consignation.swift in Sources */,
 				E57A4BF01CE8A34E0044106A /* CreateLockers.swift in Sources */,
 				E509A01A1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,

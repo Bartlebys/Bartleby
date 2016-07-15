@@ -333,7 +333,7 @@ public class Registry: BXDocument {
 
     private func _refreshProxies()throws {
         for metadatum in self.registryMetadata.collectionsMetadata {
-            if var proxy=self._collectionByName(metadatum.collectionName) {
+            if var proxy=self.collectionByName(metadatum.collectionName) {
                 self._refreshIdentifier(&proxy)
             } else {
                 throw RegistryError.MissingCollectionProxy(collectionName: metadatum.collectionName)
@@ -350,11 +350,22 @@ public class Registry: BXDocument {
     // MARK: - Collections Public API
 
     public func getCollection<T: CollectibleCollection>  () throws -> T {
-        guard var collection=self._collectionByName(T.collectionName) as? T else {
+        guard var collection=self.collectionByName(T.collectionName) as? T else {
             throw RegistryError.UnExistingCollection(collectionName: T.collectionName)
         }
         collection.undoManager=self.undoManager
         return collection
+    }
+
+
+
+    /**
+     Returns the collection Names.
+
+     - returns: the names
+     */
+    public func getCollectionsNames()->[String]{
+        return self._collections.map {$0.0}
     }
 
     // MARK: Private Collections Implementation
@@ -368,8 +379,11 @@ public class Registry: BXDocument {
 
 
     // Any call should always be casted to a CollectibleCollection
-    func _collectionByName(name: String) -> Collection? {
-        return _collections[name]
+    func collectionByName(name: String) -> Collection? {
+        if _collections.keys.contains(name){
+            return _collections[name]
+        }
+        return nil
     }
 
 
@@ -429,7 +443,7 @@ public class Registry: BXDocument {
                     // MONOLITHIC STORAGE
                     if metadatum.storage == CollectionMetadatum.Storage.MonolithicFileStorage {
 
-                        if let collection = self._collectionByName(metadatum.collectionName) as? CollectibleCollection {
+                        if let collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
 
                             // We use multiple files
 
@@ -523,7 +537,7 @@ public class Registry: BXDocument {
                     if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
                         let filename=wrapper.filename
                         if var collectionData=wrapper.regularFileContents {
-                            if let proxy=self._collectionByName(metadatum.collectionName) {
+                            if let proxy=self.collectionByName(metadatum.collectionName) {
                                 if let path: NSString=filename {
                                     let pathExtension="."+path.pathExtension
                                     if  pathExtension == Registry.DATA_EXTENSION {
