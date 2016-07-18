@@ -8,36 +8,45 @@
 
 import Cocoa
 
-
 class InspectorViewController: NSViewController,RegistryViewController{
+
 
     @IBOutlet weak var listOutlineView: NSOutlineView!
 
-    @IBOutlet weak var detailsOutlineView: NSOutlineView!
+    @IBOutlet weak var topBox: NSBox!
 
-    @IBOutlet var textView: NSTextView!
+    @IBOutlet weak var bottomBox: NSBox!
+
+    // Provisionned View controllers
+
+    @IBOutlet var sourceEditor: SourceEditor!
+
+    @IBOutlet var operationEditor: OperationsViewController!
+
+    @IBOutlet var changesViewController: ChangesViewController!
+
     
-    private var _collectionListDelegate:CollectionListDelegate?
+    // The currently associated View Controller
+    private var _topViewController:NSViewController?
 
-    private var _detailDelegate:DetailsDelegate?
+    private var _bottomViewController:NSViewController?
+
+
+    //MARK:  Collections
+
+    private var _collectionListDelegate:CollectionListDelegate?
 
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { (selected) in
-                    if selected is CollectibleCollection{
-                        // !!! not efficient
-                        let objectMask=JObject()
-                        let dictionary=selected.dictionaryRepresentation()
-                        objectMask.patchFrom(dictionary)
-                        let selectedJSON=selected.toJSONString(true)
-                        self.textView.string=selectedJSON
-                    }else{
-                        let selectedJSON=selected.toJSONString(true)
-                        self.textView.string=selectedJSON
-                    }
-
+                    self.updateRepresentedObject(selected)
                 })
+                self._topViewController=self.sourceEditor
+                self._bottomViewController=self.changesViewController
+                self.topBox.contentView=self._topViewController!.view
+                self.bottomBox.contentView=self._bottomViewController!.view
+
                 self.listOutlineView.setDelegate(self._collectionListDelegate)
                 self.listOutlineView.setDataSource(self._collectionListDelegate)
                 self.listOutlineView.reloadData()
@@ -45,20 +54,18 @@ class InspectorViewController: NSViewController,RegistryViewController{
         }
     }
 
+    //MARK: initialization
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
 
-    func outlineViewFor(delegate:NSOutlineViewDelegate)-> NSOutlineView{
-        if delegate is CollectionListDelegate{
-            return self.listOutlineView
-        }
-        return self.detailsOutlineView
+
+    func updateRepresentedObject(selected:Collectible) -> () {
+        self._topViewController?.representedObject=selected as? AnyObject
+        self._bottomViewController?.representedObject=selected as? AnyObject
     }
-
 }
-
-
 
 // MARK: - CollectionListDelegate
 
@@ -72,7 +79,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     private var _selectionHandler:((selected:Collectible)->())
 
-    public var UID: String = Bartleby.createUID()
+    var UID: String = Bartleby.createUID()
 
     required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:((selected:Collectible)->())) {
         self._registry=registry
@@ -99,14 +106,21 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         if let collection  = item as? CollectibleCollection {
             return collection.count
         }
-        return self._collectionNames.count
+        return self._collectionNames.count + 2
     }
 
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-       if let collection  = item as? CollectibleCollection {
+        if let collection  = item as? CollectibleCollection {
             return collection.itemAtIndex(index) as! AnyObject
-       }else{
-            let collectionName=self._collectionNames[index]
+        }else{
+            if index==0{
+                return self._registry.registryMetadata.currentUser!
+            }
+
+            if index==1{
+                return self._registry.registryMetadata
+            }
+            let collectionName=self._collectionNames[index - 2]
             return self._registry.collectionByName(collectionName) as? AnyObject ?? "ERROR"
         }
     }
@@ -139,33 +153,47 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineView(outlineView: NSOutlineView, viewForTableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-
-         if let element = item as? CollectibleCollection {
+        switch item {
+        case let element where element is CollectibleCollection :
             let view = outlineView.makeViewWithIdentifier("CollectionCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
-                textField.stringValue = element.d_collectionName
-            }
-            if let imageView = view.imageView {
-                //imageView.image=NSImage(named:"1052-database" )
-            }
-             return view
-
-         }else if let element = item as? Collectible {
-            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
-            if let textField = view.textField {
-                textField.stringValue = Pluralization.singularize(element.d_collectionName)+" <"+(element.summary ?? element.UID)+">"
-            }
-            if let imageView = view.imageView {
-                //imageView.image=NSImage(named:"916-planet")
+                textField.stringValue = (element as! CollectibleCollection).d_collectionName
             }
             return view
+        case let element  where element is RegistryMetadata :
+             //let casted=(element as! RegistryMetadata)
+            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                textField.stringValue = "Registry Metadata"
+          }
+            return view
+        case let element  where element is User :
+            let casted=(element as! User)
+            let view = outlineView.makeViewWithIdentifier("UserCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                if casted.creatorUID==casted.UID{
+                    textField.stringValue = "Current User"
+                }else{
+                    textField.stringValue = casted.email ?? casted.UID
+                }
+            }
+            return view
+        case let element  where element is Collectible :
+            let casted=(element as! Collectible)
+            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                textField.stringValue =  Pluralization.singularize(casted.d_collectionName)+" <"+(casted.summary ?? casted.UID)+">"
+            }
+            return view
+
+        default:
+            return  NSView()
         }
-        return NSView()
     }
 
 
     func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
-        if let element = item as? CollectibleCollection {
+        if let _ = item as? CollectibleCollection {
             return 24
         }else{
             return 20
@@ -179,32 +207,9 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineViewSelectionDidChange(notification: NSNotification) {
-         if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
+        if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
             self._selectionHandler(selected: item)
-         }
-    }
-
-}
-
-
-// MARK: - DetailsDelegate
-
-class DetailsDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource{
-
-    private var _instance:Collectible
-
-    private weak var _outlineView:NSOutlineView!
-
-    required init(object:Collectible,outlineView:NSOutlineView) {
-        self._instance=object
-        self._outlineView=outlineView
-    }
-
-    func outlineViewSelectionDidChange(notification: NSNotification) {
-        if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) {
-            bprint("** \(item)", file: #file, function: #function, line: #line, category: Default.BPRINT_CATEGORY, decorative: false)
         }
     }
 
 }
-

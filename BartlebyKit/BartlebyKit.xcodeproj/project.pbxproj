@@ -26,6 +26,8 @@
 		E509A0271CF58468007DEF8C /* JString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0211CF58468007DEF8C /* JString.swift */; };
 		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
+		E5162AF61D3CF6E20037D05D /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5162AF41D3CF6E20037D05D /* SourceEditor.swift */; };
+		E5162AF71D3CF6E20037D05D /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5162AF51D3CF6E20037D05D /* SourceEditor.xib */; };
 		E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
 		E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
 		E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */; };
@@ -40,10 +42,6 @@
 		E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1411D38E54600BAFEDF /* InspectorViewController.xib */; };
 		E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1461D38EECE00BAFEDF /* LogsViewController.swift */; };
 		E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1471D38EECE00BAFEDF /* LogsViewController.xib */; };
-		E523D14C1D38EFB900BAFEDF /* MetadataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */; };
-		E523D14D1D38EFB900BAFEDF /* MetadataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */; };
-		E523D1501D38EFDA00BAFEDF /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */; };
-		E523D1511D38EFDA00BAFEDF /* UserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */; };
 		E523D1541D38EFF900BAFEDF /* OperationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */; };
 		E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */; };
 		E523D1581D38F00B00BAFEDF /* TriggersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */; };
@@ -313,6 +311,8 @@
 		E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
 		E5BDC62F1CEF4C6A00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5BDC6301CEF4C6F00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
+		E5C05BCE1D3D0C43003AF943 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */; };
+		E5C05BCF1D3D0C43003AF943 /* ChangesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */; };
 		E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
 		E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
 		E5E4FB6B1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
@@ -366,6 +366,8 @@
 		E509A0211CF58468007DEF8C /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
 		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* JObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObjectTests.swift; sourceTree = "<group>"; };
+		E5162AF41D3CF6E20037D05D /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
+		E5162AF51D3CF6E20037D05D /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
 		E51834391CA52F96006ED867 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
 		E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
@@ -375,10 +377,6 @@
 		E523D1411D38E54600BAFEDF /* InspectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorViewController.xib; sourceTree = "<group>"; };
 		E523D1461D38EECE00BAFEDF /* LogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsViewController.swift; sourceTree = "<group>"; };
 		E523D1471D38EECE00BAFEDF /* LogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogsViewController.xib; sourceTree = "<group>"; };
-		E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataViewController.swift; sourceTree = "<group>"; };
-		E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataViewController.xib; sourceTree = "<group>"; };
-		E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
-		E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserViewController.xib; sourceTree = "<group>"; };
 		E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsViewController.swift; sourceTree = "<group>"; };
 		E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OperationsViewController.xib; sourceTree = "<group>"; };
 		E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersViewController.swift; sourceTree = "<group>"; };
@@ -525,6 +523,8 @@
 		E5B775A81CDCDDF2007261E1 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
+		E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
+		E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersByIds.swift; sourceTree = "<group>"; };
 		E5E4FB6C1CFB0205001D1F0F /* TriggersAfterIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersAfterIndex.swift; sourceTree = "<group>"; };
@@ -811,10 +811,10 @@
 				E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */,
 				E523D1401D38E54600BAFEDF /* InspectorViewController.swift */,
 				E523D1411D38E54600BAFEDF /* InspectorViewController.xib */,
-				E523D14A1D38EFB900BAFEDF /* MetadataViewController.swift */,
-				E523D14B1D38EFB900BAFEDF /* MetadataViewController.xib */,
-				E523D14E1D38EFDA00BAFEDF /* UserViewController.swift */,
-				E523D14F1D38EFDA00BAFEDF /* UserViewController.xib */,
+				E5162AF41D3CF6E20037D05D /* SourceEditor.swift */,
+				E5162AF51D3CF6E20037D05D /* SourceEditor.xib */,
+				E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */,
+				E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */,
 				E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */,
 				E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */,
 				E523D1461D38EECE00BAFEDF /* LogsViewController.swift */,
@@ -904,7 +904,6 @@
 			children = (
 				E5B7757B1CDCDDF2007261E1 /* extensions */,
 				E5B775881CDCDDF2007261E1 /* protocols */,
-				E5B775981CDCDDF2007261E1 /* tasks */,
 				E5B775761CDCDDF2007261E1 /* Bartleby.swift */,
 				E5B775771CDCDDF2007261E1 /* StatusOfCompletion.swift */,
 				E5B775781CDCDDF2007261E1 /* Consignation.swift */,
@@ -960,6 +959,7 @@
 				E5B775941CDCDDF2007261E1 /* Serializable.swift */,
 				E5B775951CDCDDF2007261E1 /* Serializer.swift */,
 				E50140FE1CE8B65100EDD9C3 /* DictionaryRepresentation.swift */,
+				E5B775981CDCDDF2007261E1 /* tasks */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -973,7 +973,8 @@
 				E5B775991CDCDDF2007261E1 /* PushOperationTask.swift */,
 				E509A0191CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift */,
 			);
-			path = tasks;
+			name = tasks;
+			path = ../tasks;
 			sourceTree = "<group>";
 		};
 		E5B7759B1CDCDDF2007261E1 /* extensions */ = {
@@ -1147,9 +1148,9 @@
 			files = (
 				E5B4ED3F1D37F5ED000A239A /* RegistryInspector.xib in Resources */,
 				E523D1591D38F00B00BAFEDF /* TriggersViewController.xib in Resources */,
-				E523D1511D38EFDA00BAFEDF /* UserViewController.xib in Resources */,
-				E523D14D1D38EFB900BAFEDF /* MetadataViewController.xib in Resources */,
+				E5C05BCF1D3D0C43003AF943 /* ChangesViewController.xib in Resources */,
 				E5B4ED3E1D37F5E7000A239A /* Media.xcassets in Resources */,
+				E5162AF71D3CF6E20037D05D /* SourceEditor.xib in Resources */,
 				E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */,
 				E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */,
 				E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */,
@@ -1196,6 +1197,7 @@
 				E5B776951CDCDDF2007261E1 /* Handlers.swift in Sources */,
 				E5B776B51CDCDDF2007261E1 /* PushOperationTask.swift in Sources */,
 				E57A4BCE1CE8A34E0044106A /* CollectionMetadatum.swift in Sources */,
+				E5C05BCE1D3D0C43003AF943 /* ChangesViewController.swift in Sources */,
 				E592B79F1CFC21A4000F3301 /* Permission.swift in Sources */,
 				E57A4BE01CE8A34E0044106A /* Tag.swift in Sources */,
 				E5B776651CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift in Sources */,
@@ -1228,6 +1230,7 @@
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E57A4BC01CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
 				E5B7768B1CDCDDF2007261E1 /* Registry+SecurityScopes.swift in Sources */,
+				E5162AF61D3CF6E20037D05D /* SourceEditor.swift in Sources */,
 				E57A4BEA1CE8A34E0044106A /* CreateGroup.swift in Sources */,
 				E5B776A11CDCDDF2007261E1 /* CryptoDelegate.swift in Sources */,
 				E5B776B31CDCDDF2007261E1 /* Registry.swift in Sources */,
@@ -1252,7 +1255,6 @@
 				E5B776851CDCDDF2007261E1 /* NSNotification+Progression.swift in Sources */,
 				E57A4BD41CE8A34E0044106A /* Group.swift in Sources */,
 				E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */,
-				E523D14C1D38EFB900BAFEDF /* MetadataViewController.swift in Sources */,
 				E57A4C281CE8A34E0044106A /* ReadLockerById.swift in Sources */,
 				E5B7765F1CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */,
 				E5B776CB1CDCDDF3007261E1 /* Pluralization.swift in Sources */,
@@ -1283,7 +1285,6 @@
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
 				E5B7769B1CDCDDF2007261E1 /* CollectibleCollection.swift in Sources */,
 				E57A4BE81CE8A34E0044106A /* User.swift in Sources */,
-				E523D1501D38EFDA00BAFEDF /* UserViewController.swift in Sources */,
 				E5B776791CDCDDF2007261E1 /* Consignation.swift in Sources */,
 				E57A4BF01CE8A34E0044106A /* CreateLockers.swift in Sources */,
 				E509A01A1CF57E7F007DEF8C /* CommitAndPushPendingOperationsTask.swift in Sources */,

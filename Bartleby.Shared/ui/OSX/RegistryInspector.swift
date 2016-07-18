@@ -19,6 +19,11 @@ protocol RegistryViewController {
     var registryDelegate:RegistryDelegate? { get set }
 }
 
+public protocol Editor{
+    associatedtype EditorOf:Collectible
+}
+
+
 public class RegistryInspector: NSWindowController,RegistryDelegate {
 
     // In the tool bar
@@ -29,10 +34,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
     // View Controllers
 
     @IBOutlet var inspectorViewController: InspectorViewController!
-
-    @IBOutlet var metadataViewController: MetadataViewController!
-
-    @IBOutlet var userViewController: UserViewController!
 
     @IBOutlet var operationsViewController: OperationsViewController!
 
@@ -58,6 +59,8 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         return self.registry
     }
 
+
+
     //MARK : Window
 
     override public func windowDidLoad() {
@@ -82,23 +85,19 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         self.globalTabView.addTabViewItem(inspectorTabViewItem)
         self.inspectorViewController.registryDelegate=self
 
-
-        let metadataTabViewItem=NSTabViewItem(viewController:self.metadataViewController)
-        self.globalTabView.addTabViewItem(metadataTabViewItem)
-
-        let userTabViewItem=NSTabViewItem(viewController:self.userViewController)
-        self.globalTabView.addTabViewItem(userTabViewItem)
-
-        let operationsTabViewItem=NSTabViewItem(viewController:self.operationsViewController)
-        self.globalTabView.addTabViewItem(operationsTabViewItem)
-
         let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
         self.globalTabView.addTabViewItem(logsTabViewItem)
 
         let triggersTabViewItem=NSTabViewItem(viewController:self.triggersViewController)
         self.globalTabView.addTabViewItem(triggersTabViewItem)
+    }
+
+
+
+    public func registerPlugin<Editor>(plugin:Editor){
 
     }
+
 
     @IBAction func openWebStack(sender:AnyObject)  {
         if let document=self.registry {
@@ -107,4 +106,13 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         }
     }
 
+    @IBAction func commitPendingChanges(sender: AnyObject) {
+
+        if let document=self.registry {
+            do {
+                try document.commitPendingChanges()
+            } catch {
+            }
+        }
+    }
 }

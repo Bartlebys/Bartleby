@@ -34,6 +34,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         super.init()
     }
 
+
+    // On object insertion the collection is set
+    public var collection:CollectibleCollection?
+
+    public func getRegistry()->(Registry?){
+        return self.collection?.registry
+    }
+
     // MARK: - Collectible = Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType
 
 
@@ -55,14 +63,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             self._runTimeTypeName = NSStringFromClass(self.dynamicType)
             return self._runTimeTypeName!
         }
-       return self._runTimeTypeName!
+        return self._runTimeTypeName!
     }
 
     /// The internal flag for auto commit
     private var _shouldBeCommitted: Bool = false
 
 
-    public var changedKeys=[String]()
+    public var changedKeys=[KeyedChanges]()
 
     // MARK: Supervisable
 
@@ -83,16 +91,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             // Set up the commit flag
             self._shouldBeCommitted=true
 
-            if !changedKeys.contains(key) {
-                if self is CollectibleCollection && key == "items"{
-                    changedKeys.append("\(NSDate())#\(key):changed")
-
-                }else if let collectibleNewValue = newValue as? Collectible{
-                    changedKeys.append("\(NSDate())#\(key):\(collectibleNewValue.UID)")
-                }else{
-                    changedKeys.append("\(NSDate())#\(key):\(oldValue)->\(newValue)")
-                }
-
+            if let collection = self as? CollectibleCollection {
+                self.changedKeys.append( KeyedChanges(key:key,changes:"\(collection.d_collectionName) did change. (\(collection.count))"))
+            }else if let collectibleNewValue = newValue as? Collectible{
+                changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) did change"))
+            }else{
+                changedKeys.append( KeyedChanges(key:key,changes:"\(oldValue ?? "nil" )->\(newValue ?? "nil" )"))
             }
 
             // Invoke the closures
@@ -304,7 +308,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.summary <- map["summary"]
         self._shouldBeCommitted <- map["_toBeCommitted"]
         self.ephemeral <- map["ephemeral"]
-        self.changedKeys <- map["changedKeys"]
         self.enableSupervision()
     }
 
@@ -339,7 +342,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
         coder.encodeBool(self._shouldBeCommitted, forKey: "_toBeCommitted")
         coder.encodeBool(self.ephemeral, forKey: "ephemeral")
-     }
+    }
 
 
     public class func supportsSecureCoding() -> Bool {
@@ -377,3 +380,19 @@ extension JObject:DictionaryRepresentation {
         self.mapping(mapped)
     }
 }
+
+
+/**
+ *  A simple Objc compliant object to keep track of changes in memory
+ */
+@objc(KeyedChanges) public class KeyedChanges:NSObject {
+    var elapsed=Bartleby.elapsedTime
+    var key:String
+    var changes: String
+    
+    init(key:String,changes:String) {
+        self.key=key
+        self.changes=changes
+    }
+}
+

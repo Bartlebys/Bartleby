@@ -27,6 +27,8 @@ import ObjectMapper
         return "TasksGroupsCollectionController"
     }
 
+    public var registry:BartlebyDocument?
+
     weak public var undoManager:NSUndoManager?
 
     public var spaceUID:String=Default.NO_UID
@@ -205,6 +207,7 @@ import ObjectMapper
     public func insertObject(item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? TasksGroup{
 
+            item.collection = self // Reference the collection
 
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{

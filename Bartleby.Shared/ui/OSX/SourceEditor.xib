@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target">
+            <connections>
+                <outlet property="applyChangesButton" destination="Ahx-qP-y28" id="d4M-bF-hM7"/>
+                <outlet property="editionLabel" destination="DNd-wd-vnP" id="yPB-Vw-2rN"/>
+                <outlet property="textEditionZoneConstraint" destination="Fbs-dh-ScL" id="pcL-9t-NVC"/>
+                <outlet property="textView" destination="wWO-rx-Q4V" id="EaP-6W-vvU"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="852" height="567"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DNd-wd-vnP">
+                    <rect key="frame" x="10" y="577" width="236" height="14"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" title="You can edit directly the json representation" id="dk0-7v-GSq">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="enabled" keyPath="self.enableEdition" id="xQg-TQ-qDo"/>
+                    </connections>
+                </textField>
+                <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ay2-w9-7vf">
+                    <rect key="frame" x="0.0" y="0.0" width="852" height="567"/>
+                    <clipView key="contentView" id="RCo-B1-83u">
+                        <rect key="frame" x="1" y="1" width="835" height="565"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="wWO-rx-Q4V">
+                                <rect key="frame" x="0.0" y="0.0" width="835" height="565"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <size key="minSize" width="835" height="565"/>
+                                <size key="maxSize" width="852" height="10000000"/>
+                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <size key="minSize" width="835" height="565"/>
+                                <size key="maxSize" width="852" height="10000000"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </clipView>
+                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="MJ3-Ru-vW2">
+                        <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="vxg-p0-xAj">
+                        <rect key="frame" x="836" y="1" width="15" height="565"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ahx-qP-y28">
+                    <rect key="frame" x="728" y="566" width="122" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="110" id="2lv-7E-Utz"/>
+                        <constraint firstAttribute="height" constant="21" id="56W-Xk-0aM"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Apply changes" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ANa-9Q-63O">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="applyChanges:" target="-2" id="CuT-Xm-drY"/>
+                        <binding destination="-2" name="enabled" keyPath="self.enableEdition" id="KpB-Z7-dva"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Ahx-qP-y28" secondAttribute="trailing" constant="8" id="3mf-Cs-8eJ"/>
+                <constraint firstItem="DNd-wd-vnP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="12" id="Aqq-7i-9bg"/>
+                <constraint firstItem="ay2-w9-7vf" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Fbs-dh-ScL"/>
+                <constraint firstAttribute="bottom" secondItem="ay2-w9-7vf" secondAttribute="bottom" id="Fun-Wl-eEE"/>
+                <constraint firstItem="wWO-rx-Q4V" firstAttribute="top" secondItem="Ahx-qP-y28" secondAttribute="bottom" constant="7" id="IbY-LH-yag"/>
+                <constraint firstItem="DNd-wd-vnP" firstAttribute="centerY" secondItem="Ahx-qP-y28" secondAttribute="centerY" id="N9s-1M-yvD"/>
+                <constraint firstItem="ay2-w9-7vf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="UvL-6g-rrr"/>
+                <constraint firstAttribute="trailing" secondItem="ay2-w9-7vf" secondAttribute="trailing" id="b9V-c7-01C"/>
+            </constraints>
+            <point key="canvasLocation" x="995" y="674.5"/>
+        </customView>
+    </objects>
+</document>

@@ -213,6 +213,9 @@ public class  Bartleby: Consignee {
         return utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue:0))
     }
 
+    public static var elapsedTime:Double {
+        return CFAbsoluteTimeGetCurrent()-Bartleby.startTime
+    }
 
     // MARK: - bprint
     private static var _enableBPrint: Bool=false
@@ -234,7 +237,7 @@ public class  Bartleby: Consignee {
      */
     public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
-            let elapsed=CFAbsoluteTimeGetCurrent()-Bartleby.startTime
+            let elapsed=Bartleby.elapsedTime
             let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
             Bartleby.bprintCollection.entries.append(entry)
             print(entry)

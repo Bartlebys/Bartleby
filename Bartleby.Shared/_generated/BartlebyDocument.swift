@@ -41,13 +41,48 @@ public class BartlebyDocument : JDocument {
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	public var tasks=TasksCollectionController()
-	public var tasksGroups=TasksGroupsCollectionController()
-	public var users=UsersCollectionController()
-	public var lockers=LockersCollectionController()
-	public var groups=GroupsCollectionController()
-	public var operations=OperationsCollectionController()
-	public var permissions=PermissionsCollectionController()
+	public var tasks=TasksCollectionController(){
+		didSet{
+			tasks.registry=self
+		}
+	}
+	
+	public var tasksGroups=TasksGroupsCollectionController(){
+		didSet{
+			tasksGroups.registry=self
+		}
+	}
+	
+	public var users=UsersCollectionController(){
+		didSet{
+			users.registry=self
+		}
+	}
+	
+	public var lockers=LockersCollectionController(){
+		didSet{
+			lockers.registry=self
+		}
+	}
+	
+	public var groups=GroupsCollectionController(){
+		didSet{
+			groups.registry=self
+		}
+	}
+	
+	public var operations=OperationsCollectionController(){
+		didSet{
+			operations.registry=self
+		}
+	}
+	
+	public var permissions=PermissionsCollectionController(){
+		didSet{
+			permissions.registry=self
+		}
+	}
+	
 
     // MARK: - OSX
  #if os(OSX) && !USE_EMBEDDED_MODULES

@@ -27,6 +27,8 @@ import ObjectMapper
         return "GroupsCollectionController"
     }
 
+    public var registry:BartlebyDocument?
+
     weak public var undoManager:NSUndoManager?
 
     public var spaceUID:String=Default.NO_UID
@@ -210,6 +212,7 @@ import ObjectMapper
     public func insertObject(item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? Group{
 
+            item.collection = self // Reference the collection
 
             if let undoManager = self.undoManager{
                 // Has an edit occurred already in this event?

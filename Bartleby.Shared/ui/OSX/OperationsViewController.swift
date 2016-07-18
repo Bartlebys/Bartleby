@@ -8,11 +8,13 @@
 
 import Cocoa
 
-class OperationsViewController: NSViewController {
+class OperationsViewController: NSViewController,Editor{
+
+    typealias EditorOf=Operation
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
-    
+
 }

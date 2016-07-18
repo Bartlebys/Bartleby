@@ -27,6 +27,9 @@ public protocol CollectibleCollection: Collectible {
     // The undo manager (for automation)
     weak var undoManager: NSUndoManager? { get set }
 
+
+    var registry:BartlebyDocument? { get set }
+
     // The dataspace UID
     var spaceUID: String { get set }
 
