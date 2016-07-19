@@ -275,7 +275,7 @@ public extension TasksGroup {
 
      - returns: an array of tasks.
      */
-    public func countTasks(@noescape matching:(task: Task) -> Bool) -> Int {
+    public func countTasks(matching:(task: Task) -> Bool) -> Int {
         var counter: Int=0
         for taskRef in self.tasks {
             if let task: Task=taskRef.toLocalInstance() {
@@ -285,7 +285,7 @@ public extension TasksGroup {
         return counter
     }
 
-    private func _countTasks(task: Task, @noescape matching:(task: Task) -> Bool, inout counter: Int) {
+    private func _countTasks(task: Task,matching:(task: Task) -> Bool, inout counter: Int) {
         if matching(task: task) {
             counter += 1
         }
@@ -308,7 +308,7 @@ public extension TasksGroup {
 
      - returns: an array of tasks.
      */
-    public func findTasks(@noescape matching:(task: Task) -> Bool) -> [Task] {
+    public func findTasks(matching:(task: Task) -> Bool) -> [Task] {
         var tasks=[Task]()
         for taskRef in self.tasks {
             if let task: Task=taskRef.toLocalInstance() {
@@ -318,7 +318,7 @@ public extension TasksGroup {
         return tasks
     }
 
-    private func _findTasks(task: Task, @noescape matching:(task: Task) -> Bool, inout tasks: [Task]) {
+    private func _findTasks(task: Task, matching:(task: Task) -> Bool, inout tasks: [Task]) {
         if matching(task: task) {
             tasks.append(task)
         }

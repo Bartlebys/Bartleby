@@ -252,7 +252,7 @@ public class  Bartleby: Consignee {
 
      - returns: a dump of the entries
      */
-    public static func getBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool )->String{
+    public static func getBprintEntries(matching:(entry: BprintEntry) -> Bool )->String{
         let entries=Bartleby.bprintCollection.entries.filter { (entry) -> Bool in
             return matching(entry: entry)
         }
@@ -308,7 +308,7 @@ public class  Bartleby: Consignee {
 
      - parameter matching: the filter closure
      */
-    public static func dumpBprintEntries(@noescape matching:(entry: BprintEntry) -> Bool,fileName:String?){
+    public static func dumpBprintEntries(matching:(entry: BprintEntry) -> Bool,fileName:String?){
 
         let log=Bartleby.getBprintEntries(matching)
         let date=NSDate()

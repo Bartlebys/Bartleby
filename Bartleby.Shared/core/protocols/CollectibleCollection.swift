@@ -124,7 +124,7 @@ public protocol SuperIterable {
 
      - returns: return value description
      */
-    func superIterate(@noescape on:(element:Collectible)->())
+    func superIterate(on:(element:Collectible)->())
 }
 
 

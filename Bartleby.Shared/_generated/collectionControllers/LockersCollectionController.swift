@@ -81,7 +81,7 @@ import ObjectMapper
 
     - parameter on: the closure
     */
-    public func superIterate(@noescape on:(element: Collectible)->()){
+    public func superIterate(on:(element: Collectible)->()){
         for item in self.items {
             on(element:item)
         }

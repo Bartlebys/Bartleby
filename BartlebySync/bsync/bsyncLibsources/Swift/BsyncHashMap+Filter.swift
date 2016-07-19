@@ -46,7 +46,7 @@ extension BsyncHashMap{
 
      - returns: the filtered BsyncHashMap
      */
-    public func filter(@noescape matches:(relativePath:String)->Bool)->BsyncHashMap{
+    public func filter(matches:(relativePath:String)->Bool)->BsyncHashMap{
         let filteredHashMap=BsyncHashMap()
         for (path,checksum) in self.pathToHash {
             if matches(relativePath:path){

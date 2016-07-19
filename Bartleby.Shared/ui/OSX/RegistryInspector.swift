@@ -109,10 +109,10 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
     @IBAction func commitPendingChanges(sender: AnyObject) {
 
         if let document=self.registry {
-            do {
-                try document.commitPendingChanges()
-            } catch {
-            }
+                do {
+                    try document.commitPendingChanges()
+                } catch {
+                }
         }
     }
 }

@@ -13,7 +13,8 @@ import Foundation
 #endif
 
 
-// MARK: - Equatable
+// MARK: - Equatable#0	0x00000001009b2db8 in protocol witness for Collectible.ephemeral.setter in conformance JObject at /Users/bpds/Documents/Entrepot/Git/Clients/LyLo.TV/YouDubOSX/Bartleby/Bartleby.Shared/adapters/JSON/JObject.swift:219
+
 
 public func ==(lhs: JObject, rhs: JObject) -> Bool {
     return lhs.UID==rhs.UID
