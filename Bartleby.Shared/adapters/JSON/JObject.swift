@@ -35,7 +35,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    // On object insertion or Registry deserialization 
+    // On object insertion or Registry deserialization
     // We setup this collection reference
     public var collection:CollectibleCollection?
 
@@ -89,16 +89,32 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
         if self._supervisionIsEnabled == true {
-
             // Set up the commit flag
             self._shouldBeCommitted=true
-
             if let collection = self as? CollectibleCollection {
-                self.changedKeys.append( KeyedChanges(key:key,changes:"\(collection.d_collectionName) did change. (\(collection.count))"))
+                let entityName=Pluralization.singularize(collection.d_collectionName)
+                if key=="items"{
+                    if let oldArray=oldValue as? [JObject], newArray=newValue as? [JObject]{
+                        if oldArray.count < newArray.count{
+                            self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(newArray.last?.UID ?? "" )"))
+                        }else{
+                            self.changedKeys.append(KeyedChanges(key:key,changes:"Removed One \(entityName)"))
+                        }
+                    }
+                }
+                if key=="item"{
+                    self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(newValue?.UID ?? "" ) has changed"))
+                }
             }else if let collectibleNewValue = newValue as? Collectible{
-                changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) did change"))
+                changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed"))
+                // Relay the as a global change to the collection
+                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }else{
-                changedKeys.append( KeyedChanges(key:key,changes:"\(oldValue ?? "nil" )->\(newValue ?? "nil" )"))
+                let o = oldValue ?? "nil"
+                let n = newValue ?? "nil"
+                changedKeys.append( KeyedChanges(key:key,changes:"\(o)->\(n)"))
+                // Relay the as a global change to the collection
+                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }
 
             // Invoke the closures
@@ -274,7 +290,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             }
         }
     }
-
 
     // MARK: - ToJSON
 

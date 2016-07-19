@@ -44,12 +44,14 @@ class InspectorViewController: NSViewController,RegistryViewController{
                 })
                 self._topViewController=self.sourceEditor
                 self._bottomViewController=self.changesViewController
+                
                 self.topBox.contentView=self._topViewController!.view
                 self.bottomBox.contentView=self._bottomViewController!.view
 
                 self.listOutlineView.setDelegate(self._collectionListDelegate)
                 self.listOutlineView.setDataSource(self._collectionListDelegate)
-                self.listOutlineView.reloadData()
+                self._collectionListDelegate?.reloadData()
+
             }
         }
     }
@@ -65,6 +67,9 @@ class InspectorViewController: NSViewController,RegistryViewController{
         self._topViewController?.representedObject=selected as? AnyObject
         self._bottomViewController?.representedObject=selected as? AnyObject
     }
+
+
+
 }
 
 // MARK: - CollectionListDelegate
@@ -90,13 +95,24 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         do{
             try self._registry.iterateOnCollections { (collection) in
                 collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
-                    self._outlineView.reloadData()
+                    self.reloadData()
                 })
             }
         } catch{
         }
     }
 
+
+    func reloadData(){
+        var selectedIndexes=self._outlineView.selectedRowIndexes
+        self._outlineView.reloadData()
+        if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
+            selectedIndexes=NSIndexSet(index: 0)
+        }
+        self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
+
+
+    }
 
 
     //MARK: NSOutlineViewDataSource
@@ -159,6 +175,10 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             if let textField = view.textField {
                 textField.stringValue = (element as! CollectibleCollection).d_collectionName
             }
+
+            if let inlineButton = view.viewWithTag(2) as? NSButton{
+                inlineButton.title="\(element.count)"
+            }
             return view
         case let element  where element is RegistryMetadata :
              //let casted=(element as! RegistryMetadata)
@@ -194,7 +214,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
         if let _ = item as? CollectibleCollection {
-            return 24
+            return 20
         }else{
             return 20
         }
