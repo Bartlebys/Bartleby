@@ -20,11 +20,11 @@
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAH-IA-oZx">
                     <rect key="frame" x="0.0" y="0.0" width="948" height="295"/>
                     <clipView key="contentView" id="3oH-B4-uHa">
-                        <rect key="frame" x="1" y="0.0" width="946" height="294"/>
+                        <rect key="frame" x="1" y="0.0" width="946" height="279"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="zNj-AQ-CCe" viewBased="YES" id="hZL-Qd-wg5">
-                                <rect key="frame" x="0.0" y="0.0" width="1053" height="271"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1053" height="256"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
