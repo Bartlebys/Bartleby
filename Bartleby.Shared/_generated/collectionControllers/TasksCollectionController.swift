@@ -134,6 +134,9 @@ import ObjectMapper
         self.disableSupervision()
 		self.items <- ( map["items"] )
 		
+        if map.mappingType == .FromJSON {
+            forEach { $0.collection=self }
+        }
         self.enableSupervision()
     }
 
@@ -145,6 +148,7 @@ import ObjectMapper
         self.disableSupervision()
 		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "items")! as! [Task]
 		
+		forEach { $0.collection=self }
         self.enableSupervision()
     }
 

@@ -35,9 +35,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    // On object insertion the collection is set
+    // On object insertion or Registry deserialization 
+    // We setup this collection reference
     public var collection:CollectibleCollection?
 
+    //Returns the registry
     public func getRegistry()->(Registry?){
         return self.collection?.registry
     }

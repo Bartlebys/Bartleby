@@ -47,7 +47,9 @@ extension ExternalReference {
         self.init()
         self.iUID=from.UID
         self.iTypeName=T.typeName()
-        self.summary=from.summary
+        if let summary=from.summary{
+            self.summary=summary
+        }
     }
 
 
