@@ -361,7 +361,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public func mapping(map: Map) {
         self.disableSupervision()
-
+        self.disableAutoCommit()
         // store the changedKeys in memory
         let changedKeys=self.changedKeys
 
@@ -384,7 +384,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
         // Changed keys are not serialized
         self.changedKeys=changedKeys
-
+        self.enableAutoCommit()
         self.enableSupervision()
 
     }
@@ -396,6 +396,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     public required init?(coder decoder: NSCoder) {
         super.init()
         self.disableSupervision()
+        self.disableAutoCommit()
         self.defineUID()
         self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
         self._typeName=self.dynamicType.typeName()
@@ -405,6 +406,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
         self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
         self.ephemeral=decoder.decodeBoolForKey("ephemeral")
+        self.enableAutoCommit()
         self.enableSupervision()
     }
 

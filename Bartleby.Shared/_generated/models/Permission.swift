@@ -58,10 +58,12 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.callString <- ( map["callString"] )
 		self.level <- ( map["level"] )
 		self.rule <- ( map["rule"] )
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -70,10 +72,13 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.callString=String(decoder.decodeObjectOfClass(NSString.self, forKey:"callString") as NSString?)
 		self.level=decoder.decodeIntegerForKey("level") 
 		self.rule=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "rule")! as! [String]
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

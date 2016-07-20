@@ -41,8 +41,10 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.string <- ( map["string"] )
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -51,8 +53,11 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.string=String(decoder.decodeObjectOfClass(NSString.self, forKey:"string") as NSString?)
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

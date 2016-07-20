@@ -50,9 +50,11 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.iUID <- ( map["iUID"] )
 		self.iTypeName <- ( map["iTypeName"] )
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -61,9 +63,12 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.iUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iUID")! as NSString)
 		self.iTypeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "iTypeName")! as NSString)
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

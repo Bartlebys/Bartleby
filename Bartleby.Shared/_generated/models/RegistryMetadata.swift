@@ -70,6 +70,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.spaceUID <- ( map["spaceUID"] )
 		self.currentUser <- ( map["currentUser"] )
 		self.identificationMethod <- ( map["identificationMethod"] )
@@ -88,6 +89,7 @@ import ObjectMapper
 		self.receivedTriggers <- ( map["receivedTriggers"] )
 		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -96,6 +98,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.currentUser=decoder.decodeObjectOfClass(User.self, forKey: "currentUser") 
 		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "identificationMethod")! as NSString))! 
@@ -113,7 +116,9 @@ import ObjectMapper
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
 		self.triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"triggeredDataBuffer") as NSData?
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {

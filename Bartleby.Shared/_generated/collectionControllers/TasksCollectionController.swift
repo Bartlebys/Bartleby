@@ -132,12 +132,14 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.items <- ( map["items"] )
 		
         if map.mappingType == .FromJSON {
             forEach { $0.collection=self }
         }
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -146,10 +148,13 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Task.classForCoder()]), forKey: "items")! as! [Task]
 		
 		forEach { $0.collection=self }
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
@@ -178,13 +183,13 @@ import ObjectMapper
                 // We do not want to produce Larsen effect on data.
                 // So we lock the auto commit observer before applying the patch
                 // And we unlock the autoCommit Observer after the patch.
-                currentInstance.disableSupervision()
+                currentInstance.disableAutoCommit()
             }
 
             let dictionary=item.dictionaryRepresentation()
             currentInstance.patchFrom(dictionary)
             if commit==false{
-                currentInstance.enableSupervision()
+                currentInstance.enableAutoCommit()
             }
         }else{
             // It is a creation

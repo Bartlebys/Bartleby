@@ -128,6 +128,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.spaceUID <- ( map["spaceUID"] )
 		self.subjectUID <- ( map["subjectUID"] )
 		self.userUID <- ( map["userUID"] )
@@ -139,6 +140,7 @@ import ObjectMapper
 		self.endDate <- ( map["endDate"], ISO8601DateTransform() )
 		self.gems <- ( map["gems"] )
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
 
@@ -147,6 +149,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
+        self.disableAutoCommit()
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
 		self.subjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "subjectUID")! as NSString)
 		self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
@@ -157,7 +160,9 @@ import ObjectMapper
 		self.startDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "startDate")! as NSDate
 		self.endDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "endDate")! as NSDate
 		self.gems=String(decoder.decodeObjectOfClass(NSString.self, forKey: "gems")! as NSString)
+
         self.enableSupervision()
+        self.enableAutoCommit()
     }
 
     override public func encodeWithCoder(coder: NSCoder) {
