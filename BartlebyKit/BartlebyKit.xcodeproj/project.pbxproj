@@ -26,8 +26,6 @@
 		E509A0271CF58468007DEF8C /* JString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509A0211CF58468007DEF8C /* JString.swift */; };
 		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
-		E5162AF61D3CF6E20037D05D /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5162AF41D3CF6E20037D05D /* SourceEditor.swift */; };
-		E5162AF71D3CF6E20037D05D /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5162AF51D3CF6E20037D05D /* SourceEditor.xib */; };
 		E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
 		E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
 		E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */; };
@@ -38,14 +36,6 @@
 		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
 		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
-		E523D1421D38E54600BAFEDF /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1401D38E54600BAFEDF /* InspectorViewController.swift */; };
-		E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1411D38E54600BAFEDF /* InspectorViewController.xib */; };
-		E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1461D38EECE00BAFEDF /* LogsViewController.swift */; };
-		E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1471D38EECE00BAFEDF /* LogsViewController.xib */; };
-		E523D1541D38EFF900BAFEDF /* OperationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */; };
-		E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */; };
-		E523D1581D38F00B00BAFEDF /* TriggersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */; };
-		E523D1591D38F00B00BAFEDF /* TriggersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */; };
 		E529CE2A1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E529CE2B1D2F96F500B9E32A /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */; };
 		E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */; };
@@ -58,6 +48,21 @@
 		E53704441CF876CC0099440D /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53704401CF876BE0099440D /* TaskWithNotifications.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E550C85B1D3F8C4300DE9DCA /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C84C1D3F8C4300DE9DCA /* ChangesViewController.swift */; };
+		E550C85C1D3F8C4300DE9DCA /* ChangesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C84D1D3F8C4300DE9DCA /* ChangesViewController.xib */; };
+		E550C85D1D3F8C4300DE9DCA /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C84E1D3F8C4300DE9DCA /* InspectorViewController.swift */; };
+		E550C85E1D3F8C4300DE9DCA /* InspectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C84F1D3F8C4300DE9DCA /* InspectorViewController.xib */; };
+		E550C85F1D3F8C4300DE9DCA /* LogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C8501D3F8C4300DE9DCA /* LogsViewController.swift */; };
+		E550C8601D3F8C4300DE9DCA /* LogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C8511D3F8C4300DE9DCA /* LogsViewController.xib */; };
+		E550C8611D3F8C4300DE9DCA /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E550C8521D3F8C4300DE9DCA /* Media.xcassets */; };
+		E550C8621D3F8C4300DE9DCA /* OperationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C8531D3F8C4300DE9DCA /* OperationViewController.swift */; };
+		E550C8631D3F8C4300DE9DCA /* OperationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C8541D3F8C4300DE9DCA /* OperationViewController.xib */; };
+		E550C8641D3F8C4300DE9DCA /* RegistryInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C8551D3F8C4300DE9DCA /* RegistryInspector.swift */; };
+		E550C8651D3F8C4300DE9DCA /* RegistryInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C8561D3F8C4300DE9DCA /* RegistryInspector.xib */; };
+		E550C8661D3F8C4300DE9DCA /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C8571D3F8C4300DE9DCA /* SourceEditor.swift */; };
+		E550C8671D3F8C4300DE9DCA /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C8581D3F8C4300DE9DCA /* SourceEditor.xib */; };
+		E550C8681D3F8C4300DE9DCA /* TriggersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550C8591D3F8C4300DE9DCA /* TriggersViewController.swift */; };
+		E550C8691D3F8C4300DE9DCA /* TriggersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550C85A1D3F8C4300DE9DCA /* TriggersViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E57A4A861CE849600044106A /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4A851CE849600044106A /* ExternalReference+Resolution.swift */; };
 		E57A4A871CE849600044106A /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57A4A851CE849600044106A /* ExternalReference+Resolution.swift */; };
@@ -179,7 +184,6 @@
 		E5AAC5511CEB16AF005C15E2 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */; };
 		E5ACFD571CDF76C2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
 		E5ACFD581CDF76E2006A1692 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */; };
-		E5AF5B601D37E5CC00435642 /* RegistryInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */; };
 		E5B127C91D1C269200D61261 /* Registry+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */; };
 		E5B127CA1D1C26C800D61261 /* Registry+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
@@ -201,8 +205,6 @@
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
-		E5B4ED3E1D37F5E7000A239A /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5AF5B5B1D37DEDC00435642 /* Media.xcassets */; };
-		E5B4ED3F1D37F5ED000A239A /* RegistryInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */; };
 		E5B776571CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */; };
 		E5B776581CDCDDF2007261E1 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */; };
 		E5B776591CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */; };
@@ -311,8 +313,6 @@
 		E5B776CE1CDCDDF3007261E1 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B775A81CDCDDF2007261E1 /* PString.swift */; };
 		E5BDC62F1CEF4C6A00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
 		E5BDC6301CEF4C6F00F20E56 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */; };
-		E5C05BCE1D3D0C43003AF943 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */; };
-		E5C05BCF1D3D0C43003AF943 /* ChangesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */; };
 		E5E0A5961CE9AEB400253007 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50140F61CE8B39E00EDD9C3 /* UniversalType.swift */; };
 		E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
 		E5E4FB6B1CFB0042001D1F0F /* TriggersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */; };
@@ -366,21 +366,11 @@
 		E509A0211CF58468007DEF8C /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
 		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* JObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObjectTests.swift; sourceTree = "<group>"; };
-		E5162AF41D3CF6E20037D05D /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
-		E5162AF51D3CF6E20037D05D /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
 		E51834391CA52F96006ED867 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
 		E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
 		E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E518343D1CA52F96006ED867 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
-		E523D1401D38E54600BAFEDF /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
-		E523D1411D38E54600BAFEDF /* InspectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorViewController.xib; sourceTree = "<group>"; };
-		E523D1461D38EECE00BAFEDF /* LogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsViewController.swift; sourceTree = "<group>"; };
-		E523D1471D38EECE00BAFEDF /* LogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogsViewController.xib; sourceTree = "<group>"; };
-		E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsViewController.swift; sourceTree = "<group>"; };
-		E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OperationsViewController.xib; sourceTree = "<group>"; };
-		E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersViewController.swift; sourceTree = "<group>"; };
-		E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TriggersViewController.xib; sourceTree = "<group>"; };
 		E529CE291D2F96F500B9E32A /* Registry+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+MetaDataImportExport.swift"; sourceTree = "<group>"; };
 		E529CE2C1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+AppFacilities.swift"; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
@@ -393,6 +383,21 @@
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E550C84C1D3F8C4300DE9DCA /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
+		E550C84D1D3F8C4300DE9DCA /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
+		E550C84E1D3F8C4300DE9DCA /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
+		E550C84F1D3F8C4300DE9DCA /* InspectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorViewController.xib; sourceTree = "<group>"; };
+		E550C8501D3F8C4300DE9DCA /* LogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsViewController.swift; sourceTree = "<group>"; };
+		E550C8511D3F8C4300DE9DCA /* LogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogsViewController.xib; sourceTree = "<group>"; };
+		E550C8521D3F8C4300DE9DCA /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		E550C8531D3F8C4300DE9DCA /* OperationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationViewController.swift; sourceTree = "<group>"; };
+		E550C8541D3F8C4300DE9DCA /* OperationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OperationViewController.xib; sourceTree = "<group>"; };
+		E550C8551D3F8C4300DE9DCA /* RegistryInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryInspector.swift; sourceTree = "<group>"; };
+		E550C8561D3F8C4300DE9DCA /* RegistryInspector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistryInspector.xib; sourceTree = "<group>"; };
+		E550C8571D3F8C4300DE9DCA /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
+		E550C8581D3F8C4300DE9DCA /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
+		E550C8591D3F8C4300DE9DCA /* TriggersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersViewController.swift; sourceTree = "<group>"; };
+		E550C85A1D3F8C4300DE9DCA /* TriggersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TriggersViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCreationWithTheSameMailInDifferentSpaceTests.swift; sourceTree = "<group>"; };
@@ -463,9 +468,6 @@
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5AAC54F1CEB16AF005C15E2 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E5ACFD561CDF76C2006A1692 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
-		E5AF5B5B1D37DEDC00435642 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryInspector.swift; sourceTree = "<group>"; };
-		E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistryInspector.xib; sourceTree = "<group>"; };
 		E5B127C81D1C269200D61261 /* Registry+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SuperIterable.swift"; sourceTree = "<group>"; };
 		E5B775621CDCDDF2007261E1 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E5B775631CDCDDF2007261E1 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
@@ -523,8 +525,6 @@
 		E5B775A81CDCDDF2007261E1 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5BDC62E1CEF4C6A00F20E56 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
-		E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
-		E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5E4FB691CFB0042001D1F0F /* TriggersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersByIds.swift; sourceTree = "<group>"; };
 		E5E4FB6C1CFB0205001D1F0F /* TriggersAfterIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersAfterIndex.swift; sourceTree = "<group>"; };
@@ -651,6 +651,36 @@
 			path = "Support-Files";
 			sourceTree = "<group>";
 		};
+		E550C84A1D3F8C4300DE9DCA /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				E550C84B1D3F8C4300DE9DCA /* ui */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
+		E550C84B1D3F8C4300DE9DCA /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				E550C8521D3F8C4300DE9DCA /* Media.xcassets */,
+				E550C8551D3F8C4300DE9DCA /* RegistryInspector.swift */,
+				E550C8561D3F8C4300DE9DCA /* RegistryInspector.xib */,
+				E550C84E1D3F8C4300DE9DCA /* InspectorViewController.swift */,
+				E550C84F1D3F8C4300DE9DCA /* InspectorViewController.xib */,
+				E550C84C1D3F8C4300DE9DCA /* ChangesViewController.swift */,
+				E550C84D1D3F8C4300DE9DCA /* ChangesViewController.xib */,
+				E550C8501D3F8C4300DE9DCA /* LogsViewController.swift */,
+				E550C8511D3F8C4300DE9DCA /* LogsViewController.xib */,
+				E550C8531D3F8C4300DE9DCA /* OperationViewController.swift */,
+				E550C8541D3F8C4300DE9DCA /* OperationViewController.xib */,
+				E550C8571D3F8C4300DE9DCA /* SourceEditor.swift */,
+				E550C8581D3F8C4300DE9DCA /* SourceEditor.xib */,
+				E550C8591D3F8C4300DE9DCA /* TriggersViewController.swift */,
+				E550C85A1D3F8C4300DE9DCA /* TriggersViewController.xib */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
 		E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -676,6 +706,7 @@
 			isa = PBXGroup;
 			children = (
 				E5B775041CDCDDF2007261E1 /* Bartleby.Shared */,
+				E550C84A1D3F8C4300DE9DCA /* OSX */,
 				E51834381CA52F96006ED867 /* CryptoHelper */,
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
 				E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
@@ -795,36 +826,6 @@
 			name = "Support-files";
 			sourceTree = "<group>";
 		};
-		E5AF5B551D37D9C800435642 /* ui */ = {
-			isa = PBXGroup;
-			children = (
-				E5AF5B5A1D37DEDC00435642 /* OSX */,
-			);
-			path = ui;
-			sourceTree = "<group>";
-		};
-		E5AF5B5A1D37DEDC00435642 /* OSX */ = {
-			isa = PBXGroup;
-			children = (
-				E5AF5B5B1D37DEDC00435642 /* Media.xcassets */,
-				E5AF5B5F1D37E5CC00435642 /* RegistryInspector.swift */,
-				E5AF5B611D37E5ED00435642 /* RegistryInspector.xib */,
-				E523D1401D38E54600BAFEDF /* InspectorViewController.swift */,
-				E523D1411D38E54600BAFEDF /* InspectorViewController.xib */,
-				E5162AF41D3CF6E20037D05D /* SourceEditor.swift */,
-				E5162AF51D3CF6E20037D05D /* SourceEditor.xib */,
-				E5C05BCC1D3D0C43003AF943 /* ChangesViewController.swift */,
-				E5C05BCD1D3D0C43003AF943 /* ChangesViewController.xib */,
-				E523D1521D38EFF900BAFEDF /* OperationsViewController.swift */,
-				E523D1531D38EFF900BAFEDF /* OperationsViewController.xib */,
-				E523D1461D38EECE00BAFEDF /* LogsViewController.swift */,
-				E523D1471D38EECE00BAFEDF /* LogsViewController.xib */,
-				E523D1561D38F00B00BAFEDF /* TriggersViewController.swift */,
-				E523D1571D38F00B00BAFEDF /* TriggersViewController.xib */,
-			);
-			path = OSX;
-			sourceTree = "<group>";
-		};
 		E5B775041CDCDDF2007261E1 /* Bartleby.Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -835,7 +836,6 @@
 				E5B7759B1CDCDDF2007261E1 /* extensions */,
 				E5B7759F1CDCDDF2007261E1 /* operations */,
 				E5B775A41CDCDDF2007261E1 /* tools */,
-				E5AF5B551D37D9C800435642 /* ui */,
 			);
 			name = Bartleby.Shared;
 			path = ../Bartleby.Shared;
@@ -1146,14 +1146,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5B4ED3F1D37F5ED000A239A /* RegistryInspector.xib in Resources */,
-				E523D1591D38F00B00BAFEDF /* TriggersViewController.xib in Resources */,
-				E5C05BCF1D3D0C43003AF943 /* ChangesViewController.xib in Resources */,
-				E5B4ED3E1D37F5E7000A239A /* Media.xcassets in Resources */,
-				E5162AF71D3CF6E20037D05D /* SourceEditor.xib in Resources */,
-				E523D1431D38E54600BAFEDF /* InspectorViewController.xib in Resources */,
-				E523D1491D38EECE00BAFEDF /* LogsViewController.xib in Resources */,
-				E523D1551D38EFF900BAFEDF /* OperationsViewController.xib in Resources */,
+				E550C8631D3F8C4300DE9DCA /* OperationViewController.xib in Resources */,
+				E550C8691D3F8C4300DE9DCA /* TriggersViewController.xib in Resources */,
+				E550C85E1D3F8C4300DE9DCA /* InspectorViewController.xib in Resources */,
+				E550C85C1D3F8C4300DE9DCA /* ChangesViewController.xib in Resources */,
+				E550C8671D3F8C4300DE9DCA /* SourceEditor.xib in Resources */,
+				E550C8611D3F8C4300DE9DCA /* Media.xcassets in Resources */,
+				E550C8651D3F8C4300DE9DCA /* RegistryInspector.xib in Resources */,
+				E550C8601D3F8C4300DE9DCA /* LogsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1164,7 +1164,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E523D1541D38EFF900BAFEDF /* OperationsViewController.swift in Sources */,
 				E5B776AF1CDCDDF2007261E1 /* Serializer.swift in Sources */,
 				E5B776771CDCDDF2007261E1 /* StatusOfCompletion.swift in Sources */,
 				E5B776C91CDCDDF3007261E1 /* HTTPManager.swift in Sources */,
@@ -1180,7 +1179,6 @@
 				E5B776AD1CDCDDF2007261E1 /* Serializable.swift in Sources */,
 				E5B776C71CDCDDF3007261E1 /* BFileManager.swift in Sources */,
 				E5B776611CDCDDF2007261E1 /* JHTTPResponse.swift in Sources */,
-				E5AF5B601D37E5CC00435642 /* RegistryInspector.swift in Sources */,
 				E592B79C1CFC2181000F3301 /* UpdatePermissions.swift in Sources */,
 				E529CE2D1D2FBFB600B9E32A /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E53704411CF876BE0099440D /* TaskWithNotifications.swift in Sources */,
@@ -1197,7 +1195,6 @@
 				E5B776951CDCDDF2007261E1 /* Handlers.swift in Sources */,
 				E5B776B51CDCDDF2007261E1 /* PushOperationTask.swift in Sources */,
 				E57A4BCE1CE8A34E0044106A /* CollectionMetadatum.swift in Sources */,
-				E5C05BCE1D3D0C43003AF943 /* ChangesViewController.swift in Sources */,
 				E592B79F1CFC21A4000F3301 /* Permission.swift in Sources */,
 				E57A4BE01CE8A34E0044106A /* Tag.swift in Sources */,
 				E5B776651CDCDDF2007261E1 /* RegistryMetadata+Protocol.swift in Sources */,
@@ -1225,24 +1222,28 @@
 				E5B7768F1CDCDDF2007261E1 /* Registry+LocalUpsertAndDelete.swift in Sources */,
 				E5B776671CDCDDF2007261E1 /* JSerializer.swift in Sources */,
 				E509A0221CF58468007DEF8C /* JData.swift in Sources */,
+				E550C85D1D3F8C4300DE9DCA /* InspectorViewController.swift in Sources */,
 				E5B776831CDCDDF2007261E1 /* NSNotification+Completion.swift in Sources */,
-				E523D1581D38F00B00BAFEDF /* TriggersViewController.swift in Sources */,
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
+				E550C8681D3F8C4300DE9DCA /* TriggersViewController.swift in Sources */,
 				E57A4BC01CE8A34E0044106A /* LockersCollectionController.swift in Sources */,
 				E5B7768B1CDCDDF2007261E1 /* Registry+SecurityScopes.swift in Sources */,
-				E5162AF61D3CF6E20037D05D /* SourceEditor.swift in Sources */,
 				E57A4BEA1CE8A34E0044106A /* CreateGroup.swift in Sources */,
 				E5B776A11CDCDDF2007261E1 /* CryptoDelegate.swift in Sources */,
+				E550C8661D3F8C4300DE9DCA /* SourceEditor.swift in Sources */,
 				E5B776B31CDCDDF2007261E1 /* Registry.swift in Sources */,
 				E50140F91CE8B3BA00EDD9C3 /* Initializable.swift in Sources */,
 				E57A4C261CE8A34E0044106A /* ReadGroupsByQuery.swift in Sources */,
 				E537043F1CF876860099440D /* RelayingTask.swift in Sources */,
+				E550C8641D3F8C4300DE9DCA /* RegistryInspector.swift in Sources */,
 				E5E4FB701CFB028A001D1F0F /* TriggersForIndexes.swift in Sources */,
+				E550C85B1D3F8C4300DE9DCA /* ChangesViewController.swift in Sources */,
 				E592B79A1CFC2181000F3301 /* UpdatePermission.swift in Sources */,
 				E57A4C4A1CE8A34E0044106A /* ReadUsersByQuery.swift in Sources */,
 				E5B776691CDCDDF2007261E1 /* ImageTransform.swift in Sources */,
 				E57A4C461CE8A34E0044106A /* ReadUserById.swift in Sources */,
 				E57A4C021CE8A34E0044106A /* CreateUser.swift in Sources */,
+				E550C8621D3F8C4300DE9DCA /* OperationViewController.swift in Sources */,
 				E5B776BD1CDCDDF3007261E1 /* User+Auth.swift in Sources */,
 				E50140FC1CE8B3D400EDD9C3 /* Descriptible.swift in Sources */,
 				E57A4C521CE8A34E0044106A /* UpdateLockers.swift in Sources */,
@@ -1253,8 +1254,8 @@
 				E57A4C2C1CE8A34E0044106A /* ReadLockersByQuery.swift in Sources */,
 				E5B776811CDCDDF2007261E1 /* Completion+Result.swift in Sources */,
 				E5B776851CDCDDF2007261E1 /* NSNotification+Progression.swift in Sources */,
+				E550C85F1D3F8C4300DE9DCA /* LogsViewController.swift in Sources */,
 				E57A4BD41CE8A34E0044106A /* Group.swift in Sources */,
-				E523D1481D38EECE00BAFEDF /* LogsViewController.swift in Sources */,
 				E57A4C281CE8A34E0044106A /* ReadLockerById.swift in Sources */,
 				E5B7765F1CDCDDF2007261E1 /* JHTTPCommand.swift in Sources */,
 				E5B776CB1CDCDDF3007261E1 /* Pluralization.swift in Sources */,
@@ -1279,7 +1280,6 @@
 				E5AAC5501CEB16AF005C15E2 /* Task+Execution.swift in Sources */,
 				E5E4FB6A1CFB0042001D1F0F /* TriggersByIds.swift in Sources */,
 				E5B776751CDCDDF2007261E1 /* Bartleby.swift in Sources */,
-				E523D1421D38E54600BAFEDF /* InspectorViewController.swift in Sources */,
 				E50140F71CE8B39E00EDD9C3 /* UniversalType.swift in Sources */,
 				E5B7766B1CDCDDF2007261E1 /* UIX.swift in Sources */,
 				E57A4BE61CE8A34E0044106A /* Trigger.swift in Sources */,
