@@ -13,12 +13,16 @@ import Cocoa
 #endif
 
 // A collection without generic constraint.
-public typealias Collection=protocol< CollectibleCollection, SuperIterable, Committable>
+public protocol BartlebyCollection:CollectibleCollection, SuperIterable, Committable{
+
+}
 
 // We add SequenceType Support to the collection Type.
 // 'SequenceType' can only be used as a generic constraint because it has Self or associated type requirements
 // So we use IterableCollectibleCollection for concrete  collection implementation and reference in the Registry `internal var _collections=[String:Collection]()`
-public typealias IterableCollectibleCollection = protocol<Collection,CollectionType>
+public protocol IterableCollectibleCollection:BartlebyCollection,CollectionType{
+
+}
 
 // Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
@@ -100,76 +104,4 @@ public protocol CollectibleCollection: Collectible {
     var count:Int { get }
 
 
-}
-
-
-public protocol Committable {
-
-    /**
-
-     Commits the changes in one bunch
-     - returns: an array of UID.
-     */
-    func commitChanges() -> [String]
-
-}
-
-
-public protocol SuperIterable {
-    /**
-
-     An iterator that permit dynamic approaches. (SequenceType uses Generics)
-
-     - parameter on: the iteration closure
-
-     - returns: return value description
-     */
-    func superIterate(on:(element:Collectible)->())
-}
-
-
-public typealias SupervisionClosure = (key:String,oldValue:AnyObject?,newValue:AnyObject?)->()
-
-public protocol Supervisable {
-
-    /// Shall we commit that instance during next autocommit?
-    var toBeCommitted: Bool { get }
-
-    /**
-     Tags the changed keys
-     And Mark that the instance requires to be committed if the auto commit observer is active
-     This mecanism can replace KVO if necessary.
-
-     - parameter key:      the key
-     - parameter oldValue: the oldValue
-     - parameter newValue: the newValue
-     */
-    func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?)
-
-
-    /**
-     Adds a closure observer
-
-     - parameter observer: the observer
-     - parameter closure:  the closure to be called.
-     */
-    func addChangesObserver(observer:Identifiable, closure:SupervisionClosure)
-
-    /**
-     Remove the observer's closure
-
-     - parameter observer: the observer.
-     */
-    func removeChangesObserver(observer:Identifiable)
-
-
-    /**
-     Locks the auto commit observer
-     */
-    func disableSupervision()
-
-    /**
-     Unlock the auto commit observer
-     */
-    func enableSupervision()
 }

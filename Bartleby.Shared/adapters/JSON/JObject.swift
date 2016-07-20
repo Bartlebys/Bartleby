@@ -74,9 +74,50 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     public var changedKeys=[KeyedChanges]()
 
-    // MARK: Supervisable
+    // MARK: Distribuable
 
     public var toBeCommitted: Bool { return self._shouldBeCommitted }
+
+    private var _autoCommitIsEnabled: Bool = true
+
+
+    /**
+     Locks the auto commit observer
+     */
+    public func disableAutoCommit(){
+        self._autoCommitIsEnabled=false
+    }
+
+    /**
+     Unlock the auto commit observer
+     */
+    public func enableAutoCommit(){
+        self._autoCommitIsEnabled=true
+    }
+
+
+
+    //Collectible protocol: committed
+    public var committed: Bool = false {
+        willSet {
+            if newValue==true{
+                // The changes have been committed
+                self._shouldBeCommitted=false
+                self.changedKeys.removeAll()
+            }
+        }
+        didSet {
+        }
+    }
+
+    //Collectible protocol: distributed
+    public var distributed: Bool = false{
+        didSet{
+        }
+    }
+
+
+    // MARK: Supervisable
 
     private var _observers=[String:SupervisionClosure]()
 
@@ -90,9 +131,15 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter newValue: the newValue
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
-        if self._supervisionIsEnabled == true {
+
+        // Commit is related to distribution
+        if self._autoCommitIsEnabled == true {
             // Set up the commit flag
             self._shouldBeCommitted=true
+        }
+
+        // Supervision is a local  observation mecanism
+        if self._supervisionIsEnabled == true {
             if key=="*" && !(self is CollectibleCollection){
                 // Dictionnary or NSData Patch
                 self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
@@ -165,36 +212,24 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    // Prevent from autoCommit
+    private var _supervisionIsEnabled: Bool = true
+
+        /**
+     Locks the supervision mecanism
+     Supervision mecanism == tracks the changed keys and relay to the holding collection
+     The supervision works even on Triggered Upsert
+     */
     public func disableSupervision() {
         self._supervisionIsEnabled=false
     }
 
-    // AutCommnit is possible
+    /**
+     UnLocks the supervision mecanism
+     */
     public func enableSupervision() {
         self._supervisionIsEnabled=true
     }
 
-    private var _supervisionIsEnabled: Bool = true
-
-    //Collectible protocol: committed
-    public var committed: Bool = false {
-        willSet {
-            if newValue==true{
-                // The changes have been committed
-                self._shouldBeCommitted=false
-                self.changedKeys.removeAll()
-            }
-        }
-        didSet {
-        }
-    }
-
-    //Collectible protocol: distributed
-    public var distributed: Bool = false{
-        didSet{
-        }
-    }
 
     //Collectible protocol: The Creator UID
     public var creatorUID: String = "\(Default.NO_UID)" {

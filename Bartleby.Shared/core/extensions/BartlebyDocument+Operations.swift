@@ -118,7 +118,7 @@ extension BartlebyDocument {
 
      - parameter on: the iteration closure
      */
-    public func iterateOnCollections(on:(collection: Collection)->()) throws {
+    public func iterateOnCollections(on:(collection: BartlebyCollection)->()) throws {
         for (_, collection) in self._collections {
             on(collection: collection)
         }

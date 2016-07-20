@@ -6,24 +6,12 @@
 //  Copyright © 2015 https://pereira-da-silva.com for Chaosmos SAS
 //  All rights reserved you can ask for a license.
 
-
 import Foundation
 
-
-
-
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType,JSONString {
-
+public protocol Collectible:  Identifiable, Serializable, Distribuable, Supervisable, DictionaryRepresentation, UniversalType, JSONString {
 
     var collection:CollectibleCollection? { get set }
-
-    // This flag is set to true on first commit.
-    var committed: Bool { get set }
-
-    // This flag should be set to true
-    // When the collaborative server has acknowledged the object creation
-    var distributed: Bool { get set }
 
     // The creator UID
     var creatorUID: String { get set }
@@ -43,7 +31,3 @@ public protocol Collectible:  Identifiable, Serializable, Supervisable,Dictionar
     var d_collectionName: String { get }
 }
 
-
-public protocol JSONString{
-   func toJSONString(prettyPrint:Bool)->String
-}

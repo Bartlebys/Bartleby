@@ -113,7 +113,7 @@ public class Registry: BXDocument {
     private var _logs:String=""
 
     /// The underlining storage hashed by collection name
-    internal var _collections=[String:Collection]()
+    internal var _collections=[String:BartlebyCollection]()
 
     /// We store the URL of the active security bookmarks
     internal var _activeSecurityBookmarks=[NSURL]()
@@ -319,7 +319,7 @@ public class Registry: BXDocument {
     public func registerCollections() throws {
         for metadatum in self.registryMetadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
-                if var proxy = proxy as? Collection {
+                if var proxy = proxy as? BartlebyCollection {
                     self._addCollection(proxy)
                     self._refreshIdentifier(&proxy)
                 } else {
@@ -341,7 +341,7 @@ public class Registry: BXDocument {
         }
     }
 
-    private func _refreshIdentifier(inout collectionProxy: Collection) {
+    private func _refreshIdentifier(inout collectionProxy: BartlebyCollection) {
         collectionProxy.undoManager=self.undoManager
         collectionProxy.spaceUID=self.spaceUID
     }
@@ -372,14 +372,14 @@ public class Registry: BXDocument {
     // Weak Casting for internal behavior
     // Those dynamic method are only used internally
 
-    internal func _addCollection(collection: Collection) {
+    internal func _addCollection(collection: BartlebyCollection) {
         let collectionName=collection.d_collectionName
         _collections[collectionName]=collection
     }
 
 
     // Any call should always be casted to a CollectibleCollection
-    func collectionByName(name: String) -> Collection? {
+    func collectionByName(name: String) -> BartlebyCollection? {
         if _collections.keys.contains(name){
             return _collections[name]
         }
