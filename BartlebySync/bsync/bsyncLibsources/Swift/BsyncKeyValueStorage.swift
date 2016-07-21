@@ -8,6 +8,11 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import BartlebyKit
+#endif
+
+
 
 enum BsyncKeyValueStorageError: ErrorType {
     case CorruptedData

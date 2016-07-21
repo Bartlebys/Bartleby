@@ -9,9 +9,8 @@
 import XCTest
 
 
-class TestContext: IdentifiableCardContext {
+class TestContext: Identifiable {
     let UID: String = Bartleby.createUID()
-    var name: String = Bartleby.randomStringWithLength(6)
     
 }
 class BsyncXPCHelperTests: TestCase {

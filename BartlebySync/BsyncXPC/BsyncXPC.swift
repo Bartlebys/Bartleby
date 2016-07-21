@@ -8,6 +8,11 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import BartlebyKit
+    import ObjectMapper
+#endif
+
 
 @objc class BsyncXPC: BFileManager, BsyncXPCProtocol {
     

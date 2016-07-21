@@ -9,6 +9,8 @@
     import BartlebyKit
 #endif
 
+import Foundation
+
 /**
  * The BsyncXPC services protocol
  * (IMPORTANT) Keep in mind that each call may setup the XPC Bartleby shared instance.

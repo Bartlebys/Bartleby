@@ -58,7 +58,7 @@ public class Registry: BXDocument {
 
 
     // The file extension for crypted data
-    static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
+    public static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
 
     // The metadata file name
     private var _metadataFileName: String { return "metadata".stringByAppendingString(Registry.DATA_EXTENSION) }

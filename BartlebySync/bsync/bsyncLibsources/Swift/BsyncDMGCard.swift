@@ -14,13 +14,6 @@ import Foundation
 #endif
 
 
-/**
- *  A protocol used to designate minimal contract to be an identifiable card context.
- */
-protocol IdentifiableCardContext {
-    var UID: String {get}
-    var name: String {get set}
-}
 
 /**
  *  A DMG card enable store the data required to unlock the DMG.
