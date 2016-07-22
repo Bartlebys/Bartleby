@@ -87,6 +87,6 @@ typedef NS_ENUM (NSUInteger,
 #define BPRINT_OBJC
 // bprint macro
 #define bprint(format, ...){\
-[Bartleby bprint:[NSString stringWithFormat:format, ##__VA_ARGS__] file:@(__FILE__) function:@(__PRETTY_FUNCTION__) line:__LINE__ category:@"PdsSync" decorative: false];\
+[PdSSyncAdmin bprint:[NSString stringWithFormat:format, ##__VA_ARGS__] file:@(__FILE__) function:@(__PRETTY_FUNCTION__) line:__LINE__ category:@"PdsSync" decorative: false];\
 }
 #endif

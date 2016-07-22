@@ -23,6 +23,8 @@
  */
 @interface PdSSyncAdmin : NSObject
 
+
+
 /**
  * The synchronization context
  */
@@ -37,6 +39,18 @@
  *  @return the admin instance
  */
 - (instancetype _Nonnull)initWithContext:(BsyncContext*_Nonnull)context;
+
+/**
+ *  Bprint wrapper
+ *
+ *  @param message    the message to be printed
+ *  @param file       the file
+ *  @param function   the func
+ *  @param line       the line
+ *  @param category   the category
+ *  @param decorative is the message decorative e.g : separators ************
+ */
++ (void)bprint:(id _Nonnull)message file:(NSString * _Nonnull)file function:(NSString * _Nonnull)function line:(NSInteger)line category:(NSString * _Nonnull)category decorative:(BOOL)decorative;
 
 
 /**
