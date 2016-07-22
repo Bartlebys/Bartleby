@@ -10,8 +10,13 @@
 
 #ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
+#else
+#ifdef OS_X_FRAMEWORK
+#import <BsyncOSX/BsyncFrameworks-Swift.h>
+#else
+#import <BsynciOS/BsyncFrameworks-Swift.h>
 #endif
-
+#endif
 
 NSString * const PdSSyncInterpreterWillFinalize = @"PdSSyncInterpreterWillFinalize";
 NSString * const PdSSyncInterpreterHasFinalized = @"PdSSyncInterpreterHasFinalized";
@@ -34,7 +39,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 @property (nonatomic,readonly)NSArray*bunchOfCommand;
 @property (nonatomic,readonly)BsyncContext*context;
 @property (nonatomic,strong)NSOperationQueue *queue;
-@property (nonatomic,readonly)BsyncSession*session;
 @property (nonatomic) NSURLSession*urlSession;
 
 // We store the current task.
@@ -51,7 +55,6 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 @synthesize bunchOfCommand  = _bunchOfCommand;
 @synthesize context         = _context;
-@synthesize session         = _session;
 
 /**
  *
@@ -399,7 +402,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:[_context valueForKeyPath:@"credentials.user.spaceUID"]
                                                                         withActionName:@"BartlebySyncUploadFileTo"
                                                                              forMethod:@"POST"
                                                                                    and:url];
@@ -514,7 +517,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSURL *url = [NSURL URLWithString:urlString];
 
             // REQUEST
-            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
+            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:[_context valueForKeyPath:@"credentials.user.spaceUID"]
                                                                             withActionName:@"BartlebySyncGetFile"
                                                                                  forMethod:@"GET"
                                                                                        and:url];
@@ -648,7 +651,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         NSURL*url = [NSURL URLWithString:URLString];
 
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:[_context valueForKeyPath:@"credentials.user.spaceUID"]
                                                                         withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                              forMethod:@"POST"
                                                                                    and:url];

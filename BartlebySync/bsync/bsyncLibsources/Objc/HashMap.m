@@ -8,9 +8,6 @@
 
 #import "HashMap.h"
 
-#ifdef USE_EMBEDDED_OBJC
-#import "bsync-Swift.h"
-#endif
 
 NSString*const pathToHashKey=@"pthToH";
 NSString*const hashToPathsKey=@"hToPths";

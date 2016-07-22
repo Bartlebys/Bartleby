@@ -8,11 +8,6 @@
 
 #import "PdSSyncContext.h"
 
-#ifdef USE_EMBEDDED_OBJC
-#import "bsync-Swift.h"
-#endif
-
-
 @implementation PdSSyncContext{
 
 }

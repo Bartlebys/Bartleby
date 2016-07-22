@@ -8,10 +8,6 @@
 
 #import "DeltaPathMap.h"
 
-#ifdef USE_EMBEDDED_OBJC
-#import "bsync-Swift.h"
-#endif
-
 NSString* const createdPathsKey=@"createdPaths";
 NSString* const deletedPathsKey=@"deletedPaths";
 NSString* const updatedPathsKey=@"updatedPaths";

@@ -8,10 +8,6 @@
 
 #import "NSData+CRC.h"
 
-#ifdef USE_EMBEDDED_OBJC
-#import "bsync-Swift.h"
-#endif
-
 #define DEFAULT_POLYNOMIAL 0xEDB88320L
 #define DEFAULT_SEED       0xFFFFFFFFL
 
