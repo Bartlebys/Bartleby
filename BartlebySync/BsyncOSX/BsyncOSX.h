@@ -14,6 +14,20 @@ FOUNDATION_EXPORT double BsyncOSXVersionNumber;
 //! Project version string for BsyncOSX.
 FOUNDATION_EXPORT const unsigned char BsyncOSXVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <BsyncOSX/PublicHeader.h>
-#import "BsyncFrameworks-Umbrella.h"
+
+#ifndef BsyncFrameworks_Umbrella_h
+#define BsyncFrameworks_Umbrella_h
+
+#import "PdSFileManager.h"
+#import "HashMap.h"
+#import "DeltaPathMap.h"
+#import "PdSCommandInterpreter.h"
+#import "PdSLocalAnalyzer.h"
+#import "PdSSyncContext.h"
+#import "PdSSyncAdmin.h"
+#import "NSData+CRC.h"
+#import "PdSSync.h"
+
+#endif /* BsyncFrameworks_Umbrella_h */
+
 

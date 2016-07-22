@@ -14,6 +14,35 @@
 		5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
+		E503B7861D42561B00D6489F /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
+		E503B7871D42561B00D6489F /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
+		E503B7881D42561B00D6489F /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
+		E503B7891D42561B00D6489F /* HashMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7921C3D4E49001CD53B /* HashMap.m */; };
+		E503B78A1D42561B00D6489F /* NSData+CRC.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7941C3D4E49001CD53B /* NSData+CRC.m */; };
+		E503B78B1D42561B00D6489F /* PdSFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79A1C3D4E49001CD53B /* PdSFileManager.m */; };
+		E503B78C1D42561B00D6489F /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
+		E503B78D1D42561B00D6489F /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
+		E503B78E1D42561B00D6489F /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
+		E503B78F1D42561B00D6489F /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
+		E503B7901D42561B00D6489F /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
+		E503B7911D42561B00D6489F /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
+		E503B7921D42561B00D6489F /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
+		E503B7931D42561B00D6489F /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E503B7941D42561B00D6489F /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E503B7951D42561B00D6489F /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
+		E503B7961D42561B00D6489F /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		E503B7971D42561B00D6489F /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
+		E503B7981D42561B00D6489F /* IdentifableCardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FED1B1D410A6A00BBB25A /* IdentifableCardContext.swift */; };
+		E503B7991D42562A00D6489F /* PdSSync.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79D1C3D4E49001CD53B /* PdSSync.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79A1D42562A00D6489F /* PdSSyncAdmin.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79E1C3D4E49001CD53B /* PdSSyncAdmin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79B1D42562A00D6489F /* PdSCommandInterpreter.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7971C3D4E49001CD53B /* PdSCommandInterpreter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79C1D42562A00D6489F /* DeltaPathMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79D1D42562A00D6489F /* HashMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7911C3D4E49001CD53B /* HashMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79E1D42562A00D6489F /* NSData+CRC.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7931C3D4E49001CD53B /* NSData+CRC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B79F1D42562A00D6489F /* PdSFileManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7991C3D4E49001CD53B /* PdSFileManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B7A01D42562A00D6489F /* PdSLocalAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79B1C3D4E49001CD53B /* PdSLocalAnalyzer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B7A11D42562A00D6489F /* PdSSyncContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E503B7A51D42575600D6489F /* BsyncOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = E503B7A31D42575600D6489F /* BsyncOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E50520851D4245F600DBCB30 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50520841D4245F600DBCB30 /* BartlebyKit.framework */; };
 		E50520911D4246AD00DBCB30 /* IdentifableCardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FED1B1D410A6A00BBB25A /* IdentifableCardContext.swift */; };
 		E5074D791D411D1B0089187A /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
@@ -86,6 +115,9 @@
 		E53E28F41CA572F40079ED23 /* CommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */; };
 		E53E28F51CA572F40079ED23 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CEC71C36CC2900F3B7B8 /* main.swift */; };
 		E53E28F61CA572F40079ED23 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
+		E5473EA61D42532A00E115A2 /* BsyncOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5473E9C1D42532A00E115A2 /* BsyncOSX.framework */; };
+		E5473EAB1D42532A00E115A2 /* BsyncOSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5473EAA1D42532A00E115A2 /* BsyncOSXTests.swift */; };
+		E5473EB51D4253A300E115A2 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5074D7F1D411EE20089187A /* BartlebyKit.framework */; };
 		E54B7FDD1D2B8A8D001F7AB3 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
 		E54B7FDE1D2B8A8D001F7AB3 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
 		E54B7FDF1D2B8A8D001F7AB3 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
@@ -451,38 +483,38 @@
 		E5C260D81D26AA430061E257 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F948D1D01C25E005BDA2D /* TestCase.swift */; };
 		E5C260DB1D26AA4F0061E257 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
-		E5EAF14C1D424B9C00D08342 /* BsyncOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = E5EAF14B1D424B9C00D08342 /* BsyncOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1511D424BBF00D08342 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
-		E5EAF1521D424BBF00D08342 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
-		E5EAF1531D424BBF00D08342 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
-		E5EAF1541D424BBF00D08342 /* HashMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7921C3D4E49001CD53B /* HashMap.m */; };
-		E5EAF1551D424BBF00D08342 /* NSData+CRC.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7941C3D4E49001CD53B /* NSData+CRC.m */; };
-		E5EAF1561D424BBF00D08342 /* PdSFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79A1C3D4E49001CD53B /* PdSFileManager.m */; };
-		E5EAF1571D424BBF00D08342 /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
-		E5EAF1581D424BBF00D08342 /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
-		E5EAF1591D424BBF00D08342 /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
-		E5EAF15A1D424BBF00D08342 /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
-		E5EAF15B1D424BBF00D08342 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
-		E5EAF15C1D424BBF00D08342 /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
-		E5EAF15D1D424BBF00D08342 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
-		E5EAF15E1D424BBF00D08342 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
-		E5EAF15F1D424BBF00D08342 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
-		E5EAF1601D424BBF00D08342 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
-		E5EAF1611D424BBF00D08342 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
-		E5EAF1621D424BBF00D08342 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
-		E5EAF1631D424BBF00D08342 /* IdentifableCardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FED1B1D410A6A00BBB25A /* IdentifableCardContext.swift */; };
-		E5EAF1641D424C4C00D08342 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5074D7F1D411EE20089187A /* BartlebyKit.framework */; };
-		E5EAF16F1D424CC400D08342 /* BsyncFrameworks-Umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E5EAF16E1D424CB400D08342 /* BsyncFrameworks-Umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1701D424DDA00D08342 /* PdSSync.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79D1C3D4E49001CD53B /* PdSSync.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1711D424DDA00D08342 /* PdSSyncAdmin.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79E1C3D4E49001CD53B /* PdSSyncAdmin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1721D424DDA00D08342 /* PdSCommandInterpreter.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7971C3D4E49001CD53B /* PdSCommandInterpreter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1731D424DDA00D08342 /* DeltaPathMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1741D424DDA00D08342 /* HashMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7911C3D4E49001CD53B /* HashMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1751D424DDA00D08342 /* NSData+CRC.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7931C3D4E49001CD53B /* NSData+CRC.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1761D424DDA00D08342 /* PdSFileManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7991C3D4E49001CD53B /* PdSFileManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1771D424DDA00D08342 /* PdSLocalAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79B1C3D4E49001CD53B /* PdSLocalAnalyzer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1781D424DDA00D08342 /* PdSSyncContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E5EAF1921D42517A00D08342 /* BsyncOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */; };
+		E5F1929F1D42585500624249 /* BsyncIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E5F1929E1D42585500624249 /* BsyncIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192A61D42585500624249 /* BsyncIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F1929C1D42585400624249 /* BsyncIOS.framework */; };
+		E5F192AB1D42585500624249 /* BsyncIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F192AA1D42585500624249 /* BsyncIOSTests.swift */; };
+		E5F192B31D42588C00624249 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
+		E5F192B41D42588C00624249 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
+		E5F192B51D42588C00624249 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
+		E5F192B61D42588C00624249 /* HashMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7921C3D4E49001CD53B /* HashMap.m */; };
+		E5F192B71D42588C00624249 /* NSData+CRC.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7941C3D4E49001CD53B /* NSData+CRC.m */; };
+		E5F192B81D42588C00624249 /* PdSFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79A1C3D4E49001CD53B /* PdSFileManager.m */; };
+		E5F192B91D42588C00624249 /* PdSLocalAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79C1C3D4E49001CD53B /* PdSLocalAnalyzer.m */; };
+		E5F192BA1D42588C00624249 /* PdSSyncContext.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A11C3D4E49001CD53B /* PdSSyncContext.m */; };
+		E5F192BB1D42588C00624249 /* BsyncAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */; };
+		E5F192BC1D42588C00624249 /* BsyncContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A41C3D4E49001CD53B /* BsyncContext.swift */; };
+		E5F192BD1D42588C00624249 /* BsyncCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */; };
+		E5F192BE1D42588C00624249 /* BsyncDirectives.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A51C3D4E49001CD53B /* BsyncDirectives.swift */; };
+		E5F192BF1D42588C00624249 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
+		E5F192C01D42588C00624249 /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E99F1D0EC38F00515179 /* BsyncHashMap.swift */; };
+		E5F192C11D42588C00624249 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E5F192C21D42588C00624249 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
+		E5F192C31D42588C00624249 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
+		E5F192C41D42588C00624249 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
+		E5F192C51D42588C00624249 /* IdentifableCardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FED1B1D410A6A00BBB25A /* IdentifableCardContext.swift */; };
+		E5F192C61D42589B00624249 /* PdSSync.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79D1C3D4E49001CD53B /* PdSSync.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192C71D42589B00624249 /* PdSSyncAdmin.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79E1C3D4E49001CD53B /* PdSSyncAdmin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192C81D42589B00624249 /* PdSCommandInterpreter.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7971C3D4E49001CD53B /* PdSCommandInterpreter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192C91D42589B00624249 /* DeltaPathMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192CA1D42589B00624249 /* HashMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7911C3D4E49001CD53B /* HashMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192CB1D42589B00624249 /* NSData+CRC.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7931C3D4E49001CD53B /* NSData+CRC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192CC1D42589B00624249 /* PdSFileManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7991C3D4E49001CD53B /* PdSFileManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192CD1D42589B00624249 /* PdSLocalAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79B1C3D4E49001CD53B /* PdSLocalAnalyzer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192CE1D42589B00624249 /* PdSSyncContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5F192D01D4258C100624249 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5F192CF1D4258C100624249 /* BartlebyKit.framework */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
 /* End PBXBuildFile section */
@@ -495,12 +527,19 @@
 			remoteGlobalIDString = E5FEE5BD1CBF5E5E006AFA2E;
 			remoteInfo = BsyncXPC;
 		};
-		E5EAF1931D42517A00D08342 /* PBXContainerItemProxy */ = {
+		E5473EA71D42532A00E115A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E5C0CEBC1C36CC2900F3B7B8 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E5EAF1481D424B9C00D08342;
+			remoteGlobalIDString = E5473E9B1D42532A00E115A2;
 			remoteInfo = BsyncOSX;
+		};
+		E5F192A71D42585500624249 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5C0CEBC1C36CC2900F3B7B8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5F1929B1D42585400624249;
+			remoteInfo = BsyncIOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -546,6 +585,8 @@
 		5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUIDCommand.swift; sourceTree = "<group>"; };
 		5BE49D0D1D019FB300FD8EA4 /* DirectivesSerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectivesSerializationTests.swift; sourceTree = "<group>"; };
 		5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSyncTests.swift; sourceTree = "<group>"; };
+		E503B7A31D42575600D6489F /* BsyncOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BsyncOSX.h; sourceTree = "<group>"; };
+		E503B7A41D42575600D6489F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E50520841D4245F600DBCB30 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
 		E5074D7F1D411EE20089187A /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5074F311D41202A0089187A /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
@@ -592,6 +633,10 @@
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
 		E545940C1C3E642C000576AD /* CleanupCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CleanupCommand.swift; sourceTree = "<group>"; };
 		E54594121C3E7DD7000576AD /* CommandBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBase.swift; sourceTree = "<group>"; };
+		E5473E9C1D42532A00E115A2 /* BsyncOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BsyncOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5473EA51D42532A00E115A2 /* BsyncOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5473EAA1D42532A00E115A2 /* BsyncOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BsyncOSXTests.swift; sourceTree = "<group>"; };
+		E5473EAC1D42532A00E115A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54957581C43B57700102771 /* CreateDirectiveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDirectiveCommand.swift; sourceTree = "<group>"; };
 		E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeltaPathMap.h; sourceTree = "<group>"; };
 		E552B7901C3D4E49001CD53B /* DeltaPathMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeltaPathMap.m; sourceTree = "<group>"; };
@@ -782,11 +827,13 @@
 		E5C0CF171C36CD4300F3B7B8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpDownDirectivesTests.swift; sourceTree = "<group>"; };
 		E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncMiscTests.swift; sourceTree = "<group>"; };
-		E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BsyncOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5EAF14B1D424B9C00D08342 /* BsyncOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncOSX.h; sourceTree = "<group>"; };
-		E5EAF14D1D424B9C00D08342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E5EAF16E1D424CB400D08342 /* BsyncFrameworks-Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BsyncFrameworks-Umbrella.h"; sourceTree = "<group>"; };
-		E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5F1929C1D42585400624249 /* BsyncIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BsyncIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5F1929E1D42585500624249 /* BsyncIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncIOS.h; sourceTree = "<group>"; };
+		E5F192A01D42585500624249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5F192A51D42585500624249 /* BsyncIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5F192AA1D42585500624249 /* BsyncIOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BsyncIOSTests.swift; sourceTree = "<group>"; };
+		E5F192AC1D42585500624249 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5F192CF1D4258C100624249 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../BartlebyKit/build/Debug-iphoneos/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPC.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5C61CBF5E5E006AFA2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPC.swift; sourceTree = "<group>"; };
@@ -805,6 +852,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5473E981D42532A00E115A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5473EB51D4253A300E115A2 /* BartlebyKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5473EA21D42532A00E115A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5473EA61D42532A00E115A2 /* BsyncOSX.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5C0CEC11C36CC2900F3B7B8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -820,19 +883,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF1451D424B9C00D08342 /* Frameworks */ = {
+		E5F192981D42585400624249 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5EAF1641D424C4C00D08342 /* BartlebyKit.framework in Frameworks */,
+				E5F192D01D4258C100624249 /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF18A1D42517A00D08342 /* Frameworks */ = {
+		E5F192A21D42585500624249 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5EAF1921D42517A00D08342 /* BsyncOSX.framework in Frameworks */,
+				E5F192A61D42585500624249 /* BsyncIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,6 +919,15 @@
 			);
 			path = BsyncXPCTests;
 			sourceTree = "<group>";
+		};
+		E503B7A21D42575600D6489F /* BsyncOSX */ = {
+			isa = PBXGroup;
+			children = (
+				E503B7A31D42575600D6489F /* BsyncOSX.h */,
+				E503B7A41D42575600D6489F /* Info.plist */,
+			);
+			path = BsyncOSX;
+			sourceTree = SOURCE_ROOT;
 		};
 		E5074D841D411F570089187A /* Embedded-Modules */ = {
 			isa = PBXGroup;
@@ -984,6 +1056,15 @@
 			path = ../Tests.shared;
 			sourceTree = "<group>";
 		};
+		E5473EA91D42532A00E115A2 /* BsyncOSXTests */ = {
+			isa = PBXGroup;
+			children = (
+				E5473EAA1D42532A00E115A2 /* BsyncOSXTests.swift */,
+				E5473EAC1D42532A00E115A2 /* Info.plist */,
+			);
+			path = BsyncOSXTests;
+			sourceTree = "<group>";
+		};
 		E552B78D1C3D4E49001CD53B /* bsyncLibsources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1060,6 +1141,7 @@
 		E578DCB21C3ABE9500617627 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E5F192CF1D4258C100624249 /* BartlebyKit.framework */,
 				E50520841D4245F600DBCB30 /* BartlebyKit.framework */,
 				E5074D7F1D411EE20089187A /* BartlebyKit.framework */,
 				E55C91C51CBF7A3D008163F6 /* SystemConfiguration.framework */,
@@ -1373,14 +1455,16 @@
 			children = (
 				E5C0CF171C36CD4300F3B7B8 /* README.md */,
 				5B5D09FF1CDC9EA5001FB281 /* bsync-Bridging-Header.h */,
-				E5EAF16E1D424CB400D08342 /* BsyncFrameworks-Umbrella.h */,
 				E5C0CEC61C36CC2900F3B7B8 /* bsync */,
 				E52F948C1D01C25E005BDA2D /* Tests.shared */,
 				E5C0CED31C36CCDD00F3B7B8 /* bsyncTests */,
 				E5FEE5BF1CBF5E5E006AFA2E /* BsyncXPC */,
 				E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */,
 				5B5D08FD1CDC8D92001FB281 /* BsyncXPCTests */,
-				E5EAF14A1D424B9C00D08342 /* BsyncOSX */,
+				E503B7A21D42575600D6489F /* BsyncOSX */,
+				E5473EA91D42532A00E115A2 /* BsyncOSXTests */,
+				E5F1929D1D42585500624249 /* BsyncIOS */,
+				E5F192A91D42585500624249 /* BsyncIOSTests */,
 				E5C0CEC51C36CC2900F3B7B8 /* Products */,
 				E578DCB21C3ABE9500617627 /* Frameworks */,
 			);
@@ -1393,8 +1477,10 @@
 				E5C0CED21C36CCDD00F3B7B8 /* bsyncTests.xctest */,
 				E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */,
 				5B5D08FC1CDC8D91001FB281 /* BsyncXPCTests.xctest */,
-				E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */,
-				E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */,
+				E5473E9C1D42532A00E115A2 /* BsyncOSX.framework */,
+				E5473EA51D42532A00E115A2 /* BsyncOSXTests.xctest */,
+				E5F1929C1D42585400624249 /* BsyncIOS.framework */,
+				E5F192A51D42585500624249 /* BsyncIOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1431,13 +1517,22 @@
 			path = bsyncTests;
 			sourceTree = "<group>";
 		};
-		E5EAF14A1D424B9C00D08342 /* BsyncOSX */ = {
+		E5F1929D1D42585500624249 /* BsyncIOS */ = {
 			isa = PBXGroup;
 			children = (
-				E5EAF14B1D424B9C00D08342 /* BsyncOSX.h */,
-				E5EAF14D1D424B9C00D08342 /* Info.plist */,
+				E5F1929E1D42585500624249 /* BsyncIOS.h */,
+				E5F192A01D42585500624249 /* Info.plist */,
 			);
-			path = BsyncOSX;
+			path = BsyncIOS;
+			sourceTree = "<group>";
+		};
+		E5F192A91D42585500624249 /* BsyncIOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				E5F192AA1D42585500624249 /* BsyncIOSTests.swift */,
+				E5F192AC1D42585500624249 /* Info.plist */,
+			);
+			path = BsyncIOSTests;
 			sourceTree = "<group>";
 		};
 		E5FEE5BF1CBF5E5E006AFA2E /* BsyncXPC */ = {
@@ -1455,21 +1550,37 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		E5EAF1461D424B9C00D08342 /* Headers */ = {
+		E5473E991D42532A00E115A2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5EAF1781D424DDA00D08342 /* PdSSyncContext.h in Headers */,
-				E5EAF1761D424DDA00D08342 /* PdSFileManager.h in Headers */,
-				E5EAF1751D424DDA00D08342 /* NSData+CRC.h in Headers */,
-				E5EAF1701D424DDA00D08342 /* PdSSync.h in Headers */,
-				E5EAF1721D424DDA00D08342 /* PdSCommandInterpreter.h in Headers */,
-				E5EAF1711D424DDA00D08342 /* PdSSyncAdmin.h in Headers */,
-				E5EAF1741D424DDA00D08342 /* HashMap.h in Headers */,
-				E5EAF1771D424DDA00D08342 /* PdSLocalAnalyzer.h in Headers */,
-				E5EAF1731D424DDA00D08342 /* DeltaPathMap.h in Headers */,
-				E5EAF14C1D424B9C00D08342 /* BsyncOSX.h in Headers */,
-				E5EAF16F1D424CC400D08342 /* BsyncFrameworks-Umbrella.h in Headers */,
+				E503B7A51D42575600D6489F /* BsyncOSX.h in Headers */,
+				E503B79F1D42562A00D6489F /* PdSFileManager.h in Headers */,
+				E503B79C1D42562A00D6489F /* DeltaPathMap.h in Headers */,
+				E503B79A1D42562A00D6489F /* PdSSyncAdmin.h in Headers */,
+				E503B79E1D42562A00D6489F /* NSData+CRC.h in Headers */,
+				E503B7A11D42562A00D6489F /* PdSSyncContext.h in Headers */,
+				E503B79D1D42562A00D6489F /* HashMap.h in Headers */,
+				E503B7A01D42562A00D6489F /* PdSLocalAnalyzer.h in Headers */,
+				E503B7991D42562A00D6489F /* PdSSync.h in Headers */,
+				E503B79B1D42562A00D6489F /* PdSCommandInterpreter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5F192991D42585400624249 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5F192CC1D42589B00624249 /* PdSFileManager.h in Headers */,
+				E5F192C91D42589B00624249 /* DeltaPathMap.h in Headers */,
+				E5F1929F1D42585500624249 /* BsyncIOS.h in Headers */,
+				E5F192C71D42589B00624249 /* PdSSyncAdmin.h in Headers */,
+				E5F192CB1D42589B00624249 /* NSData+CRC.h in Headers */,
+				E5F192CE1D42589B00624249 /* PdSSyncContext.h in Headers */,
+				E5F192CA1D42589B00624249 /* HashMap.h in Headers */,
+				E5F192CD1D42589B00624249 /* PdSLocalAnalyzer.h in Headers */,
+				E5F192C61D42589B00624249 /* PdSSync.h in Headers */,
+				E5F192C81D42589B00624249 /* PdSCommandInterpreter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1493,6 +1604,42 @@
 			name = BsyncXPCTests;
 			productName = BsyncXPCTests;
 			productReference = 5B5D08FC1CDC8D91001FB281 /* BsyncXPCTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E5473E9B1D42532A00E115A2 /* BsyncOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5473EAD1D42532A00E115A2 /* Build configuration list for PBXNativeTarget "BsyncOSX" */;
+			buildPhases = (
+				E5473E971D42532A00E115A2 /* Sources */,
+				E5473E981D42532A00E115A2 /* Frameworks */,
+				E5473E991D42532A00E115A2 /* Headers */,
+				E5473E9A1D42532A00E115A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BsyncOSX;
+			productName = BsyncOSX;
+			productReference = E5473E9C1D42532A00E115A2 /* BsyncOSX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E5473EA41D42532A00E115A2 /* BsyncOSXTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5473EB01D42532A00E115A2 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */;
+			buildPhases = (
+				E5473EA11D42532A00E115A2 /* Sources */,
+				E5473EA21D42532A00E115A2 /* Frameworks */,
+				E5473EA31D42532A00E115A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5473EA81D42532A00E115A2 /* PBXTargetDependency */,
+			);
+			name = BsyncOSXTests;
+			productName = BsyncOSXTests;
+			productReference = E5473EA51D42532A00E115A2 /* BsyncOSXTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E5C0CEC31C36CC2900F3B7B8 /* bsync */ = {
@@ -1530,40 +1677,40 @@
 			productReference = E5C0CED21C36CCDD00F3B7B8 /* bsyncTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E5EAF1481D424B9C00D08342 /* BsyncOSX */ = {
+		E5F1929B1D42585400624249 /* BsyncIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E5EAF14E1D424B9C00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSX" */;
+			buildConfigurationList = E5F192AD1D42585500624249 /* Build configuration list for PBXNativeTarget "BsyncIOS" */;
 			buildPhases = (
-				E5EAF1441D424B9C00D08342 /* Sources */,
-				E5EAF1451D424B9C00D08342 /* Frameworks */,
-				E5EAF1461D424B9C00D08342 /* Headers */,
-				E5EAF1471D424B9C00D08342 /* Resources */,
+				E5F192971D42585400624249 /* Sources */,
+				E5F192981D42585400624249 /* Frameworks */,
+				E5F192991D42585400624249 /* Headers */,
+				E5F1929A1D42585400624249 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = BsyncOSX;
-			productName = BsyncOSX;
-			productReference = E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */;
+			name = BsyncIOS;
+			productName = BsyncIOS;
+			productReference = E5F1929C1D42585400624249 /* BsyncIOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E5EAF18C1D42517A00D08342 /* BsyncOSXTests */ = {
+		E5F192A41D42585500624249 /* BsyncIOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E5EAF1951D42517A00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */;
+			buildConfigurationList = E5F192B01D42585500624249 /* Build configuration list for PBXNativeTarget "BsyncIOSTests" */;
 			buildPhases = (
-				E5EAF1891D42517A00D08342 /* Sources */,
-				E5EAF18A1D42517A00D08342 /* Frameworks */,
-				E5EAF18B1D42517A00D08342 /* Resources */,
+				E5F192A11D42585500624249 /* Sources */,
+				E5F192A21D42585500624249 /* Frameworks */,
+				E5F192A31D42585500624249 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				E5EAF1941D42517A00D08342 /* PBXTargetDependency */,
+				E5F192A81D42585500624249 /* PBXTargetDependency */,
 			);
-			name = BsyncOSXTests;
-			productName = BsyncOSXTests;
-			productReference = E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */;
+			name = BsyncIOSTests;
+			productName = BsyncIOSTests;
+			productReference = E5F192A51D42585500624249 /* BsyncIOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */ = {
@@ -1590,11 +1737,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Benoit Pereira da silva";
 				TargetAttributes = {
 					5B5D08FB1CDC8D91001FB281 = {
 						CreatedOnToolsVersion = 7.3;
+					};
+					E5473E9B1D42532A00E115A2 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E5473EA41D42532A00E115A2 = {
+						CreatedOnToolsVersion = 7.3.1;
 					};
 					E5C0CEC31C36CC2900F3B7B8 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1602,10 +1755,10 @@
 					E5C0CED11C36CCDD00F3B7B8 = {
 						CreatedOnToolsVersion = 7.2;
 					};
-					E5EAF1481D424B9C00D08342 = {
+					E5F1929B1D42585400624249 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
-					E5EAF18C1D42517A00D08342 = {
+					E5F192A41D42585500624249 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
 					E5FEE5BD1CBF5E5E006AFA2E = {
@@ -1630,14 +1783,30 @@
 				E5C0CED11C36CCDD00F3B7B8 /* bsyncTests */,
 				E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */,
 				5B5D08FB1CDC8D91001FB281 /* BsyncXPCTests */,
-				E5EAF1481D424B9C00D08342 /* BsyncOSX */,
-				E5EAF18C1D42517A00D08342 /* BsyncOSXTests */,
+				E5473E9B1D42532A00E115A2 /* BsyncOSX */,
+				E5473EA41D42532A00E115A2 /* BsyncOSXTests */,
+				E5F1929B1D42585400624249 /* BsyncIOS */,
+				E5F192A41D42585500624249 /* BsyncIOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5B5D08FA1CDC8D91001FB281 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5473E9A1D42532A00E115A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5473EA31D42532A00E115A2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1651,14 +1820,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF1471D424B9C00D08342 /* Resources */ = {
+		E5F1929A1D42585400624249 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF18B1D42517A00D08342 /* Resources */ = {
+		E5F192A31D42585500624249 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1947,6 +2116,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5473E971D42532A00E115A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E503B78C1D42561B00D6489F /* PdSLocalAnalyzer.m in Sources */,
+				E503B78F1D42561B00D6489F /* BsyncContext.swift in Sources */,
+				E503B78A1D42561B00D6489F /* NSData+CRC.m in Sources */,
+				E503B7981D42561B00D6489F /* IdentifableCardContext.swift in Sources */,
+				E503B78B1D42561B00D6489F /* PdSFileManager.m in Sources */,
+				E503B7871D42561B00D6489F /* PdSCommandInterpreter.m in Sources */,
+				E503B78D1D42561B00D6489F /* PdSSyncContext.m in Sources */,
+				E503B7881D42561B00D6489F /* DeltaPathMap.m in Sources */,
+				E503B78E1D42561B00D6489F /* BsyncAdmin.swift in Sources */,
+				E503B7921D42561B00D6489F /* BsyncDMGCard.swift in Sources */,
+				E503B7971D42561B00D6489F /* BsyncLocalAnalyzer.swift in Sources */,
+				E503B7891D42561B00D6489F /* HashMap.m in Sources */,
+				E503B7911D42561B00D6489F /* BsyncDirectives.swift in Sources */,
+				E503B7941D42561B00D6489F /* BsyncHashMap+Filter.swift in Sources */,
+				E503B7901D42561B00D6489F /* BsyncCredentials.swift in Sources */,
+				E503B7931D42561B00D6489F /* BsyncHashMap.swift in Sources */,
+				E503B7951D42561B00D6489F /* BsyncImageDiskManager.swift in Sources */,
+				E503B7861D42561B00D6489F /* PdSSyncAdmin.m in Sources */,
+				E503B7961D42561B00D6489F /* BsyncKeyValueStorage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5473EA11D42532A00E115A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5473EAB1D42532A00E115A2 /* BsyncOSXTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5C0CECE1C36CCDD00F3B7B8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1954,36 +2157,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF1441D424B9C00D08342 /* Sources */ = {
+		E5F192971D42585400624249 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5EAF1571D424BBF00D08342 /* PdSLocalAnalyzer.m in Sources */,
-				E5EAF15A1D424BBF00D08342 /* BsyncContext.swift in Sources */,
-				E5EAF1551D424BBF00D08342 /* NSData+CRC.m in Sources */,
-				E5EAF1631D424BBF00D08342 /* IdentifableCardContext.swift in Sources */,
-				E5EAF1561D424BBF00D08342 /* PdSFileManager.m in Sources */,
-				E5EAF1521D424BBF00D08342 /* PdSCommandInterpreter.m in Sources */,
-				E5EAF1581D424BBF00D08342 /* PdSSyncContext.m in Sources */,
-				E5EAF1531D424BBF00D08342 /* DeltaPathMap.m in Sources */,
-				E5EAF1591D424BBF00D08342 /* BsyncAdmin.swift in Sources */,
-				E5EAF15D1D424BBF00D08342 /* BsyncDMGCard.swift in Sources */,
-				E5EAF1621D424BBF00D08342 /* BsyncLocalAnalyzer.swift in Sources */,
-				E5EAF1541D424BBF00D08342 /* HashMap.m in Sources */,
-				E5EAF15C1D424BBF00D08342 /* BsyncDirectives.swift in Sources */,
-				E5EAF15F1D424BBF00D08342 /* BsyncHashMap+Filter.swift in Sources */,
-				E5EAF15B1D424BBF00D08342 /* BsyncCredentials.swift in Sources */,
-				E5EAF15E1D424BBF00D08342 /* BsyncHashMap.swift in Sources */,
-				E5EAF1601D424BBF00D08342 /* BsyncImageDiskManager.swift in Sources */,
-				E5EAF1511D424BBF00D08342 /* PdSSyncAdmin.m in Sources */,
-				E5EAF1611D424BBF00D08342 /* BsyncKeyValueStorage.swift in Sources */,
+				E5F192B91D42588C00624249 /* PdSLocalAnalyzer.m in Sources */,
+				E5F192BC1D42588C00624249 /* BsyncContext.swift in Sources */,
+				E5F192B71D42588C00624249 /* NSData+CRC.m in Sources */,
+				E5F192C51D42588C00624249 /* IdentifableCardContext.swift in Sources */,
+				E5F192B81D42588C00624249 /* PdSFileManager.m in Sources */,
+				E5F192B41D42588C00624249 /* PdSCommandInterpreter.m in Sources */,
+				E5F192BA1D42588C00624249 /* PdSSyncContext.m in Sources */,
+				E5F192B51D42588C00624249 /* DeltaPathMap.m in Sources */,
+				E5F192BB1D42588C00624249 /* BsyncAdmin.swift in Sources */,
+				E5F192BF1D42588C00624249 /* BsyncDMGCard.swift in Sources */,
+				E5F192C41D42588C00624249 /* BsyncLocalAnalyzer.swift in Sources */,
+				E5F192B61D42588C00624249 /* HashMap.m in Sources */,
+				E5F192BE1D42588C00624249 /* BsyncDirectives.swift in Sources */,
+				E5F192C11D42588C00624249 /* BsyncHashMap+Filter.swift in Sources */,
+				E5F192BD1D42588C00624249 /* BsyncCredentials.swift in Sources */,
+				E5F192C01D42588C00624249 /* BsyncHashMap.swift in Sources */,
+				E5F192C21D42588C00624249 /* BsyncImageDiskManager.swift in Sources */,
+				E5F192B31D42588C00624249 /* PdSSyncAdmin.m in Sources */,
+				E5F192C31D42588C00624249 /* BsyncKeyValueStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF1891D42517A00D08342 /* Sources */ = {
+		E5F192A11D42585500624249 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5F192AB1D42585500624249 /* BsyncIOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2204,10 +2408,15 @@
 			target = E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */;
 			targetProxy = 5B5D09FC1CDC9ADF001FB281 /* PBXContainerItemProxy */;
 		};
-		E5EAF1941D42517A00D08342 /* PBXTargetDependency */ = {
+		E5473EA81D42532A00E115A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E5EAF1481D424B9C00D08342 /* BsyncOSX */;
-			targetProxy = E5EAF1931D42517A00D08342 /* PBXContainerItemProxy */;
+			target = E5473E9B1D42532A00E115A2 /* BsyncOSX */;
+			targetProxy = E5473EA71D42532A00E115A2 /* PBXContainerItemProxy */;
+		};
+		E5F192A81D42585500624249 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5F1929B1D42585400624249 /* BsyncIOS */;
+			targetProxy = E5F192A71D42585500624249 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2245,6 +2454,82 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+			};
+			name = Release;
+		};
+		E5473EAE1D42532A00E115A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = BsyncOSX/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "-DOS_X_FRAMEWORK";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E5473EAF1D42532A00E115A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = BsyncOSX/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				OTHER_CFLAGS = "-DOS_X_FRAMEWORK";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E5473EB11D42532A00E115A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E5473EB21D42532A00E115A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -2293,7 +2578,7 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -2336,7 +2621,7 @@
 				SDKROOT = macosx;
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 			};
 			name = Release;
 		};
@@ -2402,75 +2687,87 @@
 			};
 			name = Release;
 		};
-		E5EAF14F1D424B9C00D08342 /* Debug */ = {
+		E5F192AE1D42585500624249 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BsyncOSX/Info.plist;
+				INFOPLIST_FILE = BsyncIOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "-DOS_X_FRAMEWORK";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSX;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		E5EAF1501D424B9C00D08342 /* Release */ = {
+		E5F192AF1D42585500624249 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = BsyncOSX/Info.plist;
+				INFOPLIST_FILE = BsyncIOS/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				OTHER_CFLAGS = "-DOS_X_FRAMEWORK";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSX;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "BsyncFrameworks-Swift.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		E5EAF1961D42517A00D08342 /* Debug */ = {
+		E5F192B11D42585500624249 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = BsyncIOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		E5EAF1971D42517A00D08342 /* Release */ = {
+		E5F192B21D42585500624249 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_NONNULL = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = BsyncIOSTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -2525,6 +2822,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E5473EAD1D42532A00E115A2 /* Build configuration list for PBXNativeTarget "BsyncOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5473EAE1D42532A00E115A2 /* Debug */,
+				E5473EAF1D42532A00E115A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E5473EB01D42532A00E115A2 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5473EB11D42532A00E115A2 /* Debug */,
+				E5473EB21D42532A00E115A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E5C0CEBF1C36CC2900F3B7B8 /* Build configuration list for PBXProject "bsync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2552,19 +2867,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E5EAF14E1D424B9C00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSX" */ = {
+		E5F192AD1D42585500624249 /* Build configuration list for PBXNativeTarget "BsyncIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E5EAF14F1D424B9C00D08342 /* Debug */,
-				E5EAF1501D424B9C00D08342 /* Release */,
+				E5F192AE1D42585500624249 /* Debug */,
+				E5F192AF1D42585500624249 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		E5EAF1951D42517A00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */ = {
+		E5F192B01D42585500624249 /* Build configuration list for PBXNativeTarget "BsyncIOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E5EAF1961D42517A00D08342 /* Debug */,
-				E5EAF1971D42517A00D08342 /* Release */,
+				E5F192B11D42585500624249 /* Debug */,
+				E5F192B21D42585500624249 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

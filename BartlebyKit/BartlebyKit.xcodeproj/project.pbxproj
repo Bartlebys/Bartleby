@@ -334,9 +334,6 @@
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
-		E5EAF1391D424B3700D08342 /* BsyncXPCF.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EAF1381D424B3700D08342 /* BsyncXPCF.m */; };
-		E5EAF13B1D424B3700D08342 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5EAF13A1D424B3700D08342 /* main.m */; };
-		E5EAF13F1D424B3700D08342 /* BsyncXPCF.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = E5EAF1341D424B3700D08342 /* BsyncXPCF.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -346,13 +343,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = E54999571C3A7D0100C52A9D;
 			remoteInfo = "Bartleby OSX";
-		};
-		E5EAF13D1D424B3700D08342 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E576E0A91C3A67BD00F1ED6B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E5EAF1331D424B3700D08342;
-			remoteInfo = BsyncXPCF;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -372,7 +362,6 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/XPCServices";
 			dstSubfolderSpec = 16;
 			files = (
-				E5EAF13F1D424B3700D08342 /* BsyncXPCF.xpc in Embed XPC Services */,
 			);
 			name = "Embed XPC Services";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -571,7 +560,6 @@
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5EAF1341D424B3700D08342 /* BsyncXPCF.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPCF.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5EAF1361D424B3700D08342 /* BsyncXPCFProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncXPCFProtocol.h; sourceTree = "<group>"; };
 		E5EAF1371D424B3700D08342 /* BsyncXPCF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncXPCF.h; sourceTree = "<group>"; };
 		E5EAF1381D424B3700D08342 /* BsyncXPCF.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BsyncXPCF.m; sourceTree = "<group>"; };
@@ -603,13 +591,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E5EAF1311D424B3700D08342 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,7 +1043,6 @@
 				E54999581C3A7D0100C52A9D /* BartlebyKit.framework */,
 				E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */,
 				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
-				E5EAF1341D424B3700D08342 /* BsyncXPCF.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1123,7 +1103,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				E5EAF13E1D424B3700D08342 /* PBXTargetDependency */,
 			);
 			name = "Bartleby OSX";
 			productName = "Bartleby OSX";
@@ -1167,23 +1146,6 @@
 			productReference = E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E5EAF1331D424B3700D08342 /* BsyncXPCF */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E5EAF1421D424B3700D08342 /* Build configuration list for PBXNativeTarget "BsyncXPCF" */;
-			buildPhases = (
-				E5EAF1301D424B3700D08342 /* Sources */,
-				E5EAF1311D424B3700D08342 /* Frameworks */,
-				E5EAF1321D424B3700D08342 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = BsyncXPCF;
-			productName = BsyncXPCF;
-			productReference = E5EAF1341D424B3700D08342 /* BsyncXPCF.xpc */;
-			productType = "com.apple.product-type.xpc-service";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1202,9 +1164,6 @@
 					E56C00451C8ED4A800BB6B19 = {
 						CreatedOnToolsVersion = 7.2.1;
 					};
-					E5EAF1331D424B3700D08342 = {
-						CreatedOnToolsVersion = 7.3.1;
-					};
 				};
 			};
 			buildConfigurationList = E576E0AC1C3A67BD00F1ED6B /* Build configuration list for PBXProject "BartlebyKit" */;
@@ -1222,7 +1181,6 @@
 				E54999571C3A7D0100C52A9D /* Bartleby OSX */,
 				E54999641C3A7D1B00C52A9D /* Bartleby iOS */,
 				E56C00451C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
-				E5EAF1331D424B3700D08342 /* BsyncXPCF */,
 			);
 		};
 /* End PBXProject section */
@@ -1254,13 +1212,6 @@
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
 				E50F3AF91D40D27F00532B09 /* RegistryInspector.xib in Resources */,
 				E50F3AF41D40D27F00532B09 /* LogsViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E5EAF1321D424B3700D08342 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1600,15 +1551,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5EAF1301D424B3700D08342 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E5EAF13B1D424B3700D08342 /* main.m in Sources */,
-				E5EAF1391D424B3700D08342 /* BsyncXPCF.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1616,11 +1558,6 @@
 			isa = PBXTargetDependency;
 			target = E54999571C3A7D0100C52A9D /* Bartleby OSX */;
 			targetProxy = E5361CFF1CD8DF03005855DC /* PBXContainerItemProxy */;
-		};
-		E5EAF13E1D424B3700D08342 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E5EAF1331D424B3700D08342 /* BsyncXPCF */;
-			targetProxy = E5EAF13D1D424B3700D08342 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1968,91 +1905,6 @@
 			};
 			name = Release;
 		};
-		E5EAF1401D424B3700D08342 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BsyncXPCF/Info.plist;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		E5EAF1411D424B3700D08342 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BsyncXPCF/Info.plist;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2091,14 +1943,6 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
-		};
-		E5EAF1421D424B3700D08342 /* Build configuration list for PBXNativeTarget "BsyncXPCF" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E5EAF1401D424B3700D08342 /* Debug */,
-				E5EAF1411D424B3700D08342 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
