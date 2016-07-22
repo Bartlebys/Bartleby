@@ -482,6 +482,7 @@
 		E5EAF1761D424DDA00D08342 /* PdSFileManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7991C3D4E49001CD53B /* PdSFileManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5EAF1771D424DDA00D08342 /* PdSLocalAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B79B1C3D4E49001CD53B /* PdSLocalAnalyzer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5EAF1781D424DDA00D08342 /* PdSSyncContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E552B7A01C3D4E49001CD53B /* PdSSyncContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5EAF1921D42517A00D08342 /* BsyncOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */; };
 		E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
 		E5FEE5ED1CBF5FA2006AFA2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5EA1CBF5FA2006AFA2E /* main.swift */; };
 /* End PBXBuildFile section */
@@ -493,6 +494,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = E5FEE5BD1CBF5E5E006AFA2E;
 			remoteInfo = BsyncXPC;
+		};
+		E5EAF1931D42517A00D08342 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E5C0CEBC1C36CC2900F3B7B8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E5EAF1481D424B9C00D08342;
+			remoteInfo = BsyncOSX;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -778,6 +786,7 @@
 		E5EAF14B1D424B9C00D08342 /* BsyncOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncOSX.h; sourceTree = "<group>"; };
 		E5EAF14D1D424B9C00D08342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5EAF16E1D424CB400D08342 /* BsyncFrameworks-Umbrella.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BsyncFrameworks-Umbrella.h"; sourceTree = "<group>"; };
+		E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BsyncOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BsyncXPC.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FEE5C61CBF5E5E006AFA2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPC.swift; sourceTree = "<group>"; };
@@ -816,6 +825,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5EAF1641D424C4C00D08342 /* BartlebyKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5EAF18A1D42517A00D08342 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5EAF1921D42517A00D08342 /* BsyncOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1377,6 +1394,7 @@
 				E5FEE5BE1CBF5E5E006AFA2E /* BsyncXPC.xpc */,
 				5B5D08FC1CDC8D91001FB281 /* BsyncXPCTests.xctest */,
 				E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */,
+				E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1530,6 +1548,24 @@
 			productReference = E5EAF1491D424B9C00D08342 /* BsyncOSX.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E5EAF18C1D42517A00D08342 /* BsyncOSXTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E5EAF1951D42517A00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */;
+			buildPhases = (
+				E5EAF1891D42517A00D08342 /* Sources */,
+				E5EAF18A1D42517A00D08342 /* Frameworks */,
+				E5EAF18B1D42517A00D08342 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E5EAF1941D42517A00D08342 /* PBXTargetDependency */,
+			);
+			name = BsyncOSXTests;
+			productName = BsyncOSXTests;
+			productReference = E5EAF18D1D42517A00D08342 /* BsyncOSXTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5FEE5C91CBF5E5E006AFA2E /* Build configuration list for PBXNativeTarget "BsyncXPC" */;
@@ -1569,6 +1605,9 @@
 					E5EAF1481D424B9C00D08342 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
+					E5EAF18C1D42517A00D08342 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					E5FEE5BD1CBF5E5E006AFA2E = {
 						CreatedOnToolsVersion = 7.3;
 					};
@@ -1592,6 +1631,7 @@
 				E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */,
 				5B5D08FB1CDC8D91001FB281 /* BsyncXPCTests */,
 				E5EAF1481D424B9C00D08342 /* BsyncOSX */,
+				E5EAF18C1D42517A00D08342 /* BsyncOSXTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1612,6 +1652,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E5EAF1471D424B9C00D08342 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5EAF18B1D42517A00D08342 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1933,6 +1980,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5EAF1891D42517A00D08342 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E5FEE5BA1CBF5E5E006AFA2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2149,6 +2203,11 @@
 			isa = PBXTargetDependency;
 			target = E5FEE5BD1CBF5E5E006AFA2E /* BsyncXPC */;
 			targetProxy = 5B5D09FC1CDC9ADF001FB281 /* PBXContainerItemProxy */;
+		};
+		E5EAF1941D42517A00D08342 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E5EAF1481D424B9C00D08342 /* BsyncOSX */;
+			targetProxy = E5EAF1931D42517A00D08342 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2391,6 +2450,30 @@
 			};
 			name = Release;
 		};
+		E5EAF1961D42517A00D08342 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E5EAF1971D42517A00D08342 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = BsyncOSXTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncOSXTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E5FEE5C71CBF5E5E006AFA2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2474,6 +2557,14 @@
 			buildConfigurations = (
 				E5EAF14F1D424B9C00D08342 /* Debug */,
 				E5EAF1501D424B9C00D08342 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E5EAF1951D42517A00D08342 /* Build configuration list for PBXNativeTarget "BsyncOSXTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E5EAF1961D42517A00D08342 /* Debug */,
+				E5EAF1971D42517A00D08342 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
