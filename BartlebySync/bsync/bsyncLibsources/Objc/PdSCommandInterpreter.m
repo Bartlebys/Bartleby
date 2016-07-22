@@ -10,12 +10,6 @@
 
 #ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
-#else
-#ifdef OS_X_FRAMEWORK
-#import <BsyncOSX/BsyncFrameworks-Swift.h>
-#else
-#import <BsynciOS/BsyncFrameworks-Swift.h>
-#endif
 #endif
 
 NSString * const PdSSyncInterpreterWillFinalize = @"PdSSyncInterpreterWillFinalize";
@@ -402,7 +396,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:[_context valueForKeyPath:@"credentials.user.spaceUID"]
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                         withActionName:@"BartlebySyncUploadFileTo"
                                                                              forMethod:@"POST"
                                                                                    and:url];
@@ -517,7 +511,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSURL *url = [NSURL URLWithString:urlString];
 
             // REQUEST
-            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:[_context valueForKeyPath:@"credentials.user.spaceUID"]
+            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInDataSpace:_context.credentials.user.spaceUID
                                                                             withActionName:@"BartlebySyncGetFile"
                                                                                  forMethod:@"GET"
                                                                                        and:url];

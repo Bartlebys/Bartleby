@@ -8,6 +8,10 @@
 
 // VERSION 1.0 Of the ObjC & PHP version
 
+
+#ifndef PdSSync_h
+#define PdSSync_h
+
 typedef NS_ENUM(NSInteger,
                 PdSStatusError) {
     PdsStatusErrorNoError = 0,
@@ -82,6 +86,7 @@ typedef NS_ENUM (NSUInteger,
 // PdSCommons 
 #import "NSData+CRC.h"
 
+#endif
 
 #ifndef BPRINT_OBJC
 #define BPRINT_OBJC
@@ -90,3 +95,5 @@ typedef NS_ENUM (NSUInteger,
 [PdSSyncAdmin bprint:[NSString stringWithFormat:format, ##__VA_ARGS__] file:@(__FILE__) function:@(__PRETTY_FUNCTION__) line:__LINE__ category:@"PdsSync" decorative: false];\
 }
 #endif
+
+

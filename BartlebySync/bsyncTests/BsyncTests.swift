@@ -1,15 +1,15 @@
 //
-//  BsyncOSXTests.swift
-//  BsyncOSXTests
+//  BsyncTests.swift
+//  BsyncTests
 //
 //  Created by Benoit Pereira da silva on 22/07/2016.
 //  Copyright © 2016 Benoit Pereira da silva. All rights reserved.
 //
 
 import XCTest
-@testable import BsyncOSX
+@testable import Bsync
 
-class BsyncOSXTests: XCTestCase {
+class BsyncTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

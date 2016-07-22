@@ -8,14 +8,9 @@
 
 #import "PdSLocalAnalyzer.h"
 
+
 #ifdef USE_EMBEDDED_OBJC
 #import "bsync-Swift.h"
-#else
-#ifdef OS_X_FRAMEWORK
-#import <BsyncOSX/BsyncFrameworks-Swift.h>
-#else
-#import <BsynciOS/BsyncFrameworks-Swift.h>
-#endif
 #endif
 
 

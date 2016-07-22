@@ -10,6 +10,9 @@
 // Exposed to swift
 // Migration to swift 2.0 is in progress.
 
+#ifndef bsync_Bridging_header_h
+#define bsync_Bridging_header_h
+
 #import "PdSFileManager.h"
 #import "HashMap.h"
 #import "DeltaPathMap.h"
@@ -22,3 +25,5 @@
 
 // Required for CryptoHelper support
 #import <CommonCrypto/CommonCrypto.h>
+
+#endif /* Header_h */
