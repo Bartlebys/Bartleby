@@ -1,8 +1,3 @@
-# Message to @Martin 
-
-Those sample tests are now compilable.
-But they are neither rigourous nor well structured! 
-
 ## Principles 
 
 1. Each test should be non intrusive ( any creation should be delete if possible)
