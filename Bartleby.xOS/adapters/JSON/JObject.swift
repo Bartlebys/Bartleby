@@ -149,14 +149,16 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                     if key=="items"{
                         if let oldArray=oldValue as? [JObject], newArray=newValue as? [JObject]{
                             if oldArray.count < newArray.count{
-                                self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(newArray.last?.UID ?? "" )"))
+                                let stringValue:String! = (newArray.last?.UID ?? "")
+                                self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(stringValue))"))
                             }else{
                                 self.changedKeys.append(KeyedChanges(key:key,changes:"Removed One \(entityName)"))
                             }
                         }
                     }
                     if key == "item" {
-                        self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(newValue?.UID ?? "" ) has changed"))
+                        let stringValue:String! = newValue?.UID ?? ""
+                        self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(stringValue) has changed"))
                     }
 
                     if key == "*" {
@@ -171,7 +173,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                     // Natives types
                     let o = oldValue ?? "nil"
                     let n = newValue ?? "nil"
-                    changedKeys.append( KeyedChanges(key:key,changes:"\(o)->\(n)"))
+                    changedKeys.append( KeyedChanges(key:key,changes:"\(o!)->\(n!)"))
                     // Relay the as a global change to the collection
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }
