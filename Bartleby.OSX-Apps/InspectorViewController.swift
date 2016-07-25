@@ -274,7 +274,9 @@ class InspectorViewController: NSViewController,RegistryViewController{
         
         func outlineViewSelectionDidChange(notification: NSNotification) {
             if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
-                self._selectionHandler(selected: item)
+                dispatch_async(dispatch_get_main_queue()) {
+                    self._selectionHandler(selected: item)
+                }
             }
         }
         
