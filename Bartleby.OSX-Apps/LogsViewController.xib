@@ -20,7 +20,7 @@
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lt-gS-ckt">
                     <rect key="frame" x="0.0" y="0.0" width="1052" height="518"/>
                     <clipView key="contentView" id="mtn-YV-py0">
-                        <rect key="frame" x="1" y="23" width="1050" height="479"/>
+                        <rect key="frame" x="1" y="0.0" width="1050" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="QqE-44-uFC" viewBased="YES" id="fi7-T7-GMt" customClass="BXTableView" customModule="BartlebyKit" customModuleProvider="target">
@@ -251,7 +251,7 @@
             <rect key="frame" x="0.0" y="0.0" width="240" height="135"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <clipView key="contentView" id="h8w-0H-Epb">
-                <rect key="frame" x="1" y="23" width="238" height="111"/>
+                <rect key="frame" x="1" y="0.0" width="238" height="134"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="Pyt-Xf-und" viewBased="YES" id="aNw-qE-NP9">
@@ -334,7 +334,7 @@
                 <rect key="frame" x="1" y="119" width="223" height="15"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>
-            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="fs8-fG-fJx">
+            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="fs8-fG-fJx">
                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                 <autoresizingMask key="autoresizingMask"/>
             </scroller>

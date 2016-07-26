@@ -114,15 +114,15 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
 
 
     @IBAction func pushOperations(sender: AnyObject) {
-        if let document=self.registry {
-            let synchronizationHandlers=Handlers(completionHandler: { (completion) in
-                bprint("End of synchronizePendingOperations (\(completion)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
+            if let document=self.registry {
+                let synchronizationHandlers=Handlers(completionHandler: { (completion) in
+                    bprint("End of synchronizePendingOperations (\(completion)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
 
-                }, progressionHandler: { (progression) in
-                    bprint("\(progression)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
-            })
+                    }, progressionHandler: { (progression) in
+                        bprint("\(progression)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
+                })
 
-            document.synchronizePendingOperations(synchronizationHandlers)
-        }
+                document.synchronizePendingOperations(synchronizationHandlers)
+            }
     }
 }

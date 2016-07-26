@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class ChangesViewController: NSViewController,Editor,NSTableViewDataSource,NSTableViewDelegate,Identifiable{
+@objc class ChangesViewController: NSViewController,Editor,Identifiable{
 
     typealias EditorOf=JObject
 
@@ -16,7 +16,7 @@ class ChangesViewController: NSViewController,Editor,NSTableViewDataSource,NSTab
 
 
     @IBOutlet weak var tableView: NSTableView!
-
+    
     override var representedObject: AnyObject?{
         willSet{
             if let _=self._selectedItem{
@@ -33,30 +33,34 @@ class ChangesViewController: NSViewController,Editor,NSTableViewDataSource,NSTab
             dispatch_async(dispatch_get_main_queue(), {
                 self.tableView.reloadData()
             })
-
         }
     }
 
-    private var _selectedItem:EditorOf?
+    private dynamic var _selectedItem:EditorOf?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.setDataSource(self)
-       //self.tableView.setDelegate(self)
     }
 
+}
+
+extension ChangesViewController:NSTableViewDataSource{
 
     // MARK: NSTableViewDataSource
 
     func numberOfRowsInTableView(tableView: NSTableView) -> Int{
-        return self._selectedItem?.changedKeys.count ?? 0
+        let nb = self._selectedItem?.changedKeys.count ?? 0
+        return nb
     }
 
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject?{
         return self._selectedItem?.changedKeys[row]
     }
 
-    /*
+}
+
+
+extension ChangesViewController:NSTableViewDelegate{
 
     // MARK: NSTableViewDelegate
 
@@ -65,7 +69,6 @@ class ChangesViewController: NSViewController,Editor,NSTableViewDataSource,NSTab
         guard let item =  self._selectedItem?.changedKeys[row] else {
             return nil
         }
-
         var image:NSImage?
         var text:String = ""
         var cellIdentifier: String = ""
@@ -87,7 +90,5 @@ class ChangesViewController: NSViewController,Editor,NSTableViewDataSource,NSTab
         }
         return nil
     }
-*/
-
 
 }
