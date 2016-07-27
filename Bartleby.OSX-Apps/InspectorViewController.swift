@@ -77,7 +77,8 @@ class InspectorViewController: NSViewController,RegistryViewController{
             switch selected {
                 
             case let selected  where selected is Operation :
-                self._bottomViewController=self.operationEditor
+                self._bottomViewController=self.changesViewController
+                //self._bottomViewController=self.operationEditor
                 break
             default:
                 self._bottomViewController=self.changesViewController

@@ -124,7 +124,8 @@ import ObjectMapper
     func commit(){
         let context=Context(code:3510917490, caller: "CreateLockers.commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._spaceUID) {
-
+                // Do not track changes
+                self._operation.disableSupervision()
                 // Prepare the operation serialization
                 self.defineUID()
                 self._operation.defineUID()

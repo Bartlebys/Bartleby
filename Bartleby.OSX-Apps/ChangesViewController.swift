@@ -74,13 +74,13 @@ extension ChangesViewController:NSTableViewDelegate{
         var cellIdentifier: String = ""
 
         if tableColumn == tableView.tableColumns[0] {
-            text = "\(floor(item.elapsed*1000)) ms"
+            text = "\(floor(item.elapsed)) s"
             cellIdentifier = "ElapsedCell"
         } else if tableColumn == tableView.tableColumns[1] {
             text = item.key
             cellIdentifier = "KeyCell"
         } else if tableColumn == tableView.tableColumns[2] {
-            text = item.changes
+            text = item.changes.stringByReplacingOccurrencesOfString("\n", withString: "")
             cellIdentifier = "ChangesCell"
         }
         if let cell = tableView.makeViewWithIdentifier(cellIdentifier, owner: nil) as? NSTableCellView {

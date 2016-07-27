@@ -560,11 +560,6 @@
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5EAF1361D424B3700D08342 /* BsyncXPCFProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncXPCFProtocol.h; sourceTree = "<group>"; };
-		E5EAF1371D424B3700D08342 /* BsyncXPCF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BsyncXPCF.h; sourceTree = "<group>"; };
-		E5EAF1381D424B3700D08342 /* BsyncXPCF.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BsyncXPCF.m; sourceTree = "<group>"; };
-		E5EAF13A1D424B3700D08342 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E5EAF13C1D424B3700D08342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -647,10 +642,10 @@
 				E50F3AE61D40D27F00532B09 /* Media.xcassets */,
 				E50F3AE91D40D27F00532B09 /* RegistryInspector.swift */,
 				E50F3AEA1D40D27F00532B09 /* RegistryInspector.xib */,
-				E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */,
-				E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */,
 				E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */,
 				E50F3AE31D40D27F00532B09 /* InspectorViewController.xib */,
+				E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */,
+				E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */,
 				E50F3AE41D40D27F00532B09 /* LogsViewController.swift */,
 				E50F3AE51D40D27F00532B09 /* LogsViewController.xib */,
 				E50F3AE71D40D27F00532B09 /* OperationViewController.swift */,
@@ -1031,7 +1026,6 @@
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
 				E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
 				E52F94871D01C23A005BDA2D /* Tests.shared */,
-				E5EAF1351D424B3700D08342 /* BsyncXPCF */,
 				E54995081C3A754F00C52A9D /* Frameworks */,
 				E576E0B51C3A67FD00F1ED6B /* Products */,
 			);
@@ -1054,18 +1048,6 @@
 				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
 			);
 			name = "Support-files";
-			sourceTree = "<group>";
-		};
-		E5EAF1351D424B3700D08342 /* BsyncXPCF */ = {
-			isa = PBXGroup;
-			children = (
-				E5EAF1361D424B3700D08342 /* BsyncXPCFProtocol.h */,
-				E5EAF1371D424B3700D08342 /* BsyncXPCF.h */,
-				E5EAF1381D424B3700D08342 /* BsyncXPCF.m */,
-				E5EAF13A1D424B3700D08342 /* main.m */,
-				E5EAF13C1D424B3700D08342 /* Info.plist */,
-			);
-			path = BsyncXPCF;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
