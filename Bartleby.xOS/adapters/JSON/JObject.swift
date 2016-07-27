@@ -133,15 +133,18 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter newValue: the newValue
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
-        dispatch_async(GlobalQueue.Main.get()) { 
-            // Commit is related to distribution
-            if self._autoCommitIsEnabled == true {
-                // Set up the commit flag
-                self._shouldBeCommitted=true
-            }
 
-            // Supervision is a local  observation mecanism
-            if self._supervisionIsEnabled == true {
+        if self._autoCommitIsEnabled == true {
+            // Set up the commit flag
+            self._shouldBeCommitted=true
+        }
+
+        // Commit is related to distribution
+        // Supervision is a local  observation mecanism
+        // Closures are invoked on the main queue asynchronously
+        if self._supervisionIsEnabled{
+            dispatch_async(GlobalQueue.Main.get()) {
+
                 if key=="*" && !(self is CollectibleCollection){
                     // Dictionnary or NSData Patch
                     self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
@@ -182,13 +185,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                 }
 
                 // Invoke the closures (changes Observers)
-                
+
                 for (_,SupervisionClosure) in self._observers{
                     SupervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
                 }
             }
 
         }
+
     }
 
 
@@ -221,7 +225,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     private var _supervisionIsEnabled: Bool = true
 
-        /**
+    /**
      Locks the supervision mecanism
      Supervision mecanism == tracks the changed keys and relay to the holding collection
      The supervision works even on Triggered Upsert

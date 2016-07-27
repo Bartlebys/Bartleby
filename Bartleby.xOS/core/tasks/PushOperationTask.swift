@@ -54,10 +54,8 @@ import Foundation
                             // Clean up the successful task.
                             let spaceUID=operation.spaceUID
                             if let document=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
-                                dispatch_async(GlobalQueue.Main.get(), {
-                                    bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                                    document.delete(operation)
-                                })
+                                bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+                                document.delete(operation)
                             }
                             self.complete(completion)
                         }, failureHandler: { (context) in
