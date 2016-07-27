@@ -126,70 +126,75 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      And Mark that the instance requires to be committed if the auto commit observer is active
      This method stores in memory changed Keys to allow Bartleby's runtime inspections
 
+     Observers and properties uses the Main queue.
+
      - parameter key:      the key
      - parameter oldValue: the oldValue
      - parameter newValue: the newValue
      */
     public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
+        dispatch_async(GlobalQueue.Main.get()) { 
+            // Commit is related to distribution
+            if self._autoCommitIsEnabled == true {
+                // Set up the commit flag
+                self._shouldBeCommitted=true
+            }
 
-        // Commit is related to distribution
-        if self._autoCommitIsEnabled == true {
-            // Set up the commit flag
-            self._shouldBeCommitted=true
-        }
-
-        // Supervision is a local  observation mecanism
-        if self._supervisionIsEnabled == true {
-            if key=="*" && !(self is CollectibleCollection){
-                // Dictionnary or NSData Patch
-                self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
-            }else{
-                if let collection = self as? CollectibleCollection {
-                    let entityName=Pluralization.singularize(collection.d_collectionName)
-                    if key=="items"{
-                        if let oldArray=oldValue as? [JObject], newArray=newValue as? [JObject]{
-                            if oldArray.count < newArray.count{
-                                let stringValue:String! = (newArray.last?.UID ?? "")
-                                self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(stringValue))"))
-                            }else{
-                                self.changedKeys.append(KeyedChanges(key:key,changes:"Removed One \(entityName)"))
+            // Supervision is a local  observation mecanism
+            if self._supervisionIsEnabled == true {
+                if key=="*" && !(self is CollectibleCollection){
+                    // Dictionnary or NSData Patch
+                    self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
+                }else{
+                    if let collection = self as? CollectibleCollection {
+                        let entityName=Pluralization.singularize(collection.d_collectionName)
+                        if key=="items"{
+                            if let oldArray=oldValue as? [JObject], newArray=newValue as? [JObject]{
+                                if oldArray.count < newArray.count{
+                                    let stringValue:String! = (newArray.last?.UID ?? "")
+                                    self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(stringValue))"))
+                                }else{
+                                    self.changedKeys.append(KeyedChanges(key:key,changes:"Removed One \(entityName)"))
+                                }
                             }
                         }
-                    }
-                    if key == "item" {
-                        let stringValue:String! = newValue?.UID ?? ""
-                        self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(stringValue) has changed"))
-                    }
+                        if key == "item" {
+                            let stringValue:String! = newValue?.UID ?? ""
+                            self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(stringValue) has changed"))
+                        }
 
-                    if key == "*" {
-                        self.changedKeys.append(KeyedChanges(key:key,changes:"This collection has been patched"))
+                        if key == "*" {
+                            self.changedKeys.append(KeyedChanges(key:key,changes:"This collection has been patched"))
+                        }
+                    }else if let collectibleNewValue = newValue as? Collectible{
+                        // Collectible objects
+                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed"))
+                        // Relay the as a global change to the collection
+                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                    }else{
+                        // Natives types
+                        let o = oldValue ?? "nil"
+                        let n = newValue ?? "nil"
+                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o!)->\(n!)"))
+                        // Relay the as a global change to the collection
+                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
-                }else if let collectibleNewValue = newValue as? Collectible{
-                    // Collectible objects
-                    changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed"))
-                    // Relay the as a global change to the collection
-                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                }else{
-                    // Natives types
-                    let o = oldValue ?? "nil"
-                    let n = newValue ?? "nil"
-                    changedKeys.append( KeyedChanges(key:key,changes:"\(o!)->\(n!)"))
-                    // Relay the as a global change to the collection
-                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                }
+
+                // Invoke the closures (changes Observers)
+                
+                for (_,SupervisionClosure) in self._observers{
+                    SupervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
                 }
             }
 
-            // Invoke the closures (changes Observers)
-
-            for (_,SupervisionClosure) in self._observers{
-                SupervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
-            }
         }
     }
 
 
     /**
      Adds a closure observer
+     Supervision Closure are called on the Main Queue.
 
      - parameter observer: the observer
      - parameter closure:  the closure to be called.

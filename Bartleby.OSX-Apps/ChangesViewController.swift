@@ -26,9 +26,7 @@ import Cocoa
         didSet{
             self._selectedItem=representedObject as? EditorOf
             self._selectedItem?.addChangesObserver(self, closure: { (key, oldValue, newValue) in
-                dispatch_async(dispatch_get_main_queue(), {
                     self.tableView.reloadData()
-                })
             })
             dispatch_async(dispatch_get_main_queue(), {
                 self.tableView.reloadData()

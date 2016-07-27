@@ -68,7 +68,7 @@ extension BartlebyDocument {
             let spaceUID=self.spaceUID
             // We taskGroupFor the task
             let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDocument: self)
-            group.priority=TasksGroup.Priority.High
+            group.priority=TasksGroup.Priority.Default
             // We add the calling handlers
             group.handlers.appendChainedHandlers(handlers)
 
