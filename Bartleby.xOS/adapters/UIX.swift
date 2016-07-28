@@ -58,7 +58,7 @@
     public class BXImage:UIImage,Identifiable{
         public let UID=Bartleby.createUID()
     }
-    
+
 #elseif os(watchOS)
 #elseif os(tvOS)
 #endif

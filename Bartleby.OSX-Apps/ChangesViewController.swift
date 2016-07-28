@@ -40,6 +40,19 @@ import Cocoa
         super.viewDidLoad()
     }
 
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        NSNotificationCenter.defaultCenter().addObserverForName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil, queue: nil) { (notification) in
+            self.tableView.reloadData()
+        }
+    }
+
+    override func viewWillDisappear() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+
 }
 
 extension ChangesViewController:NSTableViewDataSource{
@@ -51,10 +64,15 @@ extension ChangesViewController:NSTableViewDataSource{
         return nb
     }
 
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject?{
-        return self._selectedItem?.changedKeys[row]
+    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        guard let item =  self._selectedItem?.changedKeys.reverse()[row] else {
+            return 20
+        }
+        if item.changes.characters.count > 200 {
+            return 100
+        }
+        return 20
     }
-
 }
 
 
@@ -64,7 +82,7 @@ extension ChangesViewController:NSTableViewDelegate{
 
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView?{
 
-        guard let item =  self._selectedItem?.changedKeys[row] else {
+        guard let item =  self._selectedItem?.changedKeys.reverse()[row] else {
             return nil
         }
         var image:NSImage?

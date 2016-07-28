@@ -10,7 +10,6 @@
             <connections>
                 <outlet property="bottomBox" destination="1AX-jR-v4E" id="IYi-xo-tT7"/>
                 <outlet property="changesViewController" destination="3kS-31-sl3" id="Coo-mf-yFN"/>
-                <outlet property="contextualMenu" destination="cNT-xH-hfw" id="wep-e9-ehO"/>
                 <outlet property="listOutlineView" destination="nzd-mn-3O1" id="qzA-8p-G59"/>
                 <outlet property="operationEditor" destination="rF1-h1-Fwc" id="nwY-ll-kgW"/>
                 <outlet property="sourceEditor" destination="A1J-3y-mLd" id="Sjo-L1-Gwj"/>
@@ -32,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autosaveExpandedItems="YES" outlineTableColumn="63I-7z-MT7" id="nzd-mn-3O1">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="198" height="961"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -256,20 +255,6 @@
         <viewController id="A1J-3y-mLd" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="rF1-h1-Fwc" customClass="OperationViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <menu title="Actions" id="cNT-xH-hfw">
-            <items>
-                <menuItem title="Reset Changes" id="InO-yU-mkJ">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-                <menuItem title="Display Changes" id="RJk-1o-obf">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                </menuItem>
-            </items>
-            <connections>
-                <outlet property="delegate" destination="-2" id="acX-m9-Edv"/>
-            </connections>
-            <point key="canvasLocation" x="199" y="294.5"/>
-        </menu>
     </objects>
     <resources>
         <image name="1052-database" width="22" height="28"/>

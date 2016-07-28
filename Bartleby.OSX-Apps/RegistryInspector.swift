@@ -26,6 +26,8 @@ public protocol Editor:Identifiable{
 
 public class RegistryInspector: NSWindowController,RegistryDelegate {
 
+    static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
+
     // In the tool bar
     @IBOutlet weak var scopeSegmentedControl: NSSegmentedControl!
 
@@ -87,13 +89,33 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
         self.globalTabView.addTabViewItem(logsTabViewItem)
         self.logsViewController.registryDelegate=self
-
+        /*
         let triggersTabViewItem=NSTabViewItem(viewController:self.triggersViewController)
         self.globalTabView.addTabViewItem(triggersTabViewItem)
+         */
     }
 
 
 
+    @IBAction func resetChanges(sender: AnyObject) {
+
+        self.registry?.registryMetadata.changedKeys.removeAll()
+        self.registry?.registryMetadata.currentUser?.changedKeys.removeAll()
+
+        self.registry?.iterateOnCollections({ (collection) in
+            if let o = collection as? JObject{
+                o.changedKeys.removeAll()
+            }
+        })
+
+        self.registry?.superIterate({ (element) in
+            if let o = element as? JObject{
+                o.changedKeys.removeAll()
+            }
+        })
+
+        NSNotificationCenter.defaultCenter().postNotificationName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil)
+    }
 
 
     @IBAction func openWebStack(sender:AnyObject)  {
@@ -103,8 +125,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         }
     }
 
-    @IBAction func commitPendingChanges(sender: AnyObject) {
-        if let document=self.registry {
+    @IBAction func commitPendingChanges(sender: AnyObject) {        if let document=self.registry {
             do {
                 try document.commitPendingChanges()
             } catch {

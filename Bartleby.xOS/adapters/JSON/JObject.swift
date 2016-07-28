@@ -148,6 +148,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                 if key=="*" && !(self is CollectibleCollection){
                     // Dictionnary or NSData Patch
                     self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
+                    self.collection?.provisionChanges(forKey: "item", oldValue: oldValue, newValue: newValue)
                 }else{
                     if let collection = self as? CollectibleCollection {
                         let entityName=Pluralization.singularize(collection.d_collectionName)

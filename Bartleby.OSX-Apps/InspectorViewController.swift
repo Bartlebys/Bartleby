@@ -64,6 +64,18 @@ class InspectorViewController: NSViewController,RegistryViewController{
         super.init(coder: coder)
     }
 
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        NSNotificationCenter.defaultCenter().addObserverForName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil, queue: nil) { (notification) in
+            self._collectionListDelegate?.reloadData()
+        }
+    }
+
+    override func viewWillDisappear() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     /**
      Updates and adapts the children viewControllers to the Represented Object
 
@@ -75,7 +87,7 @@ class InspectorViewController: NSViewController,RegistryViewController{
         if selected.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
 
             switch selected {
-                
+
             case let selected  where selected is Operation :
                 self._bottomViewController=self.changesViewController
                 //self._bottomViewController=self.operationEditor
@@ -104,181 +116,179 @@ class InspectorViewController: NSViewController,RegistryViewController{
 
 }
 
-    // MARK: - CollectionListDelegate
+// MARK: - CollectionListDelegate
 
-    class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource,Identifiable{
+class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource,Identifiable{
 
-        private var _registry:BartlebyDocument
+    private var _registry:BartlebyDocument
 
-        private weak var _outlineView:NSOutlineView!
+    private weak var _outlineView:NSOutlineView!
 
-        private var _collectionNames=[String]()
+    private var _collectionNames=[String]()
 
-        private var _selectionHandler:((selected:Collectible)->())
+    private var _selectionHandler:((selected:Collectible)->())
 
-        var UID: String = Bartleby.createUID()
+    var UID: String = Bartleby.createUID()
 
-        required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:((selected:Collectible)->())) {
-            self._registry=registry
-            self._outlineView=outlineView
-            self._collectionNames=registry.getCollectionsNames()
-            self._selectionHandler=onSelection
-            super.init()
-            do{
-                try self._registry.iterateOnCollections { (collection) in
-                    collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
-                        self.reloadData()
-                    })
-                }
-            } catch{
+    required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:((selected:Collectible)->())) {
+        self._registry=registry
+        self._outlineView=outlineView
+        self._collectionNames=registry.getCollectionsNames()
+        self._selectionHandler=onSelection
+        super.init()
+        self._registry.iterateOnCollections { (collection) in
+            collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+                self.reloadData()
+            })
+        }
+
+    }
+
+
+    func reloadData(){
+        var selectedIndexes=self._outlineView.selectedRowIndexes
+        self._outlineView.reloadData()
+        if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
+            selectedIndexes=NSIndexSet(index: 0)
+        }
+        self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
+
+
+    }
+
+
+    //MARK: NSOutlineViewDataSource
+
+
+    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+        if let collection  = item as? CollectibleCollection {
+            return collection.count
+        }
+        return self._collectionNames.count + 2
+    }
+
+    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+        if let collection  = item as? CollectibleCollection {
+            return collection.itemAtIndex(index) as! AnyObject
+        }else{
+            if index==0{
+                return self._registry.registryMetadata.currentUser!
+            }
+
+            if index==1{
+                return self._registry.registryMetadata
+            }
+            let collectionName=self._collectionNames[index - 2]
+            return self._registry.collectionByName(collectionName) as? AnyObject ?? "ERROR"
+        }
+    }
+
+
+    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+        return (item is CollectibleCollection)
+    }
+
+    func outlineView(outlineView: NSOutlineView, persistentObjectForItem item: AnyObject?) -> AnyObject? {
+        if let serializable = item as? Serializable {
+            return JSerializer.serialize(serializable)
+        }
+        return nil
+    }
+
+    func outlineView(outlineView: NSOutlineView, itemForPersistentObject object: AnyObject) -> AnyObject? {
+        if let deserializable = object as? NSData {
+            do {
+                let o = try JSerializer.deserialize(deserializable)
+                return o as? AnyObject
+            } catch {
+                bprint("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
             }
         }
+        return nil
+    }
+
+    //MARK: NSOutlineViewDelegate
 
 
-        func reloadData(){
-            var selectedIndexes=self._outlineView.selectedRowIndexes
-            self._outlineView.reloadData()
-            if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
-                selectedIndexes=NSIndexSet(index: 0)
+    func outlineView(outlineView: NSOutlineView, viewForTableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+        switch item {
+        case let element where element is CollectibleCollection :
+            let view = outlineView.makeViewWithIdentifier("CollectionCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                textField.stringValue = (element as! CollectibleCollection).d_collectionName
             }
-            self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
-
-
-        }
-
-
-        //MARK: NSOutlineViewDataSource
-
-
-        func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-            if let collection  = item as? CollectibleCollection {
-                return collection.count
+            self.configureInlineButton(view, casted: element as! JObject)
+            return view
+        case let element  where element is RegistryMetadata :
+            let casted=(element as! RegistryMetadata)
+            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                textField.stringValue = "Registry Metadata"
             }
-            return self._collectionNames.count + 2
-        }
-
-        func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-            if let collection  = item as? CollectibleCollection {
-                return collection.itemAtIndex(index) as! AnyObject
-            }else{
-                if index==0{
-                    return self._registry.registryMetadata.currentUser!
-                }
-
-                if index==1{
-                    return self._registry.registryMetadata
-                }
-                let collectionName=self._collectionNames[index - 2]
-                return self._registry.collectionByName(collectionName) as? AnyObject ?? "ERROR"
-            }
-        }
-
-
-        func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-            return (item is CollectibleCollection)
-        }
-
-        func outlineView(outlineView: NSOutlineView, persistentObjectForItem item: AnyObject?) -> AnyObject? {
-            if let serializable = item as? Serializable {
-                return JSerializer.serialize(serializable)
-            }
-            return nil
-        }
-
-        func outlineView(outlineView: NSOutlineView, itemForPersistentObject object: AnyObject) -> AnyObject? {
-            if let deserializable = object as? NSData {
-                do {
-                    let o = try JSerializer.deserialize(deserializable)
-                    return o as? AnyObject
-                } catch {
-                    bprint("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
-                }
-            }
-            return nil
-        }
-
-        //MARK: NSOutlineViewDelegate
-
-
-        func outlineView(outlineView: NSOutlineView, viewForTableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
-            switch item {
-            case let element where element is CollectibleCollection :
-                let view = outlineView.makeViewWithIdentifier("CollectionCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    textField.stringValue = (element as! CollectibleCollection).d_collectionName
-                }
-                self.configureInlineButton(view, casted: element as! JObject)
-                return view
-            case let element  where element is RegistryMetadata :
-                let casted=(element as! RegistryMetadata)
-                let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    textField.stringValue = "Registry Metadata"
-                }
-                self.configureInlineButton(view, casted: casted)
-                return view
-            case let element  where element is User :
-                let casted=(element as! User)
-                let view = outlineView.makeViewWithIdentifier("UserCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    if casted.creatorUID==casted.UID{
-                        textField.stringValue = "Current User"
-                    }else{
-                        textField.stringValue = casted.UID
-                    }
-                }
-                self.configureInlineButton(view, casted: casted)
-                return view
-            case let element  where element is Collectible :
-                let casted=(element as! JObject)
-                let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
+            self.configureInlineButton(view, casted: casted)
+            return view
+        case let element  where element is User :
+            let casted=(element as! User)
+            let view = outlineView.makeViewWithIdentifier("UserCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                if casted.creatorUID==casted.UID{
+                    textField.stringValue = "Current User"
+                }else{
                     textField.stringValue = casted.UID
                 }
-                self.configureInlineButton(view, casted: casted)
-                return view
-                
-            default:
-                return  NSView()
             }
-        }
-
-
-
-        private func configureInlineButton(view:NSView,casted:JObject){
-            if let inlineButton = view.viewWithTag(2) as? NSButton{
-                if casted.changedKeys.count > 0 {
-                    inlineButton.hidden=false
-                    inlineButton.title="\(casted.changedKeys.count)"
-                }else{
-                    inlineButton.hidden=true
-                }
+            self.configureInlineButton(view, casted: casted)
+            return view
+        case let element  where element is Collectible :
+            let casted=(element as! JObject)
+            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            if let textField = view.textField {
+                textField.stringValue = casted.UID
             }
+            self.configureInlineButton(view, casted: casted)
+            return view
 
+        default:
+            return  NSView()
         }
+    }
 
 
-        
-        func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
-            if let _ = item as? CollectibleCollection {
-                return 20
+
+    private func configureInlineButton(view:NSView,casted:JObject){
+        if let inlineButton = view.viewWithTag(2) as? NSButton{
+            if casted.changedKeys.count > 0 {
+                inlineButton.hidden=false
+                inlineButton.title="\(casted.changedKeys.count)"
             }else{
-                return 20
+                inlineButton.hidden=true
             }
         }
-        
-        
-        func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
-            return true
+
+    }
+
+
+
+    func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
+        if let _ = item as? CollectibleCollection {
+            return 20
+        }else{
+            return 20
         }
-        
-        
-        func outlineViewSelectionDidChange(notification: NSNotification) {
-            if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
-                dispatch_async(dispatch_get_main_queue()) {
-                    self._selectionHandler(selected: item)
-                }
+    }
+
+
+    func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
+        return true
+    }
+
+
+    func outlineViewSelectionDidChange(notification: NSNotification) {
+        if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
+            dispatch_async(dispatch_get_main_queue()) {
+                self._selectionHandler(selected: item)
             }
         }
-        
+    }
+
 }

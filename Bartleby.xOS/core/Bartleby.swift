@@ -221,9 +221,10 @@ public class  Bartleby: Consignee {
     private static var _enableBPrint: Bool=false
     public static let logSectionSeparator="[- | BARTLEBY_LOG_SECTION | -]\n"
     public static let startTime=CFAbsoluteTimeGetCurrent()
-    public static var bprintCollection=BprintCollection()
+    public static  var bprintCollection=BprintCollection()
 
 
+    public static var bPrintObservers=[BprintObserver]()
 
     /**
      Print indirection with contextual informations.
@@ -239,7 +240,10 @@ public class  Bartleby: Consignee {
         if(self._enableBPrint) {
             let elapsed=Bartleby.elapsedTime
             let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
-            Bartleby.bprintCollection.entries.append(entry)
+            Bartleby.bprintCollection.entries.insert(entry, atIndex: 0)
+            for observers in bPrintObservers{
+                observers.acknowledge(entry)
+            }
             print(entry)
         }
     }
@@ -430,42 +434,44 @@ public class  Bartleby: Consignee {
                     }
                 })
             }
-
-
         }
     }
 
 
 }
 
+public protocol BprintObserver{
 
+    func acknowledge(entry:BprintEntry);
+}
 
 // MARK: - BprintEntry
 
 
-public struct BprintCollection:Mappable{
+@objc(BprintCollection) public class BprintCollection:NSObject,Mappable{
 
-    public var entries=[BprintEntry]()
+    @objc public dynamic var entries=[BprintEntry]()
 
-
-    public init(){
+    override public init(){
     }
 
     // MARK: - Mappable
 
-    public init?(_ map: Map) {
+    public required init?(_ map: Map) {
     }
 
-    public mutating func mapping(map: Map) {
+    public func mapping(map: Map) {
         self.entries <- map["entries"]
     }
 
 }
 
+
+
 /**
  *  A struct to insure temporary persistency of a BprintEntry
  */
-public struct BprintEntry:CustomStringConvertible,Mappable{
+@objc(BprintEntry) public class BprintEntry:NSObject,Mappable{
 
     public var counter: Int=0
     public var message: String=""
@@ -477,10 +483,13 @@ public struct BprintEntry:CustomStringConvertible,Mappable{
     public var decorative:Bool=false
     private var _runUID:String=Bartleby.runUID
 
+    override public init(){
+    }
+
     public init(counter:Int,message: String, file: String, function: String, line: Int, category: String,elapsed:CFAbsoluteTime,decorative:Bool=false){
         self.counter=counter
         self.message=message
-        self.file=file
+        self.file=BprintEntry.extractFileName(file)
         self.function=function
         self.line=line
         self.category=category
@@ -488,46 +497,42 @@ public struct BprintEntry:CustomStringConvertible,Mappable{
         self.decorative=decorative
     }
 
-    public var description: String {
-  
+    func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
+        var s="\(number)"
+        while s.characters.count < numberOfDigit {
+            if left {
+                s=char+s
+            } else {
+                s=s+char
+            }
+        }
+        return s
+    }
+
+    static func extractFileName(s: String) -> String {
+        let components=s.componentsSeparatedByString("/")
+        if components.count>0 {
+            return components.last!
+        }
+        return ""
+    }
+
+    override public var description: String {
         if decorative {
             return "\(message)"
         }
-
-        func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
-            var s="\(number)"
-            while s.characters.count < numberOfDigit {
-                if left {
-                    s=char+s
-                } else {
-                    s=s+char
-                }
-            }
-            return s
-        }
-
-        func extractFileName(s: String) -> String {
-            let components=s.componentsSeparatedByString("/")
-            if components.count>0 {
-                return components.last!
-            }
-            return ""
-        }
-
-        let ft: Int=Int(floor(elapsed))
-        let micro=Int((elapsed-Double(ft))*1000)
-        let s="\(padded(counter, 6)) \( category) | \(padded(ft, 4)):\(padded( micro, 3, "0", false)) \(extractFileName(file))/\(function)#\(line) : \(message)"
+        let s="\(self.padded(counter, 6)) \( category) | \(self.padded( elapsed, 3, "0", false)) \(file))/\(function)#\(line) : \(message)"
 
         return  s
     }
 
     // MARK: - Mappable
 
-    public init?(_ map: Map) {
+    public required init?(_ map: Map) {
     }
 
 
-    public mutating func mapping(map: Map) {
+    public func mapping(map: Map) {
         self.counter <- map["counter"]
         self.message <- map["message"]
         self.file <- map["file"]

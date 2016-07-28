@@ -8,6 +8,14 @@
 
 import Foundation
 
+#if os(OSX)
+    import AppKit
+#else
+    import UIKit
+#endif
+
+
+
 // The goal of PString is to facilitate PHP to SWIFT port
 // It focuses on translating litteraly the PHP style string processing.
 // For example Flexions' Pluralization.php has been ported to swift in a few minutes
@@ -187,6 +195,11 @@ extension String {
         return (self.rangeOfString(string) != nil)
     }
 
+
+    func contains(string: String,compareOptions:NSStringCompareOptions) -> Bool {
+        return (self.rangeOfString(string, options: compareOptions, range: self.fullCharactersRange(), locale: NSLocale.currentLocale()) != nil )
+    }
+
     func isMatching(regex: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: [])
@@ -222,3 +235,7 @@ extension String {
     }
 
 }
+
+
+
+
