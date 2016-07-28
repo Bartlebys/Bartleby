@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class LogsViewController: NSViewController,RegistryViewController{
+class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet weak var messageColumn: NSTableColumn!
     var font:NSFont=NSFont.systemFontOfSize(NSFont.smallSystemFontSize())

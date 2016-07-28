@@ -8,7 +8,15 @@
 
 import Cocoa
 
-class TriggersViewController: NSViewController {
+class TriggersViewController: NSViewController,RegistryDependent {
+
+    internal var registryDelegate: RegistryDelegate?{
+        didSet{
+            if let document=self.registryDelegate?.getRegistry(){
+               // ...
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

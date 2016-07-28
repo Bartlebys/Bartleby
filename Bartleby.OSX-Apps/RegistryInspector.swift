@@ -8,14 +8,11 @@
 
 import Cocoa
 
-
-
 protocol RegistryDelegate {
     func getRegistry() -> BartlebyDocument?
 }
 
-
-protocol RegistryViewController {
+protocol RegistryDependent {
     var registryDelegate:RegistryDelegate? { get set }
 }
 
@@ -42,6 +39,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
 
     @IBOutlet var triggersViewController: TriggersViewController!
 
+    @IBOutlet var webStackViewController: WebStack!
 
     // We bind this index on the scopeSegmentedControl
     public dynamic var selectedIndex:Int = -1{
@@ -89,10 +87,17 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
         self.globalTabView.addTabViewItem(logsTabViewItem)
         self.logsViewController.registryDelegate=self
+
+        let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
+        self.globalTabView.addTabViewItem(webTabViewItem)
+        self.webStackViewController.registryDelegate=self
+
         /*
-        let triggersTabViewItem=NSTabViewItem(viewController:self.triggersViewController)
-        self.globalTabView.addTabViewItem(triggersTabViewItem)
+         let triggersTabViewItem=NSTabViewItem(viewController:self.triggersViewController)
+         self.globalTabView.addTabViewItem(triggersTabViewItem)
          */
+
+
     }
 
 

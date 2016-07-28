@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class InspectorViewController: NSViewController,RegistryViewController{
+class InspectorViewController: NSViewController,RegistryDependent{
 
 
     @IBOutlet weak var listOutlineView: NSOutlineView!
