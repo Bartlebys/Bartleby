@@ -136,12 +136,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         self._collectionNames=registry.getCollectionsNames()
         self._selectionHandler=onSelection
         super.init()
+        self._registry.registryMetadata.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+             self.reloadData()
+        })
         self._registry.iterateOnCollections { (collection) in
             collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
                 self.reloadData()
             })
         }
-
     }
 
 
@@ -164,7 +166,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         if let collection  = item as? CollectibleCollection {
             return collection.count
         }
-        return self._collectionNames.count + 2
+        return self._collectionNames.count + 1
     }
 
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
@@ -172,13 +174,9 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return collection.itemAtIndex(index) as! AnyObject
         }else{
             if index==0{
-                return self._registry.registryMetadata.currentUser!
-            }
-
-            if index==1{
                 return self._registry.registryMetadata
             }
-            let collectionName=self._collectionNames[index - 2]
+            let collectionName=self._collectionNames[index - 1]
             return self._registry.collectionByName(collectionName) as? AnyObject ?? "ERROR"
         }
     }
