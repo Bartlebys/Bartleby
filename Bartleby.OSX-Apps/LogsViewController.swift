@@ -129,7 +129,7 @@ extension LogsViewController:NSTableViewDelegate{
         paragraphStyle.lineBreakMode = NSLineBreakMode.ByCharWrapping;
         let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle]
         let boundingBox = item.message.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attributes, context: nil)
-        return boundingBox.height + 10
+        return boundingBox.height + 20
     }
 }
 

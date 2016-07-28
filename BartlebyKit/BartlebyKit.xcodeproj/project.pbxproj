@@ -316,6 +316,7 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
+		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
@@ -552,6 +553,7 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
+		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCreationWithTheSameMailInDifferentSpaceTests.swift; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 				E50F3AEE1D40D27F00532B09 /* TriggersViewController.xib */,
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
+				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";
@@ -1330,6 +1333,7 @@
 				E50F3E631D40D50400532B09 /* Global.swift in Sources */,
 				E50F3E6B1D40D50400532B09 /* CollectibleCollection.swift in Sources */,
 				E50F3E911D40D50400532B09 /* Supervisable.swift in Sources */,
+				E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */,
 				E50F3E8B1D40D50400532B09 /* Serializable.swift in Sources */,
 				E50F3DF71D40D50400532B09 /* DeletePermissions.swift in Sources */,
 				E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,

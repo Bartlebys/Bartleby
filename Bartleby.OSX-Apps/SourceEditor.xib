@@ -40,10 +40,11 @@
                             <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" verticallyResizable="YES" id="wWO-rx-Q4V">
                                 <rect key="frame" x="0.0" y="0.0" width="850" height="565"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="minSize" width="835" height="565"/>
                                 <size key="maxSize" width="852" height="10000000"/>
-                                <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="insertionPointColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                 <size key="minSize" width="835" height="565"/>
                                 <size key="maxSize" width="852" height="10000000"/>
                                 <allowedInputSourceLocales>

@@ -32,7 +32,11 @@ class SourceEditor: NSViewController,Editor {
 
     //MARK: Textual Edition
 
-    @IBOutlet var textView: NSTextView!
+    @IBOutlet var textView: NSTextView!{
+        didSet{
+            textView.textColor=NSColor.whiteColor()
+        }
+    }
 
     @IBOutlet weak var applyChangesButton: NSButton!
 
