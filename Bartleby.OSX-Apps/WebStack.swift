@@ -9,9 +9,13 @@
 import Cocoa
 import WebKit
 
-class WebStack: NSViewController,RegistryDependent {
+class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
 
-    @IBOutlet weak var webView: WebView!
+    @IBOutlet weak var webView: WebView!{
+        didSet{
+            webView.frameLoadDelegate=self
+        }
+    }
 
     private var URL:NSURL?
 
@@ -41,5 +45,10 @@ class WebStack: NSViewController,RegistryDependent {
         }
     }
 
+    // Mark: WebFrameLoadDelegate
     
+    public func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!){
+        self._loadingAttempted=false
+    }
+
 }
