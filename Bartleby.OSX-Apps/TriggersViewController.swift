@@ -13,7 +13,7 @@ class TriggersViewController: NSViewController,RegistryDependent {
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let document=self.registryDelegate?.getRegistry(){
-               // ...
+               Bartleby.todo("...", message: document.UID)
             }
         }
     }

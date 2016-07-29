@@ -85,7 +85,6 @@ extension ChangesViewController:NSTableViewDelegate{
         guard let item =  self._selectedItem?.changedKeys.reverse()[row] else {
             return nil
         }
-        var image:NSImage?
         var text:String = ""
         var cellIdentifier: String = ""
 
@@ -101,7 +100,7 @@ extension ChangesViewController:NSTableViewDelegate{
         }
         if let cell = tableView.makeViewWithIdentifier(cellIdentifier, owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
-            cell.imageView?.image = image ?? nil
+            //cell.imageView?.image = image ?? nil
             return cell
         }
         return nil

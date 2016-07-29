@@ -90,7 +90,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
     public func dispatchAdaptiveMessage(context: Consignable, title: String, body: String, onSelectedIndex:(selectedIndex: UInt)->())->() {
         // You can override t Consignee and implement your own adaptive mapping
         self.presentInteractiveMessage(title, body: body, onSelectedIndex: onSelectedIndex)
-
+        bprint("presentInteractiveMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
     }
 
 
@@ -129,7 +129,6 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
                     onSelectedIndex(selectedIndex: 0)
                 }
             #else
-                self.logMessage(title, body: body)
             #endif
 
         #elseif os(iOS)
@@ -174,7 +173,6 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
                     // ERROR
                 }
             #else
-                self.logMessage(title, body: body)
             #endif
 
         #elseif os(iOS)
@@ -217,6 +215,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
                     sheet.close()
                 }
             }
+            bprint("presentVolatileMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
         }
 
     }

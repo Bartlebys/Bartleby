@@ -19,6 +19,7 @@ class LogoutCommand: CommandBase {
                                     helpMessage: "A spaceUID may be required for authentication.\n\t If spaceUID is set, email, password and salt, must be set too!")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.\n\t If salt is set; email, password and spaceUID, must be set too!\n\n")
+
         addOptions(sourceURLString, spaceUID, sharedSalt)
         
         if parse() {
@@ -53,8 +54,11 @@ class LogoutCommand: CommandBase {
                 // For future extensions.
                 Bartleby.configuration.API_BASE_URL = baseApiURL!
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
+
+                let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
+               let user=document.newUser()
                 
-                LogoutUser.execute(fromDataSpace:spaceUID.value!, sucessHandler: { () -> () in
+                LogoutUser.execute(user, sucessHandler: { () -> () in
                     print ("Successful logout")
                     exit(EX_OK)
                     }, failureHandler: { (context) -> () in

@@ -15,12 +15,15 @@ public class LogoutUser: JObject {
         return "LogoutUser"
     }
 
-    static public func execute(fromDataSpace spaceUID: String,
-                               sucessHandler success:()->(),
-                                             failureHandler failure:(context: JHTTPResponse)->()) {
-                    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                    let pathURL=baseURL.URLByAppendingPathComponent("user/logout")
-                    if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
+    static public func execute( user: User,
+                                sucessHandler success:()->(),
+                                failureHandler failure:(context: JHTTPResponse)->()) {
+
+                    if let registry=user.document{
+
+                        let baseURL=Bartleby.sharedInstance.getCollaborationURL(registry.UID)
+                        let pathURL=baseURL.URLByAppendingPathComponent("user/logout")
+
                         if registry.registryMetadata.identificationMethod == .Key{
                             // Delete the key
                             registry.registryMetadata.identificationValue=nil
@@ -28,7 +31,7 @@ public class LogoutUser: JObject {
                             success()
                         }else{
                             let dictionary: Dictionary<String, AnyObject>=[:]
-                            let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
+                            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:registry.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
                             let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
                             r.responseString { response in
                                 let request=response.request
@@ -93,7 +96,7 @@ public class LogoutUser: JObject {
 
                         let context = JHTTPResponse( code: 1,
                                                      caller: "LogoutUser.execute",
-                                                     relatedURL:pathURL,
+                                                     relatedURL:NSURL(),
                                                      httpStatusCode:417,
                                                      response:nil,
                                                      result:"{\"message\":\"Attempt to logout without having created a document that holds the dataspace\"}")

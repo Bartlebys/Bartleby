@@ -47,7 +47,7 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
 
     // Mark: WebFrameLoadDelegate
     
-    public func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!){
+    func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!){
         self._loadingAttempted=false
     }
 

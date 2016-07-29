@@ -23,73 +23,91 @@ import ObjectMapper
     }
 
 
-    public static func execute(fromDataSpace spaceUID:String,
+    public static func execute(fromRegistry registryUID:String,
 						lockerId:String,
 						sucessHandler success:(locker:Locker)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
 	
-				    let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-				    let pathURL=baseURL.URLByAppendingPathComponent("locker/\(lockerId)")
-				    let dictionary:Dictionary<String, AnyObject>=[:]
-				    let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
-				    let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
-				    r.responseJSON{ response in
-					    let request=response.request
-				        let result=response.result
-				        let response=response.response
-				        // Bartleby consignation
-				        let context = JHTTPResponse( code: 1560507225,
-				            caller: "ReadLockerById.execute",
-				            relatedURL:request?.URL,
-				            httpStatusCode: response?.statusCode ?? 0,
-				            response: response,
-				            result:result.value)
-				        // React according to the situation
-				        var reactions = Array<Bartleby.Reaction> ()
-				        reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
-				        if result.isFailure {
-				           let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
-				                context: context,
-				                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-				                body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
-				                transmit:{ (selectedIndex) -> () in
-				            })
-				            reactions.append(failureReaction)
-				            failure(context:context)
-				        }else{
-				            if let statusCode=response?.statusCode {
-				                if 200...299 ~= statusCode {
-									if let instance = Mapper <Locker>().map(result.value){					    
-									    success(locker: instance)
-									  }else{
-									   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
-									        context: context,
-									        title: NSLocalizedString("Deserialization issue",
-									            comment: "Deserialization issue"),
-									        body:"(result.value)",
-									        transmit:{ (selectedIndex) -> () in
-									    })
-									   reactions.append(failureReaction)
-									   failure(context:context)
-									}
-				            }else{
-				                // Bartlby does not currenlty discriminate status codes 100 & 101
-				                // and treats any status code >= 300 the same way
-				                // because we consider that failures differentiations could be done by the caller.
-				                let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
-				                    context: context,
-				                    title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-				                    body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
-				                    transmit:{ (selectedIndex) -> () in
-				                })
-				               reactions.append(failureReaction)
-				               failure(context:context)
-				            }
-				        }
-				     }
-				     //Let s react according to the context.
-				     Bartleby.sharedInstance.perform(reactions, forContext: context)
-				  }
-				}
 
+        if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
+            let pathURL=document.baseURL.URLByAppendingPathComponent("locker/\(lockerId)")
+            let dictionary:Dictionary<String, AnyObject>=[:]
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
+            let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            r.responseJSON{ response in
+        
+                let request=response.request
+                let result=response.result
+                let response=response.response
+        
+        
+                // Bartleby consignation
+        
+                let context = JHTTPResponse( code: 1560507225,
+                    caller: "ReadLockerById.execute",
+                    relatedURL:request?.URL,
+                    httpStatusCode: response?.statusCode ?? 0,
+                    response: response,
+                    result:result.value)
+        
+                // React according to the situation
+                var reactions = Array<Bartleby.Reaction> ()
+                reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
+        
+                if result.isFailure {
+                   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                        context: context,
+                        title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                        body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
+                        transmit:{ (selectedIndex) -> () in
+                    })
+                    reactions.append(failureReaction)
+                    failure(context:context)
+        
+                }else{
+                    if let statusCode=response?.statusCode {
+                        if 200...299 ~= statusCode {
+        					if let instance = Mapper <Locker>().map(result.value){					    
+					    success(locker: instance)
+					  }else{
+					   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+					        context: context,
+					        title: NSLocalizedString("Deserialization issue",
+					            comment: "Deserialization issue"),
+					        body:"(result.value)",
+					        transmit:{ (selectedIndex) -> () in
+					    })
+					   reactions.append(failureReaction)
+					   failure(context:context)
+					}
+
+                    }else{
+                        // Bartlby does not currenlty discriminate status codes 100 & 101
+                        // and treats any status code >= 300 the same way
+                        // because we consider that failures differentiations could be done by the caller.
+                        let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                            context: context,
+                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                            body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
+                            transmit:{ (selectedIndex) -> () in
+                        })
+                       reactions.append(failureReaction)
+                       failure(context:context)
+                    }
+                }
+             }
+        
+             //Let s react according to the context.
+             Bartleby.sharedInstance.perform(reactions, forContext: context)
+        }
+      }else{
+         let context = JHTTPResponse( code: 1,
+                caller: "ReadLockerById.execute",
+                relatedURL:NSURL(),
+                httpStatusCode: 417,
+                response: nil,
+                result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
+         failure(context:context)
+       }
+    }
 }

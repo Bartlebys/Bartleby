@@ -27,11 +27,22 @@ import ObjectMapper
         return "GroupsCollectionController"
     }
 
+    // Registry is referenced on Collection Proxy Creation.
     public var registry:BartlebyDocument?
 
-    weak public var undoManager:NSUndoManager?
+    public var spaceUID:String {
+        get{
+            return self.registry?.spaceUID ?? Default.NO_UID
+        }
+    }
 
-    public var spaceUID:String=Default.NO_UID
+    public var registryUID:String{
+        get{
+            return self.registry?.UID ?? Default.NO_UID
+        }
+    }
+
+    weak public var undoManager:NSUndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
@@ -98,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "groups" : "group" )  has changed in GroupsCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdateGroup.commit(changed, inDataSpace:self.spaceUID)
+            UpdateGroup.commit(changed, inRegistry:self.registryUID)
         }
         return UIDS
     }
@@ -265,7 +276,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreateGroup.commit(item, inDataSpace:self.spaceUID)
+               CreateGroup.commit(item, inRegistry:self.registryUID)
             }
 
         }else{
@@ -312,7 +323,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeleteGroup.commit(item.UID,fromDataSpace:self.spaceUID) 
+                DeleteGroup.commit(item.UID,fromRegistry:self.registryUID) 
             }
 
 

@@ -20,7 +20,6 @@ class AuthCookiesTests: XCTestCase {
     // We need a real local document to login.
     static let document:BartlebyDocument=BartlebyDocument()
 
-
     override class func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
@@ -41,19 +40,17 @@ class AuthCookiesTests: XCTestCase {
 
     func test001_createUser() {
         let expectation = expectationWithDescription("CreateUser should respond")
-
-        let user=User()
+        let user=AuthCookiesTests.document.newUser()
         user.email=AuthCookiesTests._email
         user.verificationMethod = .ByEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=AuthCookiesTests._password
-        user.spaceUID=AuthCookiesTests.document.spaceUID//(!)
         AuthCookiesTests._userID=user.UID // We store the UID for future deletion
 
         // Store the current user
         AuthCookiesTests._createdUser=user
         CreateUser.execute(user,
-                           inDataSpace:AuthCookiesTests.document.spaceUID,
+                           inRegistry:AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -90,7 +87,7 @@ class AuthCookiesTests: XCTestCase {
 
     func test003_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: AuthCookiesTests.document.spaceUID,
+        LogoutUser.execute(AuthCookiesTests._createdUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
@@ -133,7 +130,7 @@ class AuthCookiesTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(AuthCookiesTests._userID,
-                           fromDataSpace: AuthCookiesTests.document.spaceUID,
+                           fromRegistry: AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -146,7 +143,7 @@ class AuthCookiesTests: XCTestCase {
 
     func test009_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace:AuthCookiesTests.document.spaceUID,
+        LogoutUser.execute(AuthCookiesTests._createdUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {

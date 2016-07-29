@@ -23,7 +23,7 @@ enum TasksGroupError: ErrorType {
     case MultipleAttemptToAddTask
     case InterruptedOnFault
     case MissingExternalReference
-    case TaskGroupDataSpaceNotFound(spaceUID:String)
+    case TaskGroupRegistryWithUIDNotFound(registryUID:String)
 }
 
 /*
@@ -183,11 +183,11 @@ public extension TasksGroup {
         } else if let lastTask: Task=self.lastChainedTask!.toLocalInstance() {
             try lastTask.addChildren(task)
         } else {
-            if let registry=Bartleby.sharedInstance.getDocumentByUID(self.spaceUID) {
+            if let registry=Bartleby.sharedInstance.getDocumentByUID(self.registryUID) {
                 let tasksCollection: TasksCollectionController = try registry.getCollection()
                 print(tasksCollection.items.count)
             }
-            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID: self.spaceUID)
+            throw TasksGroupError.TaskGroupRegistryWithUIDNotFound(registryUID: self.registryUID)
         }
     }
 
@@ -201,7 +201,7 @@ public extension TasksGroup {
      - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
      */
     private func _insurePersistencyOfTask(task: Task) throws {
-        if let registry=Bartleby.sharedInstance.getDocumentByUID(self.spaceUID) {
+        if let registry=Bartleby.sharedInstance.getDocumentByUID(self.registryUID) {
             // Identify the task Creator.
             task.creatorUID=registry.currentUser.UID
             // Add the taksk to the peristent tasks.
@@ -209,7 +209,7 @@ public extension TasksGroup {
             persitentTasks.add(task,commit: false)
 
         } else {
-            throw TasksGroupError.TaskGroupDataSpaceNotFound(spaceUID:self.spaceUID)
+            throw TasksGroupError.TaskGroupRegistryWithUIDNotFound(registryUID:self.registryUID)
         }
     }
 

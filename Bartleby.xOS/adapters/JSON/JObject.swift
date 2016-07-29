@@ -34,14 +34,19 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         super.init()
     }
 
+    // A reference to the document
+    // Most of the JObject contains a reference to the document
+    public var document:BartlebyDocument?
 
     // On object insertion or Registry deserialization
     // We setup this collection reference
-    public var collection:CollectibleCollection?
-
-    //Returns the registry
-    public func getDocument()->(BartlebyDocument?){
-        return self.collection?.registry
+    // On newUser we setup directly user.document.
+    public var collection:CollectibleCollection?{
+        didSet{
+            if let registry=collection?.registry{
+                self.document=registry
+            }
+        }
     }
 
     // MARK: - Collectible = Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType
@@ -497,7 +502,7 @@ extension JObject:DictionaryRepresentation {
     
     var elapsed=Bartleby.elapsedTime
     var key:String
-    var changes: String
+    var changes:String
     
     init(key:String,changes:String) {
         self.key=key

@@ -34,7 +34,7 @@ public class  Bartleby: Consignee {
     // The File manager
     static public var fileManager: BartlebyFileIO=BFileManager()
 
-
+    // The task scheduler
     static private var _scheduler: TasksScheduler=TasksScheduler()
 
     // The task Scheduler
@@ -122,8 +122,6 @@ public class  Bartleby: Consignee {
         return "I would prefer not to!"
     }
 
-
-
     // MARK: -
     // TODO: @md #crypto Check crypto key requirement
     static public func isValidKey(key: String) -> Bool {
@@ -143,14 +141,15 @@ public class  Bartleby: Consignee {
 
 
     /**
-     Returns a document by its UID
+     Returns a document by its UID ( == document.registryMetadata.rootObjectUID)
+     The SpaceUID is shared between multiple document.
 
-     - parameter UID: the uid
+     - parameter UID: the uid of the document
 
      - returns: the document
      */
     public func getDocumentByUID(UID:String) -> BartlebyDocument?{
-        return _registries[UID] as? BartlebyDocument
+        return self._registries[UID] as? BartlebyDocument
     }
     /**
      Register a registry (each document has its own registry)
@@ -158,7 +157,7 @@ public class  Bartleby: Consignee {
      - parameter registry: the registry
      */
     public func declare(registry: Registry) {
-        _registries[registry.spaceUID]=registry
+        self._registries[registry.UID]=registry
     }
 
     /**
@@ -178,8 +177,8 @@ public class  Bartleby: Consignee {
      */
     public func replace(registryProxyUID: String, by registryUID: String) {
         if( registryProxyUID != registryUID) {
-            if let registry=_registries[registryProxyUID] {
-                _registries[registryUID]=registry
+            if let registry=self._registries[registryProxyUID] {
+                self._registries[registryUID]=registry
                 _registries.removeValueForKey(registryProxyUID)
             }
         }
@@ -377,14 +376,14 @@ public class  Bartleby: Consignee {
     // MARK: - Paths & URL
 
     /**
-     Call
+     Returns the url by the Registry UID
 
-     - parameter spaceUID: the spaceUID
+     - parameter registryUID: the registryUID
 
      - returns: the
      */
-    public func getCollaborationURLForSpaceUID(spaceUID: String) -> NSURL {
-        if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID) {
+    public func getCollaborationURL(registryUID: String) -> NSURL {
+        if let registry=self.getDocumentByUID(registryUID) {
             if let collaborationServerURL=registry.registryMetadata.collaborationServerURL {
                 return collaborationServerURL
             }
@@ -392,16 +391,24 @@ public class  Bartleby: Consignee {
         return Bartleby.configuration.API_BASE_URL
     }
 
-    /**
-     Returns a storage
 
+    // !!! TO BE DEPRECATED ?
+    /**
+     This method retuns the URL by space UID.
+     You should normally use : getCollaborationURL(...)
+     This method can be used when performing non specific document operation (Lockers, ...)
      - parameter spaceUID: the spaceUID
 
-     - returns: the Application folder URL
+     - returns: the collaboration server URL
      */
-    public func getApplicationDataFolderPath(spaceUID: String) -> String {
-        let folder=Bartleby.getSearchPath(.ApplicationSupportDirectory)!
-        return folder + "Bartleby/\(spaceUID)/"
+    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL{
+        for (_,registry) in self._registries {
+            if registry.spaceUID==spaceUID{
+                return registry.baseURL
+            }
+        }
+        return Bartleby.configuration.API_BASE_URL
+
     }
 
 

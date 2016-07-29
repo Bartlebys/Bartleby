@@ -27,11 +27,22 @@ import ObjectMapper
         return "PermissionsCollectionController"
     }
 
+    // Registry is referenced on Collection Proxy Creation.
     public var registry:BartlebyDocument?
 
-    weak public var undoManager:NSUndoManager?
+    public var spaceUID:String {
+        get{
+            return self.registry?.spaceUID ?? Default.NO_UID
+        }
+    }
 
-    public var spaceUID:String=Default.NO_UID
+    public var registryUID:String{
+        get{
+            return self.registry?.UID ?? Default.NO_UID
+        }
+    }
+
+    weak public var undoManager:NSUndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
@@ -98,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "permissions" : "permission" )  has changed in PermissionsCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdatePermission.commit(changed, inDataSpace:self.spaceUID)
+            UpdatePermission.commit(changed, inRegistry:self.registryUID)
         }
         return UIDS
     }
@@ -247,7 +258,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreatePermission.commit(item, inDataSpace:self.spaceUID)
+               CreatePermission.commit(item, inRegistry:self.registryUID)
             }
 
         }else{
@@ -281,7 +292,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeletePermission.commit(item.UID,fromDataSpace:self.spaceUID) 
+                DeletePermission.commit(item.UID,fromRegistry:self.registryUID) 
             }
 
 

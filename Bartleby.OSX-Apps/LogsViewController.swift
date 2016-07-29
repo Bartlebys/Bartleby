@@ -125,14 +125,10 @@ extension LogsViewController:NSTableViewDelegate{
         }
         let width=self.messageColumn.width-80;
         let constraintRect = CGSize(width: width, height: CGFloat.max)
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = NSLineBreakMode.ByCharWrapping;
         let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle]
         let boundingBox = item.message.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attributes, context: nil)
         return boundingBox.height + 20
     }
 }
-
-
-
-

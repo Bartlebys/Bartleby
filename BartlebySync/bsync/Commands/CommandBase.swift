@@ -51,4 +51,28 @@ public class CommandBase: Handlers {
     func printVersatile(string: String) {
         print(string)
     }
+
+
+    /**
+     Creates a virtual Document to be able to use Bartleby's stack in Commandlines sequential commands.
+
+     - parameter spaceUID: the spaceUID
+
+     - returns: a document
+     */
+    func virtualDocumentFor(spaceUID:String,rootObjectUID:String?)->BartlebyDocument{
+        let document=BartlebyDocument()
+        document.registryMetadata.spaceUID=spaceUID
+        do{
+            if let rootObjectUID=rootObjectUID{
+                try document.setRootObjectUID(rootObjectUID)
+            }else{
+                try document.setRootObjectUID(Bartleby.createUID())
+            }
+        }catch{
+
+        }
+        Bartleby.sharedInstance.declare(document)
+        return document
+    }
 }

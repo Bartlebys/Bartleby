@@ -22,14 +22,14 @@ import ObjectMapper
 
     private var _userId:String = String()
 
-    // The dataSpace UID
-    private var _spaceUID:String=Default.NO_UID
+    // The registry UID
+    private var _registryUID:String=Default.NO_UID
 
     // The operation
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init(String(), fromDataSpace:Default.NO_UID)
+        self.init(String(), fromRegistry:Default.NO_UID)
     }
 
 
@@ -43,8 +43,8 @@ import ObjectMapper
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self._userId <- ( map["_userId"] )
-		self._spaceUID <- ( map["_spaceUID"] )
-		self._operation.spaceUID <- ( map["_operation.spaceUID"] )
+		self._registryUID <- ( map["_registryUID"] )
+		self._operation.registryUID <- ( map["_operation.registryUID"] )
 		self._operation.creatorUID <- ( map["_operation.creatorUID"] )
 		self._operation.status <- ( map["_operation.status"] )
 		self._operation.counter <- ( map["_operation.counter"] )
@@ -60,8 +60,8 @@ import ObjectMapper
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
 		self._userId=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_userId")! as NSString)
-		self._spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_spaceUID")! as NSString)
-		self._operation.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.spaceUID")! as NSString)
+		self._registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_registryUID")! as NSString)
+		self._operation.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.registryUID")! as NSString)
 		self._operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
 		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
 		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
@@ -74,8 +74,8 @@ import ObjectMapper
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
 		coder.encodeObject(self._userId,forKey:"_userId")
-		coder.encodeObject(self._spaceUID,forKey:"_spaceUID")
-		coder.encodeObject(self._operation.spaceUID,forKey:"_operation.spaceUID")
+		coder.encodeObject(self._registryUID,forKey:"_registryUID")
+		coder.encodeObject(self._operation.registryUID,forKey:"_operation.registryUID")
 		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
 		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
 		if let _operation_counter = self._operation.counter {
@@ -100,12 +100,12 @@ import ObjectMapper
     This is the designated constructor.
 
     - parameter userId: the userId concerned the operation
-    - parameter spaceUID the space UID
+    - parameter registryUID the registry or document UID
 
     */
-    init (_ userId:String=String(), fromDataSpace spaceUID:String) {
+    init (_ userId:String=String(), fromRegistry registryUID:String) {
         self._userId=userId
-        self._spaceUID=spaceUID
+        self._registryUID=registryUID
         super.init()
     }
 
@@ -113,17 +113,17 @@ import ObjectMapper
     Creates the operation and proceeds to commit
 
     - parameter userId: the instance
-    - parameter spaceUID:     the space UID
+    - parameter registryUID:     the registry or document UID
     */
-    static func commit(userId:String, fromDataSpace spaceUID:String){
-        let operationInstance=DeleteUser(userId,fromDataSpace:spaceUID)
+    static func commit(userId:String, fromRegistry registryUID:String){
+        let operationInstance=DeleteUser(userId,fromRegistry:registryUID)
         operationInstance.commit()
     }
 
 
     func commit(){
         let context=Context(code:3979490154, caller: "DeleteUser.commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._spaceUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
                 // Do not track changes
                 self._operation.disableSupervision()
                 // Prepare the operation serialization
@@ -133,7 +133,7 @@ import ObjectMapper
                 self._operation.status=Operation.Status.Pending
                 self._operation.baseUrl=document.registryMetadata.collaborationServerURL
                 self._operation.creationDate=NSDate()
-                self._operation.spaceUID=self._spaceUID
+                self._operation.registryUID=self._registryUID
                 self._operation.summary="DeleteUser(\(self._userId))"
 
                 if let currentUser=document.registryMetadata.currentUser{
@@ -148,7 +148,7 @@ import ObjectMapper
                 }catch{
                     Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing",
+                    body: "Operation collection is missing in DeleteUser",
                     onSelectedIndex: { (selectedIndex) -> () in
                     })
                 }
@@ -158,7 +158,7 @@ import ObjectMapper
             let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Structural error", comment: "Structural error"),
-                    body: "\(m) spaceUID=\(self._spaceUID)",
+                    body: "\(m) registryUID =\(self._registryUID) in DeleteUser",
                     onSelectedIndex: { (selectedIndex) -> () in
                     }
             )
@@ -167,7 +167,7 @@ import ObjectMapper
 
     public func push(sucessHandler success:(context:JHTTPResponse)->(),
         failureHandler failure:(context:JHTTPResponse)->()){
-        if let _ = Bartleby.sharedInstance.getDocumentByUID(self._spaceUID) {
+        if let _ = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             // The unitary operation are not always idempotent
             // so we do not want to push multiple times unintensionnaly.
             if  self._operation.status==Operation.Status.Pending ||
@@ -175,7 +175,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 DeleteUser.execute(self._userId,
-                    fromDataSpace:self._spaceUID,
+                    fromRegistry:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         
                         self._operation.counter=self._operation.counter!+1
@@ -205,14 +205,14 @@ import ObjectMapper
     }
 
     static public func execute(userId:String,
-fromDataSpace spaceUID:String,
+            fromRegistry registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
-                let baseURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(spaceUID)
-                let pathURL=baseURL.URLByAppendingPathComponent("user")
+            if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
+                let pathURL = document.baseURL.URLByAppendingPathComponent("user")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["userId"]=userId
-                let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:"DeleteUser" ,forMethod:"DELETE", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"DeleteUser" ,forMethod:"DELETE", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 
@@ -251,9 +251,7 @@ fromDataSpace spaceUID:String,
                                 // Acknowledge the trigger and log QA issue
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
-                                        if let document=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
-                                            document.acknowledgeOwnedTriggerIndex(index.integerValue)
-                                        }
+                                        document.acknowledgeOwnedTriggerIndex(index.integerValue)
                                     }else{
                                         bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                                     }
@@ -283,5 +281,14 @@ fromDataSpace spaceUID:String,
                     //Let's react according to the context.
                     Bartleby.sharedInstance.perform(reactions, forContext: context)
                 }
+            }else{
+                let context = JHTTPResponse( code:1 ,
+                    caller: "DeleteUser.execute",
+                    relatedURL:NSURL(),
+                    httpStatusCode:417,
+                    response:nil,
+                    result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
+                    failure(context:context)
             }
+        }
 }

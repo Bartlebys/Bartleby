@@ -359,7 +359,6 @@ public class BartlebyDocument : JDocument {
         taskDefinition.proxy = self.tasks
         // By default we group the observation via the rootObjectUID
         taskDefinition.collectionName = Task.collectionName
-        taskDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         taskDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         taskDefinition.allowDistantPersistency = false
         taskDefinition.inMemory = false
@@ -369,7 +368,6 @@ public class BartlebyDocument : JDocument {
         tasksGroupDefinition.proxy = self.tasksGroups
         // By default we group the observation via the rootObjectUID
         tasksGroupDefinition.collectionName = TasksGroup.collectionName
-        tasksGroupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         tasksGroupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         tasksGroupDefinition.allowDistantPersistency = false
         tasksGroupDefinition.inMemory = false
@@ -379,7 +377,6 @@ public class BartlebyDocument : JDocument {
         userDefinition.proxy = self.users
         // By default we group the observation via the rootObjectUID
         userDefinition.collectionName = User.collectionName
-        userDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         userDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         userDefinition.allowDistantPersistency = true
         userDefinition.inMemory = false
@@ -389,7 +386,6 @@ public class BartlebyDocument : JDocument {
         lockerDefinition.proxy = self.lockers
         // By default we group the observation via the rootObjectUID
         lockerDefinition.collectionName = Locker.collectionName
-        lockerDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         lockerDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         lockerDefinition.allowDistantPersistency = true
         lockerDefinition.inMemory = false
@@ -399,7 +395,6 @@ public class BartlebyDocument : JDocument {
         groupDefinition.proxy = self.groups
         // By default we group the observation via the rootObjectUID
         groupDefinition.collectionName = Group.collectionName
-        groupDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         groupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         groupDefinition.allowDistantPersistency = true
         groupDefinition.inMemory = false
@@ -409,7 +404,6 @@ public class BartlebyDocument : JDocument {
         operationDefinition.proxy = self.operations
         // By default we group the observation via the rootObjectUID
         operationDefinition.collectionName = Operation.collectionName
-        operationDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         operationDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         operationDefinition.allowDistantPersistency = false
         operationDefinition.inMemory = false
@@ -419,7 +413,6 @@ public class BartlebyDocument : JDocument {
         permissionDefinition.proxy = self.permissions
         // By default we group the observation via the rootObjectUID
         permissionDefinition.collectionName = Permission.collectionName
-        permissionDefinition.observableViaUID = self.registryMetadata.rootObjectUID
         permissionDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
         permissionDefinition.allowDistantPersistency = true
         permissionDefinition.inMemory = false
@@ -633,6 +626,7 @@ public class BartlebyDocument : JDocument {
             user.creatorUID = user.UID
         }
         user.spaceUID = self.registryMetadata.spaceUID
+        user.document = self // Very important for the  document registry metadata current User
         return user
     }
         

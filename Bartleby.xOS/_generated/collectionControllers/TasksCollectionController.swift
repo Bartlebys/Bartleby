@@ -27,11 +27,22 @@ import ObjectMapper
         return "TasksCollectionController"
     }
 
+    // Registry is referenced on Collection Proxy Creation.
     public var registry:BartlebyDocument?
 
-    weak public var undoManager:NSUndoManager?
+    public var spaceUID:String {
+        get{
+            return self.registry?.spaceUID ?? Default.NO_UID
+        }
+    }
 
-    public var spaceUID:String=Default.NO_UID
+    public var registryUID:String{
+        get{
+            return self.registry?.UID ?? Default.NO_UID
+        }
+    }
+
+    weak public var undoManager:NSUndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 

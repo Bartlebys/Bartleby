@@ -35,7 +35,10 @@ public protocol CollectibleCollection: Collectible {
     var registry:BartlebyDocument? { get set }
 
     // The dataspace UID
-    var spaceUID: String { get set }
+    var spaceUID: String { get }
+
+    // The registry UID
+    var registryUID:String { get }
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
     // When using cocoa bindings with an array controller

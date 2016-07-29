@@ -322,8 +322,6 @@
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
 		E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B28D1511CAD3838002081D4 /* CryptoHelperTests.swift */; };
-		E5B128F61D1C317300D61261 /* InterSpacetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */; };
-		E5B128F71D1C317300D61261 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */; };
 		E5B128F81D1C317300D61261 /* UserStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */; };
 		E5B128F91D1C317300D61261 /* JObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51029171CB68FC50040FC2C /* JObjectTests.swift */; };
 		E5B128FA1D1C317300D61261 /* UsersCreationLoadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */; };
@@ -376,9 +374,7 @@
 		5B5096901CA5824500B8D36E /* LockerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockerTests.swift; sourceTree = "<group>"; };
 		5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BFileManagerTests.swift; sourceTree = "<group>"; };
 		5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusTests.swift; sourceTree = "<group>"; };
-		5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpacetTests.swift; sourceTree = "<group>"; };
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
-		5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift; sourceTree = "<group>"; };
 		5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
 		5BFDA6F91CC279AB002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -617,8 +613,6 @@
 		5BC8F1671CB2BB2400B00866 /* InterSpace */ = {
 			isa = PBXGroup;
 			children = (
-				5B87D8351CA2A10A004E6ED2 /* InterSpacetTests.swift */,
-				5BC8F1681CB2BB7700B00866 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift */,
 			);
 			name = InterSpace;
 			sourceTree = "<group>";
@@ -858,16 +852,16 @@
 				E50F3D6A1D40D50400532B09 /* BartlebyDocument+AppFacilities.swift */,
 				E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */,
 				E50F3D6C1D40D50400532B09 /* BartlebyDocument+Triggers.swift */,
+				E50F3D731D40D50400532B09 /* Registry+LocalUpsertAndDelete.swift */,
+				E50F3D741D40D50400532B09 /* Registry+MetaDataImportExport.swift */,
+				E50F3D751D40D50400532B09 /* Registry+SecurityScopes.swift */,
+				E50F3D761D40D50400532B09 /* Registry+SuperIterable.swift */,
 				E50F3D6D1D40D50400532B09 /* Completion+Conveniences.swift */,
 				E50F3D6E1D40D50400532B09 /* Completion+Result.swift */,
 				E50F3D6F1D40D50400532B09 /* ExternalReference+Resolution.swift */,
 				E50F3D701D40D50400532B09 /* NSNotification+Completion.swift */,
 				E50F3D711D40D50400532B09 /* NSNotification+Progression.swift */,
 				E50F3D721D40D50400532B09 /* Progression+Conveniences.swift */,
-				E50F3D731D40D50400532B09 /* Registry+LocalUpsertAndDelete.swift */,
-				E50F3D741D40D50400532B09 /* Registry+MetaDataImportExport.swift */,
-				E50F3D751D40D50400532B09 /* Registry+SecurityScopes.swift */,
-				E50F3D761D40D50400532B09 /* Registry+SuperIterable.swift */,
 				E50F3D771D40D50400532B09 /* Task+Execution.swift */,
 				E50F3D781D40D50400532B09 /* TasksGroup+Execution.swift */,
 			);
@@ -1527,7 +1521,6 @@
 				E5B128FF1D1C317300D61261 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
 				E5B128F91D1C317300D61261 /* JObjectTests.swift in Sources */,
 				E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */,
-				E5B128F61D1C317300D61261 /* InterSpacetTests.swift in Sources */,
 				E5B129031D1C317300D61261 /* TestCase.swift in Sources */,
 				E5B128FC1D1C317300D61261 /* LockerTests.swift in Sources */,
 				E5B128F81D1C317300D61261 /* UserStatusTests.swift in Sources */,
@@ -1537,7 +1530,6 @@
 				E5B129011D1C317300D61261 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */,
 				E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */,
 				E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */,
-				E5B128F71D1C317300D61261 /* InterSpaceUpdateUserSpaceToAnotherSpaceTests.swift in Sources */,
 				E5B128FB1D1C317300D61261 /* BasicApiTests.swift in Sources */,
 				E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */,
 				E5B128FA1D1C317300D61261 /* UsersCreationLoadTest.swift in Sources */,

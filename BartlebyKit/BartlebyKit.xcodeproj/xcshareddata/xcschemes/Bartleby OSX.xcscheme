@@ -40,6 +40,12 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "LockerTests/test203_VerifyLocker_online()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test008_DeleteUser1()">
+               </Test>
+               <Test
                   Identifier = "UsersCreationLoadTest/test_005A_10X10_key()">
                </Test>
                <Test

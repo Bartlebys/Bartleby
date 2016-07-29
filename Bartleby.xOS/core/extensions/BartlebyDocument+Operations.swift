@@ -21,7 +21,7 @@ extension BartlebyDocument {
      */
     public func commitPendingChanges() throws {
         var triggerUpsertString=""
-        try self.iterateOnCollections { (collection) in
+        self.iterateOnCollections { (collection) in
             let UIDS=collection.commitChanges()
             triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joinWithSeparator(",")
         }
@@ -65,9 +65,9 @@ extension BartlebyDocument {
         if  operations.count>0 {
 
             // We use the encapsulated SpaceUID
-            let spaceUID=self.spaceUID
+            let UID=self.UID
             // We taskGroupFor the task
-            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(spaceUID)", inDocument: self)
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(UID)", inDocument: self)
             group.priority=TasksGroup.Priority.Default
             // We add the calling handlers
             group.handlers.appendChainedHandlers(handlers)
@@ -94,17 +94,17 @@ extension BartlebyDocument {
      - throws: throws
      */
     private func _commitAndPushPendingOperations(handlers: Handlers)throws {
-        // We use the encapsulated SpaceUID
-        let spaceUID=self.spaceUID
+        // We use the encapsulated UID
+        let UID=self.UID
         // We taskGroupFor the task
-        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(spaceUID)", inDocument: self)
+        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(UID)", inDocument: self)
         group.priority=TasksGroup.Priority.High
         // We add the calling handlers
         group.handlers.appendChainedHandlers(handlers)
 
         // This task will append task
         let dataSpaceString: JString=JString()
-        dataSpaceString.string=self.spaceUID
+        dataSpaceString.string=self.UID
         let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:dataSpaceString)
         try group.appendChainedTask(commitPendingOperationsTask)
         try group.start()

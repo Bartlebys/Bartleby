@@ -35,8 +35,6 @@ import ObjectMapper
 	public var allowDistantPersistency:Bool = true
 	//In Memory?
 	public var inMemory:Bool = true
-	//The observable UID
-	dynamic public var observableViaUID:String = "\(Default.NO_UID)"
 
 
     // MARK: Mappable
@@ -52,7 +50,6 @@ import ObjectMapper
 		self.collectionName <- ( map["collectionName"] )
 		self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
 		self.inMemory <- ( map["inMemory"] )
-		self.observableViaUID <- ( map["observableViaUID"] )
         self.enableSuperVisionAndCommit()
     }
 
@@ -66,7 +63,6 @@ import ObjectMapper
 		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
 		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
 		self.inMemory=decoder.decodeBoolForKey("inMemory") 
-		self.observableViaUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "observableViaUID")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
@@ -77,7 +73,6 @@ import ObjectMapper
 		coder.encodeObject(self.collectionName,forKey:"collectionName")
 		coder.encodeBool(self.allowDistantPersistency,forKey:"allowDistantPersistency")
 		coder.encodeBool(self.inMemory,forKey:"inMemory")
-		coder.encodeObject(self.observableViaUID,forKey:"observableViaUID")
     }
 
 

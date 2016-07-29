@@ -21,8 +21,6 @@ import ObjectMapper
         return "TasksGroup"
     }
 
-	//A non serializable reference to the hosting document
-	public var document:BartlebyDocument?
 	//TasksGroup Status
 	public enum Status:Int{
 		case Paused
@@ -37,8 +35,8 @@ import ObjectMapper
 		case High
 	}
 	public var priority:Priority = .Default
-	//The group dataspace
-	public var spaceUID:String = "\(Default.NO_UID)"
+	//The group registryUID
+	public var registryUID:String = "\(Default.NO_UID)"
 	//The root group Tasks (external references)
 	public var tasks:[ExternalReference] = [ExternalReference]()
 	//The last chained (sequential) task external reference. 
@@ -64,7 +62,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.status <- ( map["status"] )
 		self.priority <- ( map["priority"] )
-		self.spaceUID <- ( map["spaceUID"] )
+		self.registryUID <- ( map["registryUID"] )
 		self.tasks <- ( map["tasks"] )
 		self.lastChainedTask <- ( map["lastChainedTask"] )
 		self.progressionState <- ( map["progressionState"] )
@@ -81,7 +79,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.status=TasksGroup.Status(rawValue:decoder.decodeIntegerForKey("status") )! 
 		self.priority=TasksGroup.Priority(rawValue:decoder.decodeIntegerForKey("priority") )! 
-		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "registryUID")! as NSString)
 		self.tasks=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tasks")! as! [ExternalReference]
 		self.lastChainedTask=decoder.decodeObjectOfClass(ExternalReference.self, forKey: "lastChainedTask") 
 		self.progressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "progressionState") 
@@ -95,7 +93,7 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeInteger(self.status.rawValue ,forKey:"status")
 		coder.encodeInteger(self.priority.rawValue ,forKey:"priority")
-		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
+		coder.encodeObject(self.registryUID,forKey:"registryUID")
 		coder.encodeObject(self.tasks,forKey:"tasks")
 		if let lastChainedTask = self.lastChainedTask {
 			coder.encodeObject(lastChainedTask,forKey:"lastChainedTask")

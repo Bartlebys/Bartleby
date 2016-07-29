@@ -35,8 +35,8 @@ import ObjectMapper
 		case Unsucessful = "unsucessful"
 	}
 	public var status:Status = .None
-	//The data space UID can be shared between multiple registries.
-	dynamic public var spaceUID:String = "\(Default.NO_UID)"
+	//The registry UID
+	dynamic public var registryUID:String = "\(Default.NO_UID)"
 	//The invocation counter
 	public var counter:Int?
 	//The creationdate
@@ -58,7 +58,7 @@ import ObjectMapper
 		self.responseDictionary <- ( map["responseDictionary"] )
 		self.baseUrl <- ( map["baseUrl"], URLTransform() )
 		self.status <- ( map["status"] )
-		self.spaceUID <- ( map["spaceUID"] )
+		self.registryUID <- ( map["registryUID"] )
 		self.counter <- ( map["counter"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
@@ -75,7 +75,7 @@ import ObjectMapper
 		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
 		self.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
 		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
+		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "registryUID")! as NSString)
 		self.counter=decoder.decodeIntegerForKey("counter") 
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
@@ -95,7 +95,7 @@ import ObjectMapper
 			coder.encodeObject(baseUrl,forKey:"baseUrl")
 		}
 		coder.encodeObject(self.status.rawValue ,forKey:"status")
-		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
+		coder.encodeObject(self.registryUID,forKey:"registryUID")
 		if let counter = self.counter {
 			coder.encodeInteger(counter,forKey:"counter")
 		}

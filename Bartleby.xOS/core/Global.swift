@@ -10,63 +10,10 @@ import Foundation
 
 
 
-/*
-
- // MARK: General Equatable implementation
-
-
-public func == (lhs:[String:AnyObject], rhs: [String:AnyObject]) -> Bool {
-    return NSDictionary(dictionary: lhs).isEqualToDictionary(rhs)
-}
-
-public func == (lhs: [String:AnyObject]?, rhs: [String:AnyObject]?) -> Bool {
-    if let lhs=lhs, rhs=rhs {
-       return lhs == rhs
-    }
-    if lhs==nil && rhs==nil{
-        return true
-    }else{
-        return false
-    }
-}
-
-
-public func == <T:Equatable> (lhs: [T], rhs: [T]) -> Bool {
-    if lhs.count != rhs.count {
-        return false
-    }
-    for i in 0...lhs.count {
-        if lhs[i] != rhs [i] {
-            return false
-        }
-    }
-    return true
-}
-
-
-public  func == <T:Equatable> (lhs: [T]?, rhs: [T]?) -> Bool {
-    if let lhs=lhs, rhs=rhs {
-        if lhs.count != rhs.count {
-            return false
-        }
-        for i in 0...lhs.count {
-            if lhs[i] != rhs [i] {
-                return false
-            }
-        }
-    }
-    if lhs==nil && rhs==nil{
-        return true
-    }else{
-        return false
-    }
-}
-*/
-
 // MARK: - bartleby Print
 
 
-public var DEFAULT_BPRINT_CATEGORY: String=""
+public var DEFAULT_BPRINT_CATEGORY: String="Default"
 
 public protocol BprintCategorizable {
     static var BPRINT_CATEGORY: String { get }

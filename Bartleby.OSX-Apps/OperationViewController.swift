@@ -52,7 +52,7 @@ class OperationViewController: NSViewController,Editor{
                 bprint("\(progression)", file:#file, function:#function, line:#line)
             })
             do {
-                if let document=self._selectedItem?.getDocument(){
+                if let document=self._selectedItem?.document{
                     try document.pushArrayOfOperations(ops, handlers: handlers)
                 }
             } catch {

@@ -21,7 +21,4 @@ public protocol CollectionMetadatumProtocol: Serializable {
     // Should the collection be volatile ? == persist in memory only
     var inMemory: Bool { get set }
 
-    //The collection observation UID
-    var observableViaUID: String { get set }
-
 }

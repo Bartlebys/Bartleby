@@ -46,16 +46,15 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     func test001_createUser1() {
         let expectation = expectationWithDescription("CreateUser should respond")
 
-        let user=User()
+        let user=UserCreationWithTheSameMailInDifferentSpaceTests.document1.newUser()
         user.verificationMethod = .ByEmail
         user.email=UserCreationWithTheSameMailInDifferentSpaceTests._email1
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=UserCreationWithTheSameMailInDifferentSpaceTests._password1
-        user.spaceUID=UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         UserCreationWithTheSameMailInDifferentSpaceTests._userID1=user.UID // We store the UID for future deletion
         UserCreationWithTheSameMailInDifferentSpaceTests._createdUser1=user
         CreateUser.execute(user,
-                           inDataSpace:UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1,
+                           inRegistry:UserCreationWithTheSameMailInDifferentSpaceTests.document1.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -70,7 +69,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     func test002_deleteUser2_shouldFail() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
-                           fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
+                           fromRegistry: UserCreationWithTheSameMailInDifferentSpaceTests.document2.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("The user does not not exists its deletion should fail")
@@ -89,7 +88,6 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
         if let user = UserCreationWithTheSameMailInDifferentSpaceTests._createdUser1 {
             // Space id is very important
             LoginUser.execute(user,
-                              //inDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1,
                               withPassword: UserCreationWithTheSameMailInDifferentSpaceTests._password1,
                               sucessHandler: { () -> () in
                                 expectation.fulfill()
@@ -108,17 +106,16 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     func test005_createUser2() {
         let expectation = expectationWithDescription("CreateUser should respond")
 
-        let user=User()
+        let user=UserCreationWithTheSameMailInDifferentSpaceTests.document2.newUser()
         user.verificationMethod = .ByEmail
         user.email=UserCreationWithTheSameMailInDifferentSpaceTests._email2
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=UserCreationWithTheSameMailInDifferentSpaceTests._password2
-        user.spaceUID=UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
         UserCreationWithTheSameMailInDifferentSpaceTests._userID2=user.UID // We store the UID for future deletion
         UserCreationWithTheSameMailInDifferentSpaceTests._createdUser2=user
 
         CreateUser.execute(user,
-                           inDataSpace:UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
+                           inRegistry:UserCreationWithTheSameMailInDifferentSpaceTests.document2.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -132,7 +129,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     func test006_deleteUser2_shouldFailAgain() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
-                           fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
+                           fromRegistry: UserCreationWithTheSameMailInDifferentSpaceTests.document2.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("The ACL should have blocked this deletion we are not authenticated")
@@ -168,7 +165,8 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID1,
-                           fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID1,
+                           fromRegistry: UserCreationWithTheSameMailInDifferentSpaceTests.document1.UID
+            ,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -185,7 +183,7 @@ class UserCreationWithTheSameMailInDifferentSpaceTests: XCTestCase {
     func test009_DeleteUser2() {
         let expectation = expectationWithDescription("DeleteUser should respond")
         DeleteUser.execute(UserCreationWithTheSameMailInDifferentSpaceTests._userID2,
-                           fromDataSpace: UserCreationWithTheSameMailInDifferentSpaceTests._spaceUID2,
+                           fromRegistry: UserCreationWithTheSameMailInDifferentSpaceTests.document2.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

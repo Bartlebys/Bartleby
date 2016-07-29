@@ -50,8 +50,7 @@ class UserStatusTests: XCTestCase {
     func test101_createUser_Creator() {
         let expectation = expectationWithDescription("CreateUser should respond")
 
-        let user=User()
-        user.spaceUID=UserStatusTests.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        let user=UserStatusTests.document.newUser()
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.email=UserStatusTests._creatorUserEmail
         user.password=UserStatusTests._creatorUserPassword
@@ -61,7 +60,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
 
         CreateUser.execute(user,
-                           inDataSpace:UserStatusTests.document.spaceUID,
+                           inRegistry:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -75,8 +74,7 @@ class UserStatusTests: XCTestCase {
     func test102_createUser_UserThatWillBeSuspendedLater() {
         let expectation = expectationWithDescription("CreateUser should respond")
 
-        let user = User()
-        user.spaceUID = UserStatusTests.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        let user = UserStatusTests.document.newUser()
         user.creatorUID = UserStatusTests._creatorUserID
         user.email = UserStatusTests._suspendedUserEmail
         user.password = UserStatusTests._suspendedUserPassword
@@ -86,7 +84,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._suspendedUserID = user.UID
 
         CreateUser.execute(user,
-                           inDataSpace:UserStatusTests.document.spaceUID,
+                           inRegistry:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -160,7 +158,7 @@ class UserStatusTests: XCTestCase {
             user.status = .Suspended
 
             UpdateUser.execute(user,
-                               inDataSpace: UserStatusTests.document.spaceUID,
+                               inRegistry: UserStatusTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -176,7 +174,7 @@ class UserStatusTests: XCTestCase {
 
     func test399_Logout_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: UserStatusTests.document.spaceUID,
+        LogoutUser.execute(UserStatusTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -229,7 +227,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._suspendedUserID,
-                           fromDataSpace:UserStatusTests.document.spaceUID,
+                           fromRegistry:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -245,7 +243,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._creatorUserID,
-                           fromDataSpace:UserStatusTests.document.spaceUID,
+                           fromRegistry:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

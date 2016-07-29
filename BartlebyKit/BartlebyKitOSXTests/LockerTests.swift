@@ -14,6 +14,8 @@ class LockerTests: XCTestCase {
     private static let _document = BartlebyDocument()
     private static var _spaceUID = Default.NO_UID
 
+    static let rootObjectUID=Bartleby.createUID()
+
     private static var _creatorUser: User? {
         didSet {
             if let user = _creatorUser {
@@ -41,13 +43,13 @@ class LockerTests: XCTestCase {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
         let document=LockerTests._document
+        let _ = try? document.setRootObjectUID(LockerTests.rootObjectUID)
         Bartleby.sharedInstance.declare(document)
         LockerTests._spaceUID = document.spaceUID
-        LockerTests._creatorUser = User()
+        LockerTests._creatorUser = document.newUser()
         if let user =  LockerTests._creatorUser {
             document.registryMetadata.currentUser = user
             document.registryMetadata.creatorUID = user.UID
-            document.registryMetadata.rootObjectUID = Bartleby.createUID()
         }
 
     }
@@ -62,7 +64,7 @@ class LockerTests: XCTestCase {
             LockerTests._creatorUserID = creator.UID
             LockerTests._creatorUserPassword = creator.password
 
-            CreateUser.execute(creator, inDataSpace: LockerTests._spaceUID,
+            CreateUser.execute(creator, inRegistry: LockerTests._document.UID,
                                sucessHandler: { (context) in
                                 expectation.fulfill()
             }) { (context) in
@@ -78,7 +80,7 @@ class LockerTests: XCTestCase {
 
     func test102_CreateUser_Consumer() {
         let expectation = expectationWithDescription("CreateUser should respond")
-        let consumer = User()
+        let consumer = LockerTests._document.newUser()
         consumer.creatorUID = LockerTests._creatorUserID
         consumer.spaceUID = LockerTests._spaceUID
         consumer.phoneNumber = LockerTests._consumerPhone
@@ -87,7 +89,7 @@ class LockerTests: XCTestCase {
         LockerTests._consumerUserID = consumer.UID
         LockerTests._consumerUserPassword = consumer.password
 
-        CreateUser.execute(consumer, inDataSpace: LockerTests._spaceUID,
+        CreateUser.execute(consumer, inRegistry: LockerTests._document.UID,
                            sucessHandler: { (context) in
                             expectation.fulfill()
         }) { (context) in
@@ -127,7 +129,7 @@ class LockerTests: XCTestCase {
         LockerTests._lockerID = locker.UID
 
         CreateLocker.execute(locker,
-                             inDataSpace: LockerTests._spaceUID,
+                             inRegistry: LockerTests._document.UID,
                              sucessHandler: { (context) in
                                 expectation.fulfill()
         }) { (context) in
@@ -141,7 +143,7 @@ class LockerTests: XCTestCase {
     func test105_ReadLockerById_ShouldFail_fromCreator() {
         let expectation = expectationWithDescription("ReadLockerById should respond")
 
-        ReadLockerById.execute(fromDataSpace: LockerTests._spaceUID,
+        ReadLockerById.execute(fromRegistry: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -161,7 +163,7 @@ class LockerTests: XCTestCase {
         let p = ReadLockersByIdsParameters()
         p.ids = [LockerTests._lockerID]
 
-        ReadLockersByIds.execute(fromDataSpace: LockerTests._spaceUID,
+        ReadLockersByIds.execute(fromRegistry: LockerTests._document.UID,
                                  parameters: p,
                                  sucessHandler: { (lockers) in
                                     expectation.fulfill()
@@ -176,7 +178,7 @@ class LockerTests: XCTestCase {
 
     func test199_LogOut_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: LockerTests._spaceUID,
+        LogoutUser.execute(LockerTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -214,7 +216,7 @@ class LockerTests: XCTestCase {
     func test202_ReadLockerById() {
         let expectation = expectationWithDescription("ReadLockerById should always fail")
 
-        ReadLockerById.execute(fromDataSpace: LockerTests._spaceUID,
+        ReadLockerById.execute(fromRegistry: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -233,7 +235,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                             inDataSpace: LockerTests._spaceUID,
+                             inRegistry: LockerTests._document.UID,
                              code: LockerTests._lockerCode,
                              accessGranted: { (locker) in
                                 expectation.fulfill()
@@ -247,7 +249,7 @@ class LockerTests: XCTestCase {
 
     func test299_LogOut_Consumer() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: LockerTests._spaceUID,
+        LogoutUser.execute(LockerTests._consumerUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -267,7 +269,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                                                inDataSpace: LockerTests._spaceUID,
+                                                inRegistry: LockerTests._document.UID,
                                                 code: "BADCOD",
                                                 accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -284,7 +286,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute( "BADID",
-                                                 inDataSpace: LockerTests._spaceUID,
+                                                 inRegistry: LockerTests._document.UID,
                                                  code: LockerTests._lockerCode,
                                                  accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -319,7 +321,7 @@ class LockerTests: XCTestCase {
 
         let expectation = expectationWithDescription("DeleteLocker should respond")
 
-        DeleteLocker.execute(LockerTests._lockerID, fromDataSpace: LockerTests._spaceUID, sucessHandler: { (context) in
+        DeleteLocker.execute(LockerTests._lockerID, fromRegistry: LockerTests._document.UID, sucessHandler: { (context) in
             expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
@@ -334,7 +336,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._consumerUserID,
-                           fromDataSpace:LockerTests._spaceUID,
+                           fromRegistry:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -350,7 +352,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._creatorUserID,
-                           fromDataSpace:LockerTests._spaceUID,
+                           fromRegistry:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -363,7 +365,7 @@ class LockerTests: XCTestCase {
 
     func test405_LogOut_Creator() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace: LockerTests._spaceUID,
+        LogoutUser.execute(LockerTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
         }) { (context) -> () in

@@ -61,6 +61,8 @@ class TestCase: XCTestCase {
     private static var _document:BartlebyDocument?
     static var document=_document!
 
+    static let rootObjectUID=Bartleby.createUID()
+
     /// MARK: Behaviour after test run
 
     enum RemoveAssets {
@@ -79,6 +81,7 @@ class TestCase: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration)
         TestCase._document=BartlebyDocument()
         TestCase.document.configureSchema()
+        let _ = try? TestCase.document.setRootObjectUID(TestCase.rootObjectUID)
         Bartleby.sharedInstance.declare(TestCase.document)
         // By default we use kvid auth.
         TestCase.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
@@ -180,7 +183,7 @@ class TestCase: XCTestCase {
      - returns: A User instance
      */
     func createUser(spaceUID: String, creator: User? = nil, email: String? = nil, autologin: Bool = false, handlers: Handlers) -> User {
-        let user = User()
+        let user = TestCase.document.newUser()
         user.spaceUID = spaceUID
         if let creator = creator {
             user.creatorUID = creator.UID
@@ -194,11 +197,10 @@ class TestCase: XCTestCase {
             user.verificationMethod = .ByEmail
             user.email = email
         }
-
         TestCase._createdUsers.append(user)
 
         // Create user on the server
-        CreateUser.execute(user, inDataSpace: spaceUID, sucessHandler: { (context) in
+        CreateUser.execute(user, inRegistry:TestCase.document.UID, sucessHandler: { (context) in
 
             if autologin {
                 // Login if needed
@@ -241,7 +243,7 @@ class TestCase: XCTestCase {
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
-            DeleteUser.execute(user.UID, fromDataSpace: user.spaceUID, sucessHandler: { (context) in
+            DeleteUser.execute(user.UID, fromRegistry:TestCase.document.UID, sucessHandler: { (context) in
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in

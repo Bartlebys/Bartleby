@@ -65,17 +65,17 @@ public class HTTPManager: NSObject {
     /**
      This method returns a mutable request with a salted token.
 
-     - parameter spaceUID:     the space UID
+     - parameter registryUID:   the registry UID
      - parameter actionName: the action name e.g : CreateUser
      - parameter method:     the HTTP method
      - parameter url:        the url.
 
      - returns: the mutable
      */
-    static public func mutableRequestWithToken(inDataSpace spaceUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
+    static public func mutableRequestWithToken(inRegistry registryUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
         let request=NSMutableURLRequest(URL: url)
         request.HTTPMethod=method
-        let headers=HTTPManager.httpHeadersWithToken(inDataSpace: spaceUID, withActionName: actionName)
+        let headers=HTTPManager.httpHeadersWithToken(inRegistry:registryUID, withActionName: actionName)
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
         }
@@ -88,37 +88,40 @@ public class HTTPManager: NSObject {
     /**
      Returns the Http Headers
 
-     - parameter spaceUID:   the space UID of the targetted DataSpace
+     - parameter registryUID:   the registry UID
      - parameter actionName: the actionName
      - parameter method:     the HTTP method (POST,GET, PATCH, DELETE, PUT)
      - parameter url:        the url.
 
      - returns: the http Headers
      */
-    static public func httpHeadersWithToken(inDataSpace spaceUID: String, withActionName actionName: String)->[String:String]{
+    static public func httpHeadersWithToken(inRegistry registryUID: String, withActionName actionName: String)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
-        // We prefer to Inject the token and spaceUID within the HTTP headers.
-        // Note It is also possible to pass them as query strings.
-        let tokenKey=HTTPManager.salt("\(actionName)#\(spaceUID)") 
-        let tokenValue=HTTPManager.salt(tokenKey)
-        headers[tokenKey]=tokenValue
+        if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
 
-        // SpaceUID
-        headers[HTTPManager.SPACE_UID_KEY]=spaceUID
+            // We prefer to Inject the token and spaceUID within the HTTP headers.
+            // Note It is also possible to pass them as query strings.
+            let tokenKey=HTTPManager.salt("\(actionName)#\(document.spaceUID)")
+            let tokenValue=HTTPManager.salt(tokenKey)
+            headers[tokenKey]=tokenValue
 
-        // Injection of key based auth if relevent.
-        if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID){
-            if registry.registryMetadata.identificationMethod == .Key{
-                if  let idv=registry.registryMetadata.identificationValue {
-                    headers["kvid"]=idv
-                }else{
-                     headers["kvid"]=Default.VOID_STRING
+            // SpaceUID
+            headers[HTTPManager.SPACE_UID_KEY]=document.spaceUID
+
+                if document.registryMetadata.identificationMethod == .Key{
+                    if  let idv=document.registryMetadata.identificationValue {
+                        headers["kvid"]=idv
+                    }else{
+                        headers["kvid"]=Default.VOID_STRING
+                    }
                 }
-            }
-            // We add the observationUID
-            headers["observationUID"]=registry.UID
+                // We add the observationUID
+                headers["observationUID"]=document.UID
+
         }
+
+
         return headers
     }
 
@@ -156,7 +159,7 @@ public class HTTPManager: NSObject {
      */
     static public func apiIsReachable(baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
         let pathURL=baseURL.URLByAppendingPathComponent("/Reachable")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
 
@@ -212,13 +215,13 @@ public class HTTPManager: NSObject {
      Use this method to test if the current user is authorized
 
      - parameter baseURL:        the base URL
-     - parameter spaceUID:     the cibled spaceUID
+     - parameter registryUID:     the cibled registry UID
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static public func verifyCredentials(spaceUID: String, baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
+    static public func verifyCredentials(registryUID: String, baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
         let pathURL=baseURL.URLByAppendingPathComponent("/verify/credentials")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
 

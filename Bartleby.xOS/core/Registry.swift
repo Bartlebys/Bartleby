@@ -126,7 +126,7 @@ public class Registry: BXDocument {
     // MARK: URI
 
     // The collection server base URL
-    public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+    public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
 
     // The EventSource URL for Server Sent Events
     public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
@@ -158,6 +158,7 @@ public class Registry: BXDocument {
 
     /**
      Sets the root object UID.
+     The previsou
 
      - parameter UID: the UID
 
@@ -166,6 +167,7 @@ public class Registry: BXDocument {
     public func setRootObjectUID(UID:String) throws {
         if (self.registryMetadata.rootObjectUID==Default.NO_UID){
             self.registryMetadata.rootObjectUID=UID
+            Bartleby.sharedInstance.replace(Default.NO_UID, by: UID)
         }else{
             throw RegistryError.AttemptToSetUpRootObjectUIDMoreThanOnce
         }
@@ -343,7 +345,7 @@ public class Registry: BXDocument {
 
     private func _refreshIdentifier(inout collectionProxy: BartlebyCollection) {
         collectionProxy.undoManager=self.undoManager
-        collectionProxy.spaceUID=self.spaceUID
+        collectionProxy.registry=self as? BartlebyDocument
     }
 
 
@@ -677,7 +679,7 @@ public class Registry: BXDocument {
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
         LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
 
-            let headers=HTTPManager.httpHeadersWithToken(inDataSpace: self.spaceUID, withActionName: "SSETriggers")
+            let headers=HTTPManager.httpHeadersWithToken(inRegistry: self.UID, withActionName: "SSETriggers")
             self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
 
             bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")

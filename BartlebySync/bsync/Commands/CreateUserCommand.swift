@@ -53,8 +53,9 @@ class CreateUserCommand: CommandBase {
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
                     Bartleby.configuration.ENABLE_BPRINT=verbosity.value
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                    
-                    let user=User()
+
+                    let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
+                    let user=document.newUser()
                     user.spaceUID = space
                     user.creatorUID = user.UID
                     user.password = pw
@@ -68,7 +69,7 @@ class CreateUserCommand: CommandBase {
                         user.verificationMethod = .ByPhoneNumber
                     }
                     
-                    CreateUser.execute(user, inDataSpace: space,
+                    CreateUser.execute(user, inRegistry: document.UID,
                                        sucessHandler: { (context) in
                                         print (user.UID)
                                         

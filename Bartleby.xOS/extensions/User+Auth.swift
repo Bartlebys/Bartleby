@@ -8,7 +8,14 @@
 
 import Foundation
 
-extension User : UserProtocol {
+extension User {
+
+    /// Returns the document UID
+    public var registryUID:String{
+        get{
+            return self.document?.UID ?? "User_Extension_NO_UID_defined"
+        }
+    }
 
     public func login(withPassword password: String,
         sucessHandler success:()->(),
@@ -19,8 +26,7 @@ extension User : UserProtocol {
 
     public func logout(sucessHandler success:()->(),
             failureHandler failure:(context: JHTTPResponse)->()) {
-        LogoutUser.execute(fromDataSpace: self.spaceUID, sucessHandler: success, failureHandler: failure)
-
+        LogoutUser.execute(self, sucessHandler: success, failureHandler: failure)
     }
 
 }

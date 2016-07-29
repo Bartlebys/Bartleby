@@ -137,7 +137,7 @@ extension BartlebyDocument {
             let multiple = uids.count > 1
             let action = trigger.action
             let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercaseString
-            let baseURL = Bartleby.sharedInstance.getCollaborationURLForSpaceUID(self.spaceUID)
+            let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
             var dictionary:Dictionary<String, AnyObject>=[:]
             var pathURL = baseURL
             if !multiple{
@@ -147,7 +147,7 @@ extension BartlebyDocument {
                 pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
                 dictionary["ids"]=uids
             }
-            let urlRequest=HTTPManager.mutableRequestWithToken(inDataSpace:spaceUID,withActionName:action ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
             let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
 
             r.responseJSON { (response) in
@@ -334,7 +334,7 @@ extension BartlebyDocument {
         let missingTriggersIndexes=self.missingContiguousTriggersIndexes()
         // Todo compute missingTriggersIndexes
         if missingTriggersIndexes.count>0{
-            TriggersForIndexes.execute(fromDataSpace: self.spaceUID, indexes:missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
+            TriggersForIndexes.execute(fromRegistry:self.UID, indexes:missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
                 // What to do in case of failure.
@@ -381,7 +381,7 @@ extension BartlebyDocument {
         // Grab all the triggers > lastIndex
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
-        TriggersAfterIndex.execute(fromDataSpace: self.spaceUID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
+        TriggersAfterIndex.execute(fromRegistry:self.UID, index:self.registryMetadata.lastIntegratedTriggerIndex, sucessHandler: { (triggers) in
             self._triggersHasBeenReceived(triggers)
         }) { (context) in
             // What to do on failure

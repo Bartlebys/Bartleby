@@ -37,12 +37,12 @@ class UsersCreationLoadTest: TestCase {
 
         // We create one document per User (to permit to variate the identification method without side effect)
         // You can for sure use one document for all the users 
-        let document=BartlebyDocument()
+        let document=UsersCreationLoadTest.document
         document.configureSchema()
         Bartleby.sharedInstance.declare(document)
         document.registryMetadata.identificationMethod=idMethod
 
-        let user=User()
+        let user=document.newUser()
         user.email=Bartleby.randomStringWithLength(6)+"@bartlebys.org"
         user.verificationMethod = .ByEmail
         user.creatorUID = user.UID // (!) Auto creation in this context (Check ACL)
@@ -50,7 +50,7 @@ class UsersCreationLoadTest: TestCase {
         user.spaceUID=document.spaceUID
 
         CreateUser.execute(user,
-                           inDataSpace:user.spaceUID,
+                           inRegistry:document.UID,
                            sucessHandler: { (context) -> () in
                             completionHandler(createdUser:user,completionState:Completion.successStateFromJHTTPResponse(context))
         }) { (context) -> () in
@@ -89,7 +89,7 @@ class UsersCreationLoadTest: TestCase {
 
         func __update(user:User){
             user.notes=Bartleby.randomStringWithLength(40)
-            UpdateUser.execute(user, inDataSpace:user.spaceUID, sucessHandler: { (context) in
+            UpdateUser.execute(user, inRegistry:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __delete(user)
             }) { (context) in
                 __fullFill()
@@ -99,7 +99,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         func __delete(user:User){
-            DeleteUser.execute(user.UID, fromDataSpace: user.spaceUID, sucessHandler: { (context) in
+            DeleteUser.execute(user.UID, fromRegistry: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __isItTheEnd()
                 //__logout(user)
             }) { (context) in
@@ -109,7 +109,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         func __logout(user:User){
-            LogoutUser.execute(fromDataSpace:user.spaceUID, sucessHandler: {
+            LogoutUser.execute(user, sucessHandler: {
                 __isItTheEnd()
             }) { (context) in
                 XCTFail("Failure on logout [\(UsersCreationLoadTest.userCounter)]  \(context)")

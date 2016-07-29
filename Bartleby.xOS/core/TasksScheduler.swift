@@ -74,7 +74,7 @@ public class TasksScheduler: BprintCategorizable {
      */
     public func getTaskGroupWithName(groupName: String, inDocument document: BartlebyDocument) throws -> TasksGroup {
         let group=try self._taskGroupByName(groupName, inDocument: document)
-        group.spaceUID=document.spaceUID
+        group.registryUID=document.UID
         return group
     }
 
@@ -88,7 +88,7 @@ public class TasksScheduler: BprintCategorizable {
      - returns: a task group
      */
     private func _taskGroupByName(groupName: String, inDocument document: BartlebyDocument) throws ->TasksGroup {
-        let groupNameForDocument=groupName+document.spaceUID
+        let groupNameForDocument=groupName+"."+document.UID
         if let group=_groups[groupNameForDocument] {
             return group
         } else {
@@ -104,7 +104,7 @@ public class TasksScheduler: BprintCategorizable {
                 group.document=document
                 // Set up the group
                 group.name=groupNameForDocument
-                _groups[groupName+document.spaceUID]=group
+                _groups[groupName+document.UID]=group
                 document.tasksGroups.add(group,commit: true)
                 return group
             } else {
@@ -126,7 +126,7 @@ public class TasksScheduler: BprintCategorizable {
             let group = try getTaskGroupWithName(groupName, inDocument: document)
             return group.toString()
         } catch {
-         return "Error while attempting to find \(groupName) in \(document.spaceUID) \(error)"
+         return "Error while attempting to find \(groupName) in \(document.UID) \(error)"
         }
     }
 
