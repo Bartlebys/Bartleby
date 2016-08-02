@@ -229,9 +229,9 @@ public class VerifyLocker: JObject {
 
         if locker.verificationMethod==Locker.VerificationMethod.Offline {
             // Let find the current user
-            if let spaceUID=locker.spaceUID {
+            if let registryUID=locker.registryUID {
                 // 1. Verify the data space consistency
-                if let registry=Bartleby.sharedInstance.getDocumentByUID(spaceUID) {
+                if let registry=Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                     // 2. Verify the current user iUD
                     if let user=registry.registryMetadata.currentUser {
                         if user.UID == locker.userUID {
@@ -258,12 +258,12 @@ public class VerifyLocker: JObject {
                         return
                     }
                 } else {
-                    context.result="SpaceUID is not valid"
+                    context.result="registryUID is not valid"
                     failure(context: context)
                     return
                 }
             } else {
-                context.result="SpaceUID is not valid"
+                context.result="registryUID is not valid"
                 failure(context: context)
                 return
             }

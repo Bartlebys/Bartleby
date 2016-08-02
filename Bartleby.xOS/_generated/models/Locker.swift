@@ -21,11 +21,11 @@ import ObjectMapper
         return "Locker"
     }
 
-	//The spaceUID is the data space UID.
-	public var spaceUID:String? {	 
+	//The associated registry UID.
+	public var registryUID:String? {	 
 	    didSet { 
-	       if spaceUID != oldValue {
-	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
+	       if registryUID != oldValue {
+	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
 	       } 
 	    }
 	}
@@ -128,7 +128,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
-		self.spaceUID <- ( map["spaceUID"] )
+		self.registryUID <- ( map["registryUID"] )
 		self.subjectUID <- ( map["subjectUID"] )
 		self.userUID <- ( map["userUID"] )
 		self.mode <- ( map["mode"] )
@@ -147,7 +147,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
+		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"registryUID") as NSString?)
 		self.subjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "subjectUID")! as NSString)
 		self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
 		self.mode=Locker.Mode(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "mode")! as NSString))! 
@@ -163,8 +163,8 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
-		if let spaceUID = self.spaceUID {
-			coder.encodeObject(spaceUID,forKey:"spaceUID")
+		if let registryUID = self.registryUID {
+			coder.encodeObject(registryUID,forKey:"registryUID")
 		}
 		coder.encodeObject(self.subjectUID,forKey:"subjectUID")
 		coder.encodeObject(self.userUID,forKey:"userUID")
