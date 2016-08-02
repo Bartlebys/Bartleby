@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init(String(), fromRegistry:Default.NO_UID)
+        self.init(String(), fromRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ lockerId:String=String(), fromRegistry registryUID:String) {
+    init (_ lockerId:String=String(), fromRegistryWithUID registryUID:String) {
         self._lockerId=lockerId
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter lockerId: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(lockerId:String, fromRegistry registryUID:String){
-        let operationInstance=DeleteLocker(lockerId,fromRegistry:registryUID)
+    static func commit(lockerId:String, fromRegistryWithUID registryUID:String){
+        let operationInstance=DeleteLocker(lockerId,fromRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -175,7 +175,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 DeleteLocker.execute(self._lockerId,
-                    fromRegistry:self._registryUID,
+                    fromRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         
                         self._operation.counter=self._operation.counter!+1
@@ -205,14 +205,14 @@ import ObjectMapper
     }
 
     static public func execute(lockerId:String,
-            fromRegistry registryUID:String,
+            fromRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.URLByAppendingPathComponent("locker")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["lockerId"]=lockerId
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

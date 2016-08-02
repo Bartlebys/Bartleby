@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init([Locker](), inRegistry:Default.NO_UID)
+        self.init([Locker](), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ lockers:[Locker]=[Locker](), inRegistry registryUID:String) {
+    init (_ lockers:[Locker]=[Locker](), inRegistryWithUID registryUID:String) {
         self._lockers=lockers
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter lockers: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(lockers:[Locker], inRegistry registryUID:String){
-        let operationInstance=CreateLockers(lockers,inRegistry:registryUID)
+    static func commit(lockers:[Locker], inRegistryWithUID registryUID:String){
+        let operationInstance=CreateLockers(lockers,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -180,7 +180,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 CreateLockers.execute(self._lockers,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         document.markAsDistributed(&self._lockers)
                         self._operation.counter=self._operation.counter!+1
@@ -210,7 +210,7 @@ import ObjectMapper
     }
 
     static public func execute(lockers:[Locker],
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
@@ -223,7 +223,7 @@ import ObjectMapper
                     collection.append(serializedInstance)
                 }
                 parameters["lockers"]=collection
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"CreateLockers" ,forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateLockers" ,forMethod:"POST", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

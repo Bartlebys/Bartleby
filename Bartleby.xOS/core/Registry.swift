@@ -679,7 +679,7 @@ public class Registry: BXDocument {
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
         LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
 
-            let headers=HTTPManager.httpHeadersWithToken(inRegistry: self.UID, withActionName: "SSETriggers")
+            let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
             self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
 
             bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")

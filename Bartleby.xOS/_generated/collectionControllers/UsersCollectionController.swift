@@ -109,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "users" : "user" )  has changed in UsersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdateUser.commit(changed, inRegistry:self.registryUID)
+            UpdateUser.commit(changed, inRegistryWithUID:self.registryUID)
         }
         return UIDS
     }
@@ -276,7 +276,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreateUser.commit(item, inRegistry:self.registryUID)
+               CreateUser.commit(item, inRegistryWithUID:self.registryUID)
             }
 
         }else{
@@ -323,7 +323,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeleteUser.commit(item.UID,fromRegistry:self.registryUID) 
+                DeleteUser.commit(item.UID,fromRegistryWithUID:self.registryUID) 
             }
 
 

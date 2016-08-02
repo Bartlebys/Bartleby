@@ -50,7 +50,7 @@ class UsersCreationLoadTest: TestCase {
         user.spaceUID=document.spaceUID
 
         CreateUser.execute(user,
-                           inRegistry:document.UID,
+                           inRegistryWithUID:document.UID,
                            sucessHandler: { (context) -> () in
                             completionHandler(createdUser:user,completionState:Completion.successStateFromJHTTPResponse(context))
         }) { (context) -> () in
@@ -89,7 +89,7 @@ class UsersCreationLoadTest: TestCase {
 
         func __update(user:User){
             user.notes=Bartleby.randomStringWithLength(40)
-            UpdateUser.execute(user, inRegistry:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            UpdateUser.execute(user, inRegistryWithUID:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __delete(user)
             }) { (context) in
                 __fullFill()
@@ -99,7 +99,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         func __delete(user:User){
-            DeleteUser.execute(user.UID, fromRegistry: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user.UID, fromRegistryWithUID: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __isItTheEnd()
                 //__logout(user)
             }) { (context) in

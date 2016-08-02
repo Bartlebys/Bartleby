@@ -32,7 +32,7 @@ public class LoginUser: JObject {
 
                 let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID,"password":password, "identification":registry.registryMetadata.identificationMethod.rawValue]
 
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
                 let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
                 r.responseJSON { response in
 

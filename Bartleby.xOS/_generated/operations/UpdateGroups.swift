@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init([Group](), inRegistry:Default.NO_UID)
+        self.init([Group](), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ groups:[Group]=[Group](), inRegistry registryUID:String) {
+    init (_ groups:[Group]=[Group](), inRegistryWithUID registryUID:String) {
         self._groups=groups
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter groups: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(groups:[Group], inRegistry registryUID:String){
-        let operationInstance=UpdateGroups(groups,inRegistry:registryUID)
+    static func commit(groups:[Group], inRegistryWithUID registryUID:String){
+        let operationInstance=UpdateGroups(groups,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -180,7 +180,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 UpdateGroups.execute(self._groups,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         
                         self._operation.counter=self._operation.counter!+1
@@ -210,7 +210,7 @@ import ObjectMapper
     }
 
     static public func execute(groups:[Group],
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
@@ -223,7 +223,7 @@ import ObjectMapper
                     collection.append(serializedInstance)
                 }
                 parameters["groups"]=collection
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"UpdateGroups" ,forMethod:"PUT", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateGroups" ,forMethod:"PUT", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

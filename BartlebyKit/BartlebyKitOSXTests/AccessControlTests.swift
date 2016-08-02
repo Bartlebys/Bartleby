@@ -93,7 +93,7 @@ class AccessControlTests: TestCase {
         
         let expectation = expectationWithDescription("ReadUserById replay")
         
-        ReadUserById.execute(fromRegistry:TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:AccessControlTests._otherUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -121,7 +121,7 @@ class AccessControlTests: TestCase {
             user.email=AccessControlTests._thirdUserNewEmail
             
             UpdateUser.execute(user,
-                               inRegistry:TestCase.document.UID,
+                               inRegistryWithUID:TestCase.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -138,7 +138,7 @@ class AccessControlTests: TestCase {
     func test107_Check_ThirdUserEmail_HasBeenUpdated() {
         let expectation = expectationWithDescription("ReadUserById should respond")
         
-        ReadUserById.execute(fromRegistry:TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId: AccessControlTests._thirdUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -166,7 +166,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute("unexisting id",
-                           fromRegistry:  TestCase.document.UID,
+                           fromRegistryWithUID:  TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("The user does not not exists its deletion should fail")
@@ -224,7 +224,7 @@ class AccessControlTests: TestCase {
     func test202_ReadUserByID_Creator_byOtherUser_ShouldNotRetrievePassword() {
         let expectation = expectationWithDescription("ReadUserById should respond")
         
-        ReadUserById.execute(fromRegistry:TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:AccessControlTests._creatorUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -243,7 +243,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._creatorUserID,
-                           fromRegistry: AccessControlTests.document.UID,
+                           fromRegistryWithUID: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete its creator")
@@ -259,7 +259,7 @@ class AccessControlTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._thirdUserID,
-                           fromRegistry: AccessControlTests.document.UID,
+                           fromRegistryWithUID: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete third user")
@@ -277,7 +277,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._creatorUser {
             user.email = "badmail@lylo.tv"
             
-            UpdateUser.execute(user, inRegistry: AccessControlTests.document.UID,
+            UpdateUser.execute(user, inRegistryWithUID: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update the document owner")
@@ -300,7 +300,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._thirdUser {
             user.email = "otherbadmail@lylo.tv"
             
-            UpdateUser.execute(user, inRegistry: AccessControlTests.document.UID,
+            UpdateUser.execute(user, inRegistryWithUID: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update third user")

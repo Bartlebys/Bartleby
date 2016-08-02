@@ -64,7 +64,7 @@ class LockerTests: XCTestCase {
             LockerTests._creatorUserID = creator.UID
             LockerTests._creatorUserPassword = creator.password
 
-            CreateUser.execute(creator, inRegistry: LockerTests._document.UID,
+            CreateUser.execute(creator, inRegistryWithUID: LockerTests._document.UID,
                                sucessHandler: { (context) in
                                 expectation.fulfill()
             }) { (context) in
@@ -89,7 +89,7 @@ class LockerTests: XCTestCase {
         LockerTests._consumerUserID = consumer.UID
         LockerTests._consumerUserPassword = consumer.password
 
-        CreateUser.execute(consumer, inRegistry: LockerTests._document.UID,
+        CreateUser.execute(consumer, inRegistryWithUID: LockerTests._document.UID,
                            sucessHandler: { (context) in
                             expectation.fulfill()
         }) { (context) in
@@ -129,7 +129,7 @@ class LockerTests: XCTestCase {
         LockerTests._lockerID = locker.UID
 
         CreateLocker.execute(locker,
-                             inRegistry: LockerTests._document.UID,
+                             inRegistryWithUID: LockerTests._document.UID,
                              sucessHandler: { (context) in
                                 expectation.fulfill()
         }) { (context) in
@@ -143,7 +143,7 @@ class LockerTests: XCTestCase {
     func test105_ReadLockerById_ShouldFail_fromCreator() {
         let expectation = expectationWithDescription("ReadLockerById should respond")
 
-        ReadLockerById.execute(fromRegistry: LockerTests._document.UID,
+        ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -163,7 +163,7 @@ class LockerTests: XCTestCase {
         let p = ReadLockersByIdsParameters()
         p.ids = [LockerTests._lockerID]
 
-        ReadLockersByIds.execute(fromRegistry: LockerTests._document.UID,
+        ReadLockersByIds.execute(fromRegistryWithUID: LockerTests._document.UID,
                                  parameters: p,
                                  sucessHandler: { (lockers) in
                                     expectation.fulfill()
@@ -216,7 +216,7 @@ class LockerTests: XCTestCase {
     func test202_ReadLockerById() {
         let expectation = expectationWithDescription("ReadLockerById should always fail")
 
-        ReadLockerById.execute(fromRegistry: LockerTests._document.UID,
+        ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -235,7 +235,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                             inRegistry: LockerTests._document.UID,
+                             inRegistryWithUID: LockerTests._document.UID,
                              code: LockerTests._lockerCode,
                              accessGranted: { (locker) in
                                 expectation.fulfill()
@@ -269,7 +269,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                                                inRegistry: LockerTests._document.UID,
+                                                inRegistryWithUID: LockerTests._document.UID,
                                                 code: "BADCOD",
                                                 accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -286,7 +286,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("VerifyLocker should respond")
 
         VerifyLocker.execute( "BADID",
-                                                 inRegistry: LockerTests._document.UID,
+                                                 inRegistryWithUID: LockerTests._document.UID,
                                                  code: LockerTests._lockerCode,
                                                  accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -321,7 +321,7 @@ class LockerTests: XCTestCase {
 
         let expectation = expectationWithDescription("DeleteLocker should respond")
 
-        DeleteLocker.execute(LockerTests._lockerID, fromRegistry: LockerTests._document.UID, sucessHandler: { (context) in
+        DeleteLocker.execute(LockerTests._lockerID, fromRegistryWithUID: LockerTests._document.UID, sucessHandler: { (context) in
             expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
@@ -336,7 +336,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._consumerUserID,
-                           fromRegistry:LockerTests._document.UID,
+                           fromRegistryWithUID:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -352,7 +352,7 @@ class LockerTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._creatorUserID,
-                           fromRegistry:LockerTests._document.UID,
+                           fromRegistryWithUID:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

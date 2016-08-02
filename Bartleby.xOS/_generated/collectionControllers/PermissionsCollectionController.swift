@@ -109,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "permissions" : "permission" )  has changed in PermissionsCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdatePermission.commit(changed, inRegistry:self.registryUID)
+            UpdatePermission.commit(changed, inRegistryWithUID:self.registryUID)
         }
         return UIDS
     }
@@ -258,7 +258,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreatePermission.commit(item, inRegistry:self.registryUID)
+               CreatePermission.commit(item, inRegistryWithUID:self.registryUID)
             }
 
         }else{
@@ -292,7 +292,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeletePermission.commit(item.UID,fromRegistry:self.registryUID) 
+                DeletePermission.commit(item.UID,fromRegistryWithUID:self.registryUID) 
             }
 
 

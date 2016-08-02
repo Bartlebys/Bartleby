@@ -41,7 +41,7 @@ class BasicApiTests: TestCase {
         BasicApiTests._createdUser=user
 
         CreateUser.execute(user,
-                           inRegistry:TestCase.document.UID,
+                           inRegistryWithUID:TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -91,7 +91,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromRegistry: TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -129,7 +129,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromRegistry: TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -157,7 +157,7 @@ class BasicApiTests: TestCase {
         let p=ReadUsersByIdsParameters()
         p.ids=[BasicApiTests._userID]
 
-        ReadUsersByIds.execute(fromRegistry: TestCase.document.UID, parameters: p,
+        ReadUsersByIds.execute(fromRegistryWithUID: TestCase.document.UID, parameters: p,
                                sucessHandler: { (users: [User]) -> () in
                                 expectation.fulfill()
 
@@ -183,7 +183,7 @@ class BasicApiTests: TestCase {
 
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromRegistry:TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:"Unexisting ID",
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -207,7 +207,7 @@ class BasicApiTests: TestCase {
         user.email=BasicApiTests._newEmail
 
         UpdateUser.execute(user,
-                           inRegistry: TestCase.document.UID,
+                           inRegistryWithUID: TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -221,7 +221,7 @@ class BasicApiTests: TestCase {
     func test502_checkUserHasBeenUpdated() {
         let expectation = expectationWithDescription("ReadUserById should respond")
 
-        ReadUserById.execute(fromRegistry: TestCase.document.UID,
+        ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -248,7 +248,7 @@ class BasicApiTests: TestCase {
         user.password=BasicApiTests._newPassword
 
         UpdateUser.execute(user,
-                           inRegistry: TestCase.document.UID,
+                           inRegistryWithUID: TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -299,7 +299,7 @@ class BasicApiTests: TestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(BasicApiTests._userID,
-                           fromRegistry:TestCase.document.UID,
+                           fromRegistryWithUID:TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

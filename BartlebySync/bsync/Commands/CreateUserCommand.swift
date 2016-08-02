@@ -69,7 +69,7 @@ class CreateUserCommand: CommandBase {
                         user.verificationMethod = .ByPhoneNumber
                     }
                     
-                    CreateUser.execute(user, inRegistry: document.UID,
+                    CreateUser.execute(user, inRegistryWithUID: document.UID,
                                        sucessHandler: { (context) in
                                         print (user.UID)
                                         

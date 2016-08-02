@@ -109,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "groups" : "group" )  has changed in GroupsCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdateGroup.commit(changed, inRegistry:self.registryUID)
+            UpdateGroup.commit(changed, inRegistryWithUID:self.registryUID)
         }
         return UIDS
     }
@@ -276,7 +276,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreateGroup.commit(item, inRegistry:self.registryUID)
+               CreateGroup.commit(item, inRegistryWithUID:self.registryUID)
             }
 
         }else{
@@ -323,7 +323,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeleteGroup.commit(item.UID,fromRegistry:self.registryUID) 
+                DeleteGroup.commit(item.UID,fromRegistryWithUID:self.registryUID) 
             }
 
 

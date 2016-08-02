@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init(User(), inRegistry:Default.NO_UID)
+        self.init(User(), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ user:User=User(), inRegistry registryUID:String) {
+    init (_ user:User=User(), inRegistryWithUID registryUID:String) {
         self._user=user
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter user: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(user:User, inRegistry registryUID:String){
-        let operationInstance=UpdateUser(user,inRegistry:registryUID)
+    static func commit(user:User, inRegistryWithUID registryUID:String){
+        let operationInstance=UpdateUser(user,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -177,7 +177,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 UpdateUser.execute(self._user,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         
                         self._operation.counter=self._operation.counter!+1
@@ -207,14 +207,14 @@ import ObjectMapper
     }
 
     static public func execute(user:User,
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.URLByAppendingPathComponent("user")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["user"]=Mapper<User>().toJSON(user)
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"UpdateUser" ,forMethod:"PUT", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateUser" ,forMethod:"PUT", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

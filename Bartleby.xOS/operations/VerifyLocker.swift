@@ -35,7 +35,7 @@ public class VerifyLocker: JObject {
      - parameter failure:   the failure closure
      */
     public static  func execute( lockerUID: String,
-                                inRegistry registryUID: String,
+                                inRegistryWithUID registryUID: String,
                                 code: String,
                                 accessGranted success:(locker: Locker)->(),
                                 accessRefused failure:(context: JHTTPResponse)->()) {
@@ -46,9 +46,9 @@ public class VerifyLocker: JObject {
             let verifyer=VerifyLocker()
             lockerRef.fetchInstance(Locker.self) { (instance) in
                 if let _=instance {
-                    verifyer._proceedToLocalVerification(lockerUID, inRegistry:document.UID, code: code, accessGranted: success, accessRefused: failure)
+                    verifyer._proceedToLocalVerification(lockerUID, inRegistryWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
                 } else {
-                    verifyer._proceedToDistantVerification(lockerUID, inRegistry:document.UID, code: code, accessGranted: success, accessRefused: failure)
+                    verifyer._proceedToDistantVerification(lockerUID, inRegistryWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
                 }
             }
         }else{
@@ -74,7 +74,7 @@ public class VerifyLocker: JObject {
      - parameter failure:   failure
      */
     private  func _proceedToLocalVerification(  lockerUID: String,
-                                                inRegistry registryUID: String,
+                                                inRegistryWithUID registryUID: String,
                                                            code: String,
                                                            accessGranted success:(locker: Locker)->(),
                                                                          accessRefused failure:(context: JHTTPResponse)->()) {
@@ -119,7 +119,7 @@ public class VerifyLocker: JObject {
      - parameter failure:   failure
      */
     private  func _proceedToDistantVerification( lockerUID: String,
-                                                 inRegistry registryUID: String,
+                                                 inRegistryWithUID registryUID: String,
                                                             code: String,
                                                             accessGranted success:(locker: Locker)->(),
                                                                           accessRefused failure:(context: JHTTPResponse)->()) {
@@ -127,7 +127,7 @@ public class VerifyLocker: JObject {
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             let pathURL=document.baseURL.URLByAppendingPathComponent("locker/verify")
             let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID, "code":code]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
             let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
             r.responseString { response in
 

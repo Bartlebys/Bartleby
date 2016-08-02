@@ -72,10 +72,10 @@ public class HTTPManager: NSObject {
 
      - returns: the mutable
      */
-    static public func mutableRequestWithToken(inRegistry registryUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
+    static public func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
         let request=NSMutableURLRequest(URL: url)
         request.HTTPMethod=method
-        let headers=HTTPManager.httpHeadersWithToken(inRegistry:registryUID, withActionName: actionName)
+        let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID:registryUID, withActionName: actionName)
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
         }
@@ -95,7 +95,7 @@ public class HTTPManager: NSObject {
 
      - returns: the http Headers
      */
-    static public func httpHeadersWithToken(inRegistry registryUID: String, withActionName actionName: String)->[String:String]{
+    static public func httpHeadersWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
@@ -159,7 +159,7 @@ public class HTTPManager: NSObject {
      */
     static public func apiIsReachable(baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
         let pathURL=baseURL.URLByAppendingPathComponent("/Reachable")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
 
@@ -221,7 +221,7 @@ public class HTTPManager: NSObject {
      */
     static public func verifyCredentials(registryUID: String, baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
         let pathURL=baseURL.URLByAppendingPathComponent("/verify/credentials")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
 

@@ -23,7 +23,7 @@ import ObjectMapper
     }
 
 
-    public static func execute(fromRegistry registryUID:String,
+    public static func execute(fromRegistryWithUID registryUID:String,
 						lockerId:String,
 						sucessHandler success:(locker:Locker)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
@@ -32,7 +32,7 @@ import ObjectMapper
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.URLByAppendingPathComponent("locker/\(lockerId)")
             let dictionary:Dictionary<String, AnyObject>=[:]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
             let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON{ response in
         

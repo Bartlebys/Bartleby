@@ -109,7 +109,7 @@ import ObjectMapper
         bprint("\(changedItems.count) \( changedItems.count>1 ? "lockers" : "locker" )  has changed in LockersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
         for changed in changedItems{
             UIDS.append(changed.UID)
-            UpdateLocker.commit(changed, inRegistry:self.registryUID)
+            UpdateLocker.commit(changed, inRegistryWithUID:self.registryUID)
         }
         return UIDS
     }
@@ -276,7 +276,7 @@ import ObjectMapper
 
 
             if item.committed==false && commit==true{
-               CreateLocker.commit(item, inRegistry:self.registryUID)
+               CreateLocker.commit(item, inRegistryWithUID:self.registryUID)
             }
 
         }else{
@@ -323,7 +323,7 @@ import ObjectMapper
 
         
             if commit==true{
-                DeleteLocker.commit(item.UID,fromRegistry:self.registryUID) 
+                DeleteLocker.commit(item.UID,fromRegistryWithUID:self.registryUID) 
             }
 
 

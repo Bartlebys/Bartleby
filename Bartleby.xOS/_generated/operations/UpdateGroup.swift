@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init(Group(), inRegistry:Default.NO_UID)
+        self.init(Group(), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ group:Group=Group(), inRegistry registryUID:String) {
+    init (_ group:Group=Group(), inRegistryWithUID registryUID:String) {
         self._group=group
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter group: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(group:Group, inRegistry registryUID:String){
-        let operationInstance=UpdateGroup(group,inRegistry:registryUID)
+    static func commit(group:Group, inRegistryWithUID registryUID:String){
+        let operationInstance=UpdateGroup(group,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -177,7 +177,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 UpdateGroup.execute(self._group,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         
                         self._operation.counter=self._operation.counter!+1
@@ -207,14 +207,14 @@ import ObjectMapper
     }
 
     static public func execute(group:Group,
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.URLByAppendingPathComponent("group")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["group"]=Mapper<Group>().toJSON(group)
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"UpdateGroup" ,forMethod:"PUT", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateGroup" ,forMethod:"PUT", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

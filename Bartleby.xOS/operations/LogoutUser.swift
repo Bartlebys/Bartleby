@@ -31,7 +31,7 @@ public class LogoutUser: JObject {
                             success()
                         }else{
                             let dictionary: Dictionary<String, AnyObject>=[:]
-                            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:registry.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
+                            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
                             let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
                             r.responseString { response in
                                 let request=response.request

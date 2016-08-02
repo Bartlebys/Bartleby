@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init([User](), inRegistry:Default.NO_UID)
+        self.init([User](), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ users:[User]=[User](), inRegistry registryUID:String) {
+    init (_ users:[User]=[User](), inRegistryWithUID registryUID:String) {
         self._users=users
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter users: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(users:[User], inRegistry registryUID:String){
-        let operationInstance=CreateUsers(users,inRegistry:registryUID)
+    static func commit(users:[User], inRegistryWithUID registryUID:String){
+        let operationInstance=CreateUsers(users,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -180,7 +180,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 CreateUsers.execute(self._users,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         document.markAsDistributed(&self._users)
                         self._operation.counter=self._operation.counter!+1
@@ -210,7 +210,7 @@ import ObjectMapper
     }
 
     static public func execute(users:[User],
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
@@ -223,7 +223,7 @@ import ObjectMapper
                     collection.append(serializedInstance)
                 }
                 parameters["users"]=collection
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"CreateUsers" ,forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateUsers" ,forMethod:"POST", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

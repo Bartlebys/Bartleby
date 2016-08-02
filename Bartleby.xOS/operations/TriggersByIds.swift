@@ -29,7 +29,7 @@ import Foundation
 
             let pathURL=document.baseURL.URLByAppendingPathComponent("triggers")
             let dictionary=["ids":ids]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
             let r: Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON { response in
                 let request=response.request

@@ -200,7 +200,7 @@ class TestCase: XCTestCase {
         TestCase._createdUsers.append(user)
 
         // Create user on the server
-        CreateUser.execute(user, inRegistry:TestCase.document.UID, sucessHandler: { (context) in
+        CreateUser.execute(user, inRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
 
             if autologin {
                 // Login if needed
@@ -243,7 +243,7 @@ class TestCase: XCTestCase {
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
-            DeleteUser.execute(user.UID, fromRegistry:TestCase.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user.UID, fromRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in

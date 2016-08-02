@@ -24,7 +24,7 @@ import Foundation
     }
 
 
-    public static func execute(  fromRegistry registryUID: String,
+    public static func execute(  fromRegistryWithUID registryUID: String,
                                 indexes: [Int],
                                 ignoreHoles:Bool,
                                 sucessHandler success:(triggers: [Trigger])->(),
@@ -35,7 +35,7 @@ import Foundation
 
             let pathURL=document.baseURL.URLByAppendingPathComponent("triggers")
             let dictionary:[String:AnyObject]=["indexes":indexes,"ignoreHoles": ignoreHoles]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
             let r: Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON { response in
                 let request=response.request

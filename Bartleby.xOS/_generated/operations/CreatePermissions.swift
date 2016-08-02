@@ -29,7 +29,7 @@ import ObjectMapper
     private var _operation:Operation=Operation()
 
     required public convenience init(){
-        self.init([Permission](), inRegistry:Default.NO_UID)
+        self.init([Permission](), inRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -103,7 +103,7 @@ import ObjectMapper
     - parameter registryUID the registry or document UID
 
     */
-    init (_ permissions:[Permission]=[Permission](), inRegistry registryUID:String) {
+    init (_ permissions:[Permission]=[Permission](), inRegistryWithUID registryUID:String) {
         self._permissions=permissions
         self._registryUID=registryUID
         super.init()
@@ -115,8 +115,8 @@ import ObjectMapper
     - parameter permissions: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(permissions:[Permission], inRegistry registryUID:String){
-        let operationInstance=CreatePermissions(permissions,inRegistry:registryUID)
+    static func commit(permissions:[Permission], inRegistryWithUID registryUID:String){
+        let operationInstance=CreatePermissions(permissions,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -180,7 +180,7 @@ import ObjectMapper
                 // We try to execute
                 self._operation.status=Operation.Status.InProgress
                 CreatePermissions.execute(self._permissions,
-                    inRegistry:self._registryUID,
+                    inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         document.markAsDistributed(&self._permissions)
                         self._operation.counter=self._operation.counter!+1
@@ -210,7 +210,7 @@ import ObjectMapper
     }
 
     static public func execute(permissions:[Permission],
-            inRegistry registryUID:String,
+            inRegistryWithUID registryUID:String,
             sucessHandler success:(context:JHTTPResponse)->(),
             failureHandler failure:(context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
@@ -223,7 +223,7 @@ import ObjectMapper
                     collection.append(serializedInstance)
                 }
                 parameters["permissions"]=collection
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"CreatePermissions" ,forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"CreatePermissions" ,forMethod:"POST", and: pathURL)
                 let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 

@@ -23,7 +23,7 @@ import ObjectMapper
     }
 
 
-    public static func execute(fromRegistry registryUID:String,
+    public static func execute(fromRegistryWithUID registryUID:String,
 						groupId:String,
 						sucessHandler success:(group:Group)->(),
 						failureHandler failure:(context:JHTTPResponse)->()){
@@ -32,7 +32,7 @@ import ObjectMapper
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.URLByAppendingPathComponent("group/\(groupId)")
             let dictionary:Dictionary<String, AnyObject>=[:]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistry:document.UID,withActionName:"ReadGroupById" ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadGroupById" ,forMethod:"GET", and: pathURL)
             let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON{ response in
         

@@ -60,7 +60,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
 
         CreateUser.execute(user,
-                           inRegistry:UserStatusTests.document.UID,
+                           inRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -84,7 +84,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._suspendedUserID = user.UID
 
         CreateUser.execute(user,
-                           inRegistry:UserStatusTests.document.UID,
+                           inRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -158,7 +158,7 @@ class UserStatusTests: XCTestCase {
             user.status = .Suspended
 
             UpdateUser.execute(user,
-                               inRegistry: UserStatusTests.document.UID,
+                               inRegistryWithUID: UserStatusTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -227,7 +227,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._suspendedUserID,
-                           fromRegistry:UserStatusTests.document.UID,
+                           fromRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -243,7 +243,7 @@ class UserStatusTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._creatorUserID,
-                           fromRegistry:UserStatusTests.document.UID,
+                           fromRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

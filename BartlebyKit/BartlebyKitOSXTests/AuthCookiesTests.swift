@@ -50,7 +50,7 @@ class AuthCookiesTests: XCTestCase {
         // Store the current user
         AuthCookiesTests._createdUser=user
         CreateUser.execute(user,
-                           inRegistry:AuthCookiesTests.document.UID,
+                           inRegistryWithUID:AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -130,7 +130,7 @@ class AuthCookiesTests: XCTestCase {
         let expectation = expectationWithDescription("DeleteUser should respond")
 
         DeleteUser.execute(AuthCookiesTests._userID,
-                           fromRegistry: AuthCookiesTests.document.UID,
+                           fromRegistryWithUID: AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
