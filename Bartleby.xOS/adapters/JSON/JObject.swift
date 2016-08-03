@@ -380,20 +380,15 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     public func mapping(map: Map) {
-
         self.disableSupervisionAndCommit()
-
         // store the changedKeys in memory
         let changedKeys=self.changedKeys
-
-        // Define if necessary the UID
-        self.defineUID()
-
         if map.mappingType == .ToJSON {
+            // Define if necessary the UID
+            self.defineUID()
             // Store the universal type Name
             self._typeName=self.dynamicType.typeName()
         }
-
         self._id <- map[Default.UID_KEY]
         self._typeName <- map[Default.TYPE_NAME_KEY]
         self.committed <- map["committed"]
