@@ -53,6 +53,9 @@ class BsyncKeyValueStorageTests: TestCase {
 //    }
 
     func test104_ReadUser() {
+
+        let x =  _kvs["user1"]
+        
         if let user = _kvs["user1"] as? User {
             XCTAssertEqual(user.UID, BsyncKeyValueStorageTests._userID)
             XCTAssertEqual(user.spaceUID, BsyncKeyValueStorageTests._spaceUID)

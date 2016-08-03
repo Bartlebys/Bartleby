@@ -76,7 +76,7 @@ public class JSerializer: Serializer {
     static public func deserializeFromDictionary(dictionary: [String:AnyObject]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             typeName = Registry.resolveTypeName(from: typeName)
-            if let Reference: Collectible.Type = NSClassFromString(typeName) as? Collectible.Type {
+            if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
                     let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
                     mappable.mapping(map)

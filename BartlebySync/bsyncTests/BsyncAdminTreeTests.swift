@@ -10,7 +10,7 @@ import XCTest
 
 class BsyncAdminTreeTests: TestCase {
 
-    private static let _user = User()
+    private static var _user = User()
     private static let _treeName = Bartleby.randomStringWithLength(10)
     private static let _context = BsyncContext(sourceURL: NSURL(fileURLWithPath: assetPath + _treeName + "/"),
                                         andDestinationUrl: TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/" + _treeName),
@@ -20,7 +20,8 @@ class BsyncAdminTreeTests: TestCase {
     
     override static func setUp() {
         super.setUp()
-        
+
+        self._user=BsyncAdminTreeTests.document.newUser()
         _user.creatorUID = _user.UID
         _user.spaceUID = TestCase.document.spaceUID
         self._context.credentials = BsyncCredentials()
@@ -42,8 +43,7 @@ class BsyncAdminTreeTests: TestCase {
     
     func test100_createUser() {
         let expectation = expectationWithDescription("Create user")
-        
-        CreateUser.execute(BsyncAdminTreeTests._user, inDataSpace: TestCase.document.spaceUID, sucessHandler: { (context) in
+        CreateUser.execute(BsyncAdminTreeTests._user, inRegistryWithUID: TestCase.document.UID, sucessHandler: { (context) in
             expectation.fulfill()
             }) { (context) in
                 expectation.fulfill()
@@ -116,7 +116,7 @@ class BsyncAdminTreeTests: TestCase {
     
     func test502_LogoutUser() {
         let expectation = expectationWithDescription("LogoutUser should respond")
-        LogoutUser.execute(fromDataSpace:TestCase.document.spaceUID,
+        LogoutUser.execute( BsyncAdminTreeTests._user,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
