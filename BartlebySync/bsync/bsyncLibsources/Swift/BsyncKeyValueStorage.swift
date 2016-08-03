@@ -118,7 +118,7 @@ class BsyncKeyValueStorage {
 // Direct Support of String and NSdata
 extension BsyncKeyValueStorage{
 
-    func setStringValue(value:String,forKey key:String) -> () {
+    func setStringValue(value:String?,forKey key:String) -> () {
         let j=JString()
         j.string=value
         self[key]=j

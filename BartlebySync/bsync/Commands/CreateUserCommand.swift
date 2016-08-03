@@ -60,6 +60,7 @@ class CreateUserCommand: CommandBase {
                     user.creatorUID = user.UID
                     user.password = pw
                     user.verificationMethod = .None
+
                     if let email = email.value {
                         user.email = email
                         user.verificationMethod = .ByEmail

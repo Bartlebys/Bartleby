@@ -1193,6 +1193,8 @@
 				5B0D4B941D058644009CBD93 /* CryptedCommand.swift */,
 				5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */,
 				5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */,
+				E585044C1C3FA12000E2F64A /* LoginCommand.swift */,
+				E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */,
 				E552B7E71C3D77F3001CD53B /* CreateHashMapCommand.swift */,
 				5B16A3511CCE0A56003E02BA /* RevealHashMapCommand.swift */,
 				E552B7D81C3D6C03001CD53B /* RunDirectivesCommand.swift */,
@@ -1201,8 +1203,6 @@
 				E545940C1C3E642C000576AD /* CleanupCommand.swift */,
 				E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */,
 				E58504491C3F9F6000E2F64A /* KeyValueStorageCommand.swift */,
-				E585044C1C3FA12000E2F64A /* LoginCommand.swift */,
-				E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */,
 				E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */,
 			);
 			path = Commands;

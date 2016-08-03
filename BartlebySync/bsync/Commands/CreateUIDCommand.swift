@@ -15,9 +15,7 @@ class CreateUIDCommand: CommandBase {
         super.init(completionHandler: completionHandler)
         
         if parse() {
-            
             print(Bartleby.createUID())
-
             self.on(Completion.successState())
         }
     }

@@ -31,7 +31,7 @@ class LoginCommand: CommandBase {
         if parse() {
             if let api = api.value, let userUID = userUID.value, let password = password.value,
                 let secretKey = secretKey.value, let sharedSalt = sharedSalt.value {
-                
+
                 if let apiUrl = NSURL(string: api) {
                     // We prefer to configure completly Bartleby
                     // When using it's api.
@@ -41,17 +41,18 @@ class LoginCommand: CommandBase {
                     Bartleby.configuration.SHARED_SALT=sharedSalt
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
-                    
+
+
                     let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
                     let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
                     let kvs = BsyncKeyValueStorage(url: kvsUrl)
                     
                     do {
                         try kvs.open()
-                        
                         if let user = kvs[userUID] as? User {
-                            
+                            let document=self.virtualDocumentFor(user.spaceUID,rootObjectUID:user.registryUID)
                             LoginUser.execute(user, withPassword: password, sucessHandler: {
+                                kvs.setStringValue(document.registryMetadata.identificationValue, forKey: "kvid.\(user.UID)")
                                 print ("Successful login")
                                 exit(EX_OK)
                                 }, failureHandler: { (context) in

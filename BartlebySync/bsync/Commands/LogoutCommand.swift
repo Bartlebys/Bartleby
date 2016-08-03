@@ -15,12 +15,16 @@ class LogoutCommand: CommandBase {
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
                                            helpMessage: "BartlebySync base url e.g http://yd.local/api/v1/BartlebySync")
-        let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID", required: true,
-                                    helpMessage: "A spaceUID may be required for authentication.\n\t If spaceUID is set, email, password and salt, must be set too!")
-        let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
-                                      helpMessage: "The salt used for authentication.\n\t If salt is set; email, password and spaceUID, must be set too!\n\n")
 
-        addOptions(sourceURLString, spaceUID, sharedSalt)
+        let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID", required: true,
+                                    helpMessage: "A spaceUID is required for authentication")
+
+        let userUID = StringOption(shortFlag: "u", longFlag: "userUID", required: true,
+                                    helpMessage: "A userUID is required")
+        let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
+                                      helpMessage: "The salt used for authentication.")
+
+        addOptions(sourceURLString,spaceUID,userUID, sharedSalt)
         
         if parse() {
             
@@ -34,8 +38,13 @@ class LogoutCommand: CommandBase {
                 print("Invalid source URL \(source)")
                 exit(EX__BASE)
             }
-            
-            
+
+            guard let userUID=userUID.value else {
+                print("userUID undefined")
+                exit(EX__BASE)
+            }
+
+
             // If there is an url let's determine the API base url.
             // it should be before baseAPI_URL/BartlebySync/tree/...
             // eg.: http://yd.local/api/v1/BartlebySync
@@ -55,20 +64,34 @@ class LogoutCommand: CommandBase {
                 Bartleby.configuration.API_BASE_URL = baseApiURL!
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
-                let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
-               let user=document.newUser()
+              let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
                 
-                LogoutUser.execute(user, sucessHandler: { () -> () in
-                    print ("Successful logout")
-                    exit(EX_OK)
-                    }, failureHandler: { (context) -> () in
-                        // Print a JSON failure description
-                        print ("An error has occured:\(context.description)")
-                        exit(EX_USAGE)
-                })
-                
-                
-                
+                let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
+                let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                let kvs = BsyncKeyValueStorage(url: kvsUrl)
+                do {
+                    try kvs.open()
+                    if let user = kvs[userUID] as? User {
+                        document.registryMetadata.currentUser=user
+                        LogoutUser.execute(user, sucessHandler: { () -> () in
+                            kvs.delete("kvid.\(user.UID)")
+                            print ("Successful logout")
+                            exit(EX_OK)
+                            }, failureHandler: { (context) -> () in
+                                // Print a JSON failure description
+                                print ("An error has occured:\(context.description)")
+                                exit(EX_USAGE)
+                        })
+
+
+                    } else {
+                        print("No user with id: \(userUID)")
+                        exit(EX__BASE)
+                    }
+                } catch {
+                    self.on(Completion.failureStateFromError(error))
+                }
+
             } else {
                 print ("An unexpected error has occured")
                 exit(EX_USAGE)
