@@ -88,6 +88,9 @@ class BsyncKeyValueStorage {
         }
     }
 
+
+
+
     func delete(key: String) {
         _kvs.removeValueForKey(key)
         _shouldSave = true
@@ -107,4 +110,39 @@ class BsyncKeyValueStorage {
         try fm.removeItemAtURL(_url)
         _shouldSave = false
     }
+}
+
+
+
+
+// Direct Support of String and NSdata
+extension BsyncKeyValueStorage{
+
+    func setStringValue(value:String,forKey key:String) -> () {
+        let j=JString()
+        j.string=value
+        self[key]=j
+    }
+
+    func  getStringValueForKey(key:String) -> String? {
+        if let s = self[key] as? JString{
+            return s.string
+        }
+        return nil
+    }
+
+
+    func setDataValue(value:NSData,forKey key:String) -> () {
+        let d=JData()
+        d.data=value
+        self[key]=d
+    }
+
+    func getDataValueForKey(key:String) -> NSData? {
+        if let d = self[key] as? JData{
+            return d.data
+        }
+        return nil
+    }
+
 }

@@ -9,6 +9,7 @@
 import XCTest
 
 class BsyncKeyValueStorageTests: TestCase {
+
     private static let _spaceUID = TestCase.document.spaceUID
     private static var _userID = "UNDEFINED"
     private static let _kvsUrl = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
@@ -42,20 +43,16 @@ class BsyncKeyValueStorageTests: TestCase {
         BsyncKeyValueStorageTests._userID = user.UID
         _kvs["user1"] = user
     }
+    func test102_Upsert2() {
+       XCTAssertTrue(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+        let s=JString()
+        s.string="value2"
+       _kvs["key2"] = s
 
-//    func test102_Upsert2() {
-//        XCTAssertTrue(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
-//        _kvs["key2"] = "value2"
-//    }
-//
-//    func test103_Upsert3() {
-//        _kvs["key3"] = "value3"
-//    }
+   }
+
 
     func test104_ReadUser() {
-
-        let x =  _kvs["user1"]
-        
         if let user = _kvs["user1"] as? User {
             XCTAssertEqual(user.UID, BsyncKeyValueStorageTests._userID)
             XCTAssertEqual(user.spaceUID, BsyncKeyValueStorageTests._spaceUID)
@@ -63,14 +60,13 @@ class BsyncKeyValueStorageTests: TestCase {
             XCTFail("Error retrieving user1")
         }
     }
-
-//    func test105_ReadString() {
-//        if let value2 = _kvs["value2"] as? String {
-//            XCTAssertEqual(value2, "value2")
-//        } else {
-//            XCTFail("Error retrieving value2")
-//        }
-//    }
+    func test105_ReadString() {
+        if let value2 = _kvs["key2"] as? JString {
+            XCTAssertEqual(value2.string, "value2")
+        } else {
+            XCTFail("Error retrieving value2")
+        }
+    }
 
     func test106_Delete() {
         _kvs.delete("user1")
@@ -82,10 +78,6 @@ class BsyncKeyValueStorageTests: TestCase {
         }
     }
 
-//    func test107_Enumerate() {
-//        let all = _kvs.enumerate()
-//        XCTAssertEqual(all.count, 2)
-//    }
 
     func test108_RemoveAll() {
         do {
@@ -108,13 +100,29 @@ class BsyncKeyValueStorageTests: TestCase {
         XCTAssertEqual(0, kvs.enumerate().count)
     }
 
-//    func test110_SerializableString() {
-//        let s1 = "Rocinante"
-//        let data1 = s1.serialize()
-//        if let s2 = JSerializer.deserialize(data1) as? String {
-//            XCTAssertEqual(s2, s1)
-//        } else {
-//            XCTFail("Serialization error")
-//        }
-//    }
+
+    func test110_SerializableString() {
+        let s1 = "Rocinante"
+        _kvs.setStringValue(s1, forKey: "horse")
+        if let s2 = _kvs.getStringValueForKey("horse") {
+            XCTAssertEqual(s2, s1)
+        } else {
+            XCTFail("Serialization error")
+        }
+    }
+
+
+    func test110_SerializableData() {
+        if let d1 = "Rocinante".dataUsingEncoding( NSUTF8StringEncoding){
+            _kvs.setDataValue(d1, forKey:"horseAsData")
+            if let d2 = _kvs.getDataValueForKey("horseAsData") {
+                XCTAssertEqual(d2, d1)
+            } else {
+                XCTFail("Serialization error")
+            }
+        }else{
+             XCTFail("NSData encoding failure")
+        }
+
+    }
 }
