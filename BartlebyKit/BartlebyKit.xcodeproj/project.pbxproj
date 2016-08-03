@@ -331,7 +331,6 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B128FF1D1C317300D61261 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */; };
 		E5B129001D1C317300D61261 /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
-		E5B129011D1C317300D61261 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */; };
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
@@ -552,7 +551,6 @@
 		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCreationWithTheSameMailInDifferentSpaceTests.swift; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
@@ -1012,7 +1010,6 @@
 				E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */,
 				5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */,
 				5BDEF70C1C9FF49200D9FB70 /* Invocations */,
-				E56C00521C8ED51D00BB6B19 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
 				E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */,
 			);
@@ -1527,7 +1524,6 @@
 				E5B129001D1C317300D61261 /* SerializableInvocationsTests.swift in Sources */,
 				E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */,
 				E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */,
-				E5B129011D1C317300D61261 /* UserCreationWithTheSameMailInDifferentSpaceTests.swift in Sources */,
 				E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */,
 				E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */,
 				E5B128FB1D1C317300D61261 /* BasicApiTests.swift in Sources */,

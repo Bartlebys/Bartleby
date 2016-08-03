@@ -40,7 +40,22 @@
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test008_DeleteUser1()">
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test002_deleteUser2_shouldFail()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test003_LoginUser1()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test005_createUser2()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test006_deleteUser2_shouldFailAgain()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test008_LoginUser2()">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test009_DeleteUser2()">
                </Test>
                <Test
                   Identifier = "UsersCreationLoadTest/test_005A_10X10_key()">

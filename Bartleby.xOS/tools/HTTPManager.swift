@@ -109,15 +109,15 @@ public class HTTPManager: NSObject {
             // SpaceUID
             headers[HTTPManager.SPACE_UID_KEY]=document.spaceUID
 
-                if document.registryMetadata.identificationMethod == .Key{
-                    if  let idv=document.registryMetadata.identificationValue {
-                        headers["kvid"]=idv
-                    }else{
-                        headers["kvid"]=Default.VOID_STRING
-                    }
+            if document.registryMetadata.identificationMethod == .Key{
+                if  let idv=document.registryMetadata.identificationValue {
+                    headers["kvid"]=idv
+                }else{
+                    headers["kvid"]=Default.VOID_STRING
                 }
-                // We add the observationUID
-                headers["observationUID"]=document.UID
+            }
+            // We add the observationUID
+            headers["observationUID"]=document.UID
 
         }
 
