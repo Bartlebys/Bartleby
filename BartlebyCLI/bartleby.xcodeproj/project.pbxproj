@@ -345,7 +345,7 @@
 		E50F410C1D40D5FF00532B09 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E50F410D1D40D5FF00532B09 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manual_graph_exec_test.swift; sourceTree = "<group>"; };
-		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
+		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
 		E5B98E141CC0E63400A7ECD1 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
