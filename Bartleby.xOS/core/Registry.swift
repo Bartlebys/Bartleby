@@ -167,7 +167,7 @@ public class Registry: BXDocument {
     public func setRootObjectUID(UID:String) throws {
         if (self.registryMetadata.rootObjectUID==Default.NO_UID){
             self.registryMetadata.rootObjectUID=UID
-            Bartleby.sharedInstance.replace(Default.NO_UID, by: UID)
+            Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: UID)
         }else{
             throw RegistryError.AttemptToSetUpRootObjectUIDMoreThanOnce
         }
@@ -498,9 +498,6 @@ public class Registry: BXDocument {
     override public func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
 
-            let registryProxyUID=self.spaceUID // May be a proxy
-
-
             // ##############
             // #1 Metadata
             // ##############
@@ -516,9 +513,9 @@ public class Registry: BXDocument {
                         bprint("ERROR \(r)", file: #file, function: #function, line: #line)
                         return
                     }
-                    // IMPORTANT we swap the UID
-                    let newRegistryUID=self.registryMetadata.UID
-                    Bartleby.sharedInstance.replace(registryProxyUID, by: newRegistryUID)
+                    let registryUID=self.registryMetadata.rootObjectUID
+                    Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: registryUID)
+                    self.registryMetadata.currentUser?.document=self as? BartlebyDocument
 
                     // Setup the triggered data buffer
                     self._setUp_triggeredDataBuffer(self.registryMetadata.triggeredDataBuffer)

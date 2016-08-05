@@ -175,7 +175,7 @@ public class  Bartleby: Consignee {
      - parameter registryProxyUID: the proxy UID
      - parameter registryUID:      the final UID
      */
-    public func replace(registryProxyUID: String, by registryUID: String) {
+    public func replaceRegistryUID(registryProxyUID: String, by registryUID: String) {
         if( registryProxyUID != registryUID) {
             if let registry=self._registries[registryProxyUID] {
                 self._registries[registryUID]=registry

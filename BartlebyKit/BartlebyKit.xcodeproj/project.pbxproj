@@ -334,6 +334,8 @@
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5CEA95C1D5243F3000DC91E /* ProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CEA95A1D5243F3000DC91E /* ProgressWindowController.swift */; };
+		E5CEA95D1D5243F3000DC91E /* ProgressWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5CEA95B1D5243F3000DC91E /* ProgressWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -559,6 +561,8 @@
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
+		E5CEA95A1D5243F3000DC91E /* ProgressWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressWindowController.swift; sourceTree = "<group>"; };
+		E5CEA95B1D5243F3000DC91E /* ProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressWindowController.xib; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -655,6 +659,8 @@
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
 				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
+				E5CEA95A1D5243F3000DC91E /* ProgressWindowController.swift */,
+				E5CEA95B1D5243F3000DC91E /* ProgressWindowController.xib */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";
@@ -1194,6 +1200,7 @@
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
 				E50F3AF91D40D27F00532B09 /* RegistryInspector.xib in Resources */,
+				E5CEA95D1D5243F3000DC91E /* ProgressWindowController.xib in Resources */,
 				E50F3AF41D40D27F00532B09 /* LogsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1269,6 +1276,7 @@
 				E50F3DB51D40D50400532B09 /* PermissionsCollectionController.swift in Sources */,
 				E50F3E511D40D50400532B09 /* NSNotification+Completion.swift in Sources */,
 				E50F3DE51D40D50400532B09 /* CreatePermission.swift in Sources */,
+				E5CEA95C1D5243F3000DC91E /* ProgressWindowController.swift in Sources */,
 				E50F3DBB1D40D50400532B09 /* UsersCollectionController.swift in Sources */,
 				E50F3E531D40D50400532B09 /* NSNotification+Progression.swift in Sources */,
 				E50F3DC11D40D50400532B09 /* ExternalReference.swift in Sources */,

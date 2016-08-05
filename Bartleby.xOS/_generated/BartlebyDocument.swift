@@ -103,11 +103,10 @@ public class BartlebyDocument : JDocument {
             self.tasks.arrayController=tasksArrayController
             // Add observer
             tasksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey] as? Int{
-               if self.tasks.items.count > index{
-                   let selection=self.tasks.items[index]
-                   self.tasksArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.tasksArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -123,11 +122,10 @@ public class BartlebyDocument : JDocument {
             self.tasksGroups.arrayController=tasksGroupsArrayController
             // Add observer
             tasksGroupsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupIndexKey] as? Int{
-               if self.tasksGroups.items.count > index{
-                   let selection=self.tasksGroups.items[index]
-                   self.tasksGroupsArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupsIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.tasksGroupsArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -143,11 +141,10 @@ public class BartlebyDocument : JDocument {
             self.users.arrayController=usersArrayController
             // Add observer
             usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUserIndexKey] as? Int{
-               if self.users.items.count > index{
-                   let selection=self.users.items[index]
-                   self.usersArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.usersArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -163,11 +160,10 @@ public class BartlebyDocument : JDocument {
             self.lockers.arrayController=lockersArrayController
             // Add observer
             lockersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockerIndexKey] as? Int{
-               if self.lockers.items.count > index{
-                   let selection=self.lockers.items[index]
-                   self.lockersArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.lockersArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -183,11 +179,10 @@ public class BartlebyDocument : JDocument {
             self.groups.arrayController=groupsArrayController
             // Add observer
             groupsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupIndexKey] as? Int{
-               if self.groups.items.count > index{
-                   let selection=self.groups.items[index]
-                   self.groupsArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupsIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.groupsArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -203,11 +198,10 @@ public class BartlebyDocument : JDocument {
             self.operations.arrayController=operationsArrayController
             // Add observer
             operationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationIndexKey] as? Int{
-               if self.operations.items.count > index{
-                   let selection=self.operations.items[index]
-                   self.operationsArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationsIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.operationsArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -223,11 +217,10 @@ public class BartlebyDocument : JDocument {
             self.permissions.arrayController=permissionsArrayController
             // Add observer
             permissionsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let index=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey] as? Int{
-               if self.permissions.items.count > index{
-                   let selection=self.permissions.items[index]
-                   self.permissionsArrayController?.setSelectedObjects([selection])
-                }
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionsIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{indexesSet.addIndex($0)}
+                self.permissionsArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -237,104 +230,132 @@ public class BartlebyDocument : JDocument {
 
 #endif
 
-//Focus indexes persistency
+    // indexes persistency
 
-    static public let kSelectedTaskIndexKey="selectedTaskIndexKey"
-    static public let TASK_SELECTED_INDEX_CHANGED_NOTIFICATION="TASK_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedTask:Task?{
+    
+    static public let kSelectedTasksIndexesKey="selectedTasksIndexesKey"
+    static public let TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION="TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedTasks:[Task]?{
         didSet{
-            if let task = selectedTask {
-                if let index=tasks.items.indexOf(task){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTaskIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASK_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let tasks = selectedTasks {
+                 let indexes:[Int]=tasks.map({ (task) -> Int in
+                    return self.tasks.indexOf(task)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedTask:Task? { return self.selectedTasks?.first }
+        
         
 
-    static public let kSelectedTasksGroupIndexKey="selectedTasksGroupIndexKey"
-    static public let TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION="TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedTasksGroup:TasksGroup?{
+    
+    static public let kSelectedTasksGroupsIndexesKey="selectedTasksGroupsIndexesKey"
+    static public let TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION="TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedTasksGroups:[TasksGroup]?{
         didSet{
-            if let tasksGroup = selectedTasksGroup {
-                if let index=tasksGroups.items.indexOf(tasksGroup){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKSGROUP_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let tasksGroups = selectedTasksGroups {
+                 let indexes:[Int]=tasksGroups.map({ (tasksGroup) -> Int in
+                    return self.tasksGroups.indexOf(tasksGroup)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupsIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedTasksGroup:TasksGroup? { return self.selectedTasksGroups?.first }
+        
         
 
-    static public let kSelectedUserIndexKey="selectedUserIndexKey"
-    static public let USER_SELECTED_INDEX_CHANGED_NOTIFICATION="USER_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedUser:User?{
+    
+    static public let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
+    static public let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedUsers:[User]?{
         didSet{
-            if let user = selectedUser {
-                if let index=users.items.indexOf(user){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUserIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.USER_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let users = selectedUsers {
+                 let indexes:[Int]=users.map({ (user) -> Int in
+                    return self.users.indexOf(user)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedUser:User? { return self.selectedUsers?.first }
+        
         
 
-    static public let kSelectedLockerIndexKey="selectedLockerIndexKey"
-    static public let LOCKER_SELECTED_INDEX_CHANGED_NOTIFICATION="LOCKER_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedLocker:Locker?{
+    
+    static public let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
+    static public let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedLockers:[Locker]?{
         didSet{
-            if let locker = selectedLocker {
-                if let index=lockers.items.indexOf(locker){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockerIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.LOCKER_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let lockers = selectedLockers {
+                 let indexes:[Int]=lockers.map({ (locker) -> Int in
+                    return self.lockers.indexOf(locker)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
+        
         
 
-    static public let kSelectedGroupIndexKey="selectedGroupIndexKey"
-    static public let GROUP_SELECTED_INDEX_CHANGED_NOTIFICATION="GROUP_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedGroup:Group?{
+    
+    static public let kSelectedGroupsIndexesKey="selectedGroupsIndexesKey"
+    static public let GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION="GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedGroups:[Group]?{
         didSet{
-            if let group = selectedGroup {
-                if let index=groups.items.indexOf(group){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.GROUP_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let groups = selectedGroups {
+                 let indexes:[Int]=groups.map({ (group) -> Int in
+                    return self.groups.indexOf(group)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupsIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedGroup:Group? { return self.selectedGroups?.first }
+        
         
 
-    static public let kSelectedOperationIndexKey="selectedOperationIndexKey"
-    static public let OPERATION_SELECTED_INDEX_CHANGED_NOTIFICATION="OPERATION_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedOperation:Operation?{
+    
+    static public let kSelectedOperationsIndexesKey="selectedOperationsIndexesKey"
+    static public let OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedOperations:[Operation]?{
         didSet{
-            if let operation = selectedOperation {
-                if let index=operations.items.indexOf(operation){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.OPERATION_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let operations = selectedOperations {
+                 let indexes:[Int]=operations.map({ (operation) -> Int in
+                    return self.operations.indexOf(operation)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationsIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedOperation:Operation? { return self.selectedOperations?.first }
+        
         
 
-    static public let kSelectedPermissionIndexKey="selectedPermissionIndexKey"
-    static public let PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION="PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION"
-    dynamic public var selectedPermission:Permission?{
+    
+    static public let kSelectedPermissionsIndexesKey="selectedPermissionsIndexesKey"
+    static public let PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic public var selectedPermissions:[Permission]?{
         didSet{
-            if let permission = selectedPermission {
-                if let index=permissions.items.indexOf(permission){
-                    self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionIndexKey]=index
-                     NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSION_SELECTED_INDEX_CHANGED_NOTIFICATION, object: nil)
-                }
+            if let permissions = selectedPermissions {
+                 let indexes:[Int]=permissions.map({ (permission) -> Int in
+                    return self.permissions.indexOf(permission)!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionsIndexesKey]=indexes
+                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
             }
         }
     }
+    dynamic var firstSelectedPermission:Permission? { return self.selectedPermissions?.first }
+        
         
 
 
@@ -462,8 +483,8 @@ public class BartlebyDocument : JDocument {
 
                     
             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
-                if let task=self.tasksArrayController?.selectedObjects.first as? Task{
-                    self.selectedTask=task
+                if let tasks=self.tasksArrayController?.selectedObjects as? [Task] {
+                    self.selectedTasks=tasks
                     return
                 }
             }
@@ -471,8 +492,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
-                if let tasksGroup=self.tasksGroupsArrayController?.selectedObjects.first as? TasksGroup{
-                    self.selectedTasksGroup=tasksGroup
+                if let tasksGroups=self.tasksGroupsArrayController?.selectedObjects as? [TasksGroup] {
+                    self.selectedTasksGroups=tasksGroups
                     return
                 }
             }
@@ -480,8 +501,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
-                if let user=self.usersArrayController?.selectedObjects.first as? User{
-                    self.selectedUser=user
+                if let users=self.usersArrayController?.selectedObjects as? [User] {
+                    self.selectedUsers=users
                     return
                 }
             }
@@ -489,8 +510,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
-                if let locker=self.lockersArrayController?.selectedObjects.first as? Locker{
-                    self.selectedLocker=locker
+                if let lockers=self.lockersArrayController?.selectedObjects as? [Locker] {
+                    self.selectedLockers=lockers
                     return
                 }
             }
@@ -498,8 +519,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
-                if let group=self.groupsArrayController?.selectedObjects.first as? Group{
-                    self.selectedGroup=group
+                if let groups=self.groupsArrayController?.selectedObjects as? [Group] {
+                    self.selectedGroups=groups
                     return
                 }
             }
@@ -507,8 +528,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
-                if let operation=self.operationsArrayController?.selectedObjects.first as? Operation{
-                    self.selectedOperation=operation
+                if let operations=self.operationsArrayController?.selectedObjects as? [Operation] {
+                    self.selectedOperations=operations
                     return
                 }
             }
@@ -516,8 +537,8 @@ public class BartlebyDocument : JDocument {
 
             
             if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
-                if let permission=self.permissionsArrayController?.selectedObjects.first as? Permission{
-                    self.selectedPermission=permission
+                if let permissions=self.permissionsArrayController?.selectedObjects as? [Permission] {
+                    self.selectedPermissions=permissions
                     return
                 }
             }
@@ -529,58 +550,72 @@ public class BartlebyDocument : JDocument {
 
     // MARK:  Delete currently selected items
     
-    public func deleteSelectedTask() {
+    public func deleteSelectedTasks() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTask{
-            self.tasks.removeObject(selected, commit:true)
+        if let selected=self.selectedTasks{
+            for item in selected{
+                 self.tasks.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedTasksGroup() {
+    public func deleteSelectedTasksGroups() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTasksGroup{
-            self.tasksGroups.removeObject(selected, commit:true)
+        if let selected=self.selectedTasksGroups{
+            for item in selected{
+                 self.tasksGroups.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedUser() {
+    public func deleteSelectedUsers() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedUser{
-            self.users.removeObject(selected, commit:true)
+        if let selected=self.selectedUsers{
+            for item in selected{
+                 self.users.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedLocker() {
+    public func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedLocker{
-            self.lockers.removeObject(selected, commit:true)
+        if let selected=self.selectedLockers{
+            for item in selected{
+                 self.lockers.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedGroup() {
+    public func deleteSelectedGroups() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedGroup{
-            self.groups.removeObject(selected, commit:true)
+        if let selected=self.selectedGroups{
+            for item in selected{
+                 self.groups.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedOperation() {
+    public func deleteSelectedOperations() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedOperation{
-            self.operations.removeObject(selected, commit:true)
+        if let selected=self.selectedOperations{
+            for item in selected{
+                 self.operations.removeObject(item, commit:true)
+            }
         }
     }
         
 
-    public func deleteSelectedPermission() {
+    public func deleteSelectedPermissions() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedPermission{
-            self.permissions.removeObject(selected, commit:true)
+        if let selected=self.selectedPermissions{
+            for item in selected{
+                 self.permissions.removeObject(item, commit:true)
+            }
         }
     }
         

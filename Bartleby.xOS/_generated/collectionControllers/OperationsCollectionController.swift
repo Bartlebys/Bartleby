@@ -230,7 +230,7 @@ import ObjectMapper
                 // Add it to the array controller's content array
                 arrayController.insertObject(item, atArrangedObjectIndex:index)
 
-                // Re-sort (in case the use has sorted a column)
+                // Re-sort (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
 
                 // Get the sorted array
@@ -293,28 +293,22 @@ import ObjectMapper
     }
 
     public func removeObject(item: Collectible, commit:Bool)->Bool{
-        var index=0
-        for storedItem in items{
-            if item.UID==storedItem.UID{
-                self.removeObjectFromItemsAtIndex(index, commit:commit)
+        if let instance=item as? Operation{
+            if let idx=self.items.indexOf(instance){
+                self.removeObjectFromItemsAtIndex(idx, commit:commit)
                 return true
             }
-            index += 1
         }
         return false
     }
+
 
     public func removeObjectWithID(id:String, commit:Bool)->Bool{
-        var index=0
-        for storedItem in items{
-            if id==storedItem.UID{
-                self.removeObjectFromItemsAtIndex(index, commit:commit)
-                return true
-            }
-            index += 1
+        if let idx=self.items.indexOf( { return $0.UID==id } ){
+            self.removeObjectFromItemsAtIndex(idx, commit:commit)
+            return true
         }
         return false
     }
-
     
 }
