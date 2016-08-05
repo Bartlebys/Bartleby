@@ -246,7 +246,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedTask:Task? { return self.selectedTasks?.first }
+    var firstSelectedTask:Task? { return self.selectedTasks?.first }
         
         
 
@@ -264,7 +264,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedTasksGroup:TasksGroup? { return self.selectedTasksGroups?.first }
+    var firstSelectedTasksGroup:TasksGroup? { return self.selectedTasksGroups?.first }
         
         
 
@@ -282,7 +282,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedUser:User? { return self.selectedUsers?.first }
+    var firstSelectedUser:User? { return self.selectedUsers?.first }
         
         
 
@@ -300,7 +300,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
+    var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
         
         
 
@@ -318,7 +318,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedGroup:Group? { return self.selectedGroups?.first }
+    var firstSelectedGroup:Group? { return self.selectedGroups?.first }
         
         
 
@@ -336,7 +336,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedOperation:Operation? { return self.selectedOperations?.first }
+    var firstSelectedOperation:Operation? { return self.selectedOperations?.first }
         
         
 
@@ -354,7 +354,7 @@ public class BartlebyDocument : JDocument {
             }
         }
     }
-    dynamic var firstSelectedPermission:Permission? { return self.selectedPermissions?.first }
+    var firstSelectedPermission:Permission? { return self.selectedPermissions?.first }
         
         
 
