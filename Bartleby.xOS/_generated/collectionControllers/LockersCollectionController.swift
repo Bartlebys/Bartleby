@@ -330,22 +330,50 @@ import ObjectMapper
         }
     }
 
-    public func removeObject(item: Collectible, commit:Bool)->Bool{
+     public func removeObject(item: Collectible, commit:Bool)->Bool{
         if let instance=item as? Locker{
-            if let idx=self.items.indexOf(instance){
-                self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                return true
-            }
+            #if os(OSX) && !USE_EMBEDDED_MODULES
+                if let arrayController = self.arrayController{
+                    if let idx=(arrayController.arrangedObjects as? [Locker])?.indexOf(instance){
+                        self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                        return true
+                    }
+                }else{
+                    if let idx=self.items.indexOf(instance){
+                        self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                        return true
+                    }
+                }
+            #else
+                if let idx=self.items.indexOf(instance){
+                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                    return true
+                }
+            #endif
         }
         return false
     }
 
 
     public func removeObjectWithID(id:String, commit:Bool)->Bool{
-        if let idx=self.items.indexOf( { return $0.UID==id } ){
-            self.removeObjectFromItemsAtIndex(idx, commit:commit)
-            return true
-        }
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+            if let arrayController = self.arrayController{
+                if let idx=(arrayController.arrangedObjects as? [Locker])?.indexOf({ return $0.UID==id }){
+                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                    return true
+                }
+            }else{
+                if let idx=self.items.indexOf( { return $0.UID==id } ){
+                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                    return true
+                }
+            }
+        #else
+            if let idx=self.items.indexOf( { return $0.UID==id } ){
+                self.removeObjectFromItemsAtIndex(idx, commit:commit)
+                return true
+            }
+        #endif
         return false
     }
     
