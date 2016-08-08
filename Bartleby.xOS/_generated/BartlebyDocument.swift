@@ -239,7 +239,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let tasks = selectedTasks {
                  let indexes:[Int]=tasks.map({ (task) -> Int in
-                    return self.tasks.indexOf(task)!
+                    return self.tasks.indexOf( { return $0.UID == task.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -257,7 +257,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let tasksGroups = selectedTasksGroups {
                  let indexes:[Int]=tasksGroups.map({ (tasksGroup) -> Int in
-                    return self.tasksGroups.indexOf(tasksGroup)!
+                    return self.tasksGroups.indexOf( { return $0.UID == tasksGroup.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupsIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -275,7 +275,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let users = selectedUsers {
                  let indexes:[Int]=users.map({ (user) -> Int in
-                    return self.users.indexOf(user)!
+                    return self.users.indexOf( { return $0.UID == user.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -293,7 +293,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let lockers = selectedLockers {
                  let indexes:[Int]=lockers.map({ (locker) -> Int in
-                    return self.lockers.indexOf(locker)!
+                    return self.lockers.indexOf( { return $0.UID == locker.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -311,7 +311,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let groups = selectedGroups {
                  let indexes:[Int]=groups.map({ (group) -> Int in
-                    return self.groups.indexOf(group)!
+                    return self.groups.indexOf( { return $0.UID == group.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupsIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -329,7 +329,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let operations = selectedOperations {
                  let indexes:[Int]=operations.map({ (operation) -> Int in
-                    return self.operations.indexOf(operation)!
+                    return self.operations.indexOf( { return $0.UID == operation.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationsIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
@@ -347,7 +347,7 @@ public class BartlebyDocument : JDocument {
         didSet{
             if let permissions = selectedPermissions {
                  let indexes:[Int]=permissions.map({ (permission) -> Int in
-                    return self.permissions.indexOf(permission)!
+                    return self.permissions.indexOf( { return $0.UID == permission.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionsIndexesKey]=indexes
                 NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
