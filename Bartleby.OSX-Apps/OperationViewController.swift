@@ -15,20 +15,21 @@ class OperationViewController: NSViewController,Editor{
     var UID:String=Bartleby.createUID()
 
 
-    private var _selectedItem:EditorOf?{
+    public dynamic var selectedItem:EditorOf?{
         didSet{
 
         }
     }
+    
 
     override var representedObject: AnyObject?{
         willSet{
-            if let _=self._selectedItem{
-                self._selectedItem?.removeChangesObserver(self)
+            if let _=self.selectedItem{
+                self.selectedItem?.removeChangesObserver(self)
             }
         }
         didSet{
-            self._selectedItem=representedObject as? EditorOf
+            self.selectedItem=representedObject as? EditorOf
 
         }
     }
@@ -42,7 +43,7 @@ class OperationViewController: NSViewController,Editor{
 
 
     @IBAction func pushSelectedOperation(sender: AnyObject) {
-        if let operation=self._selectedItem{
+        if let operation=self.selectedItem{
             var ops=[Operation]()
             ops.append(operation)
             let handlers=Handlers(completionHandler: { (completion) in
@@ -52,7 +53,7 @@ class OperationViewController: NSViewController,Editor{
                 bprint("\(progression)", file:#file, function:#function, line:#line)
             })
             do {
-                if let document=self._selectedItem?.document{
+                if let document=self.selectedItem?.document{
                     try document.pushArrayOfOperations(ops, handlers: handlers)
                 }
             } catch {

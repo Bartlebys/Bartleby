@@ -21,7 +21,7 @@ class InspectorViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var sourceEditor: SourceEditor!
 
-    @IBOutlet var operationEditor: OperationViewController!
+    @IBOutlet var operationViewController: OperationViewController!
 
     @IBOutlet var changesViewController: ChangesViewController!
 
@@ -89,8 +89,8 @@ class InspectorViewController: NSViewController,RegistryDependent{
             switch selected {
 
             case let selected  where selected is Operation :
-                self._bottomViewController=self.changesViewController
-                //self._bottomViewController=self.operationEditor
+                //self._bottomViewController=self.changesViewController
+                self._bottomViewController=self.operationViewController
                 break
             default:
                 self._bottomViewController=self.changesViewController

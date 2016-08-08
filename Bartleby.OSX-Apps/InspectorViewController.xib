@@ -11,7 +11,7 @@
                 <outlet property="bottomBox" destination="1AX-jR-v4E" id="IYi-xo-tT7"/>
                 <outlet property="changesViewController" destination="3kS-31-sl3" id="Coo-mf-yFN"/>
                 <outlet property="listOutlineView" destination="nzd-mn-3O1" id="qzA-8p-G59"/>
-                <outlet property="operationEditor" destination="rF1-h1-Fwc" id="nwY-ll-kgW"/>
+                <outlet property="operationViewController" destination="rF1-h1-Fwc" id="nwY-ll-kgW"/>
                 <outlet property="sourceEditor" destination="A1J-3y-mLd" id="Sjo-L1-Gwj"/>
                 <outlet property="topBox" destination="S2N-V4-Pw4" id="hPF-w4-sAj"/>
                 <outlet property="view" destination="c73-xf-Hj6" id="GD9-Du-8cC"/>

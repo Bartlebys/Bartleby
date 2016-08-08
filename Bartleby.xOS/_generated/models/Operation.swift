@@ -36,7 +36,7 @@ import ObjectMapper
 	}
 	public var status:Status = .None
 	//The registry UID
-	dynamic public var registryUID:String = "\(Default.NO_UID)"
+	public var registryUID:String = "\(Default.NO_UID)"
 	//The invocation counter
 	public var counter:Int?
 	//The creationdate

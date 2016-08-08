@@ -334,12 +334,12 @@ import ObjectMapper
         if let instance=item as? User{
             #if os(OSX) && !USE_EMBEDDED_MODULES
                 if let arrayController = self.arrayController{
-                    if let idx=(arrayController.arrangedObjects as? [User])?.indexOf(instance){
+                    if let idx=(arrayController.arrangedObjects as? [User])?.indexOf({ return $0.UID==instance.UID }){
                         self.removeObjectFromItemsAtIndex(idx, commit:commit)
                         return true
                     }
                 }else{
-                    if let idx=self.items.indexOf(instance){
+                    if let idx=self.items.indexOf({ return $0.UID==instance.UID }){
                         self.removeObjectFromItemsAtIndex(idx, commit:commit)
                         return true
                     }
