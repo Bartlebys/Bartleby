@@ -15,7 +15,7 @@ class OperationViewController: NSViewController,Editor{
     var UID:String=Bartleby.createUID()
 
 
-    public dynamic var selectedItem:EditorOf?{
+     dynamic var selectedItem:EditorOf?{
         didSet{
 
         }

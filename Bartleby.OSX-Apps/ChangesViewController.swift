@@ -52,6 +52,15 @@ import Cocoa
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
+    func itemForRow(row:Int)->KeyedChanges?{
+        if let r:[KeyedChanges]=self._selectedItem?.changedKeys.reverse(){
+            if r.count>row{
+                return r[row]
+            }
+        }
+        return nil
+    }
+
 
 }
 
@@ -65,7 +74,7 @@ extension ChangesViewController:NSTableViewDataSource{
     }
 
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item =  self._selectedItem?.changedKeys.reverse()[row] else {
+        guard let item =  self.itemForRow(row) else {
             return 20
         }
         if item.changes.characters.count > 200 {
@@ -82,7 +91,7 @@ extension ChangesViewController:NSTableViewDelegate{
 
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView?{
 
-        guard let item =  self._selectedItem?.changedKeys.reverse()[row] else {
+        guard let item = self.itemForRow(row) else {
             return nil
         }
         var text:String = ""
