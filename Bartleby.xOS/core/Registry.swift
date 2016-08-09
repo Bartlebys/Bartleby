@@ -42,6 +42,16 @@ func ==(lhs: Registry, rhs: Registry) -> Bool {
 }
 
 
+
+public protocol RegistryDelegate {
+    func getRegistry() -> BartlebyDocument?
+}
+
+public protocol RegistryDependent {
+    var registryDelegate:RegistryDelegate? { get set }
+}
+
+
 // MARK -
 
 

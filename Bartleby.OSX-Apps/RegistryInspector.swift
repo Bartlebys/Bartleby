@@ -8,20 +8,13 @@
 
 import Cocoa
 
-protocol RegistryDelegate {
-    func getRegistry() -> BartlebyDocument?
-}
-
-protocol RegistryDependent {
-    var registryDelegate:RegistryDelegate? { get set }
-}
 
 public protocol Editor:Identifiable{
     associatedtype EditorOf:Collectible
 }
 
 
-public class RegistryInspector: NSWindowController,RegistryDelegate {
+public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDependent {
 
     static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
 
@@ -52,7 +45,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
     private var registry:BartlebyDocument?
 
 
-    func getRegistry() -> BartlebyDocument?{
+    public func getRegistry() -> BartlebyDocument?{
         return self.registry
     }
 
@@ -62,34 +55,35 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
 
     override public func windowDidLoad() {
         super.windowDidLoad()
-        if let registry=self.registry{
-            self.display(registry)
-        }
     }
 
     override public var windowNibName: String?{
         return "RegistryInspector"
     }
 
-    //MARK : NSTabView Tabless
 
-    public func display(registry:BartlebyDocument){
+    // MARK: RegistryDependent
 
-        self.registry=registry
-        self.window?.title=registry.fileURL?.lastPathComponent ?? ""
+    public var registryDelegate: RegistryDelegate?{
+        didSet{
+            if let registry=self.registryDelegate?.getRegistry(){
+                self.registry=registry
+                self.window?.title=registry.fileURL?.lastPathComponent ?? ""
 
-        let inspectorTabViewItem=NSTabViewItem(viewController:self.inspectorViewController)
-        self.globalTabView.addTabViewItem(inspectorTabViewItem)
-        self.inspectorViewController.registryDelegate=self
+                let inspectorTabViewItem=NSTabViewItem(viewController:self.inspectorViewController)
+                self.globalTabView.addTabViewItem(inspectorTabViewItem)
+                self.inspectorViewController.registryDelegate=self
 
-        let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
-        self.globalTabView.addTabViewItem(logsTabViewItem)
-        self.logsViewController.registryDelegate=self
+                let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
+                self.globalTabView.addTabViewItem(logsTabViewItem)
+                self.logsViewController.registryDelegate=self
 
-        let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
-        self.globalTabView.addTabViewItem(webTabViewItem)
-        self.webStackViewController.registryDelegate=self
+                let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
+                self.globalTabView.addTabViewItem(webTabViewItem)
+                self.webStackViewController.registryDelegate=self
 
+            }
+        }
     }
 
 
