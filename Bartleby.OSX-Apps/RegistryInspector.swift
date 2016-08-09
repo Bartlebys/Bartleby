@@ -37,8 +37,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
 
     @IBOutlet weak var logsViewController:LogsViewController!
 
-    @IBOutlet var triggersViewController: TriggersViewController!
-
     @IBOutlet var webStackViewController: WebStack!
 
     // We bind this index on the scopeSegmentedControl
@@ -91,12 +89,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate {
         let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
         self.globalTabView.addTabViewItem(webTabViewItem)
         self.webStackViewController.registryDelegate=self
-
-        /*
-         let triggersTabViewItem=NSTabViewItem(viewController:self.triggersViewController)
-         self.globalTabView.addTabViewItem(triggersTabViewItem)
-         */
-
 
     }
 

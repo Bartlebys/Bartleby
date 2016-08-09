@@ -11,8 +11,8 @@
                 <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
                 <outlet property="logsViewController" destination="nOf-ae-T3T" id="D3V-HH-DOd"/>
                 <outlet property="scopeSegmentedControl" destination="blX-Ao-gTK" id="TdQ-Td-b6W"/>
-                <outlet property="triggersViewController" destination="uty-kP-o11" id="KDF-89-u9d"/>
                 <outlet property="webStackViewController" destination="BrD-bp-d8H" id="rpZ-VQ-0BG"/>
+                <outlet property="window" destination="QvC-M9-y7g" id="207-PX-GlZ"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -128,7 +128,6 @@
         </window>
         <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="uty-kP-o11" customClass="TriggersViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>

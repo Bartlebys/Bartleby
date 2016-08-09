@@ -26,8 +26,6 @@
 		E50F3AF91D40D27F00532B09 /* RegistryInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEA1D40D27F00532B09 /* RegistryInspector.xib */; };
 		E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */; };
 		E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */; };
-		E50F3AFC1D40D27F00532B09 /* TriggersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AED1D40D27F00532B09 /* TriggersViewController.swift */; };
-		E50F3AFD1D40D27F00532B09 /* TriggersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEE1D40D27F00532B09 /* TriggersViewController.xib */; };
 		E50F3DAD1D40D50400532B09 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D131D40D50400532B09 /* BartlebyDocument.swift */; };
 		E50F3DAE1D40D50400532B09 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D131D40D50400532B09 /* BartlebyDocument.swift */; };
 		E50F3DAF1D40D50400532B09 /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D151D40D50400532B09 /* GroupsCollectionController.swift */; };
@@ -395,8 +393,6 @@
 		E50F3AEA1D40D27F00532B09 /* RegistryInspector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistryInspector.xib; sourceTree = "<group>"; };
 		E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
 		E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
-		E50F3AED1D40D27F00532B09 /* TriggersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersViewController.swift; sourceTree = "<group>"; };
-		E50F3AEE1D40D27F00532B09 /* TriggersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TriggersViewController.xib; sourceTree = "<group>"; };
 		E50F3D131D40D50400532B09 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E50F3D151D40D50400532B09 /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
 		E50F3D161D40D50400532B09 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
@@ -654,8 +650,6 @@
 				E50F3AE81D40D27F00532B09 /* OperationViewController.xib */,
 				E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */,
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
-				E50F3AED1D40D27F00532B09 /* TriggersViewController.swift */,
-				E50F3AEE1D40D27F00532B09 /* TriggersViewController.xib */,
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
 				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
@@ -1193,7 +1187,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E50F3AF71D40D27F00532B09 /* OperationViewController.xib in Resources */,
-				E50F3AFD1D40D27F00532B09 /* TriggersViewController.xib in Resources */,
 				E50F3AF21D40D27F00532B09 /* InspectorViewController.xib in Resources */,
 				E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */,
 				E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */,
@@ -1254,7 +1247,6 @@
 				E50F3E5F1D40D50400532B09 /* Task+Execution.swift in Sources */,
 				E50F3E331D40D50400532B09 /* JSerializer.swift in Sources */,
 				E50F3DE91D40D50400532B09 /* CreateUser.swift in Sources */,
-				E50F3AFC1D40D27F00532B09 /* TriggersViewController.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
 				E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */,
 				E50F3DE71D40D50400532B09 /* CreatePermissions.swift in Sources */,
