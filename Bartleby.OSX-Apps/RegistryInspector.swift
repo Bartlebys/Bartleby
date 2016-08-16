@@ -32,6 +32,9 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
     @IBOutlet var webStackViewController: WebStack!
 
+    @IBOutlet weak var activityViewController:ActivityProgressViewController!
+
+
     // We bind this index on the scopeSegmentedControl
     public dynamic var selectedIndex:Int = -1{
         didSet{
@@ -68,7 +71,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self.registry=registry
-                self.window?.title=registry.fileURL?.lastPathComponent ?? ""
+                self.window?.title=NSLocalizedString("Inspector", tableName:"bartlebys.OSX-Apps", comment: "Inspector window title") + " (" + ( registry.fileURL?.lastPathComponent ?? "" ) + ")"
 
                 let inspectorTabViewItem=NSTabViewItem(viewController:self.inspectorViewController)
                 self.globalTabView.addTabViewItem(inspectorTabViewItem)
@@ -80,6 +83,10 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
                 let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
                 self.globalTabView.addTabViewItem(webTabViewItem)
+                self.webStackViewController.registryDelegate=self
+
+                let activityViewItem=NSTabViewItem(viewController:self.activityViewController)
+                self.globalTabView.addTabViewItem(activityViewItem)
                 self.webStackViewController.registryDelegate=self
 
             }

@@ -315,6 +315,8 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
+		E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */; };
+		E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
@@ -332,8 +334,6 @@
 		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
-		E5E0A4C11D5A4A0800D6BBE7 /* ProgressWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0A4BF1D5A4A0800D6BBE7 /* ProgressWindowController.swift */; };
-		E5E0A4C21D5A4A0800D6BBE7 /* ProgressWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E0A4C01D5A4A0800D6BBE7 /* ProgressWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -547,6 +547,8 @@
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
 		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
+		E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProgressViewController.swift; sourceTree = "<group>"; };
+		E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityProgressViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
@@ -558,8 +560,6 @@
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
-		E5E0A4BF1D5A4A0800D6BBE7 /* ProgressWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressWindowController.swift; sourceTree = "<group>"; };
-		E5E0A4C01D5A4A0800D6BBE7 /* ProgressWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -653,8 +653,8 @@
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
 				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
-				E5E0A4BF1D5A4A0800D6BBE7 /* ProgressWindowController.swift */,
-				E5E0A4C01D5A4A0800D6BBE7 /* ProgressWindowController.xib */,
+				E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */,
+				E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";
@@ -1188,7 +1188,7 @@
 			files = (
 				E50F3AF71D40D27F00532B09 /* OperationViewController.xib in Resources */,
 				E50F3AF21D40D27F00532B09 /* InspectorViewController.xib in Resources */,
-				E5E0A4C21D5A4A0800D6BBE7 /* ProgressWindowController.xib in Resources */,
+				E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */,
 				E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */,
 				E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */,
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
@@ -1229,6 +1229,7 @@
 				E50F3E811D40D50400532B09 /* Identifiable.swift in Sources */,
 				E50F3EAB1D40D50400532B09 /* LoginUser.swift in Sources */,
 				E50F3E751D40D50400532B09 /* Descriptible.swift in Sources */,
+				E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */,
 				E50F3E3F1D40D50400532B09 /* Consignation.swift in Sources */,
 				E50F3DE31D40D50400532B09 /* CreateLockers.swift in Sources */,
 				E50F3E891D40D50400532B09 /* RegistryMetadataProtocol.swift in Sources */,
@@ -1247,7 +1248,6 @@
 				E50F3E5F1D40D50400532B09 /* Task+Execution.swift in Sources */,
 				E50F3E331D40D50400532B09 /* JSerializer.swift in Sources */,
 				E50F3DE91D40D50400532B09 /* CreateUser.swift in Sources */,
-				E5E0A4C11D5A4A0800D6BBE7 /* ProgressWindowController.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
 				E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */,
 				E50F3DE71D40D50400532B09 /* CreatePermissions.swift in Sources */,

@@ -14,13 +14,12 @@ Bartleby orchestrates the access to registries ...
 
 ### registry.rootObject
 
+
 ## dataspace
 
 A dataspace is defined by a "spaceUID" 
 1. Its a server side grouping identifier that allows to discriminate sub collection of Objects. 
-2. the spaceUID is also used locally by Bartleby.swift to resolve the collaboration server URL.
-3. A user is located in a Single "dataspace" characterized by in a unique spaceUID
-4. Only one User is the spaceUID creator.
+2. A user is located in a Single "dataspace" characterized by in a unique spaceUID
 
 ## Locker 
 

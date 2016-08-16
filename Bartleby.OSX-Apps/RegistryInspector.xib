@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RegistryInspector" customModule="BartlebyKit">
             <connections>
+                <outlet property="activityViewController" destination="qlU-Em-xgV" id="trT-Ac-p6c"/>
                 <outlet property="globalTabView" destination="2rc-pm-P9A" id="nWj-YL-uLb"/>
                 <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
                 <outlet property="logsViewController" destination="nOf-ae-T3T" id="D3V-HH-DOd"/>
@@ -18,10 +19,10 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window identifier="RegistryInspector" title="Inspector" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="InspectorWindow" animationBehavior="default" id="QvC-M9-y7g">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="1024" height="768"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -57,6 +58,7 @@
                                     <segment label="Registry" selected="YES"/>
                                     <segment label="Logs" tag="1"/>
                                     <segment label=" Web Stack"/>
+                                    <segment label="Activity"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
@@ -129,6 +131,7 @@
         <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="qlU-Em-xgV" customClass="ActivityProgressViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
         <image name="1214-document-delete" width="24" height="28"/>
