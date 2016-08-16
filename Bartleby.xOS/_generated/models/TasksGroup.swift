@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's TasksGroup its property are not autocommitted (not observable)
+// MARK: A group of supervisable tasks
 @objc(TasksGroup) public class TasksGroup : JObject{
 
     // Universal type support

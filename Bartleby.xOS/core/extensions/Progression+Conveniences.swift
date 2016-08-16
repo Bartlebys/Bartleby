@@ -21,7 +21,7 @@ extension Progression:ForwardableState {
 extension Progression:Descriptible {
 
     public func toString() -> String {
-        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentTaskProgress*100))% - \(data?.length ?? 0 ) bytes of data.\n\(message)"
+        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.length ?? 0 ) bytes of data.\n\(message)"
     }
 
 }
@@ -30,23 +30,22 @@ extension Progression:Descriptible {
 
 public extension Progression {
 
-
     /**
      The initializer of the Progression state
 
      - parameter currentTaskIndex:    the current task index eg. 1
      - parameter totalTaskCount:      the total number of task
-     - parameter currentTaskProgress: the progress of the current task
+     - parameter currentPercentProgress: the progress of the current task
      - parameter message:             a message
      - parameter data:                some opaque data.
 
      - returns: the progression state.
      */
-    public convenience init(currentTaskIndex: Int, totalTaskCount: Int = 0, currentTaskProgress: Double = 0, message: String = "", data: NSData? = nil) {
+    public convenience init(currentTaskIndex: Int, totalTaskCount: Int = 0, currentPercentProgress: Double = 0, message: String = "", data: NSData? = nil) {
         self.init()
         self.currentTaskIndex = currentTaskIndex
         self.totalTaskCount = totalTaskCount
-        self.currentTaskProgress = currentTaskProgress
+        self.currentPercentProgress = currentPercentProgress
         self.message = message
         self.data = data
     }
@@ -58,7 +57,7 @@ public extension Progression {
      - returns: return value description
      */
     public static func defaultState() -> Progression {
-         return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentTaskProgress: 0, message: "", data: nil)
+         return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentPercentProgress: 0, message: "", data: nil)
     }
 
     /**

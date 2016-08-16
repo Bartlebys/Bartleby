@@ -85,7 +85,7 @@ extension Task {
     public var hasBeenSuccessfullyCompleted: Bool {
         get {
             if let c=self.completionState {
-                 return c.success
+                return c.success
             }
             return false
         }
@@ -132,9 +132,21 @@ extension Task {
                         // Including its data.
                         let total=group.totalTaskCount()
                         let executed=group.countTasks({ return $0.status == .Completed })
-                        let progress: Double = Double(executed)/Double(total)
-                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:"", data:self.completionState?.data)
-                        group.handlers.notify(groupProgression)
+                        let progress: Double = ( Double(total) * 100  / Double(executed) )
+
+                        if let groupProgression = group.progressionState{
+                            groupProgression.disableSupervisionAndCommit()
+                            groupProgression.currentTaskIndex=executed
+                            groupProgression.totalTaskCount=total
+                            groupProgression.currentPercentProgress=progress
+                            groupProgression.enableSuperVisionAndCommit()
+                        }else{
+                            // Create a  Progression instance Once.
+                            group.progressionState=Progression(currentTaskIndex:executed, totalTaskCount:total, currentPercentProgress:progress, message:"", data:self.completionState?.data)
+                        }
+
+                        // Notify the progression state.
+                        group.handlers.notify(group.progressionState!)
                         // We mark the completion
                         bprint("Marking Completion on \(self.summary ?? self.UID) \(executed)/\(total)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
 
@@ -154,8 +166,18 @@ extension Task {
                         let total=group.totalTaskCount()
                         let executed=group.countTasks({ return $0.status == .Completed })
                         let progress: Double = Double(executed)/Double(total)
-                        let groupProgression=Progression(currentTaskIndex:executed, totalTaskCount:total, currentTaskProgress:progress, message:self.progressionState?.message ?? Default.NO_MESSAGE, data:self.progressionState?.data)
-                        group.handlers.notify(groupProgression)
+                        if let groupProgression = group.progressionState{
+                            groupProgression.disableSupervisionAndCommit()
+                            groupProgression.currentTaskIndex=executed
+                            groupProgression.totalTaskCount=total
+                            groupProgression.currentPercentProgress=progress
+                            groupProgression.enableSuperVisionAndCommit()
+                        }else{
+                            // Create a  Progression instance Once.
+                            group.progressionState=Progression(currentTaskIndex:executed, totalTaskCount:total, currentPercentProgress:progress, message:"", data:self.completionState?.data)
+                        }
+
+                        group.handlers.notify(group.progressionState!)
 
                         // Reactive tasks
                         if let reactiveTask = self as? Reactive {
@@ -225,5 +247,5 @@ extension Task {
             bprint("Adding \(s) to \(t) in \(g)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         }
     }
-
+    
 }

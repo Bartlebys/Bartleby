@@ -39,11 +39,11 @@ import ObjectMapper
 	    }
 	}
 
-	//0 to 1
-	dynamic public var currentTaskProgress:Double = 0  {	 
+	//0 to 100
+	dynamic public var currentPercentProgress:Double = 0  {	 
 	    didSet { 
-	       if currentTaskProgress != oldValue {
-	            self.provisionChanges(forKey: "currentTaskProgress",oldValue: oldValue,newValue: currentTaskProgress)  
+	       if currentPercentProgress != oldValue {
+	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue,newValue: currentPercentProgress)  
 	       } 
 	    }
 	}
@@ -79,7 +79,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.currentTaskIndex <- ( map["currentTaskIndex"] )
 		self.totalTaskCount <- ( map["totalTaskCount"] )
-		self.currentTaskProgress <- ( map["currentTaskProgress"] )
+		self.currentPercentProgress <- ( map["currentPercentProgress"] )
 		self.message <- ( map["message"] )
 		self.data <- ( map["data"], Base64DataTransform() )
         self.enableSuperVisionAndCommit()
@@ -93,7 +93,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.currentTaskIndex=decoder.decodeIntegerForKey("currentTaskIndex") 
 		self.totalTaskCount=decoder.decodeIntegerForKey("totalTaskCount") 
-		self.currentTaskProgress=decoder.decodeDoubleForKey("currentTaskProgress") 
+		self.currentPercentProgress=decoder.decodeDoubleForKey("currentPercentProgress") 
 		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
 		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
 
@@ -104,7 +104,7 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeInteger(self.currentTaskIndex,forKey:"currentTaskIndex")
 		coder.encodeInteger(self.totalTaskCount,forKey:"totalTaskCount")
-		coder.encodeDouble(self.currentTaskProgress,forKey:"currentTaskProgress")
+		coder.encodeDouble(self.currentPercentProgress,forKey:"currentPercentProgress")
 		coder.encodeObject(self.message,forKey:"message")
 		if let data = self.data {
 			coder.encodeObject(data,forKey:"data")

@@ -201,6 +201,7 @@ public extension TasksGroup {
      - throws: TaskCollectionControllerNotFound can occur if the DataSpace is available locally
      */
     private func _insurePersistencyOfTask(task: Task) throws {
+        task.defineUID()// guarantee that the UID is defined
         if let registry=Bartleby.sharedInstance.getDocumentByUID(self.registryUID) {
             // Identify the task Creator.
             task.creatorUID=registry.currentUser.UID

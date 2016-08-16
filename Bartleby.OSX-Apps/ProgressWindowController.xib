@@ -8,6 +8,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="ProgressWindowController" customModule="BartlebyKit" customModuleProvider="target">
             <connections>
                 <outlet property="arrayController" destination="jtx-FE-Jk0" id="DIt-Kz-byk"/>
+                <outlet property="tableView" destination="7FO-Gg-gwu" id="ryU-ta-VBQ"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -17,19 +18,19 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1577"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVh-XQ-V4Y">
+                    <scrollView autohidesScrollers="YES" horizontalLineScroll="52" horizontalPageScroll="10" verticalLineScroll="52" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVh-XQ-V4Y">
                         <rect key="frame" x="-1" y="-1" width="482" height="272"/>
-                        <clipView key="contentView" ambiguous="YES" id="3YT-H5-U4S">
+                        <clipView key="contentView" id="3YT-H5-U4S">
                             <rect key="frame" x="1" y="1" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="50" rowSizeStyle="automatic" viewBased="YES" id="7FO-Gg-gwu">
-                                    <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="0.0"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -54,7 +55,7 @@
                                                     <subviews>
                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Z0-uY-JpE">
                                                             <rect key="frame" x="0.0" y="-4" width="477" height="32"/>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="justified" id="EUl-H4-eTm">
+                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="justified" title="XXXXX" id="EUl-H4-eTm">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -63,11 +64,14 @@
                                                                 </allowedInputSourceLocales>
                                                             </textFieldCell>
                                                             <connections>
-                                                                <binding destination="bHN-Mc-Ynk" name="value" keyPath="objectValue." id="X2U-xf-wvQ"/>
+                                                                <binding destination="bHN-Mc-Ynk" name="value" keyPath="objectValue.message" id="voU-eT-ZoE"/>
                                                             </connections>
                                                         </textField>
-                                                        <progressIndicator wantsLayer="YES" fixedFrame="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="ER4-bE-MBU">
+                                                        <progressIndicator wantsLayer="YES" fixedFrame="YES" maxValue="100" doubleValue="50" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="ER4-bE-MBU">
                                                             <rect key="frame" x="3" y="25" width="471" height="20"/>
+                                                            <connections>
+                                                                <binding destination="bHN-Mc-Ynk" name="value" keyPath="objectValue.currentPercentProgress" id="9Ie-0I-xgS"/>
+                                                            </connections>
                                                         </progressIndicator>
                                                     </subviews>
                                                     <connections>
@@ -79,6 +83,8 @@
                                     </tableColumns>
                                     <connections>
                                         <binding destination="jtx-FE-Jk0" name="content" keyPath="arrangedObjects" id="lgG-pS-Dil"/>
+                                        <binding destination="jtx-FE-Jk0" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="lgG-pS-Dil" id="adV-Wk-1w5"/>
+                                        <binding destination="jtx-FE-Jk0" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="adV-Wk-1w5" id="EmD-SA-zei"/>
                                     </connections>
                                 </tableView>
                             </subviews>
@@ -94,11 +100,21 @@
                         </scroller>
                     </scrollView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="XVh-XQ-V4Y" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="-1" id="7f5-Yp-Gws"/>
+                    <constraint firstAttribute="trailing" secondItem="XVh-XQ-V4Y" secondAttribute="trailing" constant="-1" id="Jby-vY-t8x"/>
+                    <constraint firstItem="XVh-XQ-V4Y" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="-1" id="OUS-tj-xM3"/>
+                    <constraint firstAttribute="bottom" secondItem="XVh-XQ-V4Y" secondAttribute="bottom" constant="-1" id="YWK-Mq-8eh"/>
+                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
         </window>
-        <arrayController id="jtx-FE-Jk0"/>
+        <arrayController objectClassName="Progression" id="jtx-FE-Jk0">
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="self.registry.tasksGroups.items" id="k75-kj-HQe"/>
+            </connections>
+        </arrayController>
     </objects>
 </document>
