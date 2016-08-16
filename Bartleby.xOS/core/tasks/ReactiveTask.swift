@@ -11,7 +11,7 @@ import Foundation
 // MARK: ReactiveTask
 
 // A Reactive Task that allows to append handlers.
-@objc(ReactiveTask) public class  ReactiveTask: Task, Reactive {
+public class  ReactiveTask: Task, Reactive {
 
     // Universal type support
     override public class func typeName() -> String {

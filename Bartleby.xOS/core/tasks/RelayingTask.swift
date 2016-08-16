@@ -12,11 +12,11 @@ import Foundation
 // MARK: RelayingTask
 
 // A Reactive Task that relays it completion an progression.
-@objc(RelayingTask) public class  RelayingTask: Task, Reactive {
+public class  RelayingTask: Task, Reactive {
 
     // Universal type support
     override public class func typeName() -> String {
-        return "TaskWithNotifications"
+        return "RelayingTask"
     }
 
     // MARK: Reactive Handlers
@@ -34,7 +34,7 @@ import Foundation
             }
             self._reactiveHandlers=Handlers(completionHandler: onCompletion)
             self._reactiveHandlers!.appendProgressHandler({ (progressionState) in
-                self.forward(progressionState)
+                self.transmit(progressionState)
             })
             return self._reactiveHandlers!
         }

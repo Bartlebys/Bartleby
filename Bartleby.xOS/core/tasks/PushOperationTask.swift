@@ -14,9 +14,7 @@ import Foundation
 #elseif os(tvOS)
 #endif
 
-#if !DUSE_EMBEDDED_MODULES
-
-    public class  PushOperationTask: Task, ConcreteTask {
+public class PushOperationTask: Task, ConcreteTask {
 
     public typealias ArgumentType=Operation
 
@@ -58,11 +56,11 @@ import Foundation
                                 document.delete(operation)
                             }
                             self.complete(completion)
-                        }, failureHandler: { (context) in
-                            let completion=Completion.failureStateFromJHTTPResponse(context)
-                            completion.setResult(context)
-                            bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                            self.complete(completion)
+                            }, failureHandler: { (context) in
+                                let completion=Completion.failureStateFromJHTTPResponse(context)
+                                completion.setResult(context)
+                                bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
+                                self.complete(completion)
                         })
                     } else {
                         let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.Expectation_Failed)
@@ -85,6 +83,6 @@ import Foundation
             self.complete(completion)
         }
     }
-
+    
 }
-#endif
+

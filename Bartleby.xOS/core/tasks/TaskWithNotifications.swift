@@ -8,13 +8,10 @@
 
 import Foundation
 
-
-
-
 // MARK: TaskWithNotifications
 
 // Reactive Task that relay the completion and progression by NSNotifications
-@objc(TaskWithNotifications) public class  TaskWithNotifications: Task, Reactive {
+public class  TaskWithNotifications: Task, Reactive {
 
     // Universal type support
     override public class func typeName() -> String {
