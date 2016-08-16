@@ -54,6 +54,9 @@
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                            <connections>
+                                                                <binding destination="ESt-2Y-Tog" name="value" keyPath="objectValue" id="mvi-9m-8Ar"/>
+                                                            </connections>
                                                         </textFieldCell>
                                                         <connections>
                                                             <binding destination="ESt-2Y-Tog" name="value" keyPath="objectValue" id="9Qi-js-ggr"/>
@@ -93,11 +96,45 @@
                 <constraint firstAttribute="trailing" secondItem="RcG-5c-WbI" secondAttribute="trailing" id="owV-j5-5l7"/>
                 <constraint firstAttribute="bottom" secondItem="RcG-5c-WbI" secondAttribute="bottom" constant="1" id="srr-lM-Sde"/>
             </constraints>
+            <connections>
+                <outlet property="menu" destination="Chv-hR-tnY" id="YgZ-q4-0Ki"/>
+            </connections>
         </customView>
         <arrayController objectClassName="TasksGroup" id="Si2-L3-tFb">
             <connections>
                 <binding destination="-2" name="contentArray" keyPath="self.registry.tasksGroups.items" id="ZIe-c2-vFb"/>
             </connections>
         </arrayController>
+        <menu id="Chv-hR-tnY">
+            <items>
+                <menuItem title="Create simulated tasks Group" id="Nj2-u2-ebN">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="createATestGroup:" target="-2" id="lF8-AS-4vu"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Vwt-wi-MSv"/>
+                <menuItem title="Tasks" id="MFx-kv-EDx">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Tasks" id="H4S-e4-Muv">
+                        <items>
+                            <menuItem title="Pause / Start" id="7bR-4l-ekA">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+            </items>
+        </menu>
+        <menuItem title="Menu" id="1f3-lG-8KL">
+            <modifierMask key="keyEquivalentModifierMask"/>
+            <menu key="submenu" title="Menu" id="PYa-2p-Nzd">
+                <items>
+                    <menuItem title="Item" id="HjS-Fb-4aD">
+                        <modifierMask key="keyEquivalentModifierMask"/>
+                    </menuItem>
+                </items>
+            </menu>
+        </menuItem>
     </objects>
 </document>

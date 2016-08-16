@@ -119,8 +119,7 @@ class BsyncKeyValueStorage {
 extension BsyncKeyValueStorage{
 
     func setStringValue(value:String?,forKey key:String) -> () {
-        let j=JString()
-        j.string=value
+        let j=JString(from:value)
         self[key]=j
     }
 

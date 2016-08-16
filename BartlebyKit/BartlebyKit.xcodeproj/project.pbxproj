@@ -310,6 +310,12 @@
 		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
 		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
+		E5491FFF1D6341FB00961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5491FFE1D6341FB00961796 /* SimulatedTask.swift */; };
+		E54920001D6341FB00961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5491FFE1D6341FB00961796 /* SimulatedTask.swift */; };
+		E549200C1D6351EF00961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200A1D6351EF00961796 /* JData+Conveniences.swift */; };
+		E549200D1D6351EF00961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200A1D6351EF00961796 /* JData+Conveniences.swift */; };
+		E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200B1D6351EF00961796 /* JString+Conveniences.swift */; };
+		E549200F1D6351EF00961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200B1D6351EF00961796 /* JString+Conveniences.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
@@ -540,6 +546,9 @@
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
+		E5491FFE1D6341FB00961796 /* SimulatedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedTask.swift; sourceTree = "<group>"; };
+		E549200A1D6351EF00961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
+		E549200B1D6351EF00961796 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -788,6 +797,8 @@
 				E50F3D5A1D40D50400532B09 /* JObject.swift */,
 				E50F3D5B1D40D50400532B09 /* JSerializer.swift */,
 				E50F3D5C1D40D50400532B09 /* RegistryMetadata+Protocol.swift */,
+				E549200A1D6351EF00961796 /* JData+Conveniences.swift */,
+				E549200B1D6351EF00961796 /* JString+Conveniences.swift */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -902,6 +913,7 @@
 			children = (
 				E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */,
 				E50F3D981D40D50400532B09 /* PushOperationTask.swift */,
+				E5491FFE1D6341FB00961796 /* SimulatedTask.swift */,
 				E50F3D991D40D50400532B09 /* ReactiveTask.swift */,
 				E50F3D9A1D40D50400532B09 /* RelayingTask.swift */,
 				E50F3D9B1D40D50400532B09 /* TaskWithNotifications.swift */,
@@ -1213,6 +1225,7 @@
 				E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */,
 				E50F3E971D40D50400532B09 /* Registry.swift in Sources */,
 				E50F3E9F1D40D50400532B09 /* ReactiveTask.swift in Sources */,
+				E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E50F3DC31D40D50400532B09 /* Group.swift in Sources */,
 				E50F3E991D40D50400532B09 /* StatusOfCompletion.swift in Sources */,
 				E50F3E071D40D50400532B09 /* ReadLockersByQuery.swift in Sources */,
@@ -1257,6 +1270,7 @@
 				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E50F3DAD1D40D50400532B09 /* BartlebyDocument.swift in Sources */,
 				E50F3E0B1D40D50400532B09 /* ReadPermissionsByIds.swift in Sources */,
+				E549200C1D6351EF00961796 /* JData+Conveniences.swift in Sources */,
 				E50F3E711D40D50400532B09 /* ConcreteTask.swift in Sources */,
 				E50F3E111D40D50400532B09 /* ReadUsersByIds.swift in Sources */,
 				E50F3AF81D40D27F00532B09 /* RegistryInspector.swift in Sources */,
@@ -1356,6 +1370,7 @@
 				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E50F3E771D40D50400532B09 /* DictionaryRepresentation.swift in Sources */,
 				E50F3E7F1D40D50400532B09 /* HTTPResponse.swift in Sources */,
+				E5491FFF1D6341FB00961796 /* SimulatedTask.swift in Sources */,
 				E50F3E011D40D50400532B09 /* ReadGroupsByQuery.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1389,7 +1404,9 @@
 				E50F3E6C1D40D50400532B09 /* CollectibleCollection.swift in Sources */,
 				E50F3E1C1D40D50400532B09 /* UpdateLockers.swift in Sources */,
 				E50F3E281D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
+				E54920001D6341FB00961796 /* SimulatedTask.swift in Sources */,
 				E50F3EBE1D40D50400532B09 /* Pluralization.swift in Sources */,
+				E549200F1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3E361D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
 				E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
@@ -1430,6 +1447,7 @@
 				E50F3E9A1D40D50400532B09 /* StatusOfCompletion.swift in Sources */,
 				E50F3E221D40D50400532B09 /* UpdateUser.swift in Sources */,
 				E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
+				E549200D1D6351EF00961796 /* JData+Conveniences.swift in Sources */,
 				E50F3E681D40D50400532B09 /* BartlebyFileIO.swift in Sources */,
 				E50F3DC01D40D50400532B09 /* Completion.swift in Sources */,
 				E50F3E121D40D50400532B09 /* ReadUsersByIds.swift in Sources */,

@@ -28,8 +28,6 @@ public enum TaskError: ErrorType {
 
 extension Task {
 
-
-
     /**
      Final argument getter.
 
@@ -63,8 +61,20 @@ extension Task {
     public final func complete(state: Completion) {
         self.completionState = state
         self.status = .Completed
-        self.forward(state)
+        self._forward(state)
     }
+
+    /**
+     Transmit the internal progression to 
+
+     - parameter state: the completionState
+     */
+    public final func transmit(state: Progression) {
+        self.progressionState = state
+        self._forward(state)
+    }
+
+
 
     /**
      This implementation should be calld in any Task invoke override
@@ -73,6 +83,7 @@ extension Task {
      - throws: MultipleAttemptToRunTAsk
      */
     public func invoke() {
+        self.defineUID()
         if self.status != .Runnable {
             bprint("Multiple Attempt To Run Task \(self.summary ?? self.UID)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         } else {
@@ -121,7 +132,7 @@ extension Task {
 
      - parameter completionState: the completion state
      */
-    final public func forward<T: ForwardableState>(state: T) {
+    final private func _forward<T: ForwardableState>(state: T) {
         dispatch_async(GlobalQueue.Main.get()) {
             if let groupExtRef=self.group {
                 if let group: TasksGroup = groupExtRef.toLocalInstance() {

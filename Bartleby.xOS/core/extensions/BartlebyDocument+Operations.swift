@@ -103,8 +103,7 @@ extension BartlebyDocument {
         group.handlers.appendChainedHandlers(handlers)
 
         // This task will append task
-        let registryUIDString: JString=JString()
-        registryUIDString.string=self.UID
+        let registryUIDString=JString(from:self.UID)
         let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:registryUIDString)
         try group.appendChainedTask(commitPendingOperationsTask)
         try group.start()
