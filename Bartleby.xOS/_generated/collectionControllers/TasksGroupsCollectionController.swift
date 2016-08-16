@@ -85,11 +85,18 @@ import ObjectMapper
         return self.items.count
     }
 
+    public func indexOf(@noescape predicate: (TasksGroup) throws -> Bool) rethrows -> Int?{
+        return try self.items.indexOf(predicate)
+    }
+
+    public func indexOf(element: TasksGroup) -> Int?{
+		return self.items.indexOf(element)
+    }
+
+
     /**
     An iterator that permit dynamic approaches.
-    The Registry ignore the real types.
-    Currently we do not use SequenceType, Subscript, ...
-
+    The Registry ignores the real types.
     - parameter on: the closure
     */
     public func superIterate(on:(element: Collectible)->()){
@@ -206,29 +213,28 @@ import ObjectMapper
 
     // MARK: Add
 
+
     public func add(item:Collectible, commit:Bool){
-        #if os(OSX) && !USE_EMBEDDED_MODULES
-        if let arrayController = self.arrayController{
-            self.insertObject(item, inItemsAtIndex: arrayController.arrangedObjects.count, commit:commit)
-        }else{
-            self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
-        }
-        #else
         self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
-        #endif
     }
 
     // MARK: Insert
 
+    /**
+    Inserts an object at a given index into the collection.
+
+    - parameter item:   the item
+    - parameter index:  the index in the collection (not the ArrayController arranged object)
+    - parameter commit: should we commit the insertion?
+    */
     public func insertObject(item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? TasksGroup{
 
             item.collection = self // Reference the collection
-
+            // Insert the item
+            self.items.insert(item, atIndex: index)
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
-                // Add it to the array controller's content array
-                arrayController.insertObject(item, atArrangedObjectIndex:index)
 
                 // Re-sort (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
@@ -243,12 +249,7 @@ import ObjectMapper
                     tableView.editColumn(0, row: row, withEvent: nil, select: true)
                  }
 
-            }else{
-                // Add directly to the collection
-                self.items.insert(item, atIndex: index)
             }
-            #else
-                self.items.insert(item, atIndex: index)
             #endif
 
 
@@ -265,6 +266,12 @@ import ObjectMapper
 
     // MARK: Remove
 
+    /**
+    Removes an object at a given index from the collection.
+
+    - parameter index:  the index in the collection (not the ArrayController arranged object)
+    - parameter commit: should we commit the removal?
+    */
     public func removeObjectFromItemsAtIndex(index: Int, commit:Bool) {
         if let item : TasksGroup = items[index] {
 
@@ -273,16 +280,9 @@ import ObjectMapper
 
             //Update the commit flag
             item.committed=false
-            #if os(OSX) && !USE_EMBEDDED_MODULES
-            // Remove the item from the array
-            if let arrayController = self.arrayController{
-                arrayController.removeObjectAtArrangedObjectIndex(index)
-            }else{
-                items.removeAtIndex(index)
-            }
-            #else
-            items.removeAtIndex(index)
-            #endif
+
+            // Remove the item from the collection
+            self.items.removeAtIndex(index)
 
         
             // Commit is ignored because
@@ -292,51 +292,33 @@ import ObjectMapper
         }
     }
 
-     public func removeObject(item: Collectible, commit:Bool)->Bool{
-        if let instance=item as? TasksGroup{
-            #if os(OSX) && !USE_EMBEDDED_MODULES
-                if let arrayController = self.arrayController{
-                    if let idx=(arrayController.arrangedObjects as? [TasksGroup])?.indexOf({ return $0.UID==instance.UID }){
-                        self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                        return true
-                    }
-                }else{
-                    if let idx=self.items.indexOf({ return $0.UID==instance.UID }){
-                        self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                        return true
-                    }
-                }
-            #else
-                if let idx=self.items.indexOf(instance){
-                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                    return true
-                }
-            #endif
+
+    public func removeObjects(items: [Collectible],commit:Bool){
+        for item in items{
+            self.removeObject(item,commit:commit)
         }
-        return false
     }
 
-
-    public func removeObjectWithID(id:String, commit:Bool)->Bool{
-        #if os(OSX) && !USE_EMBEDDED_MODULES
-            if let arrayController = self.arrayController{
-                if let idx=(arrayController.arrangedObjects as? [TasksGroup])?.indexOf({ return $0.UID==id }){
-                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                    return true
-                }
-            }else{
-                if let idx=self.items.indexOf( { return $0.UID==id } ){
-                    self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                    return true
-                }
-            }
-        #else
-            if let idx=self.items.indexOf( { return $0.UID==id } ){
+    public func removeObject(item: Collectible, commit:Bool){
+        if let instance=item as? TasksGroup{
+            if let idx=self.indexOf( { return $0.UID == instance.UID } ){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
-                return true
             }
-        #endif
-        return false
+        }
     }
+
+    public func removeObjectWithIDS(ids: [String],commit:Bool){
+        for uid in ids{
+            self.removeObjectWithID(uid,commit:commit)
+        }
+    }
+
+    public func removeObjectWithID(id:String, commit:Bool){
+        if let idx=self.indexOf( { return $0.UID==id } ){
+            self.removeObjectFromItemsAtIndex(idx, commit:commit)
+        }
+    }
+
+
     
 }

@@ -86,20 +86,32 @@ public protocol CollectibleCollection: Collectible {
      Remove the item
 
      - parameter item: the collectible item.
-
-     - returns: true if the item has been removed
      */
-    func removeObject(item: Collectible,commit:Bool) -> Bool
+    func removeObject(item: Collectible,commit:Bool)
+
+
+    /**
+     Remove a bunch of items
+
+     - parameter items: the collectible items.
+     */
+    func removeObjects(items: [Collectible],commit:Bool)
 
 
     /**
      Removes an item by it UID
 
      - parameter id: the UID
-
-     - returns: true if the item has been removed
      */
-    func removeObjectWithID(id: String,commit:Bool) -> Bool
+    func removeObjectWithID(id: String,commit:Bool)
+
+
+    /**
+     Removes an item by it UID
+
+     - parameter id: the UID
+     */
+    func removeObjectWithIDS(ids: [String],commit:Bool)
 
 
     func itemAtIndex(index:Int)->Collectible
