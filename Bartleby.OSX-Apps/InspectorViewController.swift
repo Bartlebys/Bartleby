@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class InspectorViewController: NSViewController,RegistryDependent{
+@objc class InspectorViewController: NSViewController,RegistryDependent{
 
 
     @IBOutlet weak var listOutlineView: NSOutlineView!
@@ -27,12 +27,46 @@ class InspectorViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var contextualMenu: NSMenu!
 
+    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
+        return true
+        //return super.validateMenuItem(menuItem)
+    }
+
+
+
+
     // The currently associated View Controller
     private var _topViewController:NSViewController?
 
     private var _bottomViewController:NSViewController?
 
+    @IBAction func resetAllSupervisionCounter(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            registry.registryMetadata.changedKeys.removeAll()
+            registry.registryMetadata.currentUser?.changedKeys.removeAll()
+            registry.iterateOnCollections({ (collection) in
+                if let o = collection as? JObject{
+                    o.changedKeys.removeAll()
+                }
+            })
+            registry.superIterate({ (element) in
+                if let o = element as? JObject{
+                    o.changedKeys.removeAll()
+                }
+            })
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil)
 
+    }
+
+    @IBAction func commitChanges(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            do {
+                try registry.commitPendingChanges()
+            } catch {
+            }
+        }
+    }
     //MARK:  Collections
 
     private var _collectionListDelegate:CollectionListDelegate?
@@ -110,10 +144,6 @@ class InspectorViewController: NSViewController,RegistryDependent{
 
     }
 
-    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
-        return super.validateMenuItem(menuItem)
-    }
-
 }
 
 // MARK: - CollectionListDelegate
@@ -137,7 +167,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         self._selectionHandler=onSelection
         super.init()
         self._registry.registryMetadata.addChangesObserver(self, closure: { (key, oldValue, newValue) in
-             self.reloadData()
+            self.reloadData()
         })
         self._registry.iterateOnCollections { (collection) in
             collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
@@ -274,13 +304,13 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return 20
         }
     }
-
-
+    
+    
     func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
         return true
     }
-
-
+    
+    
     func outlineViewSelectionDidChange(notification: NSNotification) {
         if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
             dispatch_async(dispatch_get_main_queue()) {
@@ -288,5 +318,5 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }
         }
     }
-
+    
 }

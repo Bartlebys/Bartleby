@@ -67,22 +67,6 @@
                         </segmentedControl>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Di3-Zl-25a"/>
-                    <toolbarItem implicitItemIdentifier="403F68F4-5D13-4A5F-9DA4-027E489C1081" label="Commit Changes" paletteLabel="Commit Changes" image="889-sort-descending" id="ivb-JH-BSo">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="50" height="25"/>
-                        <size key="maxSize" width="51" height="25"/>
-                        <button key="view" verticalHuggingPriority="750" id="r2s-Jd-c1x">
-                            <rect key="frame" x="23" y="14" width="51" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="889-sort-descending" imagePosition="above" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" sound="Bottle" inset="2" id="TlF-sD-RzM">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="commitPendingChanges:" target="-2" id="taF-dy-rGW"/>
-                            </connections>
-                        </button>
-                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="C11FED55-15AD-4C16-8F66-871FD3EB18F9" label="Push Operations" paletteLabel="Push Operations" image="760-refresh-3-toolbar" id="KYu-3p-WrD">
                         <nil key="toolTip"/>
                         <size key="minSize" width="51" height="25"/>
@@ -100,33 +84,17 @@
                         </button>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="98C2BB55-A096-4B0B-81E8-B5D333B4B0FB" label="Reset Supervision" paletteLabel="Reset Supervision" image="1214-document-delete" id="VlF-Bd-2cy">
-                        <nil key="toolTip"/>
-                        <size key="minSize" width="50" height="25"/>
-                        <size key="maxSize" width="50" height="25"/>
-                        <button key="view" verticalHuggingPriority="750" id="U7X-gV-VSA">
-                            <rect key="frame" x="26" y="14" width="50" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="1214-document-delete" imagePosition="above" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FJF-ev-1XQ">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                        </button>
-                        <connections>
-                            <action selector="resetChanges:" target="-2" id="V0e-9V-j5E"/>
-                        </connections>
-                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
-                    <toolbarItem reference="VlF-Bd-2cy"/>
-                    <toolbarItem reference="ivb-JH-BSo"/>
+                    <toolbarItem reference="RBs-x9-De4"/>
+                    <toolbarItem reference="RBs-x9-De4"/>
                     <toolbarItem reference="Di3-Zl-25a"/>
                     <toolbarItem reference="Nl4-0i-Klz"/>
                     <toolbarItem reference="Di3-Zl-25a"/>
                     <toolbarItem reference="KYu-3p-WrD"/>
                 </defaultToolbarItems>
             </toolbar>
-            <point key="canvasLocation" x="421.5" y="238.5"/>
+            <point key="canvasLocation" x="421" y="238"/>
         </window>
         <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
@@ -134,9 +102,7 @@
         <viewController id="qlU-Em-xgV" customClass="ActivityProgressViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="1214-document-delete" width="24" height="28"/>
         <image name="760-refresh-3-toolbar" width="22" height="22"/>
-        <image name="889-sort-descending" width="28" height="26"/>
         <sound name="Bottle"/>
     </resources>
 </document>

@@ -95,27 +95,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
 
 
-    @IBAction func resetChanges(sender: AnyObject) {
-
-        self.registry?.registryMetadata.changedKeys.removeAll()
-        self.registry?.registryMetadata.currentUser?.changedKeys.removeAll()
-
-        self.registry?.iterateOnCollections({ (collection) in
-            if let o = collection as? JObject{
-                o.changedKeys.removeAll()
-            }
-        })
-
-        self.registry?.superIterate({ (element) in
-            if let o = element as? JObject{
-                o.changedKeys.removeAll()
-            }
-        })
-
-        NSNotificationCenter.defaultCenter().postNotificationName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil)
-    }
-
-
     @IBAction func openWebStack(sender:AnyObject)  {
         if let document=self.registry {
             let url:NSURL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)")!
@@ -123,13 +102,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
         }
     }
 
-    @IBAction func commitPendingChanges(sender: AnyObject) {        if let document=self.registry {
-            do {
-                try document.commitPendingChanges()
-            } catch {
-            }
-        }
-    }
 
 
     @IBAction func pushOperations(sender: AnyObject) {

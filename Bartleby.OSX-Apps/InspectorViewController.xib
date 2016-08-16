@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autosaveExpandedItems="YES" outlineTableColumn="63I-7z-MT7" id="nzd-mn-3O1">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="961"/>
+                                <rect key="frame" x="0.0" y="0.0" width="198" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -250,11 +250,30 @@
                 <real value="311"/>
                 <real value="250"/>
             </holdingPriorities>
+            <connections>
+                <outlet property="menu" destination="c12-ge-CBZ" id="g4S-V3-IJK"/>
+            </connections>
             <point key="canvasLocation" x="539" y="956.5"/>
         </splitView>
         <viewController id="A1J-3y-mLd" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="rF1-h1-Fwc" customClass="OperationViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <menu id="c12-ge-CBZ">
+            <items>
+                <menuItem title="Reset counters" id="p08-AH-Eqj">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="resetAllSupervisionCounter:" target="-2" id="JFg-eQ-hDp"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Commit changes" id="DdL-3d-rO5">
+                    <connections>
+                        <action selector="commitChanges:" target="-2" id="bJO-vD-KJt"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="566.5" y="378.5"/>
+        </menu>
     </objects>
     <resources>
         <image name="1052-database" width="22" height="28"/>
