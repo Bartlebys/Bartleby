@@ -21,7 +21,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var arrayController: NSArrayController!
 
-    @objc dynamic var entries=Bartleby.bprintCollection.entries
+    dynamic var entries=Bartleby.bprintCollection.entries
 
     private var _lockFilterUpdate=false
 
@@ -88,6 +88,18 @@ class LogsViewController: NSViewController,RegistryDependent{
         }
     }
 
+
+    @IBAction func removeAll(sender: AnyObject) {
+        self.entries.removeAll()
+    }
+
+
+    @IBAction func reload(sender: AnyObject) {
+        self.entries=Bartleby.bprintCollection.entries
+    }
+
+    @IBAction func sendAReport(sender: AnyObject) {
+    }
 }
 
 extension LogsViewController:BprintObserver{

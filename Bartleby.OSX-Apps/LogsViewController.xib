@@ -380,8 +380,32 @@
                 <constraint firstAttribute="trailing" secondItem="Apf-Fy-UCM" secondAttribute="trailing" constant="5" id="aVR-fp-oHN"/>
                 <constraint firstAttribute="trailing" secondItem="9lt-gS-ckt" secondAttribute="trailing" id="rGE-et-e0I"/>
             </constraints>
+            <connections>
+                <outlet property="menu" destination="Y3w-Ss-8eB" id="13v-Dd-zt6"/>
+            </connections>
             <point key="canvasLocation" x="779" y="759"/>
         </customView>
+        <menu id="Y3w-Ss-8eB">
+            <items>
+                <menuItem title="Stash Entries" id="tAq-YF-XxQ">
+                    <connections>
+                        <action selector="removeAll:" target="-2" id="9g5-RD-gqa"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Reload stashed Entries" id="yyh-Lu-m0K">
+                    <connections>
+                        <action selector="reload:" target="-2" id="rwz-s2-7Nf"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="E8k-GN-Ia0"/>
+                <menuItem title="Send A Report" id="BE2-TA-YWB">
+                    <connections>
+                        <action selector="sendAReport:" target="-2" id="XXn-Su-b6m"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="638" y="383.5"/>
+        </menu>
         <arrayController objectClassName="BprintEntry" id="mTF-UK-JAt">
             <connections>
                 <binding destination="-2" name="contentArray" keyPath="self.entries" id="nyq-Ds-ZjP"/>

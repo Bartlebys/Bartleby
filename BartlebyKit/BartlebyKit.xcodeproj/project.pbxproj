@@ -661,9 +661,9 @@
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
-				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
 				E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */,
 				E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */,
+				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";

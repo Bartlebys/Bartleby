@@ -8,79 +8,58 @@
 
 import Cocoa
 
-public class ActivityProgressViewController: NSViewController ,RegistryDependent {
+class ActivityProgressViewController: NSViewController ,RegistryDependent,Identifiable {
+
+    var UID:String=Bartleby.createUID()
 
     @IBOutlet weak var tableView: NSTableView!
 
-    override public func viewDidLoad() {
+    override  func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.setDataSource(self)
-        self.tableView.setDelegate(self)
     }
 
-    override public var nibName: String?{
+    override  var nibName: String?{
         return "ActivityProgressViewController"
     }
 
     //MARK: -
 
-    @IBOutlet var arrayController: NSArrayController!
-
-    dynamic var registry:BartlebyDocument?
-
-    public var registryDelegate: RegistryDelegate?{
+    @IBOutlet var arrayController: NSArrayController!{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
-                self.registry=registry
                 registry.tasksArrayController=self.arrayController
             }
         }
     }
 
+    var registry:BartlebyDocument?
 
-    private var _createdTasksGroups=[TasksGroup]()
-
-    @IBAction func createATestGroup(sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            do{
-                // We use the encapsulated SpaceUID
-                let UID=registry.UID
-                // We taskGroupFor the task
-                let group=try Bartleby.scheduler.getTaskGroupWithName("Created Group \(_createdTasksGroups.count)", inDocument: registry)
-                group.priority=TasksGroup.Priority.Default
-
-                let nbOfSimulatedTask=arc4random_uniform(20)
-                for i in 0...nbOfSimulatedTask {
-                    let task=SimulatedTask(arguments:JString(from:"Task \(i)/\(_createdTasksGroups.count)"))
-                    try group.appendChainedTask(task)
-                }
-                try group.start()
-            }catch{
-                // Silent catch
+    var registryDelegate: RegistryDelegate?{
+        didSet{
+            if let registry=self.registryDelegate?.getRegistry(){
+                self.registry=registry
+                registry.tasksArrayController=self.arrayController
+                /*
+                self.registry?.tasksGroups.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+                    if let tableView = self.tableView{
+                        tableView.reloadData()
+                    }
+                })*/
             }
-
         }
+    }
 
+    @IBAction func reload(sender: AnyObject) {
+        self.tableView.reloadData()
     }
 
     // MARK: Filtering
 
-    private var _lockFilterUpdate=false
-
-    @IBAction func didChange(sender: AnyObject) {
-        self._updateFilter()
+    @IBAction func deleteGroup(sender: AnyObject) {
+        print("\(sender)")
     }
 
-    private func _updateFilter() -> () {
-        if !self._lockFilterUpdate{
-            let predicate=NSPredicate { (object, _) -> Bool in
-                if let _ = object as? TasksGroup{
-                }
-                return true
-            }
-            self.arrayController.filterPredicate=predicate
-        }
-    }
+
 }
 
 
@@ -88,13 +67,13 @@ public class ActivityProgressViewController: NSViewController ,RegistryDependent
 
 extension ActivityProgressViewController:NSTableViewDataSource{
 
-    public func numberOfRowsInTableView(tableView: NSTableView) -> Int{
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int{
         let nb=self.arrayController.arrangedObjects.count ?? 0
         bprint("CounterProg \(nb)",file:#file,function:#function,line:#line,category:"progression",decorative:false)
         return nb
     }
 
-    public func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject?{
+    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject?{
         let item = self.arrayController.arrangedObjects.objectAtIndex(row)
         bprint("Progression \(item)",file:#file,function:#function,line:#line,category:"progression",decorative:false)
         return item
@@ -107,7 +86,7 @@ extension ActivityProgressViewController:NSTableViewDataSource{
 
 extension ActivityProgressViewController:NSTableViewDelegate{
     
-    public func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 60
     }
 }

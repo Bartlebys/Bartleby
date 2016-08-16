@@ -271,6 +271,27 @@
                         <action selector="commitChanges:" target="-2" id="bJO-vD-KJt"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="Zty-fO-aFM"/>
+                <menuItem title="Simulations" id="DPq-Dr-fYH">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Simulations" id="fJI-3E-u9K">
+                        <items>
+                            <menuItem title="Create Simulated Tasks Group" id="CeG-Rp-v7B">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="createATestGroup:" target="-2" id="Tiw-bL-Mke"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="zyt-b7-9gH"/>
+                <menuItem title="Delete all pending tasks" id="LcK-so-XBh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="deleteAllPendingTasks:" target="-2" id="aIP-p3-kIP"/>
+                    </connections>
+                </menuItem>
             </items>
             <point key="canvasLocation" x="566.5" y="378.5"/>
         </menu>

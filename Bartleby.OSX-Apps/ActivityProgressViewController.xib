@@ -44,38 +44,39 @@
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
-                                            <tableCellView id="ESt-2Y-Tog">
+                                            <tableCellView id="SpO-aG-aQ7">
                                                 <rect key="frame" x="1" y="1" width="476" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="uw9-X7-qzc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="460" height="17"/>
-                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="rXg-Px-lQ1">
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="vgY-DU-zQq">
+                                                        <rect key="frame" x="0.0" y="0.0" width="428" height="17"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="Aan-IQ-Igw">
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                            <connections>
-                                                                <binding destination="ESt-2Y-Tog" name="value" keyPath="objectValue" id="mvi-9m-8Ar"/>
-                                                            </connections>
                                                         </textFieldCell>
                                                         <connections>
-                                                            <binding destination="ESt-2Y-Tog" name="value" keyPath="objectValue" id="9Qi-js-ggr"/>
+                                                            <binding destination="SpO-aG-aQ7" name="value" keyPath="objectValue" id="bIV-Tf-sac"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="uw9-X7-qzc" firstAttribute="leading" secondItem="ESt-2Y-Tog" secondAttribute="leading" constant="2" id="XLc-ZK-ZUh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="uw9-X7-qzc" secondAttribute="trailing" constant="18" id="nHz-xJ-KjO"/>
-                                                    <constraint firstAttribute="bottom" secondItem="uw9-X7-qzc" secondAttribute="bottom" id="u6u-93-C2z"/>
-                                                    <constraint firstItem="uw9-X7-qzc" firstAttribute="top" secondItem="ESt-2Y-Tog" secondAttribute="top" id="zu7-mu-gBt"/>
+                                                    <constraint firstItem="vgY-DU-zQq" firstAttribute="top" secondItem="SpO-aG-aQ7" secondAttribute="top" id="A4X-Dy-Bh4"/>
+                                                    <constraint firstItem="vgY-DU-zQq" firstAttribute="leading" secondItem="SpO-aG-aQ7" secondAttribute="leading" constant="2" id="Puf-ih-J7j"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vgY-DU-zQq" secondAttribute="bottom" id="RUM-DY-TU0"/>
+                                                    <constraint firstAttribute="trailing" secondItem="vgY-DU-zQq" secondAttribute="trailing" constant="50" id="x3q-K6-Mad"/>
                                                 </constraints>
                                                 <connections>
-                                                    <outlet property="textField" destination="uw9-X7-qzc" id="UqR-wV-WSe"/>
+                                                    <outlet property="textField" destination="vgY-DU-zQq" id="Kpt-MD-7ER"/>
                                                 </connections>
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <outlet property="dataSource" destination="-2" id="9GW-Zo-5jK"/>
+                                    <outlet property="delegate" destination="-2" id="cAo-bE-xOR"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -107,34 +108,13 @@
         </arrayController>
         <menu id="Chv-hR-tnY">
             <items>
-                <menuItem title="Create simulated tasks Group" id="Nj2-u2-ebN">
+                <menuItem title="Refresh" id="Nj2-u2-ebN">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="createATestGroup:" target="-2" id="lF8-AS-4vu"/>
+                        <action selector="reload:" target="-2" id="m2E-2f-HV6"/>
                     </connections>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="Vwt-wi-MSv"/>
-                <menuItem title="Tasks" id="MFx-kv-EDx">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Tasks" id="H4S-e4-Muv">
-                        <items>
-                            <menuItem title="Pause / Start" id="7bR-4l-ekA">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                        </items>
-                    </menu>
                 </menuItem>
             </items>
         </menu>
-        <menuItem title="Menu" id="1f3-lG-8KL">
-            <modifierMask key="keyEquivalentModifierMask"/>
-            <menu key="submenu" title="Menu" id="PYa-2p-Nzd">
-                <items>
-                    <menuItem title="Item" id="HjS-Fb-4aD">
-                        <modifierMask key="keyEquivalentModifierMask"/>
-                    </menuItem>
-                </items>
-            </menu>
-        </menuItem>
     </objects>
 </document>

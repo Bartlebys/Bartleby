@@ -270,7 +270,7 @@ public class  Bartleby: Consignee {
 
 
     /**
-     Cleans uo all the entries
+     Cleans up all the entries
      */
     public static func cleanUpBprintEntries(){
         Bartleby.bprintCollection.entries.removeAll()

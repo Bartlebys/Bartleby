@@ -40,6 +40,8 @@ import Cocoa
 
     private var _bottomViewController:NSViewController?
 
+    //MARK:- Menu Actions
+
     @IBAction func resetAllSupervisionCounter(sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             registry.registryMetadata.changedKeys.removeAll()
@@ -67,7 +69,42 @@ import Cocoa
             }
         }
     }
-    //MARK:  Collections
+
+    @IBAction func createATestGroup(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            do{
+                // We taskGroupFor the task
+                let group=try Bartleby.scheduler.getTaskGroupWithName("Created Group \(registry.tasksGroups.items.count)", inDocument: registry)
+                group.priority=TasksGroup.Priority.Default
+                // 1 to 10 tasks.
+                let nbOfSimulatedTask=arc4random_uniform(9)+1
+                for i in 1...nbOfSimulatedTask {
+                    let task=SimulatedTask(arguments:JString(from:"Task \(i)/\(i)"))
+                    try group.appendChainedTask(task)
+                }
+                try group.start()
+            }catch{
+                Bartleby.sharedInstance.presentVolatileMessage("We have encountered an exception", body: "\(error)")
+            }
+
+        }
+        
+    }
+
+
+    @IBAction func deleteAllPendingTasks(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            for task in registry.tasks.reverse(){
+                registry.tasks.removeObject(task, commit: false)
+            }
+
+            for group in registry.tasksGroups.reverse(){
+                registry.tasksGroups.removeObject(group, commit: false)
+            }
+        }
+    }
+
+    //MARK:-  Collections
 
     private var _collectionListDelegate:CollectionListDelegate?
 

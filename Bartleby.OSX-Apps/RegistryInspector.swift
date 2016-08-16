@@ -87,7 +87,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
                 let activityViewItem=NSTabViewItem(viewController:self.activityViewController)
                 self.globalTabView.addTabViewItem(activityViewItem)
-                self.webStackViewController.registryDelegate=self
+                self.activityViewController.registryDelegate=self
 
             }
         }
