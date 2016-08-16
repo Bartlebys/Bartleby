@@ -51,7 +51,7 @@ public enum BsyncAdminError: ErrorType {
         let admin = PdSSyncAdmin(context:context)
         admin.finalizationDelegate = self
         admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
-            handlers.notify(Progression(currentTaskIndex:taskIndex, totalTaskCount: totalTaskCount, currentTaskProgress: taskProgress, message: message, data: data))
+            handlers.notify(Progression(currentTaskIndex:taskIndex, totalTaskCount: totalTaskCount, currentPercentProgress: taskProgress, message: message, data: data))
             }, andCompletionBlock: {(success, statusCode, message) in
                 let c = Completion()
                 c.success = success
