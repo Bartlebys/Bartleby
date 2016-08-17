@@ -55,12 +55,21 @@ public extension Registry{
                     if let newRegistryMetadata=try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
                         let previousUID=self.UID
                         Bartleby.sharedInstance.forget(previousUID)
+
+                        // Disconnect from SSE
+                        self._closeSSE()
+
+                        // Reallocate the new registry Metadata
                         self.registryMetadata=newRegistryMetadata
                         Bartleby.sharedInstance.declare(self)
+
                         if let document = self as? BartlebyDocument{
                             self.registryMetadata.currentUser?.document=document
                         }
-                        self.hasChanged()
+
+                        // Reconnect to SSE
+                        self._connectToSSE()
+
                         handlers.on(Completion.successState())
                     }else{
                         handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: StatusOfCompletion.Expectation_Failed))
