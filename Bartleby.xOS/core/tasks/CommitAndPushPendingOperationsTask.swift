@@ -73,6 +73,12 @@ public class CommitAndPushPendingOperationsTask: Task, ConcreteTask {
                                 let task=PushOperationTask(arguments:operation)
                                 try group.appendChainedTask(task)
                             }
+
+                            //Add an automatic save document task.
+                            let saveTask=SaveDocumentTask(arguments:JString(from:document.UID))
+                            try group.appendChainedTask(saveTask)
+
+                            //
                             let completion=Completion.successState()
                             self.complete(completion)
                         } else {

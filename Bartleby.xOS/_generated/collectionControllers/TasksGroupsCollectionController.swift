@@ -231,10 +231,11 @@ import ObjectMapper
         if let item=item as? TasksGroup{
 
             item.collection = self // Reference the collection
-            // Insert the item
-            self.items.insert(item, atIndex: index)
+
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
+
+                arrayController.insertObject(item, atArrangedObjectIndex: index)
 
                 // Re-sort (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
@@ -249,7 +250,12 @@ import ObjectMapper
                     tableView.editColumn(0, row: row, withEvent: nil, select: true)
                  }
 
+            }else{
+                // Add directly to the collection
+                self.items.insert(item, atIndex: index)
             }
+            #else
+                self.items.insert(item, atIndex: index)
             #endif
 
 
@@ -280,9 +286,16 @@ import ObjectMapper
 
             //Update the commit flag
             item.committed=false
-
-            // Remove the item from the collection
-            self.items.removeAtIndex(index)
+            #if os(OSX) && !USE_EMBEDDED_MODULES
+            // Remove the item from the array
+            if let arrayController = self.arrayController{
+                arrayController.removeObjectAtArrangedObjectIndex(index)
+            }else{
+                items.removeAtIndex(index)
+            }
+            #else
+            items.removeAtIndex(index)
+            #endif
 
         
             // Commit is ignored because

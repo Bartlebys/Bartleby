@@ -77,7 +77,13 @@ extension BartlebyDocument {
                 let task=PushOperationTask(arguments:operation)
                 try group.appendChainedTask(task)
             }
+
+            //Add an automatic save document task.
+            let saveTask=SaveDocumentTask(arguments:JString(from:self.UID))
+            try group.appendChainedTask(saveTask)
+
             try group.start()
+
         } else {
             let completion=Completion.successState()
             completion.message=NSLocalizedString("There was no pending operation", tableName:"operations", comment: "There was no pending operation")

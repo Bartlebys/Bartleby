@@ -321,6 +321,8 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
+		E54EC2F71D64500B0028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F61D64500B0028FFFD /* SaveDocumentTask.swift */; };
+		E54EC2F81D64500B0028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F61D64500B0028FFFD /* SaveDocumentTask.swift */; };
 		E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */; };
 		E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
@@ -556,6 +558,7 @@
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
 		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
+		E54EC2F61D64500B0028FFFD /* SaveDocumentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveDocumentTask.swift; sourceTree = "<group>"; };
 		E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProgressViewController.swift; sourceTree = "<group>"; };
 		E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityProgressViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -912,6 +915,7 @@
 			isa = PBXGroup;
 			children = (
 				E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */,
+				E54EC2F61D64500B0028FFFD /* SaveDocumentTask.swift */,
 				E50F3D981D40D50400532B09 /* PushOperationTask.swift */,
 				E5491FFE1D6341FB00961796 /* SimulatedTask.swift */,
 				E50F3D991D40D50400532B09 /* ReactiveTask.swift */,
@@ -1307,6 +1311,7 @@
 				E50F3E2F1D40D50400532B09 /* JHTTPResponse.swift in Sources */,
 				E50F3E851D40D50400532B09 /* Invocable.swift in Sources */,
 				E50F3E8F1D40D50400532B09 /* SuperIterable.swift in Sources */,
+				E54EC2F71D64500B0028FFFD /* SaveDocumentTask.swift in Sources */,
 				E50F3DCB1D40D50400532B09 /* Operation.swift in Sources */,
 				E50F3AF11D40D27F00532B09 /* InspectorViewController.swift in Sources */,
 				E50F3E251D40D50400532B09 /* Base64DataTransform.swift in Sources */,
@@ -1412,6 +1417,7 @@
 				E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E50F3E161D40D50400532B09 /* UpdateGroup.swift in Sources */,
 				E50F3E621D40D50400532B09 /* TasksGroup+Execution.swift in Sources */,
+				E54EC2F81D64500B0028FFFD /* SaveDocumentTask.swift in Sources */,
 				E50F3E4A1D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */,
 				E50F3EBC1D40D50400532B09 /* HTTPManager.swift in Sources */,
 				E50F3E021D40D50400532B09 /* ReadGroupsByQuery.swift in Sources */,
