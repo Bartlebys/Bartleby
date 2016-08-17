@@ -150,6 +150,7 @@
 		E54920211D6353E900961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549201F1D6353E900961796 /* JString+Conveniences.swift */; };
 		E54920221D6353E900961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920201D6353E900961796 /* JData+Conveniences.swift */; };
 		E54920241D6353F200961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920231D6353F200961796 /* SimulatedTask.swift */; };
+		E54EC2FF1D6453C70028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */; };
 		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
 		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
 		E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E131CC0E63400A7ECD1 /* Mappable.swift */; };
@@ -351,6 +352,7 @@
 		E549201F1D6353E900961796 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
 		E54920201D6353E900961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E54920231D6353F200961796 /* SimulatedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedTask.swift; sourceTree = "<group>"; };
+		E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveDocumentTask.swift; sourceTree = "<group>"; };
 		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -697,6 +699,7 @@
 		E50F40F71D40D5FF00532B09 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */,
 				E54920231D6353F200961796 /* SimulatedTask.swift */,
 				E50F40F81D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift */,
 				E50F40F91D40D5FF00532B09 /* PushOperationTask.swift */,
@@ -913,6 +916,7 @@
 				E54920241D6353F200961796 /* SimulatedTask.swift in Sources */,
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
 				E50F41641D40D5FF00532B09 /* Registry+MetaDataImportExport.swift in Sources */,
+				E54EC2FF1D6453C70028FFFD /* SaveDocumentTask.swift in Sources */,
 				E50F415B1D40D5FF00532B09 /* BartlebyDocument+Operations.swift in Sources */,
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
 				E50F41101D40D5FF00532B09 /* LockersCollectionController.swift in Sources */,

@@ -42,7 +42,19 @@ public class  SaveDocumentTask:Task, ConcreteTask {
         if let documentUID: ArgumentType = try? self.arguments() {
             if let documentUIDString=documentUID.string{
                 if let document=Bartleby.sharedInstance.getDocumentByUID(documentUIDString){
-                    document.saveDocument(self)
+                    #if os(OSX)
+                        document.saveDocument(self)
+                    #elseif os(iOS)
+                        //@bpds (#IOS) UIDocument support url = app documents + document.UID
+                        Bartleby.todo("SAVE NEEDS AND IMPLEMENTATION", message: "url = app documents + document.UID")
+                        /*
+                        document.saveToURL(NSURL(), ofType: "", forSaveOperation: NSSaveOperationType, completionHandler: { (error) in
+
+                        })
+    */
+                    #elseif os(watchOS)
+                    #elseif os(tvOS)
+                    #endif
                     let completion = Completion.successState(NSLocalizedString( "Save Task as been accomplished", tableName:"operations", comment:"Save Task as been accomplished") + " \(documentUIDString)", statusCode: StatusOfCompletion.OK, data: nil)
                     self.complete(completion)
                     bprint(completion, file: #file, function: #function, line: #line, category: bprintCategoryFor(self))

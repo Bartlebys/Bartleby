@@ -79,6 +79,10 @@
 		E54B7FF61D2B8AA1001F7AB3 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		E54B7FF81D2B8AA1001F7AB3 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
+		E54EC2FA1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */; };
+		E54EC2FB1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */; };
+		E54EC2FC1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */; };
+		E54EC2FD1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */; };
 		E55C92731CBF854D008163F6 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
 		E55C92741CBF854D008163F6 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
 		E55C92751CBF854D008163F6 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
@@ -918,6 +922,7 @@
 		E54920111D63539E00961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E54920141D6353AE00961796 /* SimulatedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedTask.swift; sourceTree = "<group>"; };
 		E54957581C43B57700102771 /* CreateDirectiveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDirectiveCommand.swift; sourceTree = "<group>"; };
+		E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveDocumentTask.swift; sourceTree = "<group>"; };
 		E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeltaPathMap.h; sourceTree = "<group>"; };
 		E552B7901C3D4E49001CD53B /* DeltaPathMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeltaPathMap.m; sourceTree = "<group>"; };
 		E552B7911C3D4E49001CD53B /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
@@ -1553,6 +1558,7 @@
 		E58806F81D51E06A00FEA71F /* tasks */ = {
 			isa = PBXGroup;
 			children = (
+				E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */,
 				E54920141D6353AE00961796 /* SimulatedTask.swift */,
 				E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */,
 				E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */,
@@ -2098,6 +2104,7 @@
 				E58808B61D51E06A00FEA71F /* HTTPResponse.swift in Sources */,
 				E58808021D51E06A00FEA71F /* Base64DataTransform.swift in Sources */,
 				E5CEA9311D522555000DC91E /* URLTransform.swift in Sources */,
+				E54EC2FD1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */,
 				E58808D21D51E06A00FEA71F /* Serializer.swift in Sources */,
 				E5CEA9351D52255D000DC91E /* CommandLine.swift in Sources */,
 				E54B7FF61D2B8AA1001F7AB3 /* BsyncImageDiskManager.swift in Sources */,
@@ -2281,6 +2288,7 @@
 				E588078B1D51E06A00FEA71F /* CreateUsers.swift in Sources */,
 				E58807D31D51E06A00FEA71F /* ReadUserById.swift in Sources */,
 				E588082F1D51E06A00FEA71F /* Bartleby.swift in Sources */,
+				E54EC2FA1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */,
 				E58807E31D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
 				E58807E71D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
 				E58807471D51E06A00FEA71F /* Locker.swift in Sources */,
@@ -2409,6 +2417,7 @@
 				E588073C1D51E06A00FEA71F /* Group.swift in Sources */,
 				E5CEA9141D522554000DC91E /* FromJSON.swift in Sources */,
 				E591ACED1D42632800748FF4 /* UpDownDirectivesTests.swift in Sources */,
+				E54EC2FB1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */,
 				E58807401D51E06A00FEA71F /* JData.swift in Sources */,
 				E58808241D51E06A00FEA71F /* UIX.swift in Sources */,
 				E58807601D51E06A00FEA71F /* Task.swift in Sources */,
@@ -2700,6 +2709,7 @@
 				E58808391D51E06A00FEA71F /* Consignee.swift in Sources */,
 				E58807C51D51E06A00FEA71F /* ReadLockersByQuery.swift in Sources */,
 				E58808991D51E06A00FEA71F /* ConcreteTask.swift in Sources */,
+				E54EC2FC1D6453B60028FFFD /* SaveDocumentTask.swift in Sources */,
 				E55C92741CBF854D008163F6 /* PdSCommandInterpreter.m in Sources */,
 				E58807891D51E06A00FEA71F /* CreateUser.swift in Sources */,
 				E588081D1D51E06A00FEA71F /* JSerializer.swift in Sources */,
