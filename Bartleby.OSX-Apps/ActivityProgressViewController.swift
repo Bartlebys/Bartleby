@@ -12,7 +12,42 @@ class ActivityProgressViewController: NSViewController ,RegistryDependent,Identi
 
     var UID:String=Bartleby.createUID()
 
-    @IBOutlet weak var tableView: NSTableView!
+    var registry:BartlebyDocument?
+
+    var registryDelegate: RegistryDelegate?{
+        didSet{
+            self.registry=self.registryDelegate?.getRegistry()
+        }
+    }
+
+
+    @IBOutlet weak var tableView: BXTableView! {
+        didSet{
+            if let registry=self.registryDelegate?.getRegistry(){
+                 registry.tasksGroups.tableView=self.tableView
+                /*
+                self.registry?.tasksGroups.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+                    if let tableView = self.tableView{
+                        tableView.reloadData()
+                    }
+                })
+                */
+            }
+        }
+    }
+
+
+    @IBOutlet var arrayController: NSArrayController!{
+        didSet{
+            if let registry=self.registryDelegate?.getRegistry(){
+                // Each CollectionController can be backed by an ArrayController.
+                // This this the one for the tasksGroups
+                registry.tasksGroupsArrayController=self.arrayController
+            }
+        }
+    }
+    
+
 
     override  func viewDidLoad() {
         super.viewDidLoad()
@@ -24,34 +59,34 @@ class ActivityProgressViewController: NSViewController ,RegistryDependent,Identi
 
     //MARK: -
 
-    @IBOutlet var arrayController: NSArrayController!{
-        didSet{
-            if let registry=self.registryDelegate?.getRegistry(){
-                registry.tasksArrayController=self.arrayController
-            }
-        }
-    }
-
-    var registry:BartlebyDocument?
-
-    var registryDelegate: RegistryDelegate?{
-        didSet{
-            if let registry=self.registryDelegate?.getRegistry(){
-                self.registry=registry
-                registry.tasksArrayController=self.arrayController
-                /*
-                self.registry?.tasksGroups.addChangesObserver(self, closure: { (key, oldValue, newValue) in
-                    if let tableView = self.tableView{
-                        tableView.reloadData()
-                    }
-                })*/
-            }
-        }
-    }
 
     @IBAction func reload(sender: AnyObject) {
         self.tableView.reloadData()
     }
+
+    
+    @IBAction func createATestGroup(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            do{
+                // We taskGroupFor the task
+                let group=try Bartleby.scheduler.getTaskGroupWithName("Created Group \(registry.tasksGroups.items.count)", inDocument: registry)
+                group.priority=TasksGroup.Priority.Default
+                // 1 to 10 tasks.
+                let nbOfSimulatedTask=arc4random_uniform(9)+1
+                for i in 1...nbOfSimulatedTask {
+                    let task=SimulatedTask(arguments:JString(from:"Task \(i)/\(i)"))
+                    try group.appendChainedTask(task)
+                }
+                try group.start()
+            }catch{
+                Bartleby.sharedInstance.presentVolatileMessage("We have encountered an exception", body: "\(error)")
+            }
+
+        }
+
+    }
+
+    
 
     // MARK: Filtering
 

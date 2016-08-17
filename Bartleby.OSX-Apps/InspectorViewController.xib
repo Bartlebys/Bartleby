@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autosaveExpandedItems="YES" outlineTableColumn="63I-7z-MT7" id="nzd-mn-3O1">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="198" height="961"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -260,37 +260,64 @@
         <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <menu id="c12-ge-CBZ">
             <items>
-                <menuItem title="Reset counters" id="p08-AH-Eqj">
+                <menuItem title="Reset Counters" id="p08-AH-Eqj">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="resetAllSupervisionCounter:" target="-2" id="JFg-eQ-hDp"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Commit changes" id="DdL-3d-rO5">
+                <menuItem title="Commit Changes" id="DdL-3d-rO5">
                     <connections>
                         <action selector="commitChanges:" target="-2" id="bJO-vD-KJt"/>
                     </connections>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="Zty-fO-aFM"/>
-                <menuItem title="Simulations" id="DPq-Dr-fYH">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" title="Simulations" id="fJI-3E-u9K">
+                <menuItem isSeparatorItem="YES" id="zyt-b7-9gH">
+                    <menu key="submenu" id="8SS-Fc-g5k">
                         <items>
-                            <menuItem title="Create Simulated Tasks Group" id="CeG-Rp-v7B">
+                            <menuItem title="Item 1" enabled="NO" id="GfB-It-HBk">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="createATestGroup:" target="-2" id="Tiw-bL-Mke"/>
-                                </connections>
+                            </menuItem>
+                            <menuItem title="Item 2" enabled="NO" id="GVE-et-4fu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Item 3" enabled="NO" id="k4M-Pg-7ka">
+                                <modifierMask key="keyEquivalentModifierMask"/>
                             </menuItem>
                         </items>
                     </menu>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="zyt-b7-9gH"/>
-                <menuItem title="Delete all pending tasks" id="LcK-so-XBh">
+                <menuItem title="Save Registry" id="96B-Nq-fkK">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="deleteAllPendingTasks:" target="-2" id="aIP-p3-kIP"/>
+                        <action selector="saveRegistry:" target="-2" id="GVJ-lM-wqm"/>
                     </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="dL6-t0-Jas"/>
+                <menuItem title="Tasks" id="rFy-pc-iNG">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" id="oti-Ly-LKz">
+                        <items>
+                            <menuItem title="Restart Tasks Groups" id="LcK-so-XBh">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="restartTasksGroups:" target="-2" id="XGo-vF-dJD"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pause Tasks Groups" id="9MK-fm-UJV">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="pauseTasksGroups:" target="-2" id="BKY-eK-QmN"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Qco-eN-RCb"/>
+                            <menuItem title="Delete all Pending Tasks" id="WHe-Fu-atu">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteAllPendingTasks:" target="-2" id="WHz-6J-ePu"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
             </items>
             <point key="canvasLocation" x="566.5" y="378.5"/>

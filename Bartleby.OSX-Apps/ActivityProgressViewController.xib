@@ -24,7 +24,7 @@
                         <rect key="frame" x="1" y="1" width="478" height="254"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="865-oX-pAx">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="865-oX-pAx" customClass="BXTableView" customModule="BartlebyKit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="479" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -113,6 +113,19 @@
                     <connections>
                         <action selector="reload:" target="-2" id="m2E-2f-HV6"/>
                     </connections>
+                </menuItem>
+                <menuItem title="Simulate" id="FcL-Tp-eat">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Simulations" id="etN-53-3Ul">
+                        <items>
+                            <menuItem title="Create Simulated Tasks Group" id="R6a-R9-Z54">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="createATestGroup:" target="-2" id="hvv-jO-H2n"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
                 </menuItem>
             </items>
         </menu>
