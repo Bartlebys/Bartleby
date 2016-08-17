@@ -392,25 +392,6 @@ public class  Bartleby: Consignee {
     }
 
 
-    // !!! TO BE DEPRECATED ?
-    /**
-     This method retuns the URL by space UID.
-     You should normally use : getCollaborationURL(...)
-     This method can be used when performing non specific document operation (Lockers, ...)
-     - parameter spaceUID: the spaceUID
-
-     - returns: the collaboration server URL
-     */
-    public func getCollaborationURLForSpaceUID(spaceUID:String)->NSURL{
-        for (_,registry) in self._registries {
-            if registry.spaceUID==spaceUID{
-                return registry.baseURL
-            }
-        }
-        return Bartleby.configuration.API_BASE_URL
-
-    }
-
 
     /**
      Returns the search path directory
