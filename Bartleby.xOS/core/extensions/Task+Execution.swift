@@ -176,7 +176,8 @@ extension Task {
                         self.progressionState = state as? Progression
                         let total=group.totalTaskCount()
                         let executed=group.countTasks({ return $0.status == .Completed })
-                        let progress: Double = Double(executed)/Double(total)
+                        let currentTaskProgress:Double = ( Double(100) / Double(total) ) * (self.progressionState!.currentPercentProgress / Double(100))
+                        let progress:Double = ( Double(executed) * 100 / Double(total) ) + currentTaskProgress
                         if let groupProgression = group.progressionState{
                             groupProgression.disableSupervisionAndCommit()
                             groupProgression.currentTaskIndex=executed
