@@ -638,7 +638,7 @@ public class Registry: BXDocument {
     /**
      Restarts the tasks Group
      */
-    private func _restartTasksGroups(){
+    internal func _restartTasksGroups(){
         // Pause the taskGroup
         if let document=self as? BartlebyDocument{
             for taskGroup in document.tasksGroups{
@@ -660,7 +660,7 @@ public class Registry: BXDocument {
     /**
      Restarts the tasks Group
      */
-    private func _pauseTasksGroups(){
+    internal func _pauseTasksGroups(){
         // Pause the taskGroup
         if let document=self as? BartlebyDocument{
             for taskGroup in document.tasksGroups{
@@ -680,7 +680,7 @@ public class Registry: BXDocument {
     /**
      Connect to SSE
      */
-    private func _connectToSSE() {
+    internal func _connectToSSE() {
         bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
         // The connection is restricted to identified users
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
@@ -769,7 +769,7 @@ public class Registry: BXDocument {
     /**
      Closes the Server sent EventSource
      */
-    private  func _closeSSE() {
+    internal func _closeSSE() {
         if let sse=self._sse{
             sse.close()
             self._sse=nil
