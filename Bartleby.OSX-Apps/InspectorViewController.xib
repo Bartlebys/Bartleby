@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autosaveExpandedItems="YES" outlineTableColumn="63I-7z-MT7" id="nzd-mn-3O1">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="961"/>
+                                <rect key="frame" x="0.0" y="0.0" width="198" height="0.0"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -271,6 +271,19 @@
                         <action selector="commitChanges:" target="-2" id="bJO-vD-KJt"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="AAh-Ye-4B8"/>
+                <menuItem title="Pause Tasks Groups" id="xrb-s6-Qff">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="pauseTasksGroups:" target="-2" id="9ar-3F-Qhi"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Restart Tasks Groups" id="s68-hW-xSW">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="restartTasksGroups:" target="-2" id="rkt-K5-7Zj"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="zyt-b7-9gH">
                     <menu key="submenu" id="8SS-Fc-g5k">
                         <items>
@@ -293,34 +306,27 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="dL6-t0-Jas"/>
-                <menuItem title="Tasks" id="rFy-pc-iNG">
+                <menuItem title="Destructive Actions" id="rFy-pc-iNG">
                     <modifierMask key="keyEquivalentModifierMask"/>
-                    <menu key="submenu" id="oti-Ly-LKz">
+                    <menu key="submenu" title="Destructive Actions" id="oti-Ly-LKz">
                         <items>
-                            <menuItem title="Restart Tasks Groups" id="LcK-so-XBh">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="restartTasksGroups:" target="-2" id="XGo-vF-dJD"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Pause Tasks Groups" id="9MK-fm-UJV">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="pauseTasksGroups:" target="-2" id="BKY-eK-QmN"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem isSeparatorItem="YES" id="Qco-eN-RCb"/>
                             <menuItem title="Delete all Pending Tasks" id="WHe-Fu-atu">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="deleteAllPendingTasks:" target="-2" id="WHz-6J-ePu"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Delete Operations" id="Dru-Kf-MPX">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteOperations:" target="-2" id="ymM-cZ-2Fq"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="566.5" y="378.5"/>
+            <point key="canvasLocation" x="394.5" y="354.5"/>
         </menu>
     </objects>
     <resources>

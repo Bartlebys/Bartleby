@@ -89,6 +89,15 @@ import Cocoa
         }
     }
 
+    @IBAction func deleteOperations(sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            for operation in registry.operations.reverse(){
+                registry.operations.removeObject(operation, commit: false)
+            }
+        }
+    }
+
+
     @IBAction func restartTasksGroups(sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for group in registry.tasksGroups{
