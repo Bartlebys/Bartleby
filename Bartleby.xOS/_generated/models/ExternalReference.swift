@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//The UID of the referred instance
-	public var iUID:String = "\(Default.NO_UID)"{	 
+	dynamic public var iUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if iUID != oldValue {
 	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The typeName of the referred instance
-	public var iTypeName:String = "\(Default.NO_UID)"{	 
+	dynamic public var iTypeName:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if iTypeName != oldValue {
 	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 

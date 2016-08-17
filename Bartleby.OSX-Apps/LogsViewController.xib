@@ -408,7 +408,7 @@
         </menu>
         <arrayController objectClassName="BprintEntry" id="mTF-UK-JAt">
             <connections>
-                <binding destination="-2" name="contentArray" keyPath="self.entries" id="nyq-Ds-ZjP"/>
+                <binding destination="-2" name="contentArray" keyPath="self.entries" id="7xd-4O-bLY"/>
             </connections>
         </arrayController>
     </objects>

@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//Index of the task
-	public var currentTaskIndex:Int = 0  {	 
+	dynamic public var currentTaskIndex:Int = 0  {	 
 	    didSet { 
 	       if currentTaskIndex != oldValue {
 	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//Total number of tasks
-	public var totalTaskCount:Int = 0  {	 
+	dynamic public var totalTaskCount:Int = 0  {	 
 	    didSet { 
 	       if totalTaskCount != oldValue {
 	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
@@ -58,7 +58,7 @@ import ObjectMapper
 	}
 
 	//The associated data
-	public var data:NSData? {	 
+	dynamic public var data:NSData? {	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 

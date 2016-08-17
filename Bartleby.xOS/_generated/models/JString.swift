@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//the embedded String
-	public var string:String? {	 
+	dynamic public var string:String? {	 
 	    didSet { 
 	       if string != oldValue {
 	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 

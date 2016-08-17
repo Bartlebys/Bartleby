@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//The Task group. External reference to a TaskGroup instance
-	public var group:ExternalReference?
+	dynamic public var group:ExternalReference?
 	//Task Status
 	public enum Status:Int{
 		case Runnable
@@ -31,17 +31,17 @@ import ObjectMapper
 	}
 	public var status:Status = .Runnable
 	//The Task parent. 
-	public var parent:ExternalReference?
+	dynamic public var parent:ExternalReference?
 	//A collection of children Task external references (in the same group)
-	public var children:[ExternalReference] = [ExternalReference]()
+	dynamic public var children:[ExternalReference] = [ExternalReference]()
 	//The progression state of the task
-	public var progressionState:Progression?
+	dynamic public var progressionState:Progression?
 	//The completion state of the task
-	public var completionState:Completion?
+	dynamic public var completionState:Completion?
 	//The serialized arguments
-	public var argumentsData:NSData?
+	dynamic public var argumentsData:NSData?
 	//The serialized result
-	public var resultData:NSData?
+	dynamic public var resultData:NSData?
 
 
     // MARK: Mappable

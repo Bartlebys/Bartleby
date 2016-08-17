@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	public var spaceUID:String = "\(Bartleby.createUID())"{	 
+	dynamic public var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    didSet { 
 	       if spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -44,7 +44,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -52,7 +52,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -61,7 +61,7 @@ import ObjectMapper
 	}
 
 	//The user's email. Can be the secondary Identification source 
-	public var email:String? {	 
+	dynamic public var email:String? {	 
 	    didSet { 
 	       if email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -70,7 +70,7 @@ import ObjectMapper
 	}
 
 	//The user's phone number. Can be the secondary Identification source 
-	public var phoneNumber:String? {	 
+	dynamic public var phoneNumber:String? {	 
 	    didSet { 
 	       if phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -79,7 +79,7 @@ import ObjectMapper
 	}
 
 	//The hashed version of the user password
-	public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -88,7 +88,7 @@ import ObjectMapper
 	}
 
 	//An activation code
-	public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if activationCode != oldValue {
 	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
@@ -111,7 +111,7 @@ import ObjectMapper
 	}
 
 	//The user Tags. External reference to Tags instances
-	public var tags:[ExternalReference] = [ExternalReference]()  {	 
+	dynamic public var tags:[ExternalReference] = [ExternalReference]()  {	 
 	    didSet { 
 	       if tags != oldValue {
 	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
@@ -120,7 +120,7 @@ import ObjectMapper
 	}
 
 	//The user Groups. External reference to Group instances
-	public var groups:[ExternalReference] = [ExternalReference]()  {	 
+	dynamic public var groups:[ExternalReference] = [ExternalReference]()  {	 
 	    didSet { 
 	       if groups != oldValue {
 	            self.provisionChanges(forKey: "groups",oldValue: oldValue,newValue: groups)  
@@ -129,7 +129,7 @@ import ObjectMapper
 	}
 
 	//Notes
-	public var notes:String? {	 
+	dynamic public var notes:String? {	 
 	    didSet { 
 	       if notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 

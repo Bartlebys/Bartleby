@@ -438,7 +438,7 @@ public protocol BprintObserver{
 
 @objc(BprintCollection) public class BprintCollection:NSObject,Mappable{
 
-    @objc public dynamic var entries=[BprintEntry]()
+    public dynamic var entries=[BprintEntry]()
 
     override public init(){
     }

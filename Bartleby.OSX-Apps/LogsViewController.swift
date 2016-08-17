@@ -21,7 +21,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var arrayController: NSArrayController!
 
-    dynamic var entries=Bartleby.bprintCollection.entries
+    dynamic var entries=[BprintEntry]()
 
     private var _lockFilterUpdate=false
 
@@ -32,6 +32,7 @@ class LogsViewController: NSViewController,RegistryDependent{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self._registry=registry
+                self.entries=Bartleby.bprintCollection.entries
             }
         }
     }
@@ -39,7 +40,7 @@ class LogsViewController: NSViewController,RegistryDependent{
     override func viewDidLoad() {
         super.viewDidLoad()
         Bartleby.bPrintObservers.append(self)
-        self.tableView.setDataSource(self)
+        //self.tableView.setDataSource(self)
         self.tableView.setDelegate(self)
     }
 
@@ -110,7 +111,7 @@ extension LogsViewController:BprintObserver{
         }
     }
 }
-
+/*
 
 extension LogsViewController:NSTableViewDataSource{
 
@@ -127,11 +128,11 @@ extension LogsViewController:NSTableViewDataSource{
 
 
 }
+*/
 
 extension LogsViewController:NSTableViewDelegate{
 
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-
         guard let item = self.arrayController.arrangedObjects.objectAtIndex(row) as? BprintEntry else {
             return 20
         }

@@ -22,10 +22,10 @@ import ObjectMapper
     }
 
 	//The dictionary representation of a serialized action call
-	public var toDictionary:[String:AnyObject]?
+	dynamic public var toDictionary:[String:AnyObject]?
 	//The dictionary representation of the last response serialized data
 	public var responseDictionary:[String:AnyObject]?
-	public var baseUrl:NSURL?
+	dynamic public var baseUrl:NSURL?
 	//The invocation Status
 	public enum Status:String{
 		case None = "none"
@@ -38,11 +38,11 @@ import ObjectMapper
 	//The registry UID
 	public var registryUID:String = "\(Default.NO_UID)"
 	//The invocation counter
-	public var counter:Int?
+	dynamic public var counter:Int = 0
 	//The creationdate
-	public var creationDate:NSDate?
+	dynamic public var creationDate:NSDate?
 	//The last invocation date
-	public var lastInvocationDate:NSDate?
+	dynamic public var lastInvocationDate:NSDate?
 
 
     // MARK: Mappable
@@ -96,9 +96,7 @@ import ObjectMapper
 		}
 		coder.encodeObject(self.status.rawValue ,forKey:"status")
 		coder.encodeObject(self.registryUID,forKey:"registryUID")
-		if let counter = self.counter {
-			coder.encodeInteger(counter,forKey:"counter")
-		}
+		coder.encodeInteger(self.counter,forKey:"counter")
 		if let creationDate = self.creationDate {
 			coder.encodeObject(creationDate,forKey:"creationDate")
 		}

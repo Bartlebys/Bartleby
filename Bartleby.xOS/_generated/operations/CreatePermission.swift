@@ -78,9 +78,7 @@ import ObjectMapper
 		coder.encodeObject(self._operation.registryUID,forKey:"_operation.registryUID")
 		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
 		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
-		if let _operation_counter = self._operation.counter {
-			coder.encodeInteger(_operation_counter,forKey:"_operation.counter")
-		}
+		coder.encodeInteger(self._operation.counter,forKey:"_operation.counter")
 		if let _operation_creationDate = self._operation.creationDate {
 			coder.encodeObject(_operation_creationDate,forKey:"_operation.creationDate")
 		}
@@ -180,14 +178,14 @@ import ObjectMapper
                     inRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
                         document.markAsDistributed(&self._permission)
-                        self._operation.counter=self._operation.counter!+1
+                        self._operation.counter=self._operation.counter+1
                         self._operation.status=Operation.Status.Successful
                         self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()
                         success(context:context)
                     },
                     failureHandler: {(context: JHTTPResponse) -> () in
-                        self._operation.counter=self._operation.counter!+1
+                        self._operation.counter=self._operation.counter+1
                         self._operation.status=Operation.Status.Unsucessful
                         self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                         self._operation.lastInvocationDate=NSDate()

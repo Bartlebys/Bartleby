@@ -126,7 +126,7 @@ import ObjectMapper
     }
 
 
-    dynamic public var items:[Locker]=[Locker](){
+    public dynamic var items:[Locker]=[Locker](){
         didSet {
             if items != oldValue {
                 self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
@@ -259,19 +259,19 @@ import ObjectMapper
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
-                // Re-sort (in case the user has sorted a column)
+                // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
 
-                // Get the sorted array
-                let sorted = arrayController.arrangedObjects as! [Locker]
-
                 if let tableView = self.tableView{
-                    // Find the object just added
-                    let row = sorted.indexOf(item)!
-                    // Begin the edit in the first column
-                    tableView.editColumn(0, row: row, withEvent: nil, select: true)
-                 }
-
+                    dispatch_async(GlobalQueue.Main.get(), {
+                        let sorted=self.arrayController?.arrangedObjects as! [Locker]
+                        // Find the object just added
+                        if let row=sorted.indexOf(item){
+                            // Start editing
+                            tableView.editColumn(0, row: row, withEvent: nil, select: true)
+                        }
+                    })
+                }
             }
             #endif
 

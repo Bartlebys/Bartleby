@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//The call string e.g : DeleteOperation->call
-	public var callString:String? {	 
+	dynamic public var callString:String? {	 
 	    didSet { 
 	       if callString != oldValue {
 	            self.provisionChanges(forKey: "callString",oldValue: oldValue,newValue: callString) 
@@ -31,15 +31,15 @@ import ObjectMapper
 	}
 
 	//The level of the permission (check Bartleby's doc)
-	public var level:Int? {	 
+	dynamic public var level:Int = -1  {	 
 	    didSet { 
 	       if level != oldValue {
-	            self.provisionChanges(forKey: "level",oldValue: oldValue,newValue: level) 
+	            self.provisionChanges(forKey: "level",oldValue: oldValue,newValue: level)  
 	       } 
 	    }
 	}
 
-	public var rule:[String] = [String]()  {	 
+	dynamic public var rule:[String] = [String]()  {	 
 	    didSet { 
 	       if rule != oldValue {
 	            self.provisionChanges(forKey: "rule",oldValue: oldValue,newValue: rule)  
@@ -82,9 +82,7 @@ import ObjectMapper
 		if let callString = self.callString {
 			coder.encodeObject(callString,forKey:"callString")
 		}
-		if let level = self.level {
-			coder.encodeInteger(level,forKey:"level")
-		}
+		coder.encodeInteger(self.level,forKey:"level")
 		coder.encodeObject(self.rule,forKey:"rule")
     }
 

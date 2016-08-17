@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//The associated registry UID.
-	public var registryUID:String? {	 
+	dynamic public var registryUID:String? {	 
 	    didSet { 
 	       if registryUID != oldValue {
 	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The subject UID you want to lock
-	public var subjectUID:String = "\(Default.NO_UID)"{	 
+	dynamic public var subjectUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -40,7 +40,7 @@ import ObjectMapper
 	}
 
 	//The userUID that can unlock the locker
-	public var userUID:String = "\(Default.NO_UID)"{	 
+	dynamic public var userUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -75,7 +75,7 @@ import ObjectMapper
 	}
 
 	//This code should be crypted / decrypted
-	public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
+	dynamic public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
 	    didSet { 
 	       if code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -84,7 +84,7 @@ import ObjectMapper
 	}
 
 	//The number of attempts
-	public var numberOfAttempt:Int = 3  {	 
+	dynamic public var numberOfAttempt:Int = 3  {	 
 	    didSet { 
 	       if numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
@@ -92,7 +92,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var startDate:NSDate = NSDate.distantPast()  {	 
+	dynamic public var startDate:NSDate = NSDate.distantPast()  {	 
 	    didSet { 
 	       if startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -100,7 +100,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var endDate:NSDate = NSDate.distantFuture()  {	 
+	dynamic public var endDate:NSDate = NSDate.distantFuture()  {	 
 	    didSet { 
 	       if endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
@@ -109,7 +109,7 @@ import ObjectMapper
 	}
 
 	//Thoses data gems will be return on success
-	public var gems:String = "\(Default.NO_GEM)"{	 
+	dynamic public var gems:String = "\(Default.NO_GEM)"{	 
 	    didSet { 
 	       if gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 

@@ -92,7 +92,9 @@ import Cocoa
     @IBAction func restartTasksGroups(sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for group in registry.tasksGroups{
-                try? group.start()
+                if let _=try? group.start(){
+                    // Explicit silent catch
+                }
             }
         }
     }

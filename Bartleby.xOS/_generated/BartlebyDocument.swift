@@ -41,43 +41,43 @@ public class BartlebyDocument : JDocument {
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	public var tasks=TasksCollectionController(){
+	public dynamic var tasks=TasksCollectionController(){
 		didSet{
 			tasks.registry=self
 		}
 	}
 	
-	public var tasksGroups=TasksGroupsCollectionController(){
+	public dynamic var tasksGroups=TasksGroupsCollectionController(){
 		didSet{
 			tasksGroups.registry=self
 		}
 	}
 	
-	public var users=UsersCollectionController(){
+	public dynamic var users=UsersCollectionController(){
 		didSet{
 			users.registry=self
 		}
 	}
 	
-	public var lockers=LockersCollectionController(){
+	public dynamic var lockers=LockersCollectionController(){
 		didSet{
 			lockers.registry=self
 		}
 	}
 	
-	public var groups=GroupsCollectionController(){
+	public dynamic var groups=GroupsCollectionController(){
 		didSet{
 			groups.registry=self
 		}
 	}
 	
-	public var operations=OperationsCollectionController(){
+	public dynamic var operations=OperationsCollectionController(){
 		didSet{
 			operations.registry=self
 		}
 	}
 	
-	public var permissions=PermissionsCollectionController(){
+	public dynamic var permissions=PermissionsCollectionController(){
 		didSet{
 			permissions.registry=self
 		}

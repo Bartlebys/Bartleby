@@ -22,7 +22,7 @@ import ObjectMapper
     }
 
 	//Success if set to true
-	public var success:Bool = true  {	 
+	dynamic public var success:Bool = true  {	 
 	    didSet { 
 	       if success != oldValue {
 	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The status
-	public var statusCode:Int = StatusOfCompletion.Undefined.rawValue  {	 
+	dynamic public var statusCode:Int = StatusOfCompletion.Undefined.rawValue  {	 
 	    didSet { 
 	       if statusCode != oldValue {
 	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
@@ -40,7 +40,7 @@ import ObjectMapper
 	}
 
 	//The Message
-	public var message:String = ""{	 
+	dynamic public var message:String = ""{	 
 	    didSet { 
 	       if message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
@@ -49,7 +49,7 @@ import ObjectMapper
 	}
 
 	//completion data
-	public var data:NSData? {	 
+	dynamic public var data:NSData? {	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 

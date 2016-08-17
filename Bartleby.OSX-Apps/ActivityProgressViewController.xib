@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="865-oX-pAx" customClass="BXTableView" customModule="BartlebyKit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="479" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="479" height="254"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -56,7 +56,7 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <connections>
-                                                            <binding destination="SpO-aG-aQ7" name="value" keyPath="objectValue" id="bIV-Tf-sac"/>
+                                                            <binding destination="SpO-aG-aQ7" name="value" keyPath="objectValue.progressionState.currentPercentProgress" id="P3D-3R-XQ1"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -74,8 +74,9 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <outlet property="dataSource" destination="-2" id="9GW-Zo-5jK"/>
-                                    <outlet property="delegate" destination="-2" id="cAo-bE-xOR"/>
+                                    <binding destination="Si2-L3-tFb" name="content" keyPath="arrangedObjects" id="VQY-dN-Aey"/>
+                                    <binding destination="Si2-L3-tFb" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="VQY-dN-Aey" id="y2v-Z2-VUQ"/>
+                                    <binding destination="Si2-L3-tFb" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="y2v-Z2-VUQ" id="Lb9-Pq-qyv"/>
                                 </connections>
                             </tableView>
                         </subviews>

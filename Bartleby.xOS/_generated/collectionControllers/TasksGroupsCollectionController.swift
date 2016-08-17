@@ -121,7 +121,7 @@ import ObjectMapper
     }
 
 
-    dynamic public var items:[TasksGroup]=[TasksGroup](){
+    public dynamic var items:[TasksGroup]=[TasksGroup](){
         didSet {
             if items != oldValue {
                 self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
@@ -231,31 +231,25 @@ import ObjectMapper
         if let item=item as? TasksGroup{
 
             item.collection = self // Reference the collection
-
+            // Insert the item
+            self.items.insert(item, atIndex: index)
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
-                arrayController.insertObject(item, atArrangedObjectIndex: index)
-
-                // Re-sort (in case the user has sorted a column)
+                // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
 
-                // Get the sorted array
-                let sorted = arrayController.arrangedObjects as! [TasksGroup]
-
                 if let tableView = self.tableView{
-                    // Find the object just added
-                    let row = sorted.indexOf(item)!
-                    // Begin the edit in the first column
-                    tableView.editColumn(0, row: row, withEvent: nil, select: true)
-                 }
-
-            }else{
-                // Add directly to the collection
-                self.items.insert(item, atIndex: index)
+                    dispatch_async(GlobalQueue.Main.get(), {
+                        let sorted=self.arrayController?.arrangedObjects as! [TasksGroup]
+                        // Find the object just added
+                        if let row=sorted.indexOf(item){
+                            // Start editing
+                            tableView.editColumn(0, row: row, withEvent: nil, select: true)
+                        }
+                    })
+                }
             }
-            #else
-                self.items.insert(item, atIndex: index)
             #endif
 
 
@@ -286,16 +280,9 @@ import ObjectMapper
 
             //Update the commit flag
             item.committed=false
-            #if os(OSX) && !USE_EMBEDDED_MODULES
-            // Remove the item from the array
-            if let arrayController = self.arrayController{
-                arrayController.removeObjectAtArrangedObjectIndex(index)
-            }else{
-                items.removeAtIndex(index)
-            }
-            #else
-            items.removeAtIndex(index)
-            #endif
+
+            // Remove the item from the collection
+            self.items.removeAtIndex(index)
 
         
             // Commit is ignored because

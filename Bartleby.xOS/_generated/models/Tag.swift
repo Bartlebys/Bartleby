@@ -21,7 +21,7 @@ import ObjectMapper
         return "Tag"
     }
 
-	public var creationDate:String? {	 
+	dynamic public var creationDate:String? {	 
 	    didSet { 
 	       if creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
@@ -29,7 +29,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var color:String? {	 
+	dynamic public var color:String? {	 
 	    didSet { 
 	       if color != oldValue {
 	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
@@ -37,7 +37,7 @@ import ObjectMapper
 	    }
 	}
 
-	public var icon:String? {	 
+	dynamic public var icon:String? {	 
 	    didSet { 
 	       if icon != oldValue {
 	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 

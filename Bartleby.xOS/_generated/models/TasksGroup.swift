@@ -36,19 +36,33 @@ import ObjectMapper
 	}
 	public var priority:Priority = .Default
 	//The group registryUID
-	public var registryUID:String = "\(Default.NO_UID)"
+	dynamic public var registryUID:String = "\(Default.NO_UID)"
 	//The root group Tasks (external references)
-	public var tasks:[ExternalReference] = [ExternalReference]()
+	dynamic public var tasks:[ExternalReference] = [ExternalReference]()
 	//The last chained (sequential) task external reference. 
-	public var lastChainedTask:ExternalReference?
+	dynamic public var lastChainedTask:ExternalReference?
 	//The progression state of the group
-	public var progressionState:Progression?
+	dynamic public var progressionState:Progression? {	 
+	    didSet { 
+	       if progressionState != oldValue {
+	            self.provisionChanges(forKey: "progressionState",oldValue: oldValue,newValue: progressionState) 
+	       } 
+	    }
+	}
+
 	//The completion state of the group
-	public var completionState:Completion?
+	dynamic public var completionState:Completion? {	 
+	    didSet { 
+	       if completionState != oldValue {
+	            self.provisionChanges(forKey: "completionState",oldValue: oldValue,newValue: completionState) 
+	       } 
+	    }
+	}
+
 	//The group name
-	public var name:String = "\(Default.NO_NAME)"
+	dynamic public var name:String = "\(Default.NO_NAME)"
 	//A void handler to allow subscribers to register their own handlers
-	public var handlers:Handlers = Handlers.withoutCompletion()
+	dynamic public var handlers:Handlers = Handlers.withoutCompletion()
 
 
     // MARK: Mappable

@@ -22,25 +22,25 @@ import ObjectMapper
     }
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
-	public var index:Int = -1
+	dynamic public var index:Int = -1
 	//The dataSpace UID
-	public var spaceUID:String?
+	dynamic public var spaceUID:String?
 	//The observation UID for a given document correspond  to the Registry.rootObjectUID
-	public var observationUID:String?
+	dynamic public var observationUID:String?
 	//The user.UID of the sender
-	public var senderUID:String?
+	dynamic public var senderUID:String?
 	//The UID of the instance of Bartleby client that has created the trigger.
-	public var runUID:String?
+	dynamic public var runUID:String?
 	//The action that has initiated the trigger
-	public var origin:String?
+	dynamic public var origin:String?
 	//The targetted collection name
-	public var targetCollectionName:String = ""
+	dynamic public var targetCollectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
-	public var creationDate:NSDate?
+	dynamic public var creationDate:NSDate?
 	//The action name
-	public var action:String = ""
+	dynamic public var action:String = ""
 	//A coma separated UIDS list
-	public var UIDS:String = ""
+	dynamic public var UIDS:String = ""
 
 
     // MARK: Mappable

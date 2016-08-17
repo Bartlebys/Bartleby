@@ -24,7 +24,7 @@ import ObjectMapper
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
-	public var currentUser:User?
+	dynamic public var currentUser:User?
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case Key = "Key"
@@ -32,31 +32,31 @@ import ObjectMapper
 	}
 	public var identificationMethod:IdentificationMethod = .Key
 	//The current kvid identification value (injected in HTTP headers)
-	public var identificationValue:String?
+	dynamic public var identificationValue:String?
 	//The rootObject UID
 	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
 	dynamic public var collaborationServerURL:NSURL?
 	//A collection of CollectionMetadatum
-	public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 	//is the user performing Online
 	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 	//The State dictionary to insure registry persistency 
-	public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
+	dynamic public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
-	public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
+	dynamic public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
 	//Save the password or not?
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 	//The preferred filename for this registry/document
-	public var preferredFileName:String?
+	dynamic public var preferredFileName:String?
 	//A collection of trigger Indexes (used to detect data holes)
-	public var triggersIndexes:[Int] = [Int]()
+	dynamic public var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	public var ownedTriggersIndexes:[Int] = [Int]()
+	dynamic public var ownedTriggersIndexes:[Int] = [Int]()
 	//The index of the last trigger that has been integrated
 	public var lastIntegratedTriggerIndex:Int = -1
 	//A collection Triggers that are temporarly stored before data integration
-	public var receivedTriggers:[Trigger] = [Trigger]()
+	dynamic public var receivedTriggers:[Trigger] = [Trigger]()
 	//The serialized version of loaded trigger data that are pending integration
 	public var triggeredDataBuffer:NSData?
 

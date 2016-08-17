@@ -28,13 +28,13 @@ import ObjectMapper
 	}
 	public var storage:Storage = .MonolithicFileStorage
 	//The holding collection name
-	public var collectionName:String = "\(Default.NO_NAME)"
+	dynamic public var collectionName:String = "\(Default.NO_NAME)"
 	//The proxy object (not serializable, not observable)
-	public var proxy:JObject?
+	dynamic public var proxy:JObject?
 	//Allow distant persistency?
-	public var allowDistantPersistency:Bool = true
+	dynamic public var allowDistantPersistency:Bool = true
 	//In Memory?
-	public var inMemory:Bool = true
+	dynamic public var inMemory:Bool = true
 
 
     // MARK: Mappable
