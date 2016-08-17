@@ -57,7 +57,9 @@ public extension Registry{
                         Bartleby.sharedInstance.forget(previousUID)
                         self.registryMetadata=newRegistryMetadata
                         Bartleby.sharedInstance.declare(self)
-
+                        if let document = self as? BartlebyDocument{
+                            self.registryMetadata.currentUser?.document=document
+                        }
                         self.hasChanged()
                         handlers.on(Completion.successState())
                     }else{
