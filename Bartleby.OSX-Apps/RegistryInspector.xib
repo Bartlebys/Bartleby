@@ -67,12 +67,12 @@
                         </segmentedControl>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Di3-Zl-25a"/>
-                    <toolbarItem implicitItemIdentifier="C11FED55-15AD-4C16-8F66-871FD3EB18F9" label="Push Operations" paletteLabel="Push Operations" image="760-refresh-3-toolbar" id="KYu-3p-WrD">
+                    <toolbarItem implicitItemIdentifier="C11FED55-15AD-4C16-8F66-871FD3EB18F9" label="Push Manually" paletteLabel="Push Manually" image="760-refresh-3-toolbar" id="KYu-3p-WrD">
                         <nil key="toolTip"/>
                         <size key="minSize" width="51" height="25"/>
                         <size key="maxSize" width="127" height="25"/>
                         <button key="view" verticalHuggingPriority="750" id="F3q-en-sDF">
-                            <rect key="frame" x="22" y="14" width="51" height="25"/>
+                            <rect key="frame" x="16" y="14" width="51" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="760-refresh-3-toolbar" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" sound="Bottle" inset="2" id="dCd-zE-M5Y">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -82,8 +82,31 @@
                                 <action selector="pushOperations:" target="-2" id="7C6-xv-90h"/>
                             </connections>
                         </button>
+                        <connections>
+                            <binding destination="-2" name="enabled" keyPath="self.registry.registryMetadata.pushOnChanges" id="k4e-hH-evD">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="33607DC1-F311-41BD-BFC8-8C33199F7F7A" id="EoO-Ox-zgh">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="61" height="18"/>
+                        <size key="maxSize" width="120" height="18"/>
+                        <button key="view" id="CIM-nd-mnd">
+                            <rect key="frame" x="15" y="14" width="120" height="18"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="check" title=" Automatic" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <binding destination="-2" name="value" keyPath="self.registry.registryMetadata.pushOnChanges" id="GqW-qE-kEK"/>
+                            </connections>
+                        </button>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="RBs-x9-De4"/>
@@ -91,6 +114,7 @@
                     <toolbarItem reference="Di3-Zl-25a"/>
                     <toolbarItem reference="Nl4-0i-Klz"/>
                     <toolbarItem reference="Di3-Zl-25a"/>
+                    <toolbarItem reference="EoO-Ox-zgh"/>
                     <toolbarItem reference="KYu-3p-WrD"/>
                 </defaultToolbarItems>
             </toolbar>
@@ -102,6 +126,25 @@
         <viewController id="qlU-Em-xgV" customClass="ActivityProgressViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
+        <image name="33607DC1-F311-41BD-BFC8-8C33199F7F7A" width="18" height="18">
+            <mutableData key="keyedArchiveRepresentation">
+YnBsaXN0MDDUAQIDBAUGW1xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFwcI
+ERYbHCc0NTY3ODk6O0JDRElMT1VYVSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNS
+ZXBzV05TQ29sb3KAFhIAwwAAgAKAFNISCRMVWk5TLm9iamVjdHOhFIADgBPSEgkXGqIYGYAEgAWAEhAA
+1h0eHwkgISIbIyQlJlZOU1NpemVfEA9OU0JpdHNQZXJTYW1wbGVfEBBOU0NvbG9yU3BhY2VOYW1lWk5T
+SGFzQWxwaGFfEBROU0NvcmVVSUltYWdlT3B0aW9uc4APgBCAEQmABtMoEgkpLjNXTlMua2V5c6QqKywt
+gAeACIAJgAqkLxgxMoALgASADIANgA5Uc2l6ZVV2YWx1ZVVzdGF0ZVZ3aWRnZXRXcmVndWxhclZub3Jt
+YWxYY2hlY2tib3jSPD0+P1okY2xhc3NuYW1lWCRjbGFzc2VzXxATTlNNdXRhYmxlRGljdGlvbmFyeaM+
+QEFcTlNEaWN0aW9uYXJ5WE5TT2JqZWN0WHsxOCwgMTh9XxAZTlNDYWxpYnJhdGVkUkdCQ29sb3JTcGFj
+ZdI8PUVGXxAQTlNDb3JlVUlJbWFnZVJlcKNHSEFfEBBOU0NvcmVVSUltYWdlUmVwWk5TSW1hZ2VSZXDS
+PD1KS1dOU0FycmF5okpB0jw9TU5eTlNNdXRhYmxlQXJyYXmjTUpB01BRCVJTVFdOU1doaXRlXE5TQ29s
+b3JTcGFjZUQwIDAAEAOAFdI8PVZXV05TQ29sb3KiVkHSPD1ZWldOU0ltYWdlollBXxAPTlNLZXllZEFy
+Y2hpdmVy0V1eVHJvb3SAAQAIABEAGgAjAC0AMgA3AFEAVwBgAGcAdAB7AIMAhQCKAIwAjgCTAJ4AoACi
+AKQAqQCsAK4AsACyALQAwQDIANoA7QD4AQ8BEQETARUBFgEYAR8BJwEsAS4BMAEyATQBOQE7AT0BPwFB
+AUMBSAFOAVQBWwFjAWoBcwF4AYMBjAGiAaYBswG8AcUB4QHmAfkB/QIQAhsCIAIoAisCMAI/AkMCSgJS
+Al8CZAJmAmgCbQJ1AngCfQKFAogCmgKdAqIAAAAAAAACAQAAAAAAAABfAAAAAAAAAAAAAAAAAAACpA
+</mutableData>
+        </image>
         <image name="760-refresh-3-toolbar" width="22" height="22"/>
         <sound name="Bottle"/>
     </resources>

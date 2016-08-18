@@ -794,12 +794,12 @@
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ahx-qP-y28">
-                    <rect key="frame" x="728" y="566" width="122" height="32"/>
+                    <rect key="frame" x="688" y="566" width="162" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="110" id="2lv-7E-Utz"/>
+                        <constraint firstAttribute="width" constant="150" id="2lv-7E-Utz"/>
                         <constraint firstAttribute="height" constant="21" id="56W-Xk-0aM"/>
                     </constraints>
-                    <buttonCell key="cell" type="push" title="Apply changes" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ANa-9Q-63O">
+                    <buttonCell key="cell" type="push" title="Patch the Object" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ANa-9Q-63O">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

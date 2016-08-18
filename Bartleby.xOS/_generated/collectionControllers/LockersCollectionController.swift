@@ -112,12 +112,15 @@ import ObjectMapper
     */
     public func commitChanges() -> [String] {
         var UIDS=[String]()
-        let changedItems=self.items.filter { $0.toBeCommitted == true }
-        bprint("\(changedItems.count) \( changedItems.count>1 ? "lockers" : "locker" )  has changed in LockersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
-        for changed in changedItems{
-            UIDS.append(changed.UID)
-            UpdateLocker.commit(changed, inRegistryWithUID:self.registryUID)
-        }
+        if self.toBeCommitted{ // When one member has to be committed its collection _shouldBeCommited flag is turned to true
+            let changedItems=self.items.filter { $0.toBeCommitted == true }
+            bprint("\(changedItems.count) \( changedItems.count>1 ? "lockers" : "locker" )  has changed in LockersCollectionController",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+            if  changedItems.count > 0 {
+                UIDS=changedItems.map({$0.UID})
+                UpdateLockers.commit(changedItems,inRegistryWithUID:self.registryUID)
+            }
+            self.committed=true
+         }
         return UIDS
     }
 

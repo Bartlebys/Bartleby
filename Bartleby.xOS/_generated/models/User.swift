@@ -137,6 +137,8 @@ import ObjectMapper
 	    }
 	}
 
+	//set to true on the first successfull login in the session (this property is not serialized)
+	dynamic public var loginHasSucceed:Bool = false
 
 
     // MARK: Mappable

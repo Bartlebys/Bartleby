@@ -111,7 +111,7 @@ import ObjectMapper
      Commit is ignored because
      Distant persistency is not allowed for Operation
     */
-    public func commitChanges() ->[String] { 
+    public func commitChanges() ->[String] {
         return [String]()
     }
     

@@ -63,8 +63,12 @@ public class LogoutUser: JObject {
                                     reactions.append(failureReaction)
                                     failure(context:context)
                                 } else {
+
                                     if let statusCode=response?.statusCode {
                                         if 200...299 ~= statusCode {
+                                            if user.UID == registry.currentUser.UID{
+                                                registry.currentUser.loginHasSucceed=false
+                                            }
                                             success()
                                         } else {
                                             // Bartlby does not currenlty discriminate status codes 100 & 101

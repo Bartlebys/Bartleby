@@ -21,10 +21,11 @@ import Foundation
 #elseif os(tvOS)
 #endif
 
-public class CommitAndPushPendingOperationsTask: Task, ConcreteTask {
+public class PushPendingOperationsTask: Task, ConcreteTask {
 
 
     public typealias ArgumentType=JString
+
 
     // Universal type support
     override public class func typeName() -> String {
@@ -52,24 +53,14 @@ public class CommitAndPushPendingOperationsTask: Task, ConcreteTask {
         if let jstring: ArgumentType = try? self.arguments() {
             let registryUID=jstring.string ?? Default.NO_UID
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID){
-
-                // #1 commit the pending Changes
-                do {
-                    try document.commitPendingChanges()
-                } catch {
-                    let completion=Completion.failureState(NSLocalizedString( "Unexpected Commit pending changes error", tableName:"operations", comment:"Unexpected Commit pending changes error"), statusCode: StatusOfCompletion.Precondition_Failed)
-                    bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
-                    self.complete(completion)
-                }
-
-                // #2 Append the operations tasks.
+                //  Append the operations tasks.
                 do {
                     if let groupReference=self.group {
                         if let group: TasksGroup=groupReference.toLocalInstance() {
                             // Let's add all the operations to the group.
                             // #2 add the operations tasks.
                             for operation in document.operations.items {
-                                // @bpds WE SHOULD NOT NOT RE ADD OPERATION ALLREADY PLANIFIED
+                                self._plannedOperations.append(operation)
                                 let task=PushOperationTask(arguments:operation)
                                 try group.appendChainedTask(task)
                             }
@@ -109,6 +100,14 @@ public class CommitAndPushPendingOperationsTask: Task, ConcreteTask {
             bprint(completion, file: #file, function: #function, line: #line, category: TasksScheduler.BPRINT_CATEGORY)
             self.complete(completion)
         }
+    }
+
+    // We keep track of the planned operations.
+    // to allow to add other task to the group during its execution.
+    private var _plannedOperations=[Operation]()
+
+    public func containsOperation(operation:Operation)->Bool{
+        return self._plannedOperations.contains({$0.UID==operation.UID})
     }
 
 }

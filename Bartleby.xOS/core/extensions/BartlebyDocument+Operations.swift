@@ -13,7 +13,28 @@ import Foundation
 extension BartlebyDocument {
 
 
+    // MARK: - Supervised Automatic Push
+
+    func startSupervisionLoopIfNecessary() {
+        if self._timer==nil{
+            self._timer=NSTimer(timeInterval: 1, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
+            NSRunLoop.currentRunLoop().addTimer(self._timer!, forMode: NSRunLoopCommonModes)
+        }
+    }
+
+    func superVisionLoop () -> () {
+        if self.shouldBePushed(){
+            self.synchronizePendingOperations()
+        }
+    }
+
+    public func shouldBePushed()->Bool{
+        return self.registryMetadata.pushOnChanges
+    }
+
+
     // MARK: - Operations
+
 
     /**
      Commits the pending changes.
@@ -23,9 +44,13 @@ extension BartlebyDocument {
         var triggerUpsertString=""
         self.iterateOnCollections { (collection) in
             let UIDS=collection.commitChanges()
-            triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joinWithSeparator(",")
+            if UIDS.count>0{
+                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joinWithSeparator(",")
+            }
         }
+
     }
+
 
     /**
      Synchronizes the pending operations
@@ -34,19 +59,27 @@ extension BartlebyDocument {
 
      - parameter handlers: the handlers to monitor the progress and completion
      */
-    public func synchronizePendingOperations(handlers: Handlers) {
+    public func synchronizePendingOperations() {
         if let currentUser=self.registryMetadata.currentUser {
-            currentUser.login(withPassword: currentUser.password, sucessHandler: {
+            if currentUser.loginHasSucceed{
                 do {
-                    try self._commitAndPushPendingOperations(handlers)
+                    try self._commitAndPushPendingOperations()
                 } catch {
-                    handlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
+                    self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
                 }
-                }, failureHandler: { (context) in
-                    handlers.on(Completion.failureStateFromJHTTPResponse(context))
-            })
-        }
+            }else{
+                currentUser.login(withPassword: currentUser.password, sucessHandler: {
+                    do {
+                        try self._commitAndPushPendingOperations()
+                    } catch {
+                        self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
+                    }
+                    }, failureHandler: { (context) in
+                        self.synchronizationHandlers.on(Completion.failureStateFromJHTTPResponse(context))
+                })
+            }
 
+        }
     }
 
 
@@ -60,7 +93,7 @@ extension BartlebyDocument {
      - parameter operations: operations description
      - parameter handlers:   the handlers to hook the completion / Progression
      */
-    public func pushArrayOfOperations(operations: [Operation], handlers: Handlers) throws->() {
+    public func pushArrayOfOperations(operations: [Operation], handlers: Handlers?) throws->() {
         bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
         if  operations.count>0 {
 
@@ -69,9 +102,10 @@ extension BartlebyDocument {
             // We taskGroupFor the task
             let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(UID)", inDocument: self)
             group.priority=TasksGroup.Priority.Default
-            // We add the calling handlers
-            group.handlers.appendChainedHandlers(handlers)
-
+            if let handlers=handlers{
+                // We add the calling handlers
+                group.handlers.appendChainedHandlers(handlers)
+            }
             // #2 add the operations tasks.
             for operation in operations {
                 let task=PushOperationTask(arguments:operation)
@@ -81,13 +115,12 @@ extension BartlebyDocument {
             //Add an automatic save document task.
             let saveTask=SaveDocumentTask(arguments:JString(from:self.UID))
             try group.appendChainedTask(saveTask)
-
             try group.start()
 
         } else {
             let completion=Completion.successState()
             completion.message=NSLocalizedString("There was no pending operation", tableName:"operations", comment: "There was no pending operation")
-            handlers.on(completion)
+            handlers?.on(completion)
         }
     }
 
@@ -99,20 +132,43 @@ extension BartlebyDocument {
 
      - throws: throws
      */
-    private func _commitAndPushPendingOperations(handlers: Handlers)throws {
-        // We use the encapsulated UID
-        let UID=self.UID
-        // We taskGroupFor the task
-        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(UID)", inDocument: self)
-        group.priority=TasksGroup.Priority.High
-        // We add the calling handlers
-        group.handlers.appendChainedHandlers(handlers)
+    private func _commitAndPushPendingOperations()throws {
 
-        // This task will append task
-        let registryUIDString=JString(from:self.UID)
-        let commitPendingOperationsTask=CommitAndPushPendingOperationsTask(arguments:registryUIDString)
-        try group.appendChainedTask(commitPendingOperationsTask)
-        try group.start()
+        // We ask the for taskGroup
+        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(self.UID)", inDocument: self)
+        group.priority=TasksGroup.Priority.High
+
+        // Commit the pending changes (if there are changes)
+        try self.commitPendingChanges()
+
+        // We donnot want to schedule anything if there is nothing to do.
+        if self.operations.count > 0 {
+
+            if group.tasks.count==0{
+                // There is no root PushPendingOperationsTask tasks to the group
+                // lets create this task.
+                let registryUIDString=JString(from:self.UID)
+                let pushPendingOperationsTask=PushPendingOperationsTask(arguments:registryUIDString)
+                try group.appendChainedTask(pushPendingOperationsTask)
+            }else{
+                // There is already a PushPendingOperationsTask
+                // So we will append chained task if necessary.
+                if let pushPendingOperationsTask:PushPendingOperationsTask=group.tasks.first?.toLocalInstance(){
+                    for operation in self.operations{
+                        if !pushPendingOperationsTask.containsOperation(operation){
+                            let task=PushOperationTask(arguments:operation)
+                            try group.appendChainedTask(task)
+                        }
+                    }
+                }
+            }
+
+            // Let's resume the group if it is paused
+            if  group.status == .Paused{
+                try group.start()
+            }
+        }
+
     }
 
 

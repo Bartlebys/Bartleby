@@ -64,7 +64,7 @@ convenience required public init(arguments: ArgumentType) {
     }
 ```
 
- You can check implementations samples in the unit test or analyze `PushOperationTask` and `CommitAndPushPendingOperationsTask`
+ You can check implementations samples in the unit test or analyze `PushOperationTask` and `PushPendingOperationsTask`
 
  */
 public protocol ConcreteTask: Invocable {

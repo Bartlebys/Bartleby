@@ -76,7 +76,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     /// The internal flag for auto commit
     private var _shouldBeCommitted: Bool = false
 
-
     public var changedKeys=[KeyedChanges]()
 
     // MARK: Distribuable
@@ -145,8 +144,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
 
         // Commit is related to distribution
-        // Supervision is a local  observation mecanism
-        // Closures are invoked on the main queue asynchronously
+        // Supervision is a local  "observation" mecanism
+        // Supervision Closures are invoked on the main queue asynchronously
         if self._supervisionIsEnabled{
             dispatch_async(GlobalQueue.Main.get()) {
 

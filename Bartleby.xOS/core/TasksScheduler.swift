@@ -104,6 +104,8 @@ public class TasksScheduler: BprintCategorizable {
                 group.document=document
                 // Set up the group
                 group.name=groupNameForDocument
+                // We add the synchronization handlers on group creation
+                group.handlers.appendChainedHandlers(document.synchronizationHandlers)
                 _groups[groupName+document.UID]=group
                 document.tasksGroups.add(group,commit: true)
                 return group
@@ -250,7 +252,7 @@ public class TasksScheduler: BprintCategorizable {
         // Explicit removal
         group.tasks.removeAll()
         group.status = .Paused
-        group.handlers=Handlers.withoutCompletion()
+        group.handlers = Handlers.withoutCompletion()
         group.lastChainedTask=nil
         group.progressionState=nil
         group.completionState=nil

@@ -264,8 +264,8 @@
 		E50F3E981D40D50400532B09 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D941D40D50400532B09 /* Registry.swift */; };
 		E50F3E991D40D50400532B09 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */; };
 		E50F3E9A1D40D50400532B09 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */; };
-		E50F3E9B1D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */; };
-		E50F3E9C1D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */; };
+		E50F3E9B1D40D50400532B09 /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D971D40D50400532B09 /* PushPendingOperationsTask.swift */; };
+		E50F3E9C1D40D50400532B09 /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D971D40D50400532B09 /* PushPendingOperationsTask.swift */; };
 		E50F3E9D1D40D50400532B09 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D981D40D50400532B09 /* PushOperationTask.swift */; };
 		E50F3E9E1D40D50400532B09 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D981D40D50400532B09 /* PushOperationTask.swift */; };
 		E50F3E9F1D40D50400532B09 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D991D40D50400532B09 /* ReactiveTask.swift */; };
@@ -520,7 +520,7 @@
 		E50F3D931D40D50400532B09 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E50F3D941D40D50400532B09 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
-		E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
+		E50F3D971D40D50400532B09 /* PushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushPendingOperationsTask.swift; sourceTree = "<group>"; };
 		E50F3D981D40D50400532B09 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E50F3D991D40D50400532B09 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E50F3D9A1D40D50400532B09 /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
@@ -914,7 +914,7 @@
 		E50F3D961D40D50400532B09 /* tasks */ = {
 			isa = PBXGroup;
 			children = (
-				E50F3D971D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift */,
+				E50F3D971D40D50400532B09 /* PushPendingOperationsTask.swift */,
 				E54EC2F61D64500B0028FFFD /* SaveDocumentTask.swift */,
 				E50F3D981D40D50400532B09 /* PushOperationTask.swift */,
 				E5491FFE1D6341FB00961796 /* SimulatedTask.swift */,
@@ -1299,7 +1299,7 @@
 				E50F3DED1D40D50400532B09 /* DeleteGroup.swift in Sources */,
 				E50F3EA31D40D50400532B09 /* TaskWithNotifications.swift in Sources */,
 				E50F3E271D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
-				E50F3E9B1D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E50F3E9B1D40D50400532B09 /* PushPendingOperationsTask.swift in Sources */,
 				E50F3E5B1D40D50400532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E50F3E2B1D40D50400532B09 /* JDocument.swift in Sources */,
 				E50F3E791D40D50400532B09 /* Distribuable.swift in Sources */,
@@ -1465,7 +1465,7 @@
 				E50F3E441D40D50400532B09 /* Default.swift in Sources */,
 				E50F3E821D40D50400532B09 /* Identifiable.swift in Sources */,
 				E50F3DBC1D40D50400532B09 /* UsersCollectionController.swift in Sources */,
-				E50F3E9C1D40D50400532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E50F3E9C1D40D50400532B09 /* PushPendingOperationsTask.swift in Sources */,
 				E50F3E8E1D40D50400532B09 /* Serializer.swift in Sources */,
 				E50F3EC01D40D50400532B09 /* PString.swift in Sources */,
 				E50F3E881D40D50400532B09 /* JSONString.swift in Sources */,

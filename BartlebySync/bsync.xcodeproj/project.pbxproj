@@ -574,10 +574,10 @@
 		E58808E81D51E06A00FEA71F /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F71D51E06A00FEA71F /* StatusOfCompletion.swift */; };
 		E58808E91D51E06A00FEA71F /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F71D51E06A00FEA71F /* StatusOfCompletion.swift */; };
 		E58808EA1D51E06A00FEA71F /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F71D51E06A00FEA71F /* StatusOfCompletion.swift */; };
-		E58808EB1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */; };
-		E58808EC1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */; };
-		E58808ED1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */; };
-		E58808EE1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */; };
+		E58808EB1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */; };
+		E58808EC1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */; };
+		E58808ED1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */; };
+		E58808EE1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */; };
 		E58808EF1D51E06A00FEA71F /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */; };
 		E58808F01D51E06A00FEA71F /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */; };
 		E58808F11D51E06A00FEA71F /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */; };
@@ -1078,7 +1078,7 @@
 		E58806F51D51E06A00FEA71F /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E58806F61D51E06A00FEA71F /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E58806F71D51E06A00FEA71F /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
-		E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
+		E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushPendingOperationsTask.swift; sourceTree = "<group>"; };
 		E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E58806FB1D51E06A00FEA71F /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E58806FC1D51E06A00FEA71F /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
@@ -1560,7 +1560,7 @@
 			children = (
 				E54EC2F91D6453B60028FFFD /* SaveDocumentTask.swift */,
 				E54920141D6353AE00961796 /* SimulatedTask.swift */,
-				E58806F91D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift */,
+				E58806F91D51E06A00FEA71F /* PushPendingOperationsTask.swift */,
 				E58806FA1D51E06A00FEA71F /* PushOperationTask.swift */,
 				E58806FB1D51E06A00FEA71F /* ReactiveTask.swift */,
 				E58806FC1D51E06A00FEA71F /* RelayingTask.swift */,
@@ -2121,7 +2121,7 @@
 				E5CEA92C1D522555000DC91E /* EnumTransform.swift in Sources */,
 				E5CEA9541D522567000DC91E /* Result.swift in Sources */,
 				E588073E1D51E06A00FEA71F /* Group.swift in Sources */,
-				E58808EE1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E58808EE1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */,
 				E588090E1D51E06A00FEA71F /* LoginUser.swift in Sources */,
 				E58808661D51E06A00FEA71F /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E5CEA9551D522567000DC91E /* ServerTrustPolicy.swift in Sources */,
@@ -2250,7 +2250,7 @@
 				E5F654F51D42749100A40A9B /* DateFormatterTransform.swift in Sources */,
 				E58808A71D51E06A00FEA71F /* Distribuable.swift in Sources */,
 				E58808031D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift in Sources */,
-				E58808EB1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E58808EB1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */,
 				E53E28EC1CA572E80079ED23 /* CreateDirectiveCommand.swift in Sources */,
 				E5F655011D42749100A40A9B /* ISO8601DateTransform.swift in Sources */,
 				E53E28E11CA572E20079ED23 /* BsyncImageDiskManager.swift in Sources */,
@@ -2501,7 +2501,7 @@
 				E58808CC1D51E06A00FEA71F /* Serializable.swift in Sources */,
 				E54920161D6353AE00961796 /* SimulatedTask.swift in Sources */,
 				E58807301D51E06A00FEA71F /* CollectionMetadatum.swift in Sources */,
-				E58808EC1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E58808EC1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */,
 				E58807E41D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
 				E58807E01D51E06A00FEA71F /* UpdateGroup.swift in Sources */,
 				E591ACEB1D42632800748FF4 /* LocalSyncTests.swift in Sources */,
@@ -2691,7 +2691,7 @@
 				E58807A51D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
 				E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */,
 				E5F655021D42749100A40A9B /* ISO8601DateTransform.swift in Sources */,
-				E58808ED1D51E06A00FEA71F /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E58808ED1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */,
 				E58808F51D51E06A00FEA71F /* ReactiveTask.swift in Sources */,
 				E58807251D51E06A00FEA71F /* TasksCollectionController.swift in Sources */,
 				E58807B51D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */,

@@ -111,7 +111,7 @@ import ObjectMapper
      Commit is ignored because
      Distant persistency is not allowed for TasksGroup
     */
-    public func commitChanges() ->[String] { 
+    public func commitChanges() ->[String] {
         return [String]()
     }
     

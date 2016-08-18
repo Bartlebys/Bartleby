@@ -77,7 +77,7 @@ public class Registry: BXDocument {
     // JRegistryMetadata and JSerializer
 
     // We use a  JRegistryMetadata
-    public var registryMetadata=RegistryMetadata()
+    dynamic public var registryMetadata=RegistryMetadata()
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive the collectible collection is set to nil
@@ -141,10 +141,16 @@ public class Registry: BXDocument {
     // The collection server base URL
     public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
 
+
+
+    // @todo migrate to BartlebyDocument (template)
+
     // The EventSource URL for Server Sent Events
     public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
-    /// The online flag is driving the connection process.
+
+    // The online flag is driving the "connection" process
+    // It connects to the SSE and starts the supervisionLoop
     public var online:Bool=false{
         willSet{
             // Transition on line
@@ -164,8 +170,18 @@ public class Registry: BXDocument {
         }
         didSet{
             self.registryMetadata.online=online
+            if let doc = self as? BartlebyDocument{
+                doc.startSupervisionLoopIfNecessary()
+            }
         }
     }
+
+    public var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
+
+    internal var _timer:NSTimer?
+
+
+
 
     // MARK:
 

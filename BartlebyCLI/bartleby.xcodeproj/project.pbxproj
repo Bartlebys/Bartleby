@@ -128,7 +128,7 @@
 		E50F41821D40D5FF00532B09 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F41D40D5FF00532B09 /* UserProtocol.swift */; };
 		E50F41831D40D5FF00532B09 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F51D40D5FF00532B09 /* Registry.swift */; };
 		E50F41841D40D5FF00532B09 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F61D40D5FF00532B09 /* StatusOfCompletion.swift */; };
-		E50F41851D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F81D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift */; };
+		E50F41851D40D5FF00532B09 /* PushPendingOperationsTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F81D40D5FF00532B09 /* PushPendingOperationsTask.swift */; };
 		E50F41861D40D5FF00532B09 /* PushOperationTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40F91D40D5FF00532B09 /* PushOperationTask.swift */; };
 		E50F41871D40D5FF00532B09 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40FA1D40D5FF00532B09 /* ReactiveTask.swift */; };
 		E50F41881D40D5FF00532B09 /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40FB1D40D5FF00532B09 /* RelayingTask.swift */; };
@@ -329,7 +329,7 @@
 		E50F40F41D40D5FF00532B09 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E50F40F51D40D5FF00532B09 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E50F40F61D40D5FF00532B09 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
-		E50F40F81D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommitAndPushPendingOperationsTask.swift; sourceTree = "<group>"; };
+		E50F40F81D40D5FF00532B09 /* PushPendingOperationsTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushPendingOperationsTask.swift; sourceTree = "<group>"; };
 		E50F40F91D40D5FF00532B09 /* PushOperationTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationTask.swift; sourceTree = "<group>"; };
 		E50F40FA1D40D5FF00532B09 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
 		E50F40FB1D40D5FF00532B09 /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
@@ -701,7 +701,7 @@
 			children = (
 				E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */,
 				E54920231D6353F200961796 /* SimulatedTask.swift */,
-				E50F40F81D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift */,
+				E50F40F81D40D5FF00532B09 /* PushPendingOperationsTask.swift */,
 				E50F40F91D40D5FF00532B09 /* PushOperationTask.swift */,
 				E50F40FA1D40D5FF00532B09 /* ReactiveTask.swift */,
 				E50F40FB1D40D5FF00532B09 /* RelayingTask.swift */,
@@ -912,7 +912,7 @@
 				E50F41341D40D5FF00532B09 /* DeleteUser.swift in Sources */,
 				E50F41801D40D5FF00532B09 /* Supervisable.swift in Sources */,
 				E50F414C1D40D5FF00532B09 /* ImageTransform.swift in Sources */,
-				E50F41851D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */,
+				E50F41851D40D5FF00532B09 /* PushPendingOperationsTask.swift in Sources */,
 				E54920241D6353F200961796 /* SimulatedTask.swift in Sources */,
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
 				E50F41641D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,

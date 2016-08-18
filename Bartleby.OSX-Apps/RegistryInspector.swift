@@ -45,7 +45,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
     }
 
     // The selected Registry
-    private var registry:BartlebyDocument?
+    dynamic var registry:BartlebyDocument?
 
 
     public func getRegistry() -> BartlebyDocument?{
@@ -106,14 +106,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
     @IBAction func pushOperations(sender: AnyObject) {
             if let document=self.registry {
-                let synchronizationHandlers=Handlers(completionHandler: { (completion) in
-                    bprint("End of synchronizePendingOperations (\(completion)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
-
-                    }, progressionHandler: { (progression) in
-                        bprint("\(progression)", file:#file, function:#function, line:#line,category: Default.BPRINT_CATEGORY,decorative: false)
-                })
-
-                document.synchronizePendingOperations(synchronizationHandlers)
+                document.synchronizePendingOperations()
             }
     }
 }

@@ -42,6 +42,7 @@ public class LoginUser: JObject {
 
                     // Bartleby consignation
 
+
                     let context = JHTTPResponse( code: 100,
                         caller: "LoginUser.execute",
                         relatedURL:request?.URL,
@@ -54,6 +55,9 @@ public class LoginUser: JObject {
                     reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
 
                     if result.isFailure {
+                        if user.UID == registry.currentUser.UID{
+                            registry.currentUser.loginHasSucceed=false
+                        }
                         let m = NSLocalizedString("authentication login",
                             comment: "authentication login failure description")
                         let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
@@ -68,6 +72,9 @@ public class LoginUser: JObject {
                     } else {
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
+                                if user.UID == registry.currentUser.UID{
+                                    registry.currentUser.loginHasSucceed=true
+                                }
                                 if registry.registryMetadata.identificationMethod == .Key{
                                     if let kvids = result.value as? [String]{
                                         if kvids.count>=2{
