@@ -119,6 +119,9 @@ public class Registry: BXDocument {
     // Set to true when the data has been loaded once or more.
     public var hasBeenLoaded: Bool=false
 
+    // An in memory flag to distinguish dotBart import case
+    public var dotBart=false
+
     private let _logsFileName="logs.txt"
     private var _logs:String=""
 

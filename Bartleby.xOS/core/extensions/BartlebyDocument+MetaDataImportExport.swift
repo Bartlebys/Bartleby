@@ -53,6 +53,8 @@ public extension BartlebyDocument{
                         data = try Bartleby.cryptoDelegate.decryptData(data)
                     }
                     if let newRegistryMetadata=try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
+                        newRegistryMetadata.saveThePassword=false // Do not allow password bypassing on .bart import
+                        self.dotBart=true// turn on the flag (the UI should ask for the password)
                         let previousUID=self.UID
                         Bartleby.sharedInstance.forget(previousUID)
 
