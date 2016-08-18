@@ -14,7 +14,7 @@ import Foundation
     import UIKit
 #endif
 
-public extension Registry{
+public extension BartlebyDocument{
 
 
     /**
@@ -62,10 +62,7 @@ public extension Registry{
                         // Reallocate the new registry Metadata
                         self.registryMetadata=newRegistryMetadata
                         Bartleby.sharedInstance.declare(self)
-
-                        if let document = self as? BartlebyDocument{
-                            self.registryMetadata.currentUser?.document=document
-                        }
+                        self.registryMetadata.currentUser?.document=self
 
                         // Reconnect to SSE
                         self._connectToSSE()

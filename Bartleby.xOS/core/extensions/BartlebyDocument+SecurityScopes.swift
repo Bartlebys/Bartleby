@@ -15,7 +15,7 @@ import Foundation
 #endif
 
 
-extension Registry {
+extension BartlebyDocument {
 
     public enum SecurityScopedBookMarkError: ErrorType {
         // Bookmarking

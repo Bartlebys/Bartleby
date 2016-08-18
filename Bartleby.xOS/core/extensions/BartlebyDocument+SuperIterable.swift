@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension Registry:SuperIterable{
+extension BartlebyDocument:SuperIterable{
 
     // MARK : SuperIterable
 

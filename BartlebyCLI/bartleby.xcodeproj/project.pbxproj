@@ -94,10 +94,10 @@
 		E50F41601D40D5FF00532B09 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D11D40D5FF00532B09 /* NSNotification+Completion.swift */; };
 		E50F41611D40D5FF00532B09 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D21D40D5FF00532B09 /* NSNotification+Progression.swift */; };
 		E50F41621D40D5FF00532B09 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D31D40D5FF00532B09 /* Progression+Conveniences.swift */; };
-		E50F41631D40D5FF00532B09 /* Registry+LocalUpsertAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D41D40D5FF00532B09 /* Registry+LocalUpsertAndDelete.swift */; };
-		E50F41641D40D5FF00532B09 /* Registry+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D51D40D5FF00532B09 /* Registry+MetaDataImportExport.swift */; };
-		E50F41651D40D5FF00532B09 /* Registry+SecurityScopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D61D40D5FF00532B09 /* Registry+SecurityScopes.swift */; };
-		E50F41661D40D5FF00532B09 /* Registry+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D71D40D5FF00532B09 /* Registry+SuperIterable.swift */; };
+		E50F41631D40D5FF00532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D41D40D5FF00532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift */; };
+		E50F41641D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D51D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift */; };
+		E50F41651D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D61D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift */; };
+		E50F41661D40D5FF00532B09 /* BartlebyDocument+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D71D40D5FF00532B09 /* BartlebyDocument+SuperIterable.swift */; };
 		E50F41671D40D5FF00532B09 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D81D40D5FF00532B09 /* Task+Execution.swift */; };
 		E50F41681D40D5FF00532B09 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40D91D40D5FF00532B09 /* TasksGroup+Execution.swift */; };
 		E50F41691D40D5FF00532B09 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40DA1D40D5FF00532B09 /* Global.swift */; };
@@ -295,10 +295,10 @@
 		E50F40D11D40D5FF00532B09 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
 		E50F40D21D40D5FF00532B09 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
 		E50F40D31D40D5FF00532B09 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
-		E50F40D41D40D5FF00532B09 /* Registry+LocalUpsertAndDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+LocalUpsertAndDelete.swift"; sourceTree = "<group>"; };
-		E50F40D51D40D5FF00532B09 /* Registry+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+MetaDataImportExport.swift"; sourceTree = "<group>"; };
-		E50F40D61D40D5FF00532B09 /* Registry+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SecurityScopes.swift"; sourceTree = "<group>"; };
-		E50F40D71D40D5FF00532B09 /* Registry+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Registry+SuperIterable.swift"; sourceTree = "<group>"; };
+		E50F40D41D40D5FF00532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+LocalUpsertAndDelete.swift"; sourceTree = "<group>"; };
+		E50F40D51D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+MetaDataImportExport.swift"; sourceTree = "<group>"; };
+		E50F40D61D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SecurityScopes.swift"; sourceTree = "<group>"; };
+		E50F40D71D40D5FF00532B09 /* BartlebyDocument+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SuperIterable.swift"; sourceTree = "<group>"; };
 		E50F40D81D40D5FF00532B09 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
 		E50F40D91D40D5FF00532B09 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E50F40DA1D40D5FF00532B09 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
@@ -649,16 +649,16 @@
 				E50F40CB1D40D5FF00532B09 /* BartlebyDocument+AppFacilities.swift */,
 				E50F40CC1D40D5FF00532B09 /* BartlebyDocument+Operations.swift */,
 				E50F40CD1D40D5FF00532B09 /* BartlebyDocument+Triggers.swift */,
+				E50F40D41D40D5FF00532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
+				E50F40D51D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift */,
+				E50F40D61D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift */,
+				E50F40D71D40D5FF00532B09 /* BartlebyDocument+SuperIterable.swift */,
 				E50F40CE1D40D5FF00532B09 /* Completion+Conveniences.swift */,
 				E50F40CF1D40D5FF00532B09 /* Completion+Result.swift */,
 				E50F40D01D40D5FF00532B09 /* ExternalReference+Resolution.swift */,
 				E50F40D11D40D5FF00532B09 /* NSNotification+Completion.swift */,
 				E50F40D21D40D5FF00532B09 /* NSNotification+Progression.swift */,
 				E50F40D31D40D5FF00532B09 /* Progression+Conveniences.swift */,
-				E50F40D41D40D5FF00532B09 /* Registry+LocalUpsertAndDelete.swift */,
-				E50F40D51D40D5FF00532B09 /* Registry+MetaDataImportExport.swift */,
-				E50F40D61D40D5FF00532B09 /* Registry+SecurityScopes.swift */,
-				E50F40D71D40D5FF00532B09 /* Registry+SuperIterable.swift */,
 				E50F40D81D40D5FF00532B09 /* Task+Execution.swift */,
 				E50F40D91D40D5FF00532B09 /* TasksGroup+Execution.swift */,
 			);
@@ -915,7 +915,7 @@
 				E50F41851D40D5FF00532B09 /* CommitAndPushPendingOperationsTask.swift in Sources */,
 				E54920241D6353F200961796 /* SimulatedTask.swift in Sources */,
 				E5CD99F21C86D96E00C64569 /* Request.swift in Sources */,
-				E50F41641D40D5FF00532B09 /* Registry+MetaDataImportExport.swift in Sources */,
+				E50F41641D40D5FF00532B09 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E54EC2FF1D6453C70028FFFD /* SaveDocumentTask.swift in Sources */,
 				E50F415B1D40D5FF00532B09 /* BartlebyDocument+Operations.swift in Sources */,
 				E5CD99F81C86D96E00C64569 /* Timeline.swift in Sources */,
@@ -1008,7 +1008,7 @@
 				E50F41961D40D5FF00532B09 /* Pluralization.swift in Sources */,
 				E50F41121D40D5FF00532B09 /* PermissionsCollectionController.swift in Sources */,
 				E50F41551D40D5FF00532B09 /* EventSource.swift in Sources */,
-				E50F41651D40D5FF00532B09 /* Registry+SecurityScopes.swift in Sources */,
+				E50F41651D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E50F41181D40D5FF00532B09 /* ExternalReference.swift in Sources */,
 				E50F41361D40D5FF00532B09 /* ReadGroupById.swift in Sources */,
 				E50F414D1D40D5FF00532B09 /* JDocument.swift in Sources */,
@@ -1032,7 +1032,7 @@
 				E50F41671D40D5FF00532B09 /* Task+Execution.swift in Sources */,
 				E54920221D6353E900961796 /* JData+Conveniences.swift in Sources */,
 				E5D086CF1C550E7500F0090E /* StringExtensions.swift in Sources */,
-				E50F41661D40D5FF00532B09 /* Registry+SuperIterable.swift in Sources */,
+				E50F41661D40D5FF00532B09 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E50F41481D40D5FF00532B09 /* UpdateUser.swift in Sources */,
 				E50F41591D40D5FF00532B09 /* Default.swift in Sources */,
 				E50F41581D40D5FF00532B09 /* Consignee.swift in Sources */,
@@ -1044,7 +1044,7 @@
 				E50F416E1D40D5FF00532B09 /* CollectionMetadatumProtocol.swift in Sources */,
 				E50F411E1D40D5FF00532B09 /* Permission.swift in Sources */,
 				E50F41461D40D5FF00532B09 /* UpdatePermission.swift in Sources */,
-				E50F41631D40D5FF00532B09 /* Registry+LocalUpsertAndDelete.swift in Sources */,
+				E50F41631D40D5FF00532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E50F41571D40D5FF00532B09 /* Consignation.swift in Sources */,
 				E50F41391D40D5FF00532B09 /* ReadLockerById.swift in Sources */,
 				E50F412A1D40D5FF00532B09 /* CreatePermission.swift in Sources */,

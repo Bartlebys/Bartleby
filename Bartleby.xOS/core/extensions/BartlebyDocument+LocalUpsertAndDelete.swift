@@ -12,7 +12,7 @@ import Foundation
 
 // All the upsert and delete are done on GlobalQueue.Main.get()
 // like the data integration in BartlebyDocument+Trigger (_integrateContiguousData)
-public extension Registry {
+public extension BartlebyDocument {
 
     // MARK: Upsert
 
