@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not observable
+// MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not supervisable
 @objc(Operation) public class Operation : JObject{
 
     // Universal type support

@@ -20,12 +20,12 @@ import Cocoa
     override var representedObject: AnyObject?{
         willSet{
             if let _=self._selectedItem{
-                self._selectedItem?.removeChangesObserver(self)
+                self._selectedItem?.removeChangesSuperviser(self)
             }
         }
         didSet{
             self._selectedItem=representedObject as? EditorOf
-            self._selectedItem?.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+            self._selectedItem?.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                     self.tableView.reloadData()
             })
             dispatch_async(dispatch_get_main_queue(), {

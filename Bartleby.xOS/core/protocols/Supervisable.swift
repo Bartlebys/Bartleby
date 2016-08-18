@@ -33,14 +33,14 @@ public protocol Supervisable {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    func addChangesObserver(observer:Identifiable, closure:SupervisionClosure)
+    func addChangesSuperviser(superviser:Identifiable, closure:SupervisionClosure)
 
     /**
      Remove the observer's closure
 
      - parameter observer: the observer.
      */
-    func removeChangesObserver(observer:Identifiable)
+    func removeChangesSuperviser(superviser:Identifiable)
 
 
     /**

@@ -215,11 +215,11 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         self._collectionNames=registry.getCollectionsNames()
         self._selectionHandler=onSelection
         super.init()
-        self._registry.registryMetadata.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+        self._registry.registryMetadata.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
             self.reloadData()
         })
         self._registry.iterateOnCollections { (collection) in
-            collection.addChangesObserver(self, closure: { (key, oldValue, newValue) in
+            collection.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                 self.reloadData()
             })
         }

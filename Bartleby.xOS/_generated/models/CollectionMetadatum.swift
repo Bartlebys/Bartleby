@@ -29,7 +29,7 @@ import ObjectMapper
 	public var storage:Storage = .MonolithicFileStorage
 	//The holding collection name
 	dynamic public var collectionName:String = "\(Default.NO_NAME)"
-	//The proxy object (not serializable, not observable)
+	//The proxy object (not serializable, not supervisable)
 	dynamic public var proxy:JObject?
 	//Allow distant persistency?
 	dynamic public var allowDistantPersistency:Bool = true

@@ -124,14 +124,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: Supervisable
 
-    private var _observers=[String:SupervisionClosure]()
+    private var _supervisers=[String:SupervisionClosure]()
 
     /**
      Tags the changed keys
      And Mark that the instance requires to be committed if the auto commit observer is active
      This method stores in memory changed Keys to allow Bartleby's runtime inspections
 
-     Observers and properties uses the Main queue.
+     Supervisers closure call and properties uses the Main queue.
 
      - parameter key:      the key
      - parameter oldValue: the oldValue
@@ -192,8 +192,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
                 // Invoke the closures (changes Observers)
 
-                for (_,SupervisionClosure) in self._observers{
-                    SupervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
+                for (_,supervisionClosure) in self._supervisers{
+                    supervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
                 }
             }
 
@@ -203,14 +203,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     /**
-     Adds a closure observer
+     Adds a closure superviser
      Supervision Closure are called on the Main Queue.
 
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    public func addChangesObserver(observer:Identifiable, closure:SupervisionClosure) {
-        _observers[observer.UID]=closure
+    public func addChangesSuperviser(superviser:Identifiable, closure:SupervisionClosure) {
+        _supervisers[superviser.UID]=closure
     }
 
     /**
@@ -218,14 +218,14 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
      - parameter observer: the observer.
      */
-    public func removeChangesObserver(observer:Identifiable) {
-        if let _=self._observers[observer.UID]{
-            self._observers.removeValueForKey(observer.UID)
+    public func removeChangesSuperviser(superviser:Identifiable) {
+        if let _=self._supervisers[superviser.UID]{
+            self._supervisers.removeValueForKey(superviser.UID)
         }
     }
 
     deinit{
-        self._observers.removeAll()
+        self._supervisers.removeAll()
     }
 
 

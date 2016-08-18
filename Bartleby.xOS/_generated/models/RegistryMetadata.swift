@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not observable.
+// MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not supervisable.
 @objc(RegistryMetadata) public class RegistryMetadata : JObject{
 
     // Universal type support
@@ -24,7 +24,14 @@ import ObjectMapper
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
-	dynamic public var currentUser:User?
+	dynamic public var currentUser:User? {	 
+	    didSet { 
+	       if currentUser != oldValue {
+	            self.provisionChanges(forKey: "currentUser",oldValue: oldValue,newValue: currentUser) 
+	       } 
+	    }
+	}
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case Key = "Key"
@@ -32,33 +39,126 @@ import ObjectMapper
 	}
 	public var identificationMethod:IdentificationMethod = .Key
 	//The current kvid identification value (injected in HTTP headers)
-	dynamic public var identificationValue:String?
+	dynamic public var identificationValue:String? {	 
+	    didSet { 
+	       if identificationValue != oldValue {
+	            self.provisionChanges(forKey: "identificationValue",oldValue: oldValue,newValue: identificationValue) 
+	       } 
+	    }
+	}
+
 	//The rootObject UID
-	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
+	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"{	 
+	    didSet { 
+	       if rootObjectUID != oldValue {
+	            self.provisionChanges(forKey: "rootObjectUID",oldValue: oldValue,newValue: rootObjectUID) 
+	       } 
+	    }
+	}
+
 	//The url of the collaboration server
-	dynamic public var collaborationServerURL:NSURL?
+	dynamic public var collaborationServerURL:NSURL? {	 
+	    didSet { 
+	       if collaborationServerURL != oldValue {
+	            self.provisionChanges(forKey: "collaborationServerURL",oldValue: oldValue,newValue: collaborationServerURL) 
+	       } 
+	    }
+	}
+
 	//A collection of CollectionMetadatum
-	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()  {	 
+	    didSet { 
+	       if collectionsMetadata != oldValue {
+	            self.provisionChanges(forKey: "collectionsMetadata",oldValue: oldValue,newValue: collectionsMetadata)  
+	       } 
+	    }
+	}
+
 	//is the user performing Online
-	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
+	    didSet { 
+	       if online != oldValue {
+	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
+	       } 
+	    }
+	}
+
+	//If set to true any object creation, update, or deletion will be pushed to the server immediately
+	dynamic public var pushOnChanges:Bool = true  {	 
+	    didSet { 
+	       if pushOnChanges != oldValue {
+	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
+	       } 
+	    }
+	}
+
 	//The State dictionary to insure registry persistency 
 	dynamic public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
 	dynamic public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
 	//Save the password or not?
-	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
+	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
+	    didSet { 
+	       if saveThePassword != oldValue {
+	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
+	       } 
+	    }
+	}
+
 	//The preferred filename for this registry/document
-	dynamic public var preferredFileName:String?
+	dynamic public var preferredFileName:String? {	 
+	    didSet { 
+	       if preferredFileName != oldValue {
+	            self.provisionChanges(forKey: "preferredFileName",oldValue: oldValue,newValue: preferredFileName) 
+	       } 
+	    }
+	}
+
 	//A collection of trigger Indexes (used to detect data holes)
-	dynamic public var triggersIndexes:[Int] = [Int]()
+	dynamic public var triggersIndexes:[Int] = [Int]()  {	 
+	    didSet { 
+	       if triggersIndexes != oldValue {
+	            self.provisionChanges(forKey: "triggersIndexes",oldValue: oldValue,newValue: triggersIndexes)  
+	       } 
+	    }
+	}
+
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	dynamic public var ownedTriggersIndexes:[Int] = [Int]()
+	dynamic public var ownedTriggersIndexes:[Int] = [Int]()  {	 
+	    didSet { 
+	       if ownedTriggersIndexes != oldValue {
+	            self.provisionChanges(forKey: "ownedTriggersIndexes",oldValue: oldValue,newValue: ownedTriggersIndexes)  
+	       } 
+	    }
+	}
+
 	//The index of the last trigger that has been integrated
-	public var lastIntegratedTriggerIndex:Int = -1
+	public var lastIntegratedTriggerIndex:Int = -1  {	 
+	    didSet { 
+	       if lastIntegratedTriggerIndex != oldValue {
+	            self.provisionChanges(forKey: "lastIntegratedTriggerIndex",oldValue: oldValue,newValue: lastIntegratedTriggerIndex)  
+	       } 
+	    }
+	}
+
 	//A collection Triggers that are temporarly stored before data integration
-	dynamic public var receivedTriggers:[Trigger] = [Trigger]()
+	dynamic public var receivedTriggers:[Trigger] = [Trigger]()  {	 
+	    didSet { 
+	       if receivedTriggers != oldValue {
+	            self.provisionChanges(forKey: "receivedTriggers",oldValue: oldValue,newValue: receivedTriggers)  
+	       } 
+	    }
+	}
+
 	//The serialized version of loaded trigger data that are pending integration
-	public var triggeredDataBuffer:NSData?
+	public var triggeredDataBuffer:NSData? {	 
+	    didSet { 
+	       if triggeredDataBuffer != oldValue {
+	            self.provisionChanges(forKey: "triggeredDataBuffer",oldValue: oldValue,newValue: triggeredDataBuffer) 
+	       } 
+	    }
+	}
+
 
 
     // MARK: Mappable
@@ -78,6 +178,7 @@ import ObjectMapper
 		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 		self.collectionsMetadata <- ( map["collectionsMetadata"] )
 		self.online <- ( map["online"] )
+		self.pushOnChanges <- ( map["pushOnChanges"] )
 		self.stateDictionary <- ( map["stateDictionary"] )
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
 		self.saveThePassword <- ( map["saveThePassword"] )
@@ -104,6 +205,7 @@ import ObjectMapper
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
 		self.online=decoder.decodeBoolForKey("online") 
+		self.pushOnChanges=decoder.decodeBoolForKey("pushOnChanges") 
 		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
 		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
@@ -133,6 +235,7 @@ import ObjectMapper
 		}
 		coder.encodeObject(self.collectionsMetadata,forKey:"collectionsMetadata")
 		coder.encodeBool(self.online,forKey:"online")
+		coder.encodeBool(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encodeObject(self.stateDictionary,forKey:"stateDictionary")
 		coder.encodeObject(self.URLBookmarkData,forKey:"URLBookmarkData")
 		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")

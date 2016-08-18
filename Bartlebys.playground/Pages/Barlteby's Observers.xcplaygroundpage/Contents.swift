@@ -8,7 +8,7 @@ var document=BartlebyDocument()
 var userA=document.newUser()
 var spy=document.newUser()
 
-userA.addChangesObserver(spy) { (key, oldValue, newValue) in
+userA.addChangesSuperviser(spy) { (key, oldValue, newValue) in
     if let nonNilvalue=newValue{
         print("\(key) of \(userA.UID) has been set to \(nonNilvalue)")
     }else{
@@ -19,7 +19,7 @@ userA.addChangesObserver(spy) { (key, oldValue, newValue) in
 userA.firstname="Nina"
 userA.firstname="Jimmy"
 
-userA.removeChangesObserver(spy)
+userA.removeChangesSuperviser(spy)
 userA.firstname="Zorro"
 
-//: [Next](@next)
+//: [Next](@ne

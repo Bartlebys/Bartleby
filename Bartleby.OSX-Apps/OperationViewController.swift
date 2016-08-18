@@ -25,7 +25,7 @@ class OperationViewController: NSViewController,Editor{
     override var representedObject: AnyObject?{
         willSet{
             if let _=self.selectedItem{
-                self.selectedItem?.removeChangesObserver(self)
+                self.selectedItem?.removeChangesSuperviser(self)
             }
         }
         didSet{
