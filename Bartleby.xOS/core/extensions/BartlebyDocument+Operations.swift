@@ -101,7 +101,7 @@ extension BartlebyDocument {
             let UID=self.UID
             // We taskGroupFor the task
             let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(UID)", inDocument: self)
-            group.priority=TasksGroup.Priority.Default
+            group.priority=TasksGroup.Priority.Background
             if let handlers=handlers{
                 // We add the calling handlers
                 group.handlers.appendChainedHandlers(handlers)
@@ -136,7 +136,7 @@ extension BartlebyDocument {
 
         // We ask the for taskGroup
         let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(self.UID)", inDocument: self)
-        group.priority=TasksGroup.Priority.High
+        group.priority=TasksGroup.Priority.Background
 
         // Commit the pending changes (if there are changes)
         try self.commitPendingChanges()
