@@ -350,10 +350,6 @@
 		E58808081D51E06A00FEA71F /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B81D51E06A00FEA71F /* ImageTransform.swift */; };
 		E58808091D51E06A00FEA71F /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B81D51E06A00FEA71F /* ImageTransform.swift */; };
 		E588080A1D51E06A00FEA71F /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B81D51E06A00FEA71F /* ImageTransform.swift */; };
-		E588080B1D51E06A00FEA71F /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B91D51E06A00FEA71F /* JDocument.swift */; };
-		E588080C1D51E06A00FEA71F /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B91D51E06A00FEA71F /* JDocument.swift */; };
-		E588080D1D51E06A00FEA71F /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B91D51E06A00FEA71F /* JDocument.swift */; };
-		E588080E1D51E06A00FEA71F /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B91D51E06A00FEA71F /* JDocument.swift */; };
 		E588080F1D51E06A00FEA71F /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806BA1D51E06A00FEA71F /* JHTTPCommand.swift */; };
 		E58808101D51E06A00FEA71F /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806BA1D51E06A00FEA71F /* JHTTPCommand.swift */; };
 		E58808111D51E06A00FEA71F /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806BA1D51E06A00FEA71F /* JHTTPCommand.swift */; };
@@ -1022,7 +1018,6 @@
 		E58806B61D51E06A00FEA71F /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E58806B71D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
 		E58806B81D51E06A00FEA71F /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
-		E58806B91D51E06A00FEA71F /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		E58806BA1D51E06A00FEA71F /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
 		E58806BB1D51E06A00FEA71F /* JHTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPResponse.swift; sourceTree = "<group>"; };
 		E58806BC1D51E06A00FEA71F /* JObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObject.swift; sourceTree = "<group>"; };
@@ -1440,7 +1435,6 @@
 				E54920111D63539E00961796 /* JData+Conveniences.swift */,
 				E58806B71D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift */,
 				E58806B81D51E06A00FEA71F /* ImageTransform.swift */,
-				E58806B91D51E06A00FEA71F /* JDocument.swift */,
 				E58806BA1D51E06A00FEA71F /* JHTTPCommand.swift */,
 				E58806BB1D51E06A00FEA71F /* JHTTPResponse.swift */,
 				E58806BC1D51E06A00FEA71F /* JObject.swift */,
@@ -2131,7 +2125,6 @@
 				E58809061D51E06A00FEA71F /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E588083E1D51E06A00FEA71F /* Default.swift in Sources */,
 				E588079E1D51E06A00FEA71F /* DeleteLockers.swift in Sources */,
-				E588080E1D51E06A00FEA71F /* JDocument.swift in Sources */,
 				E54B7FEF1D2B8AA1001F7AB3 /* BsyncAdmin.swift in Sources */,
 				E58807421D51E06A00FEA71F /* JData.swift in Sources */,
 				E588085A1D51E06A00FEA71F /* NSNotification+Completion.swift in Sources */,
@@ -2163,7 +2156,6 @@
 				E5F654FD1D42749100A40A9B /* EnumTransform.swift in Sources */,
 				E5F6546D1D42749100A40A9B /* CryptedStringKeyValueTransform.swift in Sources */,
 				E58808AB1D51E06A00FEA71F /* ForwardableState.swift in Sources */,
-				E588080B1D51E06A00FEA71F /* JDocument.swift in Sources */,
 				E588087B1D51E06A00FEA71F /* Global.swift in Sources */,
 				E58807171D51E06A00FEA71F /* LockersCollectionController.swift in Sources */,
 				E588071F1D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */,
@@ -2577,7 +2569,6 @@
 				E58809181D51E06A00FEA71F /* TriggersByIds.swift in Sources */,
 				E588093B1D51E08100FEA71F /* CryptedStringTransform.swift in Sources */,
 				E588086C1D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift in Sources */,
-				E588080C1D51E06A00FEA71F /* JDocument.swift in Sources */,
 				E5CEA93E1D522566000DC91E /* Notifications.swift in Sources */,
 				E588085C1D51E06A00FEA71F /* NSNotification+Progression.swift in Sources */,
 				E5CEA9471D522566000DC91E /* Upload.swift in Sources */,
@@ -2791,7 +2782,6 @@
 				E5B2B5C41D4124C200D0B1B3 /* BsyncXPC.swift in Sources */,
 				E58808051D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift in Sources */,
 				E58808211D51E06A00FEA71F /* RegistryMetadata+Protocol.swift in Sources */,
-				E588080D1D51E06A00FEA71F /* JDocument.swift in Sources */,
 				E58807951D51E06A00FEA71F /* DeleteGroups.swift in Sources */,
 				E58808451D51E06A00FEA71F /* BartlebyDocument+Operations.swift in Sources */,
 				E5F655121D42749100A40A9B /* URLTransform.swift in Sources */,

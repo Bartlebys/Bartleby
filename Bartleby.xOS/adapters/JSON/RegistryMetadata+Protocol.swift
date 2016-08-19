@@ -23,12 +23,12 @@ extension RegistryMetadata:RegistryMetadataProtocol {
                 throw RegistryMetadataError.DuplicatedCollectionName(name:m.collectionName)
             }
         }
-        collectionsMetadata.append(metadatum)
+        self.collectionsMetadata.append(metadatum)
     }
 
     dynamic public var storedPassword: String {
         get {
-            if (saveThePassword) {
+            if (self.saveThePassword) {
                 if let currentUser=currentUser {
                     return currentUser.password
                 }

@@ -25,19 +25,44 @@ import AppKit
 import UIKit
 #endif
 
+#if !USE_EMBEDDED_MODULES
+import ObjectMapper
+#endif
 
 
-public class BartlebyDocument : JDocument {
 
-    // MARK - Universal Type Support
+public class BartlebyDocument : Registry {
+
+    #if os(OSX)
+
+    required public init() {
+        super.init()
+        BartlebyDocument.declareTypes()
+    }
+
+    #else
+
+    private var _fileURL: NSURL
+
+    required public init(fileURL url: NSURL) {
+        self._fileURL = url
+        super.init(fileUrl: url)
+        BartlebyDocument.declareTypes()
+    }
+    #endif
+
+
+    // MARK  Universal Type Support
 
     override public class func declareTypes() {
         super.declareTypes()
     }
 
+
+    // MARK: - Collection Controllers
+
     private var _KVOContext: Int = 0
 
-    // Collection Controller
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
@@ -84,7 +109,7 @@ public class BartlebyDocument : JDocument {
 	}
 	
 
-    // MARK: - OSX
+    // MARK: - Array Controllers and automation (OSX)
  #if os(OSX) && !USE_EMBEDDED_MODULES
 
 
@@ -361,7 +386,7 @@ public class BartlebyDocument : JDocument {
 
 
 
-    // MARK: - DATA life cycle
+    // MARK: - Schemas
 
     /**
 
@@ -625,19 +650,6 @@ public class BartlebyDocument : JDocument {
 
 
     #endif
-    
-    #if os(OSX)
-
-    required public init() {
-        super.init()
-        BartlebyDocument.declareTypes()    }
-    #else
-
-    public required init(fileURL url: NSURL) {
-        super.init(fileURL: url)
-        BartlebyDocument.declareTypes()    }
-
-    #endif
 
     
     // MARK : new User facility 
@@ -664,8 +676,431 @@ public class BartlebyDocument : JDocument {
         user.document = self // Very important for the  document registry metadata current User
         return user
     }
-        
-      
+       
+     
+    // MARK: - Synchronization
+
+
+    // The EventSource URL for Server Sent Events
+    public dynamic lazy var sseURL:NSURL=NSURL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
+
+
+    // The online flag is driving the "connection" process
+    // It connects to the SSE and starts the supervisionLoop
+    public var online:Bool=false{
+        willSet{
+            // Transition on line
+            if newValue==true && online==false{
+                self._connectToSSE()
+                self._restartTasksGroups()
+            }
+            // Transition off line
+            if newValue==false && online==true{
+                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
+                self._closeSSE()
+                self._pauseTasksGroups()
+            }
+            if newValue==online{
+                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
+            }
+        }
+        didSet{
+            self.registryMetadata.online=online
+            self.startSupervisionLoopIfNecessary()
+        }
+    }
+
+    public var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
+
+    internal var _timer:NSTimer?
+
+
+    // MARK: SSE
+
+    // SSE server sent event source
+    internal var _sse:EventSource?
+
+    /**
+     Connect to SSE
+     */
+    internal func _connectToSSE() {
+        bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
+        // The connection is restricted to identified users
+        // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
+        LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
+
+            let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
+            self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
+
+            bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
+
+            self._sse!.addEventListener("relay") { (id, event, data) in
+                bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+
+                // Parse the Data
+
+                /*
+
+                 ```
+                 id: 1466684879     <- the Event ID
+                 event: relay       <- the Event Name
+                 data: {            <- the data
+
+                 "i":1,                                                     <- the trigger index
+                 "o":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The observation UID
+                 "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+                 "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID
+                 "c":"users",                                               <- The collection name
+                 "n":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+                 "a":"ReadUserbyId",                                        <- action   : The action to be triggered
+                 "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
+
+                 ```
+
+                 */
+                do {
+                    if let dataFromString=data?.dataUsingEncoding(NSUTF8StringEncoding){
+                        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(dataFromString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                            if  let index:Int=JSONDictionary["i"] as? Int,
+                                let observationUID:String=JSONDictionary["o"] as? String,
+                                let action:String=JSONDictionary["a"] as? String,
+                                let collectionName=JSONDictionary["c"] as? String,
+                                let uids=JSONDictionary["u"] as? String {
+
+                                let trigger=Trigger()
+                                trigger.spaceUID=self.spaceUID
+
+                                // Mandatory Trigger Data
+                                trigger.index=index
+                                trigger.observationUID=observationUID
+                                trigger.action=action
+                                trigger.targetCollectionName=collectionName
+                                trigger.UIDS=uids
+
+                                // Optional data
+                                // That may be omitted on triggering
+
+                                trigger.runUID=JSONDictionary["r"] as? String
+                                trigger.senderUID=JSONDictionary["s"] as? String
+                                trigger.origin=JSONDictionary["n"] as? String
+
+
+                                var triggers=[Trigger]()
+                                triggers.append(trigger)
+                                // Uses BartlebyDocument+Triggers extension.
+                                self._triggersHasBeenReceived(triggers)
+
+
+                            }
+                        }
+                    }
+
+                }catch{
+                    bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+                }
+            }
+
+        }) { (context) in
+            bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
+            self.registryMetadata.online=false
+        }
+
+    }
+
+    /**
+     Closes the Server sent EventSource
+     */
+    internal func _closeSSE() {
+        if let sse=self._sse{
+            sse.close()
+            self._sse=nil
+        }
+    }
+
+    // MARK: triggered data buffer serialization support
+
+    // To insure persistency of non integrated data.
+
+    private func _dataFrom_triggeredDataBuffer()->NSData?{
+        // We use a super dictionary to store the Trigger as JSON as key
+        // and the collectible items as value
+        var superDictionary=[String:[[String : AnyObject]]]()
+        for (trigger,dictionary) in self._triggeredDataBuffer{
+            if let k=trigger.toJSONString(){
+                superDictionary[k]=dictionary
+            }
+        }
+        do{
+            let data = try NSJSONSerialization.dataWithJSONObject(superDictionary, options:[])
+            return data
+        }catch{
+            bprint("Serialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+            return nil
+        }
+    }
+
+    private func _setUp_triggeredDataBuffer(from:NSData?){
+        if let data=from{
+            do{
+                if let superDictionary:[String:[[String : AnyObject]]] = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String:[[String : AnyObject]]]{
+                    for (jsonTrigger,dictionary) in superDictionary{
+                        if let trigger:Trigger = Mapper<Trigger>().map(jsonTrigger){
+                            self._triggeredDataBuffer[trigger]=dictionary
+                        }else{
+                            bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                        }
+                    }
+                }
+            }catch{
+                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+            }
+        }
+    }
+
+    /**
+
+     - returns: a bunch information on the current Buffer.
+     */
+    public func getTriggerBufferInformations()->String{
+
+        var informations="#Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
+
+        // Data buffer
+        for (trigger,dictionary) in self._triggeredDataBuffer {
+            let s = try?NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
+            let n = (s?.length ?? 0)
+            informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)  \(n)\n"
+        }
+
+        // Missing
+        let missing=self.missingContiguousTriggersIndexes()
+        informations += missing.reduce("Missing indexes (\(missing.count)): ", combine: { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        informations += "\n"
+
+        // TriggerIndexes
+        let triggersIndexes=self.registryMetadata.triggersIndexes
+
+        informations += "Trigger Indexes (\(triggersIndexes.count)): "
+        informations += triggersIndexes.reduce("", combine: { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        informations += "\n"
+
+        // Owned Indexes
+        let ownedTriggersIndexes=self.registryMetadata.ownedTriggersIndexes
+
+        informations += "Owned Indexes (\(ownedTriggersIndexes.count)): "
+        informations += ownedTriggersIndexes.reduce("", combine: { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        informations += "\n"
+        informations += "Last integrated trigger Index = \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
+
+
+        return informations
+    }
+
+
+
+
+    // MARK: - Local Persistency
+
+    #if os(OSX)
+
+
+    // MARK:  NSDocument
+
+    // MARK: Serialization
+    override public func fileWrapperOfType(typeName: String) throws -> NSFileWrapper {
+
+        self.registryWillSave()
+        let fileWrapper=NSFileWrapper(directoryWithFileWrappers:[:])
+        if var fileWrappers=fileWrapper.fileWrappers {
+
+            // ##############
+            // #1 Metadata
+            // ##############
+
+            // Try to store a preferred filename
+            self.registryMetadata.preferredFileName=self.fileURL?.lastPathComponent
+            // Save the triggered Data Buffer
+            self.registryMetadata.triggeredDataBuffer=self._dataFrom_triggeredDataBuffer()
+            var metadataNSData=self.registryMetadata.serialize()
+
+            metadataNSData = try Bartleby.cryptoDelegate.encryptData(metadataNSData)
+
+            // Remove the previous metadata
+            if let wrapper=fileWrappers[self._metadataFileName] {
+                fileWrapper.removeFileWrapper(wrapper)
+            }
+            let metadataFileWrapper=NSFileWrapper(regularFileWithContents: metadataNSData)
+            metadataFileWrapper.preferredFilename=self._metadataFileName
+            fileWrapper.addFileWrapper(metadataFileWrapper)
+
+            // ##############
+            // #2 Collections
+            // ##############
+
+            for metadatum: CollectionMetadatum in self.registryMetadata.collectionsMetadata {
+
+                if !metadatum.inMemory {
+                    let collectionfileName=self._collectionFileNames(metadatum).crypted
+                    // MONOLITHIC STORAGE
+                    if metadatum.storage == CollectionMetadatum.Storage.MonolithicFileStorage {
+
+                        if let collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
+
+                            // We use multiple files
+
+                            var collectionData = collection.serialize()
+                            collectionData = try Bartleby.cryptoDelegate.encryptData(collectionData)
+
+                            // Remove the previous data
+                            if let wrapper=fileWrappers[collectionfileName] {
+                                fileWrapper.removeFileWrapper(wrapper)
+                            }
+
+                            let collectionFileWrapper=NSFileWrapper(regularFileWithContents: collectionData)
+                            collectionFileWrapper.preferredFilename=collectionfileName
+                            fileWrapper.addFileWrapper(collectionFileWrapper)
+                        } else {
+                            // NO COLLECTION
+                        }
+                    } else {
+                        // SQLITE
+                    }
+
+                }
+            }
+
+
+            // Stores the last logs in a file.
+
+            self._logs += "{\"runUID\":\"\(Bartleby.runUID)\",\"date\":\"\(NSDate())\"}\(Bartleby.logSectionSeparator)"
+            self._logs += Bartleby.bprintCollection.toJSONString() ?? ""
+            let logs=NSFileWrapper(regularFileWithContents: self._logs.dataUsingEncoding(NSUTF8StringEncoding)!)
+            logs.preferredFilename=self._logsFileName
+            fileWrapper.addFileWrapper(logs)
+
+
+        }
+        return fileWrapper
+    }
+
+    // MARK: Deserialization
+
+
+    /**
+     Standard Bundles loading
+
+     - parameter fileWrapper: the file wrapper
+     - parameter typeName:    the type name
+
+     - throws: misc exceptions
+     */
+    override public func readFromFileWrapper(fileWrapper: NSFileWrapper, ofType typeName: String) throws {
+        if let fileWrappers=fileWrapper.fileWrappers {
+
+            // ##############
+            // #1 Metadata
+            // ##############
+
+            if let wrapper=fileWrappers[_metadataFileName] {
+                if var metadataNSData=wrapper.regularFileContents {
+                    metadataNSData = try Bartleby.cryptoDelegate.decryptData(metadataNSData)
+                    let r = try Bartleby.defaultSerializer.deserialize(metadataNSData)
+                    if let registryMetadata=r as? RegistryMetadata {
+                        self.registryMetadata=registryMetadata
+                    } else {
+                        // There is an error
+                        bprint("ERROR \(r)", file: #file, function: #function, line: #line)
+                        return
+                    }
+                    let registryUID=self.registryMetadata.rootObjectUID
+                    Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: registryUID)
+                    self.registryMetadata.currentUser?.document=self
+
+                    // Setup the triggered data buffer
+                    self._setUp_triggeredDataBuffer(self.registryMetadata.triggeredDataBuffer)
+                }
+            } else {
+                // ERROR
+            }
+
+
+            // ##############
+            // #2 Collections
+            // ##############
+
+            for metadatum in self.registryMetadata.collectionsMetadata {
+                // MONOLITHIC STORAGE
+                if metadatum.storage == CollectionMetadatum.Storage.MonolithicFileStorage {
+                    let names=self._collectionFileNames(metadatum)
+                    if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
+                        let filename=wrapper.filename
+                        if var collectionData=wrapper.regularFileContents {
+                            if let proxy=self.collectionByName(metadatum.collectionName) {
+                                if let path: NSString=filename {
+                                    let pathExtension="."+path.pathExtension
+                                    if  pathExtension == Registry.DATA_EXTENSION {
+                                        collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
+                                    }
+                                    try proxy.updateData(collectionData,provisionChanges: false)
+                                }
+                            } else {
+                                throw RegistryError.AttemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
+                            }
+                        }
+                    } else {
+                        // ERROR
+                    }
+                } else {
+                    // SQLite
+                }
+            }
+            do {
+                try self._refreshProxies()
+            } catch {
+                bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
+            }
+            
+            // 3 Logs
+            
+            if let wrapper=fileWrappers[self._logsFileName] {
+                if let logsData=wrapper.regularFileContents {
+                    self._logs=String(data: logsData,encoding: NSUTF8StringEncoding) ?? ""
+                }
+            } else {
+                // ERROR
+            }
+            
+            dispatch_async(GlobalQueue.Main.get(), {
+                self.registryDidLoad()
+            })
+        }
+    }
+    
+    #else
+    
+    
+    // MARK: iOS UIDocument serialization / deserialization
+    
+    // TODO: @bpds(#IOS) UIDocument support
+    
+    // SAVE content
+    override public func contentsForType(typeName: String) throws -> AnyObject {
+    return ""
+    }
+    
+    // READ content
+    override public func loadFromContents(contents: AnyObject, ofType typeName: String?) throws {
+    
+    }
+    
+    #endif  
+         
         
 
 }

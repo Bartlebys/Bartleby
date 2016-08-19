@@ -72,7 +72,7 @@ public class TestsConfiguration: BartlebyConfiguration {
         case Production
     }
 
-    static var currentEnvironment: Environment = .Development
+    static var currentEnvironment: Environment = .Alternative
 
     static private var __BASE_URL: NSURL {
         get {

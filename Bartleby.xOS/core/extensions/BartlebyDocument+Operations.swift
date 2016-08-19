@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 // MARK: -  Operation support
 
 extension BartlebyDocument {
@@ -209,5 +210,43 @@ extension BartlebyDocument {
         }
     }
 
+
+
+    /**
+     Restarts the tasks Group
+     */
+    internal func _restartTasksGroups(){
+        // Pause the taskGroup
+        for taskGroup in self.tasksGroups{
+            if taskGroup.totalTaskCount()>0{
+                // We reset to Paused to force the restart
+                taskGroup.status=TasksGroup.Status.Paused
+                do {
+                    bprint("Starting task Group \(taskGroup.UID)", file:#file, function:#function, line:#line)
+                    try taskGroup.start()
+                } catch let e {
+                    bprint("Error while restarting taskGroup \(e)", file:#file, function:#function, line:#line)
+                }
+            }
+        }
+
+    }
+
+
+    /**
+     Restarts the tasks Group
+     */
+    internal func _pauseTasksGroups(){
+        // Pause the taskGroup
+        for taskGroup in self.tasksGroups{
+            if taskGroup.totalTaskCount()>0{
+                taskGroup.pause()
+            }
+        }
+        
+    }
+    
+    
+    
 }
 

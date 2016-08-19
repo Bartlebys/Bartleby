@@ -72,7 +72,6 @@
 		E50F414A1D40D5FF00532B09 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40B51D40D5FF00532B09 /* Base64DataTransform.swift */; };
 		E50F414B1D40D5FF00532B09 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40B61D40D5FF00532B09 /* CollectionMetadatum+Proxy.swift */; };
 		E50F414C1D40D5FF00532B09 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40B71D40D5FF00532B09 /* ImageTransform.swift */; };
-		E50F414D1D40D5FF00532B09 /* JDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40B81D40D5FF00532B09 /* JDocument.swift */; };
 		E50F414E1D40D5FF00532B09 /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40B91D40D5FF00532B09 /* JHTTPCommand.swift */; };
 		E50F414F1D40D5FF00532B09 /* JHTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40BA1D40D5FF00532B09 /* JHTTPResponse.swift */; };
 		E50F41501D40D5FF00532B09 /* JObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40BB1D40D5FF00532B09 /* JObject.swift */; };
@@ -273,7 +272,6 @@
 		E50F40B51D40D5FF00532B09 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E50F40B61D40D5FF00532B09 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
 		E50F40B71D40D5FF00532B09 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
-		E50F40B81D40D5FF00532B09 /* JDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JDocument.swift; sourceTree = "<group>"; };
 		E50F40B91D40D5FF00532B09 /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
 		E50F40BA1D40D5FF00532B09 /* JHTTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPResponse.swift; sourceTree = "<group>"; };
 		E50F40BB1D40D5FF00532B09 /* JObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObject.swift; sourceTree = "<group>"; };
@@ -581,7 +579,6 @@
 				E50F40B51D40D5FF00532B09 /* Base64DataTransform.swift */,
 				E50F40B61D40D5FF00532B09 /* CollectionMetadatum+Proxy.swift */,
 				E50F40B71D40D5FF00532B09 /* ImageTransform.swift */,
-				E50F40B81D40D5FF00532B09 /* JDocument.swift */,
 				E50F40B91D40D5FF00532B09 /* JHTTPCommand.swift */,
 				E50F40BA1D40D5FF00532B09 /* JHTTPResponse.swift */,
 				E50F40BB1D40D5FF00532B09 /* JObject.swift */,
@@ -1011,7 +1008,6 @@
 				E50F41651D40D5FF00532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E50F41181D40D5FF00532B09 /* ExternalReference.swift in Sources */,
 				E50F41361D40D5FF00532B09 /* ReadGroupById.swift in Sources */,
-				E50F414D1D40D5FF00532B09 /* JDocument.swift in Sources */,
 				E50F41161D40D5FF00532B09 /* CollectionMetadatum.swift in Sources */,
 				E50F417F1D40D5FF00532B09 /* SuperIterable.swift in Sources */,
 				E50F41311D40D5FF00532B09 /* DeleteLockers.swift in Sources */,
