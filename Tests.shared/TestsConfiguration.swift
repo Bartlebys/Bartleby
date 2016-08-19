@@ -51,6 +51,9 @@ public class TestsConfiguration: BartlebyConfiguration {
     // If set to JSON for example would be Indented
     public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
 
+    // Supervision loop interval (1 second min )
+    public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
+
     public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double=Double(1/100)
 
     // The min password size

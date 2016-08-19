@@ -51,6 +51,9 @@ public protocol BartlebyConfiguration {
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     static var PASSWORD_CHAR_CART: String { get set }
 
+    // Supervision loop interval (1 second min )
+    static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
+
     // Delay between chained operations
     static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double { get set }
 
@@ -99,6 +102,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // The min password size
     public static var MIN_PASSWORD_SIZE: UInt=6
+
+    // Supervision loop interval (1 second min )
+    public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
     // Delay between chained operations
     public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double=Double(1/10)

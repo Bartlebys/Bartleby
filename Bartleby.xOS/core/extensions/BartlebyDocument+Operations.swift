@@ -17,7 +17,7 @@ extension BartlebyDocument {
 
     func startSupervisionLoopIfNecessary() {
         if self._timer==nil{
-            self._timer=NSTimer(timeInterval: 1, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
+            self._timer=NSTimer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
             NSRunLoop.currentRunLoop().addTimer(self._timer!, forMode: NSRunLoopCommonModes)
         }
     }
