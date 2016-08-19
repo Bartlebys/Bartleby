@@ -21,6 +21,15 @@ import ObjectMapper
         return "User"
     }
 
+	//An external unique identifier
+	dynamic public var externalID:String? {	 
+	    didSet { 
+	       if externalID != oldValue {
+	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
+	       } 
+	    }
+	}
+
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	dynamic public var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    didSet { 
@@ -150,6 +159,7 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
+		self.externalID <- ( map["externalID"] )
 		self.spaceUID <- ( map["spaceUID"] )
 		self.verificationMethod <- ( map["verificationMethod"] )
 		self.firstname <- ( map["firstname"] )
@@ -171,6 +181,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
+		self.externalID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"externalID") as NSString?)
 		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
 		self.verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
 		self.firstname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "firstname")! as NSString)
@@ -189,6 +200,9 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
+		if let externalID = self.externalID {
+			coder.encodeObject(externalID,forKey:"externalID")
+		}
 		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
 		coder.encodeObject(self.verificationMethod.rawValue ,forKey:"verificationMethod")
 		coder.encodeObject(self.firstname,forKey:"firstname")
