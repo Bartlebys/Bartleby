@@ -150,15 +150,19 @@ extension BartlebyDocument {
                 // lets create this task.
                 let registryUIDString=JString(from:self.UID)
                 let pushPendingOperationsTask=PushPendingOperationsTask(arguments:registryUIDString)
-                try group.appendChainedTask(pushPendingOperationsTask)
+                try group.addTask(pushPendingOperationsTask)
             }else{
                 // There is already a PushPendingOperationsTask
-                // So we will append chained task if necessary.
                 if let pushPendingOperationsTask:PushPendingOperationsTask=group.tasks.first?.toLocalInstance(){
+
+                    // Each time we call _commitAndPushPendingOperations 
+                    // we try to group add Concurrent calls. 
+                    // That's why we add directly the task to the group not to the lastTasks
+                    // We prefer to add to the group
                     for operation in self.operations{
                         if !pushPendingOperationsTask.containsOperation(operation){
                             let task=PushOperationTask(arguments:operation)
-                            try group.appendChainedTask(task)
+                            try group.addTask(task)
                         }
                     }
                 }
