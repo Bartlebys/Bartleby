@@ -57,18 +57,14 @@ public func bprint(message: AnyObject, file: String, function: String, line: Int
 
 
 public func removeExternalReferenceWith(instanceUID: String, inout from externalReferences: [ExternalReference]) {
-    for (index, reference) in externalReferences.enumerate().reverse() {
-        if reference.iUID==instanceUID {
-            externalReferences.removeAtIndex(index)
-        }
+    if let idx=externalReferences.indexOf({$0.iUID == instanceUID}){
+        externalReferences.removeAtIndex(idx)
     }
 }
 
 public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inout from collection: [T]) {
-    for (index, instance) in collection.enumerate().reverse() {
-        if instance.UID==instanceUID {
-            collection.removeAtIndex(index)
-        }
+    if let idx=collection.indexOf({$0.UID == instanceUID}){
+        collection.removeAtIndex(idx)
     }
 }
 
