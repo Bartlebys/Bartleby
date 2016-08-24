@@ -139,7 +139,6 @@ public extension TasksGroup {
     public func addTask(task: Task) throws {
 
         try self._insurePersistencyOfTask(task)
-
         if let _ = task.group {
             throw TasksGroupError.AttemptToAddTaskInMultipleGroups
         }
@@ -156,18 +155,19 @@ public extension TasksGroup {
             let g = task.group?.iUID ?? Default.NO_GROUP
             bprint("Adding Grouped \(s) to \(t) in \(g)", file: #file, function: #function, line: #line, category:TasksScheduler.BPRINT_CATEGORY)
         }
-
     }
 
-    /**
-     Appends a task to the last task
 
-     - parameter task: the task to be sequentially added
+    /**
+     Appends a task to the last chained task
+     This task becomes the last chained task
+
+     - parameter task: the task to be  added
      */
     public func appendChainedTask(task: Task) throws {
         defer {
-            self.lastChainedTask=ExternalReference(from: task)
             task.group=ExternalReference(from: self)
+            self.lastChainedTask=ExternalReference(from: task)
         }
         try self._insurePersistencyOfTask(task)
         if self.lastChainedTask == nil {
@@ -190,7 +190,6 @@ public extension TasksGroup {
             throw TasksGroupError.TaskGroupRegistryWithUIDNotFound(registryUID: self.registryUID)
         }
     }
-
 
 
     /**

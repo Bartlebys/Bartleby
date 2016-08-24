@@ -135,15 +135,16 @@ extension BartlebyDocument {
      */
     private func _commitAndPushPendingOperations()throws {
 
-        // We ask the for taskGroup
-        let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(self.UID)", inDocument: self)
-        group.priority=TasksGroup.Priority.Background
-
         // Commit the pending changes (if there are changes)
+        // Each changed object creates a new Operation
         try self.commitPendingChanges()
 
         // We donnot want to schedule anything if there is nothing to do.
         if self.operations.count > 0 {
+
+            // We ask the for taskGroup
+            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(self.UID)", inDocument: self)
+            group.priority=TasksGroup.Priority.Background
 
             if group.tasks.count==0{
                 // There is no root PushPendingOperationsTask tasks to the group
@@ -160,22 +161,16 @@ extension BartlebyDocument {
                     // That's why we add directly the task to the group not to the lastTasks
                     // We prefer to add to the group
                     for operation in self.operations{
-                        if !pushPendingOperationsTask.containsOperation(operation){
-                            let task=PushOperationTask(arguments:operation)
-                            try group.addTask(task)
-                        }
+                        try pushPendingOperationsTask.addOperationIfNecessary(operation)
                     }
                 }
             }
-
             // Let's resume the group if it is paused
             if  group.status == .Paused{
                 try group.start()
             }
         }
-
     }
-
 
 
 

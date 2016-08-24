@@ -45,8 +45,7 @@ public class PushPendingOperationsTask: Task, ConcreteTask {
     }
 
     /**
-     #1 this task commit the pending tasks.
-     #2 Append the Push operation tasks
+     Adds all pending operation to the task group
      */
     public override func invoke() {
         super.invoke()
@@ -56,15 +55,11 @@ public class PushPendingOperationsTask: Task, ConcreteTask {
                 //  Append the operations tasks.
                 do {
                     if let groupReference=self.group {
-                        if let group: TasksGroup=groupReference.toLocalInstance() {
-                            // Let's add all the operations to the group.
-                            // #2 add the operations tasks.
+                        if let _: TasksGroup=groupReference.toLocalInstance() {
+                            // Let's add all the operations to the group
                             for operation in document.operations.items {
-                                self._plannedOperations.append(operation)
-                                let task=PushOperationTask(arguments:operation)
-                                try group.appendChainedTask(task)
+                                try self.addOperationIfNecessary(operation)
                             }
-
                             let completion=Completion.successState()
                             self.complete(completion)
                         } else {
@@ -97,6 +92,24 @@ public class PushPendingOperationsTask: Task, ConcreteTask {
         }
     }
 
+    /**
+     Adds the operation to the Push tasks if required.
+     - parameter operation: operation description
+     */
+    public func addOperationIfNecessary(operation:Operation)throws{
+        if let groupReference=self.group {
+            if let group: TasksGroup=groupReference.toLocalInstance() {
+                if !self.containsOperation(operation){
+                    self._plannedOperations.append(operation)
+                    let task=PushOperationTask(arguments:operation)
+                    try group.appendChainedTask(task)
+                }
+            }
+        }
+    }
+
+
+
     // We keep track of the planned operations.
     // to allow to add other task to the group during its execution.
     private var _plannedOperations=[Operation]()
@@ -104,5 +117,5 @@ public class PushPendingOperationsTask: Task, ConcreteTask {
     public func containsOperation(operation:Operation)->Bool{
         return self._plannedOperations.contains({$0.UID==operation.UID})
     }
-
+    
 }
