@@ -84,7 +84,7 @@ import ObjectMapper
 	}
 
 	//If set to true any object creation, update, or deletion will be pushed to the server immediately
-	dynamic public var pushOnChanges:Bool = true  {	 
+	dynamic public var pushOnChanges:Bool = false  {	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
