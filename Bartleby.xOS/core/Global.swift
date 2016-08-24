@@ -53,20 +53,25 @@ public func bprint(message: AnyObject, file: String, function: String, line: Int
 
 
 
-// MARK: - ExternalReferencing
 
 
+
+// MARK: - ExternalReferences facilities
+
+
+/**
+ Removes and external references
+
+ - parameter instanceUID:        its UID
+ - parameter externalReferences: the reference to the externalReferences collection
+ */
 public func removeExternalReferenceWith(instanceUID: String, inout from externalReferences: [ExternalReference]) {
     if let idx=externalReferences.indexOf({$0.iUID == instanceUID}){
         externalReferences.removeAtIndex(idx)
     }
 }
 
-public func deReferenceInstanceWithUID<T: Collectible>(instanceUID: String, inout from collection: [T]) {
-    if let idx=collection.indexOf({$0.UID == instanceUID}){
-        collection.removeAtIndex(idx)
-    }
-}
+
 
 public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [ExternalReference] {
     var externalReferences=[ExternalReference]()
