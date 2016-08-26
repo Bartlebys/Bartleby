@@ -11,17 +11,9 @@ import Foundation
 
 public class BFileManager: NSObject,BartlebyFileIO {
 
-
-    private var _queue=GlobalQueue.UserInitiated.get()
-
-    /**
-     Initialize the File manage on a specific queue.
-     - parameter onQueue: the dispatch queue
-     */
-    public convenience init(onQueue:dispatch_queue_t){
-        self.init()
-        self._queue=onQueue
-    }
+    // IMPORTANT NOTICE
+    // When using BFileManager via XPC remember that the Handlers closure are not on your App Main Queue.
+    // You should dispatch on the Main Queue if you perform any UI related action.
 
     // MARK: - Local File system
 
@@ -36,14 +28,12 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func createDirectoryAtPath(path: String,
-                               handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                                      handlers: Handlers) {
+        do {
+            try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
 
@@ -56,15 +46,14 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func readData( contentsOfFile path: String,
-                                  handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                let data=try NSData(contentsOfFile: path, options: [])
-                handlers.on(Completion.successState(data: data))
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                                         handlers: Handlers) {
+        do {
+            let data=try NSData(contentsOfFile: path, options: [])
+            handlers.on(Completion.successState(data: data))
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -77,16 +66,15 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func writeData( data: NSData,
-                    path: String,
-                    handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try data.writeToFile(path, options:[])
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                           path: String,
+                           handlers: Handlers) {
+        do {
+            try data.writeToFile(path, options:[])
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
 
     }
 
@@ -97,21 +85,21 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - parameter handlers:            the progress and completion handlers
      */
     public func readString(contentsOfFile path: String,
-                                   handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                let data=try NSData(contentsOfFile: path, options: [])
-                if let s = String(data: data, encoding: Default.STRING_ENCODING) {
-                    let read = Completion.successState()
-                    read.setStringResult(s)
-                    handlers.on(read)
-                } else {
-                    handlers.on(Completion.failureState("\(path) doesn't contains valid data for given encoding \(Default.STRING_ENCODING)", statusCode: .Unsupported_Media_Type))
-                }
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
+                                          handlers: Handlers) {
+
+        do {
+            let data=try NSData(contentsOfFile: path, options: [])
+            if let s = String(data: data, encoding: Default.STRING_ENCODING) {
+                let read = Completion.successState()
+                read.setStringResult(s)
+                handlers.on(read)
+            } else {
+                handlers.on(Completion.failureState("\(path) doesn't contains valid data for given encoding \(Default.STRING_ENCODING)", statusCode: .Unsupported_Media_Type))
             }
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
 
@@ -127,16 +115,15 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func writeString( string: String,
-                      path: String,
-                      handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try string.writeToFile(path, atomically: true, encoding: Default.STRING_ENCODING)
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                             path: String,
+                             handlers: Handlers) {
+        do {
+            try string.writeToFile(path, atomically: true, encoding: Default.STRING_ENCODING)
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -148,15 +135,14 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns:  N/A
      */
     public func itemExistsAtPath(path: String,
-                          handlers: Handlers) {
-        dispatch_async(self._queue) {
-            var isADirectory: ObjCBool = false
-            if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
-                handlers.on(Completion.successState())
-            } else {
-                handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
-            }
+                                 handlers: Handlers) {
+        var isADirectory: ObjCBool = false
+        if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
+            handlers.on(Completion.successState())
+        } else {
+            handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
         }
+
     }
 
     /**
@@ -168,19 +154,18 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns:  N/A
      */
     public func fileExistsAtPath(path: String,
-                          handlers: Handlers) {
-        dispatch_async(self._queue) {
-            var isADirectory: ObjCBool = false
-            if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
-                if isADirectory.boolValue {
-                    handlers.on(Completion.failureState("\(path) is a directory", statusCode: .Unsupported_Media_Type))
-                } else {
-                    handlers.on(Completion.successState())
-                }
+                                 handlers: Handlers) {
+        var isADirectory: ObjCBool = false
+        if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
+            if isADirectory.boolValue {
+                handlers.on(Completion.failureState("\(path) is a directory", statusCode: .Unsupported_Media_Type))
             } else {
-                handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
+                handlers.on(Completion.successState())
             }
+        } else {
+            handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
         }
+
     }
 
     /**
@@ -192,19 +177,18 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns:  N/A
      */
     public func directoryExistsAtPath(path: String,
-                               handlers: Handlers) {
-        dispatch_async(self._queue) {
-            var isADirectory: ObjCBool = false
-            if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
-                if isADirectory.boolValue {
-                    handlers.on(Completion.successState())
-                } else {
-                    handlers.on(Completion.failureState("\(path) is a file", statusCode: .Unsupported_Media_Type))
-                }
+                                      handlers: Handlers) {
+        var isADirectory: ObjCBool = false
+        if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isADirectory) {
+            if isADirectory.boolValue {
+                handlers.on(Completion.successState())
             } else {
-                handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
+                handlers.on(Completion.failureState("\(path) is a file", statusCode: .Unsupported_Media_Type))
             }
+        } else {
+            handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .Not_Found))
         }
+
     }
 
     /**
@@ -215,15 +199,14 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - parameter handlers:            the progress and completion handlers
      */
     public func removeItemAtPath(path: String,
-                          handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try NSFileManager.defaultManager().removeItemAtPath(path)
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                                 handlers: Handlers) {
+        do {
+            try NSFileManager.defaultManager().removeItemAtPath(path)
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -236,16 +219,15 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func copyItemAtPath(srcPath: String,
-                        toPath dstPath: String,
-                               handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try NSFileManager.defaultManager().copyItemAtPath(srcPath, toPath: dstPath)
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                               toPath dstPath: String,
+                                      handlers: Handlers) {
+        do {
+            try NSFileManager.defaultManager().copyItemAtPath(srcPath, toPath: dstPath)
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -258,15 +240,13 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func moveItemAtPath(srcPath: String,
-                        toPath dstPath: String,
-                               handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                try NSFileManager.defaultManager().moveItemAtPath(srcPath, toPath: dstPath)
-                handlers.on(Completion.successState())
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                               toPath dstPath: String,
+                                      handlers: Handlers) {
+        do {
+            try NSFileManager.defaultManager().moveItemAtPath(srcPath, toPath: dstPath)
+            handlers.on(Completion.successState())
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
     }
 
@@ -280,16 +260,15 @@ public class BFileManager: NSObject,BartlebyFileIO {
      - returns: N/A
      */
     public func contentsOfDirectoryAtPath(path: String,
-                                   handlers: Handlers) {
-        dispatch_async(self._queue) {
-            do {
-                let content=try NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
-                let c = Completion.successState()
-                c.setStringArrayResult(content)
-                handlers.on(c)
-            } catch let error as NSError {
-                handlers.on(Completion.failureStateFromError(error))
-            }
+                                          handlers: Handlers) {
+        do {
+            let content=try NSFileManager.defaultManager().contentsOfDirectoryAtPath(path)
+            let c = Completion.successState()
+            c.setStringArrayResult(content)
+            handlers.on(c)
+        } catch let error as NSError {
+            handlers.on(Completion.failureStateFromError(error))
         }
+        
     }
 }
