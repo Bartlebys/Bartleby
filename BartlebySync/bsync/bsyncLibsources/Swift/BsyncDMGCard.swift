@@ -36,7 +36,7 @@ import Foundation
 
     // The last kwnow path (if not correct the client should ask for a path)
     // The full path including the ".sparseimage" extension.
-    public var imagePath: String=BsyncDMGCard.NOT_SET
+    public var imagePath: String=BsyncDMGCard.NO_PATH
 
     // The associated volumeName
     public var volumeName: String=BsyncDMGCard.NOT_SET
@@ -95,7 +95,7 @@ import Foundation
         // Verify that everything has been set.
         if (userUID == BsyncDMGCard.NOT_SET ||
             contextUID == BsyncDMGCard.NOT_SET ||
-            imagePath == BsyncDMGCard.NOT_SET ||
+            imagePath == BsyncDMGCard.NO_PATH ||
             volumeName == BsyncDMGCard.NOT_SET) {
             return Completion.failureState(NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n", statusCode: .Bad_Request)
         } else {

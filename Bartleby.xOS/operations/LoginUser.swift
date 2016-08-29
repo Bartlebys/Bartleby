@@ -29,8 +29,8 @@ public class LoginUser: JObject {
 
                 // A valid registry is required for any authentication.
                 // So you must create a Document and use its spaceUID before to login.
-
-                let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID,"password":password, "identification":registry.registryMetadata.identificationMethod.rawValue]
+                let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(password)) ?? password
+                let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID,"password":cryptoPassword, "identification":registry.registryMetadata.identificationMethod.rawValue]
 
                 let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
                 let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)

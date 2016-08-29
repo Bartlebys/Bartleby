@@ -166,7 +166,7 @@ import ObjectMapper
 		self.lastname <- ( map["lastname"] )
 		self.email <- ( map["email"] )
 		self.phoneNumber <- ( map["phoneNumber"] )
-		self.password <- ( map["password"] )
+		self.password <- ( map["password"], CryptedStringTransform() )
 		self.activationCode <- ( map["activationCode"] )
 		self.status <- ( map["status"] )
 		self.tags <- ( map["tags"] )

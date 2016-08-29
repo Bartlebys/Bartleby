@@ -12,7 +12,7 @@ import BartlebyKit
 class BFileManagerTests: TestCase {
 
 
-    let fm = BFileManager(onQueue:dispatch_get_main_queue())
+    let fm = BFileManager()
 
     static let folder = BFileManagerTests.assetPath + Bartleby.randomStringWithLength(6) + "/"
 
