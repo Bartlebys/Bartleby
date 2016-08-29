@@ -39,7 +39,7 @@ class LocalDMGSyncTests: LocalSyncTests {
 
         self._masterDMGName = LocalDMGSyncTests._prefix+"_Master"
         self._masterDMGPath = self.assetPath + self._masterDMGName
-        self._masterDMGFullPath = self._masterDMGPath + ".sparseimage"
+        self._masterDMGFullPath = self._masterDMGPath + "."+BsyncDMGCard.DMG_EXTENSION
         self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"
         self._masterVolumeURL = NSURL(fileURLWithPath: self._masterVolumePath)
         
@@ -48,7 +48,7 @@ class LocalDMGSyncTests: LocalSyncTests {
         
         self._slaveDMGName = LocalDMGSyncTests._prefix+"_Slave"
         self._slaveDMGPath = self.assetPath + self._slaveDMGName
-        self._slaveDMGFullPath = self._slaveDMGPath + ".sparseimage"
+        self._slaveDMGFullPath = self._slaveDMGPath + "." + BsyncDMGCard.DMG_EXTENSION
         self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"
         self._slaveVolumeURL = NSURL(fileURLWithPath: self._slaveVolumePath)
         

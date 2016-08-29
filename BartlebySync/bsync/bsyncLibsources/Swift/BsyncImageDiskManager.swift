@@ -112,7 +112,7 @@
             let completion = Completion.defaultState()
             if createImageDiskTask.terminationStatus==0 {
                 completion.success = true
-                completion.setStringResult("\(imageFilePath).sparseimage")
+                completion.setStringResult("\(imageFilePath)."+BsyncDMGCard.DMG_EXTENSION)
             } else {
                 completion.message = "Error during image disk creation: \(imageFilePath)"
             }

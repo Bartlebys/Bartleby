@@ -231,7 +231,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         let hashName=CryptoHelper.hash(user.UID+context.UID)
         let imageFolderPath = (isMaster ? "\(destination)\(hashName)" : "\(destination)\(hashName)")
 
-        let imagePath =  "\(imageFolderPath).sparseimage"
+        let imagePath =  "\(imageFolderPath)."+BsyncDMGCard.DMG_EXTENSION
         let volumeName = (isMaster ? "Master_"+context.name : hashName)
 
         let card=BsyncDMGCard()
