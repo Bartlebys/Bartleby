@@ -508,64 +508,99 @@ public class BartlebyDocument : Registry {
 
                     
             if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
-                if let tasks=self.tasksArrayController?.selectedObjects as? [Task] {
+                if let tasks = self.tasksArrayController?.selectedObjects as? [Task] {
+                     if let selectedTask = self.selectedTasks{
+                        if selectedTask == tasks{
+                            return // No changes
+                        }
+                     }
                     self.selectedTasks=tasks
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
-                if let tasksGroups=self.tasksGroupsArrayController?.selectedObjects as? [TasksGroup] {
+                if let tasksGroups = self.tasksGroupsArrayController?.selectedObjects as? [TasksGroup] {
+                     if let selectedTasksGroup = self.selectedTasksGroups{
+                        if selectedTasksGroup == tasksGroups{
+                            return // No changes
+                        }
+                     }
                     self.selectedTasksGroups=tasksGroups
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
-                if let users=self.usersArrayController?.selectedObjects as? [User] {
+                if let users = self.usersArrayController?.selectedObjects as? [User] {
+                     if let selectedUser = self.selectedUsers{
+                        if selectedUser == users{
+                            return // No changes
+                        }
+                     }
                     self.selectedUsers=users
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
-                if let lockers=self.lockersArrayController?.selectedObjects as? [Locker] {
+                if let lockers = self.lockersArrayController?.selectedObjects as? [Locker] {
+                     if let selectedLocker = self.selectedLockers{
+                        if selectedLocker == lockers{
+                            return // No changes
+                        }
+                     }
                     self.selectedLockers=lockers
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
-                if let groups=self.groupsArrayController?.selectedObjects as? [Group] {
+                if let groups = self.groupsArrayController?.selectedObjects as? [Group] {
+                     if let selectedGroup = self.selectedGroups{
+                        if selectedGroup == groups{
+                            return // No changes
+                        }
+                     }
                     self.selectedGroups=groups
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
-                if let operations=self.operationsArrayController?.selectedObjects as? [Operation] {
+                if let operations = self.operationsArrayController?.selectedObjects as? [Operation] {
+                     if let selectedOperation = self.selectedOperations{
+                        if selectedOperation == operations{
+                            return // No changes
+                        }
+                     }
                     self.selectedOperations=operations
-                    return
                 }
+                return
             }
             
 
             
             if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
-                if let permissions=self.permissionsArrayController?.selectedObjects as? [Permission] {
+                if let permissions = self.permissionsArrayController?.selectedObjects as? [Permission] {
+                     if let selectedPermission = self.selectedPermissions{
+                        if selectedPermission == permissions{
+                            return // No changes
+                        }
+                     }
                     self.selectedPermissions=permissions
-                    return
                 }
+                return
             }
             
 
