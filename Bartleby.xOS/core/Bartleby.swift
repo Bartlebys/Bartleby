@@ -509,8 +509,7 @@ public protocol BprintObserver{
         if decorative {
             return "\(message)"
         }
-        let s="\(self.padded(counter, 6)) \( category) | \(self.padded( elapsed, 3, "0", false)) \(file))/\(function)#\(line) : \(message)"
-
+        let s="\(self.padded(counter, 6)) \( category) | \(self.padded( elapsed, 3, "0", false)) \(file)/\(function)#\(line) : \(message)"
         return  s
     }
 
