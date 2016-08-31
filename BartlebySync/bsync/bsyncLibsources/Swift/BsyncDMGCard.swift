@@ -50,7 +50,7 @@ import Foundation
     /// Returns the absolute volume path
     public var volumePath: String {
         get {
-            return "/Volumes/\(volumeName)"
+            return "/Volumes/\(volumeName)/"
         }
     }
 
@@ -58,9 +58,9 @@ import Foundation
     public var standardDirectivesPath: String {
         get {
             if self.directivesRelativePath != BsyncDMGCard.NO_PATH {
-                 return self.volumePath+"/\(self.directivesRelativePath)"
+                 return self.volumePath+"\(self.directivesRelativePath)"
             } else {
-                return self.volumePath+"/\(BsyncDirectives.DEFAULT_FILE_NAME)"
+                return self.volumePath+"\(BsyncDirectives.DEFAULT_FILE_NAME)"
             }
 
         }
