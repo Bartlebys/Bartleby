@@ -21,7 +21,7 @@ extension Progression:ForwardableState {
 extension Progression:Descriptible {
 
     public func toString() -> String {
-        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.length ?? 0 ) bytes of data.\n\(message)"
+        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.length ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
     }
 
 }
@@ -50,6 +50,20 @@ public extension Progression {
         self.data = data
     }
 
+
+    /**
+     Used to identify states
+
+     - parameter category: the category classifier
+     - parameter identity: the identity
+
+     - returns: the state
+     */
+    public func identifiedBy(_ category:String,_ identity:String)->Progression{
+        self.category=category
+        self.externalIdentifier=identity
+        return self
+    }
 
     /**
      The default state

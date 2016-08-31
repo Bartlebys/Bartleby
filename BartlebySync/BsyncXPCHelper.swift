@@ -1,5 +1,5 @@
 //
-//  BsyncXPCDMGManager.swift
+//  BsyncXPCHelper.swift
 //  BsyncXPC Client
 //
 //  Created by Benoit Pereira da silva on 29/01/2016.
@@ -27,6 +27,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
         connection.resume()
         return connection
     }()
+
 
     func touch(handlers: Handlers) {
         if let xpc = self.bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {

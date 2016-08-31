@@ -57,6 +57,10 @@ import ObjectMapper
 	    }
 	}
 
+	//A category to discriminate bunch of completion states
+	dynamic public var category:String = ""
+	//An external identifier
+	dynamic public var externalIdentifier:String = ""
 
 
     // MARK: Mappable
@@ -72,6 +76,8 @@ import ObjectMapper
 		self.statusCode <- ( map["statusCode"] )
 		self.message <- ( map["message"] )
 		self.data <- ( map["data"], Base64DataTransform() )
+		self.category <- ( map["category"] )
+		self.externalIdentifier <- ( map["externalIdentifier"] )
         self.enableSuperVisionAndCommit()
     }
 
@@ -85,6 +91,8 @@ import ObjectMapper
 		self.statusCode=decoder.decodeIntegerForKey("statusCode") 
 		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
 		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
+		self.category=String(decoder.decodeObjectOfClass(NSString.self, forKey: "category")! as NSString)
+		self.externalIdentifier=String(decoder.decodeObjectOfClass(NSString.self, forKey: "externalIdentifier")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
@@ -97,6 +105,8 @@ import ObjectMapper
 		if let data = self.data {
 			coder.encodeObject(data,forKey:"data")
 		}
+		coder.encodeObject(self.category,forKey:"category")
+		coder.encodeObject(self.externalIdentifier,forKey:"externalIdentifier")
     }
 
 
