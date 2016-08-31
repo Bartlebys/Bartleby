@@ -8,18 +8,52 @@
 import Foundation
 
 
-// MARK: - TypeExternalReferences
+// MARK: -
 
-//  A composed Closure with a progress and acompletion section
-//  Generally Used in XPC facades because we can pass only one handler per XPC call
-//  To consume and manipulate we generally split the ComposedHandler by calling Handlers.handlersFrom(composed)
-public typealias ComposedHandler = (progressionState: Progression?, completionState: Completion?)->()
+/*
+ ProgressHandler
 
-//ProgressHandler
+```
+let onProgression:CompletionHandler = { progression in
+    previousHandler(progression)// Invoke
+    ...
+}
+```
+*/
 public typealias ProgressHandler = (_: Progression) -> ()
 
-//CompletionHandler
+/*
+ CompletionHandler
+ You can chain handlers:
+ 
+ ```
+ let onCompletion:CompletionHandler = { completion in
+    previousHandler(completion)// Invoke
+    ...
+ }
+ ```
+ */
 public typealias CompletionHandler = (_: Completion) -> ()
+
+// !!! TO DEPRECATED we use Bidirectionnal XPC
+
+/*
+ A composed Closure with a progress and acompletion section
+ Generally Used in XPC facades because we can pass only one handler per XPC call
+ To consume and manipulate we generally split the ComposedHandler by calling Handlers.handlersFrom(composed)
+ You can instanciate a ComposedHandler :
+ ```
+ let handler: ComposedHandler = {(progressionState, completionState) -> Void in
+    if let progression=progressionState {
+    }
+    if let completion=completionState {
+    }
+ }
+ ```
+ Or you can create one from a Handlers instance by calling `composedHandler()`
+ */
+public typealias ComposedHandler = (progressionState: Progression?, completionState: Completion?)->()
+
 
 
 
@@ -29,14 +63,13 @@ protocol Reactive {
 }
 
 
-
-// MARK: -
+// MARK: - Handlers
 
 /**
- * Composable handlers with at least one Completion Handler
+ * Composable handlers
  * You can compose multiple completion and progression
  */
-public class Handlers: NSObject {
+@objc(Handlers) public class Handlers: NSObject {
 
     // MARK: Progression handlers
 

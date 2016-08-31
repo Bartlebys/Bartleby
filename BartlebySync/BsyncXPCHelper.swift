@@ -16,7 +16,7 @@ import Foundation
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-public class BsyncXPCHelper: NSObject, BartlebyFileIO {
+public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
 
     static var masterFileName="Master"
 
@@ -35,6 +35,20 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
             handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
         }
     }
+
+
+    // MARK: - BartlebyXPCMonitoring
+
+    public func receiveProgression(progression:Progression,identifiedBy identifier:String){
+        bprint("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+    }
+
+    public func receiveCompletion(completion:Completion,identifiedBy identifier:String){
+        bprint("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+    }
+
+
+
 
     // MARK: - DMG Creation
 

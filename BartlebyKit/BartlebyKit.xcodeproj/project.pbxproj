@@ -324,6 +324,7 @@
 		E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */; };
 		E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -565,6 +566,7 @@
 		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyXPCMonitoring.swift; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
 		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
@@ -672,6 +674,7 @@
 		E50F3D111D40D50400532B09 /* Bartleby.xOS */ = {
 			isa = PBXGroup;
 			children = (
+				E50F3ADF1D40D27F00532B09 /* Bartleby.OSX-Apps */,
 				E50F3D121D40D50400532B09 /* _generated */,
 				E50F3D521D40D50400532B09 /* adapters */,
 				E50F3D5E1D40D50400532B09 /* components */,
@@ -1032,8 +1035,8 @@
 		E576E0A81C3A67BD00F1ED6B = {
 			isa = PBXGroup;
 			children = (
+				E57F20711D76B7AF006DA998 /* XPC.OSX */,
 				E50F3D111D40D50400532B09 /* Bartleby.xOS */,
-				E50F3ADF1D40D27F00532B09 /* Bartleby.OSX-Apps */,
 				E50F3EC11D40D51E00532B09 /* Bartleby.iOS */,
 				E51834381CA52F96006ED867 /* CryptoHelper */,
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
@@ -1052,6 +1055,15 @@
 				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E57F20711D76B7AF006DA998 /* XPC.OSX */ = {
+			isa = PBXGroup;
+			children = (
+				E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */,
+			);
+			name = XPC.OSX;
+			path = ../XPC.OSX;
 			sourceTree = "<group>";
 		};
 		E595A2EB1CE4B34800099EB3 /* Support-files */ = {
@@ -1227,6 +1239,7 @@
 				E50F3E971D40D50400532B09 /* Registry.swift in Sources */,
 				E50F3E9F1D40D50400532B09 /* ReactiveTask.swift in Sources */,
 				E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
+				E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */,
 				E50F3DC31D40D50400532B09 /* Group.swift in Sources */,
 				E50F3E991D40D50400532B09 /* StatusOfCompletion.swift in Sources */,
 				E50F3E071D40D50400532B09 /* ReadLockersByQuery.swift in Sources */,
