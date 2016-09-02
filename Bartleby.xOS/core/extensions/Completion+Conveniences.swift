@@ -52,7 +52,7 @@ public extension Completion {
 
      - returns: the state
      */
-    public func identifiedBy(_ category:String,_ identity:String)->Completion{
+    public func identifiedBy(category:String,identity:String)->Completion{
         self.category=category
         self.externalIdentifier=identity
         return self

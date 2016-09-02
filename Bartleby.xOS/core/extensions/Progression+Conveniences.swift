@@ -59,7 +59,7 @@ public extension Progression {
 
      - returns: the state
      */
-    public func identifiedBy(_ category:String,_ identity:String)->Progression{
+    public func identifiedBy(category:String,identity:String)->Progression{
         self.category=category
         self.externalIdentifier=identity
         return self

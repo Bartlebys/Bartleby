@@ -68,6 +68,9 @@ public struct CommandsFacade {
         case "create-dmg"?, "create-disk-image"?:
             // Creates and mount a dmg
             let _ = CreateDmgCommand(completionHandler: completionHandler)
+        case "resize-dmg"? , "resize-disk-image"?:
+            // Resizes a disk image
+            let _ = ResizeDmgCommand(completionHandler: completionHandler)
         default:
             // We want to propose the best verb candidate
             let reference=[
@@ -83,6 +86,7 @@ public struct CommandsFacade {
                 "kvs", "key-value-storage", "keystore",
                 "cleanup",
                 "create-dmg", "create-disk-image",
+                "resize-dmg" , "resize-disk-image"
             ]
             let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
@@ -130,6 +134,7 @@ public struct CommandsFacade {
         s += "\n"
         s += "\n\t\(executableName) cleanup <folder path> [options]"
         s += "\n\t\(executableName) create-dmg -f <folder path> -n <volume name> [options]"
+        s += "\n\t\(executableName) resize-dmg -i <image path> -p <password> -s <size image_spec> ??b|??k|??m|??g|??t|??p|??e"
         s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"

@@ -113,6 +113,20 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
         }
     }
 
+    /*
+     Resizes the image the image must be mounted.
+
+     - parameter size:       the size according to sizeSpecs ??b|??k|??m|??g|??t|??p|??e
+     - parameter volumePath: the volume path
+     - parameter handler:    the handler
+     */
+    public func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+        if let xpc = bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
+            xpc.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
+        }
+    }
+
+
 
     // MARK: Attach and do...
 

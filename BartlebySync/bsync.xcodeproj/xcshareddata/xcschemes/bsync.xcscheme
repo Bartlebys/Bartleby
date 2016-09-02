@@ -119,11 +119,23 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "reveal-hashmap"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "resize-dmg"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = ""
-            isEnabled = "NO">
+            argument = "--imagepath $HOME/Desktop/resources/340cfb78302aa154561b994907a8dadd.sparseimage"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--password 2aea4d1f92607c57581c46687e313ea6"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--size 5g"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/Desktop/UP_SYNC_DEMO/directives.bsync"
@@ -171,7 +183,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--url https://dev.repository.lylo.tv/bsyncTests.UpDownDirectivesTests/.bsync/hashmap"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--file $HOME/Desktop/bsyncTests/LocalSyncTests/Source/LocalSyncTests/.bsync/hashmap"
@@ -179,7 +191,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--salt xyx38-d890x-899h-123e-30x6-3234e"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey XODVBRkNGMUYtRDI1RS00Mjc2LTlGM0EtMTU1N0Q22838"
@@ -187,7 +199,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--secretKey UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--verbose"

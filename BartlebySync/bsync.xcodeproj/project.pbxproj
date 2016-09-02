@@ -767,6 +767,7 @@
 		E5CEA9581D522567000DC91E /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6521E1D42749100A40A9B /* Upload.swift */; };
 		E5CEA9591D522567000DC91E /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6521F1D42749100A40A9B /* Validation.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
+		E5D9B7BE1D788C8900BB8900 /* ResizeDmgCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */; };
 		E5F654611D42749100A40A9B /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652051D42749100A40A9B /* CryptedDataTransform.swift */; };
 		E5F654621D42749100A40A9B /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652051D42749100A40A9B /* CryptedDataTransform.swift */; };
 		E5F654651D42749100A40A9B /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652061D42749100A40A9B /* CryptedKeyValueStorage.swift */; };
@@ -1108,6 +1109,7 @@
 		E5C0CF171C36CD4300F3B7B8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpDownDirectivesTests.swift; sourceTree = "<group>"; };
 		E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncMiscTests.swift; sourceTree = "<group>"; };
+		E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeDmgCommand.swift; sourceTree = "<group>"; };
 		E5F192CF1D4258C100624249 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../BartlebyKit/build/Debug-iphoneos/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5F652051D42749100A40A9B /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		E5F652061D42749100A40A9B /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
@@ -1290,6 +1292,7 @@
 				E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */,
 				E54957581C43B57700102771 /* CreateDirectiveCommand.swift */,
 				E545940C1C3E642C000576AD /* CleanupCommand.swift */,
+				E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */,
 				E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */,
 				E58504491C3F9F6000E2F64A /* KeyValueStorageCommand.swift */,
 				E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */,
@@ -2217,6 +2220,7 @@
 				E5F654E01D42749100A40A9B /* Mapper.swift in Sources */,
 				E5F654C11D42749100A40A9B /* Validation.swift in Sources */,
 				E58808071D51E06A00FEA71F /* ImageTransform.swift in Sources */,
+				E5D9B7BE1D788C8900BB8900 /* ResizeDmgCommand.swift in Sources */,
 				E58808AF1D51E06A00FEA71F /* HTTPCommand.swift in Sources */,
 				E58808971D51E06A00FEA71F /* ConcreteTask.swift in Sources */,
 				E5F654911D42749100A40A9B /* MultipartFormData.swift in Sources */,

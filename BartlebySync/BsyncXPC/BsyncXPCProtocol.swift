@@ -43,6 +43,16 @@ import Foundation
     func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?, handler: ComposedHandler)
 
 
+
+    /* 
+     Resizes the image (!) the image must be detached.
+
+     - parameter size:       the size according to sizeSpecs ??b|??k|??m|??g|??t|??p|??e
+     - parameter volumePath: the volume path
+     - parameter handler:    the handler
+     */
+    func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler)
+
     /**
      Attaches a Volume from a Dmg path
 

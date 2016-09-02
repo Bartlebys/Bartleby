@@ -29,8 +29,6 @@ import Foundation
     }
     
     func createDMG(card: BsyncDMGCard, handlers: Handlers) {
-        
-        
         // The card must be valid
         let validation = card.evaluate()
         if validation.success {
@@ -147,7 +145,21 @@ import Foundation
                          handlers: Handlers) {
         self._dm.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password, handlers: handlers)
     }
-    
+
+
+    /* 
+     Resizes the image (!) the image must be detached.
+
+     - parameter size:       the size according to sizeSpecs ??b|??k|??m|??g|??t|??p|??e
+     - parameter volumePath: the volume path
+     - parameter handler:    the handler
+     */
+    public func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+        self._dm.resize(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
+    }
+
+    /**
+
     /**
      Attaches a Volume from a Dmg path
      
@@ -187,8 +199,7 @@ import Foundation
         
     }
     
-    
-    /**
+
      Detaches the volume
      
      - parameter named:    name of the volume
