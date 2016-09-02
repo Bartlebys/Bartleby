@@ -43,7 +43,6 @@ import Foundation
     func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?, handler: ComposedHandler)
 
 
-
     /* 
      Resizes the image (!) the image must be detached.
 

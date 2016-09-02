@@ -147,18 +147,17 @@ import Foundation
     }
 
 
-    /* 
+    /**
      Resizes the image (!) the image must be detached.
 
      - parameter size:       the size according to sizeSpecs ??b|??k|??m|??g|??t|??p|??e
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    public func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
-        self._dm.resize(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
+    func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+        self._dm.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
     }
 
-    /**
 
     /**
      Attaches a Volume from a Dmg path
@@ -198,8 +197,8 @@ import Foundation
         attachVolume(from: card.imagePath, withPassword: password, handlers: handlers)
         
     }
-    
 
+    /**
      Detaches the volume
      
      - parameter named:    name of the volume
