@@ -112,6 +112,7 @@ import Foundation
         imagePath <- (map["path"], CryptedStringTransform())
         volumeName <- (map["volumeName"], CryptedStringTransform())
         directivesRelativePath <- (map["directivesRelativePath"], CryptedStringTransform())
+        size <- map["size"]
         self.enableSupervision()
     }
 
@@ -125,6 +126,7 @@ import Foundation
         coder.encodeObject(imagePath, forKey: "path")
         coder.encodeObject(volumeName, forKey: "volumeName")
         coder.encodeObject(directivesRelativePath, forKey: "directivesRelativePath")
+        coder.encodeObject(size, forKey: "size")
     }
 
     public required init?(coder decoder: NSCoder) {
@@ -135,6 +137,7 @@ import Foundation
         self.imagePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
         self.volumeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "volumeName")! as NSString)
         self.directivesRelativePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "directivesRelativePath")! as NSString)
+        self.size=String(decoder.decodeObjectOfClass(NSString.self, forKey: "size")! as NSString)
         self.enableSupervision()
     }
 
