@@ -22,15 +22,14 @@ import ObjectMapper
 
     private var _ids:[String] = [String]()
 
-    // The registry UID
     private var _registryUID:String=Default.NO_UID
-
-    // The operation
-    private var _operation:Operation=Operation()
 
     required public convenience init(){
         self.init([String](), fromRegistryWithUID:Default.NO_UID)
     }
+
+
+
 
 
     // MARK: Mappable
@@ -44,11 +43,6 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self._ids <- ( map["_ids"] )
 		self._registryUID <- ( map["_registryUID"] )
-		self._operation.registryUID <- ( map["_operation.registryUID"] )
-		self._operation.creatorUID <- ( map["_operation.creatorUID"] )
-		self._operation.status <- ( map["_operation.status"] )
-		self._operation.counter <- ( map["_operation.counter"] )
-		self._operation.creationDate <- ( map["_operation.creationDate"], ISO8601DateTransform() )
         self.enableSuperVisionAndCommit()
     }
 
@@ -60,11 +54,6 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self._ids=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "_ids")! as! [String]
 		self._registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_registryUID")! as NSString)
-		self._operation.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.registryUID")! as NSString)
-		self._operation.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.creatorUID")! as NSString)
-		self._operation.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "_operation.status")! as NSString))! 
-		self._operation.counter=decoder.decodeIntegerForKey("_operation.counter") 
-		self._operation.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"_operation.creationDate") as NSDate?
 
         self.enableSuperVisionAndCommit()
     }
@@ -73,13 +62,6 @@ import ObjectMapper
         super.encodeWithCoder(coder)
 		coder.encodeObject(self._ids,forKey:"_ids")
 		coder.encodeObject(self._registryUID,forKey:"_registryUID")
-		coder.encodeObject(self._operation.registryUID,forKey:"_operation.registryUID")
-		coder.encodeObject(self._operation.creatorUID,forKey:"_operation.creatorUID")
-		coder.encodeObject(self._operation.status.rawValue ,forKey:"_operation.status")
-		coder.encodeInteger(self._operation.counter,forKey:"_operation.counter")
-		if let _operation_creationDate = self._operation.creationDate {
-			coder.encodeObject(_operation_creationDate,forKey:"_operation.creationDate")
-		}
     }
 
 
@@ -103,6 +85,29 @@ import ObjectMapper
     }
 
     /**
+     Returns an operation with self.UID as commandUID
+
+     - returns: return the operation
+     */
+    private func _getOperation()->Operation{
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
+            if let ic:OperationsCollectionController = try? document.getCollection(){
+                let operations=ic.filter({ (operation) -> Bool in
+                    return operation.commandUID==self.UID
+                })
+                if let operation=operations.first {
+                    return operation
+                }}
+        }
+        let operation=Operation()
+        operation.disableSupervision()
+        operation.commandUID=self.UID
+        operation.defineUID()
+        return operation
+    }
+
+
+    /**
     Creates the operation and proceeds to commit
 
     - parameter ids: the instance
@@ -117,36 +122,30 @@ import ObjectMapper
     func commit(){
         let context=Context(code:902401156, caller: "DeleteGroups.commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
-                // Do not track changes
-                self._operation.disableSupervision()
-                // Prepare the operation serialization
-                self.defineUID()
-                self._operation.defineUID()
-                self._operation.counter=0
-                self._operation.status=Operation.Status.Pending
-                self._operation.creationDate=NSDate()
-                self._operation.registryUID=self._registryUID
+            // Provision the operation.
+            do{
+                let ic:OperationsCollectionController = try document.getCollection()
+                let operation=self._getOperation()
+                operation.counter += 1
+                operation.status=Operation.Status.Pending
+                operation.creationDate=NSDate()
                 let stringIDS=PString.ltrim(self._ids.reduce("", combine: { $0+","+$1 }),characters:",")
-                self._operation.summary="DeleteGroups(\(stringIDS))"
-
+                operation.summary="DeleteGroups(\(stringIDS))"
                 if let currentUser=document.registryMetadata.currentUser{
-                    self._operation.creatorUID=currentUser.UID
+                    operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
-
-                // Provision the operation.
-                do{
-                    let ic:OperationsCollectionController = try document.getCollection()
-                    ic.add(self._operation, commit:false)
-                }catch{
-                    Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
+                operation.toDictionary=self.dictionaryRepresentation()
+                operation.enableSupervision()
+                ic.add(operation, commit:false)
+            }catch{
+                Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in DeleteGroups",
+                    body: "Operation collection is missing in  DeleteGroups",
                     onSelectedIndex: { (selectedIndex) -> () in
-                    })
-                }
-                self._operation.toDictionary=self.dictionaryRepresentation()
-                }else{
+                })
+            }
+        }else{
             // This document is not available there is nothing to do.
             let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
@@ -164,29 +163,30 @@ import ObjectMapper
             // The unitary operation are not always idempotent
             // so we do not want to push multiple times unintensionnaly.
             // Check BartlebyDocument+Operations.swift to understand Operation status
-            if  self._operation.canBePushed(){
+            let operation=self._getOperation()
+            if  operation.canBePushed(){
                 // We try to execute
-                self._operation.status=Operation.Status.InProgress
+                operation.status=Operation.Status.InProgress
                 DeleteGroups.execute(self._ids,
                     fromRegistryWithUID:self._registryUID,
                     sucessHandler: { (context: JHTTPResponse) -> () in
-                                                self._operation.counter=self._operation.counter+1
-                        self._operation.status=Operation.Status.Completed
-                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                        self._operation.lastInvocationDate=NSDate()
+                                                operation.counter=operation.counter+1
+                        operation.status=Operation.Status.Completed
+                        operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
+                        operation.lastInvocationDate=NSDate()
                         let completion=Completion.successStateFromJHTTPResponse(context)
                         completion.setResult(context)
-                        self._operation.completionState=completion
+                        operation.completionState=completion
                         success(context:context)
                     },
                     failureHandler: {(context: JHTTPResponse) -> () in
-                        self._operation.counter=self._operation.counter+1
-                        self._operation.status=Operation.Status.Completed
-                        self._operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                        self._operation.lastInvocationDate=NSDate()
+                        operation.counter=operation.counter+1
+                        operation.status=Operation.Status.Completed
+                        operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
+                        operation.lastInvocationDate=NSDate()
                         let completion=Completion.failureStateFromJHTTPResponse(context)
                         completion.setResult(context)
-                        self._operation.completionState=completion
+                        operation.completionState=completion
                         failure(context:context)
                     }
                 )
@@ -195,7 +195,7 @@ import ObjectMapper
                 let context=Context(code:1782881359, caller: "DeleteGroups.push")
                 Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Push error", comment: "Push error"),
-                    body: "\(NSLocalizedString("Attempt to push an operation with status ==\(self._operation.status))",comment:"Attempt to push an operation with status =="))\(self._operation.status))",
+                    body: "\(NSLocalizedString("Attempt to push an operation with status ==)",comment:"Attempt to push an operation with status =="))\(operation.status))",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }

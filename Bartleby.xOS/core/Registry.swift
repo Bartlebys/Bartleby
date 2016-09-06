@@ -141,8 +141,7 @@ public class Registry: BXDocument {
     public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
 
 
-    // We store the progress state of the
-    var currentOperationBunchProgress:Progression?
+
 
 
     // MARK:

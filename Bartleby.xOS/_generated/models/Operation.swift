@@ -21,19 +21,14 @@ import ObjectMapper
         return "Operation"
     }
 
+	//The unique identifier of the related Command
+	dynamic public var commandUID:String?
 	//The dictionary representation of a serialized action call
 	dynamic public var toDictionary:[String:AnyObject]?
 	//The dictionary representation of the last response serialized data
 	public var responseDictionary:[String:AnyObject]?
 	//The completion state of the operation
-	dynamic public var completionState:Completion? {	 
-	    didSet { 
-	       if completionState != oldValue {
-	            self.provisionChanges(forKey: "completionState",oldValue: oldValue,newValue: completionState) 
-	       } 
-	    }
-	}
-
+	dynamic public var completionState:Completion?
 	//The invocation Status None: on creation, Pending: can be pushed, Provisionned: is currently in an operation bunch, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
 		case None = "none"
@@ -43,10 +38,8 @@ import ObjectMapper
 		case Completed = "completed"
 	}
 	public var status:Status = .None
-	//The registry UID
-	public var registryUID:String = "\(Default.NO_UID)"
 	//The invocation counter
-	dynamic public var counter:Int = 0
+	dynamic public var counter:Int = -1
 	//The creationdate
 	dynamic public var creationDate:NSDate?
 	//The last invocation date
@@ -62,11 +55,11 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
+		self.commandUID <- ( map["commandUID"] )
 		self.toDictionary <- ( map["toDictionary"] )
 		self.responseDictionary <- ( map["responseDictionary"] )
 		self.completionState <- ( map["completionState"] )
 		self.status <- ( map["status"] )
-		self.registryUID <- ( map["registryUID"] )
 		self.counter <- ( map["counter"] )
 		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
@@ -79,11 +72,11 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
+		self.commandUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"commandUID") as NSString?)
 		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
 		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
 		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "registryUID")! as NSString)
 		self.counter=decoder.decodeIntegerForKey("counter") 
 		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
 		self.lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
@@ -93,6 +86,9 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
+		if let commandUID = self.commandUID {
+			coder.encodeObject(commandUID,forKey:"commandUID")
+		}
 		if let toDictionary = self.toDictionary {
 			coder.encodeObject(toDictionary,forKey:"toDictionary")
 		}
@@ -103,7 +99,6 @@ import ObjectMapper
 			coder.encodeObject(completionState,forKey:"completionState")
 		}
 		coder.encodeObject(self.status.rawValue ,forKey:"status")
-		coder.encodeObject(self.registryUID,forKey:"registryUID")
 		coder.encodeInteger(self.counter,forKey:"counter")
 		if let creationDate = self.creationDate {
 			coder.encodeObject(creationDate,forKey:"creationDate")

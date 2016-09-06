@@ -102,7 +102,7 @@ extension BartlebyDocument {
 
     private func _pushNextBunch(){
         // Push next bunch if there is no bunch in progress
-        if self.currentOperationBunchProgress == nil{
+        if self.registryMetadata.operationsBunchProgressionState == nil{
             // We donnot want to schedule anything if there is nothing to do.
             if self.operations.count > 0 {
                 let nextBunchOfOperations=self._popNextBunchOfPendingOperations()
@@ -117,18 +117,20 @@ extension BartlebyDocument {
                 }
             }
         }
-
     }
 
 
     private func _popNextBunchOfPendingOperations()->[Operation]{
         var nextBunch=[Operation]()
         let filtered=self.operations.filter { $0.canBePushed() }
-        let maxBunchSize=10
-        let lastOperationIdx=filtered.count-1
-        let maxIndex:Int = min(maxBunchSize,lastOperationIdx)
-        for i in 0 ... maxIndex {
-            nextBunch.append(filtered[i])
+        let filteredCount=filtered.count
+        let maxBunchSize=2
+        if filteredCount > 0 {
+            let lastOperationIdx =  filteredCount-1
+            let maxIndex:Int = min(maxBunchSize,lastOperationIdx)
+            for i in 0 ... maxIndex {
+                nextBunch.append(filtered[i])
+            }
         }
         return nextBunch
     }
@@ -155,23 +157,26 @@ extension BartlebyDocument {
                 return string+operation.UID
             }
             let bunchIdentity=CryptoHelper.hash(UIDS)
-            self.currentOperationBunchProgress=Progression(currentTaskIndex: 0, totalTaskCount:nbOfOperations, currentPercentProgress:0, message: "", data:nil).identifiedBy("Operations", identity:bunchIdentity)
+             self.registryMetadata.operationsBunchProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:nbOfOperations, currentPercentProgress:0, message: "", data:nil).identifiedBy("Operations", identity:bunchIdentity)
 
             for operation in operations{
                 if let serialized=operation.toDictionary {
-                    operation.status=Operation.Status.Provisionned
                     if let command = try? JSerializer.deserializeFromDictionary(serialized) {
                         if let jCommand=command as? JHTTPCommand {
-                            // Push the command.
-                            jCommand.push(sucessHandler: { (context) in
-                                self._onCompletion(operation, within: operations, handlers: handlers,identity: bunchIdentity)
-                                // Remove the operation from the operation collection.
-                                bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: "Operations")
-                                self.delete(operation)
+                                Bartleby.executeAfter(Bartleby.configuration.DELAY_BETWEEN_OPERATIONS_IN_SECONDS, closure: { 
+                                    // Push the command.
+                                    jCommand.push(sucessHandler: { (context) in
+                                        self._onCompletion(operation, within: operations, handlers: handlers,identity: bunchIdentity)
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                            // Remove the operation from the operation collection.
+                                            bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: "Operations")
+                                            self.delete(operation)
+                                        })
 
-                                }, failureHandler: { (context) in
-                                    self._onCompletion(operation, within: operations, handlers: handlers,identity:bunchIdentity)
-                            })
+                                        }, failureHandler: { (context) in
+                                            self._onCompletion(operation, within: operations, handlers: handlers,identity:bunchIdentity)
+                                    })
+                                })
                         } else {
                             let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.Expectation_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
@@ -220,17 +225,21 @@ extension BartlebyDocument {
             }else{
                 bunchCompletionState.statusCode = StatusOfCompletion.Expectation_Failed.rawValue
             }
-            self.currentOperationBunchProgress=nil
-            handlers?.on(bunchCompletionState)
+            self.registryMetadata.operationsBunchProgressionState=nil
+            dispatch_async(dispatch_get_main_queue(), {
+                handlers?.on(bunchCompletionState)
+            })
         }else{
-            if let progressionState=self.currentOperationBunchProgress{
+            if let progressionState=self.registryMetadata.operationsBunchProgressionState{
                 let total=Double(bunchOfOperations.count)
                 let completed=Double(total-nbOfunCompletedOperations)
                 let currentPercentProgress=completed*Double(100)/total
                 progressionState.currentTaskIndex=Int(completed)
                 progressionState.totalTaskCount=Int(total)
                 progressionState.currentPercentProgress=currentPercentProgress
-                handlers?.notify(progressionState)
+                dispatch_async(dispatch_get_main_queue(), {
+                    handlers?.notify(progressionState)
+                })
             }else{
                 bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
             }

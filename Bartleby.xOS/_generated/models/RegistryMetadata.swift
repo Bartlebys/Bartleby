@@ -159,6 +159,8 @@ import ObjectMapper
 	    }
 	}
 
+	//The progression state of the current bunch of operations
+	dynamic public var operationsBunchProgressionState:Progression?
 
 
     // MARK: Mappable
@@ -188,6 +190,7 @@ import ObjectMapper
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
 		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
+		self.operationsBunchProgressionState <- ( map["operationsBunchProgressionState"] )
         self.enableSuperVisionAndCommit()
     }
 
@@ -215,6 +218,7 @@ import ObjectMapper
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
 		self.triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"triggeredDataBuffer") as NSData?
+		self.operationsBunchProgressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "operationsBunchProgressionState") 
 
         self.enableSuperVisionAndCommit()
     }
@@ -248,6 +252,9 @@ import ObjectMapper
 		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
 		if let triggeredDataBuffer = self.triggeredDataBuffer {
 			coder.encodeObject(triggeredDataBuffer,forKey:"triggeredDataBuffer")
+		}
+		if let operationsBunchProgressionState = self.operationsBunchProgressionState {
+			coder.encodeObject(operationsBunchProgressionState,forKey:"operationsBunchProgressionState")
 		}
     }
 

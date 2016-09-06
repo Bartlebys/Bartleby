@@ -14,6 +14,6 @@ import Foundation
 /**
  *  A JSON Flavoured HTTPCommand
  */
-public protocol JHTTPCommand: Mappable, Collectible, HTTPCommand {
+public protocol JHTTPCommand:  Collectible, Mappable, NSCopying, NSSecureCoding,HTTPCommand {
 
 }

@@ -11,7 +11,8 @@ import Foundation
 public extension Operation{
 
     public func canBePushed()->Bool{
-        if self.status.rawValue < Operation.Status.Provisionned.rawValue {
+
+        if self.status == .None || self.status == .Pending {
             return true
         }
 
@@ -22,6 +23,7 @@ public extension Operation{
                 }
             }
         }
+
         return false
     }
 
