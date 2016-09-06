@@ -98,6 +98,10 @@
 		E55C92801CBF8998008163F6 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E55C92811CBF8998008163F6 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
 		E55C92831CBF8998008163F6 /* BsyncDMGCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538C6181C5A58CD001CD0E2 /* BsyncDMGCard.swift */; };
+		E56EC0751D7EEC2700D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
+		E56EC0781D7EEC6A00D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
+		E56EC0791D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
+		E56EC07A1D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
 		E57F207A1D76FBF6006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */; };
 		E57F207B1D76FC0E006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */; };
 		E588070F1D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
@@ -951,6 +955,7 @@
 		E55C92881CBF8E9B008163F6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E55FF29A1C3ED5C000BD49DB /* CreateDmgCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDmgCommand.swift; sourceTree = "<group>"; };
 		E5667CCD1C478EAB007073FA /* RevealDirectivesCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealDirectivesCommand.swift; sourceTree = "<group>"; };
+		E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
 		E578DCF61C3AC3FD00617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E578DD051C3AC50600617627 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyXPCMonitoring.swift; sourceTree = "<group>"; };
@@ -1515,6 +1520,7 @@
 		E58806CB1D51E06A00FEA71F /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */,
 				E58806CC1D51E06A00FEA71F /* BartlebyDocument+AppFacilities.swift */,
 				E58806CD1D51E06A00FEA71F /* BartlebyDocument+Operations.swift */,
 				E58806CE1D51E06A00FEA71F /* BartlebyDocument+Triggers.swift */,
@@ -2129,6 +2135,7 @@
 				E588073A1D51E06A00FEA71F /* ExternalReference.swift in Sources */,
 				E588078A1D51E06A00FEA71F /* CreateUser.swift in Sources */,
 				E5CEA92C1D522555000DC91E /* EnumTransform.swift in Sources */,
+				E56EC07A1D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E5CEA9541D522567000DC91E /* Result.swift in Sources */,
 				E588073E1D51E06A00FEA71F /* Group.swift in Sources */,
 				E58808EE1D51E06A00FEA71F /* PushPendingOperationsTask.swift in Sources */,
@@ -2361,6 +2368,7 @@
 				E588090B1D51E06A00FEA71F /* LoginUser.swift in Sources */,
 				E58807CF1D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */,
 				E58809171D51E06A00FEA71F /* TriggersByIds.swift in Sources */,
+				E56EC0751D7EEC2700D5CD81 /* Operation+Conveniences.swift in Sources */,
 				5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */,
 				E588079F1D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E5F6547F1D42749100A40A9B /* Download.swift in Sources */,
@@ -2534,6 +2542,7 @@
 				E5CEA9441D522566000DC91E /* ServerTrustPolicy.swift in Sources */,
 				E58809101D51E06A00FEA71F /* LogoutUser.swift in Sources */,
 				E58808301D51E06A00FEA71F /* Bartleby.swift in Sources */,
+				E56EC0781D7EEC6A00D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E58808701D51E06A00FEA71F /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E58807A41D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
 				E58807141D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
@@ -2789,6 +2798,7 @@
 				E58807A91D51E06A00FEA71F /* DeleteUser.swift in Sources */,
 				E58807151D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
 				E58807691D51E06A00FEA71F /* Trigger.swift in Sources */,
+				E56EC0791D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E588073D1D51E06A00FEA71F /* Group.swift in Sources */,
 				E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E588076D1D51E06A00FEA71F /* User.swift in Sources */,

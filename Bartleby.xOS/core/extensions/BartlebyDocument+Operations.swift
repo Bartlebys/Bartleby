@@ -13,7 +13,6 @@ import Foundation
 
 extension BartlebyDocument {
 
-
     // MARK: - Supervised Automatic Push
 
     func startSupervisionLoopIfNecessary() {
@@ -79,51 +78,10 @@ extension BartlebyDocument {
                         self.synchronizationHandlers.on(Completion.failureStateFromJHTTPResponse(context))
                 })
             }
-
         }
     }
 
 
-    /**
-     Pushes an array of operations using a Group of chained PushOperationTasks
-
-     - On successful completion the operation is deleted.
-     - On total completion the tasks are deleted on global success.
-     If an error as occured the task group is preserved for re-run or analysis.
-
-     - parameter operations: operations description
-     - parameter handlers:   the handlers to hook the completion / Progression
-     */
-    public func pushArrayOfOperations(operations: [Operation], handlers: Handlers?) throws->() {
-        bprint("Pushing \(operations.count) Operations", file:#file, function:#function, line:#line, category:TasksScheduler.BPRINT_CATEGORY)
-        if  operations.count>0 {
-
-            // We use the encapsulated SpaceUID
-            let UID=self.UID
-            // We taskGroupFor the task
-            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Operations\(UID)", inDocument: self)
-            group.priority=TasksGroup.Priority.Background
-            if let handlers=handlers{
-                // We add the calling handlers
-                group.handlers.appendChainedHandlers(handlers)
-            }
-            // #2 add the operations tasks.
-            for operation in operations {
-                let task=PushOperationTask(arguments:operation)
-                try group.appendChainedTask(task)
-            }
-
-            //Add an automatic save document task.
-            let saveTask=SaveDocumentTask(arguments:JString(from:self.UID))
-            try group.appendChainedTask(saveTask)
-            try group.start()
-
-        } else {
-            let completion=Completion.successState()
-            completion.message=NSLocalizedString("There was no pending operation", tableName:"operations", comment: "There was no pending operation")
-            handlers?.on(completion)
-        }
-    }
 
     /**
      Commits and Pushes the pending operations.
@@ -138,39 +96,147 @@ extension BartlebyDocument {
         // Commit the pending changes (if there are changes)
         // Each changed object creates a new Operation
         try self.commitPendingChanges()
+        self._pushNextBunch()
+    }
 
-        // We donnot want to schedule anything if there is nothing to do.
-        if self.operations.count > 0 {
 
-            // We ask the for taskGroup
-            let group=try Bartleby.scheduler.getTaskGroupWithName("Push_Pending_Operations\(self.UID)", inDocument: self)
-            group.priority=TasksGroup.Priority.Background
-
-            if group.tasks.count==0{
-                // There is no root PushPendingOperationsTask tasks to the group
-                // lets create this task.
-                let registryUIDString=JString(from:self.UID)
-                let pushPendingOperationsTask=PushPendingOperationsTask(arguments:registryUIDString)
-                try group.addTask(pushPendingOperationsTask)
-            }else{
-                // There is already a PushPendingOperationsTask
-                if let pushPendingOperationsTask:PushPendingOperationsTask=group.tasks.first?.toLocalInstance(){
-
-                    // Each time we call _commitAndPushPendingOperations 
-                    // we try to group add Concurrent calls. 
-                    // That's why we add directly the task to the group not to the lastTasks
-                    // We prefer to add to the group
-                    for operation in self.operations{
-                        try pushPendingOperationsTask.addOperationIfNecessary(operation)
-                    }
+    private func _pushNextBunch(){
+        // Push next bunch if there is no bunch in progress
+        if self.currentOperationBunchProgress == nil{
+            // We donnot want to schedule anything if there is nothing to do.
+            if self.operations.count > 0 {
+                let nextBunchOfOperations=self._popNextBunchOfPendingOperations()
+                if nextBunchOfOperations.count>0{
+                    let bunchHandlers=Handlers(completionHandler: { (completionState) in
+                        self.synchronizationHandlers.on(completionState)
+                        self._pushNextBunch()
+                        }, progressionHandler: { (progressionState) in
+                            self.synchronizationHandlers.notify(progressionState)
+                    })
+                    self.pushSortedOperations(nextBunchOfOperations, handlers:bunchHandlers)
                 }
             }
-            // Let's resume the group if it is paused
-            if  group.status == .Paused{
-                try group.start()
+        }
+
+    }
+
+
+    private func _popNextBunchOfPendingOperations()->[Operation]{
+        var nextBunch=[Operation]()
+        let filtered=self.operations.filter { $0.canBePushed() }
+        let maxBunchSize=10
+        let lastOperationIdx=filtered.count-1
+        let maxIndex:Int = min(maxBunchSize,lastOperationIdx)
+        for i in 0 ... maxIndex {
+            nextBunch.append(filtered[i])
+        }
+        return nextBunch
+    }
+
+
+
+    /**
+     Pushes an array of operations
+
+     - On successful completion the operation is deleted.
+     - On total completion the tasks are deleted on global success.
+     If an error as occured the task group is preserved for re-run or analysis.
+
+     - parameter operations: the sorted operations to be excecuted
+     - parameter handlers:   the handlers to hook the completion / Progression
+     */
+    public func pushSortedOperations(operations: [Operation], handlers: Handlers?)->() {
+        let nbOfOperations=operations.count
+        bprint("Pushing \(nbOfOperations) Operations", file:#file, function:#function, line:#line, category:"Operations")
+        if  nbOfOperations>0 {
+
+            // Define a unique identity for this bunch.
+            let UIDS=operations.reduce("") { (string, operation) -> String in
+                return string+operation.UID
+            }
+            let bunchIdentity=CryptoHelper.hash(UIDS)
+            self.currentOperationBunchProgress=Progression(currentTaskIndex: 0, totalTaskCount:nbOfOperations, currentPercentProgress:0, message: "", data:nil).identifiedBy("Operations", identity:bunchIdentity)
+
+            for operation in operations{
+                if let serialized=operation.toDictionary {
+                    operation.status=Operation.Status.Provisionned
+                    if let command = try? JSerializer.deserializeFromDictionary(serialized) {
+                        if let jCommand=command as? JHTTPCommand {
+                            // Push the command.
+                            jCommand.push(sucessHandler: { (context) in
+                                self._onCompletion(operation, within: operations, handlers: handlers,identity: bunchIdentity)
+                                // Remove the operation from the operation collection.
+                                bprint("Deleting \(operation.summary ?? operation.UID)", file: #file, function: #function, line: #line, category: "Operations")
+                                self.delete(operation)
+
+                                }, failureHandler: { (context) in
+                                    self._onCompletion(operation, within: operations, handlers: handlers,identity:bunchIdentity)
+                            })
+                        } else {
+                            let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.Expectation_Failed)
+                            bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                            handlers?.on(completion)
+                        }
+                    } else {
+                        let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.Expectation_Failed)
+                        bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                        handlers?.on(completion)
+                    }
+                } else {
+                    let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.Precondition_Failed)
+                    bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                    handlers?.on(completion)
+                }
+            }
+        } else {
+            let completion=Completion.successState()
+            completion.message=NSLocalizedString("Void bunch of operations", tableName:"operations", comment: "Void bunch of operations")
+            handlers?.on(completion)
+        }
+    }
+
+    /**
+     Called on the completion of any operation in the bunch
+
+     - parameter completedOperation: the completed operation
+     - parameter bunchOfOperations:  the bunch
+     - parameter handlers:           the global handlers
+     - parameter identity:           the bunch identity
+     */
+    private func _onCompletion(completedOperation:Operation,within bunchOfOperations:[Operation], handlers:Handlers?,identity:String){
+        let unCompletedOperations=bunchOfOperations.filter { $0.completionState==nil }
+        let nbOfunCompletedOperations=Double(unCompletedOperations.count)
+        if nbOfunCompletedOperations == 0{
+            // All the bunch has been completed.
+            let bunchCompletionState=Completion().identifiedBy("Operations", identity:identity)
+            bunchCompletionState.success=bunchOfOperations.reduce(true, combine: { (success, operation) -> Bool in
+                if operation.completionState?.success==true{
+                    return true
+                }
+                return false
+            })
+            if bunchCompletionState.success{
+                bunchCompletionState.statusCode = StatusOfCompletion.OK.rawValue
+            }else{
+                bunchCompletionState.statusCode = StatusOfCompletion.Expectation_Failed.rawValue
+            }
+            self.currentOperationBunchProgress=nil
+            handlers?.on(bunchCompletionState)
+        }else{
+            if let progressionState=self.currentOperationBunchProgress{
+                let total=Double(bunchOfOperations.count)
+                let completed=Double(total-nbOfunCompletedOperations)
+                let currentPercentProgress=completed*Double(100)/total
+                progressionState.currentTaskIndex=Int(completed)
+                progressionState.totalTaskCount=Int(total)
+                progressionState.currentPercentProgress=currentPercentProgress
+                handlers?.notify(progressionState)
+            }else{
+                bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
             }
         }
     }
+
 
 
 
@@ -230,8 +296,8 @@ extension BartlebyDocument {
         }
 
     }
-
-
+    
+    
     /**
      Restarts the tasks Group
      */

@@ -150,6 +150,7 @@
 		E54920221D6353E900961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920201D6353E900961796 /* JData+Conveniences.swift */; };
 		E54920241D6353F200961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920231D6353F200961796 /* SimulatedTask.swift */; };
 		E54EC2FF1D6453C70028FFFD /* SaveDocumentTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */; };
+		E56EC0771D7EEC3900D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */; };
 		E5B98E171CC0E63400A7ECD1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */; };
 		E5B98E181CC0E63400A7ECD1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E121CC0E63400A7ECD1 /* Map.swift */; };
 		E5B98E191CC0E63400A7ECD1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B98E131CC0E63400A7ECD1 /* Mappable.swift */; };
@@ -351,6 +352,7 @@
 		E54920201D6353E900961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E54920231D6353F200961796 /* SimulatedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedTask.swift; sourceTree = "<group>"; };
 		E54EC2FE1D6453C70028FFFD /* SaveDocumentTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveDocumentTask.swift; sourceTree = "<group>"; };
+		E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
 		E5B98E111CC0E63400A7ECD1 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5B98E121CC0E63400A7ECD1 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		E5B98E131CC0E63400A7ECD1 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
@@ -643,6 +645,7 @@
 		E50F40CA1D40D5FF00532B09 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */,
 				E50F40CB1D40D5FF00532B09 /* BartlebyDocument+AppFacilities.swift */,
 				E50F40CC1D40D5FF00532B09 /* BartlebyDocument+Operations.swift */,
 				E50F40CD1D40D5FF00532B09 /* BartlebyDocument+Triggers.swift */,
@@ -1010,6 +1013,7 @@
 				E50F41361D40D5FF00532B09 /* ReadGroupById.swift in Sources */,
 				E50F41161D40D5FF00532B09 /* CollectionMetadatum.swift in Sources */,
 				E50F417F1D40D5FF00532B09 /* SuperIterable.swift in Sources */,
+				E56EC0771D7EEC3900D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E50F41311D40D5FF00532B09 /* DeleteLockers.swift in Sources */,
 				E50F41111D40D5FF00532B09 /* OperationsCollectionController.swift in Sources */,
 				E50F41191D40D5FF00532B09 /* Group.swift in Sources */,

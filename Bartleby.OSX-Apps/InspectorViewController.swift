@@ -124,7 +124,9 @@ import Cocoa
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { (selected) in
-                    self.updateRepresentedObject(selected)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.updateRepresentedObject(selected)
+                    }
                 })
 
                 self._topViewController=self.sourceEditor
@@ -362,9 +364,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     
     func outlineViewSelectionDidChange(notification: NSNotification) {
         if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
-            dispatch_async(dispatch_get_main_queue()) {
-                self._selectionHandler(selected: item)
-            }
+            self._selectionHandler(selected: item)
         }
     }
     

@@ -14,13 +14,7 @@ class OperationViewController: NSViewController,Editor{
 
     var UID:String=Bartleby.createUID()
 
-
-     dynamic var selectedItem:EditorOf?{
-        didSet{
-
-        }
-    }
-    
+    dynamic weak var selectedItem:EditorOf?
 
     override var representedObject: AnyObject?{
         willSet{
@@ -30,7 +24,6 @@ class OperationViewController: NSViewController,Editor{
         }
         didSet{
             self.selectedItem=representedObject as? EditorOf
-
         }
     }
 
@@ -39,7 +32,6 @@ class OperationViewController: NSViewController,Editor{
         super.viewDidLoad()
         // Do view setup here.
     }
-
 
 
     @IBAction func pushSelectedOperation(sender: AnyObject) {
@@ -52,14 +44,10 @@ class OperationViewController: NSViewController,Editor{
             handlers.appendProgressHandler({ (progression) in
                 bprint("\(progression)", file:#file, function:#function, line:#line)
             })
-            do {
-                if let document=self.selectedItem?.document{
-                    try document.pushArrayOfOperations(ops, handlers: handlers)
-                }
-            } catch {
-                bprint("Push operation has failed error: \(error)", file:#file, function:#function, line:#line)
+            if let document=self.selectedItem?.document{
+                document.pushSortedOperations(ops, handlers: handlers)
             }
         }
     }
-
+    
 }

@@ -25,14 +25,22 @@ import ObjectMapper
 	dynamic public var toDictionary:[String:AnyObject]?
 	//The dictionary representation of the last response serialized data
 	public var responseDictionary:[String:AnyObject]?
-	dynamic public var baseUrl:NSURL?
-	//The invocation Status
+	//The completion state of the operation
+	dynamic public var completionState:Completion? {	 
+	    didSet { 
+	       if completionState != oldValue {
+	            self.provisionChanges(forKey: "completionState",oldValue: oldValue,newValue: completionState) 
+	       } 
+	    }
+	}
+
+	//The invocation Status None: on creation, Pending: can be pushed, Provisionned: is currently in an operation bunch, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
 		case None = "none"
 		case Pending = "pending"
+		case Provisionned = "provisionned"
 		case InProgress = "inProgress"
-		case Successful = "successful"
-		case Unsucessful = "unsucessful"
+		case Completed = "completed"
 	}
 	public var status:Status = .None
 	//The registry UID
@@ -56,7 +64,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.toDictionary <- ( map["toDictionary"] )
 		self.responseDictionary <- ( map["responseDictionary"] )
-		self.baseUrl <- ( map["baseUrl"], URLTransform() )
+		self.completionState <- ( map["completionState"] )
 		self.status <- ( map["status"] )
 		self.registryUID <- ( map["registryUID"] )
 		self.counter <- ( map["counter"] )
@@ -73,7 +81,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
 		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
 		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
-		self.baseUrl=decoder.decodeObjectOfClass(NSURL.self, forKey:"baseUrl") as NSURL?
+		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
 		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
 		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "registryUID")! as NSString)
 		self.counter=decoder.decodeIntegerForKey("counter") 
@@ -91,8 +99,8 @@ import ObjectMapper
 		if let responseDictionary = self.responseDictionary {
 			coder.encodeObject(responseDictionary,forKey:"responseDictionary")
 		}
-		if let baseUrl = self.baseUrl {
-			coder.encodeObject(baseUrl,forKey:"baseUrl")
+		if let completionState = self.completionState {
+			coder.encodeObject(completionState,forKey:"completionState")
 		}
 		coder.encodeObject(self.status.rawValue ,forKey:"status")
 		coder.encodeObject(self.registryUID,forKey:"registryUID")

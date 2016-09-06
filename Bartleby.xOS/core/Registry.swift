@@ -66,7 +66,6 @@ public protocol RegistryDependent {
  */
 public class Registry: BXDocument {
 
-
     // The file extension for crypted data
     public static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
 
@@ -140,6 +139,10 @@ public class Registry: BXDocument {
 
     // The collection server base URL
     public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
+
+
+    // We store the progress state of the
+    var currentOperationBunchProgress:Progression?
 
 
     // MARK:
