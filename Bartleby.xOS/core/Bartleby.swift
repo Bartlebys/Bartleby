@@ -180,12 +180,11 @@ public class  Bartleby: Consignee {
      - parameter seconds: the delay in fraction of seconds
      - parameter closure: the closure
      */
-    public static func executeAfter(seconds: Double, closure:()->())->() {
+    public static func executeAfter(seconds: Double,on queue:dispatch_queue_t=dispatch_get_main_queue(),closure:()->())->() {
         let delayInNanoSeconds = seconds * Double(NSEC_PER_SEC)
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInNanoSeconds))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        dispatch_after(delayTime, queue) {
             closure()
-
         }
     }
 
