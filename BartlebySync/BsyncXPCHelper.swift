@@ -40,12 +40,12 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO,Monitoring {
 
     // MARK: - Monitoring
 
-    public func receiveProgression(progression:Progression,identifiedBy identifier:String){
-        bprint("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+    public func receiveProgression(progression:Progression){
+        bprint("\(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
     }
 
-    public func receiveCompletion(completion:Completion,identifiedBy identifier:String){
-        bprint("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+    public func receiveCompletion(completion:Completion){
+        bprint(" \(completion)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
     }
 
 

@@ -22,18 +22,16 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
      Or by the app -> app to aggregate identified progressions
 
      - parameter progression: the progression state
-     - parameter identifier:  a unique identifier corresponding to the "process"
      */
-    func receiveProgression(progression:Progression,identifiedBy identifier:String)
+    func receiveProgression(progression:Progression)
 
     /**
      Called by an XPC service (XPC -> app)
      Or by the app -> app to aggregate identified progressions
 
      - parameter completion: the completion state
-     - parameter identifier:  a unique identifier corresponding to the "process"
      */
-    func receiveCompletion(completion:Completion,identifiedBy identifier:String)
+    func receiveCompletion(completion:Completion)
 }
 
 
@@ -75,11 +73,11 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
 
  // MARK: Monitoring
 
- public func receiveProgression(progression:Progression,identifiedBy identifier:String){
+ public func receiveProgression(progression:Progression){
  bprint("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
  }
 
- public func receiveCompletion(completion:Completion,identifiedBy identifier:String){
+ public func receiveCompletion(completion:Completion){
  bprint("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
  }
 
