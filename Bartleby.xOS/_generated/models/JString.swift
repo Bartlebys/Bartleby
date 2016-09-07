@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: String Primitive Wrapper. (Used for example to pass task Arguments)
+// MARK: Bartleby's Core: String Primitive Wrapper.
 @objc(JString) public class JString : JObject{
 
     // Universal type support

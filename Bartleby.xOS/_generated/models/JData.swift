@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: Data Primitive Wrapper. (Used for example to pass task Arguments)
+// MARK: Bartleby's Core: Data Primitive Wrapper.
 @objc(JData) public class JData : JObject{
 
     // Universal type support
