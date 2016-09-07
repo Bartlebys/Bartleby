@@ -132,7 +132,6 @@
 		E50F41951D40D5FF00532B09 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F410B1D40D5FF00532B09 /* HTTPManager.swift */; };
 		E50F41961D40D5FF00532B09 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F410C1D40D5FF00532B09 /* Pluralization.swift */; };
 		E50F41971D40D5FF00532B09 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F410D1D40D5FF00532B09 /* PString.swift */; };
-		E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */; };
 		E54920211D6353E900961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549201F1D6353E900961796 /* JString+Conveniences.swift */; };
 		E54920221D6353E900961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920201D6353E900961796 /* JData+Conveniences.swift */; };
 		E56EC0771D7EEC3900D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */; };
@@ -319,7 +318,6 @@
 		E50F410B1D40D5FF00532B09 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E50F410C1D40D5FF00532B09 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E50F410D1D40D5FF00532B09 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
-		E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manual_graph_exec_test.swift; sourceTree = "<group>"; };
 		E549201F1D6353E900961796 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
 		E54920201D6353E900961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
@@ -412,7 +410,6 @@
 				E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */,
 				E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */,
 				E5D086D01C550EFD00F0090E /* README.md */,
-				E52489391CE4D87500B4B064 /* Manual_graph_exec_test.swift */,
 			);
 			path = bartleby;
 			sourceTree = "<group>";
@@ -1009,7 +1006,6 @@
 				E5CD99F71C86D96E00C64569 /* Stream.swift in Sources */,
 				E5CD99EA1C86D96E00C64569 /* Alamofire.swift in Sources */,
 				E5B98E1C1CC0E63400A7ECD1 /* ToJSON.swift in Sources */,
-				E524893A1CE4D87500B4B064 /* Manual_graph_exec_test.swift in Sources */,
 				E50F41831D40D5FF00532B09 /* Registry.swift in Sources */,
 				E50F413F1D40D5FF00532B09 /* ReadUserById.swift in Sources */,
 				E50F41611D40D5FF00532B09 /* NSNotification+Progression.swift in Sources */,

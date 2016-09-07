@@ -122,22 +122,6 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "resize-dmg"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--imagepath $HOME/Desktop/resources/340cfb78302aa154561b994907a8dadd.sparseimage"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--password 2aea4d1f92607c57581c46687e313ea6"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--size 5g"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "--file $HOME/Desktop/UP_SYNC_DEMO/directives.bsync"
             isEnabled = "NO">
          </CommandLineArgument>

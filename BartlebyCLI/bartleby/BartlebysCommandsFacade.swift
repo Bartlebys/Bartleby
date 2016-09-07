@@ -25,8 +25,6 @@ struct BartlebysCommandFacade {
         case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
-        case "testTasks"?:
-            graph_exec_completion_routine(TasksGroup.Priority.High, useRandomPause:false, numberOfSequTask:50, testMode:GraphTestMode.Chained)
         default:
             // We want to propose the best verb candidate
             let reference=[
@@ -37,8 +35,8 @@ struct BartlebysCommandFacade {
                 "update"
             ]
             let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
-            print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
-            print("Did you mean:\"bsync \(bestCandidate)\"?")
+            print("Hey ...\"bartleby \(firstArgumentAfterExecutablePath!)\" is unexpected!")
+            print("Did you mean:\"bartleby \(bestCandidate)\"?")
 
         }
     }
@@ -83,7 +81,7 @@ struct BartlebysCommandFacade {
         s += "\nCreated by Benoit Pereira da Silva"
         s += "\nhttps://pereira-da-silva.com for Chaosmos SAS"
         s += "\n"
-        s += "\nvalid calls are S.V.O sentences like:\"bsync <verb> [options]\""
+        s += "\nvalid calls are S.V.O sentences like:\"bartleby <verb> [options]\""
         s += "\nAvailable verbs:"
         s += "\n"
         s += "\n\t\(executableName) install -m <Manifest FilePath>"
@@ -93,8 +91,8 @@ struct BartlebysCommandFacade {
         s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"
-        s += "\n\te.g:\t\"bsync synchronize help\""
-        s += "\n\te.g:\t\"bsync snapshoot help\""
+        s += "\n\te.g:\t\"bartleby synchronize help\""
+        s += "\n\te.g:\t\"bartleby snapshoot help\""
         s += "\n"
         return s
     }
