@@ -161,8 +161,10 @@ import ObjectMapper
 
 	//Do we have operations in progress in the current bunch ?
 	dynamic public var bunchInProgress:Bool = false
-	//The progression state of the global pending operations
-	dynamic public var upDataProgressionState:Progression?
+	//We store the highest number of operation we have counted during a phase of bunches
+	public var maxCountedNumberOperations:Int = 0
+	//The consolidated progression state of all pending operations
+	dynamic public var pendingOperationsProgressionState:Progression?
 
 
     // MARK: Mappable
@@ -192,7 +194,6 @@ import ObjectMapper
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
 		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
-		self.upDataProgressionState <- ( map["upDataProgressionState"] )
         self.enableSuperVisionAndCommit()
     }
 
@@ -220,7 +221,6 @@ import ObjectMapper
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
 		self.triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"triggeredDataBuffer") as NSData?
-		self.upDataProgressionState=decoder.decodeObjectOfClass(Progression.self, forKey: "upDataProgressionState") 
 
         self.enableSuperVisionAndCommit()
     }
@@ -254,9 +254,6 @@ import ObjectMapper
 		coder.encodeObject(self.receivedTriggers,forKey:"receivedTriggers")
 		if let triggeredDataBuffer = self.triggeredDataBuffer {
 			coder.encodeObject(triggeredDataBuffer,forKey:"triggeredDataBuffer")
-		}
-		if let upDataProgressionState = self.upDataProgressionState {
-			coder.encodeObject(upDataProgressionState,forKey:"upDataProgressionState")
 		}
     }
 
