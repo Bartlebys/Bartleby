@@ -11,6 +11,7 @@
 		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		5BFDA6FF1CC27A05002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */; };
 		5BFDA7021CC27A87002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */; };
+		E50406EA1D804BE200F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406E91D804BE200F5AE3A /* Monitoring.swift */; };
 		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */; };
@@ -293,7 +294,6 @@
 		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
 		E56EC0731D7ED38400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
-		E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -352,6 +352,7 @@
 		5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../Debug-iphoneos/Alamofire.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "../Debug-iphonesimulator/ObjectMapper.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E50406E91D804BE200F5AE3A /* Monitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monitoring.swift; sourceTree = "<group>"; };
 		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
 		E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
@@ -515,7 +516,6 @@
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyXPCMonitoring.swift; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -812,6 +812,7 @@
 		E50F3D7B1D40D50400532B09 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E50406E91D804BE200F5AE3A /* Monitoring.swift */,
 				E50F3D7C1D40D50400532B09 /* BartlebyFileIO.swift */,
 				E50F3D7E1D40D50400532B09 /* CollectibleCollection.swift */,
 				E50F3D7D1D40D50400532B09 /* Collectible.swift */,
@@ -947,7 +948,6 @@
 		E576E0A81C3A67BD00F1ED6B = {
 			isa = PBXGroup;
 			children = (
-				E57F20711D76B7AF006DA998 /* XPC.OSX */,
 				E50F3D111D40D50400532B09 /* Bartleby.xOS */,
 				E50F3EC11D40D51E00532B09 /* Bartleby.iOS */,
 				E51834381CA52F96006ED867 /* CryptoHelper */,
@@ -967,15 +967,6 @@
 				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E57F20711D76B7AF006DA998 /* XPC.OSX */ = {
-			isa = PBXGroup;
-			children = (
-				E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */,
-			);
-			name = XPC.OSX;
-			path = ../XPC.OSX;
 			sourceTree = "<group>";
 		};
 		E595A2EB1CE4B34800099EB3 /* Support-files */ = {
@@ -1144,12 +1135,12 @@
 				E50F3EB11D40D50400532B09 /* TriggersByIds.swift in Sources */,
 				E50F3E3B1D40D50400532B09 /* EventSource.swift in Sources */,
 				E50F3EB51D40D50400532B09 /* VerifyLocker.swift in Sources */,
+				E50406EA1D804BE200F5AE3A /* Monitoring.swift in Sources */,
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
 				E50F3AF61D40D27F00532B09 /* OperationViewController.swift in Sources */,
 				E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */,
 				E50F3E971D40D50400532B09 /* Registry.swift in Sources */,
 				E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
-				E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */,
 				E50F3DC31D40D50400532B09 /* Group.swift in Sources */,
 				E50F3E991D40D50400532B09 /* StatusOfCompletion.swift in Sources */,
 				E50F3E071D40D50400532B09 /* ReadLockersByQuery.swift in Sources */,

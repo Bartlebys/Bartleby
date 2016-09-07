@@ -14,6 +14,10 @@
 		5B99413E1CC536DD004B5F91 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB9F84F1CB555B900B83252 /* CreateUserCommand.swift */; };
 		5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */; };
+		E50406EE1D804C3600F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406ED1D804C3600F5AE3A /* Monitoring.swift */; };
+		E50406EF1D804C3600F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406ED1D804C3600F5AE3A /* Monitoring.swift */; };
+		E50406F01D804C3600F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406ED1D804C3600F5AE3A /* Monitoring.swift */; };
+		E50406F11D804C3600F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406ED1D804C3600F5AE3A /* Monitoring.swift */; };
 		E50520911D4246AD00DBCB30 /* IdentifableCardContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FED1B1D410A6A00BBB25A /* IdentifableCardContext.swift */; };
 		E5074D791D411D1B0089187A /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		E50750461D4120B40089187A /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
@@ -94,8 +98,6 @@
 		E56EC0781D7EEC6A00D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
 		E56EC0791D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
 		E56EC07A1D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */; };
-		E57F207A1D76FBF6006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */; };
-		E57F207B1D76FC0E006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */; };
 		E588070F1D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
 		E58807101D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
 		E58807111D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
@@ -850,6 +852,7 @@
 		5BCB1FB31CB7F6E800961CD9 /* CreateUIDCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUIDCommand.swift; sourceTree = "<group>"; };
 		5BE49D0D1D019FB300FD8EA4 /* DirectivesSerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectivesSerializationTests.swift; sourceTree = "<group>"; };
 		5BFD56EB1CD20C140081FB64 /* LocalSyncTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalSyncTests.swift; sourceTree = "<group>"; };
+		E50406ED1D804C3600F5AE3A /* Monitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monitoring.swift; sourceTree = "<group>"; };
 		E50520841D4245F600DBCB30 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = ../BartlebyKit/build/Debug/BartlebyKit.framework; sourceTree = "<group>"; };
 		E5074D7F1D411EE20089187A /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5091D9C1C4F8DB200E640A2 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -896,7 +899,6 @@
 		E56EC0741D7EEC2700D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
 		E578DCF61C3AC3FD00617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E578DD051C3AC50600617627 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyXPCMonitoring.swift; sourceTree = "<group>"; };
 		E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncXPCHelper.swift; sourceTree = "<group>"; };
 		E58504491C3F9F6000E2F64A /* KeyValueStorageCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyValueStorageCommand.swift; sourceTree = "<group>"; };
 		E585044C1C3FA12000E2F64A /* LoginCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCommand.swift; sourceTree = "<group>"; };
@@ -1138,7 +1140,6 @@
 		E5074D841D411F570089187A /* Embedded-Modules */ = {
 			isa = PBXGroup;
 			children = (
-				E57F20781D76FBF6006DA998 /* XPC.OSX */,
 				E58806731D51E06A00FEA71F /* Bartleby.xOS */,
 				E5F655151D42749F00A40A9B /* Vendors */,
 				E5F652041D42749100A40A9B /* CryptoHelper */,
@@ -1246,15 +1247,6 @@
 				E578DCF61C3AC3FD00617627 /* AppKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E57F20781D76FBF6006DA998 /* XPC.OSX */ = {
-			isa = PBXGroup;
-			children = (
-				E57F20791D76FBF6006DA998 /* BartlebyXPCMonitoring.swift */,
-			);
-			name = XPC.OSX;
-			path = ../../XPC.OSX;
 			sourceTree = "<group>";
 		};
 		E58806731D51E06A00FEA71F /* Bartleby.xOS */ = {
@@ -1460,6 +1452,7 @@
 		E58806DD1D51E06A00FEA71F /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E50406ED1D804C3600F5AE3A /* Monitoring.swift */,
 				E58806DE1D51E06A00FEA71F /* BartlebyFileIO.swift */,
 				E58806DF1D51E06A00FEA71F /* Collectible.swift */,
 				E58806E01D51E06A00FEA71F /* CollectibleCollection.swift */,
@@ -1945,6 +1938,7 @@
 				E58808721D51E06A00FEA71F /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E5CEA92B1D522555000DC91E /* DateTransform.swift in Sources */,
 				E54B7FE01D2B8A8D001F7AB3 /* HashMap.m in Sources */,
+				E50406F11D804C3600F5AE3A /* Monitoring.swift in Sources */,
 				E58807A21D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E588086E1D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5C260DB1D26AA4F0061E257 /* TestsConfiguration.swift in Sources */,
@@ -2191,6 +2185,7 @@
 				E53E28DA1CA572D80079ED23 /* PdSLocalAnalyzer.m in Sources */,
 				E591AD041D42646E00748FF4 /* CleanupCommand.swift in Sources */,
 				E58807871D51E06A00FEA71F /* CreateUser.swift in Sources */,
+				E50406EE1D804C3600F5AE3A /* Monitoring.swift in Sources */,
 				E58809271D51E06A00FEA71F /* BFileManager.swift in Sources */,
 				E58809131D51E06A00FEA71F /* TriggersAfterIndex.swift in Sources */,
 				E58808271D51E06A00FEA71F /* NoCrypto.swift in Sources */,
@@ -2259,7 +2254,6 @@
 				E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */,
 				E53E28EA1CA572E80079ED23 /* RunDirectivesCommand.swift in Sources */,
 				E588088F1D51E06A00FEA71F /* CollectionMetadatumProtocol.swift in Sources */,
-				E57F207A1D76FBF6006DA998 /* BartlebyXPCMonitoring.swift in Sources */,
 				E588081F1D51E06A00FEA71F /* RegistryMetadata+Protocol.swift in Sources */,
 				E5F655051D42749100A40A9B /* NSDecimalNumberTransform.swift in Sources */,
 				E53E28F51CA572F40079ED23 /* main.swift in Sources */,
@@ -2365,6 +2359,7 @@
 				E58808381D51E06A00FEA71F /* Consignee.swift in Sources */,
 				E588089C1D51E06A00FEA71F /* CryptoDelegate.swift in Sources */,
 				E58809081D51E06A00FEA71F /* User+Auth.swift in Sources */,
+				E50406EF1D804C3600F5AE3A /* Monitoring.swift in Sources */,
 				E588088C1D51E06A00FEA71F /* CollectibleCollection.swift in Sources */,
 				E588087C1D51E06A00FEA71F /* Global.swift in Sources */,
 				E58809371D51E08100FEA71F /* CryptedDataTransform.swift in Sources */,
@@ -2536,7 +2531,6 @@
 				E510E9A21D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E5F6549E1D42749100A40A9B /* ParameterEncoding.swift in Sources */,
 				E58809111D51E06A00FEA71F /* LogoutUser.swift in Sources */,
-				E57F207B1D76FC0E006DA998 /* BartlebyXPCMonitoring.swift in Sources */,
 				E5F6548E1D42749100A40A9B /* Manager.swift in Sources */,
 				E58807F11D51E06A00FEA71F /* UpdatePermission.swift in Sources */,
 				E58807E91D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
@@ -2672,6 +2666,7 @@
 				E58808411D51E06A00FEA71F /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E5F654CD1D42749100A40A9B /* Option.swift in Sources */,
 				E58808851D51E06A00FEA71F /* BartlebyFileIO.swift in Sources */,
+				E50406F01D804C3600F5AE3A /* Monitoring.swift in Sources */,
 				E5F6550A1D42749100A40A9B /* TransformOf.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,7 +16,7 @@ import Foundation
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
+public class BsyncXPCHelper: NSObject, BartlebyFileIO,Monitoring {
 
     static var masterFileName="Master"
 
@@ -38,7 +38,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
     }
 
 
-    // MARK: - BartlebyXPCMonitoring
+    // MARK: - Monitoring
 
     public func receiveProgression(progression:Progression,identifiedBy identifier:String){
         bprint("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)

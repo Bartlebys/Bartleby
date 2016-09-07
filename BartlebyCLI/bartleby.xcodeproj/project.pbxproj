@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E50406EC1D804C0F00F5AE3A /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50406EB1D804C0F00F5AE3A /* Monitoring.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E50A6F021CC8DE7700F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6F011CC8DE7700F89311 /* CryptedSerializableTransform.swift */; };
 		E50F410E1D40D5FF00532B09 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F40741D40D5FF00532B09 /* BartlebyDocument.swift */; };
@@ -190,6 +191,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E50406EB1D804C0F00F5AE3A /* Monitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monitoring.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 		E50F40DC1D40D5FF00532B09 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E50406EB1D804C0F00F5AE3A /* Monitoring.swift */,
 				E50F40DD1D40D5FF00532B09 /* BartlebyFileIO.swift */,
 				E50F40DE1D40D5FF00532B09 /* Collectible.swift */,
 				E50F40DF1D40D5FF00532B09 /* CollectibleCollection.swift */,
@@ -875,6 +878,7 @@
 				E50F41901D40D5FF00532B09 /* TriggersByIds.swift in Sources */,
 				E50F415E1D40D5FF00532B09 /* Completion+Result.swift in Sources */,
 				E50F414A1D40D5FF00532B09 /* Base64DataTransform.swift in Sources */,
+				E50406EC1D804C0F00F5AE3A /* Monitoring.swift in Sources */,
 				E50F41561D40D5FF00532B09 /* Bartleby.swift in Sources */,
 				E50F41741D40D5FF00532B09 /* Distribuable.swift in Sources */,
 				E50F41601D40D5FF00532B09 /* NSNotification+Completion.swift in Sources */,
