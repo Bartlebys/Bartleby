@@ -195,7 +195,7 @@ import ObjectMapper
                 let context=Context(code:4150882059, caller: "UpdatePermission.push")
                 Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Push error", comment: "Push error"),
-                    body: "\(NSLocalizedString("Attempt to push an operation with status ==)",comment:"Attempt to push an operation with status =="))\(operation.status))",
+                    body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }

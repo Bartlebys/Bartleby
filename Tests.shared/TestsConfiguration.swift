@@ -54,7 +54,7 @@ public class TestsConfiguration: BartlebyConfiguration {
     // Supervision loop interval (1 second min )
     public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
-    public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double=Double(1/100)
+    public static var MAX_OPERATIONS_BUNCH_SIZE: Int = 10
 
     // The min password size
     public static var MIN_PASSWORD_SIZE: UInt=6

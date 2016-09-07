@@ -194,7 +194,7 @@ import ObjectMapper
                 let context=Context(code:3934953874, caller: "DeleteLocker.push")
                 Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                     title: NSLocalizedString("Push error", comment: "Push error"),
-                    body: "\(NSLocalizedString("Attempt to push an operation with status ==)",comment:"Attempt to push an operation with status =="))\(operation.status))",
+                    body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }

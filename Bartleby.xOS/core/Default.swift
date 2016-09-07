@@ -55,7 +55,7 @@ public protocol BartlebyConfiguration {
     static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
 
     // Delay between chained operations
-    static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double { get set }
+    static var MAX_OPERATIONS_BUNCH_SIZE: Int { get set }
 
     // Should the registries metadata be crypted on export
     static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool { get set }
@@ -107,7 +107,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
     // Delay between chained operations
-    public static var DELAY_BETWEEN_OPERATIONS_IN_SECONDS: Double=Double(1/10)
+    public static var MAX_OPERATIONS_BUNCH_SIZE: Int=10
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
