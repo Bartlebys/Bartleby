@@ -24,7 +24,10 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
     var registryDelegate: RegistryDelegate?{
         didSet{
             if let document=self.registryDelegate?.getRegistry(){
-                self.URL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)");
+                if let currentUser=document.registryMetadata.currentUser{
+                    let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
+                    self.URL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)");
+                }
             }
         }
     }
