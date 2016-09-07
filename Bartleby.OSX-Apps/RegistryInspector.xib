@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="RegistryInspector" customModule="BartlebyKit">
             <connections>
-                <outlet property="activityViewController" destination="qlU-Em-xgV" id="trT-Ac-p6c"/>
                 <outlet property="globalTabView" destination="2rc-pm-P9A" id="nWj-YL-uLb"/>
                 <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
                 <outlet property="logsViewController" destination="nOf-ae-T3T" id="D3V-HH-DOd"/>
@@ -58,7 +57,6 @@
                                     <segment label="Registry" selected="YES"/>
                                     <segment label="Logs" tag="1"/>
                                     <segment label=" Web Stack"/>
-                                    <segment label="Activity"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
@@ -91,14 +89,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="33607DC1-F311-41BD-BFC8-8C33199F7F7A" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="07A290E7-F058-4830-AF8C-71C8389AE8DB" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
                             <rect key="frame" x="15" y="14" width="120" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="check" title=" Automatic" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="07A290E7-F058-4830-AF8C-71C8389AE8DB" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -123,10 +121,9 @@
         <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="qlU-Em-xgV" customClass="ActivityProgressViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="33607DC1-F311-41BD-BFC8-8C33199F7F7A" width="18" height="18">
+        <image name="07A290E7-F058-4830-AF8C-71C8389AE8DB" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGW1xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFwcI
 ERYbHCc0NTY3ODk6O0JDRElMT1VYVSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNS

@@ -32,8 +32,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
     @IBOutlet var webStackViewController: WebStack!
 
-    @IBOutlet weak var activityViewController:ActivityProgressViewController!
-
 
     // We bind this index on the scopeSegmentedControl
     public dynamic var selectedIndex:Int = -1{
@@ -84,10 +82,6 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
                 let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
                 self.globalTabView.addTabViewItem(webTabViewItem)
                 self.webStackViewController.registryDelegate=self
-
-                let activityViewItem=NSTabViewItem(viewController:self.activityViewController)
-                self.globalTabView.addTabViewItem(activityViewItem)
-                self.activityViewController.registryDelegate=self
 
             }
         }

@@ -36,10 +36,6 @@
 		E50F3DB41D40D50400532B09 /* OperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D171D40D50400532B09 /* OperationsCollectionController.swift */; };
 		E50F3DB51D40D50400532B09 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D181D40D50400532B09 /* PermissionsCollectionController.swift */; };
 		E50F3DB61D40D50400532B09 /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D181D40D50400532B09 /* PermissionsCollectionController.swift */; };
-		E50F3DB71D40D50400532B09 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D191D40D50400532B09 /* TasksCollectionController.swift */; };
-		E50F3DB81D40D50400532B09 /* TasksCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D191D40D50400532B09 /* TasksCollectionController.swift */; };
-		E50F3DB91D40D50400532B09 /* TasksGroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D1A1D40D50400532B09 /* TasksGroupsCollectionController.swift */; };
-		E50F3DBA1D40D50400532B09 /* TasksGroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D1A1D40D50400532B09 /* TasksGroupsCollectionController.swift */; };
 		E50F3DBB1D40D50400532B09 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D1B1D40D50400532B09 /* UsersCollectionController.swift */; };
 		E50F3DBC1D40D50400532B09 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D1B1D40D50400532B09 /* UsersCollectionController.swift */; };
 		E50F3DBD1D40D50400532B09 /* CollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D1D1D40D50400532B09 /* CollectionMetadatum.swift */; };
@@ -66,10 +62,6 @@
 		E50F3DD21D40D50400532B09 /* RegistryMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D271D40D50400532B09 /* RegistryMetadata.swift */; };
 		E50F3DD31D40D50400532B09 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D281D40D50400532B09 /* Tag.swift */; };
 		E50F3DD41D40D50400532B09 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D281D40D50400532B09 /* Tag.swift */; };
-		E50F3DD51D40D50400532B09 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D291D40D50400532B09 /* Task.swift */; };
-		E50F3DD61D40D50400532B09 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D291D40D50400532B09 /* Task.swift */; };
-		E50F3DD71D40D50400532B09 /* TasksGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D2A1D40D50400532B09 /* TasksGroup.swift */; };
-		E50F3DD81D40D50400532B09 /* TasksGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D2A1D40D50400532B09 /* TasksGroup.swift */; };
 		E50F3DD91D40D50400532B09 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D2B1D40D50400532B09 /* Trigger.swift */; };
 		E50F3DDA1D40D50400532B09 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D2B1D40D50400532B09 /* Trigger.swift */; };
 		E50F3DDB1D40D50400532B09 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D2C1D40D50400532B09 /* User.swift */; };
@@ -202,10 +194,6 @@
 		E50F3E5C1D40D50400532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D751D40D50400532B09 /* BartlebyDocument+SecurityScopes.swift */; };
 		E50F3E5D1D40D50400532B09 /* BartlebyDocument+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D761D40D50400532B09 /* BartlebyDocument+SuperIterable.swift */; };
 		E50F3E5E1D40D50400532B09 /* BartlebyDocument+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D761D40D50400532B09 /* BartlebyDocument+SuperIterable.swift */; };
-		E50F3E5F1D40D50400532B09 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D771D40D50400532B09 /* Task+Execution.swift */; };
-		E50F3E601D40D50400532B09 /* Task+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D771D40D50400532B09 /* Task+Execution.swift */; };
-		E50F3E611D40D50400532B09 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D781D40D50400532B09 /* TasksGroup+Execution.swift */; };
-		E50F3E621D40D50400532B09 /* TasksGroup+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D781D40D50400532B09 /* TasksGroup+Execution.swift */; };
 		E50F3E631D40D50400532B09 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D791D40D50400532B09 /* Global.swift */; };
 		E50F3E641D40D50400532B09 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D791D40D50400532B09 /* Global.swift */; };
 		E50F3E651D40D50400532B09 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D7A1D40D50400532B09 /* Handlers.swift */; };
@@ -220,8 +208,6 @@
 		E50F3E6E1D40D50400532B09 /* CollectionMetadatumProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D7F1D40D50400532B09 /* CollectionMetadatumProtocol.swift */; };
 		E50F3E6F1D40D50400532B09 /* Commitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D801D40D50400532B09 /* Commitable.swift */; };
 		E50F3E701D40D50400532B09 /* Commitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D801D40D50400532B09 /* Commitable.swift */; };
-		E50F3E711D40D50400532B09 /* ConcreteTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D811D40D50400532B09 /* ConcreteTask.swift */; };
-		E50F3E721D40D50400532B09 /* ConcreteTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D811D40D50400532B09 /* ConcreteTask.swift */; };
 		E50F3E731D40D50400532B09 /* CryptoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D821D40D50400532B09 /* CryptoDelegate.swift */; };
 		E50F3E741D40D50400532B09 /* CryptoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D821D40D50400532B09 /* CryptoDelegate.swift */; };
 		E50F3E751D40D50400532B09 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D831D40D50400532B09 /* Descriptible.swift */; };
@@ -262,14 +248,6 @@
 		E50F3E981D40D50400532B09 /* Registry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D941D40D50400532B09 /* Registry.swift */; };
 		E50F3E991D40D50400532B09 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */; };
 		E50F3E9A1D40D50400532B09 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */; };
-		E50F3E9F1D40D50400532B09 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D991D40D50400532B09 /* ReactiveTask.swift */; };
-		E50F3EA01D40D50400532B09 /* ReactiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D991D40D50400532B09 /* ReactiveTask.swift */; };
-		E50F3EA11D40D50400532B09 /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9A1D40D50400532B09 /* RelayingTask.swift */; };
-		E50F3EA21D40D50400532B09 /* RelayingTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9A1D40D50400532B09 /* RelayingTask.swift */; };
-		E50F3EA31D40D50400532B09 /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9B1D40D50400532B09 /* TaskWithNotifications.swift */; };
-		E50F3EA41D40D50400532B09 /* TaskWithNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9B1D40D50400532B09 /* TaskWithNotifications.swift */; };
-		E50F3EA51D40D50400532B09 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9C1D40D50400532B09 /* TasksScheduler.swift */; };
-		E50F3EA61D40D50400532B09 /* TasksScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9C1D40D50400532B09 /* TasksScheduler.swift */; };
 		E50F3EA71D40D50400532B09 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9E1D40D50400532B09 /* NSUndomanager+RegisterUndo.swift */; };
 		E50F3EA81D40D50400532B09 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9E1D40D50400532B09 /* NSUndomanager+RegisterUndo.swift */; };
 		E50F3EA91D40D50400532B09 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D9F1D40D50400532B09 /* User+Auth.swift */; };
@@ -304,8 +282,6 @@
 		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
 		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
-		E5491FFF1D6341FB00961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5491FFE1D6341FB00961796 /* SimulatedTask.swift */; };
-		E54920001D6341FB00961796 /* SimulatedTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5491FFE1D6341FB00961796 /* SimulatedTask.swift */; };
 		E549200C1D6351EF00961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200A1D6351EF00961796 /* JData+Conveniences.swift */; };
 		E549200D1D6351EF00961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200A1D6351EF00961796 /* JData+Conveniences.swift */; };
 		E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E549200B1D6351EF00961796 /* JString+Conveniences.swift */; };
@@ -315,8 +291,6 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
-		E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */; };
-		E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */; };
 		E56EC0731D7ED38400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */; };
@@ -331,9 +305,6 @@
 		E5B128FC1D1C317300D61261 /* LockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5096901CA5824500B8D36E /* LockerTests.swift */; };
 		E5B128FD1D1C317300D61261 /* AuthCookiesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */; };
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
-		E5B128FF1D1C317300D61261 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */; };
-		E5B129001D1C317300D61261 /* SerializableInvocationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */; };
-		E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 /* End PBXBuildFile section */
@@ -400,8 +371,6 @@
 		E50F3D161D40D50400532B09 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
 		E50F3D171D40D50400532B09 /* OperationsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsCollectionController.swift; sourceTree = "<group>"; };
 		E50F3D181D40D50400532B09 /* PermissionsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionsCollectionController.swift; sourceTree = "<group>"; };
-		E50F3D191D40D50400532B09 /* TasksCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksCollectionController.swift; sourceTree = "<group>"; };
-		E50F3D1A1D40D50400532B09 /* TasksGroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupsCollectionController.swift; sourceTree = "<group>"; };
 		E50F3D1B1D40D50400532B09 /* UsersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCollectionController.swift; sourceTree = "<group>"; };
 		E50F3D1D1D40D50400532B09 /* CollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMetadatum.swift; sourceTree = "<group>"; };
 		E50F3D1E1D40D50400532B09 /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
@@ -415,8 +384,6 @@
 		E50F3D261D40D50400532B09 /* Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		E50F3D271D40D50400532B09 /* RegistryMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryMetadata.swift; sourceTree = "<group>"; };
 		E50F3D281D40D50400532B09 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		E50F3D291D40D50400532B09 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
-		E50F3D2A1D40D50400532B09 /* TasksGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroup.swift; sourceTree = "<group>"; };
 		E50F3D2B1D40D50400532B09 /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E50F3D2C1D40D50400532B09 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E50F3D2E1D40D50400532B09 /* CreateGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
@@ -483,8 +450,6 @@
 		E50F3D741D40D50400532B09 /* BartlebyDocument+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+MetaDataImportExport.swift"; sourceTree = "<group>"; };
 		E50F3D751D40D50400532B09 /* BartlebyDocument+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SecurityScopes.swift"; sourceTree = "<group>"; };
 		E50F3D761D40D50400532B09 /* BartlebyDocument+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SuperIterable.swift"; sourceTree = "<group>"; };
-		E50F3D771D40D50400532B09 /* Task+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Execution.swift"; sourceTree = "<group>"; };
-		E50F3D781D40D50400532B09 /* TasksGroup+Execution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TasksGroup+Execution.swift"; sourceTree = "<group>"; };
 		E50F3D791D40D50400532B09 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E50F3D7A1D40D50400532B09 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
 		E50F3D7C1D40D50400532B09 /* BartlebyFileIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyFileIO.swift; sourceTree = "<group>"; };
@@ -492,7 +457,6 @@
 		E50F3D7E1D40D50400532B09 /* CollectibleCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectibleCollection.swift; sourceTree = "<group>"; };
 		E50F3D7F1D40D50400532B09 /* CollectionMetadatumProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMetadatumProtocol.swift; sourceTree = "<group>"; };
 		E50F3D801D40D50400532B09 /* Commitable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commitable.swift; sourceTree = "<group>"; };
-		E50F3D811D40D50400532B09 /* ConcreteTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcreteTask.swift; sourceTree = "<group>"; };
 		E50F3D821D40D50400532B09 /* CryptoDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoDelegate.swift; sourceTree = "<group>"; };
 		E50F3D831D40D50400532B09 /* Descriptible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Descriptible.swift; sourceTree = "<group>"; };
 		E50F3D841D40D50400532B09 /* DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentation.swift; sourceTree = "<group>"; };
@@ -513,10 +477,6 @@
 		E50F3D931D40D50400532B09 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E50F3D941D40D50400532B09 /* Registry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registry.swift; sourceTree = "<group>"; };
 		E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
-		E50F3D991D40D50400532B09 /* ReactiveTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactiveTask.swift; sourceTree = "<group>"; };
-		E50F3D9A1D40D50400532B09 /* RelayingTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayingTask.swift; sourceTree = "<group>"; };
-		E50F3D9B1D40D50400532B09 /* TaskWithNotifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskWithNotifications.swift; sourceTree = "<group>"; };
-		E50F3D9C1D40D50400532B09 /* TasksScheduler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksScheduler.swift; sourceTree = "<group>"; };
 		E50F3D9E1D40D50400532B09 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
 		E50F3D9F1D40D50400532B09 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E50F3DA11D40D50400532B09 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
@@ -539,7 +499,6 @@
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
-		E5491FFE1D6341FB00961796 /* SimulatedTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedTask.swift; sourceTree = "<group>"; };
 		E549200A1D6351EF00961796 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E549200B1D6351EF00961796 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -549,20 +508,15 @@
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
 		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
-		E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityProgressViewController.swift; sourceTree = "<group>"; };
-		E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActivityProgressViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
-		E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializableInvocationsTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E57F20761D76F8EE006DA998 /* BartlebyXPCMonitoring.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyXPCMonitoring.swift; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
-		E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksGroupCompletionPriorityAndPausesTests.swift; sourceTree = "<group>"; };
-		E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTests.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -619,15 +573,6 @@
 			name = InterSpace;
 			sourceTree = "<group>";
 		};
-		5BDEF70C1C9FF49200D9FB70 /* Invocations */ = {
-			isa = PBXGroup;
-			children = (
-				E595A2E91CE4B34000099EB3 /* TasksGroupCompletionPriorityAndPausesTests.swift */,
-				E56C00591C8ED51D00BB6B19 /* SerializableInvocationsTests.swift */,
-			);
-			name = Invocations;
-			sourceTree = "<group>";
-		};
 		5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,8 +601,6 @@
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
-				E56AD8DC1D630E6E00354327 /* ActivityProgressViewController.swift */,
-				E56AD8DD1D630E6E00354327 /* ActivityProgressViewController.xib */,
 				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
 			);
 			name = "Bartleby.OSX-Apps";
@@ -698,8 +641,6 @@
 				E50F3D161D40D50400532B09 /* LockersCollectionController.swift */,
 				E50F3D171D40D50400532B09 /* OperationsCollectionController.swift */,
 				E50F3D181D40D50400532B09 /* PermissionsCollectionController.swift */,
-				E50F3D191D40D50400532B09 /* TasksCollectionController.swift */,
-				E50F3D1A1D40D50400532B09 /* TasksGroupsCollectionController.swift */,
 				E50F3D1B1D40D50400532B09 /* UsersCollectionController.swift */,
 			);
 			path = collectionControllers;
@@ -720,8 +661,6 @@
 				E50F3D261D40D50400532B09 /* Progression.swift */,
 				E50F3D271D40D50400532B09 /* RegistryMetadata.swift */,
 				E50F3D281D40D50400532B09 /* Tag.swift */,
-				E50F3D291D40D50400532B09 /* Task.swift */,
-				E50F3D2A1D40D50400532B09 /* TasksGroup.swift */,
 				E50F3D2B1D40D50400532B09 /* Trigger.swift */,
 				E50F3D2C1D40D50400532B09 /* User.swift */,
 				E50F3D2D1D40D50400532B09 /* operations */,
@@ -845,8 +784,6 @@
 				E50F3D951D40D50400532B09 /* StatusOfCompletion.swift */,
 				E50F3D7B1D40D50400532B09 /* protocols */,
 				E50F3D691D40D50400532B09 /* extensions */,
-				E50F3D961D40D50400532B09 /* tasks */,
-				E50F3D9C1D40D50400532B09 /* TasksScheduler.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -868,8 +805,6 @@
 				E50F3D701D40D50400532B09 /* NSNotification+Completion.swift */,
 				E50F3D711D40D50400532B09 /* NSNotification+Progression.swift */,
 				E50F3D721D40D50400532B09 /* Progression+Conveniences.swift */,
-				E50F3D771D40D50400532B09 /* Task+Execution.swift */,
-				E50F3D781D40D50400532B09 /* TasksGroup+Execution.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -882,7 +817,6 @@
 				E50F3D7D1D40D50400532B09 /* Collectible.swift */,
 				E50F3D7F1D40D50400532B09 /* CollectionMetadatumProtocol.swift */,
 				E50F3D801D40D50400532B09 /* Commitable.swift */,
-				E50F3D811D40D50400532B09 /* ConcreteTask.swift */,
 				E50F3D821D40D50400532B09 /* CryptoDelegate.swift */,
 				E50F3D831D40D50400532B09 /* Descriptible.swift */,
 				E50F3D841D40D50400532B09 /* DictionaryRepresentation.swift */,
@@ -903,17 +837,6 @@
 				E50F3D931D40D50400532B09 /* UserProtocol.swift */,
 			);
 			path = protocols;
-			sourceTree = "<group>";
-		};
-		E50F3D961D40D50400532B09 /* tasks */ = {
-			isa = PBXGroup;
-			children = (
-				E5491FFE1D6341FB00961796 /* SimulatedTask.swift */,
-				E50F3D991D40D50400532B09 /* ReactiveTask.swift */,
-				E50F3D9A1D40D50400532B09 /* RelayingTask.swift */,
-				E50F3D9B1D40D50400532B09 /* TaskWithNotifications.swift */,
-			);
-			path = tasks;
 			sourceTree = "<group>";
 		};
 		E50F3D9D1D40D50400532B09 /* extensions */ = {
@@ -1016,9 +939,7 @@
 				E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */,
 				E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */,
 				5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */,
-				5BDEF70C1C9FF49200D9FB70 /* Invocations */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
-				E5BDC63A1CEF73FB00F20E56 /* DocumentTests.swift */,
 			);
 			path = BartlebyKitOSXTests;
 			sourceTree = "<group>";
@@ -1204,7 +1125,6 @@
 			files = (
 				E50F3AF71D40D27F00532B09 /* OperationViewController.xib in Resources */,
 				E50F3AF21D40D27F00532B09 /* InspectorViewController.xib in Resources */,
-				E56AD8DF1D630E6E00354327 /* ActivityProgressViewController.xib in Resources */,
 				E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */,
 				E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */,
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
@@ -1228,7 +1148,6 @@
 				E50F3AF61D40D27F00532B09 /* OperationViewController.swift in Sources */,
 				E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */,
 				E50F3E971D40D50400532B09 /* Registry.swift in Sources */,
-				E50F3E9F1D40D50400532B09 /* ReactiveTask.swift in Sources */,
 				E549200E1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E57F20771D76F8EE006DA998 /* BartlebyXPCMonitoring.swift in Sources */,
 				E50F3DC31D40D50400532B09 /* Group.swift in Sources */,
@@ -1240,14 +1159,12 @@
 				E50F3E951D40D50400532B09 /* UserProtocol.swift in Sources */,
 				E50F3DEF1D40D50400532B09 /* DeleteGroups.swift in Sources */,
 				E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
-				E50F3DD71D40D50400532B09 /* TasksGroup.swift in Sources */,
 				E50F3EB91D40D50400532B09 /* BFileManager.swift in Sources */,
 				E50F3E151D40D50400532B09 /* UpdateGroup.swift in Sources */,
 				E50F3E171D40D50400532B09 /* UpdateGroups.swift in Sources */,
 				E50F3E811D40D50400532B09 /* Identifiable.swift in Sources */,
 				E50F3EAB1D40D50400532B09 /* LoginUser.swift in Sources */,
 				E50F3E751D40D50400532B09 /* Descriptible.swift in Sources */,
-				E56AD8DE1D630E6E00354327 /* ActivityProgressViewController.swift in Sources */,
 				E50F3E3F1D40D50400532B09 /* Consignation.swift in Sources */,
 				E50F3DE31D40D50400532B09 /* CreateLockers.swift in Sources */,
 				E50F3E891D40D50400532B09 /* RegistryMetadataProtocol.swift in Sources */,
@@ -1257,13 +1174,10 @@
 				E50F3EBB1D40D50400532B09 /* HTTPManager.swift in Sources */,
 				E50F3E1F1D40D50400532B09 /* UpdatePermissions.swift in Sources */,
 				E50F3E551D40D50400532B09 /* Progression+Conveniences.swift in Sources */,
-				E50F3EA11D40D50400532B09 /* RelayingTask.swift in Sources */,
 				E50F3E091D40D50400532B09 /* ReadPermissionById.swift in Sources */,
 				E50F3DF51D40D50400532B09 /* DeletePermission.swift in Sources */,
-				E50F3EA51D40D50400532B09 /* TasksScheduler.swift in Sources */,
 				E50F3E651D40D50400532B09 /* Handlers.swift in Sources */,
 				E50F3E231D40D50400532B09 /* UpdateUsers.swift in Sources */,
-				E50F3E5F1D40D50400532B09 /* Task+Execution.swift in Sources */,
 				E50F3E331D40D50400532B09 /* JSerializer.swift in Sources */,
 				E50F3DE91D40D50400532B09 /* CreateUser.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
@@ -1276,7 +1190,6 @@
 				E50F3DAD1D40D50400532B09 /* BartlebyDocument.swift in Sources */,
 				E50F3E0B1D40D50400532B09 /* ReadPermissionsByIds.swift in Sources */,
 				E549200C1D6351EF00961796 /* JData+Conveniences.swift in Sources */,
-				E50F3E711D40D50400532B09 /* ConcreteTask.swift in Sources */,
 				E50F3E111D40D50400532B09 /* ReadUsersByIds.swift in Sources */,
 				E50F3AF81D40D27F00532B09 /* RegistryInspector.swift in Sources */,
 				E50F3E0D1D40D50400532B09 /* ReadPermissionsByQuery.swift in Sources */,
@@ -1297,7 +1210,6 @@
 				E50F3DAF1D40D50400532B09 /* GroupsCollectionController.swift in Sources */,
 				E50F3EAF1D40D50400532B09 /* TriggersAfterIndex.swift in Sources */,
 				E50F3DED1D40D50400532B09 /* DeleteGroup.swift in Sources */,
-				E50F3EA31D40D50400532B09 /* TaskWithNotifications.swift in Sources */,
 				E50F3E271D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E50F3E5B1D40D50400532B09 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E50F3E791D40D50400532B09 /* Distribuable.swift in Sources */,
@@ -1323,7 +1235,6 @@
 				E50F3DFB1D40D50400532B09 /* DeleteUsers.swift in Sources */,
 				E50F3DDF1D40D50400532B09 /* CreateGroups.swift in Sources */,
 				E50F3E931D40D50400532B09 /* UniversalType.swift in Sources */,
-				E50F3E611D40D50400532B09 /* TasksGroup+Execution.swift in Sources */,
 				E50F3E3D1D40D50400532B09 /* Bartleby.swift in Sources */,
 				E50F3E491D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */,
 				E50F3E7D1D40D50400532B09 /* HTTPCommand.swift in Sources */,
@@ -1348,7 +1259,6 @@
 				E50F3E131D40D50400532B09 /* ReadUsersByQuery.swift in Sources */,
 				E50F3DB11D40D50400532B09 /* LockersCollectionController.swift in Sources */,
 				E50F3E831D40D50400532B09 /* Initializable.swift in Sources */,
-				E50F3DB71D40D50400532B09 /* TasksCollectionController.swift in Sources */,
 				E50F3EBD1D40D50400532B09 /* Pluralization.swift in Sources */,
 				E50F3E4B1D40D50400532B09 /* Completion+Conveniences.swift in Sources */,
 				E50F3E031D40D50400532B09 /* ReadLockerById.swift in Sources */,
@@ -1358,7 +1268,6 @@
 				E50F3E411D40D50400532B09 /* Consignee.swift in Sources */,
 				E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E50F3E871D40D50400532B09 /* JSONString.swift in Sources */,
-				E50F3DB91D40D50400532B09 /* TasksGroupsCollectionController.swift in Sources */,
 				E50F3E571D40D50400532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E50F3E311D40D50400532B09 /* JObject.swift in Sources */,
 				E50F3E731D40D50400532B09 /* CryptoDelegate.swift in Sources */,
@@ -1366,14 +1275,12 @@
 				E50F3E291D40D50400532B09 /* ImageTransform.swift in Sources */,
 				E50F3DF91D40D50400532B09 /* DeleteUser.swift in Sources */,
 				E50F3E351D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
-				E50F3DD51D40D50400532B09 /* Task.swift in Sources */,
 				E50F3EBF1D40D50400532B09 /* PString.swift in Sources */,
 				E50F3E671D40D50400532B09 /* BartlebyFileIO.swift in Sources */,
 				E50F3E051D40D50400532B09 /* ReadLockersByIds.swift in Sources */,
 				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E50F3E771D40D50400532B09 /* DictionaryRepresentation.swift in Sources */,
 				E50F3E7F1D40D50400532B09 /* HTTPResponse.swift in Sources */,
-				E5491FFF1D6341FB00961796 /* SimulatedTask.swift in Sources */,
 				E50F3E011D40D50400532B09 /* ReadGroupsByQuery.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1402,18 +1309,15 @@
 				E50F3E581D40D50400532B09 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E50F3E041D40D50400532B09 /* ReadLockerById.swift in Sources */,
 				E50F3E6E1D40D50400532B09 /* CollectionMetadatumProtocol.swift in Sources */,
-				E50F3E721D40D50400532B09 /* ConcreteTask.swift in Sources */,
 				E50F3E6C1D40D50400532B09 /* CollectibleCollection.swift in Sources */,
 				E50F3E1C1D40D50400532B09 /* UpdateLockers.swift in Sources */,
 				E50F3E281D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
-				E54920001D6341FB00961796 /* SimulatedTask.swift in Sources */,
 				E50F3EBE1D40D50400532B09 /* Pluralization.swift in Sources */,
 				E549200F1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3E361D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
 				E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E50F3E161D40D50400532B09 /* UpdateGroup.swift in Sources */,
-				E50F3E621D40D50400532B09 /* TasksGroup+Execution.swift in Sources */,
 				E50F3E4A1D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */,
 				E50F3EBC1D40D50400532B09 /* HTTPManager.swift in Sources */,
 				E50F3E021D40D50400532B09 /* ReadGroupsByQuery.swift in Sources */,
@@ -1438,9 +1342,7 @@
 				E50F3E7C1D40D50400532B09 /* ForwardableState.swift in Sources */,
 				E50F3E3A1D40D50400532B09 /* NoCrypto.swift in Sources */,
 				E50F3DDE1D40D50400532B09 /* CreateGroup.swift in Sources */,
-				E50F3E601D40D50400532B09 /* Task+Execution.swift in Sources */,
 				E50F3DAE1D40D50400532B09 /* BartlebyDocument.swift in Sources */,
-				E50F3EA01D40D50400532B09 /* ReactiveTask.swift in Sources */,
 				E50F3DBE1D40D50400532B09 /* CollectionMetadatum.swift in Sources */,
 				E50F3DC21D40D50400532B09 /* ExternalReference.swift in Sources */,
 				E50F3E481D40D50400532B09 /* BartlebyDocument+Operations.swift in Sources */,
@@ -1476,7 +1378,6 @@
 				E50F3E3E1D40D50400532B09 /* Bartleby.swift in Sources */,
 				E50F3E321D40D50400532B09 /* JObject.swift in Sources */,
 				E50F3DFA1D40D50400532B09 /* DeleteUser.swift in Sources */,
-				E50F3DB81D40D50400532B09 /* TasksCollectionController.swift in Sources */,
 				E50F3E541D40D50400532B09 /* NSNotification+Progression.swift in Sources */,
 				E50F3DD41D40D50400532B09 /* Tag.swift in Sources */,
 				E50F3DCC1D40D50400532B09 /* Operation.swift in Sources */,
@@ -1501,7 +1402,6 @@
 				E50F3DB61D40D50400532B09 /* PermissionsCollectionController.swift in Sources */,
 				E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E50F3E981D40D50400532B09 /* Registry.swift in Sources */,
-				E50F3DBA1D40D50400532B09 /* TasksGroupsCollectionController.swift in Sources */,
 				E50F3DEC1D40D50400532B09 /* CreateUsers.swift in Sources */,
 				E50F3E101D40D50400532B09 /* ReadUserById.swift in Sources */,
 				E50F3E781D40D50400532B09 /* DictionaryRepresentation.swift in Sources */,
@@ -1514,14 +1414,9 @@
 				E50F3DC81D40D50400532B09 /* JString.swift in Sources */,
 				E50F3E641D40D50400532B09 /* Global.swift in Sources */,
 				E50F3EB01D40D50400532B09 /* TriggersAfterIndex.swift in Sources */,
-				E50F3EA61D40D50400532B09 /* TasksScheduler.swift in Sources */,
 				E50F3DB01D40D50400532B09 /* GroupsCollectionController.swift in Sources */,
-				E50F3EA21D40D50400532B09 /* RelayingTask.swift in Sources */,
 				E50F3E1A1D40D50400532B09 /* UpdateLocker.swift in Sources */,
-				E50F3DD61D40D50400532B09 /* Task.swift in Sources */,
 				E50F3EA81D40D50400532B09 /* NSUndomanager+RegisterUndo.swift in Sources */,
-				E50F3EA41D40D50400532B09 /* TaskWithNotifications.swift in Sources */,
-				E50F3DD81D40D50400532B09 /* TasksGroup.swift in Sources */,
 				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E50F3E561D40D50400532B09 /* Progression+Conveniences.swift in Sources */,
 				E50F3DEA1D40D50400532B09 /* CreateUser.swift in Sources */,
@@ -1533,14 +1428,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */,
-				E5B128FF1D1C317300D61261 /* TasksGroupCompletionPriorityAndPausesTests.swift in Sources */,
 				E5B128F91D1C317300D61261 /* JObjectTests.swift in Sources */,
 				E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */,
 				E5B129031D1C317300D61261 /* TestCase.swift in Sources */,
 				E5B128FC1D1C317300D61261 /* LockerTests.swift in Sources */,
 				E5B128F81D1C317300D61261 /* UserStatusTests.swift in Sources */,
-				E5B129001D1C317300D61261 /* SerializableInvocationsTests.swift in Sources */,
-				E5B129021D1C317300D61261 /* DocumentTests.swift in Sources */,
 				E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */,
 				E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */,
 				E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */,

@@ -272,33 +272,6 @@
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="AAh-Ye-4B8"/>
-                <menuItem title="Pause Tasks Groups" id="xrb-s6-Qff">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="pauseTasksGroups:" target="-2" id="9ar-3F-Qhi"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Restart Tasks Groups" id="s68-hW-xSW">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="restartTasksGroups:" target="-2" id="rkt-K5-7Zj"/>
-                    </connections>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="zyt-b7-9gH">
-                    <menu key="submenu" id="8SS-Fc-g5k">
-                        <items>
-                            <menuItem title="Item 1" enabled="NO" id="GfB-It-HBk">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                            <menuItem title="Item 2" enabled="NO" id="GVE-et-4fu">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                            <menuItem title="Item 3" enabled="NO" id="k4M-Pg-7ka">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                            </menuItem>
-                        </items>
-                    </menu>
-                </menuItem>
                 <menuItem title="Save Registry" id="96B-Nq-fkK">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -310,12 +283,6 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Destructive Actions" id="oti-Ly-LKz">
                         <items>
-                            <menuItem title="Delete all Pending Tasks" id="WHe-Fu-atu">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="deleteAllPendingTasks:" target="-2" id="WHz-6J-ePu"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Delete Operations" id="Dru-Kf-MPX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

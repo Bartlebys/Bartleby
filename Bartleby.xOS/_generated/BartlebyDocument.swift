@@ -66,18 +66,6 @@ public class BartlebyDocument : Registry {
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	public dynamic var tasks=TasksCollectionController(){
-		didSet{
-			tasks.registry=self
-		}
-	}
-	
-	public dynamic var tasksGroups=TasksGroupsCollectionController(){
-		didSet{
-			tasksGroups.registry=self
-		}
-	}
-	
 	public dynamic var users=UsersCollectionController(){
 		didSet{
 			users.registry=self
@@ -117,44 +105,6 @@ public class BartlebyDocument : Registry {
     // Those array controllers are Owned by their respective ViewControllers
     // Those view Controller are observed here to insure a consistent persitency
 
-
-    public var tasksArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            tasksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.tasks.arrayController=tasksArrayController
-            // Add observer
-            tasksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{indexesSet.addIndex($0)}
-                self.tasksArrayController?.setSelectionIndexes(indexesSet)
-             }
-        }
-    }
-        
-
-    public var tasksGroupsArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            tasksGroupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.tasksGroups.arrayController=tasksGroupsArrayController
-            // Add observer
-            tasksGroupsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupsIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{indexesSet.addIndex($0)}
-                self.tasksGroupsArrayController?.setSelectionIndexes(indexesSet)
-             }
-        }
-    }
-        
 
     public var usersArrayController: NSArrayController?{
         willSet{
@@ -256,42 +206,6 @@ public class BartlebyDocument : Registry {
 #endif
 
     // indexes persistency
-
-    
-    static public let kSelectedTasksIndexesKey="selectedTasksIndexesKey"
-    static public let TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION="TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedTasks:[Task]?{
-        didSet{
-            if let tasks = selectedTasks {
-                 let indexes:[Int]=tasks.map({ (task) -> Int in
-                    return self.tasks.indexOf( { return $0.UID == task.UID })!
-                })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksIndexesKey]=indexes
-                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
-            }
-        }
-    }
-    var firstSelectedTask:Task? { return self.selectedTasks?.first }
-        
-        
-
-    
-    static public let kSelectedTasksGroupsIndexesKey="selectedTasksGroupsIndexesKey"
-    static public let TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION="TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedTasksGroups:[TasksGroup]?{
-        didSet{
-            if let tasksGroups = selectedTasksGroups {
-                 let indexes:[Int]=tasksGroups.map({ (tasksGroup) -> Int in
-                    return self.tasksGroups.indexOf( { return $0.UID == tasksGroup.UID })!
-                })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedTasksGroupsIndexesKey]=indexes
-                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.TASKSGROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
-            }
-        }
-    }
-    var firstSelectedTasksGroup:TasksGroup? { return self.selectedTasksGroups?.first }
-        
-        
 
     
     static public let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
@@ -401,24 +315,6 @@ public class BartlebyDocument : Registry {
         // #1  Defines the Schema
         super.configureSchema()
 
-        let taskDefinition = CollectionMetadatum()
-        taskDefinition.proxy = self.tasks
-        // By default we group the observation via the rootObjectUID
-        taskDefinition.collectionName = Task.collectionName
-        taskDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        taskDefinition.allowDistantPersistency = false
-        taskDefinition.inMemory = false
-        
-
-        let tasksGroupDefinition = CollectionMetadatum()
-        tasksGroupDefinition.proxy = self.tasksGroups
-        // By default we group the observation via the rootObjectUID
-        tasksGroupDefinition.collectionName = TasksGroup.collectionName
-        tasksGroupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        tasksGroupDefinition.allowDistantPersistency = false
-        tasksGroupDefinition.inMemory = false
-        
-
         let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
         // By default we group the observation via the rootObjectUID
@@ -468,8 +364,6 @@ public class BartlebyDocument : Registry {
         // Proceed to configuration
         do{
 
-			try self.registryMetadata.configureSchema(taskDefinition)
-			try self.registryMetadata.configureSchema(tasksGroupDefinition)
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(groupDefinition)
@@ -507,34 +401,6 @@ public class BartlebyDocument : Registry {
         if let keyPath = keyPath, object = object {
 
                     
-            if keyPath=="selectionIndexes" && self.tasksArrayController == object as? NSArrayController {
-                if let tasks = self.tasksArrayController?.selectedObjects as? [Task] {
-                     if let selectedTask = self.selectedTasks{
-                        if selectedTask == tasks{
-                            return // No changes
-                        }
-                     }
-                    self.selectedTasks=tasks
-                }
-                return
-            }
-            
-
-            
-            if keyPath=="selectionIndexes" && self.tasksGroupsArrayController == object as? NSArrayController {
-                if let tasksGroups = self.tasksGroupsArrayController?.selectedObjects as? [TasksGroup] {
-                     if let selectedTasksGroup = self.selectedTasksGroups{
-                        if selectedTasksGroup == tasksGroups{
-                            return // No changes
-                        }
-                     }
-                    self.selectedTasksGroups=tasksGroups
-                }
-                return
-            }
-            
-
-            
             if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
                 if let users = self.usersArrayController?.selectedObjects as? [User] {
                      if let selectedUser = self.selectedUsers{
@@ -610,26 +476,6 @@ public class BartlebyDocument : Registry {
 
     // MARK:  Delete currently selected items
     
-    public func deleteSelectedTasks() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTasks{
-            for item in selected{
-                 self.tasks.removeObject(item, commit:true)
-            }
-        }
-    }
-        
-
-    public func deleteSelectedTasksGroups() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedTasksGroups{
-            for item in selected{
-                 self.tasksGroups.removeObject(item, commit:true)
-            }
-        }
-    }
-        
-
     public func deleteSelectedUsers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedUsers{
@@ -727,13 +573,11 @@ public class BartlebyDocument : Registry {
             // Transition on line
             if newValue==true && online==false{
                 self._connectToSSE()
-                self._restartTasksGroups()
             }
             // Transition off line
             if newValue==false && online==true{
                 bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
                 self._closeSSE()
-                self._pauseTasksGroups()
             }
             if newValue==online{
                 bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")

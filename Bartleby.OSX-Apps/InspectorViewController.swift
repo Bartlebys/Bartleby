@@ -77,18 +77,6 @@ import Cocoa
     }
 
 
-    @IBAction func deleteAllPendingTasks(sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            for task in registry.tasks.reverse(){
-                registry.tasks.removeObject(task, commit: false)
-            }
-
-            for group in registry.tasksGroups.reverse(){
-                registry.tasksGroups.removeObject(group, commit: false)
-            }
-        }
-    }
-
     @IBAction func deleteOperations(sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for operation in registry.operations.reverse(){
@@ -97,24 +85,6 @@ import Cocoa
         }
     }
 
-
-    @IBAction func restartTasksGroups(sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            for group in registry.tasksGroups{
-                if let _=try? group.start(){
-                    // Explicit silent catch
-                }
-            }
-        }
-    }
-
-    @IBAction func pauseTasksGroups(sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            for group in registry.tasksGroups{
-                group.pause()
-            }
-        }
-    }
 
     //MARK:-  Collections
 
