@@ -261,13 +261,12 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO,BartlebyXPCMonitoring {
         let imageFolderPath = (isMaster ? "\(destination)\(hashName)" : "\(destination)\(hashName)")
 
         let imagePath =  "\(imageFolderPath)."+BsyncDMGCard.DMG_EXTENSION
-        let volumeName = (isMaster ? "Master_"+context.name : hashName)
 
         let card=BsyncDMGCard()
         card.contextUID=context.UID
         card.userUID=user.UID
         card.imagePath=imagePath
-        card.volumeName=volumeName
+        card.volumeName=hashName
         card.directivesRelativePath=BsyncDirectives.DEFAULT_FILE_NAME
         return card
     }
