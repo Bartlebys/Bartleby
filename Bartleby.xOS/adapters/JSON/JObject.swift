@@ -51,7 +51,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: - Collectible = Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType
 
-
     // MARK: UniversalType
 
     // Used to store the type name on serialization
@@ -183,14 +182,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                         self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
                 }
-
                 // Invoke the closures (changes Observers)
-
                 for (_,supervisionClosure) in self._supervisers{
                     supervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
                 }
             }
-
         }
 
     }
@@ -364,8 +360,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
-
-
     // MARK: - Mappable
 
     public required init?(_ map: Map) {
@@ -394,7 +388,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
         // Changed keys are not serialized
         self.changedKeys=changedKeys
-
         self.enableSuperVisionAndCommit()
 
     }
@@ -408,7 +401,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     public func enableSuperVisionAndCommit(){
         self.enableSupervision()
         self.enableAutoCommit()
-
     }
 
 
