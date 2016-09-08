@@ -43,13 +43,15 @@ extension BartlebyDocument {
             savePanel.allowedFileTypes=["json"]
         }
         savePanel.beginWithCompletionHandler({ (result) in
-            if result==NSFileHandlingPanelOKButton{
-                if let url = savePanel.URL {
-                    if let filePath=url.path {
-                        self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
+            dispatch_async(dispatch_get_main_queue(), {
+                if result==NSFileHandlingPanelOKButton{
+                    if let url = savePanel.URL {
+                        if let filePath=url.path {
+                            self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
+                        }
                     }
                 }
-            }
+            })
         })
     }
 
@@ -67,18 +69,19 @@ extension BartlebyDocument {
             openPanel.allowedFileTypes=["json"]
         }
         openPanel.beginWithCompletionHandler({ (result) in
-            if result==NSFileHandlingPanelOKButton{
-                if let url = openPanel.URL {
-                    if let filePath=url.path {
-                        self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
+            dispatch_async(dispatch_get_main_queue(), {
+                if result==NSFileHandlingPanelOKButton{
+                    if let url = openPanel.URL {
+                        if let filePath=url.path {
+                            self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
+                        }
                     }
                 }
-            }
-
+            })
         })
     }
 
-    
+
     #endif
 
     /**
@@ -120,7 +123,7 @@ extension BartlebyDocument {
                                                     do {
                                                         if let instance=try Bartleby.defaultSerializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
                                                             if let user:User=instance as? User{
-                                                                 // We donnot want to expose the document current user
+                                                                // We donnot want to expose the document current user
                                                                 if user.creatorUID != user.UID{
                                                                     proxy.upsert(instance,commit:false)
                                                                 }
@@ -155,13 +158,13 @@ extension BartlebyDocument {
                     }
                 }
             }
-
-            }) { (context) in
-
-                handlers.on(Completion.failureStateFromJHTTPResponse(context))
+            
+        }) { (context) in
+            
+            handlers.on(Completion.failureStateFromJHTTPResponse(context))
         }
-
+        
     }
-
-
+    
+    
 }
