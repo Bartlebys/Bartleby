@@ -104,7 +104,6 @@ extension BartlebyDocument {
                 if nextBunchOfOperations.count>0{
                     bprint("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
                     let bunchHandlers=Handlers(completionHandler: { (completionState) in
-                        self.synchronizationHandlers.on(completionState)
                         self._pushNextBunch()
                         }, progressionHandler: { (progressionState) in
                             self.synchronizationHandlers.notify(progressionState)
@@ -223,6 +222,8 @@ extension BartlebyDocument {
             if totalNbOfOperations==0 {
                 self.registryMetadata.pendingOperationsProgressionState=nil
                 self.registryMetadata.maxCountedNumberOperations=0//Reset the number of operation
+                let finalCompletionState=Completion.successState().identifiedBy("Operations", identity:identity)
+                self.synchronizationHandlers.on(finalCompletionState)
             }
             self.registryMetadata.bunchInProgress=false
             handlers?.on(bunchCompletionState)
