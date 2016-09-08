@@ -244,9 +244,6 @@ extension BartlebyDocument {
             let total=Double(self.registryMetadata.totalNumberOfOperations)
             let completed=Double(self.registryMetadata.totalNumberOfOperations-currentOperationsCounter)
             let currentPercentProgress=completed*Double(100)/total
-            if currentPercentProgress>=100{
-                print("**")
-            }
             progressionState.currentTaskIndex=Int(completed)
             progressionState.totalTaskCount=Int(total)
             progressionState.currentPercentProgress=currentPercentProgress
