@@ -21,6 +21,8 @@ import ObjectMapper
         return "Progression"
     }
 
+	//The start time of the progression state
+	public var startTime:Double?
 	//Index of the task
 	dynamic public var currentTaskIndex:Int = 0  {	 
 	    didSet { 
@@ -57,6 +59,15 @@ import ObjectMapper
 	    }
 	}
 
+	//The consolidated information (may include the message)
+	dynamic public var informations:String = ""{	 
+	    didSet { 
+	       if informations != oldValue {
+	            self.provisionChanges(forKey: "informations",oldValue: oldValue,newValue: informations) 
+	       } 
+	    }
+	}
+
 	//The associated data
 	dynamic public var data:NSData? {	 
 	    didSet { 
@@ -81,10 +92,12 @@ import ObjectMapper
     override public func mapping(map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
+		self.startTime <- ( map["startTime"] )
 		self.currentTaskIndex <- ( map["currentTaskIndex"] )
 		self.totalTaskCount <- ( map["totalTaskCount"] )
 		self.currentPercentProgress <- ( map["currentPercentProgress"] )
 		self.message <- ( map["message"] )
+		self.informations <- ( map["informations"] )
 		self.data <- ( map["data"], Base64DataTransform() )
 		self.category <- ( map["category"] )
 		self.externalIdentifier <- ( map["externalIdentifier"] )
@@ -97,10 +110,12 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
+		self.startTime=decoder.decodeDoubleForKey("startTime") 
 		self.currentTaskIndex=decoder.decodeIntegerForKey("currentTaskIndex") 
 		self.totalTaskCount=decoder.decodeIntegerForKey("totalTaskCount") 
 		self.currentPercentProgress=decoder.decodeDoubleForKey("currentPercentProgress") 
 		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
+		self.informations=String(decoder.decodeObjectOfClass(NSString.self, forKey: "informations")! as NSString)
 		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
 		self.category=String(decoder.decodeObjectOfClass(NSString.self, forKey: "category")! as NSString)
 		self.externalIdentifier=String(decoder.decodeObjectOfClass(NSString.self, forKey: "externalIdentifier")! as NSString)
@@ -110,10 +125,14 @@ import ObjectMapper
 
     override public func encodeWithCoder(coder: NSCoder) {
         super.encodeWithCoder(coder)
+		if let startTime = self.startTime {
+			coder.encodeDouble(startTime,forKey:"startTime")
+		}
 		coder.encodeInteger(self.currentTaskIndex,forKey:"currentTaskIndex")
 		coder.encodeInteger(self.totalTaskCount,forKey:"totalTaskCount")
 		coder.encodeDouble(self.currentPercentProgress,forKey:"currentPercentProgress")
 		coder.encodeObject(self.message,forKey:"message")
+		coder.encodeObject(self.informations,forKey:"informations")
 		if let data = self.data {
 			coder.encodeObject(data,forKey:"data")
 		}

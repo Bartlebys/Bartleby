@@ -161,8 +161,8 @@ import ObjectMapper
 
 	//Do we have operations in progress in the current bunch ?
 	dynamic public var bunchInProgress:Bool = false
-	//We store the highest number of operation we have counted during a phase of bunches
-	public var maxCountedNumberOperations:Int = 0
+	//The highest number that we may have counted
+	public var totalNumberOfOperations:Int = 0
 	//The consolidated progression state of all pending operations
 	dynamic public var pendingOperationsProgressionState:Progression?
 

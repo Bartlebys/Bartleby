@@ -48,8 +48,51 @@ public extension Progression {
         self.currentPercentProgress = currentPercentProgress
         self.message = message
         self.data = data
+        self.startTime=CFAbsoluteTimeGetCurrent()
     }
 
+
+    ///  Proportionnal Probable duration
+    public var probableDuration:Double{
+        if self.currentPercentProgress==0{
+            return -1 // We donnot want to predict the unpredictable
+        }
+        // c    100
+        //    x
+        // e     ?
+        return self.elapsedTime * 100 / self.currentPercentProgress
+    }
+
+
+    // Remaining by projection
+    public var remaining:Double{
+        return self.probableDuration-self.elapsedTime
+    }
+
+    /// Returns the elapsed time since the instanciation of the progression State
+    public var elapsedTime:Double{
+        if let startTime=self.startTime{
+            return CFAbsoluteTimeGetCurrent() - startTime
+
+        }else{
+            return 0
+        }
+    }
+
+    /// Returns a rounded version of the probable duration.
+    public var roundedProbableDuration:Int{
+        return Int(ceil(self.probableDuration))
+    }
+
+    /// Returns a rounded version of the probable duration.
+    public var roundedRemaining:Int{
+        return Int(ceil(self.remaining))
+    }
+
+    ///  Returns a rounded version of the elapsed time
+    public var roundedElapsedTime:Int{
+        return Int(ceil(self.elapsedTime))
+    }
 
     /**
      Used to identify states

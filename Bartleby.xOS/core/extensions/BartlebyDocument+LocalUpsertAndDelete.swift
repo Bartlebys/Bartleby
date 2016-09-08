@@ -83,7 +83,6 @@ public extension BartlebyDocument {
 
      */
     public func deleteById(instanceUID: String, fromCollectionWithName: String) {
-
         if let collection=self.collectionByName(fromCollectionWithName) as? CollectibleCollection {
             collection.removeObjectWithID(instanceUID, commit:false)
         }

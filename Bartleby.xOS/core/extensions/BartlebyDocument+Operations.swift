@@ -147,7 +147,9 @@ extension BartlebyDocument {
         let totalNumberOfOperations=self.operations.count
 
         if self.registryMetadata.pendingOperationsProgressionState==nil{
-            self.registryMetadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: "Data synchronization upstream", data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
+            // It is the first Bunch
+            self.registryMetadata.totalNumberOfOperations=self.operations.count
+            self.registryMetadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
         }
 
         let nbOfOperationsInCurrentBunch=bunchOfOperations.count
@@ -202,9 +204,11 @@ extension BartlebyDocument {
      */
     private func _onCompletion(completedOperation:Operation,within bunchOfOperations:[Operation], handlers:Handlers?,identity:String){
         let nbOfunCompletedOperationsInBunch=Double(bunchOfOperations.filter { $0.completionState==nil }.count)
-        let totalNbOfOperations=self.operations.count
-        self.registryMetadata.maxCountedNumberOperations=max(self.registryMetadata.maxCountedNumberOperations,totalNbOfOperations)
+        let currentOperationsCounter=self.operations.count
         if nbOfunCompletedOperationsInBunch == 0{
+
+            self._updateProgressionState(completedOperation,currentOperationsCounter)
+
             // All the operation of that bunch have been completed.
             let bunchCompletionState=Completion().identifiedBy("Operations", identity:identity)
             bunchCompletionState.success=bunchOfOperations.reduce(true, combine: { (success, operation) -> Bool in
@@ -218,28 +222,46 @@ extension BartlebyDocument {
             }else{
                 bunchCompletionState.statusCode = StatusOfCompletion.Expectation_Failed.rawValue
             }
+            self.registryMetadata.bunchInProgress=false
+            handlers?.on(bunchCompletionState)
+
             // Let's remove the progression state if there is no more operations
-            if totalNbOfOperations==0 {
+            if currentOperationsCounter==0 {
                 self.registryMetadata.pendingOperationsProgressionState=nil
-                self.registryMetadata.maxCountedNumberOperations=0//Reset the number of operation
+                self.registryMetadata.totalNumberOfOperations=0//Reset the number of operation
                 let finalCompletionState=Completion.successState().identifiedBy("Operations", identity:identity)
                 self.synchronizationHandlers.on(finalCompletionState)
             }
-            self.registryMetadata.bunchInProgress=false
-            handlers?.on(bunchCompletionState)
         }else{
-            if let progressionState=self.registryMetadata.pendingOperationsProgressionState{
-                let total=Double(self.operations.count)
-                let completed=Double(self.registryMetadata.maxCountedNumberOperations-totalNbOfOperations)
-                let currentPercentProgress=completed*Double(100)/total
-                progressionState.currentTaskIndex=Int(completed)
-                progressionState.totalTaskCount=Int(total)
-                progressionState.currentPercentProgress=currentPercentProgress
-                handlers?.notify(progressionState)
-            }else{
-                bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
+            if let progressionState=self._updateProgressionState(completedOperation,currentOperationsCounter){
+                 handlers?.notify(progressionState)
             }
         }
+    }
+
+    private func _updateProgressionState(completedOperation:Operation,_ currentOperationsCounter:Int)->Progression?{
+        if let progressionState=self.registryMetadata.pendingOperationsProgressionState{
+            let total=Double(self.registryMetadata.totalNumberOfOperations)
+            let completed=Double(self.registryMetadata.totalNumberOfOperations-currentOperationsCounter)
+            let currentPercentProgress=completed*Double(100)/total
+            if currentPercentProgress>=100{
+                print("**")
+            }
+            progressionState.currentTaskIndex=Int(completed)
+            progressionState.totalTaskCount=Int(total)
+            progressionState.currentPercentProgress=currentPercentProgress
+            progressionState.message=self._messageForOperation(completedOperation)
+            return progressionState
+        }else{
+            bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
+            return nil
+        }
+
+    }
+
+
+    private func _messageForOperation(operation:Operation?)->String{
+        return NSLocalizedString("Upstream Data transmission", tableName:"operations", comment: "Upstream Data transmission")
     }
 
 
