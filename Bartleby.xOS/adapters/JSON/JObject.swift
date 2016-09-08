@@ -100,7 +100,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-
     //Collectible protocol: committed
     public var committed: Bool = false {
         willSet {
@@ -115,11 +114,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
     //Collectible protocol: distributed
-    public var distributed: Bool = false{
-        didSet{
-        }
-    }
-
+    public var distributed: Bool = false
 
     // MARK: Supervisable
 

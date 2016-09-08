@@ -25,12 +25,12 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
     // View Controllers
 
-    @IBOutlet var inspectorViewController: InspectorViewController!
+    @IBOutlet weak var inspectorViewController: InspectorViewController!
 
 
     @IBOutlet weak var logsViewController:LogsViewController!
 
-    @IBOutlet var webStackViewController: WebStack!
+    @IBOutlet weak var webStackViewController: WebStack!
 
 
     // We bind this index on the scopeSegmentedControl
@@ -43,7 +43,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
     }
 
     // The selected Registry
-    dynamic var registry:BartlebyDocument?
+    dynamic weak var registry:BartlebyDocument?
 
 
     public func getRegistry() -> BartlebyDocument?{

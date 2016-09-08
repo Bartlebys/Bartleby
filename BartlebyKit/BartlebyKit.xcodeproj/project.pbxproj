@@ -172,7 +172,6 @@
 		E50F3E451D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6A1D40D50400532B09 /* BartlebyDocument+AppFacilities.swift */; };
 		E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6A1D40D50400532B09 /* BartlebyDocument+AppFacilities.swift */; };
 		E50F3E471D40D50400532B09 /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */; };
-		E50F3E481D40D50400532B09 /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */; };
 		E50F3E491D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6C1D40D50400532B09 /* BartlebyDocument+Triggers.swift */; };
 		E50F3E4A1D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6C1D40D50400532B09 /* BartlebyDocument+Triggers.swift */; };
 		E50F3E4B1D40D50400532B09 /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6D1D40D50400532B09 /* Completion+Conveniences.swift */; };
@@ -1336,7 +1335,6 @@
 				E50F3DAE1D40D50400532B09 /* BartlebyDocument.swift in Sources */,
 				E50F3DBE1D40D50400532B09 /* CollectionMetadatum.swift in Sources */,
 				E50F3DC21D40D50400532B09 /* ExternalReference.swift in Sources */,
-				E50F3E481D40D50400532B09 /* BartlebyDocument+Operations.swift in Sources */,
 				E50F3DF61D40D50400532B09 /* DeletePermission.swift in Sources */,
 				E50F3DF81D40D50400532B09 /* DeletePermissions.swift in Sources */,
 				E50F3E9A1D40D50400532B09 /* StatusOfCompletion.swift in Sources */,

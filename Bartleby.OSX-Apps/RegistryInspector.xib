@@ -89,14 +89,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="07A290E7-F058-4830-AF8C-71C8389AE8DB" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="DFAE42A4-F6FB-4B5A-8E3B-C2D46CB88198" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
                             <rect key="frame" x="15" y="14" width="120" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="07A290E7-F058-4830-AF8C-71C8389AE8DB" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="DFAE42A4-F6FB-4B5A-8E3B-C2D46CB88198" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -123,7 +123,8 @@
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="07A290E7-F058-4830-AF8C-71C8389AE8DB" width="18" height="18">
+        <image name="760-refresh-3-toolbar" width="22" height="22"/>
+        <image name="DFAE42A4-F6FB-4B5A-8E3B-C2D46CB88198" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGW1xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFwcI
 ERYbHCc0NTY3ODk6O0JDRElMT1VYVSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNS
@@ -142,7 +143,6 @@ AUMBSAFOAVQBWwFjAWoBcwF4AYMBjAGiAaYBswG8AcUB4QHmAfkB/QIQAhsCIAIoAisCMAI/AkMCSgJS
 Al8CZAJmAmgCbQJ1AngCfQKFAogCmgKdAqIAAAAAAAACAQAAAAAAAABfAAAAAAAAAAAAAAAAAAACpA
 </mutableData>
         </image>
-        <image name="760-refresh-3-toolbar" width="22" height="22"/>
         <sound name="Bottle"/>
     </resources>
 </document>

@@ -158,46 +158,44 @@ import ObjectMapper
 
     public func push(sucessHandler success:(context:JHTTPResponse)->(),
         failureHandler failure:(context:JHTTPResponse)->()){
-        if let _ = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
-            // The unitary operation are not always idempotent
-            // so we do not want to push multiple times unintensionnaly.
-            // Check BartlebyDocument+Operations.swift to understand Operation status
-            let operation=self._getOperation()
-            if  operation.canBePushed(){
-                // We try to execute
-                operation.status=Operation.Status.InProgress
-                DeletePermission.execute(self._permissionId,
-                    fromRegistryWithUID:self._registryUID,
-                    sucessHandler: { (context: JHTTPResponse) -> () in
-                                                operation.counter=operation.counter+1
-                        operation.status=Operation.Status.Completed
-                        operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                        operation.lastInvocationDate=NSDate()
-                        let completion=Completion.successStateFromJHTTPResponse(context)
-                        completion.setResult(context)
-                        operation.completionState=completion
-                        success(context:context)
-                    },
-                    failureHandler: {(context: JHTTPResponse) -> () in
-                        operation.counter=operation.counter+1
-                        operation.status=Operation.Status.Completed
-                        operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                        operation.lastInvocationDate=NSDate()
-                        let completion=Completion.failureStateFromJHTTPResponse(context)
-                        completion.setResult(context)
-                        operation.completionState=completion
-                        failure(context:context)
-                    }
-                )
-            }else{
-                // This document is not available there is nothing to do.
-                let context=Context(code:3927068608, caller: "DeletePermission.push")
-                Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
-                    title: NSLocalizedString("Push error", comment: "Push error"),
-                    body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                })
-            }
+        // The unitary operation are not always idempotent
+        // so we do not want to push multiple times unintensionnaly.
+        // Check BartlebyDocument+Operations.swift to understand Operation status
+        let operation=self._getOperation()
+        if  operation.canBePushed(){
+            // We try to execute
+            operation.status=Operation.Status.InProgress
+            DeletePermission.execute(self._permissionId,
+                fromRegistryWithUID:self._registryUID,
+                sucessHandler: { (context: JHTTPResponse) -> () in
+                    operation.counter=operation.counter+1
+                    operation.status=Operation.Status.Completed
+                    operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
+                    operation.lastInvocationDate=NSDate()
+                    let completion=Completion.successStateFromJHTTPResponse(context)
+                    completion.setResult(context)
+                    operation.completionState=completion
+                    success(context:context)
+                },
+                failureHandler: {(context: JHTTPResponse) -> () in
+                    operation.counter=operation.counter+1
+                    operation.status=Operation.Status.Completed
+                    operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
+                    operation.lastInvocationDate=NSDate()
+                    let completion=Completion.failureStateFromJHTTPResponse(context)
+                    completion.setResult(context)
+                    operation.completionState=completion
+                    failure(context:context)
+                }
+            )
+        }else{
+            // This document is not available there is nothing to do.
+            let context=Context(code:3927068608, caller: "DeletePermission.push")
+            Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
+                title: NSLocalizedString("Push error", comment: "Push error"),
+                body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"",
+                onSelectedIndex: { (selectedIndex) -> () in
+            })
         }
     }
 

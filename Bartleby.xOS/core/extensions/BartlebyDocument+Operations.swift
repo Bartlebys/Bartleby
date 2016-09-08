@@ -58,7 +58,6 @@ extension BartlebyDocument {
      */
     public func synchronizePendingOperations() {
         if let currentUser=self.registryMetadata.currentUser {
-            bprint("Synchronizing pending operations",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
             if currentUser.loginHasSucceed{
                 do {
                     try self._commitAndPushPendingOperations()
@@ -78,7 +77,6 @@ extension BartlebyDocument {
             }
         }
     }
-
 
 
     /**
@@ -102,8 +100,9 @@ extension BartlebyDocument {
         if !self.registryMetadata.bunchInProgress {
             // We donnot want to schedule anything if there is nothing to do.
             if self.operations.count > 0 {
-                let nextBunchOfOperations=self._popNextBunchOfPendingOperations()
+                let nextBunchOfOperations=self._getNextBunchOfPendingOperations()
                 if nextBunchOfOperations.count>0{
+                    bprint("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
                     let bunchHandlers=Handlers(completionHandler: { (completionState) in
                         self.synchronizationHandlers.on(completionState)
                         self._pushNextBunch()
@@ -117,7 +116,7 @@ extension BartlebyDocument {
     }
 
 
-    private func _popNextBunchOfPendingOperations()->[Operation]{
+    private func _getNextBunchOfPendingOperations()->[Operation]{
         var nextBunch=[Operation]()
         let filtered=self.operations.filter { $0.canBePushed() }
         let filteredCount=filtered.count
@@ -162,13 +161,13 @@ extension BartlebyDocument {
                 if let serialized=operation.toDictionary {
                     if let command = try? JSerializer.deserializeFromDictionary(serialized) {
                         if let jCommand=command as? JHTTPCommand {
-                            dispatch_async(dispatch_get_main_queue(), {
+                            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
                                 // Push the command.
-                                jCommand.push(sucessHandler: { (context) in
+                                jCommand.push(sucessHandler: {  [unowned self] (context) in
                                     self.delete(operation)
-                                    self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity: "Operations."+self.UID)
-                                    }, failureHandler: { (context) in
-                                        self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:"Operations."+self.UID)
+                                    self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
+                                    }, failureHandler: {  [unowned self] (context) in
+                                        self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
                                 })
                             })
                         } else {
@@ -207,7 +206,7 @@ extension BartlebyDocument {
         let totalNbOfOperations=self.operations.count
         self.registryMetadata.maxCountedNumberOperations=max(self.registryMetadata.maxCountedNumberOperations,totalNbOfOperations)
         if nbOfunCompletedOperationsInBunch == 0{
-            // All the operation of that bunch has been completed.
+            // All the operation of that bunch have been completed.
             let bunchCompletionState=Completion().identifiedBy("Operations", identity:identity)
             bunchCompletionState.success=bunchOfOperations.reduce(true, combine: { (success, operation) -> Bool in
                 if operation.completionState?.success==true{
@@ -240,7 +239,6 @@ extension BartlebyDocument {
                 bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
             }
         }
-
     }
 
 
@@ -252,30 +250,6 @@ extension BartlebyDocument {
     public func iterateOnCollections(on:(collection: BartlebyCollection)->()){
         for (_, collection) in self._collections {
             on(collection: collection)
-        }
-    }
-
-
-
-    // MARK: markAsDistributed
-
-    /**
-     Marks the instance as distributed (on Push).
-
-     - parameter instances: the collectible instances
-     */
-    public func markAsDistributed<T: Collectible>(inout instance: T) {
-        instance.distributed=true
-    }
-
-    /**
-     Marks the instances as distributed  (on Push).
-
-     - parameter instances: the collectible instances
-     */
-    public func markAsDistributed<T: Collectible>(inout instances: [T]) {
-        for var instance in instances {
-            instance.distributed=true
         }
     }
 
