@@ -78,21 +78,9 @@ public class BartlebyDocument : Registry {
 		}
 	}
 	
-	public dynamic var groups=GroupsCollectionController(){
-		didSet{
-			groups.registry=self
-		}
-	}
-	
 	public dynamic var operations=OperationsCollectionController(){
 		didSet{
 			operations.registry=self
-		}
-	}
-	
-	public dynamic var permissions=PermissionsCollectionController(){
-		didSet{
-			permissions.registry=self
 		}
 	}
 	
@@ -144,25 +132,6 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public var groupsArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            groupsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.groups.arrayController=groupsArrayController
-            // Add observer
-            groupsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupsIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{indexesSet.addIndex($0)}
-                self.groupsArrayController?.setSelectionIndexes(indexesSet)
-             }
-        }
-    }
-        
-
     public var operationsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
@@ -177,25 +146,6 @@ public class BartlebyDocument : Registry {
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{indexesSet.addIndex($0)}
                 self.operationsArrayController?.setSelectionIndexes(indexesSet)
-             }
-        }
-    }
-        
-
-    public var permissionsArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            permissionsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.permissions.arrayController=permissionsArrayController
-            // Add observer
-            permissionsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .New, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionsIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{indexesSet.addIndex($0)}
-                self.permissionsArrayController?.setSelectionIndexes(indexesSet)
              }
         }
     }
@@ -244,24 +194,6 @@ public class BartlebyDocument : Registry {
         
 
     
-    static public let kSelectedGroupsIndexesKey="selectedGroupsIndexesKey"
-    static public let GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION="GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedGroups:[Group]?{
-        didSet{
-            if let groups = selectedGroups {
-                 let indexes:[Int]=groups.map({ (group) -> Int in
-                    return self.groups.indexOf( { return $0.UID == group.UID })!
-                })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedGroupsIndexesKey]=indexes
-                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.GROUPS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
-            }
-        }
-    }
-    var firstSelectedGroup:Group? { return self.selectedGroups?.first }
-        
-        
-
-    
     static public let kSelectedOperationsIndexesKey="selectedOperationsIndexesKey"
     static public let OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic public var selectedOperations:[Operation]?{
@@ -276,24 +208,6 @@ public class BartlebyDocument : Registry {
         }
     }
     var firstSelectedOperation:Operation? { return self.selectedOperations?.first }
-        
-        
-
-    
-    static public let kSelectedPermissionsIndexesKey="selectedPermissionsIndexesKey"
-    static public let PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedPermissions:[Permission]?{
-        didSet{
-            if let permissions = selectedPermissions {
-                 let indexes:[Int]=permissions.map({ (permission) -> Int in
-                    return self.permissions.indexOf( { return $0.UID == permission.UID })!
-                })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPermissionsIndexesKey]=indexes
-                NSNotificationCenter.defaultCenter().postNotificationName(BartlebyDocument.PERMISSIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION, object: nil)
-            }
-        }
-    }
-    var firstSelectedPermission:Permission? { return self.selectedPermissions?.first }
         
         
 
@@ -333,15 +247,6 @@ public class BartlebyDocument : Registry {
         lockerDefinition.inMemory = false
         
 
-        let groupDefinition = CollectionMetadatum()
-        groupDefinition.proxy = self.groups
-        // By default we group the observation via the rootObjectUID
-        groupDefinition.collectionName = Group.collectionName
-        groupDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        groupDefinition.allowDistantPersistency = true
-        groupDefinition.inMemory = false
-        
-
         let operationDefinition = CollectionMetadatum()
         operationDefinition.proxy = self.operations
         // By default we group the observation via the rootObjectUID
@@ -351,24 +256,13 @@ public class BartlebyDocument : Registry {
         operationDefinition.inMemory = false
         
 
-        let permissionDefinition = CollectionMetadatum()
-        permissionDefinition.proxy = self.permissions
-        // By default we group the observation via the rootObjectUID
-        permissionDefinition.collectionName = Permission.collectionName
-        permissionDefinition.storage = CollectionMetadatum.Storage.MonolithicFileStorage
-        permissionDefinition.allowDistantPersistency = true
-        permissionDefinition.inMemory = false
-        
-
 
         // Proceed to configuration
         do{
 
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
-			try self.registryMetadata.configureSchema(groupDefinition)
 			try self.registryMetadata.configureSchema(operationDefinition)
-			try self.registryMetadata.configureSchema(permissionDefinition)
 
         }catch RegistryError.DuplicatedCollectionName(let collectionName){
             bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
@@ -429,20 +323,6 @@ public class BartlebyDocument : Registry {
             
 
             
-            if keyPath=="selectionIndexes" && self.groupsArrayController == object as? NSArrayController {
-                if let groups = self.groupsArrayController?.selectedObjects as? [Group] {
-                     if let selectedGroup = self.selectedGroups{
-                        if selectedGroup == groups{
-                            return // No changes
-                        }
-                     }
-                    self.selectedGroups=groups
-                }
-                return
-            }
-            
-
-            
             if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
                 if let operations = self.operationsArrayController?.selectedObjects as? [Operation] {
                      if let selectedOperation = self.selectedOperations{
@@ -451,20 +331,6 @@ public class BartlebyDocument : Registry {
                         }
                      }
                     self.selectedOperations=operations
-                }
-                return
-            }
-            
-
-            
-            if keyPath=="selectionIndexes" && self.permissionsArrayController == object as? NSArrayController {
-                if let permissions = self.permissionsArrayController?.selectedObjects as? [Permission] {
-                     if let selectedPermission = self.selectedPermissions{
-                        if selectedPermission == permissions{
-                            return // No changes
-                        }
-                     }
-                    self.selectedPermissions=permissions
                 }
                 return
             }
@@ -496,31 +362,11 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public func deleteSelectedGroups() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedGroups{
-            for item in selected{
-                 self.groups.removeObject(item, commit:true)
-            }
-        }
-    }
-        
-
     public func deleteSelectedOperations() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedOperations{
             for item in selected{
                  self.operations.removeObject(item, commit:true)
-            }
-        }
-    }
-        
-
-    public func deleteSelectedPermissions() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedPermissions{
-            for item in selected{
-                 self.permissions.removeObject(item, commit:true)
             }
         }
     }
@@ -853,7 +699,6 @@ public class BartlebyDocument : Registry {
 
                 }
             }
-
         }
         return fileWrapper
     }
@@ -934,7 +779,7 @@ public class BartlebyDocument : Registry {
             } catch {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
-            
+           
             dispatch_async(GlobalQueue.Main.get(), {
                 self.registryDidLoad()
             })

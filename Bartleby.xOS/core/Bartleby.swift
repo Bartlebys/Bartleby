@@ -207,7 +207,6 @@ public class  Bartleby: Consignee {
 
     // MARK: - bprint
     private static var _enableBPrint: Bool=false
-    public static let logSectionSeparator="[- | BARTLEBY_LOG_SECTION | -]\n"
     public static let startTime=CFAbsoluteTimeGetCurrent()
     public static  var bprintCollection=BprintCollection()
 

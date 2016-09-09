@@ -128,15 +128,6 @@ import ObjectMapper
 	    }
 	}
 
-	//The user Groups. External reference to Group instances
-	dynamic public var groups:[ExternalReference] = [ExternalReference]()  {	 
-	    didSet { 
-	       if groups != oldValue {
-	            self.provisionChanges(forKey: "groups",oldValue: oldValue,newValue: groups)  
-	       } 
-	    }
-	}
-
 	//Notes
 	dynamic public var notes:String? {	 
 	    didSet { 
@@ -170,7 +161,6 @@ import ObjectMapper
 		self.activationCode <- ( map["activationCode"] )
 		self.status <- ( map["status"] )
 		self.tags <- ( map["tags"] )
-		self.groups <- ( map["groups"] )
 		self.notes <- ( map["notes"] )
         self.enableSuperVisionAndCommit()
     }
@@ -192,7 +182,6 @@ import ObjectMapper
 		self.activationCode=String(decoder.decodeObjectOfClass(NSString.self, forKey: "activationCode")! as NSString)
 		self.status=User.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
 		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tags")! as! [ExternalReference]
-		self.groups=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "groups")! as! [ExternalReference]
 		self.notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
 
         self.enableSuperVisionAndCommit()
@@ -217,7 +206,6 @@ import ObjectMapper
 		coder.encodeObject(self.activationCode,forKey:"activationCode")
 		coder.encodeObject(self.status.rawValue ,forKey:"status")
 		coder.encodeObject(self.tags,forKey:"tags")
-		coder.encodeObject(self.groups,forKey:"groups")
 		if let notes = self.notes {
 			coder.encodeObject(notes,forKey:"notes")
 		}

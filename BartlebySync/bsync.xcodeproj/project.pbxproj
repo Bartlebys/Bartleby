@@ -102,10 +102,6 @@
 		E58807101D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
 		E58807111D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
 		E58807121D51E06A00FEA71F /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806751D51E06A00FEA71F /* BartlebyDocument.swift */; };
-		E58807131D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */; };
-		E58807141D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */; };
-		E58807151D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */; };
-		E58807161D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */; };
 		E58807171D51E06A00FEA71F /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806781D51E06A00FEA71F /* LockersCollectionController.swift */; };
 		E58807181D51E06A00FEA71F /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806781D51E06A00FEA71F /* LockersCollectionController.swift */; };
 		E58807191D51E06A00FEA71F /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806781D51E06A00FEA71F /* LockersCollectionController.swift */; };
@@ -114,10 +110,6 @@
 		E588071C1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806791D51E06A00FEA71F /* OperationsCollectionController.swift */; };
 		E588071D1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806791D51E06A00FEA71F /* OperationsCollectionController.swift */; };
 		E588071E1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806791D51E06A00FEA71F /* OperationsCollectionController.swift */; };
-		E588071F1D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */; };
-		E58807201D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */; };
-		E58807211D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */; };
-		E58807221D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */; };
 		E588072B1D51E06A00FEA71F /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067D1D51E06A00FEA71F /* UsersCollectionController.swift */; };
 		E588072C1D51E06A00FEA71F /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067D1D51E06A00FEA71F /* UsersCollectionController.swift */; };
 		E588072D1D51E06A00FEA71F /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588067D1D51E06A00FEA71F /* UsersCollectionController.swift */; };
@@ -134,10 +126,6 @@
 		E58807381D51E06A00FEA71F /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806811D51E06A00FEA71F /* ExternalReference.swift */; };
 		E58807391D51E06A00FEA71F /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806811D51E06A00FEA71F /* ExternalReference.swift */; };
 		E588073A1D51E06A00FEA71F /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806811D51E06A00FEA71F /* ExternalReference.swift */; };
-		E588073B1D51E06A00FEA71F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806821D51E06A00FEA71F /* Group.swift */; };
-		E588073C1D51E06A00FEA71F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806821D51E06A00FEA71F /* Group.swift */; };
-		E588073D1D51E06A00FEA71F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806821D51E06A00FEA71F /* Group.swift */; };
-		E588073E1D51E06A00FEA71F /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806821D51E06A00FEA71F /* Group.swift */; };
 		E588073F1D51E06A00FEA71F /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806831D51E06A00FEA71F /* JData.swift */; };
 		E58807401D51E06A00FEA71F /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806831D51E06A00FEA71F /* JData.swift */; };
 		E58807411D51E06A00FEA71F /* JData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806831D51E06A00FEA71F /* JData.swift */; };
@@ -154,10 +142,6 @@
 		E588074C1D51E06A00FEA71F /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806861D51E06A00FEA71F /* Operation.swift */; };
 		E588074D1D51E06A00FEA71F /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806861D51E06A00FEA71F /* Operation.swift */; };
 		E588074E1D51E06A00FEA71F /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806861D51E06A00FEA71F /* Operation.swift */; };
-		E588074F1D51E06A00FEA71F /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806871D51E06A00FEA71F /* Permission.swift */; };
-		E58807501D51E06A00FEA71F /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806871D51E06A00FEA71F /* Permission.swift */; };
-		E58807511D51E06A00FEA71F /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806871D51E06A00FEA71F /* Permission.swift */; };
-		E58807521D51E06A00FEA71F /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806871D51E06A00FEA71F /* Permission.swift */; };
 		E58807531D51E06A00FEA71F /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806881D51E06A00FEA71F /* Progression.swift */; };
 		E58807541D51E06A00FEA71F /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806881D51E06A00FEA71F /* Progression.swift */; };
 		E58807551D51E06A00FEA71F /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806881D51E06A00FEA71F /* Progression.swift */; };
@@ -178,14 +162,6 @@
 		E588076C1D51E06A00FEA71F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588068E1D51E06A00FEA71F /* User.swift */; };
 		E588076D1D51E06A00FEA71F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588068E1D51E06A00FEA71F /* User.swift */; };
 		E588076E1D51E06A00FEA71F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588068E1D51E06A00FEA71F /* User.swift */; };
-		E588076F1D51E06A00FEA71F /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806901D51E06A00FEA71F /* CreateGroup.swift */; };
-		E58807701D51E06A00FEA71F /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806901D51E06A00FEA71F /* CreateGroup.swift */; };
-		E58807711D51E06A00FEA71F /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806901D51E06A00FEA71F /* CreateGroup.swift */; };
-		E58807721D51E06A00FEA71F /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806901D51E06A00FEA71F /* CreateGroup.swift */; };
-		E58807731D51E06A00FEA71F /* CreateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806911D51E06A00FEA71F /* CreateGroups.swift */; };
-		E58807741D51E06A00FEA71F /* CreateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806911D51E06A00FEA71F /* CreateGroups.swift */; };
-		E58807751D51E06A00FEA71F /* CreateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806911D51E06A00FEA71F /* CreateGroups.swift */; };
-		E58807761D51E06A00FEA71F /* CreateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806911D51E06A00FEA71F /* CreateGroups.swift */; };
 		E58807771D51E06A00FEA71F /* CreateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806921D51E06A00FEA71F /* CreateLocker.swift */; };
 		E58807781D51E06A00FEA71F /* CreateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806921D51E06A00FEA71F /* CreateLocker.swift */; };
 		E58807791D51E06A00FEA71F /* CreateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806921D51E06A00FEA71F /* CreateLocker.swift */; };
@@ -194,14 +170,6 @@
 		E588077C1D51E06A00FEA71F /* CreateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806931D51E06A00FEA71F /* CreateLockers.swift */; };
 		E588077D1D51E06A00FEA71F /* CreateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806931D51E06A00FEA71F /* CreateLockers.swift */; };
 		E588077E1D51E06A00FEA71F /* CreateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806931D51E06A00FEA71F /* CreateLockers.swift */; };
-		E588077F1D51E06A00FEA71F /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806941D51E06A00FEA71F /* CreatePermission.swift */; };
-		E58807801D51E06A00FEA71F /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806941D51E06A00FEA71F /* CreatePermission.swift */; };
-		E58807811D51E06A00FEA71F /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806941D51E06A00FEA71F /* CreatePermission.swift */; };
-		E58807821D51E06A00FEA71F /* CreatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806941D51E06A00FEA71F /* CreatePermission.swift */; };
-		E58807831D51E06A00FEA71F /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806951D51E06A00FEA71F /* CreatePermissions.swift */; };
-		E58807841D51E06A00FEA71F /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806951D51E06A00FEA71F /* CreatePermissions.swift */; };
-		E58807851D51E06A00FEA71F /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806951D51E06A00FEA71F /* CreatePermissions.swift */; };
-		E58807861D51E06A00FEA71F /* CreatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806951D51E06A00FEA71F /* CreatePermissions.swift */; };
 		E58807871D51E06A00FEA71F /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806961D51E06A00FEA71F /* CreateUser.swift */; };
 		E58807881D51E06A00FEA71F /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806961D51E06A00FEA71F /* CreateUser.swift */; };
 		E58807891D51E06A00FEA71F /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806961D51E06A00FEA71F /* CreateUser.swift */; };
@@ -210,14 +178,6 @@
 		E588078C1D51E06A00FEA71F /* CreateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806971D51E06A00FEA71F /* CreateUsers.swift */; };
 		E588078D1D51E06A00FEA71F /* CreateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806971D51E06A00FEA71F /* CreateUsers.swift */; };
 		E588078E1D51E06A00FEA71F /* CreateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806971D51E06A00FEA71F /* CreateUsers.swift */; };
-		E588078F1D51E06A00FEA71F /* DeleteGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806981D51E06A00FEA71F /* DeleteGroup.swift */; };
-		E58807901D51E06A00FEA71F /* DeleteGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806981D51E06A00FEA71F /* DeleteGroup.swift */; };
-		E58807911D51E06A00FEA71F /* DeleteGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806981D51E06A00FEA71F /* DeleteGroup.swift */; };
-		E58807921D51E06A00FEA71F /* DeleteGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806981D51E06A00FEA71F /* DeleteGroup.swift */; };
-		E58807931D51E06A00FEA71F /* DeleteGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806991D51E06A00FEA71F /* DeleteGroups.swift */; };
-		E58807941D51E06A00FEA71F /* DeleteGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806991D51E06A00FEA71F /* DeleteGroups.swift */; };
-		E58807951D51E06A00FEA71F /* DeleteGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806991D51E06A00FEA71F /* DeleteGroups.swift */; };
-		E58807961D51E06A00FEA71F /* DeleteGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806991D51E06A00FEA71F /* DeleteGroups.swift */; };
 		E58807971D51E06A00FEA71F /* DeleteLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069A1D51E06A00FEA71F /* DeleteLocker.swift */; };
 		E58807981D51E06A00FEA71F /* DeleteLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069A1D51E06A00FEA71F /* DeleteLocker.swift */; };
 		E58807991D51E06A00FEA71F /* DeleteLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069A1D51E06A00FEA71F /* DeleteLocker.swift */; };
@@ -226,14 +186,6 @@
 		E588079C1D51E06A00FEA71F /* DeleteLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069B1D51E06A00FEA71F /* DeleteLockers.swift */; };
 		E588079D1D51E06A00FEA71F /* DeleteLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069B1D51E06A00FEA71F /* DeleteLockers.swift */; };
 		E588079E1D51E06A00FEA71F /* DeleteLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069B1D51E06A00FEA71F /* DeleteLockers.swift */; };
-		E588079F1D51E06A00FEA71F /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069C1D51E06A00FEA71F /* DeletePermission.swift */; };
-		E58807A01D51E06A00FEA71F /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069C1D51E06A00FEA71F /* DeletePermission.swift */; };
-		E58807A11D51E06A00FEA71F /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069C1D51E06A00FEA71F /* DeletePermission.swift */; };
-		E58807A21D51E06A00FEA71F /* DeletePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069C1D51E06A00FEA71F /* DeletePermission.swift */; };
-		E58807A31D51E06A00FEA71F /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069D1D51E06A00FEA71F /* DeletePermissions.swift */; };
-		E58807A41D51E06A00FEA71F /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069D1D51E06A00FEA71F /* DeletePermissions.swift */; };
-		E58807A51D51E06A00FEA71F /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069D1D51E06A00FEA71F /* DeletePermissions.swift */; };
-		E58807A61D51E06A00FEA71F /* DeletePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069D1D51E06A00FEA71F /* DeletePermissions.swift */; };
 		E58807A71D51E06A00FEA71F /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069E1D51E06A00FEA71F /* DeleteUser.swift */; };
 		E58807A81D51E06A00FEA71F /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069E1D51E06A00FEA71F /* DeleteUser.swift */; };
 		E58807A91D51E06A00FEA71F /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069E1D51E06A00FEA71F /* DeleteUser.swift */; };
@@ -242,18 +194,6 @@
 		E58807AC1D51E06A00FEA71F /* DeleteUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069F1D51E06A00FEA71F /* DeleteUsers.swift */; };
 		E58807AD1D51E06A00FEA71F /* DeleteUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069F1D51E06A00FEA71F /* DeleteUsers.swift */; };
 		E58807AE1D51E06A00FEA71F /* DeleteUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588069F1D51E06A00FEA71F /* DeleteUsers.swift */; };
-		E58807AF1D51E06A00FEA71F /* ReadGroupById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A01D51E06A00FEA71F /* ReadGroupById.swift */; };
-		E58807B01D51E06A00FEA71F /* ReadGroupById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A01D51E06A00FEA71F /* ReadGroupById.swift */; };
-		E58807B11D51E06A00FEA71F /* ReadGroupById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A01D51E06A00FEA71F /* ReadGroupById.swift */; };
-		E58807B21D51E06A00FEA71F /* ReadGroupById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A01D51E06A00FEA71F /* ReadGroupById.swift */; };
-		E58807B31D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */; };
-		E58807B41D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */; };
-		E58807B51D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */; };
-		E58807B61D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */; };
-		E58807B71D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */; };
-		E58807B81D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */; };
-		E58807B91D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */; };
-		E58807BA1D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */; };
 		E58807BB1D51E06A00FEA71F /* ReadLockerById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A31D51E06A00FEA71F /* ReadLockerById.swift */; };
 		E58807BC1D51E06A00FEA71F /* ReadLockerById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A31D51E06A00FEA71F /* ReadLockerById.swift */; };
 		E58807BD1D51E06A00FEA71F /* ReadLockerById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A31D51E06A00FEA71F /* ReadLockerById.swift */; };
@@ -266,18 +206,6 @@
 		E58807C41D51E06A00FEA71F /* ReadLockersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A51D51E06A00FEA71F /* ReadLockersByQuery.swift */; };
 		E58807C51D51E06A00FEA71F /* ReadLockersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A51D51E06A00FEA71F /* ReadLockersByQuery.swift */; };
 		E58807C61D51E06A00FEA71F /* ReadLockersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A51D51E06A00FEA71F /* ReadLockersByQuery.swift */; };
-		E58807C71D51E06A00FEA71F /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */; };
-		E58807C81D51E06A00FEA71F /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */; };
-		E58807C91D51E06A00FEA71F /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */; };
-		E58807CA1D51E06A00FEA71F /* ReadPermissionById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */; };
-		E58807CB1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */; };
-		E58807CC1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */; };
-		E58807CD1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */; };
-		E58807CE1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */; };
-		E58807CF1D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */; };
-		E58807D01D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */; };
-		E58807D11D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */; };
-		E58807D21D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */; };
 		E58807D31D51E06A00FEA71F /* ReadUserById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A91D51E06A00FEA71F /* ReadUserById.swift */; };
 		E58807D41D51E06A00FEA71F /* ReadUserById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A91D51E06A00FEA71F /* ReadUserById.swift */; };
 		E58807D51D51E06A00FEA71F /* ReadUserById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806A91D51E06A00FEA71F /* ReadUserById.swift */; };
@@ -290,14 +218,6 @@
 		E58807DC1D51E06A00FEA71F /* ReadUsersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AB1D51E06A00FEA71F /* ReadUsersByQuery.swift */; };
 		E58807DD1D51E06A00FEA71F /* ReadUsersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AB1D51E06A00FEA71F /* ReadUsersByQuery.swift */; };
 		E58807DE1D51E06A00FEA71F /* ReadUsersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AB1D51E06A00FEA71F /* ReadUsersByQuery.swift */; };
-		E58807DF1D51E06A00FEA71F /* UpdateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */; };
-		E58807E01D51E06A00FEA71F /* UpdateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */; };
-		E58807E11D51E06A00FEA71F /* UpdateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */; };
-		E58807E21D51E06A00FEA71F /* UpdateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */; };
-		E58807E31D51E06A00FEA71F /* UpdateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */; };
-		E58807E41D51E06A00FEA71F /* UpdateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */; };
-		E58807E51D51E06A00FEA71F /* UpdateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */; };
-		E58807E61D51E06A00FEA71F /* UpdateGroups.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */; };
 		E58807E71D51E06A00FEA71F /* UpdateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AE1D51E06A00FEA71F /* UpdateLocker.swift */; };
 		E58807E81D51E06A00FEA71F /* UpdateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AE1D51E06A00FEA71F /* UpdateLocker.swift */; };
 		E58807E91D51E06A00FEA71F /* UpdateLocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AE1D51E06A00FEA71F /* UpdateLocker.swift */; };
@@ -306,14 +226,6 @@
 		E58807EC1D51E06A00FEA71F /* UpdateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AF1D51E06A00FEA71F /* UpdateLockers.swift */; };
 		E58807ED1D51E06A00FEA71F /* UpdateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AF1D51E06A00FEA71F /* UpdateLockers.swift */; };
 		E58807EE1D51E06A00FEA71F /* UpdateLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806AF1D51E06A00FEA71F /* UpdateLockers.swift */; };
-		E58807EF1D51E06A00FEA71F /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B01D51E06A00FEA71F /* UpdatePermission.swift */; };
-		E58807F01D51E06A00FEA71F /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B01D51E06A00FEA71F /* UpdatePermission.swift */; };
-		E58807F11D51E06A00FEA71F /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B01D51E06A00FEA71F /* UpdatePermission.swift */; };
-		E58807F21D51E06A00FEA71F /* UpdatePermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B01D51E06A00FEA71F /* UpdatePermission.swift */; };
-		E58807F31D51E06A00FEA71F /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */; };
-		E58807F41D51E06A00FEA71F /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */; };
-		E58807F51D51E06A00FEA71F /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */; };
-		E58807F61D51E06A00FEA71F /* UpdatePermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */; };
 		E58807F71D51E06A00FEA71F /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B21D51E06A00FEA71F /* UpdateUser.swift */; };
 		E58807F81D51E06A00FEA71F /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B21D51E06A00FEA71F /* UpdateUser.swift */; };
 		E58807F91D51E06A00FEA71F /* UpdateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58806B21D51E06A00FEA71F /* UpdateUser.swift */; };
@@ -905,59 +817,37 @@
 		E585044F1C3FA12D00E2F64A /* LogoutCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutCommand.swift; sourceTree = "<group>"; };
 		E58504521C3FA14300E2F64A /* VerifyCredentialsCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyCredentialsCommand.swift; sourceTree = "<group>"; };
 		E58806751D51E06A00FEA71F /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
-		E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsCollectionController.swift; sourceTree = "<group>"; };
 		E58806781D51E06A00FEA71F /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
 		E58806791D51E06A00FEA71F /* OperationsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsCollectionController.swift; sourceTree = "<group>"; };
-		E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionsCollectionController.swift; sourceTree = "<group>"; };
 		E588067D1D51E06A00FEA71F /* UsersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCollectionController.swift; sourceTree = "<group>"; };
 		E588067F1D51E06A00FEA71F /* CollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMetadatum.swift; sourceTree = "<group>"; };
 		E58806801D51E06A00FEA71F /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E58806811D51E06A00FEA71F /* ExternalReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalReference.swift; sourceTree = "<group>"; };
-		E58806821D51E06A00FEA71F /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		E58806831D51E06A00FEA71F /* JData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JData.swift; sourceTree = "<group>"; };
 		E58806841D51E06A00FEA71F /* JString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JString.swift; sourceTree = "<group>"; };
 		E58806851D51E06A00FEA71F /* Locker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locker.swift; sourceTree = "<group>"; };
 		E58806861D51E06A00FEA71F /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		E58806871D51E06A00FEA71F /* Permission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 		E58806881D51E06A00FEA71F /* Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		E58806891D51E06A00FEA71F /* RegistryMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryMetadata.swift; sourceTree = "<group>"; };
 		E588068A1D51E06A00FEA71F /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E588068D1D51E06A00FEA71F /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E588068E1D51E06A00FEA71F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		E58806901D51E06A00FEA71F /* CreateGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
-		E58806911D51E06A00FEA71F /* CreateGroups.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroups.swift; sourceTree = "<group>"; };
 		E58806921D51E06A00FEA71F /* CreateLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLocker.swift; sourceTree = "<group>"; };
 		E58806931D51E06A00FEA71F /* CreateLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLockers.swift; sourceTree = "<group>"; };
-		E58806941D51E06A00FEA71F /* CreatePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermission.swift; sourceTree = "<group>"; };
-		E58806951D51E06A00FEA71F /* CreatePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePermissions.swift; sourceTree = "<group>"; };
 		E58806961D51E06A00FEA71F /* CreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
 		E58806971D51E06A00FEA71F /* CreateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUsers.swift; sourceTree = "<group>"; };
-		E58806981D51E06A00FEA71F /* DeleteGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteGroup.swift; sourceTree = "<group>"; };
-		E58806991D51E06A00FEA71F /* DeleteGroups.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteGroups.swift; sourceTree = "<group>"; };
 		E588069A1D51E06A00FEA71F /* DeleteLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteLocker.swift; sourceTree = "<group>"; };
 		E588069B1D51E06A00FEA71F /* DeleteLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteLockers.swift; sourceTree = "<group>"; };
-		E588069C1D51E06A00FEA71F /* DeletePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePermission.swift; sourceTree = "<group>"; };
-		E588069D1D51E06A00FEA71F /* DeletePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeletePermissions.swift; sourceTree = "<group>"; };
 		E588069E1D51E06A00FEA71F /* DeleteUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
 		E588069F1D51E06A00FEA71F /* DeleteUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteUsers.swift; sourceTree = "<group>"; };
-		E58806A01D51E06A00FEA71F /* ReadGroupById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadGroupById.swift; sourceTree = "<group>"; };
-		E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadGroupsByIds.swift; sourceTree = "<group>"; };
-		E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadGroupsByQuery.swift; sourceTree = "<group>"; };
 		E58806A31D51E06A00FEA71F /* ReadLockerById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadLockerById.swift; sourceTree = "<group>"; };
 		E58806A41D51E06A00FEA71F /* ReadLockersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadLockersByIds.swift; sourceTree = "<group>"; };
 		E58806A51D51E06A00FEA71F /* ReadLockersByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadLockersByQuery.swift; sourceTree = "<group>"; };
-		E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionById.swift; sourceTree = "<group>"; };
-		E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionsByIds.swift; sourceTree = "<group>"; };
-		E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadPermissionsByQuery.swift; sourceTree = "<group>"; };
 		E58806A91D51E06A00FEA71F /* ReadUserById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUserById.swift; sourceTree = "<group>"; };
 		E58806AA1D51E06A00FEA71F /* ReadUsersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUsersByIds.swift; sourceTree = "<group>"; };
 		E58806AB1D51E06A00FEA71F /* ReadUsersByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUsersByQuery.swift; sourceTree = "<group>"; };
-		E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateGroup.swift; sourceTree = "<group>"; };
-		E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateGroups.swift; sourceTree = "<group>"; };
 		E58806AE1D51E06A00FEA71F /* UpdateLocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateLocker.swift; sourceTree = "<group>"; };
 		E58806AF1D51E06A00FEA71F /* UpdateLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateLockers.swift; sourceTree = "<group>"; };
-		E58806B01D51E06A00FEA71F /* UpdatePermission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePermission.swift; sourceTree = "<group>"; };
-		E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePermissions.swift; sourceTree = "<group>"; };
 		E58806B21D51E06A00FEA71F /* UpdateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUser.swift; sourceTree = "<group>"; };
 		E58806B31D51E06A00FEA71F /* UpdateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateUsers.swift; sourceTree = "<group>"; };
 		E58806B61D51E06A00FEA71F /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
@@ -1279,10 +1169,8 @@
 		E58806761D51E06A00FEA71F /* collectionControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E58806771D51E06A00FEA71F /* GroupsCollectionController.swift */,
 				E58806781D51E06A00FEA71F /* LockersCollectionController.swift */,
 				E58806791D51E06A00FEA71F /* OperationsCollectionController.swift */,
-				E588067A1D51E06A00FEA71F /* PermissionsCollectionController.swift */,
 				E588067D1D51E06A00FEA71F /* UsersCollectionController.swift */,
 			);
 			path = collectionControllers;
@@ -1294,12 +1182,10 @@
 				E588067F1D51E06A00FEA71F /* CollectionMetadatum.swift */,
 				E58806801D51E06A00FEA71F /* Completion.swift */,
 				E58806811D51E06A00FEA71F /* ExternalReference.swift */,
-				E58806821D51E06A00FEA71F /* Group.swift */,
 				E58806831D51E06A00FEA71F /* JData.swift */,
 				E58806841D51E06A00FEA71F /* JString.swift */,
 				E58806851D51E06A00FEA71F /* Locker.swift */,
 				E58806861D51E06A00FEA71F /* Operation.swift */,
-				E58806871D51E06A00FEA71F /* Permission.swift */,
 				E58806881D51E06A00FEA71F /* Progression.swift */,
 				E58806891D51E06A00FEA71F /* RegistryMetadata.swift */,
 				E588068A1D51E06A00FEA71F /* Tag.swift */,
@@ -1312,40 +1198,22 @@
 		E588068F1D51E06A00FEA71F /* operations */ = {
 			isa = PBXGroup;
 			children = (
-				E58806901D51E06A00FEA71F /* CreateGroup.swift */,
-				E58806911D51E06A00FEA71F /* CreateGroups.swift */,
 				E58806921D51E06A00FEA71F /* CreateLocker.swift */,
 				E58806931D51E06A00FEA71F /* CreateLockers.swift */,
-				E58806941D51E06A00FEA71F /* CreatePermission.swift */,
-				E58806951D51E06A00FEA71F /* CreatePermissions.swift */,
 				E58806961D51E06A00FEA71F /* CreateUser.swift */,
 				E58806971D51E06A00FEA71F /* CreateUsers.swift */,
-				E58806981D51E06A00FEA71F /* DeleteGroup.swift */,
-				E58806991D51E06A00FEA71F /* DeleteGroups.swift */,
 				E588069A1D51E06A00FEA71F /* DeleteLocker.swift */,
 				E588069B1D51E06A00FEA71F /* DeleteLockers.swift */,
-				E588069C1D51E06A00FEA71F /* DeletePermission.swift */,
-				E588069D1D51E06A00FEA71F /* DeletePermissions.swift */,
 				E588069E1D51E06A00FEA71F /* DeleteUser.swift */,
 				E588069F1D51E06A00FEA71F /* DeleteUsers.swift */,
-				E58806A01D51E06A00FEA71F /* ReadGroupById.swift */,
-				E58806A11D51E06A00FEA71F /* ReadGroupsByIds.swift */,
-				E58806A21D51E06A00FEA71F /* ReadGroupsByQuery.swift */,
 				E58806A31D51E06A00FEA71F /* ReadLockerById.swift */,
 				E58806A41D51E06A00FEA71F /* ReadLockersByIds.swift */,
 				E58806A51D51E06A00FEA71F /* ReadLockersByQuery.swift */,
-				E58806A61D51E06A00FEA71F /* ReadPermissionById.swift */,
-				E58806A71D51E06A00FEA71F /* ReadPermissionsByIds.swift */,
-				E58806A81D51E06A00FEA71F /* ReadPermissionsByQuery.swift */,
 				E58806A91D51E06A00FEA71F /* ReadUserById.swift */,
 				E58806AA1D51E06A00FEA71F /* ReadUsersByIds.swift */,
 				E58806AB1D51E06A00FEA71F /* ReadUsersByQuery.swift */,
-				E58806AC1D51E06A00FEA71F /* UpdateGroup.swift */,
-				E58806AD1D51E06A00FEA71F /* UpdateGroups.swift */,
 				E58806AE1D51E06A00FEA71F /* UpdateLocker.swift */,
 				E58806AF1D51E06A00FEA71F /* UpdateLockers.swift */,
-				E58806B01D51E06A00FEA71F /* UpdatePermission.swift */,
-				E58806B11D51E06A00FEA71F /* UpdatePermissions.swift */,
 				E58806B21D51E06A00FEA71F /* UpdateUser.swift */,
 				E58806B31D51E06A00FEA71F /* UpdateUsers.swift */,
 			);
@@ -1860,7 +1728,6 @@
 				E588071A1D51E06A00FEA71F /* LockersCollectionController.swift in Sources */,
 				E58808D61D51E06A00FEA71F /* SuperIterable.swift in Sources */,
 				E549201E1D6353B200961796 /* JData+Conveniences.swift in Sources */,
-				E58807B61D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */,
 				E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */,
 				E58809401D51E08200FEA71F /* CryptedStringKeyValueTransform.swift in Sources */,
 				E58808E61D51E06A00FEA71F /* Registry.swift in Sources */,
@@ -1868,8 +1735,6 @@
 				E58808CE1D51E06A00FEA71F /* Serializable.swift in Sources */,
 				E5CEA9571D522567000DC91E /* Timeline.swift in Sources */,
 				E588092E1D51E06A00FEA71F /* HTTPManager.swift in Sources */,
-				E58807521D51E06A00FEA71F /* Permission.swift in Sources */,
-				E58807D21D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */,
 				E58808321D51E06A00FEA71F /* Bartleby.swift in Sources */,
 				E588074E1D51E06A00FEA71F /* Operation.swift in Sources */,
 				E54B7FF81D2B8AA1001F7AB3 /* BsyncLocalAnalyzer.swift in Sources */,
@@ -1901,7 +1766,6 @@
 				E54B7FE21D2B8A8D001F7AB3 /* PdSFileManager.m in Sources */,
 				E58807FA1D51E06A00FEA71F /* UpdateUser.swift in Sources */,
 				E588077A1D51E06A00FEA71F /* CreateLocker.swift in Sources */,
-				E58807F21D51E06A00FEA71F /* UpdatePermission.swift in Sources */,
 				E58809121D51E06A00FEA71F /* LogoutUser.swift in Sources */,
 				E58808A21D51E06A00FEA71F /* Descriptible.swift in Sources */,
 				E5CEA9511D522567000DC91E /* Request.swift in Sources */,
@@ -1913,19 +1777,14 @@
 				E54B7FE31D2B8A8D001F7AB3 /* PdSLocalAnalyzer.m in Sources */,
 				E58807EA1D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
 				E5B129131D1C33DD00D61261 /* BsyncXPCProtocolTests.swift in Sources */,
-				E58807761D51E06A00FEA71F /* CreateGroups.swift in Sources */,
-				E58807161D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
 				E5CEA9561D522567000DC91E /* Stream.swift in Sources */,
-				E58807CE1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */,
 				E5CEA9371D52255D000DC91E /* StringExtensions.swift in Sources */,
 				E5CEA92F1D522555000DC91E /* TransformOf.swift in Sources */,
 				E5CEA9241D522555000DC91E /* Map.swift in Sources */,
 				E58808BE1D51E06A00FEA71F /* Initializable.swift in Sources */,
 				E588088A1D51E06A00FEA71F /* Collectible.swift in Sources */,
-				E58807221D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */,
 				E588082A1D51E06A00FEA71F /* NoCrypto.swift in Sources */,
 				E588076E1D51E06A00FEA71F /* User.swift in Sources */,
-				E58807E61D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
 				E5CEA9271D522555000DC91E /* Operators.swift in Sources */,
 				E588084A1D51E06A00FEA71F /* BartlebyDocument+Triggers.swift in Sources */,
 				E588087E1D51E06A00FEA71F /* Global.swift in Sources */,
@@ -1939,7 +1798,6 @@
 				E5CEA92B1D522555000DC91E /* DateTransform.swift in Sources */,
 				E54B7FE01D2B8A8D001F7AB3 /* HashMap.m in Sources */,
 				E50406F11D804C3600F5AE3A /* Monitoring.swift in Sources */,
-				E58807A21D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E588086E1D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5C260DB1D26AA4F0061E257 /* TestsConfiguration.swift in Sources */,
 				E588076A1D51E06A00FEA71F /* Trigger.swift in Sources */,
@@ -1956,13 +1814,11 @@
 				E58808161D51E06A00FEA71F /* JHTTPResponse.swift in Sources */,
 				E58809161D51E06A00FEA71F /* TriggersAfterIndex.swift in Sources */,
 				E588071E1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */,
-				E58807BA1D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */,
 				E5CEA94E1D522567000DC91E /* NetworkReachabilityManager.swift in Sources */,
 				E58808DE1D51E06A00FEA71F /* UniversalType.swift in Sources */,
 				E588077E1D51E06A00FEA71F /* CreateLockers.swift in Sources */,
 				E54B7FF01D2B8AA1001F7AB3 /* BsyncContext.swift in Sources */,
 				E58808B21D51E06A00FEA71F /* HTTPCommand.swift in Sources */,
-				E58807CA1D51E06A00FEA71F /* ReadPermissionById.swift in Sources */,
 				E588085E1D51E06A00FEA71F /* NSNotification+Progression.swift in Sources */,
 				E58807461D51E06A00FEA71F /* JString.swift in Sources */,
 				E5CEA9261D522555000DC91E /* Mapper.swift in Sources */,
@@ -1971,7 +1827,6 @@
 				E58808561D51E06A00FEA71F /* ExternalReference+Resolution.swift in Sources */,
 				E58807FE1D51E06A00FEA71F /* UpdateUsers.swift in Sources */,
 				E50520911D4246AD00DBCB30 /* IdentifableCardContext.swift in Sources */,
-				E58807B21D51E06A00FEA71F /* ReadGroupById.swift in Sources */,
 				E58809361D51E06A00FEA71F /* PString.swift in Sources */,
 				E5C260D81D26AA430061E257 /* TestCase.swift in Sources */,
 				E588079A1D51E06A00FEA71F /* DeleteLocker.swift in Sources */,
@@ -1985,7 +1840,6 @@
 				E588089E1D51E06A00FEA71F /* CryptoDelegate.swift in Sources */,
 				E58808C61D51E06A00FEA71F /* JSONString.swift in Sources */,
 				E5CEA9581D522567000DC91E /* Upload.swift in Sources */,
-				E58807F61D51E06A00FEA71F /* UpdatePermissions.swift in Sources */,
 				E588075E1D51E06A00FEA71F /* Tag.swift in Sources */,
 				E5B129151D1C33DD00D61261 /* BsyncXPCTests.swift in Sources */,
 				E588093E1D51E08200FEA71F /* CryptedKeyValueStorage.swift in Sources */,
@@ -1998,13 +1852,10 @@
 				E58808221D51E06A00FEA71F /* RegistryMetadata+Protocol.swift in Sources */,
 				E58809411D51E08200FEA71F /* CryptedStringTransform.swift in Sources */,
 				E58809421D51E08200FEA71F /* CryptoHelper.swift in Sources */,
-				E58807721D51E06A00FEA71F /* CreateGroup.swift in Sources */,
-				E58807E21D51E06A00FEA71F /* UpdateGroup.swift in Sources */,
 				E588090A1D51E06A00FEA71F /* User+Auth.swift in Sources */,
 				E54B7FE11D2B8A8D001F7AB3 /* NSData+CRC.m in Sources */,
 				E58808A61D51E06A00FEA71F /* DictionaryRepresentation.swift in Sources */,
 				E58808261D51E06A00FEA71F /* UIX.swift in Sources */,
-				E58807821D51E06A00FEA71F /* CreatePermission.swift in Sources */,
 				E5B129141D1C33DD00D61261 /* BsyncXPCHelperTests.swift in Sources */,
 				E58808B61D51E06A00FEA71F /* HTTPResponse.swift in Sources */,
 				E58808021D51E06A00FEA71F /* Base64DataTransform.swift in Sources */,
@@ -2014,7 +1865,6 @@
 				E54B7FF61D2B8AA1001F7AB3 /* BsyncImageDiskManager.swift in Sources */,
 				E5CEA94C1D522567000DC91E /* Manager.swift in Sources */,
 				E58808821D51E06A00FEA71F /* Handlers.swift in Sources */,
-				E58807A61D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
 				E5CEA9531D522567000DC91E /* ResponseSerialization.swift in Sources */,
 				E5CEA92A1D522555000DC91E /* DateFormatterTransform.swift in Sources */,
 				E588073A1D51E06A00FEA71F /* ExternalReference.swift in Sources */,
@@ -2022,12 +1872,10 @@
 				E5CEA92C1D522555000DC91E /* EnumTransform.swift in Sources */,
 				E56EC07A1D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E5CEA9541D522567000DC91E /* Result.swift in Sources */,
-				E588073E1D51E06A00FEA71F /* Group.swift in Sources */,
 				E588090E1D51E06A00FEA71F /* LoginUser.swift in Sources */,
 				E58808661D51E06A00FEA71F /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E5CEA9551D522567000DC91E /* ServerTrustPolicy.swift in Sources */,
 				E5CEA9301D522555000DC91E /* TransformType.swift in Sources */,
-				E58807961D51E06A00FEA71F /* DeleteGroups.swift in Sources */,
 				E58808421D51E06A00FEA71F /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E58809061D51E06A00FEA71F /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E588083E1D51E06A00FEA71F /* Default.swift in Sources */,
@@ -2035,14 +1883,12 @@
 				E54B7FEF1D2B8AA1001F7AB3 /* BsyncAdmin.swift in Sources */,
 				E58807421D51E06A00FEA71F /* JData.swift in Sources */,
 				E588085A1D51E06A00FEA71F /* NSNotification+Completion.swift in Sources */,
-				E58807921D51E06A00FEA71F /* DeleteGroup.swift in Sources */,
 				E54B7FDE1D2B8A8D001F7AB3 /* PdSCommandInterpreter.m in Sources */,
 				E54B7FE41D2B8A8D001F7AB3 /* PdSSyncContext.m in Sources */,
 				E58807C21D51E06A00FEA71F /* ReadLockersByIds.swift in Sources */,
 				E5CEA9251D522555000DC91E /* Mappable.swift in Sources */,
 				E5CEA92D1D522555000DC91E /* ISO8601DateTransform.swift in Sources */,
 				E5CEA94A1D522567000DC91E /* Download.swift in Sources */,
-				E58807861D51E06A00FEA71F /* CreatePermissions.swift in Sources */,
 				E54B7FF11D2B8AA1001F7AB3 /* BsyncCredentials.swift in Sources */,
 				E588072E1D51E06A00FEA71F /* UsersCollectionController.swift in Sources */,
 				E58808521D51E06A00FEA71F /* Completion+Result.swift in Sources */,
@@ -2062,7 +1908,6 @@
 				E58808AB1D51E06A00FEA71F /* ForwardableState.swift in Sources */,
 				E588087B1D51E06A00FEA71F /* Global.swift in Sources */,
 				E58807171D51E06A00FEA71F /* LockersCollectionController.swift in Sources */,
-				E588071F1D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */,
 				E53E28D41CA572D80079ED23 /* PdSSyncAdmin.m in Sources */,
 				E5F654E41D42749100A40A9B /* Operators.swift in Sources */,
 				E58807FF1D51E06A00FEA71F /* Base64DataTransform.swift in Sources */,
@@ -2070,29 +1915,24 @@
 				E588084F1D51E06A00FEA71F /* Completion+Result.swift in Sources */,
 				E588090F1D51E06A00FEA71F /* LogoutUser.swift in Sources */,
 				E58807A71D51E06A00FEA71F /* DeleteUser.swift in Sources */,
-				E58807731D51E06A00FEA71F /* CreateGroups.swift in Sources */,
 				E53E28E01CA572E20079ED23 /* BsyncDirectives.swift in Sources */,
 				E58807EB1D51E06A00FEA71F /* UpdateLockers.swift in Sources */,
 				E58809331D51E06A00FEA71F /* PString.swift in Sources */,
 				E5F654E81D42749100A40A9B /* ToJSON.swift in Sources */,
-				E588074F1D51E06A00FEA71F /* Permission.swift in Sources */,
 				E588073F1D51E06A00FEA71F /* JData.swift in Sources */,
 				E588085F1D51E06A00FEA71F /* Progression+Conveniences.swift in Sources */,
 				E58809071D51E06A00FEA71F /* User+Auth.swift in Sources */,
 				E58808B31D51E06A00FEA71F /* HTTPResponse.swift in Sources */,
 				E50750461D4120B40089187A /* BsyncXPCProtocol.swift in Sources */,
 				E5074D791D411D1B0089187A /* BsyncXPCHelper.swift in Sources */,
-				E58807B71D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */,
 				E53E28F11CA572E80079ED23 /* LogoutCommand.swift in Sources */,
 				E58808331D51E06A00FEA71F /* Consignation.swift in Sources */,
 				E58807331D51E06A00FEA71F /* Completion.swift in Sources */,
 				E5F654D81D42749100A40A9B /* Map.swift in Sources */,
 				E588079B1D51E06A00FEA71F /* DeleteLockers.swift in Sources */,
-				E58807931D51E06A00FEA71F /* DeleteGroups.swift in Sources */,
 				E5F654991D42749100A40A9B /* Notifications.swift in Sources */,
 				E588084B1D51E06A00FEA71F /* Completion+Conveniences.swift in Sources */,
 				E588072F1D51E06A00FEA71F /* CollectionMetadatum.swift in Sources */,
-				E588073B1D51E06A00FEA71F /* Group.swift in Sources */,
 				E510E9A51D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E53E28EF1CA572E80079ED23 /* KeyValueStorageCommand.swift in Sources */,
 				E5F654951D42749100A40A9B /* NetworkReachabilityManager.swift in Sources */,
@@ -2114,7 +1954,6 @@
 				E588086B1D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E58808171D51E06A00FEA71F /* JObject.swift in Sources */,
 				E588075B1D51E06A00FEA71F /* Tag.swift in Sources */,
-				E588076F1D51E06A00FEA71F /* CreateGroup.swift in Sources */,
 				E58807F71D51E06A00FEA71F /* UpdateUser.swift in Sources */,
 				E58807D71D51E06A00FEA71F /* ReadUsersByIds.swift in Sources */,
 				E588081B1D51E06A00FEA71F /* JSerializer.swift in Sources */,
@@ -2123,7 +1962,6 @@
 				E58807671D51E06A00FEA71F /* Trigger.swift in Sources */,
 				5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */,
 				E5F655111D42749100A40A9B /* URLTransform.swift in Sources */,
-				E588078F1D51E06A00FEA71F /* DeleteGroup.swift in Sources */,
 				E53E28DF1CA572E20079ED23 /* BsyncCredentials.swift in Sources */,
 				E58807531D51E06A00FEA71F /* Progression.swift in Sources */,
 				E53E28F01CA572E80079ED23 /* LoginCommand.swift in Sources */,
@@ -2142,7 +1980,6 @@
 				E5F655011D42749100A40A9B /* ISO8601DateTransform.swift in Sources */,
 				E53E28E11CA572E20079ED23 /* BsyncImageDiskManager.swift in Sources */,
 				E58808B71D51E06A00FEA71F /* Identifiable.swift in Sources */,
-				E58807831D51E06A00FEA71F /* CreatePermissions.swift in Sources */,
 				E58808CF1D51E06A00FEA71F /* Serializer.swift in Sources */,
 				E588076B1D51E06A00FEA71F /* User.swift in Sources */,
 				E58807431D51E06A00FEA71F /* JString.swift in Sources */,
@@ -2153,7 +1990,6 @@
 				E588070F1D51E06A00FEA71F /* BartlebyDocument.swift in Sources */,
 				E588089B1D51E06A00FEA71F /* CryptoDelegate.swift in Sources */,
 				E588092B1D51E06A00FEA71F /* HTTPManager.swift in Sources */,
-				E58807DF1D51E06A00FEA71F /* UpdateGroup.swift in Sources */,
 				E58807971D51E06A00FEA71F /* DeleteLocker.swift in Sources */,
 				E588071B1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */,
 				E588091B1D51E06A00FEA71F /* TriggersForIndexes.swift in Sources */,
@@ -2175,7 +2011,6 @@
 				E588078B1D51E06A00FEA71F /* CreateUsers.swift in Sources */,
 				E58807D31D51E06A00FEA71F /* ReadUserById.swift in Sources */,
 				E588082F1D51E06A00FEA71F /* Bartleby.swift in Sources */,
-				E58807E31D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
 				E58807E71D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
 				E58807471D51E06A00FEA71F /* Locker.swift in Sources */,
 				E53E28F21CA572E80079ED23 /* VerifyCredentialsCommand.swift in Sources */,
@@ -2196,7 +2031,6 @@
 				E588091F1D51E06A00FEA71F /* VerifyLocker.swift in Sources */,
 				E588086F1D51E06A00FEA71F /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E5F654F91D42749100A40A9B /* DateTransform.swift in Sources */,
-				E588077F1D51E06A00FEA71F /* CreatePermission.swift in Sources */,
 				E58808131D51E06A00FEA71F /* JHTTPResponse.swift in Sources */,
 				E58808CB1D51E06A00FEA71F /* Serializable.swift in Sources */,
 				E53E28EB1CA572E80079ED23 /* RevealDirectivesCommand.swift in Sources */,
@@ -2207,24 +2041,19 @@
 				E5F654F11D42749100A40A9B /* CustomDateFormatTransform.swift in Sources */,
 				E53E28D91CA572D80079ED23 /* PdSFileManager.m in Sources */,
 				E5F6550D1D42749100A40A9B /* TransformType.swift in Sources */,
-				E58807B31D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */,
 				E53E28F41CA572F40079ED23 /* CommandsFacade.swift in Sources */,
-				E58807C71D51E06A00FEA71F /* ReadPermissionById.swift in Sources */,
 				E58808E31D51E06A00FEA71F /* Registry.swift in Sources */,
 				E58809031D51E06A00FEA71F /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5F654831D42749100A40A9B /* Error.swift in Sources */,
 				E58807371D51E06A00FEA71F /* ExternalReference.swift in Sources */,
 				E58807FB1D51E06A00FEA71F /* UpdateUsers.swift in Sources */,
-				E58807A31D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
 				E588087F1D51E06A00FEA71F /* Handlers.swift in Sources */,
 				E5F654751D42749100A40A9B /* CryptoHelper.swift in Sources */,
 				E58808871D51E06A00FEA71F /* Collectible.swift in Sources */,
 				E5F6547B1D42749100A40A9B /* Alamofire.swift in Sources */,
 				E588077B1D51E06A00FEA71F /* CreateLockers.swift in Sources */,
-				E58807EF1D51E06A00FEA71F /* UpdatePermission.swift in Sources */,
 				E5F654B51D42749100A40A9B /* Stream.swift in Sources */,
 				E58807AB1D51E06A00FEA71F /* DeleteUsers.swift in Sources */,
-				E58807CB1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */,
 				E58808D31D51E06A00FEA71F /* SuperIterable.swift in Sources */,
 				E5F654A11D42749100A40A9B /* Request.swift in Sources */,
 				E5F655091D42749100A40A9B /* TransformOf.swift in Sources */,
@@ -2235,11 +2064,9 @@
 				E58807BF1D51E06A00FEA71F /* ReadLockersByIds.swift in Sources */,
 				E58808471D51E06A00FEA71F /* BartlebyDocument+Triggers.swift in Sources */,
 				E588090B1D51E06A00FEA71F /* LoginUser.swift in Sources */,
-				E58807CF1D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */,
 				E58809171D51E06A00FEA71F /* TriggersByIds.swift in Sources */,
 				E56EC0751D7EEC2700D5CD81 /* Operation+Conveniences.swift in Sources */,
 				5B16A3521CCE0A56003E02BA /* RevealHashMapCommand.swift in Sources */,
-				E588079F1D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E5F6547F1D42749100A40A9B /* Download.swift in Sources */,
 				E588080F1D51E06A00FEA71F /* JHTTPCommand.swift in Sources */,
 				E5F654B11D42749100A40A9B /* ServerTrustPolicy.swift in Sources */,
@@ -2248,7 +2075,6 @@
 				E58808BF1D51E06A00FEA71F /* Invocable.swift in Sources */,
 				E5F654611D42749100A40A9B /* CryptedDataTransform.swift in Sources */,
 				E53E28D81CA572D80079ED23 /* NSData+CRC.m in Sources */,
-				E58807F31D51E06A00FEA71F /* UpdatePermissions.swift in Sources */,
 				E58808DF1D51E06A00FEA71F /* UserProtocol.swift in Sources */,
 				E58808D71D51E06A00FEA71F /* Supervisable.swift in Sources */,
 				E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */,
@@ -2258,10 +2084,8 @@
 				E5F655051D42749100A40A9B /* NSDecimalNumberTransform.swift in Sources */,
 				E53E28F51CA572F40079ED23 /* main.swift in Sources */,
 				E53E28DE1CA572E20079ED23 /* BsyncContext.swift in Sources */,
-				E58807131D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
 				5BCB1FB41CB7F6E800961CD9 /* CreateUIDCommand.swift in Sources */,
 				E58FED1C1D410A6A00BBB25A /* IdentifableCardContext.swift in Sources */,
-				E58807AF1D51E06A00FEA71F /* ReadGroupById.swift in Sources */,
 				E58808C71D51E06A00FEA71F /* RegistryMetadataProtocol.swift in Sources */,
 				E5F654A91D42749100A40A9B /* ResponseSerialization.swift in Sources */,
 			);
@@ -2273,7 +2097,6 @@
 			files = (
 				E5CEA9201D522554000DC91E /* TransformOf.swift in Sources */,
 				E58808641D51E06A00FEA71F /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
-				E58807D01D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */,
 				E58807F81D51E06A00FEA71F /* UpdateUser.swift in Sources */,
 				E588081C1D51E06A00FEA71F /* JSerializer.swift in Sources */,
 				E588092C1D51E06A00FEA71F /* HTTPManager.swift in Sources */,
@@ -2294,7 +2117,6 @@
 				E5CEA9151D522554000DC91E /* Map.swift in Sources */,
 				E588071C1D51E06A00FEA71F /* OperationsCollectionController.swift in Sources */,
 				E5CEA9341D52255C000DC91E /* StringExtensions.swift in Sources */,
-				E588073C1D51E06A00FEA71F /* Group.swift in Sources */,
 				E5CEA9141D522554000DC91E /* FromJSON.swift in Sources */,
 				E591ACED1D42632800748FF4 /* UpDownDirectivesTests.swift in Sources */,
 				E58807401D51E06A00FEA71F /* JData.swift in Sources */,
@@ -2303,7 +2125,6 @@
 				E58808341D51E06A00FEA71F /* Consignation.swift in Sources */,
 				E5CEA9451D522566000DC91E /* Stream.swift in Sources */,
 				E58808841D51E06A00FEA71F /* BartlebyFileIO.swift in Sources */,
-				E58807F41D51E06A00FEA71F /* UpdatePermissions.swift in Sources */,
 				E588079C1D51E06A00FEA71F /* DeleteLockers.swift in Sources */,
 				E591AD001D42643B00748FF4 /* BsyncImageDiskManager.swift in Sources */,
 				E588093A1D51E08100FEA71F /* CryptedStringKeyValueTransform.swift in Sources */,
@@ -2311,17 +2132,14 @@
 				E5CEA9381D522566000DC91E /* Alamofire.swift in Sources */,
 				E58809201D51E06A00FEA71F /* VerifyLocker.swift in Sources */,
 				E5CEA93F1D522566000DC91E /* ParameterEncoding.swift in Sources */,
-				E58807901D51E06A00FEA71F /* DeleteGroup.swift in Sources */,
 				E591ACE91D42632800748FF4 /* BsyncAdminTreeTests.swift in Sources */,
 				E5CEA91A1D522554000DC91E /* CustomDateFormatTransform.swift in Sources */,
 				E58808B01D51E06A00FEA71F /* HTTPCommand.swift in Sources */,
 				E588093C1D51E08100FEA71F /* CryptoHelper.swift in Sources */,
-				E58807701D51E06A00FEA71F /* CreateGroup.swift in Sources */,
 				E58807EC1D51E06A00FEA71F /* UpdateLockers.swift in Sources */,
 				E591ACE81D42632800748FF4 /* DirectivesSerializationTests.swift in Sources */,
 				E58807101D51E06A00FEA71F /* BartlebyDocument.swift in Sources */,
 				E588084C1D51E06A00FEA71F /* Completion+Conveniences.swift in Sources */,
-				E58807F01D51E06A00FEA71F /* UpdatePermission.swift in Sources */,
 				E54920191D6353B100961796 /* JString+Conveniences.swift in Sources */,
 				E591ACF11D42643B00748FF4 /* PdSSyncAdmin.m in Sources */,
 				E58807781D51E06A00FEA71F /* CreateLocker.swift in Sources */,
@@ -2333,7 +2151,6 @@
 				E58807381D51E06A00FEA71F /* ExternalReference.swift in Sources */,
 				E591ACF01D42632800748FF4 /* BsyncKeyValueStorageTests.swift in Sources */,
 				E58807341D51E06A00FEA71F /* Completion.swift in Sources */,
-				E58807A01D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E58808501D51E06A00FEA71F /* Completion+Result.swift in Sources */,
 				E591ACE61D42632100748FF4 /* TestsConfiguration.swift in Sources */,
 				E588090C1D51E06A00FEA71F /* LoginUser.swift in Sources */,
@@ -2363,7 +2180,6 @@
 				E588088C1D51E06A00FEA71F /* CollectibleCollection.swift in Sources */,
 				E588087C1D51E06A00FEA71F /* Global.swift in Sources */,
 				E58809371D51E08100FEA71F /* CryptedDataTransform.swift in Sources */,
-				E58807501D51E06A00FEA71F /* Permission.swift in Sources */,
 				E58808BC1D51E06A00FEA71F /* Initializable.swift in Sources */,
 				E591ACFC1D42643B00748FF4 /* BsyncDirectives.swift in Sources */,
 				E58808401D51E06A00FEA71F /* BartlebyDocument+AppFacilities.swift in Sources */,
@@ -2371,12 +2187,9 @@
 				E58808541D51E06A00FEA71F /* ExternalReference+Resolution.swift in Sources */,
 				E591ACF41D42643B00748FF4 /* HashMap.m in Sources */,
 				E58808941D51E06A00FEA71F /* Commitable.swift in Sources */,
-				E58807841D51E06A00FEA71F /* CreatePermissions.swift in Sources */,
 				E591ACE51D42632100748FF4 /* TestCase.swift in Sources */,
 				E58808CC1D51E06A00FEA71F /* Serializable.swift in Sources */,
 				E58807301D51E06A00FEA71F /* CollectionMetadatum.swift in Sources */,
-				E58807E41D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
-				E58807E01D51E06A00FEA71F /* UpdateGroup.swift in Sources */,
 				E591ACEB1D42632800748FF4 /* LocalSyncTests.swift in Sources */,
 				E591AD031D42643B00748FF4 /* IdentifableCardContext.swift in Sources */,
 				E58809381D51E08100FEA71F /* CryptedKeyValueStorage.swift in Sources */,
@@ -2398,30 +2211,24 @@
 				E58808301D51E06A00FEA71F /* Bartleby.swift in Sources */,
 				E56EC0781D7EEC6A00D5CD81 /* Operation+Conveniences.swift in Sources */,
 				E58808701D51E06A00FEA71F /* BartlebyDocument+SuperIterable.swift in Sources */,
-				E58807A41D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
-				E58807141D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
 				E591ACE71D42632800748FF4 /* SyncTestCase.swift in Sources */,
 				E58807981D51E06A00FEA71F /* DeleteLocker.swift in Sources */,
 				E58808A41D51E06A00FEA71F /* DictionaryRepresentation.swift in Sources */,
 				E5CEA93A1D522566000DC91E /* Error.swift in Sources */,
 				E591ACF31D42643B00748FF4 /* DeltaPathMap.m in Sources */,
 				E58808E01D51E06A00FEA71F /* UserProtocol.swift in Sources */,
-				E58807941D51E06A00FEA71F /* DeleteGroups.swift in Sources */,
 				E591ACEA1D42632800748FF4 /* BsyncAdminUpDownSyncTests.swift in Sources */,
 				E58808D41D51E06A00FEA71F /* SuperIterable.swift in Sources */,
 				E58808B41D51E06A00FEA71F /* HTTPResponse.swift in Sources */,
 				E58807E81D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
 				E58807A81D51E06A00FEA71F /* DeleteUser.swift in Sources */,
 				E5CEA9421D522566000DC91E /* ResponseSerialization.swift in Sources */,
-				E58807CC1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */,
 				E591ACF61D42643B00748FF4 /* PdSFileManager.m in Sources */,
-				E58807741D51E06A00FEA71F /* CreateGroups.swift in Sources */,
 				E58807DC1D51E06A00FEA71F /* ReadUsersByQuery.swift in Sources */,
 				E5CEA9431D522566000DC91E /* Result.swift in Sources */,
 				E58807541D51E06A00FEA71F /* Progression.swift in Sources */,
 				E588076C1D51E06A00FEA71F /* User.swift in Sources */,
 				E591ACFF1D42643B00748FF4 /* BsyncHashMap+Filter.swift in Sources */,
-				E58807201D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */,
 				E591ACEE1D42632800748FF4 /* bsyncMiscTests.swift in Sources */,
 				E58809301D51E06A00FEA71F /* Pluralization.swift in Sources */,
 				E591ACF51D42643B00748FF4 /* NSData+CRC.m in Sources */,
@@ -2434,18 +2241,15 @@
 				E58808D81D51E06A00FEA71F /* Supervisable.swift in Sources */,
 				E58807FC1D51E06A00FEA71F /* UpdateUsers.swift in Sources */,
 				E5CEA91B1D522554000DC91E /* DateFormatterTransform.swift in Sources */,
-				E58807C81D51E06A00FEA71F /* ReadPermissionById.swift in Sources */,
 				E58807D41D51E06A00FEA71F /* ReadUserById.swift in Sources */,
 				E591ACFE1D42643B00748FF4 /* BsyncHashMap.swift in Sources */,
 				E5CEA9331D52255C000DC91E /* Option.swift in Sources */,
-				E58807801D51E06A00FEA71F /* CreatePermission.swift in Sources */,
 				E5CEA9171D522554000DC91E /* Mapper.swift in Sources */,
 				E591ACFB1D42643B00748FF4 /* BsyncCredentials.swift in Sources */,
 				E5CEA91E1D522554000DC91E /* ISO8601DateTransform.swift in Sources */,
 				E58808801D51E06A00FEA71F /* Handlers.swift in Sources */,
 				E5CEA93D1D522566000DC91E /* NetworkReachabilityManager.swift in Sources */,
 				E58808101D51E06A00FEA71F /* JHTTPCommand.swift in Sources */,
-				E58807B41D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */,
 				E58809181D51E06A00FEA71F /* TriggersByIds.swift in Sources */,
 				E588093B1D51E08100FEA71F /* CryptedStringTransform.swift in Sources */,
 				E588086C1D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift in Sources */,
@@ -2465,11 +2269,9 @@
 				E58809341D51E06A00FEA71F /* PString.swift in Sources */,
 				E5CEA9161D522554000DC91E /* Mappable.swift in Sources */,
 				E58808441D51E06A00FEA71F /* BartlebyDocument+Operations.swift in Sources */,
-				E58807B81D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */,
 				E591ACEF1D42632800748FF4 /* bsyncHashMapTests.swift in Sources */,
 				E58808DC1D51E06A00FEA71F /* UniversalType.swift in Sources */,
 				E588083C1D51E06A00FEA71F /* Default.swift in Sources */,
-				E58807B01D51E06A00FEA71F /* ReadGroupById.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2494,8 +2296,6 @@
 				E55C92731CBF854D008163F6 /* PdSSyncAdmin.m in Sources */,
 				E58807F91D51E06A00FEA71F /* UpdateUser.swift in Sources */,
 				E5F654A61D42749100A40A9B /* Response.swift in Sources */,
-				E58807CD1D51E06A00FEA71F /* ReadPermissionsByIds.swift in Sources */,
-				E58807751D51E06A00FEA71F /* CreateGroups.swift in Sources */,
 				E588079D1D51E06A00FEA71F /* DeleteLockers.swift in Sources */,
 				E58807411D51E06A00FEA71F /* JData.swift in Sources */,
 				E58807ED1D51E06A00FEA71F /* UpdateLockers.swift in Sources */,
@@ -2506,7 +2306,6 @@
 				E58808251D51E06A00FEA71F /* UIX.swift in Sources */,
 				E58807991D51E06A00FEA71F /* DeleteLocker.swift in Sources */,
 				E58808711D51E06A00FEA71F /* BartlebyDocument+SuperIterable.swift in Sources */,
-				E58807911D51E06A00FEA71F /* DeleteGroup.swift in Sources */,
 				E5F654921D42749100A40A9B /* MultipartFormData.swift in Sources */,
 				E58808691D51E06A00FEA71F /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E5F654E91D42749100A40A9B /* ToJSON.swift in Sources */,
@@ -2517,22 +2316,18 @@
 				E58808D51D51E06A00FEA71F /* SuperIterable.swift in Sources */,
 				E5F654BA1D42749100A40A9B /* Timeline.swift in Sources */,
 				E58808E51D51E06A00FEA71F /* Registry.swift in Sources */,
-				E58807D11D51E06A00FEA71F /* ReadPermissionsByQuery.swift in Sources */,
 				E588091D1D51E06A00FEA71F /* TriggersForIndexes.swift in Sources */,
 				E58808D11D51E06A00FEA71F /* Serializer.swift in Sources */,
 				E58807491D51E06A00FEA71F /* Locker.swift in Sources */,
 				E58808A51D51E06A00FEA71F /* DictionaryRepresentation.swift in Sources */,
 				E58807591D51E06A00FEA71F /* RegistryMetadata.swift in Sources */,
 				E58807D51D51E06A00FEA71F /* ReadUserById.swift in Sources */,
-				E58807811D51E06A00FEA71F /* CreatePermission.swift in Sources */,
-				E58807E51D51E06A00FEA71F /* UpdateGroups.swift in Sources */,
 				E58809291D51E06A00FEA71F /* BFileManager.swift in Sources */,
 				E5F654E51D42749100A40A9B /* Operators.swift in Sources */,
 				E510E9A21D0EC38F00515179 /* BsyncHashMap.swift in Sources */,
 				E5F6549E1D42749100A40A9B /* ParameterEncoding.swift in Sources */,
 				E58809111D51E06A00FEA71F /* LogoutUser.swift in Sources */,
 				E5F6548E1D42749100A40A9B /* Manager.swift in Sources */,
-				E58807F11D51E06A00FEA71F /* UpdatePermission.swift in Sources */,
 				E58807E91D51E06A00FEA71F /* UpdateLocker.swift in Sources */,
 				E588087D1D51E06A00FEA71F /* Global.swift in Sources */,
 				E5F654D11D42749100A40A9B /* StringExtensions.swift in Sources */,
@@ -2553,11 +2348,8 @@
 				E5F654801D42749100A40A9B /* Download.swift in Sources */,
 				E58809051D51E06A00FEA71F /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E55C92751CBF854D008163F6 /* DeltaPathMap.m in Sources */,
-				E58807A51D51E06A00FEA71F /* DeletePermissions.swift in Sources */,
 				E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */,
 				E5F655021D42749100A40A9B /* ISO8601DateTransform.swift in Sources */,
-				E58807B51D51E06A00FEA71F /* ReadGroupsByIds.swift in Sources */,
-				E58807211D51E06A00FEA71F /* PermissionsCollectionController.swift in Sources */,
 				E58808E91D51E06A00FEA71F /* StatusOfCompletion.swift in Sources */,
 				E58809151D51E06A00FEA71F /* TriggersAfterIndex.swift in Sources */,
 				E55C92801CBF8998008163F6 /* BsyncImageDiskManager.swift in Sources */,
@@ -2566,7 +2358,6 @@
 				E5F6547C1D42749100A40A9B /* Alamofire.swift in Sources */,
 				E55C927D1CBF8998008163F6 /* BsyncContext.swift in Sources */,
 				E588083D1D51E06A00FEA71F /* Default.swift in Sources */,
-				E58807711D51E06A00FEA71F /* CreateGroup.swift in Sources */,
 				E55C92761CBF854D008163F6 /* HashMap.m in Sources */,
 				E58808391D51E06A00FEA71F /* Consignee.swift in Sources */,
 				E58807C51D51E06A00FEA71F /* ReadLockersByQuery.swift in Sources */,
@@ -2576,7 +2367,6 @@
 				E58808811D51E06A00FEA71F /* Handlers.swift in Sources */,
 				E58807351D51E06A00FEA71F /* Completion.swift in Sources */,
 				E588078D1D51E06A00FEA71F /* CreateUsers.swift in Sources */,
-				E58807511D51E06A00FEA71F /* Permission.swift in Sources */,
 				E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */,
 				E55C927E1CBF8998008163F6 /* BsyncCredentials.swift in Sources */,
 				E588074D1D51E06A00FEA71F /* Operation.swift in Sources */,
@@ -2587,13 +2377,10 @@
 				E55C92781CBF854D008163F6 /* PdSFileManager.m in Sources */,
 				E5F654661D42749100A40A9B /* CryptedKeyValueStorage.swift in Sources */,
 				E58809191D51E06A00FEA71F /* TriggersByIds.swift in Sources */,
-				E58807851D51E06A00FEA71F /* CreatePermissions.swift in Sources */,
 				E58807AD1D51E06A00FEA71F /* DeleteUsers.swift in Sources */,
 				E5F654E11D42749100A40A9B /* Mapper.swift in Sources */,
 				E5F6546A1D42749100A40A9B /* CryptedSerializableTransform.swift in Sources */,
-				E58807B91D51E06A00FEA71F /* ReadGroupsByQuery.swift in Sources */,
 				E58808C91D51E06A00FEA71F /* RegistryMetadataProtocol.swift in Sources */,
-				E58807B11D51E06A00FEA71F /* ReadGroupById.swift in Sources */,
 				E5F654FE1D42749100A40A9B /* EnumTransform.swift in Sources */,
 				E5F654721D42749100A40A9B /* CryptedStringTransform.swift in Sources */,
 				E58808A91D51E06A00FEA71F /* Distribuable.swift in Sources */,
@@ -2605,7 +2392,6 @@
 				E58808CD1D51E06A00FEA71F /* Serializable.swift in Sources */,
 				E58808351D51E06A00FEA71F /* Consignation.swift in Sources */,
 				E5F654761D42749100A40A9B /* CryptoHelper.swift in Sources */,
-				E58807E11D51E06A00FEA71F /* UpdateGroup.swift in Sources */,
 				E58807C11D51E06A00FEA71F /* ReadLockersByIds.swift in Sources */,
 				5B0514021CC674E3008F30C2 /* BsyncKeyValueStorage.swift in Sources */,
 				E5F654841D42749100A40A9B /* Error.swift in Sources */,
@@ -2621,7 +2407,6 @@
 				E55C927F1CBF8998008163F6 /* BsyncDirectives.swift in Sources */,
 				E5F654C21D42749100A40A9B /* Validation.swift in Sources */,
 				E58807DD1D51E06A00FEA71F /* ReadUsersByQuery.swift in Sources */,
-				E58807C91D51E06A00FEA71F /* ReadPermissionById.swift in Sources */,
 				E5F654B61D42749100A40A9B /* Stream.swift in Sources */,
 				E58808511D51E06A00FEA71F /* Completion+Result.swift in Sources */,
 				E55C927A1CBF854D008163F6 /* PdSSyncContext.m in Sources */,
@@ -2632,10 +2417,8 @@
 				E58808BD1D51E06A00FEA71F /* Initializable.swift in Sources */,
 				E58808651D51E06A00FEA71F /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E58807A91D51E06A00FEA71F /* DeleteUser.swift in Sources */,
-				E58807151D51E06A00FEA71F /* GroupsCollectionController.swift in Sources */,
 				E58807691D51E06A00FEA71F /* Trigger.swift in Sources */,
 				E56EC0791D7EEC9400D5CD81 /* Operation+Conveniences.swift in Sources */,
-				E588073D1D51E06A00FEA71F /* Group.swift in Sources */,
 				E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E588076D1D51E06A00FEA71F /* User.swift in Sources */,
 				E549201B1D6353B100961796 /* JString+Conveniences.swift in Sources */,
@@ -2647,13 +2430,10 @@
 				E5B2B5C41D4124C200D0B1B3 /* BsyncXPC.swift in Sources */,
 				E58808051D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift in Sources */,
 				E58808211D51E06A00FEA71F /* RegistryMetadata+Protocol.swift in Sources */,
-				E58807951D51E06A00FEA71F /* DeleteGroups.swift in Sources */,
 				E58808451D51E06A00FEA71F /* BartlebyDocument+Operations.swift in Sources */,
 				E5F655121D42749100A40A9B /* URLTransform.swift in Sources */,
-				E58807A11D51E06A00FEA71F /* DeletePermission.swift in Sources */,
 				E58808D91D51E06A00FEA71F /* Supervisable.swift in Sources */,
 				E58809091D51E06A00FEA71F /* User+Auth.swift in Sources */,
-				E58807F51D51E06A00FEA71F /* UpdatePermissions.swift in Sources */,
 				E58808911D51E06A00FEA71F /* CollectionMetadatumProtocol.swift in Sources */,
 				E5FEE5EC1CBF5FA2006AFA2E /* BsyncXPCProtocol.swift in Sources */,
 				E55C92831CBF8998008163F6 /* BsyncDMGCard.swift in Sources */,
