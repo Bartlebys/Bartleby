@@ -24,14 +24,7 @@ import ObjectMapper
 	//The data space UID can be shared between multiple registries.
 	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
-	dynamic public var currentUser:User? {	 
-	    didSet { 
-	       if currentUser != oldValue {
-	            self.provisionChanges(forKey: "currentUser",oldValue: oldValue,newValue: currentUser) 
-	       } 
-	    }
-	}
-
+	dynamic public var currentUser:User?
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case Key = "Key"
@@ -39,41 +32,35 @@ import ObjectMapper
 	}
 	public var identificationMethod:IdentificationMethod = .Key
 	//The current kvid identification value (injected in HTTP headers)
-	dynamic public var identificationValue:String? {	 
-	    didSet { 
-	       if identificationValue != oldValue {
-	            self.provisionChanges(forKey: "identificationValue",oldValue: oldValue,newValue: identificationValue) 
-	       } 
-	    }
-	}
-
+	dynamic public var identificationValue:String?
 	//The rootObject UID
-	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"{	 
-	    didSet { 
-	       if rootObjectUID != oldValue {
-	            self.provisionChanges(forKey: "rootObjectUID",oldValue: oldValue,newValue: rootObjectUID) 
-	       } 
-	    }
-	}
-
+	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
-	dynamic public var collaborationServerURL:NSURL? {	 
-	    didSet { 
-	       if collaborationServerURL != oldValue {
-	            self.provisionChanges(forKey: "collaborationServerURL",oldValue: oldValue,newValue: collaborationServerURL) 
-	       } 
-	    }
-	}
-
+	dynamic public var collaborationServerURL:NSURL?
 	//A collection of CollectionMetadatum
-	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()  {	 
-	    didSet { 
-	       if collectionsMetadata != oldValue {
-	            self.provisionChanges(forKey: "collectionsMetadata",oldValue: oldValue,newValue: collectionsMetadata)  
-	       } 
-	    }
-	}
-
+	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	//The State dictionary to insure registry persistency 
+	dynamic public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
+	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
+	dynamic public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
+	//The preferred filename for this registry/document
+	dynamic public var preferredFileName:String?
+	//A collection of trigger Indexes (used to detect data holes)
+	dynamic public var triggersIndexes:[Int] = [Int]()
+	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
+	dynamic public var ownedTriggersIndexes:[Int] = [Int]()
+	//The index of the last trigger that has been integrated
+	public var lastIntegratedTriggerIndex:Int = -1
+	//A collection Triggers that are temporarly stored before data integration
+	dynamic public var receivedTriggers:[Trigger] = [Trigger]()
+	//The serialized version of loaded trigger data that are pending integration
+	public var triggeredDataBuffer:NSData?
+	//Do we have operations in progress in the current bunch ?
+	dynamic public var bunchInProgress:Bool = false
+	//The highest number that we may have counted
+	public var totalNumberOfOperations:Int = 0
+	//The consolidated progression state of all pending operations
+	dynamic public var pendingOperationsProgressionState:Progression?
 	//is the user performing Online
 	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
@@ -92,10 +79,6 @@ import ObjectMapper
 	    }
 	}
 
-	//The State dictionary to insure registry persistency 
-	dynamic public var stateDictionary:[String:AnyObject] = [String:AnyObject]()
-	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
-	dynamic public var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
 	//Save the password or not?
 	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
 	    didSet { 
@@ -105,66 +88,6 @@ import ObjectMapper
 	    }
 	}
 
-	//The preferred filename for this registry/document
-	dynamic public var preferredFileName:String? {	 
-	    didSet { 
-	       if preferredFileName != oldValue {
-	            self.provisionChanges(forKey: "preferredFileName",oldValue: oldValue,newValue: preferredFileName) 
-	       } 
-	    }
-	}
-
-	//A collection of trigger Indexes (used to detect data holes)
-	dynamic public var triggersIndexes:[Int] = [Int]()  {	 
-	    didSet { 
-	       if triggersIndexes != oldValue {
-	            self.provisionChanges(forKey: "triggersIndexes",oldValue: oldValue,newValue: triggersIndexes)  
-	       } 
-	    }
-	}
-
-	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	dynamic public var ownedTriggersIndexes:[Int] = [Int]()  {	 
-	    didSet { 
-	       if ownedTriggersIndexes != oldValue {
-	            self.provisionChanges(forKey: "ownedTriggersIndexes",oldValue: oldValue,newValue: ownedTriggersIndexes)  
-	       } 
-	    }
-	}
-
-	//The index of the last trigger that has been integrated
-	public var lastIntegratedTriggerIndex:Int = -1  {	 
-	    didSet { 
-	       if lastIntegratedTriggerIndex != oldValue {
-	            self.provisionChanges(forKey: "lastIntegratedTriggerIndex",oldValue: oldValue,newValue: lastIntegratedTriggerIndex)  
-	       } 
-	    }
-	}
-
-	//A collection Triggers that are temporarly stored before data integration
-	dynamic public var receivedTriggers:[Trigger] = [Trigger]()  {	 
-	    didSet { 
-	       if receivedTriggers != oldValue {
-	            self.provisionChanges(forKey: "receivedTriggers",oldValue: oldValue,newValue: receivedTriggers)  
-	       } 
-	    }
-	}
-
-	//The serialized version of loaded trigger data that are pending integration
-	public var triggeredDataBuffer:NSData? {	 
-	    didSet { 
-	       if triggeredDataBuffer != oldValue {
-	            self.provisionChanges(forKey: "triggeredDataBuffer",oldValue: oldValue,newValue: triggeredDataBuffer) 
-	       } 
-	    }
-	}
-
-	//Do we have operations in progress in the current bunch ?
-	dynamic public var bunchInProgress:Bool = false
-	//The highest number that we may have counted
-	public var totalNumberOfOperations:Int = 0
-	//The consolidated progression state of all pending operations
-	dynamic public var pendingOperationsProgressionState:Progression?
 
 
     // MARK: Mappable
@@ -183,17 +106,17 @@ import ObjectMapper
 		self.rootObjectUID <- ( map["rootObjectUID"] )
 		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 		self.collectionsMetadata <- ( map["collectionsMetadata"] )
-		self.online <- ( map["online"] )
-		self.pushOnChanges <- ( map["pushOnChanges"] )
 		self.stateDictionary <- ( map["stateDictionary"] )
 		self.URLBookmarkData <- ( map["URLBookmarkData"] )
-		self.saveThePassword <- ( map["saveThePassword"] )
 		self.preferredFileName <- ( map["preferredFileName"] )
 		self.triggersIndexes <- ( map["triggersIndexes"] )
 		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 		self.receivedTriggers <- ( map["receivedTriggers"] )
 		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
+		self.online <- ( map["online"] )
+		self.pushOnChanges <- ( map["pushOnChanges"] )
+		self.saveThePassword <- ( map["saveThePassword"] )
         self.enableSuperVisionAndCommit()
     }
 
@@ -210,17 +133,17 @@ import ObjectMapper
 		self.rootObjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "rootObjectUID")! as NSString)
 		self.collaborationServerURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"collaborationServerURL") as NSURL?
 		self.collectionsMetadata=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-		self.online=decoder.decodeBoolForKey("online") 
-		self.pushOnChanges=decoder.decodeBoolForKey("pushOnChanges") 
 		self.stateDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
 		self.URLBookmarkData=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
-		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 		self.preferredFileName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"preferredFileName") as NSString?)
 		self.triggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
 		self.ownedTriggersIndexes=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
 		self.lastIntegratedTriggerIndex=decoder.decodeIntegerForKey("lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
 		self.triggeredDataBuffer=decoder.decodeObjectOfClass(NSData.self, forKey:"triggeredDataBuffer") as NSData?
+		self.online=decoder.decodeBoolForKey("online") 
+		self.pushOnChanges=decoder.decodeBoolForKey("pushOnChanges") 
+		self.saveThePassword=decoder.decodeBoolForKey("saveThePassword") 
 
         self.enableSuperVisionAndCommit()
     }
@@ -240,11 +163,8 @@ import ObjectMapper
 			coder.encodeObject(collaborationServerURL,forKey:"collaborationServerURL")
 		}
 		coder.encodeObject(self.collectionsMetadata,forKey:"collectionsMetadata")
-		coder.encodeBool(self.online,forKey:"online")
-		coder.encodeBool(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encodeObject(self.stateDictionary,forKey:"stateDictionary")
 		coder.encodeObject(self.URLBookmarkData,forKey:"URLBookmarkData")
-		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")
 		if let preferredFileName = self.preferredFileName {
 			coder.encodeObject(preferredFileName,forKey:"preferredFileName")
 		}
@@ -255,6 +175,9 @@ import ObjectMapper
 		if let triggeredDataBuffer = self.triggeredDataBuffer {
 			coder.encodeObject(triggeredDataBuffer,forKey:"triggeredDataBuffer")
 		}
+		coder.encodeBool(self.online,forKey:"online")
+		coder.encodeBool(self.pushOnChanges,forKey:"pushOnChanges")
+		coder.encodeBool(self.saveThePassword,forKey:"saveThePassword")
     }
 
 

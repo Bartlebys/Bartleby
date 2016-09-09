@@ -1,6 +1,6 @@
 # Sync
 Bartleby Sync is a file Synchronizer
-It embedd BartlebyKit
+It embedds BartlebyKit
 
 # Targets 
 
