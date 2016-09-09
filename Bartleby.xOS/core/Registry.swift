@@ -121,9 +121,6 @@ public class Registry: BXDocument {
     // An in memory flag to distinguish dotBart import case
     public var dotBart=false
 
-    internal let _logsFileName="logs.txt"
-    internal var _logs:String=""
-
     /// The underlining storage hashed by collection name
     internal var _collections=[String:BartlebyCollection]()
 

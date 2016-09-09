@@ -854,16 +854,6 @@ public class BartlebyDocument : Registry {
                 }
             }
 
-
-            // Stores the last logs in a file.
-
-            self._logs += "{\"runUID\":\"\(Bartleby.runUID)\",\"date\":\"\(NSDate())\"}\(Bartleby.logSectionSeparator)"
-            self._logs += Bartleby.bprintCollection.toJSONString() ?? ""
-            let logs=NSFileWrapper(regularFileWithContents: self._logs.dataUsingEncoding(NSUTF8StringEncoding)!)
-            logs.preferredFilename=self._logsFileName
-            fileWrapper.addFileWrapper(logs)
-
-
         }
         return fileWrapper
     }
@@ -943,16 +933,6 @@ public class BartlebyDocument : Registry {
                 try self._refreshProxies()
             } catch {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
-            }
-            
-            // 3 Logs
-            
-            if let wrapper=fileWrappers[self._logsFileName] {
-                if let logsData=wrapper.regularFileContents {
-                    self._logs=String(data: logsData,encoding: NSUTF8StringEncoding) ?? ""
-                }
-            } else {
-                // ERROR
             }
             
             dispatch_async(GlobalQueue.Main.get(), {
