@@ -278,6 +278,13 @@
                         <action selector="saveRegistry:" target="-2" id="GVJ-lM-wqm"/>
                     </connections>
                 </menuItem>
+                <menuItem isSeparatorItem="YES" id="Ujm-F8-gUz"/>
+                <menuItem title="Open Web Stack In a Browser" id="nqO-fp-qw9">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="openWebStack:" target="-1" id="6IE-w4-o6G"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="dL6-t0-Jas"/>
                 <menuItem title="Destructive Actions" id="rFy-pc-iNG">
                     <modifierMask key="keyEquivalentModifierMask"/>

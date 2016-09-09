@@ -70,6 +70,15 @@ import Cocoa
         }
     }
 
+    @IBAction func openWebStack(sender: AnyObject) {
+        if let document=self.registryDelegate?.getRegistry() {
+            let currentUser=document.registryMetadata.currentUser!
+            let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
+            let url:NSURL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
+            NSWorkspace.sharedWorkspace().openURL(url)
+        }
+    }
+
     @IBAction func saveRegistry(sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             registry.saveDocument(sender)
