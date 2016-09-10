@@ -89,14 +89,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="99C83172-DB38-4881-84ED-AFCE68C9DC63" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="576F5CE6-2A67-4C14-B4D8-1F6F1014D81B" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
                             <rect key="frame" x="15" y="14" width="120" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="99C83172-DB38-4881-84ED-AFCE68C9DC63" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="576F5CE6-2A67-4C14-B4D8-1F6F1014D81B" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -123,8 +123,7 @@
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="760-refresh-3-toolbar" width="22" height="22"/>
-        <image name="99C83172-DB38-4881-84ED-AFCE68C9DC63" width="18" height="18">
+        <image name="576F5CE6-2A67-4C14-B4D8-1F6F1014D81B" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGW1xYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QFwcI
 ERYbHCc0NTY3ODk6O0JDRElMT1VYVSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNS
@@ -143,6 +142,7 @@ AUMBSAFOAVQBWwFjAWoBcwF4AYMBjAGiAaYBswG8AcUB4QHmAfkB/QIQAhsCIAIoAisCMAI/AkMCSgJS
 Al8CZAJmAmgCbQJ1AngCfQKFAogCmgKdAqIAAAAAAAACAQAAAAAAAABfAAAAAAAAAAAAAAAAAAACpA
 </mutableData>
         </image>
+        <image name="760-refresh-3-toolbar" width="22" height="22"/>
         <sound name="Bottle"/>
     </resources>
 </document>
