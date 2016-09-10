@@ -12,7 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class CryptedSerializableTransform<T: Serializable>: TransformType {
+open class CryptedSerializableTransform<T: Serializable>: TransformType {
     public init() {
 
     }
@@ -20,17 +20,17 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType {
     public typealias Object = T
     public typealias JSON = String
 
-    private let _CRYPTED_OBJECT_KEY = "o"
+    fileprivate let _CRYPTED_OBJECT_KEY = "o"
 
-    public func transformFromJSON(value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: AnyObject?) -> Object? {
 
         if let JSONSTRING=value as? String {
             do {
-                if let dataString = JSONSTRING.dataUsingEncoding(Default.STRING_ENCODING) {
-                    if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(dataString, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+                if let dataString = JSONSTRING.data(using: Default.STRING_ENCODING) {
+                    if let jsonDictionary = try JSONSerialization.jsonObject(with: dataString, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
                         if let value = jsonDictionary[self._CRYPTED_OBJECT_KEY] {
                             if let base64EncodedString = value as? String {
-                                if let encryptedData = NSData(base64EncodedString: base64EncodedString, options: .IgnoreUnknownCharacters) {
+                                if let encryptedData = Data(base64Encoded: base64EncodedString, options: .ignoreUnknownCharacters) {
                                     let deCryptedData = try Bartleby.cryptoDelegate.decryptData(encryptedData)
                                     let o = try? JSerializer.deserialize(deCryptedData)
                                     return  o as? Object
@@ -46,12 +46,12 @@ public class CryptedSerializableTransform<T: Serializable>: TransformType {
         return nil
     }
 
-    public func transformToJSON(value: Object?) -> JSON? {
+    open func transformToJSON(_ value: Object?) -> JSON? {
         if let object=value {
             do {
                 let data=JSerializer.serialize(object)
                 let cryptedData = try Bartleby.cryptoDelegate.encryptData(data)
-                let base64EncodedString = cryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                let base64EncodedString = cryptedData.base64EncodedString(options: .endLineWithCarriageReturn)
                 let JSONSTRING="{\"\(self._CRYPTED_OBJECT_KEY)\":\"\(base64EncodedString)\"}"
                 return JSONSTRING
             } catch {

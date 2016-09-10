@@ -22,7 +22,7 @@ class BsyncAdminUpDownSyncTestsNoCrypto: BsyncAdminUpDownSyncTests {
 }
 
 class BsyncAdminUpDownSyncTests: TestCase {
-    private static var _user: User?
+    fileprivate static var _user: User?
 
     class var _treeName: String {
         get {
@@ -30,28 +30,28 @@ class BsyncAdminUpDownSyncTests: TestCase {
         }
     }
     
-    private var _upFolderPath = ""
+    fileprivate var _upFolderPath = ""
 
-    private var _distantTreeURL = NSURL()
+    fileprivate var _distantTreeURL = URL()
 
-    private var _downFolderPath = ""
+    fileprivate var _downFolderPath = ""
 
-    private let _fileName = "file.txt"
-    private let _fileContent = "dummy content"
+    fileprivate let _fileName = "file.txt"
+    fileprivate let _fileContent = "dummy content"
 
     override func setUp() {
         super.setUp()
         
         _upFolderPath = assetPath + "Up/"
         
-        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(testName)")
+        _distantTreeURL = TestsConfiguration.API_BASE_URL.appendingPathComponent("BartlebySync/tree/\(testName)")
         
         _downFolderPath = assetPath + "Down/"
     }
     
     // MARK: 1 - Create user
     func test101_CreateUser() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
         
         let user = createUser(TestCase.document.spaceUID, autologin: true, handlers: Handlers { (creation) in
             expectation.fulfill()
@@ -59,18 +59,18 @@ class BsyncAdminUpDownSyncTests: TestCase {
             })
         BsyncAdminUpDownSyncTests._user = user
             
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 2 - Prepare folder and directives
     func test201_CreateFileInUpFolder() {
         do {
             // Create down folder
-            try _fm.createDirectoryAtPath(_downFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectory(atPath: _downFolderPath, withIntermediateDirectories: true, attributes: nil)
             // Create up folder
-            try _fm.createDirectoryAtPath(_upFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectory(atPath: _upFolderPath, withIntermediateDirectories: true, attributes: nil)
             // Create file
-            try _fileContent.writeToFile(_upFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
+            try _fileContent.write(toFile: _upFolderPath + _fileName, atomically: true, encoding: Default.STRING_ENCODING)
         } catch {
             XCTFail("\(error)")
         }
@@ -79,7 +79,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     // MARK: 3 - Run local analyser
     
     func test301_RunLocalAnalyser_UpPath() {
-        let expectation = expectationWithDescription("Local analyser should complete")
+        let expectation = self.expectation(description: "Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_upFolderPath, handlers: Handlers { (analyze) in
@@ -87,11 +87,11 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTAssert(analyze.success, analyze.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test302_RunLocalAnalyser_DownPath() {
-        let expectation = expectationWithDescription("Local analyser should complete")
+        let expectation = self.expectation(description: "Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_downFolderPath, handlers: Handlers { (analyze) in
@@ -99,16 +99,16 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTAssert(analyze.success, analyze.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 4 - Run synchronization
     
     func test401_RunDirectives_UpToDistant() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+        let expectation = self.expectation(description: "Synchronization should complete")
         
         
-        let context = BsyncContext(sourceURL: NSURL(fileURLWithPath: _upFolderPath, isDirectory: true),
+        let context = BsyncContext(sourceURL: URL(fileURLWithPath: _upFolderPath, isDirectory: true),
                                    andDestinationUrl: _distantTreeURL,
                                    restrictedTo: nil,
                                    autoCreateTrees: true)
@@ -124,15 +124,15 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test402_RunDirectives_DistantToDown() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+        let expectation = self.expectation(description: "Synchronization should complete")
         
         
         let context = BsyncContext(sourceURL: _distantTreeURL,
-                                   andDestinationUrl: NSURL(fileURLWithPath: _downFolderPath, isDirectory: true),
+                                   andDestinationUrl: URL(fileURLWithPath: _downFolderPath, isDirectory: true),
                                    restrictedTo: nil,
                                    autoCreateTrees: true)
         context.credentials = BsyncCredentials()
@@ -147,12 +147,12 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
         }))
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test403_CheckFileHasBeenDownloaded() {
         do {
-            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
+            let files = try _fm.contentsOfDirectory(atPath: _downFolderPath)
             XCTAssertEqual(files, [".bsync", "file.txt"])
             let content = try String(contentsOfFile: _downFolderPath + _fileName)
             
@@ -165,7 +165,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     // MARK: 5 - Remove file
     func test501_CreateFileInUpFolder() {
         do {
-            try _fm.removeItemAtPath(_upFolderPath + _fileName)
+            try _fm.removeItem(atPath: _upFolderPath + _fileName)
         } catch {
             XCTFail("\(error)")
         }
@@ -174,7 +174,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     // MARK: 6 - Run local analyser
     
     func test601_RunLocalAnalyser_UpPath() {
-        let expectation = expectationWithDescription("Local analyser should complete")
+        let expectation = self.expectation(description: "Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_upFolderPath, handlers: Handlers { (analyze) in
@@ -182,11 +182,11 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTAssert(analyze.success, analyze.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test602_RunLocalAnalyser_DownPath() {
-        let expectation = expectationWithDescription("Local analyser should complete")
+        let expectation = self.expectation(description: "Local analyser should complete")
         var analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_downFolderPath, handlers: Handlers { (analyze) in
@@ -194,16 +194,16 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTAssert(analyze.success, analyze.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 7 - Run synchronization
     
     func test701_RunDirectives_UpToDistant() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+        let expectation = self.expectation(description: "Synchronization should complete")
         
         
-        let context = BsyncContext(sourceURL: NSURL(fileURLWithPath: _upFolderPath, isDirectory: true),
+        let context = BsyncContext(sourceURL: URL(fileURLWithPath: _upFolderPath, isDirectory: true),
                                    andDestinationUrl: _distantTreeURL,
                                    restrictedTo: nil,
                                    autoCreateTrees: true)
@@ -219,15 +219,15 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test702_RunDirectives_DistantToDown() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+        let expectation = self.expectation(description: "Synchronization should complete")
         
         
         let context = BsyncContext(sourceURL: _distantTreeURL,
-                                   andDestinationUrl: NSURL(fileURLWithPath: _downFolderPath, isDirectory: true),
+                                   andDestinationUrl: URL(fileURLWithPath: _downFolderPath, isDirectory: true),
                                    restrictedTo: nil,
                                    autoCreateTrees: true)
         context.credentials = BsyncCredentials()
@@ -242,12 +242,12 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
         }))
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test703_Check_file_has_been_delete() {
         do {
-            let files = try _fm.contentsOfDirectoryAtPath(_downFolderPath)
+            let files = try _fm.contentsOfDirectory(atPath: _downFolderPath)
             XCTAssertEqual(files, [".bsync"])
         } catch {
             XCTFail("\(error)")
@@ -256,13 +256,13 @@ class BsyncAdminUpDownSyncTests: TestCase {
 
     // MARk: 9 - Cleanup
     func test901_deleteUser() {
-        let expectation = expectationWithDescription("Delete user")
+        let expectation = self.expectation(description: "Delete user")
         
         deleteCreatedUsers(Handlers { (deletion) in
             expectation.fulfill()
             XCTAssert(deletion.success, deletion.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

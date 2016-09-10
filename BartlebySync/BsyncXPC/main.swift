@@ -10,8 +10,8 @@ import Foundation
 
 
 class ServiceDelegate: NSObject, NSXPCListenerDelegate {
-    func listener(listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
-        newConnection.exportedInterface = NSXPCInterface(withProtocol:BsyncXPCProtocol.self)
+    func listener(_ listener: NSXPCListener, shouldAcceptNewConnection newConnection: NSXPCConnection) -> Bool {
+        newConnection.exportedInterface = NSXPCInterface(with:BsyncXPCProtocol.self)
         let exportedObject = BsyncXPC()
         newConnection.exportedObject = exportedObject
         newConnection.resume()
@@ -22,6 +22,6 @@ class ServiceDelegate: NSObject, NSXPCListenerDelegate {
 
 // Create the listener and resume
 let delegate = ServiceDelegate()
-let listener = NSXPCListener.serviceListener()
+let listener = NSXPCListener.service()
 listener.delegate = delegate
 listener.resume()

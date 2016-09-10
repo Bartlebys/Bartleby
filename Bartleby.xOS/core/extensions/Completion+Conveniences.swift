@@ -20,7 +20,7 @@ extension Completion:ForwardableState {
 extension Completion:Descriptible {
 
     public func toString() -> String {
-        return "Completion success:\(success) statusCode:\(statusCode) \(data?.length ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
+        return "Completion success:\(success) statusCode:\(statusCode) \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
     }
 
 }
@@ -36,7 +36,7 @@ public extension Completion {
 
      - returns: a Completion state instance
      */
-    private convenience init(success: Bool, message: String="", statusCode: StatusOfCompletion  = .Undefined, data: NSData? = nil) {
+    fileprivate convenience init(success: Bool, message: String="", statusCode: StatusOfCompletion  = .undefined, data: Data? = nil) {
         self.init()
         self.success = success
         self.message = message
@@ -52,7 +52,7 @@ public extension Completion {
 
      - returns: the state
      */
-    public func identifiedBy(category:String,identity:String)->Completion{
+    public func identifiedBy(_ category:String,identity:String)->Completion{
         self.category=category
         self.externalIdentifier=identity
         return self
@@ -64,7 +64,7 @@ public extension Completion {
      - returns: return value description
      */
     public static func defaultState() -> Completion {
-        return Completion(success:false, message:"", statusCode:.Undefined)
+        return Completion(success:false, message:"", statusCode:.undefined)
     }
 
 
@@ -73,13 +73,13 @@ public extension Completion {
 
      - returns: return value description
      */
-    public static func successState(message: String = "", statusCode: StatusOfCompletion  = .OK, data: NSData? = nil) -> Completion {
+    public static func successState(_ message: String = "", statusCode: StatusOfCompletion  = .ok, data: Data? = nil) -> Completion {
         return Completion(success:true, message: message, statusCode:statusCode, data: data)
     }
 
 
-    public static func successStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
-        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .Undefined)
+    public static func successStateFromJHTTPResponse(_ context: JHTTPResponse) -> Completion {
+        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
     }
 
 
@@ -88,27 +88,27 @@ public extension Completion {
 
      - returns: return value description
      */
-    public static func failureState(message: String, statusCode: StatusOfCompletion ) -> Completion {
+    public static func failureState(_ message: String, statusCode: StatusOfCompletion ) -> Completion {
         return Completion(success:false, message:message, statusCode:statusCode)
     }
 
 
 
-    public static func failureStateFromError(error: ErrorType) -> Completion {
+    public static func failureStateFromError(_ error: Error) -> Completion {
         let nse = error as NSError
-        return Completion(success: false, message: nse.localizedDescription, statusCode: StatusOfCompletion (rawValue: nse.code) ?? .Undefined)
+        return Completion(success: false, message: nse.localizedDescription, statusCode: StatusOfCompletion (rawValue: nse.code) ?? .undefined)
 
     }
 
-    public static func failureStateFromJHTTPResponse(context: JHTTPResponse) -> Completion {
-        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .Undefined)
+    public static func failureStateFromJHTTPResponse(_ context: JHTTPResponse) -> Completion {
+        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
     }
 
 
-    public static func failureStateFromAlamofire<Value, Error:ErrorType>(response: Response<Value, Error>) -> Completion {
-        var status = StatusOfCompletion .Undefined
+    public static func failureStateFromAlamofire<Value, Error:Error>(_ response: Response<Value, Error>) -> Completion {
+        var status = StatusOfCompletion .undefined
         if let statusCode=response.response?.statusCode{
-            status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion .Undefined
+            status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion .undefined
         }
         if let value=response.result.value{
             return Completion(success: false, message: "\(value)", statusCode:status )
@@ -126,9 +126,9 @@ public extension Completion {
 
      - returns: a Progression notification
      */
-    public var completionNotification: NSNotification {
+    public var completionNotification: Notification {
         get {
-            return NSNotification(completionState:self, object:nil)
+            return Notification(name:self, object:nil)
         }
     }
 }

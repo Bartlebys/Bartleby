@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class NoCrypto: NSObject, CryptoDelegate {
+open class NoCrypto: NSObject, CryptoDelegate {
 
 
     public override init() {
@@ -16,27 +16,27 @@ public class NoCrypto: NSObject, CryptoDelegate {
     }
 
 
-    public func encryptString(string: String)throws->String {
+    open func encryptString(_ string: String)throws->String {
         return string
     }
 
 
 
-    public func decryptString(string: String)throws->String {
+    open func decryptString(_ string: String)throws->String {
         return string
     }
 
 
-    public func encryptData(data: NSData)throws ->NSData {
+    open func encryptData(_ data: Data)throws ->Data {
         return data
     }
 
 
-    public func decryptData(data: NSData)throws ->NSData {
+    open func decryptData(_ data: Data)throws ->Data {
         return data
     }
 
-    public static func hash(string: String) -> String {
+    open static func hash(_ string: String) -> String {
         return string
     }
 

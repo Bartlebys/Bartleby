@@ -16,7 +16,7 @@ import Foundation
 // de-encaspulation of read only properties was necessary to allow mapping from swift.
 // (!)  when all the code base will be ported we should reencapsulate
 // sourceTreeId, destinationTreeId, sourceBaseUrln destinationBaseUrl, hashMapViewName, syncID
-@objc(BsyncContext) public class BsyncContext: PdSSyncContext, Mappable {
+@objc(BsyncContext) open class BsyncContext: PdSSyncContext, Mappable {
 
 
     // Can be used during long operation to relog
@@ -41,7 +41,7 @@ import Foundation
         super.init()
     }
 
-    init(sourceURL: NSURL, andDestinationUrl: NSURL, restrictedTo hashMapViewName: String?, autoCreateTrees: Bool=false) {
+    init(sourceURL: URL, andDestinationUrl: URL, restrictedTo hashMapViewName: String?, autoCreateTrees: Bool=false) {
         super.init(sourceURL: sourceURL, andDestinationUrl: andDestinationUrl, restrictedTo: hashMapViewName)
         self.autoCreateTrees=autoCreateTrees
     }
@@ -54,7 +54,7 @@ import Foundation
         self.mapping(map)
     }
 
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         self.credentials <- map ["credentials"]
         self.hashmapAsADictionary <- map["hashmapAsADictionary"]
         self.repositoryPath <- map["repositoryPath"]

@@ -13,16 +13,16 @@ import Alamofire
 import ObjectMapper
 #endif
 
-@objc(CreateLocker) public class CreateLocker : JObject,JHTTPCommand{
+@objc(CreateLocker) open class CreateLocker : JObject,JHTTPCommand{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "CreateLocker"
     }
 
-    private var _locker:Locker = Locker()
+    fileprivate var _locker:Locker = Locker()
 
-    private var _registryUID:String=Default.NO_UID
+    fileprivate var _registryUID:String=Default.NO_UID
 
     required public convenience init(){
         self.init(Locker(), inRegistryWithUID:Default.NO_UID)
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self._locker <- ( map["_locker"] )
@@ -52,20 +52,20 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self._locker=decoder.decodeObjectOfClass(Locker.self, forKey: "_locker")! 
-		self._registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "_registryUID")! as NSString)
+		self._locker=decoder.decodeObject(of: Locker.self, forKey: "_locker")! 
+		self._registryUID=String(decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-		coder.encodeObject(self._locker,forKey:"_locker")
-		coder.encodeObject(self._registryUID,forKey:"_registryUID")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+		coder.encode(self._locker,forKey:"_locker")
+		coder.encode(self._registryUID,forKey:"_registryUID")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -89,7 +89,7 @@ import ObjectMapper
 
      - returns: return the operation
      */
-    private func _getOperation()->Operation{
+    fileprivate func _getOperation()->Operation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             if let ic:OperationsCollectionController = try? document.getCollection(){
                 let operations=ic.filter({ (operation) -> Bool in
@@ -113,7 +113,7 @@ import ObjectMapper
     - parameter locker: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(locker:Locker, inRegistryWithUID registryUID:String){
+    static func commit(_ locker:Locker, inRegistryWithUID registryUID:String){
         let operationInstance=CreateLocker(locker,inRegistryWithUID:registryUID)
         operationInstance.commit()
     }
@@ -128,7 +128,7 @@ import ObjectMapper
                 let operation=self._getOperation()
                 operation.counter += 1
                 operation.status=Operation.Status.Pending
-                operation.creationDate=NSDate()
+                operation.creationDate=Date()
                 operation.summary="CreateLocker(\(self._locker.UID))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
@@ -157,8 +157,8 @@ import ObjectMapper
         }
     }
 
-    public func push(sucessHandler success:(context:JHTTPResponse)->(),
-        failureHandler failure:(context:JHTTPResponse)->()){
+    open func push(sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
+        failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
         // The unitary operation are not always idempotent
         // so we do not want to push multiple times unintensionnaly.
         // Check BartlebyDocument+Operations.swift to understand Operation status
@@ -173,21 +173,21 @@ import ObjectMapper
                     operation.counter=operation.counter+1
                     operation.status=Operation.Status.Completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                    operation.lastInvocationDate=NSDate()
+                    operation.lastInvocationDate=Date()
                     let completion=Completion.successStateFromJHTTPResponse(context)
                     completion.setResult(context)
                     operation.completionState=completion
-                    success(context:context)
+                    success(context)
                 },
                 failureHandler: {(context: JHTTPResponse) -> () in
                     operation.counter=operation.counter+1
                     operation.status=Operation.Status.Completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
-                    operation.lastInvocationDate=NSDate()
+                    operation.lastInvocationDate=Date()
                     let completion=Completion.failureStateFromJHTTPResponse(context)
                     completion.setResult(context)
                     operation.completionState=completion
-                    failure(context:context)
+                    failure(context)
                 }
             )
         }else{
@@ -201,16 +201,16 @@ import ObjectMapper
         }
     }
 
-    static public func execute(locker:Locker,
+    static open func execute(_ locker:Locker,
             inRegistryWithUID registryUID:String,
-            sucessHandler success:(context:JHTTPResponse)->(),
-            failureHandler failure:(context:JHTTPResponse)->()){
+            sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
+            failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
-                let pathURL = document.baseURL.URLByAppendingPathComponent("locker")
+                let pathURL = document.baseURL.appendingPathComponent("locker")
                 var parameters=Dictionary<String, AnyObject>()
                 parameters["locker"]=Mapper<Locker>().toJSON(locker)
                 let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateLocker" ,forMethod:"POST", and: pathURL)
-                let r:Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: parameters).0)
+                let r:Request=request(ParameterEncoding.json.encode(urlRequest, parameters: parameters).0)
                 r.responseJSON{ response in
 
                     // Store the response
@@ -221,19 +221,19 @@ import ObjectMapper
                     // Bartleby consignation
                     let context = JHTTPResponse( code: 503102730,
                         caller: "CreateLocker.execute",
-                        relatedURL:request?.URL,
+                        relatedURL:request?.url,
                         httpStatusCode: response?.statusCode ?? 0,
                         response: response,
                         result:result.value)
 
                     // React according to the situation
                     var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
+                    reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
 
                     if result.isFailure {
                         let m = NSLocalizedString("creation  of locker",
                             comment: "creation of locker failure description")
-                        let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
@@ -248,7 +248,7 @@ import ObjectMapper
                                 // Acknowledge the trigger and log QA issue
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
-                                        document.acknowledgeOwnedTriggerIndex(index.integerValue)
+                                        document.acknowledgeOwnedTriggerIndex(index.intValue)
                                     }else{
                                         bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
                                     }
@@ -263,7 +263,7 @@ import ObjectMapper
 
                                 let m=NSLocalizedString("creation of locker",
                                         comment: "creation of locker failure description")
-                                let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
@@ -281,7 +281,7 @@ import ObjectMapper
             }else{
                 let context = JHTTPResponse( code:1 ,
                     caller: "CreateLocker.execute",
-                    relatedURL:NSURL(),
+                    relatedURL:URL(),
                     httpStatusCode:417,
                     response:nil,
                     result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")

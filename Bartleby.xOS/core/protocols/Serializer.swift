@@ -26,9 +26,9 @@ public protocol Serializer {
 
      - returns: the serizalizable Object
      */
-    static func deserialize(data: NSData) throws -> Serializable
+    static func deserialize(_ data: Data) throws -> Serializable
 
-    static func deserializeFromDictionary(dictionary: [String:AnyObject])throws ->Serializable
+    static func deserializeFromDictionary(_ dictionary: [String:AnyObject])throws ->Serializable
 
     /**
      Serialize an instance
@@ -37,7 +37,7 @@ public protocol Serializer {
 
      - returns: the NSData
      */
-    static func serialize(instance: Serializable) -> NSData
+    static func serialize(_ instance: Serializable) -> Data
 
 
     /// The file extension for file based serializers. eg: "json" for JSerializer

@@ -9,9 +9,9 @@
 import Foundation
 
 
-public enum RegistryMetadataError: ErrorType {
-    case DuplicatedCollectionName(name:String)
-    case ErrorOfCasting
+public enum RegistryMetadataError: Error {
+    case duplicatedCollectionName(name:String)
+    case errorOfCasting
 }
 
 // A model that encapsulates the descriptions-CollectionMetadatum of its persitent collections
@@ -40,7 +40,7 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
     var collectionsMetadata: [CollectionMetadatumType] { get }
 
     //Configure the schema (generally generated)
-    func configureSchema(metadatum: CollectionMetadatumType) throws ->()
+    func configureSchema(_ metadatum: CollectionMetadatumType) throws ->()
 
     // Should return the password if saveThePassword==true else a void string ""
     var storedPassword: String { get }
@@ -49,7 +49,7 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
     var saveThePassword: Bool { get set }
 
     // The collaboration URL
-    var collaborationServerURL: NSURL? { get set }
+    var collaborationServerURL: URL? { get set }
 
 
 }

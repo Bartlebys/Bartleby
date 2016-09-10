@@ -11,9 +11,9 @@ import Cocoa
 class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet weak var messageColumn: NSTableColumn!
-    var font:NSFont=NSFont.systemFontOfSize(NSFont.smallSystemFontSize())
+    var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize())
 
-    private var _registry:BartlebyDocument?
+    fileprivate var _registry:BartlebyDocument?
     
     @IBOutlet weak var tableView: BXTableView!
 
@@ -23,7 +23,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     dynamic var entries=[BprintEntry]()
 
-    private var _lockFilterUpdate=false
+    fileprivate var _lockFilterUpdate=false
 
 
     // MARK: life Cycle
@@ -41,7 +41,7 @@ class LogsViewController: NSViewController,RegistryDependent{
         super.viewDidLoad()
         Bartleby.bPrintObservers.append(self)
         //self.tableView.setDataSource(self)
-        self.tableView.setDelegate(self)
+        self.tableView.delegate = self
     }
 
 
@@ -55,26 +55,26 @@ class LogsViewController: NSViewController,RegistryDependent{
     }
 
     deinit{
-        if let idx=Bartleby.bPrintObservers.indexOf({ (observer) -> Bool in
+        if let idx=Bartleby.bPrintObservers.index(where: { (observer) -> Bool in
             if let observer=observer as? LogsViewController{
                 return observer == self
             }else{
                 return false
             }
         }){
-            Bartleby.bPrintObservers.removeAtIndex(idx)
+            Bartleby.bPrintObservers.remove(at: idx)
         }
     }
 
 
-    @IBAction func didChange(sender: AnyObject) {
+    @IBAction func didChange(_ sender: AnyObject) {
         self._updateFilter()
     }
     
     // MARK: Filtering
 
 
-    private func _updateFilter() -> () {
+    fileprivate func _updateFilter() -> () {
         if !self._lockFilterUpdate{
             let predicate=NSPredicate { (object, _) -> Bool in
                 if let entry = object as? BprintEntry{
@@ -90,24 +90,24 @@ class LogsViewController: NSViewController,RegistryDependent{
     }
 
 
-    @IBAction func removeAll(sender: AnyObject) {
+    @IBAction func removeAll(_ sender: AnyObject) {
         self.entries.removeAll()
     }
 
 
-    @IBAction func reload(sender: AnyObject) {
+    @IBAction func reload(_ sender: AnyObject) {
         self.entries=Bartleby.bprintCollection.entries
     }
 
-    @IBAction func sendAReport(sender: AnyObject) {
+    @IBAction func sendAReport(_ sender: AnyObject) {
     }
 }
 
 extension LogsViewController:BprintObserver{
 
-    func acknowledge(entry:BprintEntry){
-        dispatch_async(GlobalQueue.Main.get()) { 
-            self.entries.insert(entry, atIndex: 0)
+    func acknowledge(_ entry:BprintEntry){
+        GlobalQueue.main.get().async { 
+            self.entries.insert(entry, at: 0)
         }
     }
 }
@@ -132,16 +132,16 @@ extension LogsViewController:NSTableViewDataSource{
 
 extension LogsViewController:NSTableViewDelegate{
 
-    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item = self.arrayController.arrangedObjects.objectAtIndex(row) as? BprintEntry else {
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        guard let item = (self.arrayController.arrangedObjects as AnyObject).object(row) as? BprintEntry else {
             return 20
         }
         let width=self.messageColumn.width-80;
-        let constraintRect = CGSize(width: width, height: CGFloat.max)
+        let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSLineBreakMode.ByCharWrapping;
-        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle]
-        let boundingBox = item.message.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attributes, context: nil)
+        paragraphStyle.lineBreakMode = NSLineBreakMode.byCharWrapping;
+        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle] as [String : Any]
+        let boundingBox = item.message.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil)
         return boundingBox.height + 20
     }
 }

@@ -12,25 +12,25 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc(TriggersByIds) public class TriggersByIds: JObject {
+@objc(TriggersByIds) open class TriggersByIds: JObject {
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "TriggersByIds"
     }
 
 
-    public static func execute( fromRegisty registryUID: String,
+    open static func execute( fromRegisty registryUID: String,
                                 ids: [String],
-                                sucessHandler success:(triggers: [Trigger])->(),
-                                failureHandler failure:(context: JHTTPResponse)->()) {
+                                sucessHandler success:@escaping (_ triggers: [Trigger])->(),
+                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
 
-            let pathURL=document.baseURL.URLByAppendingPathComponent("triggers")
+            let pathURL=document.baseURL.appendingPathComponent("triggers")
             let dictionary=["ids":ids]
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
-            let r: Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            let r: Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON { response in
                 let request=response.request
                 let result=response.result
@@ -38,15 +38,15 @@ import Foundation
                 // Bartleby consignation
                 let context = JHTTPResponse( code: 3054667497,
                     caller: "TriggersByIds.execute",
-                    relatedURL:request?.URL,
+                    relatedURL:request?.url,
                     httpStatusCode: response?.statusCode ?? 0,
                     response: response,
                     result:result.value)
                 // React according to the situation
                 var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
+                reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
                 if result.isFailure {
-                    let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                         body:NSLocalizedString("Explicit Failure", comment: "Explicit Failure"),
@@ -60,7 +60,7 @@ import Foundation
                             if let instance = Mapper <Trigger>().mapArray(result.value) {
                                 success(triggers: instance)
                             } else {
-                                let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Deserialization issue",
                                         comment: "Deserialization issue"),
@@ -74,7 +74,7 @@ import Foundation
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
-                            let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                                 body:NSLocalizedString("Implicit Failure", comment: "Implicit Failure"),
@@ -92,7 +92,7 @@ import Foundation
 
             let context = JHTTPResponse( code: 1,
                                          caller: "TriggersByIds.execute",
-                                         relatedURL:NSURL(),
+                                         relatedURL:URL(),
                                          httpStatusCode: 417,
                                          response: nil,
                                          result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")

@@ -15,17 +15,17 @@ import Foundation
 #endif
 
 
-public enum BsyncAdminError: ErrorType {
-    case HashMapViewError(explanations:String)
-    case DeserializationError
-    case SerializationError
-    case DirectivesError(explanations:String)
+public enum BsyncAdminError: Error {
+    case hashMapViewError(explanations:String)
+    case deserializationError
+    case serializationError
+    case directivesError(explanations:String)
 }
 
 // Port to swift 2.0 is in progress
 // so we bridge most of the calls to a PdSSyncAdmin
 // And implement new functionalities directly in swift.
-@objc public class BsyncAdmin: NSObject, PdSSyncFinalizationDelegate {
+@objc open class BsyncAdmin: NSObject, PdSSyncFinalizationDelegate {
 
     // MARK: - Synchronisation
 
@@ -35,7 +35,7 @@ public enum BsyncAdminError: ErrorType {
 
      - parameter folderPath: the folder path
      */
-    public static func cleanupFolder(folderPath: String)throws->[String] {
+    open static func cleanupFolder(_ folderPath: String)throws->[String] {
         // TODO @md Implementation required (Clarification with bpds may be required)
         let messages=[String]()
         return messages
@@ -47,7 +47,7 @@ public enum BsyncAdminError: ErrorType {
      - parameter context:   the synchronization context
      - parameter handlers: the progress and completion handlers
      */
-    public func synchronizeWithprogressBlock(context: BsyncContext, handlers: Handlers) {
+    open func synchronizeWithprogressBlock(_ context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context:context)
         admin.finalizationDelegate = self
         admin.synchronizeWithprogressBlock({(taskIndex, totalTaskCount, taskProgress, message, data) in
@@ -77,22 +77,22 @@ public enum BsyncAdminError: ErrorType {
      - parameter hashMapViewName: the hashMapViewName
      - parameter treeFolderPath:  the tree folderPath
      */
-    public static func createAHashMapViewFrom(hashMap: HashMap, hashMapViewName: String, treeFolderPath: String) throws {
-        let fs=NSFileManager.defaultManager()
+    open static func createAHashMapViewFrom(_ hashMap: HashMap, hashMapViewName: String, treeFolderPath: String) throws {
+        let fs=FileManager.default
         var isDirectory: ObjCBool = false
-        guard fs.fileExistsAtPath(treeFolderPath, isDirectory: &isDirectory) else {
-            throw BsyncAdminError.HashMapViewError(explanations: "Directory \(treeFolderPath) does not exit")
+        guard fs.fileExists(atPath: treeFolderPath, isDirectory: &isDirectory) else {
+            throw BsyncAdminError.hashMapViewError(explanations: "Directory \(treeFolderPath) does not exit")
         }
-        let prefix=PdSSyncAdmin.valueForConst("kBsyncHashmapViewPrefixSignature")
+        let prefix=PdSSyncAdmin.value(forConst: "kBsyncHashmapViewPrefixSignature")
         let hashmapviewPath=treeFolderPath+prefix!+hashMapViewName
         do {
             let dictionary=hashMap.dictionaryRepresentation()
-            let data=try NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
-            guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING) else {
-                throw BsyncAdminError.HashMapViewError(explanations: "Data encoding as failed")
+            let data=try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING.rawValue) else {
+                throw BsyncAdminError.hashMapViewError(explanations: "Data encoding as failed")
             }
             let crypted: NSString=try Bartleby.cryptoDelegate.encryptString(string as String)
-            try crypted.writeToFile(hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING)
+            try crypted.write(toFile: hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING.rawValue)
         }
     }
 
@@ -104,9 +104,9 @@ public enum BsyncAdminError: ErrorType {
 
      - returns: the url of the hashMapView File
      */
-    public static func hashMapViewURL(hashMapViewName: String, treeFolderURL: NSURL) -> NSURL {
-        let prefix=PdSSyncAdmin.valueForConst("kBsyncHashmapViewPrefixSignature")!
-        return treeFolderURL.URLByAppendingPathComponent("/"+prefix+hashMapViewName)
+    open static func hashMapViewURL(_ hashMapViewName: String, treeFolderURL: URL) -> URL {
+        let prefix=PdSSyncAdmin.value(forConst: "kBsyncHashmapViewPrefixSignature")!
+        return treeFolderURL.appendingPathComponent("/"+prefix+hashMapViewName)
     }
 
 
@@ -118,9 +118,9 @@ public enum BsyncAdminError: ErrorType {
      *  @param content the syncrhonization context
      *  @param handlers   the progress and completion handlers
      */
-    public func installWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
+    open func installWithCompletionBlock(_ context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.installWithCompletionBlock { (success, message, statusCode) in
+        admin.install { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
             completion.message = message
@@ -136,9 +136,9 @@ public enum BsyncAdminError: ErrorType {
      *  @param content the syncrhonization context
      *  @param handlers   the progress and completion handlers
      */
-    public func createTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
+    open func createTreesWithCompletionBlock(_ context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.createTreesWithCompletionBlock { (success, message, statusCode) in
+        admin.createTrees { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
             completion.message = message
@@ -153,9 +153,9 @@ public enum BsyncAdminError: ErrorType {
      *  @param content the syncrhonization context
      *  @param handlers   the progress and completion handlers
      */
-    public func touchTreesWithCompletionBlock(context: BsyncContext, handlers: Handlers) {
+    open func touchTreesWithCompletionBlock(_ context: BsyncContext, handlers: Handlers) {
         let admin = PdSSyncAdmin(context: context)
-        admin.touchTreesWithCompletionBlock { (success, message, statusCode) in
+        admin.touchTrees { (success, message, statusCode) in
             let completion = Completion.defaultState()
             completion.success = success
             completion.message = message
@@ -168,12 +168,12 @@ public enum BsyncAdminError: ErrorType {
 
     //MARK : PdSSyncFinalizationDelegate
 
-    @objc public func readyForFinalization(reference: PdSCommandInterpreter!) {
+    @objc open func ready(forFinalization reference: PdSCommandInterpreter!) {
         reference.finalize()
     }
 
 
-    @objc public func progressMessage(message: String!) {
+    @objc open func progressMessage(_ message: String!) {
         print(message)
     }
 
@@ -183,19 +183,19 @@ public enum BsyncAdminError: ErrorType {
      Load directives from file
 
      */
-    public func loadDirectives(path: String) throws -> BsyncDirectives {
+    open func loadDirectives(_ path: String) throws -> BsyncDirectives {
         // Load the directives
         var JSONString="{}"
         // If the file is named .json the file is deleted.
         // TODO: @bpds @md #io Using BFileManager with handlers is not very comod here...
-        JSONString = try NSString(contentsOfFile: path, encoding: Default.STRING_ENCODING) as String
+        JSONString = try NSString(contentsOfFile: path, encoding: Default.STRING_ENCODING.rawValue) as String
         // TODO: @bpds @md #crypto Since we already crypt json content, do we need to encrypt again directives? (currently not symetric btw
         //        JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
 
         if let directives: BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString) {
             return directives
         } else {
-            throw BsyncAdminError.DeserializationError
+            throw BsyncAdminError.deserializationError
         }
 
     }
@@ -208,16 +208,16 @@ public enum BsyncAdminError: ErrorType {
 
      - throws: Explanation is something wrong happened
      */
-    public func saveDirectives(directives: BsyncDirectives, path: String) throws {
+    open func saveDirectives(_ directives: BsyncDirectives, path: String) throws {
         let result = directives.areValid()
         if result.valid {
             if let jsonString = Mapper().toJSONString(directives) {
-                try jsonString.writeToFile(path, atomically: true, encoding: Default.STRING_ENCODING)
+                try jsonString.write(toFile: path, atomically: true, encoding: Default.STRING_ENCODING)
             } else {
-                throw BsyncAdminError.SerializationError
+                throw BsyncAdminError.serializationError
             }
         } else {
-            throw BsyncAdminError.DirectivesError(explanations: result.message)
+            throw BsyncAdminError.directivesError(explanations: result.message)
         }
     }
 
@@ -230,11 +230,11 @@ public enum BsyncAdminError: ErrorType {
      */
 
 
-    func runDirectives(directives: BsyncDirectives, sharedSalt: String, handlers: Handlers) {
+    func runDirectives(_ directives: BsyncDirectives, sharedSalt: String, handlers: Handlers) {
 
         let validity=directives.areValid()
 
-        if let sourceURL = directives.sourceURL, let destinationURL = directives.destinationURL where validity.valid {
+        if let sourceURL = directives.sourceURL, let destinationURL = directives.destinationURL , validity.valid {
 
             // Before to Proceed to hash.
             // We need to determine what ?
@@ -268,7 +268,7 @@ public enum BsyncAdminError: ErrorType {
                             }
                             }, progressionHandler: handlers.notify))
                     } else {
-                        handlers.on(Completion.failureState("Bad source URL: \(sourceURL)", statusCode: .Bad_Request))
+                        handlers.on(Completion.failureState("Bad source URL: \(sourceURL)", statusCode: .bad_Request))
                     }
                 case BsyncMode.SourceIsDistantDestinationIsLocal:
                     if let destinationPath = destinationURL.path {
@@ -280,7 +280,7 @@ public enum BsyncAdminError: ErrorType {
                             }
                             })
                     } else {
-                        handlers.on(Completion.failureState("Bad destination URL: \(destinationURL)", statusCode: .Bad_Request))
+                        handlers.on(Completion.failureState("Bad destination URL: \(destinationURL)", statusCode: .bad_Request))
                     }
                 case BsyncMode.SourceIsLocalDestinationIsLocal:
                     if let sourcePath = sourceURL.path, let destinationPath = destinationURL.path {
@@ -298,10 +298,10 @@ public enum BsyncAdminError: ErrorType {
                             }
                             })
                     } else {
-                        handlers.on(Completion.failureState("Bad source or destination URL: \(sourceURL) /  \(destinationURL)", statusCode: .Bad_Request))
+                        handlers.on(Completion.failureState("Bad source or destination URL: \(sourceURL) /  \(destinationURL)", statusCode: .bad_Request))
                     }
                 default:
-                    handlers.on(Completion.failureState("Unsupported mode \(context.mode())", statusCode: .Bad_Request))
+                    handlers.on(Completion.failureState("Unsupported mode \(context.mode())", statusCode: .bad_Request))
                 }
             } else {
                 // There is no need to compute
@@ -309,7 +309,7 @@ public enum BsyncAdminError: ErrorType {
                 synchronize(context, handlers: handlers)
             }
         } else {
-            handlers.on(Completion.failureState(validity.message, statusCode: .Bad_Request))
+            handlers.on(Completion.failureState(validity.message, statusCode: .bad_Request))
         }
 
     }
@@ -322,7 +322,7 @@ public enum BsyncAdminError: ErrorType {
 
 
      */
-    func synchronize(context: BsyncContext, handlers: Handlers) {
+    func synchronize(_ context: BsyncContext, handlers: Handlers) {
         if (context.mode() == BsyncMode.SourceIsLocalDestinationIsDistant) || (context.mode() == BsyncMode.SourceIsDistantDestinationIsLocal) {
             // We need to login before performing sync
             if let user = context.credentials?.user, let password = context.credentials?.password {

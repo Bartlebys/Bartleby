@@ -17,10 +17,10 @@ import Foundation
 // The underlining model has been implemented by flexions in BaseRegistryMetadata
 extension RegistryMetadata:RegistryMetadataProtocol {
 
-    public func configureSchema(metadatum: CollectionMetadatum) throws ->() {
+    public func configureSchema(_ metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {
             if m.collectionName == metadatum.collectionName {
-                throw RegistryMetadataError.DuplicatedCollectionName(name:m.collectionName)
+                throw RegistryMetadataError.duplicatedCollectionName(name:m.collectionName)
             }
         }
         self.collectionsMetadata.append(metadatum)

@@ -21,7 +21,7 @@ public protocol BartlebyFileIO {
      - parameter path:                the path
      - parameter handlers:            the handlers
      */
-    func createDirectoryAtPath(path: String,
+    func createDirectoryAtPath(_ path: String,
                                handlers: Handlers)
     
     /**
@@ -42,7 +42,7 @@ public protocol BartlebyFileIO {
      - parameter useAuxiliaryFile: useAuxiliaryFile
      - parameter handlers:          the handlers
      */
-    func writeData(data: NSData,
+    func writeData(_ data: Data,
                    path: String,
                    handlers: Handlers)
     
@@ -75,7 +75,7 @@ public protocol BartlebyFileIO {
      - parameter path:             the path
      - parameter handlers:          the handlers
      */
-    func writeString(string: String,
+    func writeString(_ string: String,
                      path: String,
                      handlers: Handlers)
     
@@ -86,7 +86,7 @@ public protocol BartlebyFileIO {
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
      */
-    func itemExistsAtPath(path: String,
+    func itemExistsAtPath(_ path: String,
                           handlers: Handlers)
     
     /**
@@ -95,7 +95,7 @@ public protocol BartlebyFileIO {
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
      */
-    func fileExistsAtPath(path: String,
+    func fileExistsAtPath(_ path: String,
                           handlers: Handlers)
     
     /**
@@ -104,7 +104,7 @@ public protocol BartlebyFileIO {
      - parameter path:     the path
      - parameter handlers: The progress and completion handler
      */
-    func directoryExistsAtPath(path: String,
+    func directoryExistsAtPath(_ path: String,
                                handlers: Handlers)
     
     /**
@@ -114,7 +114,7 @@ public protocol BartlebyFileIO {
      - parameter path:     path
      - parameter handlers: The progress and completion handler
      */
-    func removeItemAtPath(path: String,
+    func removeItemAtPath(_ path: String,
                           handlers: Handlers)
     
     /**
@@ -124,7 +124,7 @@ public protocol BartlebyFileIO {
      - parameter dstPath:  dstPath
      - parameter handlers: The progress and completion handler
      */
-    func copyItemAtPath(srcPath: String,
+    func copyItemAtPath(_ srcPath: String,
                         toPath dstPath: String,
                                handlers: Handlers)
     
@@ -135,7 +135,7 @@ public protocol BartlebyFileIO {
      - parameter dstPath:  dstPath
      - parameter handlers: The progress and completion handler
      */
-    func moveItemAtPath(srcPath: String,
+    func moveItemAtPath(_ srcPath: String,
                         toPath dstPath: String,
                                handlers: Handlers)
     
@@ -159,7 +159,7 @@ public protocol BartlebyFileIO {
              }
          }
      */
-    func contentsOfDirectoryAtPath(path: String,
+    func contentsOfDirectoryAtPath(_ path: String,
                                    handlers: Handlers)
     
     

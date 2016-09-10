@@ -14,10 +14,10 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) public class CollectionMetadatum : JObject{
+@objc(CollectionMetadatum) open class CollectionMetadatum : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "CollectionMetadatum"
     }
 
@@ -26,15 +26,15 @@ import ObjectMapper
 		case MonolithicFileStorage = "MonolithicFileStorage"
 		case SQLiteIncrementalStore = "SQLiteIncrementalStore"
 	}
-	public var storage:Storage = .MonolithicFileStorage
+	open var storage:Storage = .MonolithicFileStorage
 	//The holding collection name
-	dynamic public var collectionName:String = "\(Default.NO_NAME)"
+	dynamic open var collectionName:String = "\(Default.NO_NAME)"
 	//The proxy object (not serializable, not supervisable)
-	dynamic public var proxy:JObject?
+	dynamic open var proxy:JObject?
 	//Allow distant persistency?
-	dynamic public var allowDistantPersistency:Bool = true
+	dynamic open var allowDistantPersistency:Bool = true
 	//In Memory?
-	dynamic public var inMemory:Bool = true
+	dynamic open var inMemory:Bool = true
 
 
     // MARK: Mappable
@@ -43,7 +43,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.storage <- ( map["storage"] )
@@ -59,24 +59,24 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.storage=CollectionMetadatum.Storage(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "storage")! as NSString))! 
-		self.collectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "collectionName")! as NSString)
-		self.allowDistantPersistency=decoder.decodeBoolForKey("allowDistantPersistency") 
-		self.inMemory=decoder.decodeBoolForKey("inMemory") 
+		self.storage=CollectionMetadatum.Storage(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
+		self.collectionName=String(decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
+		self.allowDistantPersistency=decoder.decodeBool(forKey: "allowDistantPersistency") 
+		self.inMemory=decoder.decodeBool(forKey: "inMemory") 
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-		coder.encodeObject(self.storage.rawValue ,forKey:"storage")
-		coder.encodeObject(self.collectionName,forKey:"collectionName")
-		coder.encodeBool(self.allowDistantPersistency,forKey:"allowDistantPersistency")
-		coder.encodeBool(self.inMemory,forKey:"inMemory")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+		coder.encode(self.storage.rawValue ,forKey:"storage")
+		coder.encode(self.collectionName,forKey:"collectionName")
+		coder.encode(self.allowDistantPersistency,forKey:"allowDistantPersistency")
+		coder.encode(self.inMemory,forKey:"inMemory")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -87,11 +87,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "collectionMetadata"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return CollectionMetadatum.collectionName
     }
 

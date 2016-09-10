@@ -8,26 +8,26 @@
 
 class LocalDMGSyncTests: LocalSyncTests {
     
-    private let _diskManager = BsyncImageDiskManager()
-    private let _dmgSize = "100m"
+    fileprivate let _diskManager = BsyncImageDiskManager()
+    fileprivate let _dmgSize = "100m"
 
-    private static var _treeId = ""
-    private var _masterDMGName = ""
-    private var _masterDMGPath = ""
-    private var _masterDMGFullPath = ""
-    private let _masterDMGPassword = "12345"
-    private var _masterVolumePath = ""
-    private var _masterVolumeURL = NSURL()
+    fileprivate static var _treeId = ""
+    fileprivate var _masterDMGName = ""
+    fileprivate var _masterDMGPath = ""
+    fileprivate var _masterDMGFullPath = ""
+    fileprivate let _masterDMGPassword = "12345"
+    fileprivate var _masterVolumePath = ""
+    fileprivate var _masterVolumeURL = URL()
     
-    private var _slaveDMGName = ""
-    private var _slaveDMGPath = ""
-    private var _slaveDMGFullPath = ""
-    private let _slaveDMGPassword = "67890"
-    private var _slaveVolumePath = ""
-    private var _slaveVolumeURL = NSURL()
+    fileprivate var _slaveDMGName = ""
+    fileprivate var _slaveDMGPath = ""
+    fileprivate var _slaveDMGFullPath = ""
+    fileprivate let _slaveDMGPassword = "67890"
+    fileprivate var _slaveVolumePath = ""
+    fileprivate var _slaveVolumeURL = URL()
 
 
-    private static var _prefix=Bartleby.createUID()
+    fileprivate static var _prefix=Bartleby.createUID()
 
     override class func setUp() {
         super.setUp()
@@ -41,7 +41,7 @@ class LocalDMGSyncTests: LocalSyncTests {
         self._masterDMGPath = self.assetPath + self._masterDMGName
         self._masterDMGFullPath = self._masterDMGPath + "."+BsyncDMGCard.DMG_EXTENSION
         self._masterVolumePath = "/Volumes/" + self._masterDMGName + "/"
-        self._masterVolumeURL = NSURL(fileURLWithPath: self._masterVolumePath)
+        self._masterVolumeURL = URL(fileURLWithPath: self._masterVolumePath)
         
         
         self.sourceFolderPath = self._masterVolumePath+LocalDMGSyncTests._treeId+"/"
@@ -50,13 +50,13 @@ class LocalDMGSyncTests: LocalSyncTests {
         self._slaveDMGPath = self.assetPath + self._slaveDMGName
         self._slaveDMGFullPath = self._slaveDMGPath + "." + BsyncDMGCard.DMG_EXTENSION
         self._slaveVolumePath = "/Volumes/" + self._slaveDMGName + "/"
-        self._slaveVolumeURL = NSURL(fileURLWithPath: self._slaveVolumePath)
+        self._slaveVolumeURL = URL(fileURLWithPath: self._slaveVolumePath)
         
         destinationFolderPath = self._slaveVolumePath+LocalDMGSyncTests._treeId+"/"
         
     }
     
-    override func prepareSync(handlers: Handlers) {
+    override func prepareSync(_ handlers: Handlers) {
         // Create master DMG
         self._diskManager.createImageDisk(_masterDMGPath, volumeName: _masterDMGName, size: self._dmgSize, password: self._masterDMGPassword, handlers: Handlers { (createMaster) in
             if createMaster.success {
@@ -89,19 +89,19 @@ class LocalDMGSyncTests: LocalSyncTests {
             })
     }
     
-    override func disposeSync(handlers: Handlers) {
+    override func disposeSync(_ handlers: Handlers) {
         // Detach slave DMG
         self._diskManager.detachVolume(self._slaveDMGName, handlers: Handlers { (detachSlave) in
             if detachSlave.success {
                 // Remove slave DMG
                 do {
-                    try self._fm.removeItemAtPath(self._slaveDMGFullPath)
+                    try self._fm.removeItem(atPath: self._slaveDMGFullPath)
                     // Detach master DMG
                     self._diskManager.detachVolume(self._masterDMGName, handlers: Handlers { (detachMaster) in
                         if detachMaster.success {
                             // Remove master DMG
                             do {
-                                try self._fm.removeItemAtPath(self._masterDMGFullPath)
+                                try self._fm.removeItem(atPath: self._masterDMGFullPath)
                                 super.disposeSync(handlers)
                             } catch {
                                 handlers.on(Completion.failureStateFromError(error))

@@ -9,25 +9,25 @@
 import Cocoa
 
 @IBDesignable
-public class ColoredView: NSView {
+open class ColoredView: NSView {
 
 
-    @IBInspectable public  var backgroundColor: NSColor? {
+    @IBInspectable open  var backgroundColor: NSColor? {
         get {
             if let colorRef = self.layer?.backgroundColor {
-                return NSColor(CGColor: colorRef)
+                return NSColor(cgColor: colorRef)
             } else {
                 return nil
             }
         }
         set {
             self.wantsLayer = true
-            self.layer?.backgroundColor = newValue?.CGColor
+            self.layer?.backgroundColor = newValue?.cgColor
         }
     }
 
-    override public func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override open func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
     }
     
 }

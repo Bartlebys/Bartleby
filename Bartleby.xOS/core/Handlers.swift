@@ -52,7 +52,7 @@ public typealias CompletionHandler = (_: Completion) -> ()
  ```
  Or you can create one from a Handlers instance by calling `composedHandler()`
  */
-public typealias ComposedHandler = (progressionState: Progression?, completionState: Completion?)->()
+public typealias ComposedHandler = (_ progressionState: Progression?, _ completionState: Completion?)->()
 
 
 
@@ -69,25 +69,25 @@ protocol Reactive {
  * Composable handlers
  * You can compose multiple completion and progression
  */
-@objc(Handlers) public class Handlers: NSObject {
+@objc(Handlers) open class Handlers: NSObject {
 
     // MARK: Progression handlers
 
-    public var progressionHandlersCount: Int {
+    open var progressionHandlersCount: Int {
         get {
             return self._progressionHandlers.count
         }
     }
 
 
-    private var _progressionHandlers: [ProgressHandler] = []
+    fileprivate var _progressionHandlers: [ProgressHandler] = []
 
-    public func appendProgressHandler(progressHandler: ProgressHandler) {
+    open func appendProgressHandler(_ progressHandler: @escaping ProgressHandler) {
         self._progressionHandlers.append(progressHandler)
     }
 
     // Call all the progression handlers
-    public func notify(progressionState: Progression) {
+    open func notify(_ progressionState: Progression) {
         for handler in self._progressionHandlers {
             handler(progressionState)
         }
@@ -96,20 +96,20 @@ protocol Reactive {
     // MARK: Completion handlers
 
 
-    public var completionHandlersCount: Int {
+    open var completionHandlersCount: Int {
         get {
             return self._completionHandlers.count
         }
     }
 
-    private var _completionHandlers: [CompletionHandler] = []
+    fileprivate var _completionHandlers: [CompletionHandler] = []
 
-    public func appendCompletionHandler(handler: CompletionHandler) {
+    open func appendCompletionHandler(_ handler: @escaping CompletionHandler) {
         self._completionHandlers.append(handler)
     }
 
     // Call all the completion handlers
-    public func on(completionState: Completion) {
+    open func on(_ completionState: Completion) {
         for handler in self._completionHandlers {
             handler(completionState)
         }
@@ -122,7 +122,7 @@ protocol Reactive {
 
      - returns: an Handlers instance
      */
-    public static func withoutCompletion() -> Handlers {
+    open static func withoutCompletion() -> Handlers {
         return Handlers.init(completionHandler: nil)
     }
 
@@ -133,7 +133,7 @@ protocol Reactive {
 
      - parameter chainedHandlers: the handlers to be chained.
      */
-    public func appendChainedHandlers(chainedHandlers: Handlers) {
+    open func appendChainedHandlers(_ chainedHandlers: Handlers) {
         self.appendCompletionHandler(chainedHandlers.on)
         self.appendProgressHandler(chainedHandlers.notify)
 
@@ -176,18 +176,18 @@ protocol Reactive {
 
      - returns: an instance of Handlers
      */
-    public static func handlersFrom(composedHandler: ComposedHandler) -> Handlers {
+    open static func handlersFrom(_ composedHandler: @escaping ComposedHandler) -> Handlers {
 
         // Those handlers produce an adaptation
         // From the unique handler form
         // progress and completion handlers.
 
         let handlers=Handlers {(onCompletion) -> () in
-            composedHandler(progressionState:nil, completionState:onCompletion)
+            composedHandler(nil, onCompletion)
         }
 
         handlers.appendProgressHandler { (onProgression) -> () in
-            composedHandler(progressionState:onProgression, completionState:nil)
+            composedHandler(onProgression, nil)
         }
         return handlers
     }
@@ -200,7 +200,7 @@ protocol Reactive {
 
      - returns: the composed Handler
      */
-    public func composedHandler() -> ComposedHandler {
+    open func composedHandler() -> ComposedHandler {
         let handler: ComposedHandler = {(progressionState, completionState) -> Void in
             if let progressionState=progressionState {
                  self.notify(progressionState)

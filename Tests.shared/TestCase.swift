@@ -14,7 +14,7 @@ import XCTest
 #endif
 
 class TestObserver: NSObject, XCTestObservation {
-    private var _failureCount = 0
+    fileprivate var _failureCount = 0
 
     var hasSucceeded: Bool {
         get {
@@ -22,13 +22,13 @@ class TestObserver: NSObject, XCTestObservation {
         }
     }
 
-    func testCaseWillStart(testCase: XCTestCase) {
+    func testCaseWillStart(_ testCase: XCTestCase) {
         if let name = testCase.name {
             print("\n#### \(name) ####\n")
         }
     }
 
-    func testCase(testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
         self._failureCount += 1
     }
 }
@@ -43,7 +43,7 @@ class TestObserver: NSObject, XCTestObservation {
 /// - Clean all created users during static tear down
 class TestCase: XCTestCase {
 
-    static let fm = NSFileManager.defaultManager()
+    static let fm = FileManager.default
     let _fm = TestCase.fm
 
     static var testName = ""
@@ -52,13 +52,13 @@ class TestCase: XCTestCase {
     static var assetPath = ""
     var assetPath: String = ""
 
-    private static var _creator: User? = nil
-    private static var _createdUsers = [User]()
+    fileprivate static var _creator: User? = nil
+    fileprivate static var _createdUsers = [User]()
 
-    private static var _testObserver = TestObserver()
+    fileprivate static var _testObserver = TestObserver()
 
     // We need a real local document to login.
-    private static var _document:BartlebyDocument?
+    fileprivate static var _document:BartlebyDocument?
     static var document=_document!
 
     static let rootObjectUID=Bartleby.createUID()
@@ -66,12 +66,12 @@ class TestCase: XCTestCase {
     /// MARK: Behaviour after test run
 
     enum RemoveAssets {
-        case Always
-        case OnSuccess
-        case Never
+        case always
+        case onSuccess
+        case never
     }
 
-    static var removeAsset = RemoveAssets.OnSuccess
+    static var removeAsset = RemoveAssets.onSuccess
 
 
     override class func setUp() {
@@ -95,32 +95,32 @@ class TestCase: XCTestCase {
 
 
         //        assetPath = NSTemporaryDirectory() + testName + "/"
-        assetPath = Bartleby.getSearchPath(.DesktopDirectory)! + testName + "/"
+        assetPath = Bartleby.getSearchPath(.desktopDirectory)! + testName + "/"
         bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
 
         // Remove asset folder if it exists
         do {
-            if fm.fileExistsAtPath(assetPath) {
-                try fm.removeItemAtPath(assetPath)
+            if fm.fileExists(atPath: assetPath) {
+                try fm.removeItem(atPath: assetPath)
             }
-            try fm.createDirectoryAtPath(assetPath, withIntermediateDirectories: true, attributes: nil)
+            try fm.createDirectory(atPath: assetPath, withIntermediateDirectories: true, attributes: nil)
         } catch {
             XCTFail("\(error)")
         }
 
         if TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Add test observer
-            XCTestObservationCenter.sharedTestObservationCenter().addTestObserver(_testObserver)
+            XCTestObservationCenter.shared().addTestObserver(_testObserver)
         }
 
         // Purge cookie for the domain
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
             for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
 
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
             XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
 
@@ -134,13 +134,13 @@ class TestCase: XCTestCase {
 
         if  TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Remove test observer
-            XCTestObservationCenter.sharedTestObservationCenter().removeTestObserver(_testObserver)
+            XCTestObservationCenter.shared().removeTestObserver(_testObserver)
 
             // Remove asset folder depending of the configuration
-            if fm.fileExistsAtPath(assetPath) && removeAsset != .Never {
-                if (removeAsset == .Always) || (_testObserver.hasSucceeded) {
+            if fm.fileExists(atPath: assetPath) && removeAsset != .never {
+                if (removeAsset == .always) || (_testObserver.hasSucceeded) {
                     do {
-                        try fm.removeItemAtPath(self.assetPath)
+                        try fm.removeItem(atPath: self.assetPath)
                     } catch {
                         bprint("Error: \(error)", file: #file, function: #function, line: #line)
                     }
@@ -166,8 +166,8 @@ class TestCase: XCTestCase {
         assetPath = TestCase.assetPath
     }
 
-    func waitForExpectations(timeout: NSTimeInterval = TestsConfiguration.TIME_OUT_DURATION) {
-        waitForExpectationsWithTimeout(timeout, handler: nil)
+    func waitForExpectations(_ timeout: TimeInterval = TestsConfiguration.TIME_OUT_DURATION) {
+        self.waitForExpectations(timeout: timeout, handler: nil)
     }
 
     /**
@@ -182,7 +182,7 @@ class TestCase: XCTestCase {
 
      - returns: A User instance
      */
-    func createUser(spaceUID: String, creator: User? = nil, email: String? = nil, autologin: Bool = false, handlers: Handlers) -> User {
+    func createUser(_ spaceUID: String, creator: User? = nil, email: String? = nil, autologin: Bool = false, handlers: Handlers) -> User {
         let user = TestCase.document.newUser()
         user.spaceUID = spaceUID
         if let creator = creator {
@@ -229,7 +229,7 @@ class TestCase: XCTestCase {
 
      - parameter handlers: The progress and completion handlers
      */
-    private func _deleteNextUser(handlers: Handlers) {
+    fileprivate func _deleteNextUser(_ handlers: Handlers) {
         if TestCase._createdUsers.isEmpty {
             // If all users have been deleted, it means that we're almost done, let log out the creator!
             if let creator = TestCase._creator {
@@ -239,7 +239,7 @@ class TestCase: XCTestCase {
                         handlers.on(Completion.failureStateFromJHTTPResponse(context))
                 })
             } else {
-                handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .Bad_Request))
+                handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
@@ -257,7 +257,7 @@ class TestCase: XCTestCase {
 
      - parameter handlers: The progress and completion handlers
      */
-    func deleteCreatedUsers(handlers: Handlers) {
+    func deleteCreatedUsers(_ handlers: Handlers) {
         if let creator = TestCase._creator {
             // Login the creator
             creator.login(withPassword: creator.password, sucessHandler: {
@@ -267,7 +267,7 @@ class TestCase: XCTestCase {
                     handlers.on(Completion.failureStateFromJHTTPResponse(context))
             })
         } else {
-            handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .Bad_Request))
+            handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))
         }
     }
 
@@ -281,13 +281,13 @@ class TestCase: XCTestCase {
 
      - throws: throws file issue
      */
-    func writeStrinToPath(string:String,path:String,createIntermediaryFolders:Bool=true) throws -> () {
-        let fileURL=NSURL(fileURLWithPath:path)
-        if let folderURL=fileURL.URLByDeletingLastPathComponent{
+    func writeStrinToPath(_ string:String,path:String,createIntermediaryFolders:Bool=true) throws -> () {
+        let fileURL=URL(fileURLWithPath:path)
+        if let folderURL=fileURL.deletingLastPathComponent(){
             if createIntermediaryFolders{
-                try self._fm.createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: [:])
+                try self._fm.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: [:])
             }
-            try string.writeToURL(fileURL, atomically: true, encoding: Default.STRING_ENCODING)
+            try string.write(to: fileURL, atomically: true, encoding: Default.STRING_ENCODING)
         }
     }
 

@@ -34,7 +34,7 @@ class OperationViewController: NSViewController,Editor{
     }
 
 
-    @IBAction func pushSelectedOperation(sender: AnyObject) {
+    @IBAction func pushSelectedOperation(_ sender: AnyObject) {
         if let operation=self.selectedItem{
             var ops=[Operation]()
             ops.append(operation)

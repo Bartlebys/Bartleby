@@ -22,6 +22,6 @@ public protocol DictionaryRepresentation {
 
      - parameter dictionaryRepresentation: a dictionary
      */
-    func patchFrom(dictionaryRepresentation:[String:AnyObject])
+    func patchFrom(_ dictionaryRepresentation:[String:AnyObject])
     
 }

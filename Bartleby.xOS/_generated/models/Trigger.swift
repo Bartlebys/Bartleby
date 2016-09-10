@@ -14,33 +14,33 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
-@objc(Trigger) public class Trigger : JObject{
+@objc(Trigger) open class Trigger : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Trigger"
     }
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
-	dynamic public var index:Int = -1
+	dynamic open var index:Int = -1
 	//The dataSpace UID
-	dynamic public var spaceUID:String?
+	dynamic open var spaceUID:String?
 	//The observation UID for a given document correspond  to the Registry.rootObjectUID
-	dynamic public var observationUID:String?
+	dynamic open var observationUID:String?
 	//The user.UID of the sender
-	dynamic public var senderUID:String?
+	dynamic open var senderUID:String?
 	//The UID of the instance of Bartleby client that has created the trigger.
-	dynamic public var runUID:String?
+	dynamic open var runUID:String?
 	//The action that has initiated the trigger
-	dynamic public var origin:String?
+	dynamic open var origin:String?
 	//The targetted collection name
-	dynamic public var targetCollectionName:String = ""
+	dynamic open var targetCollectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
-	dynamic public var creationDate:NSDate?
+	dynamic open var creationDate:Date?
 	//The action name
-	dynamic public var action:String = ""
+	dynamic open var action:String = ""
 	//A coma separated UIDS list
-	dynamic public var UIDS:String = ""
+	dynamic open var UIDS:String = ""
 
 
     // MARK: Mappable
@@ -49,7 +49,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.index <- ( map["index"] )
@@ -71,48 +71,48 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.index=decoder.decodeIntegerForKey("index") 
-		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"spaceUID") as NSString?)
-		self.observationUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"observationUID") as NSString?)
-		self.senderUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"senderUID") as NSString?)
-		self.runUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"runUID") as NSString?)
-		self.origin=String(decoder.decodeObjectOfClass(NSString.self, forKey:"origin") as NSString?)
-		self.targetCollectionName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "targetCollectionName")! as NSString)
-		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
-		self.action=String(decoder.decodeObjectOfClass(NSString.self, forKey: "action")! as NSString)
-		self.UIDS=String(decoder.decodeObjectOfClass(NSString.self, forKey: "UIDS")! as NSString)
+		self.index=decoder.decodeInteger(forKey: "index") 
+		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
+		self.observationUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"observationUID") as NSString?)
+		self.senderUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"senderUID") as NSString?)
+		self.runUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"runUID") as NSString?)
+		self.origin=String(describing: decoder.decodeObject(of: NSString.self, forKey:"origin") as NSString?)
+		self.targetCollectionName=String(decoder.decodeObject(of: NSString.self, forKey: "targetCollectionName")! as NSString)
+		self.creationDate=decoder.decodeObject(of: NSDate.self, forKey:"creationDate") as Date?
+		self.action=String(decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
+		self.UIDS=String(decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-		coder.encodeInteger(self.index,forKey:"index")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+		coder.encode(self.index,forKey:"index")
 		if let spaceUID = self.spaceUID {
-			coder.encodeObject(spaceUID,forKey:"spaceUID")
+			coder.encode(spaceUID,forKey:"spaceUID")
 		}
 		if let observationUID = self.observationUID {
-			coder.encodeObject(observationUID,forKey:"observationUID")
+			coder.encode(observationUID,forKey:"observationUID")
 		}
 		if let senderUID = self.senderUID {
-			coder.encodeObject(senderUID,forKey:"senderUID")
+			coder.encode(senderUID,forKey:"senderUID")
 		}
 		if let runUID = self.runUID {
-			coder.encodeObject(runUID,forKey:"runUID")
+			coder.encode(runUID,forKey:"runUID")
 		}
 		if let origin = self.origin {
-			coder.encodeObject(origin,forKey:"origin")
+			coder.encode(origin,forKey:"origin")
 		}
-		coder.encodeObject(self.targetCollectionName,forKey:"targetCollectionName")
+		coder.encode(self.targetCollectionName,forKey:"targetCollectionName")
 		if let creationDate = self.creationDate {
-			coder.encodeObject(creationDate,forKey:"creationDate")
+			coder.encode(creationDate,forKey:"creationDate")
 		}
-		coder.encodeObject(self.action,forKey:"action")
-		coder.encodeObject(self.UIDS,forKey:"UIDS")
+		coder.encode(self.action,forKey:"action")
+		coder.encode(self.UIDS,forKey:"UIDS")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -123,11 +123,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "triggers"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Trigger.collectionName
     }
 

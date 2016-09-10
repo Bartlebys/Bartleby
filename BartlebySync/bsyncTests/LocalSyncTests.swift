@@ -10,7 +10,7 @@ import XCTest
 
 class LocalSyncTests: SyncTestCase {
 
-    private static var _directives = BsyncDirectives()
+    fileprivate static var _directives = BsyncDirectives()
 
     override class func setUp() {
         super.setUp()
@@ -22,14 +22,14 @@ class LocalSyncTests: SyncTestCase {
         self.destinationFolderPath = self.assetPath + "Dst/tree/"
     }
 
-    static private let _admin = BsyncAdmin()
+    static fileprivate let _admin = BsyncAdmin()
 
-    override func prepareSync(handlers: Handlers) {
+    override func prepareSync(_ handlers: Handlers) {
         LocalSyncTests._directives = BsyncDirectives.localDirectivesWithPath(sourceFolderPath, destinationPath: destinationFolderPath)
         super.prepareSync(handlers)
     }
 
-    override func sync(handlers: Handlers) {
+    override func sync(_ handlers: Handlers) {
         LocalSyncTests._admin.runDirectives(LocalSyncTests._directives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (localSync) in
             if localSync.success {
                 super.sync(handlers)

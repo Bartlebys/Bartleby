@@ -11,14 +11,14 @@ import Foundation
 public let BARTLEBYS_COMPLETION_NOTIFICATION_NAME="BARTLEBYS_COMPLETION_NOTIFICATION_NAME"
 
 /// A Completion notification
-extension NSNotification {
+extension Notification {
 
-    public convenience init(completionState: Completion, object: AnyObject?) {
-        self.init(name: BARTLEBYS_COMPLETION_NOTIFICATION_NAME, object: object, userInfo:completionState.dictionaryRepresentation())
+    public init(completionState: Completion, object: AnyObject?) {
+        (self as NSNotification).init(name: BARTLEBYS_COMPLETION_NOTIFICATION_NAME, object: object, userInfo:completionState.dictionaryRepresentation())
     }
 
     public func getCompletionState() -> Completion? {
-        if let dictionary=self.userInfo as? [String:AnyObject] {
+        if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
             let completion = try? JSerializer.deserializeFromDictionary(dictionary)
             return completion as? Completion
         }

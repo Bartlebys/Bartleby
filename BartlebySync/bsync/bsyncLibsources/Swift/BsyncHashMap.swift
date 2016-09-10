@@ -15,13 +15,13 @@ import Foundation
 
 
 // Swift Adapter to Objective C Hash Map
-@objc(BsyncHashMap) public class BsyncHashMap:JObject {
+(BsyncHashMap) open class BsyncHashMap:JObject {
 
-    public var pathToHash:Dictionary<String,String>=Dictionary<String,String>()
+    open var pathToHash:Dictionary<String,String>=Dictionary<String,String>()
 
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "BsyncHashMap"
     }
 
@@ -32,7 +32,7 @@ import Foundation
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervision()
         self.pathToHash <- ( map["pathToHash"] )
@@ -44,17 +44,17 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
-        self.pathToHash=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "pathToHash") as! Dictionary<String,String>
+        self.pathToHash=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "pathToHash") as! Dictionary<String,String>
         self.enableSupervision()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-        coder.encodeObject(pathToHash,forKey:"pathToHash")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(pathToHash,forKey:"pathToHash")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -65,11 +65,11 @@ import Foundation
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "BsyncHashMaps"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return BsyncHashMap.collectionName
     }
 

@@ -8,21 +8,21 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class LogoutUser: JObject {
+open class LogoutUser: JObject {
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "LogoutUser"
     }
 
-    static public func execute( user: User,
-                                sucessHandler success:()->(),
-                                failureHandler failure:(context: JHTTPResponse)->()) {
+    static open func execute( _ user: User,
+                                sucessHandler success:@escaping ()->(),
+                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
                     if let registry=user.document{
 
                         let baseURL=Bartleby.sharedInstance.getCollaborationURL(registry.UID)
-                        let pathURL=baseURL.URLByAppendingPathComponent("user/logout")
+                        let pathURL=baseURL.appendingPathComponent("user/logout")
 
                         if registry.registryMetadata.identificationMethod == .Key{
                             // Delete the key
@@ -32,7 +32,7 @@ public class LogoutUser: JObject {
                         }else{
                             let dictionary: Dictionary<String, AnyObject>=[:]
                             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
-                            let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
+                            let r: Request=request(ParameterEncoding.json.encode(urlRequest, parameters: dictionary).0)
                             r.responseString { response in
                                 let request=response.request
                                 let result=response.result
@@ -42,17 +42,17 @@ public class LogoutUser: JObject {
 
                                 let context = JHTTPResponse( code: 100,
                                     caller: "LogoutUser.execute",
-                                    relatedURL:request?.URL,
+                                    relatedURL:request?.url,
                                     httpStatusCode: response?.statusCode ?? 0,
                                     response: response,
                                     result:result.value)
 
                                 // React according to the situation
                                 var reactions = Array<Bartleby.Reaction> ()
-                                reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
+                                reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
 
                                 if result.isFailure {
-                                    let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                         context: context,
                                         title: NSLocalizedString("Unsuccessfull attempt",
                                             comment: "Unsuccessfull attempt"),
@@ -74,7 +74,7 @@ public class LogoutUser: JObject {
                                             // Bartlby does not currenlty discriminate status codes 100 & 101
                                             // and treats any status code >= 300 the same way
                                             // because we consider that failures differentiations could be done by the caller.
-                                            let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                                 context: context,
                                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                     comment: "Unsuccessfull attempt"),
@@ -100,7 +100,7 @@ public class LogoutUser: JObject {
 
                         let context = JHTTPResponse( code: 1,
                                                      caller: "LogoutUser.execute",
-                                                     relatedURL:NSURL(),
+                                                     relatedURL:URL(),
                                                      httpStatusCode:417,
                                                      response:nil,
                                                      result:"{\"message\":\"Attempt to logout without having created a document that holds the dataspace\"}")

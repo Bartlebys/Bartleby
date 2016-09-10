@@ -16,32 +16,32 @@ import Foundation
 
 @objc class BsyncXPC: BFileManager, BsyncXPCProtocol {
     
-    private let _dm = BsyncImageDiskManager()
+    fileprivate let _dm = BsyncImageDiskManager()
     
     // MARK: Minimal protocol
     
-    func touch(handler: ComposedHandler) {
-        handler(progressionState: nil, completionState: Completion.successState())
+    func touch(_ handler: ComposedHandler) {
+        handler(nil, Completion.successState())
     }
-    func createDMG(card: BsyncDMGCard, handler: ComposedHandler) {
+    func createDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         createDMG(card, handlers: handlers)
     }
     
-    func createDMG(card: BsyncDMGCard, handlers: Handlers) {
+    func createDMG(_ card: BsyncDMGCard, handlers: Handlers) {
         // The card must be valid
         let validation = card.evaluate()
         if validation.success {
             // The url is validated by card.evaluate()
-            let url=NSURL(fileURLWithPath:card.imagePath)
-            let imageFolderPath: String!=url.URLByDeletingLastPathComponent?.path!
+            let url=URL(fileURLWithPath:card.imagePath)
+            let imageFolderPath: String!=url.deletingLastPathComponent().path
             self.createDirectoryAtPath(imageFolderPath, handlers: Handlers { (directoryCreation) in
                 if directoryCreation.success {
                     // The destination has been Successfully created
                     self.itemExistsAtPath(card.imagePath, handlers: Handlers { (existence) -> () in
                         if existence.success {
                             // We preserve existing DMGs !
-                            handlers.on(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .Conflict))
+                            handlers.on(Completion.failureState(NSLocalizedString("The disk image already exists ", comment:"The disk image already exists ") + "\(card.imagePath)", statusCode: .conflict))
                         } else {
                             
                             
@@ -77,12 +77,12 @@ import Foundation
         }
     }
     
-    func mountDMG(card: BsyncDMGCard, handler: ComposedHandler) {
+    func mountDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         mountDMG(card, handlers: handlers)
     }
     
-    func mountDMG(card: BsyncDMGCard, handlers: Handlers) {
+    func mountDMG(_ card: BsyncDMGCard, handlers: Handlers) {
         // The car must be valid
         let validation=card.evaluate()
         if validation.success {
@@ -107,12 +107,12 @@ import Foundation
         }
     }
     
-    func unMountDMG(card: BsyncDMGCard, handler: ComposedHandler) {
+    func unMountDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         unMountDMG(card, handlers: handlers)
     }
 
-    func unMountDMG(card: BsyncDMGCard, handlers: Handlers) {
+    func unMountDMG(_ card: BsyncDMGCard, handlers: Handlers) {
         let validation = card.evaluate()
         if validation.success {
             self.detachVolume(card.volumeName, handlers: handlers)
@@ -135,13 +135,13 @@ import Foundation
      
      - returns: nothing
      */
-    func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?,
+    func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?,
                          handler: ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password, handlers: handlers)
     }
 
-    func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?,
+    func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?,
                          handlers: Handlers) {
         self._dm.createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password, handlers: handlers)
     }
@@ -154,7 +154,7 @@ import Foundation
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+    func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
         self._dm.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
     }
 
@@ -205,12 +205,12 @@ import Foundation
      - parameter handler:       the composed handler for progress and completion
      
      */
-    func detachVolume(named: String, handler: ComposedHandler) {
+    func detachVolume(_ named: String, handler: ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         detachVolume(named, handlers: handlers)
     }
     
-    func detachVolume(named: String, handlers: Handlers) {
+    func detachVolume(_ named: String, handlers: Handlers) {
         handlers.appendCompletionHandler { (test) in
             print("test")
         }
@@ -229,7 +229,7 @@ import Foundation
      
      - returns: N/A
      */
-    func createDirectives(directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
+    func createDirectives(_ directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
                           handler: (ComposedHandler)) {
         
         let handlers = Handlers.handlersFrom(handler)
@@ -239,7 +239,7 @@ import Foundation
         guard validity.valid else {
             var validityMessage=""
             validityMessage="Directives are not valid : \(validity.message)"
-            handlers.on(Completion.failureState(validityMessage, statusCode: .Precondition_Failed))
+            handlers.on(Completion.failureState(validityMessage, statusCode: .precondition_Failed))
             return
         }
         
@@ -252,14 +252,14 @@ import Foundation
         if var JSONString: NSString = Mapper().toJSONString(directives) {
             do {
                 JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                try JSONString.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
+                try JSONString.write(toFile: filePath, atomically: true, encoding: Default.STRING_ENCODING.rawValue)
             } catch {
-                handlers.on(Completion.failureState("\(error)", statusCode: .Undefined))
+                handlers.on(Completion.failureState("\(error)", statusCode: .undefined))
                 return
             }
             handlers.on(Completion.successState("Directives have be saved to:\(filePath)"))
         } else {
-            handlers.on(Completion.failureState("Serialization failure", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Serialization failure", statusCode: .undefined))
         }
     }
     
@@ -274,7 +274,7 @@ import Foundation
      
      - returns: N/A
      */
-    func runDirectives(filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler) {
+    func runDirectives(_ filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler) {
         
         // Those handlers produce an adaptation
         // From the unique handler form
@@ -296,7 +296,7 @@ import Foundation
     }
     
     // MARK: File IO
-    func createDirectoryAtPath(path: String, handler: ComposedHandler) {
+    func createDirectoryAtPath(_ path: String, handler: ComposedHandler) {
         self.createDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
@@ -304,7 +304,7 @@ import Foundation
         self.readData(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func writeData(data: NSData, path: String, handler: ComposedHandler) {
+    func writeData(_ data: Data, path: String, handler: ComposedHandler) {
         self.writeData(data, path: path, handlers: Handlers.handlersFrom(handler))
     }
     
@@ -312,35 +312,35 @@ import Foundation
         self.readString(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func writeString(string: String, path: String, handler: ComposedHandler) {
+    func writeString(_ string: String, path: String, handler: ComposedHandler) {
         self.writeString(string, path: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func itemExistsAtPath(path: String, handler: ComposedHandler) {
+    func itemExistsAtPath(_ path: String, handler: ComposedHandler) {
         self.itemExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func directoryExistsAtPath(path: String, handler: ComposedHandler) {
+    func directoryExistsAtPath(_ path: String, handler: ComposedHandler) {
         self.directoryExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func fileExistsAtPath(path: String, handler: ComposedHandler) {
+    func fileExistsAtPath(_ path: String, handler: ComposedHandler) {
         self.fileExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func removeItemAtPath(path: String, handler: ComposedHandler) {
+    func removeItemAtPath(_ path: String, handler: ComposedHandler) {
         self.removeItemAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func copyItemAtPath(path: String, toPath: String, handler: ComposedHandler) {
+    func copyItemAtPath(_ path: String, toPath: String, handler: ComposedHandler) {
         self.copyItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
     
-    func moveItemAtPath(path: String, toPath: String, handler: ComposedHandler) {
+    func moveItemAtPath(_ path: String, toPath: String, handler: ComposedHandler) {
         self.moveItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
     
-    func contentsOfDirectoryAtPath(path: String, handler: ComposedHandler) {
+    func contentsOfDirectoryAtPath(_ path: String, handler: ComposedHandler) {
         self.contentsOfDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     

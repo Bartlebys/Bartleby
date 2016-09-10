@@ -11,21 +11,21 @@ import XCTest
 class bsyncMiscTests: TestCase {
     
     func test001_DMG_create_attach_detach() {
-        let expectation = expectationWithDescription("DMG_create_attach_detach_remove")
+        let expectation = self.expectation(description: "DMG_create_attach_detach_remove")
         let dm = BsyncImageDiskManager()
-        let fm = NSFileManager.defaultManager()
+        let fm = FileManager.default
         let path = bsyncMiscTests.assetPath + Bartleby.randomStringWithLength(6)
         do {
-            try fm.createDirectoryAtPath(bsyncMiscTests.assetPath, withIntermediateDirectories: true, attributes: nil)
+            try fm.createDirectory(atPath: bsyncMiscTests.assetPath, withIntermediateDirectories: true, attributes: nil)
             dm.createImageDisk(path, volumeName: "Project 1 Synchronized", size: "2g", password: "gugu", handlers: Handlers { (createDisc) in
-                if let imagePath = createDisc.getStringResult() where createDisc.success {
+                if let imagePath = createDisc.getStringResult() , createDisc.success {
                     dm.attachVolume(from:imagePath, withPassword: "gugu", handlers: Handlers { (attach) in
                         XCTAssert(attach.success, attach.message)
                         dm.detachVolume("Project 1 Synchronized", handlers: Handlers { (detach) in
                             XCTAssert(detach.success, detach.message)
                             expectation.fulfill()
                             do {
-                                try fm.removeItemAtPath(imagePath)
+                                try fm.removeItem(atPath: imagePath)
                             } catch {
                                 XCTFail("Error: \(error)")
                             }
@@ -36,7 +36,7 @@ class bsyncMiscTests: TestCase {
                 }
                 })
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("Error: \(error)")
         }
@@ -44,7 +44,7 @@ class bsyncMiscTests: TestCase {
     
     func test002_hash_sample_folder() {
         
-        let expectation = expectationWithDescription("hash_sample_folder")
+        let expectation = self.expectation(description: "hash_sample_folder")
         
         var analyzer=BsyncLocalAnalyzer()
         analyzer.saveHashInAFile=false
@@ -61,7 +61,7 @@ class bsyncMiscTests: TestCase {
                 let s = Bartleby.randomStringWithLength(UInt(i * 1024))
                 let subPath = path + (i > 10 ? "subfolder/\(i).data" : "\(i).data")
                 do {
-                    try s.writeToFile(subPath, atomically: false, encoding: Default.STRING_ENCODING)
+                    try s.write(toFile: subPath, atomically: false, encoding: Default.STRING_ENCODING)
                 } catch {
                     XCTFail("Creation of \(subPath) failure \(error)")
                 }
@@ -97,10 +97,10 @@ class bsyncMiscTests: TestCase {
                 })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
-    func randomStringWithLength (len: Int) -> String {
+    func randomStringWithLength (_ len: Int) -> String {
         // We exclude possibily confusing signs "oOiI01" to make random strings less ambiguous
         let signs = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789"
         
@@ -109,7 +109,7 @@ class bsyncMiscTests: TestCase {
         for _ in 0 ..< len {
             let length = UInt32 (signs.characters.count)
             let rand = arc4random_uniform(length)
-            let idx = signs.startIndex.advancedBy(Int(rand))
+            let idx = signs.characters.index(signs.startIndex, offsetBy: Int(rand))
             let c=signs.characters[idx]
             randomString.append(c)
         }

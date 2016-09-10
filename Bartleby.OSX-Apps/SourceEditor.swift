@@ -28,13 +28,13 @@ class SourceEditor: NSViewController,Editor {
         }
     }
 
-    private var _selectedItem:Collectible?
+    fileprivate var _selectedItem:Collectible?
 
     //MARK: Textual Edition
 
     @IBOutlet var textView: NSTextView!{
         didSet{
-            textView.textColor=NSColor.whiteColor()
+            textView.textColor=NSColor.white
         }
     }
 
@@ -45,7 +45,7 @@ class SourceEditor: NSViewController,Editor {
     @IBOutlet weak var textEditionZoneConstraint: NSLayoutConstraint!
 
 
-    private dynamic var enableEdition:Bool=false{
+    fileprivate dynamic var enableEdition:Bool=false{
         didSet{
             self.textView.enabledTextCheckingTypes=0
             if enableEdition==true{
@@ -57,7 +57,7 @@ class SourceEditor: NSViewController,Editor {
         }
     }
 
-    private func _animateEditionConstraint(value:CGFloat){
+    fileprivate func _animateEditionConstraint(_ value:CGFloat){
         if self.textEditionZoneConstraint.constant != value {
             NSAnimationContext.runAnimationGroup({ (context) in
                 context.duration=0.2
@@ -67,9 +67,9 @@ class SourceEditor: NSViewController,Editor {
         }
     }
 
-    @IBAction func applyChanges(sender: AnyObject) {
+    @IBAction func applyChanges(_ sender: AnyObject) {
         let newJsonString=self.textView.string
-        if let data=newJsonString?.dataUsingEncoding(NSUTF8StringEncoding), selectedItem=self._selectedItem{
+        if let data=newJsonString?.data(using: String.Encoding.utf8), let selectedItem=self._selectedItem{
             let previousData=selectedItem.serialize()
             do{
                 try selectedItem.updateData(data,provisionChanges: true)

@@ -21,7 +21,7 @@
     import BartlebyKit
 #endif
 
-    public class BsyncImageDiskManager {
+    open class BsyncImageDiskManager {
 
         var type="SPARSE"
         var encryption="AES-128"
@@ -34,11 +34,11 @@
 
         //MARK: - Image Disk Creation
 
-        public func createImageDiskWithName(imageFilePath: String, size: String, password: String?, handlers: Handlers) {
+        open func createImageDiskWithName(_ imageFilePath: String, size: String, password: String?, handlers: Handlers) {
             if let volumeName=NSString(string: imageFilePath).pathComponents.last {
                 self.createImageDisk(imageFilePath, volumeName:volumeName, size: size, password: password, handlers: handlers)
             } else {
-                handlers.on(Completion.failureState("Bad image file path: \(imageFilePath)", statusCode: .Bad_Request))
+                handlers.on(Completion.failureState("Bad image file path: \(imageFilePath)", statusCode: .bad_Request))
             }
         }
 
@@ -50,15 +50,15 @@
          - parameter size:          a size e.g : "10m" = 10MB "1g"=1GB
          - parameter password:      the password (if omitted the disk image will not be crypted
          */
-        public func createImageDisk(imageFilePath: String, volumeName: String, size: String, password: String?, handlers: Handlers) {
+        open func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?, handlers: Handlers) {
             // Main task
-            let createImageDiskTask=NSTask()
+            let createImageDiskTask=Process()
             createImageDiskTask.launchPath="/usr/bin/hdiutil"
 
             if let password = password {
-                let interPipe=NSPipe()
+                let interPipe=Pipe()
                 // Password injection task
-                let passwordTask = NSTask()
+                let passwordTask = Process()
                 passwordTask.launchPath = "/bin/echo"
                 passwordTask.standardOutput = interPipe
                 passwordTask.arguments=["-n", password]
@@ -95,16 +95,16 @@
                 ]
             }
 
-            let outPipe=NSPipe()
+            let outPipe=Pipe()
             createImageDiskTask.standardOutput=outPipe
             createImageDiskTask.launch()
             createImageDiskTask.waitUntilExit()
 
 
             switch createImageDiskTask.terminationReason {
-            case NSTaskTerminationReason.Exit:
+            case Process.TerminationReason.exit:
                 print("Exit")
-            case NSTaskTerminationReason.UncaughtSignal:
+            case Process.TerminationReason.uncaughtSignal:
                 print("UncaughtSignal")
             }
 
@@ -129,15 +129,15 @@
 
          - returns: return value description
          */
-        public func attachVolume(from path: String, withPassword: String?, handlers: Handlers) {
+        open func attachVolume(from path: String, withPassword: String?, handlers: Handlers) {
             // Main task
-            let attachDiskTask=NSTask()
+            let attachDiskTask=Process()
             attachDiskTask.launchPath="/usr/bin/hdiutil"
 
             if let password=withPassword {
-                let interPipe=NSPipe()
+                let interPipe=Pipe()
                 // Password injection task
-                let passwordTask=NSTask()
+                let passwordTask=Process()
                 passwordTask.launchPath="/bin/echo"
                 passwordTask.standardOutput=interPipe
                 passwordTask.arguments=["-n", password]
@@ -159,15 +159,15 @@
                 ]
             }
 
-            let outPipe=NSPipe()
+            let outPipe=Pipe()
             attachDiskTask.standardOutput=outPipe
             attachDiskTask.launch()
             attachDiskTask.waitUntilExit()
 
             switch attachDiskTask.terminationReason {
-            case NSTaskTerminationReason.Exit:
+            case Process.TerminationReason.exit:
                 print("Exit")
-            case NSTaskTerminationReason.UncaughtSignal:
+            case Process.TerminationReason.uncaughtSignal:
                 print("UncaughtSignal")
             }
 
@@ -188,9 +188,9 @@
 
          - returns: true on success
          */
-        public func detachVolume(named: String, handlers: Handlers) {
+        open func detachVolume(_ named: String, handlers: Handlers) {
             // Main task
-            let detachDiskTask=NSTask()
+            let detachDiskTask=Process()
             let path="/Volumes/\(named)"
             detachDiskTask.launchPath="/usr/bin/hdiutil"
             detachDiskTask.arguments=[
@@ -198,15 +198,15 @@
                 path
 
             ]
-            let outPipe=NSPipe()
+            let outPipe=Pipe()
             detachDiskTask.standardOutput=outPipe
             detachDiskTask.launch()
             detachDiskTask.waitUntilExit()
 
             switch detachDiskTask.terminationReason {
-            case NSTaskTerminationReason.Exit:
+            case Process.TerminationReason.exit:
                 print("Exit")
-            case NSTaskTerminationReason.UncaughtSignal:
+            case Process.TerminationReason.uncaughtSignal:
                 print("UncaughtSignal")
             }
 
@@ -284,15 +284,15 @@
          - parameter volumePath: the volume path
          - parameter handler:    the handler
          */
-        public func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+        open func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
             // Main task
-            let resizeTask=NSTask()
+            let resizeTask=Process()
             resizeTask.launchPath="/usr/bin/hdiutil"
 
             if let password=password {
-                let interPipe=NSPipe()
+                let interPipe=Pipe()
                 // Password injection task
-                let passwordTask=NSTask()
+                let passwordTask=Process()
                 passwordTask.launchPath="/bin/echo"
                 passwordTask.standardOutput=interPipe
                 passwordTask.arguments=["-n", password]
@@ -318,15 +318,15 @@
                 ]
             }
 
-            let outPipe=NSPipe()
+            let outPipe=Pipe()
             resizeTask.standardOutput=outPipe
             resizeTask.launch()
             resizeTask.waitUntilExit()
 
             switch resizeTask.terminationReason {
-            case NSTaskTerminationReason.Exit:
+            case Process.TerminationReason.exit:
                 print("Exit")
-            case NSTaskTerminationReason.UncaughtSignal:
+            case Process.TerminationReason.uncaughtSignal:
                 print("UncaughtSignal")
             }
 

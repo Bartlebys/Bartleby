@@ -33,7 +33,7 @@ extension BartlebyDocument {
 
      - parameter crypted: should the data be crypted?
      */
-    public func saveMetadata(crypted:Bool,handlers: Handlers){
+    public func saveMetadata(_ crypted:Bool,handlers: Handlers){
         let savePanel = NSSavePanel()
         savePanel.canCreateDirectories = true
         savePanel.nameFieldStringValue = self.fileURL?.lastPathComponent ?? "metadata"
@@ -42,10 +42,10 @@ extension BartlebyDocument {
         }else{
             savePanel.allowedFileTypes=["json"]
         }
-        savePanel.beginWithCompletionHandler({ (result) in
-            dispatch_async(dispatch_get_main_queue(), {
+        savePanel.begin(completionHandler: { (result) in
+            DispatchQueue.main.async(execute: {
                 if result==NSFileHandlingPanelOKButton{
-                    if let url = savePanel.URL {
+                    if let url = savePanel.url {
                         if let filePath=url.path {
                             self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
                         }
@@ -60,7 +60,7 @@ extension BartlebyDocument {
 
      - parameter crypted: should the data be decrypted?
      */
-    public func loadMetadata(crypted:Bool,handlers: Handlers){
+    public func loadMetadata(_ crypted:Bool,handlers: Handlers){
         let openPanel = NSOpenPanel()
         openPanel.canCreateDirectories = false
         if crypted{
@@ -68,10 +68,10 @@ extension BartlebyDocument {
         }else{
             openPanel.allowedFileTypes=["json"]
         }
-        openPanel.beginWithCompletionHandler({ (result) in
-            dispatch_async(dispatch_get_main_queue(), {
+        openPanel.begin(completionHandler: { (result) in
+            DispatchQueue.main.async(execute: {
                 if result==NSFileHandlingPanelOKButton{
-                    if let url = openPanel.URL {
+                    if let url = openPanel.url {
                         if let filePath=url.path {
                             self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
                         }
@@ -89,17 +89,17 @@ extension BartlebyDocument {
 
      - parameter handlers: the handlers
      */
-    public func importCollectionsFromCollaborativeServer(handlers: Handlers){
+    public func importCollectionsFromCollaborativeServer(_ handlers: Handlers){
 
         let password=self.currentUser.password
 
         self.currentUser.login(withPassword: password, sucessHandler: {
 
-            let pathURL=self.baseURL.URLByAppendingPathComponent("/Export")
+            let pathURL=self.baseURL.appendingPathComponent("/Export")
             let dictionary:Dictionary<String, AnyObject>=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
 
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
-            let r: Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            let r: Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON { response in
 
                 let result=response.result
@@ -146,12 +146,12 @@ extension BartlebyDocument {
                             if issues.count==0{
                                 handlers.on(Completion.successState())
                             }else{
-                                handlers.on(Completion.failureState(issues.joinWithSeparator("\n"), statusCode: StatusOfCompletion.Expectation_Failed))
+                                handlers.on(Completion.failureState(issues.joined(separator: "\n"), statusCode: StatusOfCompletion.expectation_Failed))
                             }
                         } else {
-                            var status = StatusOfCompletion.Undefined
+                            var status = StatusOfCompletion.undefined
                             if let statusCode=httpResponse?.statusCode{
-                                status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion.Undefined
+                                status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion.undefined
                             }
                             handlers.on(Completion.failureState("\(result)", statusCode:status ))
                         }

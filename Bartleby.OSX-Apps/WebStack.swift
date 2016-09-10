@@ -17,16 +17,16 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
         }
     }
 
-    private var URL:NSURL?
+    fileprivate var URL:Foundation.URL?
 
-    private var _loadingAttempted:Bool=false
+    fileprivate var _loadingAttempted:Bool=false
 
     var registryDelegate: RegistryDelegate?{
         didSet{
             if let document=self.registryDelegate?.getRegistry(){
                 if let currentUser=document.registryMetadata.currentUser{
                     let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
-                    self.URL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)");
+                    self.URL=Foundation.URL(string: document.baseURL.absoluteString?.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)");
                 }
             }
         }
@@ -41,8 +41,8 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
         super.viewDidAppear()
         if !self._loadingAttempted {
             if let URL=self.URL {
-                let r=NSURLRequest(URL:URL)
-                self.webView.mainFrame.loadRequest(r)
+                let r=URLRequest(url:URL)
+                self.webView.mainFrame.load(r)
                 self._loadingAttempted=true
             }
         }
@@ -50,7 +50,7 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
 
     // Mark: WebFrameLoadDelegate
     
-    func webView(sender: WebView!, didFailLoadWithError error: NSError!, forFrame frame: WebFrame!){
+    func webView(_ sender: WebView!, didFailLoadWithError error: Error!, for frame: WebFrame!){
         self._loadingAttempted=false
     }
 

@@ -10,7 +10,7 @@
     import ObjectMapper
 #endif
 
-public class CryptedKeyValueStorage: Mappable {
+open class CryptedKeyValueStorage: Mappable {
 
 
     var storage: [String:String]=[String:String]()
@@ -22,7 +22,7 @@ public class CryptedKeyValueStorage: Mappable {
         self.mapping(map)
     }
 
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         storage <- (map["storage"], CryptedStringKeyValueTransform())
     }
 

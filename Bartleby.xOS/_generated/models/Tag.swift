@@ -14,33 +14,33 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a tag can be used to classify instances.
-@objc(Tag) public class Tag : JObject{
+@objc(Tag) open class Tag : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Tag"
     }
 
-	dynamic public var creationDate:String? {	 
+	dynamic open var creationDate:String? {	 
 	    didSet { 
 	       if creationDate != oldValue {
-	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
+	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue as AnyObject?,newValue: creationDate as AnyObject?) 
 	       } 
 	    }
 	}
 
-	dynamic public var color:String? {	 
+	dynamic open var color:String? {	 
 	    didSet { 
 	       if color != oldValue {
-	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
+	            self.provisionChanges(forKey: "color",oldValue: oldValue as AnyObject?,newValue: color as AnyObject?) 
 	       } 
 	    }
 	}
 
-	dynamic public var icon:String? {	 
+	dynamic open var icon:String? {	 
 	    didSet { 
 	       if icon != oldValue {
-	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
+	            self.provisionChanges(forKey: "icon",oldValue: oldValue as AnyObject?,newValue: icon as AnyObject?) 
 	       } 
 	    }
 	}
@@ -53,7 +53,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.creationDate <- ( map["creationDate"] )
@@ -68,28 +68,28 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.creationDate=String(decoder.decodeObjectOfClass(NSString.self, forKey:"creationDate") as NSString?)
-		self.color=String(decoder.decodeObjectOfClass(NSString.self, forKey:"color") as NSString?)
-		self.icon=String(decoder.decodeObjectOfClass(NSString.self, forKey:"icon") as NSString?)
+		self.creationDate=String(describing: decoder.decodeObject(of: NSString.self, forKey:"creationDate") as NSString?)
+		self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
+		self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let creationDate = self.creationDate {
-			coder.encodeObject(creationDate,forKey:"creationDate")
+			coder.encode(creationDate,forKey:"creationDate")
 		}
 		if let color = self.color {
-			coder.encodeObject(color,forKey:"color")
+			coder.encode(color,forKey:"color")
 		}
 		if let icon = self.icon {
-			coder.encodeObject(icon,forKey:"icon")
+			coder.encode(icon,forKey:"icon")
 		}
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -100,11 +100,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "tags"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Tag.collectionName
     }
 

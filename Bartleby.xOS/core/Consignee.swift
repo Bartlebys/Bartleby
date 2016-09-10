@@ -20,23 +20,23 @@ import Foundation
 #endif
 
 /// A concrete implementation of a consignee with multi platform basic support
-public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Consignation, AdaptiveConsignation {
+open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Consignation, AdaptiveConsignation {
 
     // MARK: - ConcreteConsignee protocol
 
-    public func perform(reaction: Reaction, forContext: Consignable) {
+    open func perform(_ reaction: Reaction, forContext: Consignable) {
         switch reaction {
-            case  Reaction.Nothing:
+            case  Reaction.nothing:
                 break
-            case let .DispatchAdaptiveMessage(context, title, body, trigger):
+            case let .dispatchAdaptiveMessage(context, title, body, trigger):
                 self.dispatchAdaptiveMessage(context, title: title, body: body, onSelectedIndex:trigger)
-            case let .Track(result, context):
+            case let .track(result, context):
                 self.track(result, context: context)
-            case let .PresentInteractiveMessage(title, body, trigger):
+            case let .presentInteractiveMessage(title, body, trigger):
                 self.presentInteractiveMessage(title, body: body, onSelectedIndex:trigger)
-            case let .PresentVolatileMessage(title, body):
+            case let .presentVolatileMessage(title, body):
                 self.presentVolatileMessage(title, body: body)
-            case let .LogMessage(title, body):
+            case let .logMessage(title, body):
                 self.logMessage(title, body: body)
         }
     }
@@ -46,7 +46,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
     // var reactions = Array<Consignee.Reaction> ()
 
 
-    public func perform(reactions: [Reaction], forContext: Consignable) {
+    open func perform(_ reactions: [Reaction], forContext: Consignable) {
         for reaction in reactions {
             self.perform(reaction, forContext: forContext)
         }
@@ -54,7 +54,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
 
     // MARK: - ConcreteTracker protocol
 
-    public func track(result: AnyObject?, context: Consignable) {
+    open func track(_ result: AnyObject?, context: Consignable) {
         if trackingIsEnabled == true {
             trackingStack.append((result:result, context:context))
         }
@@ -62,8 +62,8 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
             var resultString=""
             if result != nil{
                 resultString="\(result!)"
-                resultString=resultString.stringByReplacingOccurrencesOfString(" ", withString:"")
-                resultString=resultString.stringByReplacingOccurrencesOfString("\n", withString:"")
+                resultString=resultString.replacingOccurrences(of: " ", with:"")
+                resultString=resultString.replacingOccurrences(of: "\n", with:"")
             }
             let contextString="\(context)"
             bprint("Context:\(contextString)", file:#file, function:#function, line:#line)
@@ -73,13 +73,13 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
     // MARK:  Simple stack management
 
 
-    public var trackingIsEnabled: Bool=false
+    open var trackingIsEnabled: Bool=false
 
-    public var bprintTrackedEntries: Bool=false
+    open var bprintTrackedEntries: Bool=false
 
-    public var trackingStack=[(result:AnyObject?, context:Consignable)]()
+    open var trackingStack=[(result:AnyObject?, context:Consignable)]()
 
-    public func dumpStack() {
+    open func dumpStack() {
         for (result, context) in trackingStack {
             print("\n\(context):\n\(result)\n")
         }
@@ -87,7 +87,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
 
     // MARK: - AdaptiveConsignation protocol
 
-    public func dispatchAdaptiveMessage(context: Consignable, title: String, body: String, onSelectedIndex:(selectedIndex: UInt)->())->() {
+    open func dispatchAdaptiveMessage(_ context: Consignable, title: String, body: String, onSelectedIndex:@escaping (_ selectedIndex: UInt)->())->() {
         // You can override t Consignee and implement your own adaptive mapping
         self.presentInteractiveMessage(title, body: body, onSelectedIndex: onSelectedIndex)
         bprint("presentInteractiveMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
@@ -97,36 +97,36 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
     // MARK: - Consignation
 
 
-    public func presentInteractiveMessage(title: String, body: String, onSelectedIndex:(selectedIndex: UInt)->())->() {
+    open func presentInteractiveMessage(_ title: String, body: String, onSelectedIndex:@escaping (_ selectedIndex: UInt)->())->() {
         #if os(OSX)
             #if !USE_EMBEDDED_MODULES
 
                 // Return if this is a unit test
                 if let _ = NSClassFromString("XCTest") {
-                    onSelectedIndex(selectedIndex: 0)
+                    onSelectedIndex(0)
                     return
                 }
 
                 if let window=NSApp.mainWindow {
                     let alert = NSAlert()
                     alert.messageText = title
-                    alert.addButtonWithTitle("OK")
+                    alert.addButton(withTitle: "OK")
                     alert.informativeText = body
-                    alert.beginSheetModalForWindow( window, completionHandler: { (returnCode) -> Void in
+                    alert.beginSheetModal( for: window, completionHandler: { (returnCode) -> Void in
                         switch returnCode {
                         case NSAlertFirstButtonReturn:
-                            onSelectedIndex(selectedIndex: 0)
+                            onSelectedIndex(0)
                         case NSAlertSecondButtonReturn:
-                            onSelectedIndex(selectedIndex: 1)
+                            onSelectedIndex(1)
                         case NSAlertThirdButtonReturn:
-                            onSelectedIndex(selectedIndex: 3)
+                            onSelectedIndex(3)
                         default:
-                            onSelectedIndex(selectedIndex: 0)
+                            onSelectedIndex(0)
                         }
                     })
                 } else {
                     // ERROR
-                    onSelectedIndex(selectedIndex: 0)
+                    onSelectedIndex(0)
                 }
             #else
             #endif
@@ -150,7 +150,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
         #endif
     }
 
-    public func presentVolatileMessage(title: String, body: String)->() {
+    open func presentVolatileMessage(_ title: String, body: String)->() {
         #if os(OSX)
             #if !USE_EMBEDDED_MODULES
 
@@ -162,11 +162,11 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
                 if let window=NSApp.mainWindow {
                     let alert = NSAlert()
                     alert.messageText = title
-                    alert.addButtonWithTitle("OK")
+                    alert.addButton(withTitle: "OK")
                     alert.informativeText = body
-                    alert.beginSheetModalForWindow( window, completionHandler: nil)
-                    let dispatchTime=dispatch_time(DISPATCH_TIME_NOW, Int64(Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC)))
-                    dispatch_after(dispatchTime, dispatch_get_main_queue()) { () -> Void in
+                    alert.beginSheetModal( for: window, completionHandler: nil)
+                    let dispatchTime=DispatchTime.now() + Double(Int64(Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                    DispatchQueue.main.asyncAfter(deadline: dispatchTime) { () -> Void in
                         window.attachedSheet?.close()
                     }
                 } else {
@@ -202,15 +202,15 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
 
     #if os(OSX)
     //#if !USE_EMBEDDED_MODULES
-    public func presentVolatileMessage(window: NSWindow, title: String, body: String)->() {
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+    open func presentVolatileMessage(_ window: NSWindow, title: String, body: String)->() {
+        DispatchQueue.main.async { () -> Void in
             let alert = NSAlert()
             alert.messageText = title
-            alert.addButtonWithTitle("OK")
+            alert.addButton(withTitle: "OK")
             alert.informativeText = body
-            alert.beginSheetModalForWindow( window, completionHandler: nil)
-            let dispatchTime=dispatch_time(DISPATCH_TIME_NOW, Int64(Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC)))
-            dispatch_after(dispatchTime, dispatch_get_main_queue()) { () -> Void in
+            alert.beginSheetModal( for: window, completionHandler: nil)
+            let dispatchTime=DispatchTime.now() + Double(Int64(Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime) { () -> Void in
                 if let sheet=window.attachedSheet {
                     sheet.close()
                 }
@@ -223,7 +223,7 @@ public class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, C
     #endif
 
 
-    public func logMessage(title: String, body: String)->() {
+    open func logMessage(_ title: String, body: String)->() {
         bprint("\(title):\n\(body)", file:#file, function:#function, line: #line)
     }
 

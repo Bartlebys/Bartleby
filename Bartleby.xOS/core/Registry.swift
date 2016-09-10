@@ -20,18 +20,18 @@ import Foundation
 #endif
 
 
-public enum RegistryError: ErrorType {
-    case DuplicatedCollectionName(collectionName:String)
-    case AttemptToLoadAnNonSupportedCollection(collectionName:String)
-    case UnExistingCollection(collectionName:String)
-    case MissingCollectionProxy(collectionName:String)
-    case CollectionProxyTypeError
-    case CollectionTypeError
-    case RootObjectTypeMissMatch
-    case InstanceNotFound
-    case InstanceTypeMissMatch
-    case AttemptToSetUpRootObjectUIDMoreThanOnce
-    case UnSupportedFileType(typeName:String)
+public enum RegistryError: Error {
+    case duplicatedCollectionName(collectionName:String)
+    case attemptToLoadAnNonSupportedCollection(collectionName:String)
+    case unExistingCollection(collectionName:String)
+    case missingCollectionProxy(collectionName:String)
+    case collectionProxyTypeError
+    case collectionTypeError
+    case rootObjectTypeMissMatch
+    case instanceNotFound
+    case instanceTypeMissMatch
+    case attemptToSetUpRootObjectUIDMoreThanOnce
+    case unSupportedFileType(typeName:String)
 }
 
 
@@ -64,19 +64,19 @@ public protocol RegistryDependent {
  Documents can be shared between iOS, tvOS and OSX.
 
  */
-public class Registry: BXDocument {
+open class Registry: BXDocument {
 
     // The file extension for crypted data
-    public static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
+    open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
 
     // The metadata file name
-    internal var _metadataFileName: String { return "metadata".stringByAppendingString(Registry.DATA_EXTENSION) }
+    internal var _metadataFileName: String { return "metadata" + Registry.DATA_EXTENSION }
 
     // By default the registry uses Json based implementations
     // JRegistryMetadata and JSerializer
 
     // We use a  JRegistryMetadata
-    dynamic public var registryMetadata=RegistryMetadata()
+    dynamic open var registryMetadata=RegistryMetadata()
 
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive the collectible collection is set to nil
@@ -88,7 +88,7 @@ public class Registry: BXDocument {
     // We use the root object UID as observationUID
     // You should have set up the rootObjectUID before any trigger emitted.
     // The triggers are observable via this UID
-    public var UID:String{
+    open var UID:String{
         get{
             return self.registryMetadata.rootObjectUID
         }
@@ -97,7 +97,7 @@ public class Registry: BXDocument {
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace in wich a user can perform operations.
     // A user can `live` in one data space only.
-    public var spaceUID: String {
+    open var spaceUID: String {
         get {
             return self.registryMetadata.spaceUID
         }
@@ -105,7 +105,7 @@ public class Registry: BXDocument {
 
 
     /// The current document user
-    public var currentUser: User {
+    open var currentUser: User {
         get {
             if let currentUser=self.registryMetadata.currentUser {
                 return currentUser
@@ -116,26 +116,26 @@ public class Registry: BXDocument {
     }
 
     // Set to true when the data has been loaded once or more.
-    public var hasBeenLoaded: Bool=false
+    open var hasBeenLoaded: Bool=false
 
     // An in memory flag to distinguish dotBart import case
-    public var dotBart=false
+    open var dotBart=false
 
     /// The underlining storage hashed by collection name
     internal var _collections=[String:BartlebyCollection]()
 
     /// We store the URL of the active security bookmarks
-    internal var _activeSecurityBookmarks=[NSURL]()
+    internal var _activeSecurityBookmarks=[URL]()
 
 
     // MARK: Universal Type management.
 
-    private static var _associatedTypesMap=[String:String]()
+    fileprivate static var _associatedTypesMap=[String:String]()
 
     // MARK: URI
 
     // The collection server base URL
-    public dynamic lazy var baseURL:NSURL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
+    open dynamic lazy var baseURL:URL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
 
 
 
@@ -151,18 +151,18 @@ public class Registry: BXDocument {
 
      - throws: throws value description
      */
-    public func setRootObjectUID(UID:String) throws {
+    open func setRootObjectUID(_ UID:String) throws {
         if (self.registryMetadata.rootObjectUID==Default.NO_UID){
             self.registryMetadata.rootObjectUID=UID
             Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: UID)
         }else{
-            throw RegistryError.AttemptToSetUpRootObjectUIDMoreThanOnce
+            throw RegistryError.attemptToSetUpRootObjectUIDMoreThanOnce
         }
     }
 
 
 
-    public class func declareTypes() {
+    open class func declareTypes() {
         /*
          Registry.declareCollectibleType(Object)
          Registry.declareCollectibleType(Alias<Object>)
@@ -207,10 +207,10 @@ public class Registry: BXDocument {
      ```
      - parameter type: a Collectible type
      */
-    public static func declareCollectibleType(type: Collectible.Type) {
+    open static func declareCollectibleType(_ type: Collectible.Type) {
         let prototype=type.init()
         let name = prototype.runTimeTypeName()
-        Registry._associatedTypesMap[prototype.dynamicType.typeName()]=name
+        Registry._associatedTypesMap[type(of: prototype).typeName()]=name
     }
 
 
@@ -221,7 +221,7 @@ public class Registry: BXDocument {
 
      - returns: the resolved type name
      */
-    public static func resolveTypeName(from universalTypeName: String) -> String {
+    open static func resolveTypeName(from universalTypeName: String) -> String {
         if let name = Registry._associatedTypesMap[universalTypeName] {
             return name
         } else {
@@ -236,11 +236,11 @@ public class Registry: BXDocument {
     // to resolve externalReferences, cross reference, it simplify instance mobility from a registry to another, etc..
     // future implementation may include extension for lazy Storage
 
-    private static var _instancesByUID=Dictionary<String, Collectible>()
+    fileprivate static var _instancesByUID=Dictionary<String, Collectible>()
 
 
     // The number of registred object
-    public static var numberOfRegistredObject: Int {
+    open static var numberOfRegistredObject: Int {
         get {
             return _instancesByUID.count
         }
@@ -251,7 +251,7 @@ public class Registry: BXDocument {
 
      - parameter instance: the Identifiable instance
      */
-    public static func register<T: Collectible>(instance: T) {
+    open static func register<T: Collectible>(_ instance: T) {
         self._instancesByUID[instance.UID]=instance
     }
 
@@ -260,8 +260,8 @@ public class Registry: BXDocument {
 
      - parameter instance: the collectible instance
      */
-    public static func unRegister<T: Collectible>(instance: T) {
-        self._instancesByUID.removeValueForKey(instance.UID)
+    open static func unRegister<T: Collectible>(_ instance: T) {
+        self._instancesByUID.removeValue(forKey: instance.UID)
     }
 
     /**
@@ -271,11 +271,11 @@ public class Registry: BXDocument {
 
      - returns: the instance
      */
-    public static func registredObjectByUID<T: Collectible>(UID: String) throws-> T {
+    open static func registredObjectByUID<T: Collectible>(_ UID: String) throws-> T {
         if let instance=self._instancesByUID[UID] as? T {
             return instance
         }
-        throw RegistryError.InstanceNotFound
+        throw RegistryError.instanceNotFound
 
     }
 
@@ -288,7 +288,7 @@ public class Registry: BXDocument {
      î
      - returns: the instance
      */
-    static public func collectibleInstanceByUID(UID: String) -> Collectible? {
+    static open func collectibleInstanceByUID(_ UID: String) -> Collectible? {
         return self._instancesByUID[UID]
     }
 
@@ -342,21 +342,21 @@ public class Registry: BXDocument {
      #3  Replace the collections proxies (if you want to use cocoa bindings)
 
      */
-    public func configureSchema() {
+    open func configureSchema() {
 
     }
 
-    public func registerCollections() throws {
+    open func registerCollections() throws {
         for metadatum in self.registryMetadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
                 if var proxy = proxy as? BartlebyCollection {
                     self._addCollection(proxy)
                     self._refreshIdentifier(&proxy)
                 } else {
-                    throw RegistryError.CollectionProxyTypeError
+                    throw RegistryError.collectionProxyTypeError
                 }
             } else {
-                throw RegistryError.MissingCollectionProxy(collectionName: metadatum.collectionName)
+                throw RegistryError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
@@ -366,12 +366,12 @@ public class Registry: BXDocument {
             if var proxy=self.collectionByName(metadatum.collectionName) {
                 self._refreshIdentifier(&proxy)
             } else {
-                throw RegistryError.MissingCollectionProxy(collectionName: metadatum.collectionName)
+                throw RegistryError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
 
-    private func _refreshIdentifier(inout collectionProxy: BartlebyCollection) {
+    fileprivate func _refreshIdentifier(_ collectionProxy: inout BartlebyCollection) {
         collectionProxy.undoManager=self.undoManager
         collectionProxy.registry=self as? BartlebyDocument
     }
@@ -379,9 +379,9 @@ public class Registry: BXDocument {
 
     // MARK: - Collections Public API
 
-    public func getCollection<T: CollectibleCollection>  () throws -> T {
+    open func getCollection<T: CollectibleCollection>  () throws -> T {
         guard var collection=self.collectionByName(T.collectionName) as? T else {
-            throw RegistryError.UnExistingCollection(collectionName: T.collectionName)
+            throw RegistryError.unExistingCollection(collectionName: T.collectionName)
         }
         collection.undoManager=self.undoManager
         return collection
@@ -394,7 +394,7 @@ public class Registry: BXDocument {
 
      - returns: the names
      */
-    public func getCollectionsNames()->[String]{
+    open func getCollectionsNames()->[String]{
         return self._collections.map {$0.0}
     }
 
@@ -402,14 +402,14 @@ public class Registry: BXDocument {
     // Weak Casting for internal behavior
     // Those dynamic method are only used internally
 
-    internal func _addCollection(collection: BartlebyCollection) {
+    internal func _addCollection(_ collection: BartlebyCollection) {
         let collectionName=collection.d_collectionName
         _collections[collectionName]=collection
     }
 
 
     // Any call should always be casted to a CollectibleCollection
-    func collectionByName(name: String) -> BartlebyCollection? {
+    func collectionByName(_ name: String) -> BartlebyCollection? {
         if _collections.keys.contains(name){
             return _collections[name]
         }
@@ -420,9 +420,9 @@ public class Registry: BXDocument {
     /**
      Universal change
      */
-    public func hasChanged() -> () {
+    open func hasChanged() -> () {
         #if os(OSX)
-            self.updateChangeCount(NSDocumentChangeType.ChangeDone)
+            self.updateChangeCount(NSDocumentChangeType.changeDone)
         #else
             self.updateChangeCount(UIDocumentChangeKind.Done)
         #endif
@@ -437,25 +437,25 @@ public class Registry: BXDocument {
 
      - returns: the crypted and the non crypted file name in a tupple.
      */
-    internal func _collectionFileNames(metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
+    internal func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=Registry.DATA_EXTENSION
         let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
-        let cryptedFileName=metadatum.collectionName.stringByAppendingString(cryptedExtension)
-        let nonCryptedFileName=metadatum.collectionName.stringByAppendingString(nonCryptedExtension)
+        let cryptedFileName=metadatum.collectionName + cryptedExtension
+        let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
     }
 
     /**
      Registry did load
      */
-    public func registryDidLoad() {
+    open func registryDidLoad() {
         self.hasBeenLoaded=true
     }
 
     /**
      Registry will save
      */
-    public func registryWillSave() {
+    open func registryWillSave() {
 
     }
 

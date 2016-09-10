@@ -20,6 +20,6 @@ public protocol HTTPCommand {
      - parameter success: the successful JHTTPResponse
      - parameter failure: the unsucessful JHTTPResponse
      */
-    func push(sucessHandler success:(context: JHTTPResponse)->(), failureHandler failure:(context: JHTTPResponse)->())
+    func push(sucessHandler success:(_ context: JHTTPResponse)->(), failureHandler failure:(_ context: JHTTPResponse)->())
 
 }

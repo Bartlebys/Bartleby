@@ -11,12 +11,12 @@ import Foundation
 @objc public protocol CryptoDelegate {
 
     // TODO: @md #crypto Remove throw for encryption
-    func encryptString(string: String)throws->String
-    func decryptString(string: String)throws->String
+    func encryptString(_ string: String)throws->String
+    func decryptString(_ string: String)throws->String
 
-    func encryptData(data: NSData)throws ->NSData
-    func decryptData(data: NSData)throws ->NSData
+    func encryptData(_ data: Data)throws ->Data
+    func decryptData(_ data: Data)throws ->Data
 
-    static func hash(string: String) -> String
+    static func hash(_ string: String) -> String
 
 }

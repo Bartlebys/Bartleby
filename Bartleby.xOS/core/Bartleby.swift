@@ -23,24 +23,24 @@ import Foundation
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
 // Bartleby 2.0 will implement storage layers for larger data set, and distant external references
-public class  Bartleby: Consignee {
+open class  Bartleby: Consignee {
 
     // The configuration
-    static public var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
+    static open var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
 
     // The crypto delegate
-    static public var cryptoDelegate: CryptoDelegate=NoCrypto()
+    static open var cryptoDelegate: CryptoDelegate=NoCrypto()
 
     // The File manager
-    static public var fileManager: BartlebyFileIO=BFileManager()
+    static open var fileManager: BartlebyFileIO=BFileManager()
 
 
     //The default serializer
-    static public var defaultSerializer: Serializer.Type=JSerializer.self
+    static open var defaultSerializer: Serializer.Type=JSerializer.self
 
 
     /// The standard singleton shared instance
-    public static let sharedInstance: Bartleby = {
+    open static let sharedInstance: Bartleby = {
         let instance = Bartleby()
         return instance
     }()
@@ -49,34 +49,34 @@ public class  Bartleby: Consignee {
     static let b_release = "beta2"
 
     /// The version string of Bartleby framework
-    public static var versionString: String {
+    open static var versionString: String {
         get {
             return "\(self.b_version).\(self.b_release)"
         }
     }
 
     // A unique run identifier that changes each time Bartleby is launched
-    public static let runUID: String=Bartleby.createUID()
+    open static let runUID: String=Bartleby.createUID()
 
 
     /**
      This method should be only used to cleanup in core unit test
      */
-    public func hardCoreCleanupForUnitTests() {
+    open func hardCoreCleanupForUnitTests() {
         self._registries=[String:Registry]()
     }
 
     /**
      * When using ephemeralMode on registration Instance are marked ephemeral
      */
-    public static var ephemeral=false
+    open static var ephemeral=false
 
-    public static var requestCounter=0
+    open static var requestCounter=0
 
     /**
      Should be called on Init of the Document.
      */
-    public func configureWith(configuration: BartlebyConfiguration.Type) {
+    open func configureWith(_ configuration: BartlebyConfiguration.Type) {
 
         if configuration.DISABLE_DATA_CRYPTO {
             // Use NoCrypto a neutral crypto delegate
@@ -108,13 +108,13 @@ public class  Bartleby: Consignee {
     }
 
     // Bartleby's favourite
-    public static func please(message: String) -> String {
+    open static func please(_ message: String) -> String {
         return "I would prefer not to!"
     }
 
     // MARK: -
     // TODO: @md #crypto Check crypto key requirement
-    static public func isValidKey(key: String) -> Bool {
+    static open func isValidKey(_ key: String) -> Bool {
         return key.characters.count >= 32
     }
 
@@ -127,7 +127,7 @@ public class  Bartleby: Consignee {
 
 
     /// Memory storage
-    private var _registries: [String:Registry] = [String:Registry]()
+    fileprivate var _registries: [String:Registry] = [String:Registry]()
 
 
     /**
@@ -138,7 +138,7 @@ public class  Bartleby: Consignee {
 
      - returns: the document
      */
-    public func getDocumentByUID(UID:String) -> BartlebyDocument?{
+    open func getDocumentByUID(_ UID:String) -> BartlebyDocument?{
         return self._registries[UID] as? BartlebyDocument
     }
     /**
@@ -146,7 +146,7 @@ public class  Bartleby: Consignee {
 
      - parameter registry: the registry
      */
-    public func declare(registry: Registry) {
+    open func declare(_ registry: Registry) {
         self._registries[registry.UID]=registry
     }
 
@@ -155,8 +155,8 @@ public class  Bartleby: Consignee {
 
      - parameter registryUID: the target registry UID
      */
-    public func forget(registryUID: String) {
-        _registries.removeValueForKey(registryUID)
+    open func forget(_ registryUID: String) {
+        _registries.removeValue(forKey: registryUID)
     }
 
     /**
@@ -165,11 +165,11 @@ public class  Bartleby: Consignee {
      - parameter registryProxyUID: the proxy UID
      - parameter registryUID:      the final UID
      */
-    public func replaceRegistryUID(registryProxyUID: String, by registryUID: String) {
+    open func replaceRegistryUID(_ registryProxyUID: String, by registryUID: String) {
         if( registryProxyUID != registryUID) {
             if let registry=self._registries[registryProxyUID] {
                 self._registries[registryUID]=registry
-                _registries.removeValueForKey(registryProxyUID)
+                _registries.removeValue(forKey: registryProxyUID)
             }
         }
     }
@@ -180,10 +180,10 @@ public class  Bartleby: Consignee {
      - parameter seconds: the delay in fraction of seconds
      - parameter closure: the closure
      */
-    public static func executeAfter(seconds: Double,on queue:dispatch_queue_t=dispatch_get_main_queue(),closure:()->())->() {
+    open static func executeAfter(_ seconds: Double,on queue:DispatchQueue=DispatchQueue.main,closure:@escaping ()->())->() {
         let delayInNanoSeconds = seconds * Double(NSEC_PER_SEC)
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInNanoSeconds))
-        dispatch_after(delayTime, queue) {
+        let delayTime = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
+        queue.asyncAfter(deadline: delayTime) {
             closure()
         }
     }
@@ -193,25 +193,25 @@ public class  Bartleby: Consignee {
 
      - returns: the UID
      */
-    public static func createUID() -> String {
+    open static func createUID() -> String {
         // (!) NSUUID are not suitable for MONGODB as Primary Ids.
         // We need to encode them we have choosen base64
-        let uid=NSUUID().UUIDString
-        let utf8str = uid.dataUsingEncoding(Default.STRING_ENCODING)
-        return utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue:0))
+        let uid=UUID().uuidString
+        let utf8str = uid.data(using: Default.STRING_ENCODING)
+        return utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue:0))
     }
 
-    public static var elapsedTime:Double {
+    open static var elapsedTime:Double {
         return CFAbsoluteTimeGetCurrent()-Bartleby.startTime
     }
 
     // MARK: - bprint
-    private static var _enableBPrint: Bool=false
-    public static let startTime=CFAbsoluteTimeGetCurrent()
-    public static  var bprintCollection=BprintCollection()
+    fileprivate static var _enableBPrint: Bool=false
+    open static let startTime=CFAbsoluteTimeGetCurrent()
+    open static  var bprintCollection=BprintCollection()
 
 
-    public static var bPrintObservers=[BprintObserver]()
+    open static var bPrintObservers=[BprintObserver]()
 
     /**
      Print indirection with contextual informations.
@@ -223,11 +223,11 @@ public class  Bartleby: Consignee {
      - parameter category: a categorizer string
      - parameter decorative: if set to true only the message will be displayed.
      */
-    public static func bprint(message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
+    open static func bprint(_ message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=Bartleby.elapsedTime
             let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
-            Bartleby.bprintCollection.entries.insert(entry, atIndex: 0)
+            Bartleby.bprintCollection.entries.insert(entry, at: 0)
             for observers in bPrintObservers{
                 observers.acknowledge(entry)
             }
@@ -243,9 +243,9 @@ public class  Bartleby: Consignee {
 
      - returns: a dump of the entries
      */
-    public static func getBprintEntries(matching:(entry: BprintEntry) -> Bool )->String{
+    open static func getBprintEntries(_ matching:@escaping (_ entry: BprintEntry) -> Bool )->String{
         let entries=Bartleby.bprintCollection.entries.filter { (entry) -> Bool in
-            return matching(entry: entry)
+            return matching(entry)
         }
         var infos=""
         var counter = 1
@@ -260,7 +260,7 @@ public class  Bartleby: Consignee {
     /**
      Cleans up all the entries
      */
-    public static func cleanUpBprintEntries(){
+    open static func cleanUpBprintEntries(){
         Bartleby.bprintCollection.entries.removeAll()
     }
 
@@ -299,23 +299,23 @@ public class  Bartleby: Consignee {
 
      - parameter matching: the filter closure
      */
-    public static func dumpBprintEntries(matching:(entry: BprintEntry) -> Bool,fileName:String?){
+    open static func dumpBprintEntries(_ matching:@escaping (_ entry: BprintEntry) -> Bool,fileName:String?){
 
         let log=Bartleby.getBprintEntries(matching)
-        let date=NSDate()
-        let df=NSDateFormatter()
+        let date=Date()
+        let df=DateFormatter()
         df.dateFormat = "yyyy-MM-dd-HH-mm"
-        let dateFolder = df.stringFromDate(date)
-        var id = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleIdentifier")
+        let dateFolder = df.string(from: date)
+        var id = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier")
         if id == nil{
-            id=NSBundle.mainBundle().executableURL?.lastPathComponent
+            id=Bundle.main.executableURL?.lastPathComponent
         }
         let groupFolder = (id ?? "Shared")!
 
-        let folderPath=Bartleby.getSearchPath(NSSearchPathDirectory.ApplicationSupportDirectory)!.stringByAppendingString("Bartlebys/logs/\(groupFolder)/\(dateFolder)/")
+        let folderPath=Bartleby.getSearchPath(FileManager.SearchPathDirectory.applicationSupportDirectory)! + "Bartlebys/logs/\(groupFolder)/\(dateFolder)/"
         let filePath=folderPath+"\(fileName ?? "" ).txt"
 
-        dispatch_async(GlobalQueue.Background.get()) {
+        GlobalQueue.background.get().async {
             let fileCreationHandler=Handlers { (folderCreation) in
                 if folderCreation.success {
                     Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())
@@ -333,7 +333,7 @@ public class  Bartleby: Consignee {
      - parameter title:   the title of the todo
      - parameter message: its message
      */
-    public static func todo(title: String, message: String) {
+    open static func todo(_ title: String, message: String) {
         Bartleby.sharedInstance.presentVolatileMessage(title, body:message)
     }
 
@@ -347,13 +347,13 @@ public class  Bartleby: Consignee {
 
      - returns: the string
      */
-    public static func randomStringWithLength (len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
+    open static func randomStringWithLength (_ len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
         var randomString = ""
         for _ in (0 ..< len) {
             let length = UInt32 (signs.characters.count)
             let rand = Int(arc4random_uniform(length))
-            let idx = signs.startIndex.advancedBy(rand,limit:signs.endIndex)
-            let c=signs.characters[idx]
+            let idx = signs.characters.index(signs.startIndex, offsetBy: rand, limitedBy:signs.endIndex)
+            let c=signs.characters[idx!]
             randomString.append(c)
         }
         return randomString
@@ -370,13 +370,13 @@ public class  Bartleby: Consignee {
 
      - returns: the
      */
-    public func getCollaborationURL(registryUID: String) -> NSURL {
+    open func getCollaborationURL(_ registryUID: String) -> URL {
         if let registry=self.getDocumentByUID(registryUID) {
             if let collaborationServerURL=registry.registryMetadata.collaborationServerURL {
-                return collaborationServerURL
+                return collaborationServerURL as URL
             }
         }
-        return Bartleby.configuration.API_BASE_URL
+        return Bartleby.configuration.API_BASE_URL as URL
     }
 
 
@@ -388,8 +388,8 @@ public class  Bartleby: Consignee {
 
      - returns: the path string
      */
-    public static func getSearchPath(searchPath: NSSearchPathDirectory) -> String? {
-        let urls = NSFileManager.defaultManager().URLsForDirectory(searchPath, inDomains: .UserDomainMask)
+    open static func getSearchPath(_ searchPath: FileManager.SearchPathDirectory) -> String? {
+        let urls = FileManager.default.urls(for: searchPath, in: .userDomainMask)
         if urls.count>0 {
             if let path = urls[0].path {
                 return path + "/"
@@ -400,7 +400,7 @@ public class  Bartleby: Consignee {
 
     // MARK: - Maintenance
 
-    public func destroyLocalEphemeralInstances() {
+    open func destroyLocalEphemeralInstances() {
         for (dataSpaceUID, registry) in _registries {
             if  let document = registry as? BartlebyDocument{
                 bprint("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
@@ -418,15 +418,15 @@ public class  Bartleby: Consignee {
 
 public protocol BprintObserver{
 
-    func acknowledge(entry:BprintEntry);
+    func acknowledge(_ entry:BprintEntry);
 }
 
 // MARK: - BprintEntry
 
 
-@objc(BprintCollection) public class BprintCollection:NSObject,Mappable{
+@objc(BprintCollection) open class BprintCollection:NSObject,Mappable{
 
-    public dynamic var entries=[BprintEntry]()
+    open dynamic var entries=[BprintEntry]()
 
     override public init(){
     }
@@ -436,7 +436,7 @@ public protocol BprintObserver{
     public required init?(_ map: Map) {
     }
 
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         self.entries <- map["entries"]
     }
 
@@ -447,17 +447,17 @@ public protocol BprintObserver{
 /**
  *  A struct to insure temporary persistency of a BprintEntry
  */
-@objc(BprintEntry) public class BprintEntry:NSObject,Mappable{
+@objc(BprintEntry) open class BprintEntry:NSObject,Mappable{
 
-    public var counter: Int=0
-    public var message: String=""
-    public var file: String=""
-    public var function: String=""
-    public var line: Int=0
-    public var category: String=""
-    public var elapsed:CFAbsoluteTime=0
-    public var decorative:Bool=false
-    private var _runUID:String=Bartleby.runUID
+    open var counter: Int=0
+    open var message: String=""
+    open var file: String=""
+    open var function: String=""
+    open var line: Int=0
+    open var category: String=""
+    open var elapsed:CFAbsoluteTime=0
+    open var decorative:Bool=false
+    fileprivate var _runUID:String=Bartleby.runUID
 
     override public init(){
     }
@@ -473,7 +473,7 @@ public protocol BprintObserver{
         self.decorative=decorative
     }
 
-    func padded<T>(number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
+    func padded<T>(_ number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
         var s="\(number)"
         while s.characters.count < numberOfDigit {
             if left {
@@ -485,15 +485,15 @@ public protocol BprintObserver{
         return s
     }
 
-    static func extractFileName(s: String) -> String {
-        let components=s.componentsSeparatedByString("/")
+    static func extractFileName(_ s: String) -> String {
+        let components=s.components(separatedBy: "/")
         if components.count>0 {
             return components.last!
         }
         return ""
     }
 
-    override public var description: String {
+    override open var description: String {
         if decorative {
             return "\(message)"
         }
@@ -507,7 +507,7 @@ public protocol BprintObserver{
     }
 
 
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         self.counter <- map["counter"]
         self.message <- map["message"]
         self.file <- map["file"]

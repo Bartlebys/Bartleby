@@ -34,13 +34,13 @@ extension BartlebyDocument {
 
      - parameter triggers: the collection of Trigger
      */
-    internal func _triggersHasBeenReceived(triggers:[Trigger]) {
+    internal func _triggersHasBeenReceived(_ triggers:[Trigger]) {
 
         let indexes=triggers.map {$0.index}
         self.acknowledgeTriggerIndexes(indexes)
 
-        self.registryMetadata.receivedTriggers.appendContentsOf(triggers)
-        self.registryMetadata.receivedTriggers.sortInPlace { (lTrigger, rTrigger) -> Bool in
+        self.registryMetadata.receivedTriggers.append(contentsOf: triggers)
+        self.registryMetadata.receivedTriggers.sort { (lTrigger, rTrigger) -> Bool in
             return lTrigger.index<rTrigger.index
         }
 
@@ -74,12 +74,12 @@ extension BartlebyDocument {
 
      - parameter index: the trigger index.
      */
-    public func acknowledgeOwnedTriggerIndex(index:Int){
+    public func acknowledgeOwnedTriggerIndex(_ index:Int){
         if self.registryMetadata.triggersIndexes.contains(index) {
             bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
         }else{
             // We want ownedTriggersIndexes to be sorted
-            self.registryMetadata.ownedTriggersIndexes.sortInPlace { (lIdx, rIdx) -> Bool in
+            self.registryMetadata.ownedTriggersIndexes.sort { (lIdx, rIdx) -> Bool in
                 return lIdx<rIdx
             }
             self.registryMetadata.ownedTriggersIndexes.append(index)
@@ -95,7 +95,7 @@ extension BartlebyDocument {
 
      - parameter indexes: the triggers indexes
      */
-    public func acknowledgeTriggerIndexes(indexes:[Int]) {
+    public func acknowledgeTriggerIndexes(_ indexes:[Int]) {
         for index in indexes{
             if index>=0{
                 if registryMetadata.triggersIndexes.contains(index) {
@@ -119,16 +119,16 @@ extension BartlebyDocument {
 
      - parameter trigger: the trigger.
      */
-    private func _loadDataFrom(trigger:Trigger){
+    fileprivate func _loadDataFrom(_ trigger:Trigger){
 
-        let alreadyLoaded=self._triggeredDataBuffer.contains({ $0.0.index == trigger.index })
+        let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
         if !alreadyLoaded {
 
             /////////////////////////
             // Request Interpreter
             ////////////////////////
 
-            let uids = trigger.UIDS.componentsSeparatedByString(",")
+            let uids = trigger.UIDS.components(separatedBy: ",")
             if (uids.count==0){
                 bprint("Trigger interpretation issue uids are void! \(trigger)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
                 return
@@ -136,19 +136,19 @@ extension BartlebyDocument {
 
             let multiple = uids.count > 1
             let action = trigger.action
-            let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercaseString
+            let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercased()
             let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
             var dictionary:Dictionary<String, AnyObject>=[:]
             var pathURL = baseURL
             if !multiple{
                 let UID=uids.first!
-                pathURL = baseURL.URLByAppendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
+                pathURL = baseURL.appendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
             }else{
-                pathURL = baseURL.URLByAppendingPathComponent("\(entityName)")
-                dictionary["ids"]=uids
+                pathURL = baseURL.appendingPathComponent("\(entityName)")
+                dictionary["ids"]=uids as AnyObject?
             }
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
-            let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            let r:Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
 
             r.responseJSON { (response) in
 
@@ -168,7 +168,7 @@ extension BartlebyDocument {
                     if let statusCode=response?.statusCode {
                         if 200...299 ~= statusCode {
                             // In case of concurrent loading we prefer to test again if the trigger as not been already loaded
-                            let alreadyLoaded=self._triggeredDataBuffer.contains({ $0.0.index == trigger.index })
+                            let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
                             if !alreadyLoaded{
                                 if multiple{
                                     // upsert a collection
@@ -203,11 +203,11 @@ extension BartlebyDocument {
      Integrates the data and re-computes: lastIntegratedTriggerIndex, triggersIndexes
      Continuity of triggers is required to insure data consistency.
      */
-    private func _integrateContiguousData(){
-        dispatch_async(GlobalQueue.Main.get()) {
+    fileprivate func _integrateContiguousData(){
+        GlobalQueue.main.get().async {
 
             // Sort the triggered data
-            let sortedData=self._triggeredDataBuffer.sort { (lEntry, rEntry) -> Bool in
+            let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
                 return lEntry.0.index < rEntry.0.index
             }
 
@@ -227,8 +227,8 @@ extension BartlebyDocument {
 
             // Verify the continuity with currently ownedTriggersIndexes
             // ownedTriggersIndexes is sorted
-            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.maxElement(),
-                let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.minElement(){
+            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
+                let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.min(){
                 if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
                     for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
                         if index == (lastIntegratedTriggerIndex+1) {
@@ -255,11 +255,11 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    private func _integrate(triggeredData:(Trigger,[[String : AnyObject]])){
+    fileprivate func _integrate(_ triggeredData:(Trigger,[[String : AnyObject]])){
         // Integrate
         if triggeredData.1.count==0 {
             // It is a deletion.
-            let UIDS=triggeredData.0.UIDS.componentsSeparatedByString(",")
+            let UIDS=triggeredData.0.UIDS.components(separatedBy: ",")
             let collectionName=triggeredData.0.targetCollectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
@@ -281,16 +281,16 @@ extension BartlebyDocument {
         }
 
         // Remove the trigger from the collection.
-        if let idx=self.registryMetadata.receivedTriggers.indexOf(triggeredData.0){
-            self.registryMetadata.receivedTriggers.removeAtIndex(idx)
+        if let idx=self.registryMetadata.receivedTriggers.index(of: triggeredData.0){
+            self.registryMetadata.receivedTriggers.remove(at: idx)
         }
 
         //CleanUp the triggerData
-        if let idx=self._triggeredDataBuffer.indexOf({ (data) -> Bool in
+        if let idx=self._triggeredDataBuffer.index(where: { (data) -> Bool in
             return triggeredData.0.index == data.0.index
         }){
             // Remove the triggered data
-            self._triggeredDataBuffer.removeAtIndex(idx)
+            self._triggeredDataBuffer.remove(at: idx)
         }
 
     }
@@ -315,7 +315,7 @@ extension BartlebyDocument {
         var missingIndexes=[Int]()
         let triggersIndexes=self.registryMetadata.triggersIndexes
         let nextIndexToBeIntegrated=self.registryMetadata.lastIntegratedTriggerIndex+1
-        if let maxIndex=triggersIndexes.maxElement(){
+        if let maxIndex=triggersIndexes.max(){
             for index in  nextIndexToBeIntegrated ... maxIndex{
                 if !triggersIndexes.contains(index){
                     missingIndexes.append(index)
@@ -353,7 +353,7 @@ extension BartlebyDocument {
      */
     public func forceDataIntegration(){
 
-        let sortedData=self._triggeredDataBuffer.sort { (lEntry, rEntry) -> Bool in
+        let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
             return lEntry.0.index < rEntry.0.index
         }
         for data  in sortedData{
@@ -364,7 +364,7 @@ extension BartlebyDocument {
 
         // Set the lastIntegratedTriggerIndex to the highest possible value
         let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
-        let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.maxElement() ?? 0
+        let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
         self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
     }
 

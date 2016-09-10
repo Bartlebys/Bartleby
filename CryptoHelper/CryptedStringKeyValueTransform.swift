@@ -13,18 +13,18 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class CryptedStringKeyValueTransform: TransformType {
+open class CryptedStringKeyValueTransform: TransformType {
 
     public typealias Object = Dictionary<String, String>
     public typealias JSON = String
 
 
-    public func transformFromJSON(value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: AnyObject?) -> Object? {
 
         if let s = value as? String {
-            if let jsonData=s.dataUsingEncoding(Default.STRING_ENCODING) {
+            if let jsonData=s.data(using: Default.STRING_ENCODING) {
                 do {
-                    if let jsonDictionary = try NSJSONSerialization.JSONObjectWithData(jsonData, options: []) as? Dictionary<String, String> {
+                    if let jsonDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? Dictionary<String, String> {
                         var dictionary = Dictionary<String, String>()
                         for (key, value) in jsonDictionary {
                             dictionary[try Bartleby.cryptoDelegate.decryptString(key)]=try Bartleby.cryptoDelegate.decryptString(value)
@@ -40,14 +40,14 @@ public class CryptedStringKeyValueTransform: TransformType {
         return nil
     }
 
-    public func transformToJSON(value: Object?) -> JSON? {
+    open func transformToJSON(_ value: Object?) -> JSON? {
         if let dictionary = value {
             var cryptedDictionary = Dictionary<String, String>()
             do {
                 for (key, value) in dictionary {
                     cryptedDictionary[try Bartleby.cryptoDelegate.encryptString(key)]=try Bartleby.cryptoDelegate.encryptString(value)
                 }
-                let jsonData = try NSJSONSerialization.dataWithJSONObject(cryptedDictionary, options: NSJSONWritingOptions.PrettyPrinted)
+                let jsonData = try JSONSerialization.data(withJSONObject: cryptedDictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
                 return String(data: jsonData, encoding: Default.STRING_ENCODING)
             } catch {
                 bprint("\(error)", file: #file, function: #function, line: #line)

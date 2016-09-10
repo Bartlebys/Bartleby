@@ -20,34 +20,34 @@ import Foundation
  *  and we use its parent folder as tree root
  *  It suppports NSSecureCoding as it can be to perform XPC calls.
  */
-@objc(BsyncDirectives) public class  BsyncDirectives: BsyncCredentials {
+@objc(BsyncDirectives) open class  BsyncDirectives: BsyncCredentials {
     
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "BsyncDirectives"
     }
     
-    public static let distantSchemes: [String]=["http", "https", "ftp", "ftps"]
+    open static let distantSchemes: [String]=["http", "https", "ftp", "ftps"]
     
     
     /// The default file name is just a convention
-    public static let DEFAULT_FILE_NAME=".directives"
+    open static let DEFAULT_FILE_NAME=".directives"
     
     // TODO: @bpds @md #bsync Change url to not optionnal
-    public var sourceURL: NSURL?
-    public var destinationURL: NSURL?
-    public var hashMapViewName: String?
+    open var sourceURL: URL?
+    open var destinationURL: URL?
+    open var hashMapViewName: String?
     
-    public var computeTheHashMap: Bool=true
-    public var automaticTreeCreation: Bool=false
+    open var computeTheHashMap: Bool=true
+    open var automaticTreeCreation: Bool=false
     
     public required init() {
         super.init()
     }
     
-    public func areValid()->(valid: Bool, message: String) {
+    open func areValid()->(valid: Bool, message: String) {
         if let sourceURL = self.sourceURL, let destinationURL = self.destinationURL {
-            let destinationIsDistant = BsyncDirectives.distantSchemes.indexOf(destinationURL.scheme) != nil
-            let sourceIsDistant = BsyncDirectives.distantSchemes.indexOf(sourceURL.scheme) != nil
+            let destinationIsDistant = BsyncDirectives.distantSchemes.index(of: destinationURL.scheme) != nil
+            let sourceIsDistant = BsyncDirectives.distantSchemes.index(of: sourceURL.scheme) != nil
             
             if (sourceIsDistant || destinationIsDistant) {
                 if self.user == nil {
@@ -80,9 +80,9 @@ import Foundation
      
      - returns: the directives
      */
-    public static func upStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
+    open static func upStreamDirectivesWithDistantURL(_ distantURL: URL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
-        directives.sourceURL = NSURL(fileURLWithPath: localPath)
+        directives.sourceURL = URL(fileURLWithPath: localPath)
         directives.destinationURL = distantURL
         return directives
         
@@ -95,10 +95,10 @@ import Foundation
      
      - returns: the directives
      */
-    public static func downStreamDirectivesWithDistantURL(distantURL: NSURL, localPath: String) -> BsyncDirectives {
+    open static func downStreamDirectivesWithDistantURL(_ distantURL: URL, localPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
         directives.sourceURL = distantURL
-        directives.destinationURL = NSURL(fileURLWithPath: localPath)
+        directives.destinationURL = URL(fileURLWithPath: localPath)
         return directives
     }
     
@@ -110,10 +110,10 @@ import Foundation
      
      - returns: the directives
      */
-    public static func localDirectivesWithPath(sourcePath: String, destinationPath: String) -> BsyncDirectives {
+    open static func localDirectivesWithPath(_ sourcePath: String, destinationPath: String) -> BsyncDirectives {
         let directives=BsyncDirectives()
-        directives.sourceURL = NSURL(fileURLWithPath: sourcePath)
-        directives.destinationURL = NSURL(fileURLWithPath: destinationPath)
+        directives.sourceURL = URL(fileURLWithPath: sourcePath)
+        directives.destinationURL = URL(fileURLWithPath: destinationPath)
         return directives
     }
     
@@ -124,7 +124,7 @@ import Foundation
         self.mapping(map)
     }
     
-    public override func mapping(map: Map) {
+    open override func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervision()
         sourceURL <- (map["sourceURL"], URLTransform())
@@ -139,34 +139,34 @@ import Foundation
     // MARK: NSecureCoding
     
     
-    public override func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-        coder.encodeObject(sourceURL, forKey: "sourceURL")
-        coder.encodeObject(destinationURL, forKey: "destinationURL")
-        coder.encodeObject(hashMapViewName, forKey: "hashMapViewName")
-        coder.encodeBool(computeTheHashMap, forKey: "computeTheHashMap")
-        coder.encodeBool(automaticTreeCreation, forKey: "automaticTreeCreation")
+    open override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(sourceURL, forKey: "sourceURL")
+        coder.encode(destinationURL, forKey: "destinationURL")
+        coder.encode(hashMapViewName, forKey: "hashMapViewName")
+        coder.encode(computeTheHashMap, forKey: "computeTheHashMap")
+        coder.encode(automaticTreeCreation, forKey: "automaticTreeCreation")
         
     }
     
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
-        self.sourceURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"sourceURL") as NSURL?
-        self.destinationURL=decoder.decodeObjectOfClass(NSURL.self, forKey:"destinationURL") as NSURL?
-        self.hashMapViewName=String(decoder.decodeObjectOfClass(NSString.self, forKey:"hashMapViewName") as NSString?)
-        self.computeTheHashMap=decoder.decodeBoolForKey("computeTheHashMap")
-        self.automaticTreeCreation=decoder.decodeBoolForKey("automaticTreeCreation")
+        self.sourceURL=decoder.decodeObject(of: NSURL.self, forKey:"sourceURL") as URL?
+        self.destinationURL=decoder.decodeObject(of: NSURL.self, forKey:"destinationURL") as URL?
+        self.hashMapViewName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"hashMapViewName") as NSString?)
+        self.computeTheHashMap=decoder.decodeBool(forKey: "computeTheHashMap")
+        self.automaticTreeCreation=decoder.decodeBool(forKey: "automaticTreeCreation")
         self.enableSupervision()
     }
     
     // MARK: Identifiable
     
-    override public class var collectionName: String {
+    override open class var collectionName: String {
         return "BsyncDirectives"
     }
     
-    override public var d_collectionName: String {
+    override open var d_collectionName: String {
         return BsyncDirectives.collectionName
     }
 }

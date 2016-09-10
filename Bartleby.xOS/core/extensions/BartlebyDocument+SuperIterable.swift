@@ -20,7 +20,7 @@ extension BartlebyDocument:SuperIterable{
 
      - parameter on: the closure
      */
-    public func superIterate(on:(element: Collectible)->()) {
+    public func superIterate(_ on:@escaping (_ element: Collectible)->()) {
         // We want to super superIterate on each collection
         for (_, collection) in self._collections {
             collection.superIterate({ (element) in

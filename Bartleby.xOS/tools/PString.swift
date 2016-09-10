@@ -25,15 +25,15 @@ import Foundation
 
 public struct PString {
 
-    public static func strtoupper(string: String) -> String {
-        return string.uppercaseString
+    public static func strtoupper(_ string: String) -> String {
+        return string.uppercased()
     }
 
-    public static func strtolower(string: String) -> String {
-        return string.lowercaseString
+    public static func strtolower(_ string: String) -> String {
+        return string.lowercased()
     }
 
-    public static func substr(string: String, _ start: Int) -> String? {
+    public static func substr(_ string: String, _ start: Int) -> String? {
         if(start>0) {
             return substr(string, start, string.characters.count)
         } else {
@@ -53,9 +53,9 @@ public struct PString {
 
      - returns: the string
      */
-    public static func ltrim(string: String, characterSet: NSCharacterSet=NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
-        if let range = string.rangeOfCharacterFromSet(characterSet.invertedSet) {
-            return string[range.startIndex..<string.endIndex]
+    public static func ltrim(_ string: String, characterSet: CharacterSet=CharacterSet.whitespacesAndNewlines) -> String {
+        if let range = string.rangeOfCharacter(from: characterSet.inverted) {
+            return string[range.lowerBound..<string.endIndex]
         }
         return string
     }
@@ -72,8 +72,8 @@ public struct PString {
 
      - returns: the string
      */
-    public static func ltrim(string: String, characters: String) -> String {
-        return ltrim(string, characterSet: NSCharacterSet(charactersInString:characters) )
+    public static func ltrim(_ string: String, characters: String) -> String {
+        return ltrim(string, characterSet: CharacterSet(charactersIn:characters) )
     }
 
 
@@ -88,9 +88,9 @@ public struct PString {
      - returns: the string
      */
 
-    public static func rtrim(string: String, characterSet: NSCharacterSet=NSCharacterSet.whitespaceAndNewlineCharacterSet()) -> String {
-        if let range = string.rangeOfCharacterFromSet(characterSet.invertedSet, options: NSStringCompareOptions.BackwardsSearch) {
-            return string[string.startIndex...range.startIndex]
+    public static func rtrim(_ string: String, characterSet: CharacterSet=CharacterSet.whitespacesAndNewlines) -> String {
+        if let range = string.rangeOfCharacter(from: characterSet.inverted, options: NSString.CompareOptions.backwards) {
+            return string[string.startIndex...range.lowerBound]
         }
         return string
     }
@@ -102,8 +102,8 @@ public struct PString {
 
      - returns: the string
      */
-    public static func rtrim(string: String, characters: String) -> String {
-        return rtrim(string, characterSet: NSCharacterSet(charactersInString:characters) )
+    public static func rtrim(_ string: String, characters: String) -> String {
+        return rtrim(string, characterSet: CharacterSet(charactersIn:characters) )
     }
 
 
@@ -116,7 +116,7 @@ public struct PString {
 
      - returns: the sub string
      */
-    public static func substr(string: String, _ start: Int, _ length: Int) -> String {
+    public static func substr(_ string: String, _ start: Int, _ length: Int) -> String {
         let startIndex: String.Index?
         if start<0 {
             let l=strlen(string)
@@ -124,32 +124,32 @@ public struct PString {
             if from>=l {
                 startIndex=string.endIndex
             } else {
-                startIndex=string.startIndex.advancedBy(from)
+                startIndex=string.characters.index(string.startIndex, offsetBy: from)
             }
         } else if start==0 {
             startIndex=string.startIndex
         } else {
-            startIndex=string.startIndex.advancedBy(start)
+            startIndex=string.characters.index(string.startIndex, offsetBy: start)
         }
-        let endIndex = string.startIndex.advancedBy(length)
-        return string.substringWithRange(startIndex! ..< endIndex)
+        let endIndex = string.characters.index(string.startIndex, offsetBy: length)
+        return string.substring(with: startIndex! ..< endIndex)
     }
 
-    public static func strlen(string: String) -> Int {
+    public static func strlen(_ string: String) -> Int {
         return string.characters.count
     }
 
-    public static func lcfirst(string: String) -> String {
+    public static func lcfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceRange(first, with:tstring.substringWithRange(first).lowercaseString)
+        tstring.replaceSubrange(first, with:tstring.substringWithRange(first).lowercased())
         return tstring
     }
 
-    public static func ucfirst(string: String) -> String {
+    public static func ucfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceRange(first, with:tstring.substringWithRange(first).uppercaseString)
+        tstring.replaceSubrange(first, with:tstring.substringWithRange(first).uppercased())
         return tstring
     }
 
@@ -157,7 +157,7 @@ public struct PString {
 
     static let PREG_OFFSET_CAPTURE=1
 
-    public static func preg_match(pattern: String, _ subject: String, inout _ matches: [String], _ flags: Int = 0, _ offset: Int = 0) -> Int {
+    public static func preg_match(_ pattern: String, _ subject: String, _ matches: inout [String], _ flags: Int = 0, _ offset: Int = 0) -> Int {
         let subjectWithOffset=substr(subject, offset, strlen(subject))
         if subjectWithOffset.isMatching(pattern) {
             return 1
@@ -165,10 +165,10 @@ public struct PString {
         return 0
     }
 
-    public static func preg_replace (pattern: String, _ replacement: String, _ subject: String, _ limit: Int = -1) -> String {
+    public static func preg_replace (_ pattern: String, _ replacement: String, _ subject: String, _ limit: Int = -1) -> String {
         do {
-            let regex = try NSRegularExpression(pattern: pattern, options: [.CaseInsensitive])
-            return regex.stringByReplacingMatchesInString(subject, options: [], range: NSMakeRange(0, strlen(subject)), withTemplate:replacement)
+            let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
+            return regex.stringByReplacingMatches(in: subject, options: [], range: NSMakeRange(0, strlen(subject)), withTemplate:replacement)
         } catch {
             bprint("\(error)", file:#file, function:#function, line: #line)
         }
@@ -176,7 +176,7 @@ public struct PString {
     }
 
 
-    public static func preg_replace (pattern: String, _ replacement: String, _ subject: [String], _ limit: Int = -1) -> [String] {
+    public static func preg_replace (_ pattern: String, _ replacement: String, _ subject: [String], _ limit: Int = -1) -> [String] {
         var r=[String]()
         for subSubject in subject {
             r.append(preg_replace(pattern, replacement, subSubject, limit))
@@ -191,19 +191,19 @@ public struct PString {
 
 extension String {
 
-    func contains(string: String) -> Bool {
-        return (self.rangeOfString(string) != nil)
+    func contains(_ string: String) -> Bool {
+        return (self.range(of: string) != nil)
     }
 
 
-    func contains(string: String,compareOptions:NSStringCompareOptions) -> Bool {
-        return (self.rangeOfString(string, options: compareOptions, range: self.fullCharactersRange(), locale: NSLocale.currentLocale()) != nil )
+    func contains(_ string: String,compareOptions:NSString.CompareOptions) -> Bool {
+        return (self.range(of: string, options: compareOptions, range: self.fullCharactersRange(), locale: Locale.current) != nil )
     }
 
-    func isMatching(regex: String) -> Bool {
+    func isMatching(_ regex: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: [])
-            let matchCount = regex.numberOfMatchesInString(self, options: [], range: NSMakeRange(0, self.characters.count))
+            let matchCount = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
             return matchCount > 0
         } catch {
             bprint("\(error)", file:#file, function:#function, line: #line)
@@ -211,10 +211,10 @@ extension String {
         return false
     }
 
-    func getMatches(regex: String, options: NSRegularExpressionOptions) -> [NSTextCheckingResult]? {
+    func getMatches(_ regex: String, options: NSRegularExpression.Options) -> [NSTextCheckingResult]? {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: options)
-            let matches = regex.matchesInString(self, options: [], range: NSMakeRange(0, self.characters.count))
+            let matches = regex.matches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
             return matches
         } catch {
             bprint("\(error)", file:#file, function:#function, line: #line)

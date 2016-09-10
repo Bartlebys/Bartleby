@@ -14,36 +14,36 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a locker
-@objc(Locker) public class Locker : JObject{
+@objc(Locker) open class Locker : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Locker"
     }
 
 	//The associated registry UID.
-	dynamic public var registryUID:String? {	 
+	dynamic open var registryUID:String? {	 
 	    didSet { 
 	       if registryUID != oldValue {
-	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
+	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue as AnyObject?,newValue: registryUID as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The subject UID you want to lock
-	dynamic public var subjectUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var subjectUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if subjectUID != oldValue {
-	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
+	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue as AnyObject?,newValue: subjectUID as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The userUID that can unlock the locker
-	dynamic public var userUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var userUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if userUID != oldValue {
-	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
+	            self.provisionChanges(forKey: "userUID",oldValue: oldValue as AnyObject?,newValue: userUID as AnyObject?) 
 	       } 
 	    }
 	}
@@ -53,10 +53,10 @@ import ObjectMapper
 		case AutoDestructive = "AutoDestructive"
 		case Persistent = "Persistent"
 	}
-	public var mode:Mode = .AutoDestructive  {	 
+	open var mode:Mode = .AutoDestructive  {	 
 	    didSet { 
 	       if mode != oldValue {
-	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
+	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue as AnyObject?,newValue: mode.rawValue as AnyObject?)  
 	       } 
 	    }
 	}
@@ -66,53 +66,53 @@ import ObjectMapper
 		case Online = "Online"
 		case Offline = "Offline"
 	}
-	public var verificationMethod:VerificationMethod = .Online  {	 
+	open var verificationMethod:VerificationMethod = .Online  {	 
 	    didSet { 
 	       if verificationMethod != oldValue {
-	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
+	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue as AnyObject?,newValue: verificationMethod.rawValue as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//This code should be crypted / decrypted
-	dynamic public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
+	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
 	    didSet { 
 	       if code != oldValue {
-	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
+	            self.provisionChanges(forKey: "code",oldValue: oldValue as AnyObject?,newValue: code as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The number of attempts
-	dynamic public var numberOfAttempt:Int = 3  {	 
+	dynamic open var numberOfAttempt:Int = 3  {	 
 	    didSet { 
 	       if numberOfAttempt != oldValue {
-	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
+	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue as AnyObject?,newValue: numberOfAttempt as AnyObject?)  
 	       } 
 	    }
 	}
 
-	dynamic public var startDate:NSDate = NSDate.distantPast()  {	 
+	dynamic open var startDate:Date = Date.distantPast  {	 
 	    didSet { 
 	       if startDate != oldValue {
-	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
+	            self.provisionChanges(forKey: "startDate",oldValue: oldValue as AnyObject?,newValue: startDate as AnyObject?)  
 	       } 
 	    }
 	}
 
-	dynamic public var endDate:NSDate = NSDate.distantFuture()  {	 
+	dynamic open var endDate:Date = Date.distantFuture  {	 
 	    didSet { 
 	       if endDate != oldValue {
-	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
+	            self.provisionChanges(forKey: "endDate",oldValue: oldValue as AnyObject?,newValue: endDate as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//Thoses data gems will be return on success
-	dynamic public var gems:String = "\(Default.NO_GEM)"{	 
+	dynamic open var gems:String = "\(Default.NO_GEM)"{	 
 	    didSet { 
 	       if gems != oldValue {
-	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
+	            self.provisionChanges(forKey: "gems",oldValue: oldValue as AnyObject?,newValue: gems as AnyObject?) 
 	       } 
 	    }
 	}
@@ -125,7 +125,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.registryUID <- ( map["registryUID"] )
@@ -147,38 +147,38 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.registryUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"registryUID") as NSString?)
-		self.subjectUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "subjectUID")! as NSString)
-		self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
-		self.mode=Locker.Mode(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "mode")! as NSString))! 
-		self.verificationMethod=Locker.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
-		self.code=String(decoder.decodeObjectOfClass(NSString.self, forKey: "code")! as NSString)
-		self.numberOfAttempt=decoder.decodeIntegerForKey("numberOfAttempt") 
-		self.startDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "startDate")! as NSDate
-		self.endDate=decoder.decodeObjectOfClass(NSDate.self, forKey: "endDate")! as NSDate
-		self.gems=String(decoder.decodeObjectOfClass(NSString.self, forKey: "gems")! as NSString)
+		self.registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"registryUID") as NSString?)
+		self.subjectUID=String(decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
+		self.userUID=String(decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
+		self.mode=Locker.Mode(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
+		self.verificationMethod=Locker.VerificationMethod(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+		self.code=String(decoder.decodeObject(of: NSString.self, forKey: "code")! as NSString)
+		self.numberOfAttempt=decoder.decodeInteger(forKey: "numberOfAttempt") 
+		self.startDate=decoder.decodeObject(of: NSDate.self, forKey: "startDate")! as Date
+		self.endDate=decoder.decodeObject(of: NSDate.self, forKey: "endDate")! as Date
+		self.gems=String(decoder.decodeObject(of: NSString.self, forKey: "gems")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let registryUID = self.registryUID {
-			coder.encodeObject(registryUID,forKey:"registryUID")
+			coder.encode(registryUID,forKey:"registryUID")
 		}
-		coder.encodeObject(self.subjectUID,forKey:"subjectUID")
-		coder.encodeObject(self.userUID,forKey:"userUID")
-		coder.encodeObject(self.mode.rawValue ,forKey:"mode")
-		coder.encodeObject(self.verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encodeObject(self.code,forKey:"code")
-		coder.encodeInteger(self.numberOfAttempt,forKey:"numberOfAttempt")
-		coder.encodeObject(self.startDate,forKey:"startDate")
-		coder.encodeObject(self.endDate,forKey:"endDate")
-		coder.encodeObject(self.gems,forKey:"gems")
+		coder.encode(self.subjectUID,forKey:"subjectUID")
+		coder.encode(self.userUID,forKey:"userUID")
+		coder.encode(self.mode.rawValue ,forKey:"mode")
+		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encode(self.code,forKey:"code")
+		coder.encode(self.numberOfAttempt,forKey:"numberOfAttempt")
+		coder.encode(self.startDate,forKey:"startDate")
+		coder.encode(self.endDate,forKey:"endDate")
+		coder.encode(self.gems,forKey:"gems")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -189,11 +189,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "lockers"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Locker.collectionName
     }
 

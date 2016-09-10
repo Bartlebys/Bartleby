@@ -12,18 +12,18 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadUsersByIdsParameters) public class ReadUsersByIdsParameters : JObject {
+@objc(ReadUsersByIdsParameters) open class ReadUsersByIdsParameters : JObject {
 	
 	// Universal type support
-	override public class func typeName() -> String {
+	override open class func typeName() -> String {
 		 return "ReadUsersByIdsParameters"
 	}
 	// 
-	public var ids:[String]?
+	open var ids:[String]?
 	// 
-	public var result_fields:[String]?
+	open var result_fields:[String]?
 	// the sort (MONGO DB)
-	public var sort:[String:AnyObject]?
+	open var sort:[String:AnyObject]?
 
     required public init(){
         super.init()
@@ -36,7 +36,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.ids <- ( map["ids"] )
@@ -51,28 +51,28 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.ids=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "ids") as? [String]
-		self.result_fields=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "result_fields") as? [String]
-		self.sort=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? [String:AnyObject]
+		self.ids=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "ids") as? [String]
+		self.result_fields=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "result_fields") as? [String]
+		self.sort=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? [String:AnyObject]
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let ids = self.ids {
-			coder.encodeObject(ids,forKey:"ids")
+			coder.encode(ids,forKey:"ids")
 		}
 		if let result_fields = self.result_fields {
-			coder.encodeObject(result_fields,forKey:"result_fields")
+			coder.encode(result_fields,forKey:"result_fields")
 		}
 		if let sort = self.sort {
-			coder.encodeObject(sort,forKey:"sort")
+			coder.encode(sort,forKey:"sort")
 		}
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -80,25 +80,25 @@ import ObjectMapper
 
 
 
-@objc(ReadUsersByIds) public class ReadUsersByIds : JObject{
+@objc(ReadUsersByIds) open class ReadUsersByIds : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
            return "ReadUsersByIds"
     }
 
 
-    public static func execute(fromRegistryWithUID registryUID:String,
+    open static func execute(fromRegistryWithUID registryUID:String,
 						parameters:ReadUsersByIdsParameters,
-						sucessHandler success:(users:[User])->(),
-						failureHandler failure:(context:JHTTPResponse)->()){
+						sucessHandler success:@escaping (_ users:[User])->(),
+						failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
 	
 
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
-            let pathURL=document.baseURL.URLByAppendingPathComponent("users")
+            let pathURL=document.baseURL.appendingPathComponent("users")
             let dictionary:Dictionary<String, AnyObject>?=Mapper().toJSON(parameters)
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUsersByIds" ,forMethod:"GET", and: pathURL)
-            let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            let r:Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON{ response in
         
                 let request=response.request
@@ -110,17 +110,17 @@ import ObjectMapper
         
                 let context = JHTTPResponse( code: 745776284,
                     caller: "ReadUsersByIds.execute",
-                    relatedURL:request?.URL,
+                    relatedURL:request?.url,
                     httpStatusCode: response?.statusCode ?? 0,
                     response: response,
                     result:result.value)
         
                 // React according to the situation
                 var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
+                reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
         
                 if result.isFailure {
-                   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
                         body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
@@ -135,7 +135,7 @@ import ObjectMapper
         					if let instance = Mapper <User>().mapArray(result.value){					    
 					    success(users: instance)
 					  }else{
-					   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+					   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
 					        context: context,
 					        title: NSLocalizedString("Deserialization issue",
 					            comment: "Deserialization issue"),
@@ -150,7 +150,7 @@ import ObjectMapper
                         // Bartlby does not currenlty discriminate status codes 100 & 101
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
-                        let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
                             body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
@@ -168,7 +168,7 @@ import ObjectMapper
       }else{
          let context = JHTTPResponse( code: 1,
                 caller: "ReadUsersByIds.execute",
-                relatedURL:NSURL(),
+                relatedURL:URL(),
                 httpStatusCode: 417,
                 response: nil,
                 result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")

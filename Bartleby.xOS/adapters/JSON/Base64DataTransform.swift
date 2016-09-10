@@ -12,23 +12,23 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class Base64DataTransform: TransformType {
-    public typealias Object = NSData
+open class Base64DataTransform: TransformType {
+    public typealias Object = Data
     public typealias JSON = String
 
     public init() {
     }
 
-    public func transformFromJSON(value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: AnyObject?) -> Object? {
         if let string=value as? String {
-            return NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters])
+            return Data(base64Encoded: string, options: [.ignoreUnknownCharacters])
         }
         return nil
     }
 
-    public func transformToJSON(value: Object?) -> JSON? {
+    open func transformToJSON(_ value: Object?) -> JSON? {
         if let d=value {
-            return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+            return d.base64EncodedString(options: .endLineWithCarriageReturn)
         }
         return nil
     }

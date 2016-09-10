@@ -10,5 +10,5 @@ import Foundation
 
 
 public protocol JSONString{
-    func toJSONString(prettyPrint:Bool)->String
+    func toJSONString(_ prettyPrint:Bool)->String
 }

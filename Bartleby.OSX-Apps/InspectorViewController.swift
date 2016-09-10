@@ -27,7 +27,7 @@ import Cocoa
 
     @IBOutlet var contextualMenu: NSMenu!
 
-    override func validateMenuItem(menuItem: NSMenuItem) -> Bool {
+    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         return true
         //return super.validateMenuItem(menuItem)
     }
@@ -36,13 +36,13 @@ import Cocoa
 
 
     // The currently associated View Controller
-    private var _topViewController:NSViewController?
+    fileprivate var _topViewController:NSViewController?
 
-    private var _bottomViewController:NSViewController?
+    fileprivate var _bottomViewController:NSViewController?
 
     //MARK:- Menu Actions
 
-    @IBAction func resetAllSupervisionCounter(sender: AnyObject) {
+    @IBAction func resetAllSupervisionCounter(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             registry.registryMetadata.changedKeys.removeAll()
             registry.registryMetadata.currentUser?.changedKeys.removeAll()
@@ -57,11 +57,11 @@ import Cocoa
                 }
             })
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil)
 
     }
 
-    @IBAction func commitChanges(sender: AnyObject) {
+    @IBAction func commitChanges(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             do {
                 try registry.commitPendingChanges()
@@ -70,25 +70,25 @@ import Cocoa
         }
     }
 
-    @IBAction func openWebStack(sender: AnyObject) {
+    @IBAction func openWebStack(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry() {
             let currentUser=document.registryMetadata.currentUser!
             let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
-            let url:NSURL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
-            NSWorkspace.sharedWorkspace().openURL(url)
+            let url:URL=URL(string: document.baseURL.absoluteString!.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
+            NSWorkspace.shared().open(url)
         }
     }
 
-    @IBAction func saveRegistry(sender: AnyObject) {
+    @IBAction func saveRegistry(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
-            registry.saveDocument(sender)
+            registry.save(sender)
         }
     }
 
 
-    @IBAction func deleteOperations(sender: AnyObject) {
+    @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
-            for operation in registry.operations.reverse(){
+            for operation in registry.operations.reversed(){
                 registry.operations.removeObject(operation, commit: false)
             }
         }
@@ -97,13 +97,13 @@ import Cocoa
 
     //MARK:-  Collections
 
-    private var _collectionListDelegate:CollectionListDelegate?
+    fileprivate var _collectionListDelegate:CollectionListDelegate?
 
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { (selected) in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self.updateRepresentedObject(selected)
                     }
                 })
@@ -114,8 +114,8 @@ import Cocoa
                 self.topBox.contentView=self._topViewController!.view
                 self.bottomBox.contentView=self._bottomViewController!.view
 
-                self.listOutlineView.setDelegate(self._collectionListDelegate)
-                self.listOutlineView.setDataSource(self._collectionListDelegate)
+                self.listOutlineView.delegate = self._collectionListDelegate
+                self.listOutlineView.dataSource = self._collectionListDelegate
                 self._collectionListDelegate?.reloadData()
 
             }
@@ -131,13 +131,13 @@ import Cocoa
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        NSNotificationCenter.defaultCenter().addObserverForName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) { (notification) in
             self._collectionListDelegate?.reloadData()
         }
     }
 
     override func viewWillDisappear() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     /**
@@ -145,7 +145,7 @@ import Cocoa
 
      - parameter selected: the outline selected Object
      */
-    func updateRepresentedObject(selected:Collectible) -> () {
+    func updateRepresentedObject(_ selected:Collectible) -> () {
 
         // Did the type of represented object changed.
         if selected.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
@@ -180,17 +180,17 @@ import Cocoa
 
 class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource,Identifiable{
 
-    private var _registry:BartlebyDocument
+    fileprivate var _registry:BartlebyDocument
 
-    private weak var _outlineView:NSOutlineView!
+    fileprivate weak var _outlineView:NSOutlineView!
 
-    private var _collectionNames=[String]()
+    fileprivate var _collectionNames=[String]()
 
-    private var _selectionHandler:((selected:Collectible)->())
+    fileprivate var _selectionHandler:((_ selected:Collectible)->())
 
     var UID: String = Bartleby.createUID()
 
-    required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:((selected:Collectible)->())) {
+    required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Collectible)->())) {
         self._registry=registry
         self._outlineView=outlineView
         self._collectionNames=registry.getCollectionsNames()
@@ -211,7 +211,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         var selectedIndexes=self._outlineView.selectedRowIndexes
         self._outlineView.reloadData()
         if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
-            selectedIndexes=NSIndexSet(index: 0)
+            selectedIndexes=IndexSet(integer: 0)
         }
         self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
 
@@ -222,14 +222,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     //MARK: NSOutlineViewDataSource
 
 
-    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let collection  = item as? CollectibleCollection {
             return collection.count
         }
         return self._collectionNames.count + 1
     }
 
-    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if let collection  = item as? CollectibleCollection {
             return collection.itemAtIndex(index) as! AnyObject
         }else{
@@ -242,19 +242,19 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     }
 
 
-    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         return (item is CollectibleCollection)
     }
 
-    func outlineView(outlineView: NSOutlineView, persistentObjectForItem item: AnyObject?) -> AnyObject? {
+    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
         if let serializable = item as? Serializable {
             return JSerializer.serialize(serializable)
         }
         return nil
     }
 
-    func outlineView(outlineView: NSOutlineView, itemForPersistentObject object: AnyObject) -> AnyObject? {
-        if let deserializable = object as? NSData {
+    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
+        if let deserializable = object as? Data {
             do {
                 let o = try JSerializer.deserialize(deserializable)
                 return o as? AnyObject
@@ -268,10 +268,10 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     //MARK: NSOutlineViewDelegate
 
 
-    func outlineView(outlineView: NSOutlineView, viewForTableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+    func outlineView(_ outlineView: NSOutlineView, viewFor viewForTableColumn: NSTableColumn?, item: Any) -> NSView? {
         switch item {
         case let element where element is CollectibleCollection :
-            let view = outlineView.makeViewWithIdentifier("CollectionCell", owner: self) as! NSTableCellView
+            let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
                 textField.stringValue = (element as! CollectibleCollection).d_collectionName
             }
@@ -279,7 +279,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return view
         case let element  where element is RegistryMetadata :
             let casted=(element as! RegistryMetadata)
-            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
                 textField.stringValue = "Registry Metadata"
             }
@@ -287,7 +287,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return view
         case let element  where element is User :
             let casted=(element as! User)
-            let view = outlineView.makeViewWithIdentifier("UserCell", owner: self) as! NSTableCellView
+            let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
                 if casted.creatorUID==casted.UID{
                     textField.stringValue = "Current User"
@@ -299,7 +299,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return view
         case let element  where element is Collectible :
             let casted=(element as! JObject)
-            let view = outlineView.makeViewWithIdentifier("ObjectCell", owner: self) as! NSTableCellView
+            let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
                 textField.stringValue = casted.UID
             }
@@ -313,13 +313,13 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
 
-    private func configureInlineButton(view:NSView,casted:JObject){
+    fileprivate func configureInlineButton(_ view:NSView,casted:JObject){
         if let inlineButton = view.viewWithTag(2) as? NSButton{
             if casted.changedKeys.count > 0 {
-                inlineButton.hidden=false
+                inlineButton.isHidden=false
                 inlineButton.title="\(casted.changedKeys.count)"
             }else{
-                inlineButton.hidden=true
+                inlineButton.isHidden=true
             }
         }
 
@@ -327,7 +327,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
 
-    func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
+    func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let _ = item as? CollectibleCollection {
             return 20
         }else{
@@ -336,14 +336,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     }
     
     
-    func outlineView(outlineView: NSOutlineView, shouldSelectItem item: AnyObject) -> Bool {
+    func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
         return true
     }
     
     
-    func outlineViewSelectionDidChange(notification: NSNotification) {
-        if let item=self._outlineView.itemAtRow(_outlineView.selectedRow) as? Collectible{
-            self._selectionHandler(selected: item)
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        if let item=self._outlineView.item(atRow: _outlineView.selectedRow) as? Collectible{
+            self._selectionHandler(item)
         }
     }
     

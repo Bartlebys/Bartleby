@@ -19,11 +19,11 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 class UpDownDirectivesTests: SyncTestCase {
 
-    private var _distantTreeURL = NSURL()
+    fileprivate var _distantTreeURL = URL()
 
-    private static var _upDirectives = BsyncDirectives()
-    private static var _downDirectives = BsyncDirectives()
-    private static var _treeId = ""
+    fileprivate static var _upDirectives = BsyncDirectives()
+    fileprivate static var _downDirectives = BsyncDirectives()
+    fileprivate static var _treeId = ""
 
     override class func setUp() {
         super.setUp()
@@ -37,12 +37,12 @@ class UpDownDirectivesTests: SyncTestCase {
         self.sourceFolderPath = self.assetPath + "Src/"
         self.destinationFolderPath = self.assetPath + "Dst/"
 
-        _distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(UpDownDirectivesTests._treeId)")
+        _distantTreeURL = TestsConfiguration.API_BASE_URL.appendingPathComponent("BartlebySync/tree/\(UpDownDirectivesTests._treeId)")
     }
 
-    static private let _admin = BsyncAdmin()
+    static fileprivate let _admin = BsyncAdmin()
 
-    override func prepareSync(handlers: Handlers) {
+    override func prepareSync(_ handlers: Handlers) {
         // Create user
         let user = createUser(TestCase.document.spaceUID, handlers: Handlers { (creation) in
             if creation.success {
@@ -74,7 +74,7 @@ class UpDownDirectivesTests: SyncTestCase {
         UpDownDirectivesTests._downDirectives = downDirectives
     }
 
-    override func sync(handlers: Handlers) {
+    override func sync(_ handlers: Handlers) {
         UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._upDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (upSync) in
             if upSync.success {
                 UpDownDirectivesTests._admin.runDirectives(UpDownDirectivesTests._downDirectives, sharedSalt: TestsConfiguration.SHARED_SALT, handlers: Handlers { (downSync) in
@@ -90,7 +90,7 @@ class UpDownDirectivesTests: SyncTestCase {
             })
     }
 
-    override func disposeSync(handlers: Handlers) {
+    override func disposeSync(_ handlers: Handlers) {
         deleteCreatedUsers(Handlers { (deletion) in
             if deletion.success {
                 super.disposeSync(handlers)

@@ -17,12 +17,12 @@ import Foundation
 
 extension BartlebyDocument {
 
-    public enum SecurityScopedBookMarkError: ErrorType {
+    public enum SecurityScopedBookMarkError: Error {
         // Bookmarking
-        case BookMarkFailed(message:String)
+        case bookMarkFailed(message:String)
         // Scoped URL
-        case GetScopedURLRessourceFailed(message:String)
-        case BookMarkIsStale
+        case getScopedURLRessourceFailed(message:String)
+        case bookMarkIsStale
     }
     // MARK: Security-Scoped Bookmarks support
 
@@ -55,7 +55,7 @@ extension BartlebyDocument {
 
      - returns: the securized URL
      */
-    public func getSecurizedURL(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) throws ->NSURL {
+    public func getSecurizedURL(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) throws ->URL {
         if self.securityScopedBookmarkExits(url, appScoped: false, documentfileURL:nil)==false {
             return try self.bookmarkURL(url, appScoped: false, documentfileURL:nil)
         } else {
@@ -70,10 +70,10 @@ extension BartlebyDocument {
      - parameter appScoped:       appScoped description
      - parameter documentfileURL: documentfileURL description
      */
-    public func deleteSecurityScopedBookmark(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) {
+    public func deleteSecurityScopedBookmark(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) {
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-            self.registryMetadata.URLBookmarkData.removeValueForKey(key)
+            self.registryMetadata.URLBookmarkData.removeValue(forKey: key)
         }
     }
 
@@ -82,9 +82,9 @@ extension BartlebyDocument {
 
      - parameter scopedUrl: the scopedUrl
      */
-    public func startAccessingToSecurityScopedResourceAtURL(scopedUrl: NSURL) {
+    public func startAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
         scopedUrl.startAccessingSecurityScopedResource()
-        if _activeSecurityBookmarks.indexOf(scopedUrl)==nil {
+        if _activeSecurityBookmarks.index(of: scopedUrl)==nil {
             _activeSecurityBookmarks.append(scopedUrl)
         }
     }
@@ -95,10 +95,10 @@ extension BartlebyDocument {
 
      - parameter url: the url
      */
-    public func stopAccessingToSecurityScopedResourceAtURL(scopedUrl: NSURL) {
+    public func stopAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
         scopedUrl.stopAccessingSecurityScopedResource()
-        if let idx=_activeSecurityBookmarks.indexOf(scopedUrl) {
-            _activeSecurityBookmarks.removeAtIndex(idx)
+        if let idx=_activeSecurityBookmarks.index(of: scopedUrl) {
+            _activeSecurityBookmarks.remove(at: idx)
         }
 
     }
@@ -110,7 +110,7 @@ extension BartlebyDocument {
      */
     public func stopAccessingAllSecurityScopedResources() {
         while  let key = _activeSecurityBookmarks.first {
-            stopAccessingToSecurityScopedResourceAtURL(key)
+            stopAccessingToSecurityScopedResourceAtURL(key as URL)
         }
     }
 
@@ -126,21 +126,21 @@ extension BartlebyDocument {
 
      - returns: return the security scoped resource URL
      */
-    public func bookmarkURL(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) throws -> NSURL {
+    public func bookmarkURL(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) throws -> URL {
         if let _=url.path {
             var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped, documentfileURL:documentfileURL)
             // Encode the bookmark data as a Base64 string.
-            shareData=shareData.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
+            shareData=shareData.base64EncodedData(options: .endLineWithCarriageReturn)
             let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-            self.registryMetadata.URLBookmarkData[key]=stringifyedData
+            self.registryMetadata.URLBookmarkData[key]=stringifyedData as AnyObject?
             self.hasChanged()
             return try getSecurityScopedURLFrom(url)
         }
-        throw SecurityScopedBookMarkError.BookMarkFailed(message: "Invalid path Error for \(url)")
+        throw SecurityScopedBookMarkError.bookMarkFailed(message: "Invalid path Error for \(url)")
     }
 
-    private func _getBookMarkKeyFor(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) -> String {
+    fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> String {
         if let path=url.path {
             return "\(path)-\((appScoped ? "YES" : "NO" ))-\(documentfileURL?.path ?? Default.NO_PATH ))"
         } else {
@@ -160,18 +160,18 @@ extension BartlebyDocument {
 
      - returns: the securized URL
      */
-    public func getSecurityScopedURLFrom(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil)throws -> NSURL {
+    public func getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil)throws -> URL {
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             if let stringifyedData=self.registryMetadata.URLBookmarkData[key] as? String {
-                if let base64EncodedData=stringifyedData.dataUsingEncoding(Default.STRING_ENCODING) {
-                    if let data=NSData(base64EncodedData: base64EncodedData, options: [.IgnoreUnknownCharacters]) {
+                if let base64EncodedData=stringifyedData.data(using: Default.STRING_ENCODING) {
+                    if let data=Data(base64Encoded: base64EncodedData, options: [.ignoreUnknownCharacters]) {
                         var bookmarkIsStale: ObjCBool = false
                         do {
                             #if os(OSX)
-                                let securizedURL = try NSURL(byResolvingBookmarkData: data,
-                                                             options: NSURLBookmarkResolutionOptions.WithSecurityScope, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
-                                                             bookmarkDataIsStale: &bookmarkIsStale)
+                                let securizedURL = try (NSURL(resolvingBookmarkData: data,
+                                                             options: NSURL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : (documentfileURL ?? self.fileURL),
+                                                             bookmarkDataIsStale: &bookmarkIsStale) as URL)
                             #else
                                 let securizedURL = try NSURL(byResolvingBookmarkData: data,
                                                              options: NSURLBookmarkResolutionOptions.WithoutUI, relativeToURL:  appScoped ? nil : (documentfileURL ?? self.fileURL),
@@ -180,27 +180,27 @@ extension BartlebyDocument {
                             if (!bookmarkIsStale) {
                                 return securizedURL
                             } else {
-                                throw SecurityScopedBookMarkError.BookMarkIsStale
+                                throw SecurityScopedBookMarkError.bookMarkIsStale
                             }
                         } catch {
-                            throw SecurityScopedBookMarkError.GetScopedURLRessourceFailed(message: "Error \(error)")
+                            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Error \(error)")
                         }
                     } else {
-                        throw SecurityScopedBookMarkError.GetScopedURLRessourceFailed(message:"Bookmark data Base64 decoding error")
+                        throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Bookmark data Base64 decoding error")
                     }
                 } else {
-                    throw SecurityScopedBookMarkError.GetScopedURLRessourceFailed(message:"Bookmark data deserialization error")
+                    throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Bookmark data deserialization error")
                 }
             } else {
-                throw SecurityScopedBookMarkError.GetScopedURLRessourceFailed(message:"Unable to resolve bookmark for \(url) Did you bookmark that url?")
+                throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Unable to resolve bookmark for \(url) Did you bookmark that url?")
             }
         } else {
-            throw SecurityScopedBookMarkError.GetScopedURLRessourceFailed(message:"Invalid path Error for \(url)")
+            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Invalid path Error for \(url)")
         }
     }
 
 
-    public func securityScopedBookmarkExits(url: NSURL, appScoped: Bool=false, documentfileURL: NSURL?=nil) -> Bool {
+    public func securityScopedBookmarkExits(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> Bool {
         if let _=url.path {
             let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
             let result=self.registryMetadata.URLBookmarkData.keys.contains(key)
@@ -212,12 +212,12 @@ extension BartlebyDocument {
 
 
 
-    private func _createDataFromBookmarkForURL(fileURL: NSURL, appScoped: Bool=false, documentfileURL: NSURL?) throws -> NSData {
+    fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false, documentfileURL: URL?) throws -> Data {
         do {
             #if os(OSX)
-                let data = try fileURL.bookmarkDataWithOptions(NSURLBookmarkCreationOptions.WithSecurityScope,
+                let data = try (fileURL as NSURL).bookmarkData(options: NSURL.BookmarkCreationOptions.withSecurityScope,
                                                                includingResourceValuesForKeys:nil,
-                                                               relativeToURL: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
+                                                               relativeTo: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
             #else
                 let data = try fileURL.bookmarkDataWithOptions(NSURLBookmarkCreationOptions.SuitableForBookmarkFile,
                                                                includingResourceValuesForKeys: nil,
@@ -231,7 +231,7 @@ extension BartlebyDocument {
             // To create a document-scoped bookmark, use the absolute path (despite this parameter’s name) to the document file that is to own the new security-scoped bookmark.
             return data
         } catch {
-            throw SecurityScopedBookMarkError.BookMarkFailed(message: "\(error)")
+            throw SecurityScopedBookMarkError.bookMarkFailed(message: "\(error)")
         }
     }
 

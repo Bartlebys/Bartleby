@@ -14,27 +14,27 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a user in a specified data Space
-@objc(User) public class User : JObject{
+@objc(User) open class User : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "User"
     }
 
 	//An external unique identifier
-	dynamic public var externalID:String? {	 
+	dynamic open var externalID:String? {	 
 	    didSet { 
 	       if externalID != oldValue {
-	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
+	            self.provisionChanges(forKey: "externalID",oldValue: oldValue as AnyObject?,newValue: externalID as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	dynamic public var spaceUID:String = "\(Bartleby.createUID())"{	 
+	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    didSet { 
 	       if spaceUID != oldValue {
-	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
+	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue as AnyObject?,newValue: spaceUID as AnyObject?) 
 	       } 
 	    }
 	}
@@ -45,62 +45,62 @@ import ObjectMapper
 		case ByPhoneNumber = "ByPhoneNumber"
 		case ByEmail = "ByEmail"
 	}
-	public var verificationMethod:VerificationMethod = .ByPhoneNumber  {	 
+	open var verificationMethod:VerificationMethod = .ByPhoneNumber  {	 
 	    didSet { 
 	       if verificationMethod != oldValue {
-	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
+	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue as AnyObject?,newValue: verificationMethod.rawValue as AnyObject?)  
 	       } 
 	    }
 	}
 
-	dynamic public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if firstname != oldValue {
-	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
+	            self.provisionChanges(forKey: "firstname",oldValue: oldValue as AnyObject?,newValue: firstname as AnyObject?) 
 	       } 
 	    }
 	}
 
-	dynamic public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if lastname != oldValue {
-	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
+	            self.provisionChanges(forKey: "lastname",oldValue: oldValue as AnyObject?,newValue: lastname as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The user's email. Can be the secondary Identification source 
-	dynamic public var email:String? {	 
+	dynamic open var email:String? {	 
 	    didSet { 
 	       if email != oldValue {
-	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
+	            self.provisionChanges(forKey: "email",oldValue: oldValue as AnyObject?,newValue: email as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The user's phone number. Can be the secondary Identification source 
-	dynamic public var phoneNumber:String? {	 
+	dynamic open var phoneNumber:String? {	 
 	    didSet { 
 	       if phoneNumber != oldValue {
-	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
+	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue as AnyObject?,newValue: phoneNumber as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The hashed version of the user password
-	dynamic public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if password != oldValue {
-	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
+	            self.provisionChanges(forKey: "password",oldValue: oldValue as AnyObject?,newValue: password as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//An activation code
-	dynamic public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if activationCode != oldValue {
-	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
+	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue as AnyObject?,newValue: activationCode as AnyObject?) 
 	       } 
 	    }
 	}
@@ -111,34 +111,34 @@ import ObjectMapper
 		case Actived = "actived"
 		case Suspended = "suspended"
 	}
-	public var status:Status = .New  {	 
+	open var status:Status = .New  {	 
 	    didSet { 
 	       if status != oldValue {
-	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
+	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue as AnyObject?,newValue: status.rawValue as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//The user Tags. External reference to Tags instances
-	dynamic public var tags:[ExternalReference] = [ExternalReference]()  {	 
+	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {	 
 	    didSet { 
 	       if tags != oldValue {
-	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
+	            self.provisionChanges(forKey: "tags",oldValue: oldValue as AnyObject?,newValue: tags as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//Notes
-	dynamic public var notes:String? {	 
+	dynamic open var notes:String? {	 
 	    didSet { 
 	       if notes != oldValue {
-	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
+	            self.provisionChanges(forKey: "notes",oldValue: oldValue as AnyObject?,newValue: notes as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//set to true on the first successfull login in the session (this property is not serialized)
-	dynamic public var loginHasSucceed:Bool = false
+	dynamic open var loginHasSucceed:Bool = false
 
 
     // MARK: Mappable
@@ -147,7 +147,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.externalID <- ( map["externalID"] )
@@ -171,48 +171,48 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.externalID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"externalID") as NSString?)
-		self.spaceUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "spaceUID")! as NSString)
-		self.verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "verificationMethod")! as NSString))! 
-		self.firstname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "firstname")! as NSString)
-		self.lastname=String(decoder.decodeObjectOfClass(NSString.self, forKey: "lastname")! as NSString)
-		self.email=String(decoder.decodeObjectOfClass(NSString.self, forKey:"email") as NSString?)
-		self.phoneNumber=String(decoder.decodeObjectOfClass(NSString.self, forKey:"phoneNumber") as NSString?)
-		self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey: "password")! as NSString)
-		self.activationCode=String(decoder.decodeObjectOfClass(NSString.self, forKey: "activationCode")! as NSString)
-		self.status=User.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.tags=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tags")! as! [ExternalReference]
-		self.notes=String(decoder.decodeObjectOfClass(NSString.self, forKey:"notes") as NSString?)
+		self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
+		self.spaceUID=String(decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
+		self.verificationMethod=User.VerificationMethod(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+		self.firstname=String(decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
+		self.lastname=String(decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
+		self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
+		self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
+		self.password=String(decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
+		self.activationCode=String(decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
+		self.status=User.Status(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
+		self.tags=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),ExternalReference.classForCoder()]), forKey: "tags")! as! [ExternalReference]
+		self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let externalID = self.externalID {
-			coder.encodeObject(externalID,forKey:"externalID")
+			coder.encode(externalID,forKey:"externalID")
 		}
-		coder.encodeObject(self.spaceUID,forKey:"spaceUID")
-		coder.encodeObject(self.verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encodeObject(self.firstname,forKey:"firstname")
-		coder.encodeObject(self.lastname,forKey:"lastname")
+		coder.encode(self.spaceUID,forKey:"spaceUID")
+		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encode(self.firstname,forKey:"firstname")
+		coder.encode(self.lastname,forKey:"lastname")
 		if let email = self.email {
-			coder.encodeObject(email,forKey:"email")
+			coder.encode(email,forKey:"email")
 		}
 		if let phoneNumber = self.phoneNumber {
-			coder.encodeObject(phoneNumber,forKey:"phoneNumber")
+			coder.encode(phoneNumber,forKey:"phoneNumber")
 		}
-		coder.encodeObject(self.password,forKey:"password")
-		coder.encodeObject(self.activationCode,forKey:"activationCode")
-		coder.encodeObject(self.status.rawValue ,forKey:"status")
-		coder.encodeObject(self.tags,forKey:"tags")
+		coder.encode(self.password,forKey:"password")
+		coder.encode(self.activationCode,forKey:"activationCode")
+		coder.encode(self.status.rawValue ,forKey:"status")
+		coder.encode(self.tags,forKey:"tags")
 		if let notes = self.notes {
-			coder.encodeObject(notes,forKey:"notes")
+			coder.encode(notes,forKey:"notes")
 		}
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -223,11 +223,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "users"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return User.collectionName
     }
 

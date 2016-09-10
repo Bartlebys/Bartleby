@@ -18,44 +18,44 @@ import Foundation
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-@objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
+(BsyncDMGCard) open class BsyncDMGCard: JObject {
 
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "BsyncDMGCard"
     }
 
-    public static let NO_PATH="none"
-    public static let NOT_SET="not-set"
-    public static let DMG_EXTENSION="sparseimage"
+    open static let NO_PATH="none"
+    open static let NOT_SET="not-set"
+    open static let DMG_EXTENSION="sparseimage"
 
     /// The user Unique Identifier
-    public var userUID: String=BsyncDMGCard.NOT_SET
+    open var userUID: String=BsyncDMGCard.NOT_SET
 
     // Associated to a context (e.g. project UID)
-    public var contextUID: String=BsyncDMGCard.NOT_SET
+    open var contextUID: String=BsyncDMGCard.NOT_SET
 
     // The last kwnow path (if not correct the client should ask for a path)
     // The full path including the ".sparseimage" extension.
-    public var imagePath: String=BsyncDMGCard.NO_PATH
+    open var imagePath: String=BsyncDMGCard.NO_PATH
 
     // The associated volumeName
-    public var volumeName: String=BsyncDMGCard.NOT_SET
+    open var volumeName: String=BsyncDMGCard.NOT_SET
 
     // You can provide an optionnal sync directive path.
-    public var directivesRelativePath: String=BsyncDMGCard.NO_PATH
+    open var directivesRelativePath: String=BsyncDMGCard.NO_PATH
 
     // The size of the disk image.
-    public var size: String="1g"
+    open var size: String="1g"
 
     /// Returns the absolute volume path
-    public var volumePath: String {
+    open var volumePath: String {
         get {
             return "/Volumes/\(volumeName)/"
         }
     }
 
 
-    public var standardDirectivesPath: String {
+    open var standardDirectivesPath: String {
         get {
             if self.directivesRelativePath != BsyncDMGCard.NO_PATH {
                  return self.volumePath+"\(self.directivesRelativePath)"
@@ -84,12 +84,12 @@ import Foundation
 
      - returns: a block
      */
-    public func evaluate() -> Completion {
+    open func evaluate() -> Completion {
         // Test the path
-        let url=NSURL(fileURLWithPath:imagePath, isDirectory:false)
+        let url=URL(fileURLWithPath:imagePath, isDirectory:false)
         let ext=url.pathExtension
         if ext != BsyncDMGCard.DMG_EXTENSION {
-            return Completion.failureState(NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(imagePath)", statusCode: .Bad_Request)
+            return Completion.failureState(NSLocalizedString("Invalid path extension. The path must end by .\(BsyncDMGCard.DMG_EXTENSION). Current path:", comment: "Invalid path extension.")+"\(imagePath)", statusCode: .bad_Request)
         }
 
         // Verify that everything has been set.
@@ -97,14 +97,14 @@ import Foundation
             contextUID == BsyncDMGCard.NOT_SET ||
             imagePath == BsyncDMGCard.NO_PATH ||
             volumeName == BsyncDMGCard.NOT_SET) {
-            return Completion.failureState(NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n", statusCode: .Bad_Request)
+            return Completion.failureState(NSLocalizedString("The card is not correctly configured userUID,contextUID,path and volumeName must be set.", comment: "The card is not correctly configured.")+"\nuserUID = \(userUID),\ncontextUID = \(contextUID),\npath= \(imagePath),\n volumeName = \(volumeName)\n", statusCode: .bad_Request)
         } else {
             return Completion.successState()
         }
     }
 
 
-    public override func mapping(map: Map) {
+    open override func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervision()
         userUID <- (map["userUID"], CryptedStringTransform())
@@ -119,29 +119,29 @@ import Foundation
     // MARK: NSecureCoding
 
 
-    public override func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-        coder.encodeObject(userUID, forKey: "userUID")
-        coder.encodeObject(contextUID, forKey: "contextUID")
-        coder.encodeObject(imagePath, forKey: "path")
-        coder.encodeObject(volumeName, forKey: "volumeName")
-        coder.encodeObject(directivesRelativePath, forKey: "directivesRelativePath")
-        coder.encodeObject(size, forKey: "size")
+    open override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(userUID, forKey: "userUID")
+        coder.encode(contextUID, forKey: "contextUID")
+        coder.encode(imagePath, forKey: "path")
+        coder.encode(volumeName, forKey: "volumeName")
+        coder.encode(directivesRelativePath, forKey: "directivesRelativePath")
+        coder.encode(size, forKey: "size")
     }
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder:decoder)
         self.disableSupervision()
-        self.userUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "userUID")! as NSString)
-        self.contextUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "contextUID")! as NSString)
-        self.imagePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "path")! as NSString)
-        self.volumeName=String(decoder.decodeObjectOfClass(NSString.self, forKey: "volumeName")! as NSString)
-        self.directivesRelativePath=String(decoder.decodeObjectOfClass(NSString.self, forKey: "directivesRelativePath")! as NSString)
-        self.size=String(decoder.decodeObjectOfClass(NSString.self, forKey: "size")! as NSString)
+        self.userUID=String(decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
+        self.contextUID=String(decoder.decodeObject(of: NSString.self, forKey: "contextUID")! as NSString)
+        self.imagePath=String(decoder.decodeObject(of: NSString.self, forKey: "path")! as NSString)
+        self.volumeName=String(decoder.decodeObject(of: NSString.self, forKey: "volumeName")! as NSString)
+        self.directivesRelativePath=String(decoder.decodeObject(of: NSString.self, forKey: "directivesRelativePath")! as NSString)
+        self.size=String(decoder.decodeObject(of: NSString.self, forKey: "size")! as NSString)
         self.enableSupervision()
     }
 
-    public override static func supportsSecureCoding() -> Bool {
+    open override static func supportsSecureCoding() -> Bool {
         return true
     }
 
@@ -152,7 +152,7 @@ import Foundation
 
      - returns: the password
      */
-    public func getPasswordForDMG() -> String {
+    open func getPasswordForDMG() -> String {
         // This method will not return a correct password if Bartleby is not correctly initialized.
         do {
             return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))
@@ -165,11 +165,11 @@ import Foundation
 
     // MARK: Identifiable
 
-    override public class var collectionName: String {
+    override open class var collectionName: String {
         return "BsyncDMGCard"
     }
 
-    override public var d_collectionName: String {
+    override open var d_collectionName: String {
         return BsyncDMGCard.collectionName
     }
 

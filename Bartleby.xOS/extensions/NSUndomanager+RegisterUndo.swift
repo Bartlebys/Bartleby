@@ -20,25 +20,25 @@
 //
 
 private class SwiftUndoPerformer: NSObject {
-    let closure: Void -> Void
+    let closure: (Void) -> Void
 
-    init(closure: Void -> Void) {
+    init(closure: @escaping (Void) -> Void) {
         self.closure = closure
     }
 
-    @objc func performWithSelf(retainedSelf: SwiftUndoPerformer) {
+    @objc func performWithSelf(_ retainedSelf: SwiftUndoPerformer) {
         closure()
     }
 }
 
-public extension NSUndoManager {
+public extension UndoManager {
 
     // With the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
     // That's why we have added an registerUndo extension on NSUndoManager
 
-    public func registerUndo(closure: Void -> Void) {
+    public func registerUndo(_ closure: @escaping (Void) -> Void) {
         let performer = SwiftUndoPerformer(closure: closure)
-        registerUndoWithTarget(performer, selector: #selector(SwiftUndoPerformer.performWithSelf(_:)), object: performer)
+        self.registerUndo(withTarget: performer, selector: #selector(SwiftUndoPerformer.performWithSelf(_:)), object: performer)
         //(Passes unnecessary object to get undo manager to retain SwiftUndoPerformer)
     }
 

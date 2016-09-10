@@ -14,17 +14,17 @@ import Foundation
 #endif
 
 
-@objc(BsyncCredentials) public class BsyncCredentials: JObject {
+(BsyncCredentials) open class BsyncCredentials: JObject {
 
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "BsyncCredentials"
     }
 
 
     // CRYPTED
-    public var user: User?
-    public var password: String?
-    public var salt: String?
+    open var user: User?
+    open var password: String?
+    open var salt: String?
 
     public required init() {
         super.init()
@@ -37,7 +37,7 @@ import Foundation
         self.mapping(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervision()
         user <- (map["user"], CryptedSerializableTransform())
@@ -49,35 +49,35 @@ import Foundation
 
     // MARK: NSecureCoding
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-        coder.encodeObject(user, forKey: "user")
-        coder.encodeObject(password, forKey: "password")
-        coder.encodeObject(salt, forKey: "salt")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+        coder.encode(user, forKey: "user")
+        coder.encode(password, forKey: "password")
+        coder.encode(salt, forKey: "salt")
     }
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervision()
         self.user=User(coder: decoder)
-        self.password=String(decoder.decodeObjectOfClass(NSString.self, forKey:"password") as NSString?)
-        self.salt=String(decoder.decodeObjectOfClass(NSString.self, forKey:"salt") as NSString?)
+        self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
+        self.salt=String(describing: decoder.decodeObject(of: NSString.self, forKey:"salt") as NSString?)
         self.enableSupervision()
     }
 
 
-    override public class func supportsSecureCoding() -> Bool {
+    override open class func supportsSecureCoding() -> Bool {
         return true
     }
 
 
     // MARK: Identifiable
 
-    override public class var collectionName: String {
+    override open class var collectionName: String {
         return "BsyncCredentials"
     }
 
-    override public var d_collectionName: String {
+    override open var d_collectionName: String {
         return BsyncCredentials.collectionName
     }
 

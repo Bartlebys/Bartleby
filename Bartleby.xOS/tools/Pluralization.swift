@@ -88,7 +88,7 @@ class Pluralization {
         }
     }
 
-    static func pluralize(word: String)->String {
+    static func pluralize(_ word: String)->String {
 
         let lowerCasedWord=word//PString.strtolower(word)
 
@@ -118,7 +118,7 @@ class Pluralization {
     }
 
 
-    static func singularize(word: String)->String {
+    static func singularize(_ word: String)->String {
 
         let lowerCasedWord = word//PString.strtolower(word);
         for uncountable in Pluralization.uncountables {

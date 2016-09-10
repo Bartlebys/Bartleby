@@ -14,73 +14,73 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Commons: A progression state
-@objc(Progression) public class Progression : JObject{
+@objc(Progression) open class Progression : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Progression"
     }
 
 	//The start time of the progression state
-	public var startTime:Double?
+	open var startTime:Double?
 	//Index of the task
-	dynamic public var currentTaskIndex:Int = 0  {	 
+	dynamic open var currentTaskIndex:Int = 0  {	 
 	    didSet { 
 	       if currentTaskIndex != oldValue {
-	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
+	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue as AnyObject?,newValue: currentTaskIndex as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//Total number of tasks
-	dynamic public var totalTaskCount:Int = 0  {	 
+	dynamic open var totalTaskCount:Int = 0  {	 
 	    didSet { 
 	       if totalTaskCount != oldValue {
-	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
+	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue as AnyObject?,newValue: totalTaskCount as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//0 to 100
-	dynamic public var currentPercentProgress:Double = 0  {	 
+	dynamic open var currentPercentProgress:Double = 0  {	 
 	    didSet { 
 	       if currentPercentProgress != oldValue {
-	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue,newValue: currentPercentProgress)  
+	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue as AnyObject?,newValue: currentPercentProgress as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//The Message
-	dynamic public var message:String = ""{	 
+	dynamic open var message:String = ""{	 
 	    didSet { 
 	       if message != oldValue {
-	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
+	            self.provisionChanges(forKey: "message",oldValue: oldValue as AnyObject?,newValue: message as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The consolidated information (may include the message)
-	dynamic public var informations:String = ""{	 
+	dynamic open var informations:String = ""{	 
 	    didSet { 
 	       if informations != oldValue {
-	            self.provisionChanges(forKey: "informations",oldValue: oldValue,newValue: informations) 
+	            self.provisionChanges(forKey: "informations",oldValue: oldValue as AnyObject?,newValue: informations as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//The associated data
-	dynamic public var data:NSData? {	 
+	dynamic open var data:Data? {	 
 	    didSet { 
 	       if data != oldValue {
-	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
+	            self.provisionChanges(forKey: "data",oldValue: oldValue as AnyObject?,newValue: data as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//A category to discriminate bunch of progression states
-	dynamic public var category:String = ""
+	dynamic open var category:String = ""
 	//An external identifier
-	dynamic public var externalIdentifier:String = ""
+	dynamic open var externalIdentifier:String = ""
 
 
     // MARK: Mappable
@@ -89,7 +89,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.startTime <- ( map["startTime"] )
@@ -110,38 +110,38 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.startTime=decoder.decodeDoubleForKey("startTime") 
-		self.currentTaskIndex=decoder.decodeIntegerForKey("currentTaskIndex") 
-		self.totalTaskCount=decoder.decodeIntegerForKey("totalTaskCount") 
-		self.currentPercentProgress=decoder.decodeDoubleForKey("currentPercentProgress") 
-		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
-		self.informations=String(decoder.decodeObjectOfClass(NSString.self, forKey: "informations")! as NSString)
-		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
-		self.category=String(decoder.decodeObjectOfClass(NSString.self, forKey: "category")! as NSString)
-		self.externalIdentifier=String(decoder.decodeObjectOfClass(NSString.self, forKey: "externalIdentifier")! as NSString)
+		self.startTime=decoder.decodeDouble(forKey: "startTime") 
+		self.currentTaskIndex=decoder.decodeInteger(forKey: "currentTaskIndex") 
+		self.totalTaskCount=decoder.decodeInteger(forKey: "totalTaskCount") 
+		self.currentPercentProgress=decoder.decodeDouble(forKey: "currentPercentProgress") 
+		self.message=String(decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
+		self.informations=String(decoder.decodeObject(of: NSString.self, forKey: "informations")! as NSString)
+		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
+		self.category=String(decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
+		self.externalIdentifier=String(decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let startTime = self.startTime {
-			coder.encodeDouble(startTime,forKey:"startTime")
+			coder.encode(startTime,forKey:"startTime")
 		}
-		coder.encodeInteger(self.currentTaskIndex,forKey:"currentTaskIndex")
-		coder.encodeInteger(self.totalTaskCount,forKey:"totalTaskCount")
-		coder.encodeDouble(self.currentPercentProgress,forKey:"currentPercentProgress")
-		coder.encodeObject(self.message,forKey:"message")
-		coder.encodeObject(self.informations,forKey:"informations")
+		coder.encode(self.currentTaskIndex,forKey:"currentTaskIndex")
+		coder.encode(self.totalTaskCount,forKey:"totalTaskCount")
+		coder.encode(self.currentPercentProgress,forKey:"currentPercentProgress")
+		coder.encode(self.message,forKey:"message")
+		coder.encode(self.informations,forKey:"informations")
 		if let data = self.data {
-			coder.encodeObject(data,forKey:"data")
+			coder.encode(data,forKey:"data")
 		}
-		coder.encodeObject(self.category,forKey:"category")
-		coder.encodeObject(self.externalIdentifier,forKey:"externalIdentifier")
+		coder.encode(self.category,forKey:"category")
+		coder.encode(self.externalIdentifier,forKey:"externalIdentifier")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -152,11 +152,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "progressions"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Progression.collectionName
     }
 

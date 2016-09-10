@@ -14,53 +14,53 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Commons: A completion state
-@objc(Completion) public class Completion : JObject{
+@objc(Completion) open class Completion : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Completion"
     }
 
 	//Success if set to true
-	dynamic public var success:Bool = true  {	 
+	dynamic open var success:Bool = true  {	 
 	    didSet { 
 	       if success != oldValue {
-	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
+	            self.provisionChanges(forKey: "success",oldValue: oldValue as AnyObject?,newValue: success as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//The status
-	dynamic public var statusCode:Int = StatusOfCompletion.Undefined.rawValue  {	 
+	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {	 
 	    didSet { 
 	       if statusCode != oldValue {
-	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
+	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue as AnyObject?,newValue: statusCode as AnyObject?)  
 	       } 
 	    }
 	}
 
 	//The Message
-	dynamic public var message:String = ""{	 
+	dynamic open var message:String = ""{	 
 	    didSet { 
 	       if message != oldValue {
-	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
+	            self.provisionChanges(forKey: "message",oldValue: oldValue as AnyObject?,newValue: message as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//completion data
-	dynamic public var data:NSData? {	 
+	dynamic open var data:Data? {	 
 	    didSet { 
 	       if data != oldValue {
-	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
+	            self.provisionChanges(forKey: "data",oldValue: oldValue as AnyObject?,newValue: data as AnyObject?) 
 	       } 
 	    }
 	}
 
 	//A category to discriminate bunch of completion states
-	dynamic public var category:String = ""
+	dynamic open var category:String = ""
 	//An external identifier
-	dynamic public var externalIdentifier:String = ""
+	dynamic open var externalIdentifier:String = ""
 
 
     // MARK: Mappable
@@ -69,7 +69,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.success <- ( map["success"] )
@@ -87,30 +87,30 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.success=decoder.decodeBoolForKey("success") 
-		self.statusCode=decoder.decodeIntegerForKey("statusCode") 
-		self.message=String(decoder.decodeObjectOfClass(NSString.self, forKey: "message")! as NSString)
-		self.data=decoder.decodeObjectOfClass(NSData.self, forKey:"data") as NSData?
-		self.category=String(decoder.decodeObjectOfClass(NSString.self, forKey: "category")! as NSString)
-		self.externalIdentifier=String(decoder.decodeObjectOfClass(NSString.self, forKey: "externalIdentifier")! as NSString)
+		self.success=decoder.decodeBool(forKey: "success") 
+		self.statusCode=decoder.decodeInteger(forKey: "statusCode") 
+		self.message=String(decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
+		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
+		self.category=String(decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
+		self.externalIdentifier=String(decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-		coder.encodeBool(self.success,forKey:"success")
-		coder.encodeInteger(self.statusCode,forKey:"statusCode")
-		coder.encodeObject(self.message,forKey:"message")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+		coder.encode(self.success,forKey:"success")
+		coder.encode(self.statusCode,forKey:"statusCode")
+		coder.encode(self.message,forKey:"message")
 		if let data = self.data {
-			coder.encodeObject(data,forKey:"data")
+			coder.encode(data,forKey:"data")
 		}
-		coder.encodeObject(self.category,forKey:"category")
-		coder.encodeObject(self.externalIdentifier,forKey:"externalIdentifier")
+		coder.encode(self.category,forKey:"category")
+		coder.encode(self.externalIdentifier,forKey:"externalIdentifier")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -121,11 +121,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "completions"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Completion.collectionName
     }
 

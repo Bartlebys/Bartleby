@@ -27,7 +27,7 @@ public protocol Invocable: Collectible {
 
      - parameter state: the Completion state
      */
-    func complete(state: Completion)
+    func complete(_ state: Completion)
 
 
     /**
@@ -35,6 +35,6 @@ public protocol Invocable: Collectible {
        (!) This method is implemented as final in Task Extension to guarantee the task scheduler consistency
      - parameter state: the Progression state
      */
-    func transmit(state: Progression)
+    func transmit(_ state: Progression)
 
 }

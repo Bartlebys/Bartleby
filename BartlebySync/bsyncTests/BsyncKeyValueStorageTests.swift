@@ -10,9 +10,9 @@ import XCTest
 
 class BsyncKeyValueStorageTests: TestCase {
 
-    private static let _spaceUID = TestCase.document.spaceUID
-    private static var _userID = "UNDEFINED"
-    private static let _kvsUrl = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
+    fileprivate static let _spaceUID = TestCase.document.spaceUID
+    fileprivate static var _userID = "UNDEFINED"
+    fileprivate static let _kvsUrl = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(Bartleby.randomStringWithLength(6) + ".kvs")
     let _kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
 
     override func setUp() {
@@ -36,7 +36,7 @@ class BsyncKeyValueStorageTests: TestCase {
     }
 
     func test101_Upsert1() {
-        XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
         let user = User()
         user.creatorUID = user.UID
         user.spaceUID = BsyncKeyValueStorageTests._spaceUID
@@ -44,7 +44,7 @@ class BsyncKeyValueStorageTests: TestCase {
         _kvs["user1"] = user
     }
     func test102_Upsert2() {
-       XCTAssertTrue(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+       XCTAssertTrue(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
         let s=JString()
         s.string="value2"
        _kvs["key2"] = s
@@ -82,7 +82,7 @@ class BsyncKeyValueStorageTests: TestCase {
     func test108_RemoveAll() {
         do {
             try _kvs.removeAll()
-            XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+            XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
         } catch {
             XCTFail("\(error)")
         }
@@ -90,7 +90,7 @@ class BsyncKeyValueStorageTests: TestCase {
 
     func test109_EnumerateAfterRemoveAll() {
         let kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
-        XCTAssertFalse(_fm.fileExistsAtPath(BsyncKeyValueStorageTests._kvsUrl.path!))
+        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
 
         do {
             try kvs.open()
@@ -113,7 +113,7 @@ class BsyncKeyValueStorageTests: TestCase {
 
 
     func test110_SerializableData() {
-        if let d1 = "Rocinante".dataUsingEncoding( NSUTF8StringEncoding){
+        if let d1 = "Rocinante".data( using: String.Encoding.utf8){
             _kvs.setDataValue(d1, forKey:"horseAsData")
             if let d2 = _kvs.getDataValueForKey("horseAsData") {
                 XCTAssertEqual(d2, d1)

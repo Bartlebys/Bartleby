@@ -10,30 +10,30 @@ import Foundation
 #endif
 
 
-public class LoginUser: JObject {
+open class LoginUser: JObject {
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "LoginUser"
     }
 
-    static public func execute(  user: User,
+    static open func execute(  _ user: User,
                                 withPassword password: String,
-                                sucessHandler success:()->(),
-                                failureHandler failure:(context: JHTTPResponse)->()) {
+                                sucessHandler success:@escaping ()->(),
+                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
             if let registry=user.document{
                 
                 let baseURL=Bartleby.sharedInstance.getCollaborationURL(registry.UID)
-                let pathURL=baseURL.URLByAppendingPathComponent("user/login")
+                let pathURL=baseURL.appendingPathComponent("user/login")
 
                 // A valid registry is required for any authentication.
                 // So you must create a Document and use its spaceUID before to login.
                 let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(password)) ?? password
-                let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID,"password":cryptoPassword, "identification":registry.registryMetadata.identificationMethod.rawValue]
+                let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":cryptoPassword as AnyObject, "identification":registry.registryMetadata.identificationMethod.rawValue as AnyObject]
 
                 let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
-                let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
+                let r: Request=request(ParameterEncoding.json.encode(urlRequest, parameters: dictionary).0)
                 r.responseJSON { response in
 
                     let request=response.request
@@ -45,14 +45,14 @@ public class LoginUser: JObject {
 
                     let context = JHTTPResponse( code: 100,
                         caller: "LoginUser.execute",
-                        relatedURL:request?.URL,
+                        relatedURL:request?.url,
                         httpStatusCode:response?.statusCode ?? 0,
                         response:response,
                         result:result.value)
 
                     // React according to the situation
                     var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
+                    reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
 
                     if result.isFailure {
                         if user.UID == registry.currentUser.UID{
@@ -60,7 +60,7 @@ public class LoginUser: JObject {
                         }
                         let m = NSLocalizedString("authentication login",
                             comment: "authentication login failure description")
-                        let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                 comment: "Unsuccessfull attempt"),
@@ -90,7 +90,7 @@ public class LoginUser: JObject {
                                 // because we consider that failures differentiations could be done by the caller.
                                 let m = NSLocalizedString("authentication login",
                                     comment: "authentication login failure description")
-                                let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                         comment: "Unsuccessfull attempt"),
@@ -111,7 +111,7 @@ public class LoginUser: JObject {
 
                 let context = JHTTPResponse( code: 1,
                                              caller: "LoginUser.execute",
-                                             relatedURL:NSURL(),
+                                             relatedURL:URL(),
                                              httpStatusCode:417,
                                              response:nil,
                                              result:"{\"message\":\"Attempt to login without having created a document that holds the dataspace\"}")

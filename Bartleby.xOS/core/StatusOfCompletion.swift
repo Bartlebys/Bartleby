@@ -14,68 +14,68 @@ import Foundation
 public enum StatusOfCompletion : Int {
 
     // Error
-    case Error = -1
+    case error = -1
 
     // Not Defined
-    case Undefined = 0
+    case undefined = 0
 
     // Relay
-    case Continue = 100
-    case Switching_Protocols = 101
+    case `continue` = 100
+    case switching_Protocols = 101
 
     // Explicit Success
-    case OK = 200
-    case Created = 201
-    case Accepted = 202
-    case Non_Authoritative_Information = 203
-    case No_Content = 204
-    case Reset_Content = 205
-    case Partial_Content = 206
+    case ok = 200
+    case created = 201
+    case accepted = 202
+    case non_Authoritative_Information = 203
+    case no_Content = 204
+    case reset_Content = 205
+    case partial_Content = 206
 
     // 3XX - redirections & ...
-    case Multiple_Choices = 300
-    case Moved_Permanently = 301
-    case Found = 302
-    case See_Other = 303
-    case Not_modified = 304
-    case Use_Proxy = 305
-    case Unused = 306
-    case Temporary_Redirect = 307
+    case multiple_Choices = 300
+    case moved_Permanently = 301
+    case found = 302
+    case see_Other = 303
+    case not_modified = 304
+    case use_Proxy = 305
+    case unused = 306
+    case temporary_Redirect = 307
 
     // 4XX
-    case Bad_Request = 400
-    case Unauthorized = 401
-    case Payment_Required = 402
-    case Forbidden = 403
-    case Not_Found = 404
-    case Method_Not_Allowed = 405
-    case Not_Acceptable = 406
-    case Proxy_Authentication_Required = 407
-    case Request_Timeout = 408
-    case Conflict = 409
-    case Gone = 410
-    case Length_Required = 411
-    case Precondition_Failed = 412
-    case Request_Entity_Too_Large = 413
-    case Request_URI_Too_Long = 414
-    case Unsupported_Media_Type = 415
-    case Requested_Range_Not_Satisfiable = 416
-    case Expectation_Failed = 417
-    case Locked = 423
+    case bad_Request = 400
+    case unauthorized = 401
+    case payment_Required = 402
+    case forbidden = 403
+    case not_Found = 404
+    case method_Not_Allowed = 405
+    case not_Acceptable = 406
+    case proxy_Authentication_Required = 407
+    case request_Timeout = 408
+    case conflict = 409
+    case gone = 410
+    case length_Required = 411
+    case precondition_Failed = 412
+    case request_Entity_Too_Large = 413
+    case request_URI_Too_Long = 414
+    case unsupported_Media_Type = 415
+    case requested_Range_Not_Satisfiable = 416
+    case expectation_Failed = 417
+    case locked = 423
 
-    case Internal_Server_Error = 500
-    case Not_Implemented = 501
-    case Bad_EndPointsGateway = 502
-    case Service_Unavailable = 503
-    case EndPointsGateway_Timeout = 504
-    case HTTP_Version_Not_Supported = 505
+    case internal_Server_Error = 500
+    case not_Implemented = 501
+    case bad_EndPointsGateway = 502
+    case service_Unavailable = 503
+    case endPointsGateway_Timeout = 504
+    case http_Version_Not_Supported = 505
 
 
-    public static func messageFromStatus(status: StatusOfCompletion ) -> String {
+    public static func messageFromStatus(_ status: StatusOfCompletion ) -> String {
         return messageFromStatus(status.rawValue)
     }
 
-    public static func messageFromStatus(status: Int) -> String {
+    public static func messageFromStatus(_ status: Int) -> String {
         var message: String
         switch status {
         case 100:

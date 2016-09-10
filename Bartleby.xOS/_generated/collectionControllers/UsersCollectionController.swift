@@ -20,42 +20,42 @@ import ObjectMapper
 
 // This controller implements data automation features.
 
-@objc(UsersCollectionController) public class UsersCollectionController : JObject,IterableCollectibleCollection{
+@objc(UsersCollectionController) open class UsersCollectionController : JObject,IterableCollectibleCollection{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "UsersCollectionController"
     }
 
     // Registry is referenced on Collection Proxy Creation.
-    public var registry:BartlebyDocument?
+    open var registry:BartlebyDocument?
 
-    public var spaceUID:String {
+    open var spaceUID:String {
         get{
             return self.registry?.spaceUID ?? Default.NO_UID
         }
     }
 
-    public var registryUID:String{
+    open var registryUID:String{
         get{
             return self.registry?.UID ?? Default.NO_UID
         }
     }
 
-    weak public var undoManager:NSUndoManager?
+    weak open var undoManager:UndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
-    public weak var arrayController:NSArrayController?
+    open weak var arrayController:NSArrayController?
 
     #endif
 
-    weak public var tableView: BXTableView?
+    weak open var tableView: BXTableView?
 
-    public func generate() -> AnyGenerator<User> {
+    open func makeIterator() -> AnyIterator<User> {
         var nextIndex = -1
         let limit=self.items.count-1
-        return AnyGenerator {
+        return AnyIterator {
             nextIndex += 1
             if (nextIndex > limit) {
                 return nil
@@ -65,32 +65,32 @@ import ObjectMapper
     }
 
 
-    public subscript(index: Int) -> User {
+    open subscript(index: Int) -> User {
         return self.items[index]
     }
 
-    public func itemAtIndex(index:Int)->Collectible{
+    open func itemAtIndex(_ index:Int)->Collectible{
         return self[index]
     }
 
-    public var startIndex:Int {
+    open var startIndex:Int {
         return 0
     }
 
-    public var endIndex:Int {
+    open var endIndex:Int {
         return self.items.count
     }
 
-    public var count:Int {
+    open var count:Int {
         return self.items.count
     }
 
-    public func indexOf(@noescape predicate: (User) throws -> Bool) rethrows -> Int?{
-        return try self.items.indexOf(predicate)
+    open func indexOf(predicate: (User) throws -> Bool) rethrows -> Int?{
+        return try self.items.index(where: predicate)
     }
 
-    public func indexOf(element: User) -> Int?{
-		return self.items.indexOf(element)
+    open func indexOf(_ element: User) -> Int?{
+		return self.items.index(of: element)
     }
 
 
@@ -99,9 +99,9 @@ import ObjectMapper
     The Registry ignores the real types.
     - parameter on: the closure
     */
-    public func superIterate(on:(element: Collectible)->()){
+    open func superIterate(_ on:(_ element: Collectible)->()){
         for item in self.items {
-            on(element:item)
+            on(item)
         }
     }
 
@@ -110,7 +110,7 @@ import ObjectMapper
     Commit all the changes in one bunch
     Marking commit on each item will toggle hasChanged flag.
     */
-    public func commitChanges() -> [String] {
+    open func commitChanges() -> [String] {
         var UIDS=[String]()
         if self.toBeCommitted{ // When one member has to be committed its collection _shouldBeCommited flag is turned to true
             let changedItems=self.items.filter { $0.toBeCommitted == true }
@@ -129,21 +129,21 @@ import ObjectMapper
     }
 
 
-    public dynamic var items:[User]=[User](){
+    open dynamic var items:[User]=[User](){
         didSet {
             if items != oldValue {
-                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+                self.provisionChanges(forKey: "items",oldValue: oldValue as AnyObject?,newValue: items as AnyObject?)
             }
         }
     }
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return User.collectionName
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return User.collectionName
     }
 
@@ -155,12 +155,12 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.items <- ( map["items"] )
 		
-        if map.mappingType == .FromJSON {
+        if map.mappingType == .fromJSON {
             forEach { $0.collection=self }
         }
         self.enableSuperVisionAndCommit()
@@ -172,20 +172,20 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.items=decoder.decodeObjectOfClasses(NSSet(array: [NSArray.classForCoder(),User.classForCoder()]), forKey: "items")! as! [User]
+		self.items=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),User.classForCoder()]), forKey: "items")! as! [User]
 		
 		forEach { $0.collection=self }
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
-		coder.encodeObject(self.items,forKey:"items")
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+		coder.encode(self.items,forKey:"items")
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -194,9 +194,9 @@ import ObjectMapper
 
     // MARK: Upsert
 
-    public func upsert(item: Collectible, commit:Bool){
+    open func upsert(_ item: Collectible, commit:Bool){
 
-        if let idx=items.indexOf({return $0.UID == item.UID}){
+        if let idx=items.index(where: {return $0.UID == item.UID}){
             // it is an update
             // we must patch it
             let currentInstance=items[idx]
@@ -222,7 +222,7 @@ import ObjectMapper
     // MARK: Add
 
 
-    public func add(item:Collectible, commit:Bool){
+    open func add(_ item:Collectible, commit:Bool){
         self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
     }
 
@@ -235,7 +235,7 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the insertion?
     */
-    public func insertObject(item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
+    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? User{
 
             item.collection = self // Reference the collection
@@ -251,14 +251,14 @@ import ObjectMapper
             }
 
             // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
-                undoManager.prepareWithInvocationTarget(self).removeObjectFromItemsAtIndex(index, commit:commit)
-                if !undoManager.undoing {
+            if let undoManager: UndoManager = undoManager {
+                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectFromItemsAtIndex(index, commit:commit)
+                if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("AddUser", comment: "AddUser undo action"))
                 }
             }
                         // Insert the item
-            self.items.insert(item, atIndex: index)
+            self.items.insert(item, at: index)
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
@@ -266,12 +266,12 @@ import ObjectMapper
                 arrayController.rearrangeObjects()
 
                 if let tableView = self.tableView{
-                    dispatch_async(GlobalQueue.Main.get(), {
+                    GlobalQueue.main.get().async(execute: {
                         let sorted=self.arrayController?.arrangedObjects as! [User]
                         // Find the object just added
-                        if let row=sorted.indexOf(item){
+                        if let row=sorted.index(of: item){
                             // Start editing
-                            tableView.editColumn(0, row: row, withEvent: nil, select: true)
+                            tableView.editColumn(0, row: row, with: nil, select: true)
                         }
                     })
                 }
@@ -299,18 +299,18 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the removal?
     */
-    public func removeObjectFromItemsAtIndex(index: Int, commit:Bool) {
+    open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
         if let item : User = items[index] {
 
             // Add the inverse of this invocation to the undo stack
-            if let undoManager: NSUndoManager = undoManager {
+            if let undoManager: UndoManager = undoManager {
                 // We don't want to introduce a retain cycle
                 // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
                 // That's why we have added an registerUndo extension on NSUndoManager
                 undoManager.registerUndo({ () -> Void in
                    self.insertObject(item, inItemsAtIndex: index, commit:commit)
                 })
-                if !undoManager.undoing {
+                if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("RemoveUser", comment: "Remove User undo action"))
                 }
             }
@@ -322,7 +322,7 @@ import ObjectMapper
             item.committed=false
 
             // Remove the item from the collection
-            self.items.removeAtIndex(index)
+            self.items.remove(at: index)
 
         
             if commit==true{
@@ -334,13 +334,13 @@ import ObjectMapper
     }
 
 
-    public func removeObjects(items: [Collectible],commit:Bool){
+    open func removeObjects(_ items: [Collectible],commit:Bool){
         for item in items{
             self.removeObject(item,commit:commit)
         }
     }
 
-    public func removeObject(item: Collectible, commit:Bool){
+    open func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? User{
             if let idx=self.indexOf( { return $0.UID == instance.UID } ){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
@@ -348,13 +348,13 @@ import ObjectMapper
         }
     }
 
-    public func removeObjectWithIDS(ids: [String],commit:Bool){
+    open func removeObjectWithIDS(_ ids: [String],commit:Bool){
         for uid in ids{
             self.removeObjectWithID(uid,commit:commit)
         }
     }
 
-    public func removeObjectWithID(id:String, commit:Bool){
+    open func removeObjectWithID(_ id:String, commit:Bool){
         if let idx=self.indexOf( { return $0.UID==id } ){
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }

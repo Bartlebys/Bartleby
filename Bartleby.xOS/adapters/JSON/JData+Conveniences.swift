@@ -10,7 +10,7 @@ import Foundation
 
 extension JData{
 
-    public convenience init(from: NSData?) {
+    public convenience init(from: Data?) {
         self.init()
         self.data=from
     }

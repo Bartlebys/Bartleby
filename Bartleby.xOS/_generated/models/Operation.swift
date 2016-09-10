@@ -14,21 +14,21 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not supervisable
-@objc(Operation) public class Operation : JObject{
+@objc(Operation) open class Operation : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Operation"
     }
 
 	//The unique identifier of the related Command
-	dynamic public var commandUID:String?
+	dynamic open var commandUID:String?
 	//The dictionary representation of a serialized action call
-	dynamic public var toDictionary:[String:AnyObject]?
+	dynamic open var toDictionary:[String:AnyObject]?
 	//The dictionary representation of the last response serialized data
-	public var responseDictionary:[String:AnyObject]?
+	open var responseDictionary:[String:AnyObject]?
 	//The completion state of the operation
-	dynamic public var completionState:Completion?
+	dynamic open var completionState:Completion?
 	//The invocation Status None: on creation, Pending: can be pushed, Provisionned: is currently in an operation bunch, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
 		case None = "none"
@@ -37,13 +37,13 @@ import ObjectMapper
 		case InProgress = "inProgress"
 		case Completed = "completed"
 	}
-	public var status:Status = .None
+	open var status:Status = .None
 	//The invocation counter
-	dynamic public var counter:Int = -1
+	dynamic open var counter:Int = -1
 	//The creationdate
-	dynamic public var creationDate:NSDate?
+	dynamic open var creationDate:Date?
 	//The last invocation date
-	dynamic public var lastInvocationDate:NSDate?
+	dynamic open var lastInvocationDate:Date?
 
 
     // MARK: Mappable
@@ -52,7 +52,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.commandUID <- ( map["commandUID"] )
@@ -72,44 +72,44 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.commandUID=String(decoder.decodeObjectOfClass(NSString.self, forKey:"commandUID") as NSString?)
-		self.toDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
-		self.responseDictionary=decoder.decodeObjectOfClasses(NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
-		self.completionState=decoder.decodeObjectOfClass(Completion.self, forKey: "completionState") 
-		self.status=Operation.Status(rawValue:String(decoder.decodeObjectOfClass(NSString.self, forKey: "status")! as NSString))! 
-		self.counter=decoder.decodeIntegerForKey("counter") 
-		self.creationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"creationDate") as NSDate?
-		self.lastInvocationDate=decoder.decodeObjectOfClass(NSDate.self, forKey:"lastInvocationDate") as NSDate?
+		self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
+		self.toDictionary=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "toDictionary")as? [String:AnyObject]
+		self.responseDictionary=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "responseDictionary")as? [String:AnyObject]
+		self.completionState=decoder.decodeObject(of: Completion.self, forKey: "completionState") 
+		self.status=Operation.Status(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
+		self.counter=decoder.decodeInteger(forKey: "counter") 
+		self.creationDate=decoder.decodeObject(of: NSDate.self, forKey:"creationDate") as Date?
+		self.lastInvocationDate=decoder.decodeObject(of: NSDate.self, forKey:"lastInvocationDate") as Date?
 
         self.enableSuperVisionAndCommit()
     }
 
-    override public func encodeWithCoder(coder: NSCoder) {
-        super.encodeWithCoder(coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with: coder)
 		if let commandUID = self.commandUID {
-			coder.encodeObject(commandUID,forKey:"commandUID")
+			coder.encode(commandUID,forKey:"commandUID")
 		}
 		if let toDictionary = self.toDictionary {
-			coder.encodeObject(toDictionary,forKey:"toDictionary")
+			coder.encode(toDictionary,forKey:"toDictionary")
 		}
 		if let responseDictionary = self.responseDictionary {
-			coder.encodeObject(responseDictionary,forKey:"responseDictionary")
+			coder.encode(responseDictionary,forKey:"responseDictionary")
 		}
 		if let completionState = self.completionState {
-			coder.encodeObject(completionState,forKey:"completionState")
+			coder.encode(completionState,forKey:"completionState")
 		}
-		coder.encodeObject(self.status.rawValue ,forKey:"status")
-		coder.encodeInteger(self.counter,forKey:"counter")
+		coder.encode(self.status.rawValue ,forKey:"status")
+		coder.encode(self.counter,forKey:"counter")
 		if let creationDate = self.creationDate {
-			coder.encodeObject(creationDate,forKey:"creationDate")
+			coder.encode(creationDate,forKey:"creationDate")
 		}
 		if let lastInvocationDate = self.lastInvocationDate {
-			coder.encodeObject(lastInvocationDate,forKey:"lastInvocationDate")
+			coder.encode(lastInvocationDate,forKey:"lastInvocationDate")
 		}
     }
 
 
-    override public class func supportsSecureCoding() -> Bool{
+    override open class func supportsSecureCoding() -> Bool{
         return true
     }
 
@@ -120,11 +120,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "operations"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Operation.collectionName
     }
 

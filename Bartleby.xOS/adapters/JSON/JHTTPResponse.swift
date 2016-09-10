@@ -11,33 +11,33 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc(JHTTPResponse) public class JHTTPResponse: JObject, HTTPResponse {
+@objc(JHTTPResponse) open class JHTTPResponse: JObject, HTTPResponse {
 
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "JHTTPResponse"
     }
 
 
     // A developer set code to provide filtering
-    public var code: UInt=UInt.max
+    open var code: UInt=UInt.max
 
     // A descriptive string for developper to identify the calling context
-    public var caller: String=Default.NO_NAME
+    open var caller: String=Default.NO_NAME
 
     // The related url
-    public var relatedURL: NSURL!
+    open var relatedURL: URL!
 
     // The http status code
-    public var httpStatusCode: Int!
+    open var httpStatusCode: Int!
 
     // The response
-    public var response: AnyObject?
+    open var response: AnyObject?
 
-    public var result: AnyObject?
+    open var result: AnyObject?
 
-    public init(code: UInt!, caller: String!, relatedURL: NSURL!, httpStatusCode: Int!, response: AnyObject?, result: AnyObject?="") {
+    public init(code: UInt!, caller: String!, relatedURL: URL!, httpStatusCode: Int!, response: AnyObject?, result: AnyObject?="") {
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
@@ -48,7 +48,7 @@ import Foundation
     }
 
     required public convenience  init() {
-        self.init(code: 0, caller: "", relatedURL: NSURL(), httpStatusCode: Int.max, response: nil, result:"")
+        self.init(code: 0, caller: "", relatedURL: URL(), httpStatusCode: Int.max, response: nil, result:"")
     }
 
     // MARK: Mappable
@@ -58,7 +58,7 @@ import Foundation
     }
 
 
-    override public func mapping(map: Map) {
+    override open func mapping(_ map: Map) {
         code <- map["code"]
         caller <- map["caller"]
         relatedURL <- map["relatedURL"]

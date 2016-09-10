@@ -28,13 +28,13 @@ import Cocoa
             self._selectedItem?.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                     self.tableView.reloadData()
             })
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.tableView.reloadData()
             })
         }
     }
 
-    private dynamic var _selectedItem:EditorOf?
+    fileprivate dynamic var _selectedItem:EditorOf?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,17 +43,17 @@ import Cocoa
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        NSNotificationCenter.defaultCenter().addObserverForName(RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION, object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) { (notification) in
             self.tableView.reloadData()
         }
     }
 
     override func viewWillDisappear() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
-    func itemForRow(row:Int)->KeyedChanges?{
-        if let r:[KeyedChanges]=self._selectedItem?.changedKeys.reverse(){
+    func itemForRow(_ row:Int)->KeyedChanges?{
+        if let r:[KeyedChanges]=self._selectedItem?.changedKeys.reversed(){
             if r.count>row{
                 return r[row]
             }
@@ -68,12 +68,12 @@ extension ChangesViewController:NSTableViewDataSource{
 
     // MARK: NSTableViewDataSource
 
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int{
+    func numberOfRows(in tableView: NSTableView) -> Int{
         let nb = self._selectedItem?.changedKeys.count ?? 0
         return nb
     }
 
-    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         guard let item =  self.itemForRow(row) else {
             return 20
         }
@@ -89,7 +89,7 @@ extension ChangesViewController:NSTableViewDelegate{
 
     // MARK: NSTableViewDelegate
 
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView?{
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?{
 
         guard let item = self.itemForRow(row) else {
             return nil
@@ -104,10 +104,10 @@ extension ChangesViewController:NSTableViewDelegate{
             text = item.key
             cellIdentifier = "KeyCell"
         } else if tableColumn == tableView.tableColumns[2] {
-            text = item.changes.stringByReplacingOccurrencesOfString("\n", withString: "")
+            text = item.changes.replacingOccurrences(of: "\n", with: "")
             cellIdentifier = "ChangesCell"
         }
-        if let cell = tableView.makeViewWithIdentifier(cellIdentifier, owner: nil) as? NSTableCellView {
+        if let cell = tableView.make(withIdentifier: cellIdentifier, owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
             //cell.imageView?.image = image ?? nil
             return cell

@@ -12,12 +12,12 @@ import Foundation
     import Alamofire
 #endif
 
-public class HTTPManager: NSObject {
+open class HTTPManager: NSObject {
 
-    static public let SPACE_UID_KEY="spaceUID"
+    static open let SPACE_UID_KEY="spaceUID"
 
 
-    static var baseURLApi: NSURL?
+    static var baseURLApi: URL?
 
     static var userAgent: String {
         get {
@@ -28,14 +28,14 @@ public class HTTPManager: NSObject {
 
 
 
-    private static var _hasBeenConfigured=false
+    fileprivate static var _hasBeenConfigured=false
 
     /**
      Configure the Manager
      */
-    static public func configure()->() {
+    static open func configure()->() {
         if _hasBeenConfigured == false {
-            let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+            let configuration = URLSessionConfiguration.default
             _ = Manager(configuration:configuration)
             _hasBeenConfigured=true
         }
@@ -52,9 +52,9 @@ public class HTTPManager: NSObject {
 
      - returns: the mutable request
      */
-    static public func mutableRequestWithHeaders(method: String, url: NSURL) -> NSMutableURLRequest {
-        let request=NSMutableURLRequest(URL: url)
-        request.HTTPMethod=method
+    static open func mutableRequestWithHeaders(_ method: String, url: URL) -> NSMutableURLRequest {
+        let request=NSMutableURLRequest(url: url)
+        request.httpMethod=method
         let headers=HTTPManager.baseHttpHeaders()
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
@@ -72,9 +72,9 @@ public class HTTPManager: NSObject {
 
      - returns: the mutable
      */
-    static public func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: NSURL) -> NSMutableURLRequest {
-        let request=NSMutableURLRequest(URL: url)
-        request.HTTPMethod=method
+    static open func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> NSMutableURLRequest {
+        let request=NSMutableURLRequest(url: url)
+        request.httpMethod=method
         let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID:registryUID, withActionName: actionName)
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
@@ -95,7 +95,7 @@ public class HTTPManager: NSObject {
 
      - returns: the http Headers
      */
-    static public func httpHeadersWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String)->[String:String]{
+    static open func httpHeadersWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
@@ -131,7 +131,7 @@ public class HTTPManager: NSObject {
 
      - returns: the headers
      */
-    static public func baseHttpHeaders()->[String:String]{
+    static open func baseHttpHeaders()->[String:String]{
         var headers=[String:String]()
         Bartleby.requestCounter += 1
         headers["User-Agent"]=HTTPManager.userAgent
@@ -157,8 +157,8 @@ public class HTTPManager: NSObject {
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static public func apiIsReachable(baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
-        let pathURL=baseURL.URLByAppendingPathComponent("/Reachable")
+    static open func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
+        let pathURL=baseURL.appendingPathComponent("/Reachable")
         let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
@@ -171,15 +171,15 @@ public class HTTPManager: NSObject {
 
             let context = JHTTPResponse( code: 1,
                 caller: "Reachable",
-                relatedURL:request?.URL,
+                relatedURL:request?.url,
                 httpStatusCode: response?.statusCode ?? 0,
                 response: response )
 
             // React according to the situation
             var reactions = Array<Bartleby.Reaction> ()
-            reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
+            reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
 
-            let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                 context: context,
                 title: NSLocalizedString("Server is not reachable",
                     comment: "Server is not reachable"),
@@ -219,8 +219,8 @@ public class HTTPManager: NSObject {
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static public func verifyCredentials(registryUID: String, baseURL: NSURL, successHandler:()->(), failureHandler:(context: JHTTPResponse)->()) {
-        let pathURL=baseURL.URLByAppendingPathComponent("/verify/credentials")
+    static open func verifyCredentials(_ registryUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
+        let pathURL=baseURL.appendingPathComponent("/verify/credentials")
         let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
         let r: Request=request(urlRequest)
         r.responseString { response in
@@ -233,15 +233,15 @@ public class HTTPManager: NSObject {
 
             let context = JHTTPResponse( code: 1,
                 caller: "verifyCredentials",
-                relatedURL:request?.URL,
+                relatedURL:request?.url,
                 httpStatusCode: response?.statusCode ?? 0,
                 response: response )
 
             // React according to the situation
             var reactions = Array<Bartleby.Reaction> ()
-            reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
+            reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
 
-            let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                 context: context,
                 title: NSLocalizedString("Forbidden",
                     comment: "Forbidden"),
@@ -280,10 +280,10 @@ public class HTTPManager: NSObject {
 
      - returns: true if it is a valid email.
      */
-    static public func isValidEmail(testStr: String) -> Bool {
+    static open func isValidEmail(_ testStr: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluateWithObject(testStr)
+        return emailTest.evaluate(with: testStr)
     }
 
 
@@ -294,8 +294,8 @@ public class HTTPManager: NSObject {
 
      - returns: the salted value
      */
-    static public func salt(string: String) -> String {
-        return CryptoHelper.hash(string.stringByAppendingString(Bartleby.configuration.SHARED_SALT))
+    static open func salt(_ string: String) -> String {
+        return CryptoHelper.hash(string + Bartleby.configuration.SHARED_SALT)
     }
 
 }

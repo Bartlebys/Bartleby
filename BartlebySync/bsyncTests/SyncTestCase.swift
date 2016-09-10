@@ -25,11 +25,11 @@ class SyncTestCase : TestCase {
         self.destinationFolderPath = self.assetPath
     }
 
-    func prepareSync(handlers: Handlers) {
+    func prepareSync(_ handlers: Handlers) {
         // Create folders
         do {
-            try _fm.createDirectoryAtPath(sourceFolderPath, withIntermediateDirectories: true, attributes: nil)
-            try _fm.createDirectoryAtPath(destinationFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectory(atPath: sourceFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectory(atPath: destinationFolderPath, withIntermediateDirectories: true, attributes: nil)
             handlers.on(Completion.successState())
         } catch {
             handlers.on(Completion.failureStateFromError(error))
@@ -37,20 +37,20 @@ class SyncTestCase : TestCase {
         }
     }
 
-    func disposeSync(handlers: Handlers) {
+    func disposeSync(_ handlers: Handlers) {
         // Doing nothing
         handlers.on(Completion.successState())
     }
 
-    func sync(handlers: Handlers) {
+    func sync(_ handlers: Handlers) {
         // We don't perform sync, we just check the source and destination hashmap the same
         var analyzer = BsyncLocalAnalyzer()
         analyzer.recomputeHash = true
         analyzer.saveHashInAFile = false
         analyzer.createHashMapFromLocalPath(self.sourceFolderPath, handlers: Handlers { (computeSrc) in
-            if let srcHashmap = computeSrc.getDictionaryResult() where computeSrc.success {
+            if let srcHashmap = computeSrc.getDictionaryResult() , computeSrc.success {
                 analyzer.createHashMapFromLocalPath(self.destinationFolderPath, handlers: Handlers { (computeDst) in
-                    if let dstHashmap = computeDst.getDictionaryResult() where computeDst.success {
+                    if let dstHashmap = computeDst.getDictionaryResult() , computeDst.success {
 
                         var diagnostic=""
                         for (k,_) in srcHashmap{
@@ -72,7 +72,7 @@ class SyncTestCase : TestCase {
                         if srcHashmap == dstHashmap {
                             handlers.on(Completion.successState())
                         } else {
-                            let completion=Completion.failureState("Different hashmap:\(diagnostic)", statusCode: .Undefined)
+                            let completion=Completion.failureState("Different hashmap:\(diagnostic)", statusCode: .undefined)
                             handlers.on(completion)
                             bprint(completion, file: #file, function: #function, line: #line, category: bprintCategoryFor(self))                        }
                     } else {
@@ -86,7 +86,7 @@ class SyncTestCase : TestCase {
     }
 
     func test001_preparation() {
-        let expectation = expectationWithDescription("Preparation")
+        let expectation = self.expectation(description: "Preparation")
         prepareSync(Handlers { (preparation) in
             expectation.fulfill()
             XCTAssert(preparation.success, preparation.message)
@@ -104,7 +104,7 @@ class SyncTestCase : TestCase {
 
             try self.writeStrinToPath(_fileContent1, path: sourceFolderPath + _fileName)
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -114,7 +114,7 @@ class SyncTestCase : TestCase {
                 // Check result is correct
                 do {
                     // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                         return !filename.hasPrefix(".")
                     })
                     XCTAssertEqual(files, ["file.txt"])
@@ -126,7 +126,7 @@ class SyncTestCase : TestCase {
 
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -140,7 +140,7 @@ class SyncTestCase : TestCase {
 
             try self.writeStrinToPath(_fileContent2, path: sourceFolderPath + _fileName)
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -150,7 +150,7 @@ class SyncTestCase : TestCase {
                 // Check result is correct
                 do {
                     // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                         return !filename.hasPrefix(".")
                     })
                     XCTAssertEqual(files, ["file.txt"])
@@ -161,7 +161,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -172,9 +172,9 @@ class SyncTestCase : TestCase {
 
     func test004_Move_existing_file() {
         do {
-            try _fm.moveItemAtPath(sourceFolderPath + _fileName, toPath: sourceFolderPath + _newFileName)
+            try _fm.moveItem(atPath: sourceFolderPath + _fileName, toPath: sourceFolderPath + _newFileName)
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -184,7 +184,7 @@ class SyncTestCase : TestCase {
                 // Check result is correct
                 do {
                     // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                         return !filename.hasPrefix(".")
                     })
                     XCTAssertEqual(files, ["newfile.txt"])
@@ -195,7 +195,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
 
         } catch {
@@ -203,14 +203,14 @@ class SyncTestCase : TestCase {
         }
     }
 
-    private let _subFileCount = 4
-    private let _subFileContent = "sub file content"
+    fileprivate let _subFileCount = 4
+    fileprivate let _subFileContent = "sub file content"
 
     func test005_Add_files_in_subfolder() {
         do {
 
             let subFolderPath = sourceFolderPath + "sub/"
-            try _fm.createDirectoryAtPath(subFolderPath, withIntermediateDirectories: true, attributes: nil)
+            try _fm.createDirectory(atPath: subFolderPath, withIntermediateDirectories: true, attributes: nil)
 
             for i in 1..._subFileCount {
                 let filePath = subFolderPath + "file\(i).txt"
@@ -218,7 +218,7 @@ class SyncTestCase : TestCase {
                 try self.writeStrinToPath(content, path: filePath)
             }
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -229,7 +229,7 @@ class SyncTestCase : TestCase {
                 do {
                     // Check subfolder
                     let subFolderPath = self.destinationFolderPath + "sub/"
-                    let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath).sort()
+                    let subFiles = try self._fm.contentsOfDirectory(atPath: subFolderPath).sorted()
                     XCTAssertEqual(subFiles.count, self._subFileCount)
 
                     for i in 1...self._subFileCount {
@@ -242,7 +242,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -251,10 +251,10 @@ class SyncTestCase : TestCase {
 
     func test006_Move_and_copy_existing_file() {
         do {
-            try _fm.moveItemAtPath(sourceFolderPath + _newFileName, toPath: sourceFolderPath + _fileName)
-            try _fm.copyItemAtPath(sourceFolderPath + _fileName, toPath: sourceFolderPath + "sub/" + _fileName)
+            try _fm.moveItem(atPath: sourceFolderPath + _newFileName, toPath: sourceFolderPath + _fileName)
+            try _fm.copyItem(atPath: sourceFolderPath + _fileName, toPath: sourceFolderPath + "sub/" + _fileName)
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -264,7 +264,7 @@ class SyncTestCase : TestCase {
                 // Check result is correct
                 do {
                     // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                         return !filename.hasPrefix(".")
                     })
                     XCTAssertEqual(files, ["file.txt", "sub"])
@@ -279,7 +279,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -287,7 +287,7 @@ class SyncTestCase : TestCase {
     }
 
     func test007_Doing_nothing() {
-        let expectation = expectationWithDescription("Synchronization should complete")
+        let expectation = self.expectation(description: "Synchronization should complete")
 
         // Perform synchronization
         sync(Handlers { (sync) in
@@ -297,7 +297,7 @@ class SyncTestCase : TestCase {
             // Check result is correct
             do {
                 // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                     return !filename.hasPrefix(".")
                 })
                 XCTAssertEqual(files, ["file.txt", "sub"])
@@ -309,7 +309,7 @@ class SyncTestCase : TestCase {
                 XCTAssertEqual(content2, self._fileContent2)
 
                 let subFolderPath = self.destinationFolderPath + "sub/"
-                let subFiles = try self._fm.contentsOfDirectoryAtPath(subFolderPath).sort()
+                let subFiles = try self._fm.contentsOfDirectory(atPath: subFolderPath).sorted()
 
                 XCTAssertEqual(subFiles.count, self._subFileCount + 1)
 
@@ -323,7 +323,7 @@ class SyncTestCase : TestCase {
             }
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // @bpds: func test008_Remove_one_file()
@@ -331,14 +331,14 @@ class SyncTestCase : TestCase {
     // MARK 9 - Cleaning
     func test009_Remove_all_files() {
         do {
-            try _fm.removeItemAtPath(sourceFolderPath + _fileName)
+            try _fm.removeItem(atPath: sourceFolderPath + _fileName)
             let subFolderPath = sourceFolderPath + "sub/"
-            if _fm.fileExistsAtPath(subFolderPath) {
-                try _fm.removeItemAtPath(subFolderPath)
+            if _fm.fileExists(atPath: subFolderPath) {
+                try _fm.removeItem(atPath: subFolderPath)
             }
 
 
-            let expectation = expectationWithDescription("Synchronization should complete")
+            let expectation = self.expectation(description: "Synchronization should complete")
 
             // Perform synchronization
             sync(Handlers { (sync) in
@@ -348,7 +348,7 @@ class SyncTestCase : TestCase {
                 // Check result is correct
                 do {
                     // List files, excluding path starting with "." (like .bsync folder or prefinalization files if applicable)
-                    let files = try self._fm.contentsOfDirectoryAtPath(self.destinationFolderPath).filter({ (filename) -> Bool in
+                    let files = try self._fm.contentsOfDirectory(atPath: self.destinationFolderPath).filter({ (filename) -> Bool in
                         return !filename.hasPrefix(".")
                     })
                     XCTAssertEqual(files, [])
@@ -357,19 +357,19 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("\(error)")
         }
     }
 
     func test999_Dispose_sync() {
-        let expectation = expectationWithDescription("Dispose sync")
+        let expectation = self.expectation(description: "Dispose sync")
         disposeSync(Handlers { (dispose) in
             expectation.fulfill()
             XCTAssert(dispose.success, dispose.message)
             })
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

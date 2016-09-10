@@ -9,8 +9,8 @@
 import XCTest
 
 class bsyncHashMapTests: TestCase {
-    private var _sourceHashMap, _destinationHashMap: HashMap!
-    private var _deltaPathMap: DeltaPathMap!
+    fileprivate var _sourceHashMap, _destinationHashMap: HashMap!
+    fileprivate var _deltaPathMap: DeltaPathMap!
 
     // MARK: Set up / tear down
     override func setUp() {
@@ -51,13 +51,13 @@ class bsyncHashMapTests: TestCase {
 
     // MARK: Simple delta map test
     func testDeltaMapWithBadSourceAndDestination() {
-        XCTAssertNil(_sourceHashMap.deltaPathMapWithSource(nil, andDestination: nil, withFilter: nil), "Computing delta path map with bad source or destination return nothing")
+        XCTAssertNil(_sourceHashMap.deltaPathMap(withSource: nil, andDestination: nil, withFilter: nil), "Computing delta path map with bad source or destination return nothing")
     }
 
     func testDeltaMapCreate() {
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/a")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, ["/path/to/a"])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -69,7 +69,7 @@ class bsyncHashMapTests: TestCase {
     func testDeltaMapDelete() {
         _destinationHashMap.setSyncHash("aaa", forPath: "/path/to/a")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, [])
         XCTAssertEqual(_deltaPathMap.deletedPaths, ["/path/to/a"])
@@ -82,7 +82,7 @@ class bsyncHashMapTests: TestCase {
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/a")
         _destinationHashMap.setSyncHash("bbb", forPath: "/path/to/a")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, [])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -97,7 +97,7 @@ class bsyncHashMapTests: TestCase {
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/b")
         _destinationHashMap.setSyncHash("aaa", forPath: "/path/to/a")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, [])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -110,7 +110,7 @@ class bsyncHashMapTests: TestCase {
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/b")
         _destinationHashMap.setSyncHash("aaa", forPath: "/path/to/a")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, [])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -124,7 +124,7 @@ class bsyncHashMapTests: TestCase {
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/b")
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/c")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, ["/path/to/a"])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -143,7 +143,7 @@ class bsyncHashMapTests: TestCase {
         _sourceHashMap.setSyncHash("bbb", forPath: "/path/to/b")
         _sourceHashMap.setSyncHash("aaa", forPath: "/path/to/c")
 
-        _deltaPathMap = _sourceHashMap.deltaPathMapWithSource(_sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
+        _deltaPathMap = _sourceHashMap.deltaPathMap(withSource: _sourceHashMap, andDestination: _destinationHashMap, withFilter: nil)
 
         XCTAssertEqual(_deltaPathMap.createdPaths, [])
         XCTAssertEqual(_deltaPathMap.deletedPaths, [])
@@ -158,8 +158,8 @@ class bsyncHashMapTests: TestCase {
 }
 
 extension HashMap {
-    func hashForPath(path: String) -> String? {
-        if let nsDict: [NSObject: AnyObject] = self.dictionaryRepresentation() {
+    func hashForPath(_ path: String) -> String? {
+        if let nsDict: [AnyHashable: Any] = self.dictionaryRepresentation() {
             if let pthToH = nsDict["pthToH"] as? Dictionary<String, String> {
                 return pthToH[path]
             }
@@ -167,8 +167,8 @@ extension HashMap {
         return nil
     }
 
-    func pathsForHash(hash: String) -> [String] {
-        if let nsDict: [NSObject: AnyObject] = self.dictionaryRepresentation() {
+    func pathsForHash(_ hash: String) -> [String] {
+        if let nsDict: [AnyHashable: Any] = self.dictionaryRepresentation() {
             if let hToPths = nsDict["hToPths"] as? Dictionary<String, AnyObject> {
                 if let paths = hToPths[hash] as? [String] {
                     return paths

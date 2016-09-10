@@ -13,25 +13,25 @@
 
     import AppKit
 
-    public class BXView:NSView,Identifiable{
-        public let UID=Bartleby.createUID()
+    open class BXView:NSView,Identifiable{
+        open let UID=Bartleby.createUID()
     }
 
-    public class BXViewController:NSViewController,Identifiable{
-        public let UID=Bartleby.createUID()
+    open class BXViewController:NSViewController,Identifiable{
+        open let UID=Bartleby.createUID()
     }
 
-    public class BXTableView:NSTableView,Identifiable{
-        public let UID=Bartleby.createUID()
+    open class BXTableView:NSTableView,Identifiable{
+        open let UID=Bartleby.createUID()
     }
 
     // BXDocument is the base type of Registry
     // Registry implements Identifiable
-    public class BXDocument:NSDocument{
+    open class BXDocument:NSDocument{
     }
 
-    public class BXImage:NSImage,Identifiable{
-        public let UID=Bartleby.createUID()
+    open class BXImage:NSImage,Identifiable{
+        open let UID=Bartleby.createUID()
     }
 
 

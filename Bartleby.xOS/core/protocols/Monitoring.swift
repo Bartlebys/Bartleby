@@ -23,7 +23,7 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
 
      - parameter progression: the progression state
      */
-    func receiveProgression(progression:Progression)
+    func receiveProgression(_ progression:Progression)
 
     /**
      Called by an XPC service (XPC -> app)
@@ -31,7 +31,7 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
 
      - parameter completion: the completion state
      */
-    func receiveCompletion(completion:Completion)
+    func receiveCompletion(_ completion:Completion)
 }
 
 

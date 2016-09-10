@@ -21,7 +21,7 @@ extension Progression:ForwardableState {
 extension Progression:Descriptible {
 
     public func toString() -> String {
-        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.length ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
+        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
     }
 
 }
@@ -41,7 +41,7 @@ public extension Progression {
 
      - returns: the progression state.
      */
-    public convenience init(currentTaskIndex: Int, totalTaskCount: Int = 0, currentPercentProgress: Double = 0, message: String = "", data: NSData? = nil) {
+    public convenience init(currentTaskIndex: Int, totalTaskCount: Int = 0, currentPercentProgress: Double = 0, message: String = "", data: Data? = nil) {
         self.init()
         self.currentTaskIndex = currentTaskIndex
         self.totalTaskCount = totalTaskCount
@@ -102,7 +102,7 @@ public extension Progression {
 
      - returns: the state
      */
-    public func identifiedBy(category:String,identity:String)->Progression{
+    public func identifiedBy(_ category:String,identity:String)->Progression{
         self.category=category
         self.externalIdentifier=identity
         return self
@@ -122,9 +122,9 @@ public extension Progression {
 
      - returns: a Progression notification
      */
-    public var progressionNotification: NSNotification {
+    public var progressionNotification: Notification {
         get {
-            return NSNotification(progressionState:self, object:nil)
+            return Notification(name:self, object:nil)
         }
     }
 

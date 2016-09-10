@@ -12,11 +12,11 @@ import Foundation
 
 
 
-public enum SerializableError: ErrorType {
-    case TypeMissmatch
-    case TypeNameUndefined
-    case UnknownTypeName(typeName:String)
-    case EnableToTransformDataToDictionary
+public enum SerializableError: Error {
+    case typeMissmatch
+    case typeNameUndefined
+    case unknownTypeName(typeName:String)
+    case enableToTransformDataToDictionary
 }
 
 
@@ -30,7 +30,7 @@ public protocol Serializable:Initializable{
 
      - returns: a NSData
      */
-    func serialize() -> NSData
+    func serialize() -> Data
 
 
     /**
@@ -41,6 +41,6 @@ public protocol Serializable:Initializable{
 
      - returns: the patched Object
      */
-    func updateData(data: NSData,provisionChanges:Bool) throws -> Serializable
+    func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable
 
 }

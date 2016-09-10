@@ -14,27 +14,27 @@ import Foundation
 
 
 
-enum BsyncKeyValueStorageError: ErrorType {
-    case CorruptedData
-    case OtherDataProblem
+enum BsyncKeyValueStorageError: Error {
+    case corruptedData
+    case otherDataProblem
 }
 
 class BsyncKeyValueStorage {
 
-    private var _kvs = [String : String]()
-    private var _url: NSURL
-    private var _shouldSave = false
+    fileprivate var _kvs = [String : String]()
+    fileprivate var _url: URL
+    fileprivate var _shouldSave = false
 
-    init(url: NSURL) {
+    init(url: URL) {
         self._url = url
     }
 
     func open() throws {
-        let fm = NSFileManager.defaultManager()
+        let fm = FileManager.default
         if let path = _url.path {
-            if fm.fileExistsAtPath(path) {
-                if let data=NSData(contentsOfFile: path) {
-                    if let kvs = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments) as? [String: String] {
+            if fm.fileExists(atPath: path) {
+                if let data=try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                    if let kvs = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: String] {
                         _kvs = kvs
                     }
                 }
@@ -44,16 +44,16 @@ class BsyncKeyValueStorage {
 
     func save() throws {
         if(_shouldSave) {
-            let json = try NSJSONSerialization.dataWithJSONObject(_kvs, options: NSJSONWritingOptions.PrettyPrinted)
+            let json = try JSONSerialization.data(withJSONObject: _kvs, options: JSONSerialization.WritingOptions.prettyPrinted)
 
-            let fm = NSFileManager.defaultManager()
-            if let folderUrl = _url.URLByDeletingLastPathComponent {
+            let fm = FileManager.default
+            if let folderUrl = _url.deletingLastPathComponent() {
                 if let folderPath = folderUrl.path {
-                    if !fm.fileExistsAtPath(folderPath) {
-                        try fm.createDirectoryAtURL(folderUrl, withIntermediateDirectories: false, attributes: [:])
+                    if !fm.fileExists(atPath: folderPath) {
+                        try fm.createDirectory(at: folderUrl, withIntermediateDirectories: false, attributes: [:])
                     }
                 }
-                try json.writeToURL(_url, options: NSDataWritingOptions.AtomicWrite)
+                try json.write(to: _url, options: NSData.WritingOptions.atomicWrite)
             }
 
         }
@@ -62,7 +62,7 @@ class BsyncKeyValueStorage {
     subscript (key: String) -> Serializable? {
         get {
             if let base64CryptedValueString = _kvs[key] {
-                if let cryptedValueData = NSData(base64EncodedString: base64CryptedValueString, options: [.IgnoreUnknownCharacters]) {
+                if let cryptedValueData = Data(base64Encoded: base64CryptedValueString, options: [.ignoreUnknownCharacters]) {
                     do {
                         let decryptedValueData =  try Bartleby.cryptoDelegate.decryptData(cryptedValueData)
                         return try JSerializer.deserialize(decryptedValueData)
@@ -78,7 +78,7 @@ class BsyncKeyValueStorage {
                 let newValueData = newValue.serialize()
                 do {
                     let newValueCryptedData = try Bartleby.cryptoDelegate.encryptData(newValueData)
-                    let newValueBase64CryptedString = newValueCryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                    let newValueBase64CryptedString = newValueCryptedData.base64EncodedString(options: .endLineWithCarriageReturn)
                     _kvs[key] = newValueBase64CryptedString
                     _shouldSave = true
                 } catch {
@@ -91,8 +91,8 @@ class BsyncKeyValueStorage {
 
 
 
-    func delete(key: String) {
-        _kvs.removeValueForKey(key)
+    func delete(_ key: String) {
+        _kvs.removeValue(forKey: key)
         _shouldSave = true
     }
 
@@ -106,8 +106,8 @@ class BsyncKeyValueStorage {
 
     // Maybe we should
     func removeAll() throws {
-        let fm = NSFileManager()
-        try fm.removeItemAtURL(_url)
+        let fm = FileManager()
+        try fm.removeItem(at: _url)
         _shouldSave = false
     }
 }
@@ -118,12 +118,12 @@ class BsyncKeyValueStorage {
 // Direct Support of String and NSdata
 extension BsyncKeyValueStorage{
 
-    func setStringValue(value:String?,forKey key:String) -> () {
+    func setStringValue(_ value:String?,forKey key:String) -> () {
         let j=JString(from:value)
         self[key]=j
     }
 
-    func  getStringValueForKey(key:String) -> String? {
+    func  getStringValueForKey(_ key:String) -> String? {
         if let s = self[key] as? JString{
             return s.string
         }
@@ -131,15 +131,15 @@ extension BsyncKeyValueStorage{
     }
 
 
-    func setDataValue(value:NSData,forKey key:String) -> () {
+    func setDataValue(_ value:Data,forKey key:String) -> () {
         let d=JData()
         d.data=value
         self[key]=d
     }
 
-    func getDataValueForKey(key:String) -> NSData? {
+    func getDataValueForKey(_ key:String) -> Data? {
         if let d = self[key] as? JData{
-            return d.data
+            return d.data as Data?
         }
         return nil
     }

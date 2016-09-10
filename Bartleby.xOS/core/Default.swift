@@ -21,7 +21,7 @@ public protocol BartlebyConfiguration {
 
     // Collaboration server base URL
     // eg : https://demo.bartlebys.org/www/api/v1
-    static var API_BASE_URL: NSURL { get set }
+    static var API_BASE_URL: URL { get set }
 
     // Bartleby Bprint
     static var ENABLE_BPRINT: Bool { get set }
@@ -76,7 +76,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // Collaboration server base URL
     // This bartlebys default ephemeral demo server (data are erased chronically)
-    public static var API_BASE_URL: NSURL = NSURL(string: "https://demo.bartlebys.org/www/api/v1")!
+    public static var API_BASE_URL: URL = URL(string: "https://demo.bartlebys.org/www/api/v1")!
 
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
@@ -147,7 +147,7 @@ public struct Default {
     static public let NO_GEM: String="NO_GEM"
     static public let NO_GROUP: String="NO_GROUP"
     static public let NO_INT_INDEX=Int.max
-    static public let STRING_ENCODING = NSUTF8StringEncoding
+    static public let STRING_ENCODING = String.Encoding.utf8
 
 
     // A bunch of char in wich to pick to compose a random password

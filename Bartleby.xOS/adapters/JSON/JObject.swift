@@ -26,7 +26,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 // NSecureCoding does not implement Universal Strategy the module is prepended to the name.
 // By putting @objc(name) we fix the serialization name.
 // This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) public class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
+@objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
     // MARK: - Initializable
 
@@ -36,12 +36,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // A reference to the document
     // Most of the JObject contains a reference to the document
-    public var document:BartlebyDocument?
+    open var document:BartlebyDocument?
 
     // On object insertion or Registry deserialization
     // We setup this collection reference
     // On newUser we setup directly user.document.
-    public var collection:CollectibleCollection?{
+    open var collection:CollectibleCollection?{
         didSet{
             if let registry=collection?.registry{
                 self.document=registry
@@ -54,53 +54,53 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: UniversalType
 
     // Used to store the type name on serialization
-    private var _typeName: String?
+    fileprivate var _typeName: String?
 
     // The type name is Universal and used when serializing the instance
-    public class func typeName() -> String {
+    open class func typeName() -> String {
         return "JObject"
     }
 
     internal var _runTimeTypeName: String?
 
     // The runTypeName is used when deserializing the instance.
-    public func runTimeTypeName() -> String {
+    open func runTimeTypeName() -> String {
         guard let _ = self._runTimeTypeName  else {
-            self._runTimeTypeName = NSStringFromClass(self.dynamicType)
+            self._runTimeTypeName = NSStringFromClass(type(of: self))
             return self._runTimeTypeName!
         }
         return self._runTimeTypeName!
     }
 
     /// The internal flag for auto commit
-    private var _shouldBeCommitted: Bool = false
+    fileprivate var _shouldBeCommitted: Bool = false
 
-    public var changedKeys=[KeyedChanges]()
+    open var changedKeys=[KeyedChanges]()
 
     // MARK: Distribuable
 
-    public var toBeCommitted: Bool { return self._shouldBeCommitted }
+    open var toBeCommitted: Bool { return self._shouldBeCommitted }
 
-    private var _autoCommitIsEnabled: Bool = true
+    fileprivate var _autoCommitIsEnabled: Bool = true
 
 
     /**
      Locks the auto commit observer
      */
-    public func disableAutoCommit(){
+    open func disableAutoCommit(){
         self._autoCommitIsEnabled=false
     }
 
     /**
      Unlock the auto commit observer
      */
-    public func enableAutoCommit(){
+    open func enableAutoCommit(){
         self._autoCommitIsEnabled=true
     }
 
 
     //Collectible protocol: committed
-    public var committed: Bool = false {
+    open var committed: Bool = false {
         willSet {
             if newValue==true{
                 // The changes have been committed
@@ -113,11 +113,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
     //Collectible protocol: distributed
-    public var distributed: Bool = false
+    open var distributed: Bool = false
 
     // MARK: Supervisable
 
-    private var _supervisers=[String:SupervisionClosure]()
+    fileprivate var _supervisers=[String:SupervisionClosure]()
 
     /**
      Tags the changed keys
@@ -130,7 +130,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter oldValue: the oldValue
      - parameter newValue: the newValue
      */
-    public func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
+    open func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
 
         if self._autoCommitIsEnabled == true {
             // Set up the commit flag
@@ -141,17 +141,17 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         // Supervision is a local  "observation" mecanism
         // Supervision Closures are invoked on the main queue asynchronously
         if self._supervisionIsEnabled{
-            dispatch_async(GlobalQueue.Main.get()) {
+            GlobalQueue.main.get().async {
 
                 if key=="*" && !(self is CollectibleCollection){
                     // Dictionnary or NSData Patch
-                    self.changedKeys.append(KeyedChanges(key:key,changes:"\(self.dynamicType.typeName()) \(self.UID) has been patched"))
+                    self.changedKeys.append(KeyedChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched"))
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }else{
                     if let collection = self as? CollectibleCollection {
                         let entityName=Pluralization.singularize(collection.d_collectionName)
                         if key=="items"{
-                            if let oldArray=oldValue as? [JObject], newArray=newValue as? [JObject]{
+                            if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
                                 if oldArray.count < newArray.count{
                                     let stringValue:String! = (newArray.last?.UID ?? "")
                                     self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(stringValue))"))
@@ -199,7 +199,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    public func addChangesSuperviser(superviser:Identifiable, closure:SupervisionClosure) {
+    open func addChangesSuperviser(_ superviser:Identifiable, closure:@escaping SupervisionClosure) {
         _supervisers[superviser.UID]=closure
     }
 
@@ -208,9 +208,9 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
      - parameter observer: the observer.
      */
-    public func removeChangesSuperviser(superviser:Identifiable) {
+    open func removeChangesSuperviser(_ superviser:Identifiable) {
         if let _=self._supervisers[superviser.UID]{
-            self._supervisers.removeValueForKey(superviser.UID)
+            self._supervisers.removeValue(forKey: superviser.UID)
         }
     }
 
@@ -219,40 +219,40 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    private var _supervisionIsEnabled: Bool = true
+    fileprivate var _supervisionIsEnabled: Bool = true
 
     /**
      Locks the supervision mecanism
      Supervision mecanism == tracks the changed keys and relay to the holding collection
      The supervision works even on Triggered Upsert
      */
-    public func disableSupervision() {
+    open func disableSupervision() {
         self._supervisionIsEnabled=false
     }
 
     /**
      UnLocks the supervision mecanism
      */
-    public func enableSupervision() {
+    open func enableSupervision() {
         self._supervisionIsEnabled=true
     }
 
 
     //Collectible protocol: The Creator UID
-    public var creatorUID: String = "\(Default.NO_UID)" {
+    open var creatorUID: String = "\(Default.NO_UID)" {
         didSet{
             if creatorUID != oldValue{
-                self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID)
+                self.provisionChanges(forKey: "creatorUID",oldValue: oldValue as AnyObject?,newValue: creatorUID as AnyObject?)
             }
         }
     }
 
     // The object summary can be used for example by externalReferences to describe the JObject instance.
     // If you want to disclose more information you can adopt the Descriptible protocol.
-    public var summary: String? {
+    open var summary: String? {
         didSet{
             if summary != oldValue{
-                self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary)
+                self.provisionChanges(forKey: "summary",oldValue: oldValue as AnyObject?,newValue: summary as AnyObject?)
             }
         }
     }
@@ -260,39 +260,39 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: Collection Name
 
     // Needs to be overriden to determine in wich collection the instances will be 'stored
-    class public var collectionName: String {
+    class open var collectionName: String {
         return "JObjects"
     }
 
-    public var d_collectionName: String {
+    open var d_collectionName: String {
         return JObject.collectionName
     }
 
 
     // An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.
     // This flag allows for example to remove entities that have been for example created by unit-tests.
-    public var ephemeral: Bool=false
+    open var ephemeral: Bool=false
 
 
     // MARK: Serializable
 
-    public func serialize() -> NSData {
+    open func serialize() -> Data {
         let dictionaryRepresentation = self.dictionaryRepresentation()
         do {
             if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[NSJSONWritingOptions.PrettyPrinted])
+                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[JSONSerialization.WritingOptions.prettyPrinted])
             } else {
-                return try NSJSONSerialization.dataWithJSONObject(dictionaryRepresentation, options:[])
+                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[])
             }
         } catch {
-            return NSData()
+            return Data()
         }
     }
 
 
-    public func updateData(data: NSData,provisionChanges:Bool) throws -> Serializable {
-        if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
-            let map=Map(mappingType: .FromJSON, JSONDictionary: JSONDictionary)
+    open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
+        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
+            let map=Map(mappingType: .fromJSON, JSONDictionary: JSONDictionary)
             self.mapping(map)
             if provisionChanges{
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
@@ -305,7 +305,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
-    private var _id: String=Default.NO_UID {
+    fileprivate var _id: String=Default.NO_UID {
         didSet {
             // tag ephemeral instance
             if Bartleby.ephemeral {
@@ -321,7 +321,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      The creation of a Unique Identifier is ressource intensive.
      We create the UID only if necessary.
      */
-    public func defineUID() {
+    open func defineUID() {
         if self._id == Default.NO_UID {
             self._id=Bartleby.createUID()
         }
@@ -337,7 +337,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: - CustomStringConvertible
 
 
-    override public var description: String {
+    override open var description: String {
         get {
             if self is Descriptible {
                 return (self as! Descriptible).toString()
@@ -352,7 +352,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: - ToJSON
 
-    public func toJSONString(prettyPrint:Bool)->String{
+    open func toJSONString(_ prettyPrint:Bool)->String{
         if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
             return j
         } else {
@@ -367,15 +367,15 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public func mapping(map: Map) {
+    open func mapping(_ map: Map) {
         self.disableSupervisionAndCommit()
         // store the changedKeys in memory
         let changedKeys=self.changedKeys
-        if map.mappingType == .ToJSON {
+        if map.mappingType == .toJSON {
             // Define if necessary the UID
             self.defineUID()
             // Store the universal type Name
-            self._typeName=self.dynamicType.typeName()
+            self._typeName=type(of: self).typeName()
         }
         self._id <- map[Default.UID_KEY]
         self._typeName <- map[Default.TYPE_NAME_KEY]
@@ -393,12 +393,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public func disableSupervisionAndCommit(){
+    open func disableSupervisionAndCommit(){
         self.disableSupervision()
         self.disableAutoCommit()
     }
 
-    public func enableSuperVisionAndCommit(){
+    open func enableSuperVisionAndCommit(){
         self.enableSupervision()
         self.enableAutoCommit()
     }
@@ -412,33 +412,33 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         super.init()
         self.disableSupervisionAndCommit()
         self.defineUID()
-        self._id=String(decoder.decodeObjectOfClass(NSString.self, forKey: Default.UID_KEY)! as NSString)
-        self._typeName=self.dynamicType.typeName()
-        self.committed=decoder.decodeBoolForKey("committed")
-        self.distributed=decoder.decodeBoolForKey("distributed")
-        self.creatorUID=String(decoder.decodeObjectOfClass(NSString.self, forKey: "creatorUID")! as NSString)
-        self.summary=String(decoder.decodeObjectOfClass(NSString.self, forKey:"summary") as NSString?)
-        self._shouldBeCommitted=decoder.decodeBoolForKey("_toBeCommitted")
-        self.ephemeral=decoder.decodeBoolForKey("ephemeral")
+        self._id=String(decoder.decodeObject(of: NSString.self, forKey: Default.UID_KEY)! as NSString)
+        self._typeName=type(of: self).typeName()
+        self.committed=decoder.decodeBool(forKey: "committed")
+        self.distributed=decoder.decodeBool(forKey: "distributed")
+        self.creatorUID=String(decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
+        self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
+        self._shouldBeCommitted=decoder.decodeBool(forKey: "_toBeCommitted")
+        self.ephemeral=decoder.decodeBool(forKey: "ephemeral")
         self.enableSuperVisionAndCommit()
     }
 
-    public func encodeWithCoder(coder: NSCoder) {
-        self._typeName=self.dynamicType.typeName()// Store the universal type name on serialization
-        coder.encodeObject(self._typeName, forKey: Default.TYPE_NAME_KEY)
-        coder.encodeObject(self._id, forKey: Default.UID_KEY)
-        coder.encodeBool(self.committed, forKey:"committed")
-        coder.encodeBool(self.distributed, forKey:"distributed")
-        coder.encodeObject(self.creatorUID, forKey:"creatorUID")
+    open func encode(with coder: NSCoder) {
+        self._typeName=type(of: self).typeName()// Store the universal type name on serialization
+        coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
+        coder.encode(self._id, forKey: Default.UID_KEY)
+        coder.encode(self.committed, forKey:"committed")
+        coder.encode(self.distributed, forKey:"distributed")
+        coder.encode(self.creatorUID, forKey:"creatorUID")
         if let summary = self.summary {
-            coder.encodeObject(summary, forKey:"summary")
+            coder.encode(summary, forKey:"summary")
         }
-        coder.encodeBool(self._shouldBeCommitted, forKey: "_toBeCommitted")
-        coder.encodeBool(self.ephemeral, forKey: "ephemeral")
+        coder.encode(self._shouldBeCommitted, forKey: "_toBeCommitted")
+        coder.encode(self.ephemeral, forKey: "ephemeral")
     }
 
 
-    public class func supportsSecureCoding() -> Bool {
+    public class var supportsSecureCoding : Bool {
         return true
     }
 
@@ -446,8 +446,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: - NSCopying
 
 
-    public func copyWithZone(zone: NSZone) -> AnyObject {
-        let data: NSData=JSerializer.serialize(self)
+    open func copy(with zone: NSZone?) -> Any {
+        let data: Data=JSerializer.serialize(self)
         if let copied = try? JSerializer.deserialize(data) {
             return copied as! AnyObject
         }
@@ -468,8 +468,8 @@ extension JObject:DictionaryRepresentation {
         return Mapper().toJSON(self)
     }
 
-    public func patchFrom(dictionaryRepresentation:[String:AnyObject]){
-        let mapped=Map(mappingType: .FromJSON, JSONDictionary: dictionaryRepresentation)
+    public func patchFrom(_ dictionaryRepresentation:[String:AnyObject]){
+        let mapped=Map(mappingType: .fromJSON, JSONDictionary: dictionaryRepresentation)
         self.mapping(mapped)
         self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
     }
@@ -479,7 +479,7 @@ extension JObject:DictionaryRepresentation {
 /**
  *  A simple Objc compliant object to keep track of changes in memory
  */
-@objc(KeyedChanges) public class KeyedChanges:NSObject {
+@objc(KeyedChanges) open class KeyedChanges:NSObject {
     
     var elapsed=Bartleby.elapsedTime
     var key:String

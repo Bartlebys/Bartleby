@@ -13,7 +13,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class CryptedStringTransform: TransformType {
+open class CryptedStringTransform: TransformType {
     public init() {
 
     }
@@ -21,7 +21,7 @@ public class CryptedStringTransform: TransformType {
     public typealias Object = String
     public typealias JSON = String
 
-    public func transformFromJSON(value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: AnyObject?) -> Object? {
         if let s=value as? String {
             do {
                 return try Bartleby.cryptoDelegate.decryptString(s)
@@ -32,7 +32,7 @@ public class CryptedStringTransform: TransformType {
         return nil
     }
 
-    public func transformToJSON(value: Object?) -> JSON? {
+    open func transformToJSON(_ value: Object?) -> JSON? {
         if let s=value {
             do {
                 return try Bartleby.cryptoDelegate.encryptString(s)

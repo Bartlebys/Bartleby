@@ -13,10 +13,10 @@ import Foundation
 #endif
 
 
-public class VerifyLocker: JObject {
+open class VerifyLocker: JObject {
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "VerifyLocker"
     }
 
@@ -34,11 +34,11 @@ public class VerifyLocker: JObject {
      - parameter success:   the sucess closure
      - parameter failure:   the failure closure
      */
-    public static  func execute( lockerUID: String,
+    open static  func execute( _ lockerUID: String,
                                 inRegistryWithUID registryUID: String,
                                 code: String,
-                                accessGranted success:(locker: Locker)->(),
-                                accessRefused failure:(context: JHTTPResponse)->()) {
+                                accessGranted success:@escaping (_ locker: Locker)->(),
+                                accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             // Let's determine if we should verify locally or not.
@@ -54,7 +54,7 @@ public class VerifyLocker: JObject {
         }else{
             let context = JHTTPResponse( code: 1,
                                          caller: "VerifyLocker.execute",
-                                         relatedURL:NSURL(),
+                                         relatedURL:URL(),
                                          httpStatusCode:417,
                                          response:nil,
                                          result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
@@ -73,11 +73,11 @@ public class VerifyLocker: JObject {
      - parameter success:   success
      - parameter failure:   failure
      */
-    private  func _proceedToLocalVerification(  lockerUID: String,
+    fileprivate  func _proceedToLocalVerification(  _ lockerUID: String,
                                                 inRegistryWithUID registryUID: String,
                                                            code: String,
-                                                           accessGranted success:(locker: Locker)->(),
-                                                                         accessRefused failure:(context: JHTTPResponse)->()) {
+                                                           accessGranted success:@escaping (_ locker: Locker)->(),
+                                                                         accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         let context = JHTTPResponse( code: 900,
                                      caller: "VerifyLocker.proceedToLocalVerification",
@@ -118,17 +118,17 @@ public class VerifyLocker: JObject {
      - parameter success:   success
      - parameter failure:   failure
      */
-    private  func _proceedToDistantVerification( lockerUID: String,
+    fileprivate  func _proceedToDistantVerification( _ lockerUID: String,
                                                  inRegistryWithUID registryUID: String,
                                                             code: String,
-                                                            accessGranted success:(locker: Locker)->(),
-                                                                          accessRefused failure:(context: JHTTPResponse)->()) {
+                                                            accessGranted success:@escaping (_ locker: Locker)->(),
+                                                                          accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
-            let pathURL=document.baseURL.URLByAppendingPathComponent("locker/verify")
-            let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID, "code":code]
+            let pathURL=document.baseURL.appendingPathComponent("locker/verify")
+            let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID as AnyObject, "code":code as AnyObject]
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
-            let r: Request=request(ParameterEncoding.JSON.encode(urlRequest, parameters: dictionary).0)
+            let r: Request=request(ParameterEncoding.json.encode(urlRequest, parameters: dictionary).0)
             r.responseString { response in
 
                 let request=response.request
@@ -139,19 +139,19 @@ public class VerifyLocker: JObject {
 
                 let context = JHTTPResponse( code: 901,
                     caller: "VerifyLocker.execute",
-                    relatedURL:request?.URL,
+                    relatedURL:request?.url,
                     httpStatusCode: response?.statusCode ?? 0,
                     response: response,
                     result:result.value)
 
                 // React according to the situation
                 var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.Track(result: nil, context: context)) // Tracking
+                reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
 
                 if result.isFailure {
                     let m = NSLocalizedString("locker verification",
                         comment: "locker verification failure description")
-                    let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
@@ -167,7 +167,7 @@ public class VerifyLocker: JObject {
                                 instance.verificationMethod=Locker.VerificationMethod.Online
                                 self._verifyLockerBusinessLogic(instance, accessGranted: success, accessRefused: failure)
                             } else {
-                                let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Deserialization issue",
                                         comment: "Deserialization issue"),
@@ -183,7 +183,7 @@ public class VerifyLocker: JObject {
                             // because we consider that failures differentiations could be done by the caller.
                             let m = NSLocalizedString("locker verification",
                                 comment: "locker verification failure description")
-                            let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
@@ -204,7 +204,7 @@ public class VerifyLocker: JObject {
 
             let context = JHTTPResponse( code: 1,
                                          caller: "VerifyLocker._proceedToDistantVerification",
-                                         relatedURL:NSURL(),
+                                         relatedURL:URL(),
                                          httpStatusCode:417,
                                          response:nil,
                                          result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
@@ -213,9 +213,9 @@ public class VerifyLocker: JObject {
     }
 
 
-    private func _verifyLockerBusinessLogic( locker: Locker,
-                                             accessGranted success:(locker: Locker)->(),
-                                                           accessRefused failure:(context: JHTTPResponse)->()) {
+    fileprivate func _verifyLockerBusinessLogic( _ locker: Locker,
+                                             accessGranted success:(_ locker: Locker)->(),
+                                                           accessRefused failure:(_ context: JHTTPResponse)->()) {
 
 
         let context = JHTTPResponse( code: 902,
@@ -236,42 +236,42 @@ public class VerifyLocker: JObject {
                     if let user=registry.registryMetadata.currentUser {
                         if user.UID == locker.userUID {
                             // 3. Verify the date
-                            let referenceDate=NSDate()
-                            if locker.startDate.compare(referenceDate)==NSComparisonResult.OrderedAscending
-                                && locker.endDate.compare(referenceDate)==NSComparisonResult.OrderedDescending {
-                                success(locker: locker)
+                            let referenceDate=Date()
+                            if locker.startDate.compare(referenceDate)==ComparisonResult.orderedAscending
+                                && locker.endDate.compare(referenceDate)==ComparisonResult.orderedDescending {
+                                success(locker)
                                 return
                             } else {
-                                context.result="The Date is not valid"
-                                failure(context: context)
+                                context.result="The Date is not valid" as AnyObject?
+                                failure(context)
                                 return
                             }
 
                         } else {
-                            context.result="The current user is the natural recipient of locker"
-                            failure(context: context)
+                            context.result="The current user is the natural recipient of locker" as AnyObject?
+                            failure(context)
                             return
                         }
                     } else {
-                        context.result="There is no root user in the registry"
-                        failure(context: context)
+                        context.result="There is no root user in the registry" as AnyObject?
+                        failure(context)
                         return
                     }
                 } else {
-                    context.result="registryUID is not valid"
-                    failure(context: context)
+                    context.result="registryUID is not valid" as AnyObject?
+                    failure(context)
                     return
                 }
             } else {
-                context.result="registryUID is not valid"
-                failure(context: context)
+                context.result="registryUID is not valid" as AnyObject?
+                failure(context)
                 return
             }
         } else {
             //
         }
-        context.result="Undefined failure"
-        failure(context: context)
+        context.result="Undefined failure" as AnyObject?
+        failure(context)
         return
         
         

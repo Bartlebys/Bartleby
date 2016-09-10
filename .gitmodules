@@ -1,9 +1,0 @@
-[submodule "Vendors/Alamofire"]
-	path = Vendors/Alamofire
-	url = https://github.com/Alamofire/Alamofire.git
-[submodule "Vendors/ObjectMapper"]
-	path = Vendors/ObjectMapper
-	url = https://github.com/Hearst-DD/ObjectMapper.git
-[submodule "Vendors/CommandLine"]
-	path = Vendors/CommandLine
-	url = https://github.com/benoit-pereira-da-silva/CommandLine/

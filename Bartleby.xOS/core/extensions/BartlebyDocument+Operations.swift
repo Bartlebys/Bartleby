@@ -17,8 +17,8 @@ extension BartlebyDocument {
 
     func startSupervisionLoopIfNecessary() {
         if self._timer==nil{
-            self._timer=NSTimer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
-            NSRunLoop.currentRunLoop().addTimer(self._timer!, forMode: NSRunLoopCommonModes)
+            self._timer=Timer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
+            RunLoop.current.add(self._timer!, forMode: RunLoopMode.commonModes)
         }
     }
 
@@ -44,7 +44,7 @@ extension BartlebyDocument {
         self.iterateOnCollections { (collection) in
             let UIDS=collection.commitChanges()
             if UIDS.count>0{
-                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joinWithSeparator(",")
+                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joined(separator: ",")
             }
         }
     }
@@ -62,14 +62,14 @@ extension BartlebyDocument {
                 do {
                     try self._commitAndPushPendingOperations()
                 } catch {
-                    self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
+                    self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.expectation_Failed))
                 }
             }else{
                 currentUser.login(withPassword: currentUser.password, sucessHandler: {
                     do {
                         try self._commitAndPushPendingOperations()
                     } catch {
-                        self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.Expectation_Failed))
+                        self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.expectation_Failed))
                     }
                     }, failureHandler: { (context) in
                         self.synchronizationHandlers.on(Completion.failureStateFromJHTTPResponse(context))
@@ -87,7 +87,7 @@ extension BartlebyDocument {
 
      - throws: throws
      */
-    private func _commitAndPushPendingOperations()throws {
+    fileprivate func _commitAndPushPendingOperations()throws {
         // Commit the pending changes (if there are changes)
         // Each changed object creates a new Operation
         try self.commitPendingChanges()
@@ -95,7 +95,7 @@ extension BartlebyDocument {
     }
 
 
-    private func _pushNextBunch(){
+    fileprivate func _pushNextBunch(){
         // Push next bunch if there is no bunch in progress
         if !self.registryMetadata.bunchInProgress {
             // We donnot want to schedule anything if there is nothing to do.
@@ -115,7 +115,7 @@ extension BartlebyDocument {
     }
 
 
-    private func _getNextBunchOfPendingOperations()->[Operation]{
+    fileprivate func _getNextBunchOfPendingOperations()->[Operation]{
         var nextBunch=[Operation]()
         let filtered=self.operations.filter { $0.canBePushed() }
         let filteredCount=filtered.count
@@ -142,7 +142,7 @@ extension BartlebyDocument {
      - parameter operations: the sorted operations to be excecuted
      - parameter handlers:   the handlers to hook the completion / Progression
      */
-    public func pushSortedOperations(bunchOfOperations: [Operation], handlers: Handlers?)->() {
+    public func pushSortedOperations(_ bunchOfOperations: [Operation], handlers: Handlers?)->() {
 
         let totalNumberOfOperations=self.operations.count
 
@@ -162,7 +162,7 @@ extension BartlebyDocument {
                 if let serialized=operation.toDictionary {
                     if let command = try? JSerializer.deserializeFromDictionary(serialized) {
                         if let jCommand=command as? JHTTPCommand {
-                            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                            DispatchQueue.main.async(execute: { [unowned self] in
                                 // Push the command.
                                 jCommand.push(sucessHandler: {  [unowned self] (context) in
                                     self.delete(operation)
@@ -172,17 +172,17 @@ extension BartlebyDocument {
                                 })
                             })
                         } else {
-                            let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.Expectation_Failed)
+                            let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.expectation_Failed)
                             bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
                             handlers?.on(completion)
                         }
                     } else {
-                        let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.Expectation_Failed)
+                        let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.expectation_Failed)
                         bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
                         handlers?.on(completion)
                     }
                 } else {
-                    let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.Precondition_Failed)
+                    let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.precondition_Failed)
                     bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
                     handlers?.on(completion)
                 }
@@ -202,7 +202,7 @@ extension BartlebyDocument {
      - parameter handlers:           the global handlers
      - parameter identity:           the bunch identity
      */
-    private func _onCompletion(completedOperation:Operation,within bunchOfOperations:[Operation], handlers:Handlers?,identity:String){
+    fileprivate func _onCompletion(_ completedOperation:Operation,within bunchOfOperations:[Operation], handlers:Handlers?,identity:String){
         let nbOfunCompletedOperationsInBunch=Double(bunchOfOperations.filter { $0.completionState==nil }.count)
         let currentOperationsCounter=self.operations.count
         if nbOfunCompletedOperationsInBunch == 0{
@@ -211,16 +211,16 @@ extension BartlebyDocument {
 
             // All the operation of that bunch have been completed.
             let bunchCompletionState=Completion().identifiedBy("Operations", identity:identity)
-            bunchCompletionState.success=bunchOfOperations.reduce(true, combine: { (success, operation) -> Bool in
+            bunchCompletionState.success=bunchOfOperations.reduce(true, { (success, operation) -> Bool in
                 if operation.completionState?.success==true{
                     return true
                 }
                 return false
             })
             if bunchCompletionState.success{
-                bunchCompletionState.statusCode = StatusOfCompletion.OK.rawValue
+                bunchCompletionState.statusCode = StatusOfCompletion.ok.rawValue
             }else{
-                bunchCompletionState.statusCode = StatusOfCompletion.Expectation_Failed.rawValue
+                bunchCompletionState.statusCode = StatusOfCompletion.expectation_Failed.rawValue
             }
             self.registryMetadata.bunchInProgress=false
             handlers?.on(bunchCompletionState)
@@ -239,7 +239,7 @@ extension BartlebyDocument {
         }
     }
 
-    private func _updateProgressionState(completedOperation:Operation,_ currentOperationsCounter:Int)->Progression?{
+    fileprivate func _updateProgressionState(_ completedOperation:Operation,_ currentOperationsCounter:Int)->Progression?{
         if let progressionState=self.registryMetadata.pendingOperationsProgressionState{
             let total=Double(self.registryMetadata.totalNumberOfOperations)
             let completed=Double(self.registryMetadata.totalNumberOfOperations-currentOperationsCounter)
@@ -257,7 +257,7 @@ extension BartlebyDocument {
     }
 
 
-    private func _messageForOperation(operation:Operation?)->String{
+    fileprivate func _messageForOperation(_ operation:Operation?)->String{
         return NSLocalizedString("Upstream Data transmission", tableName:"operations", comment: "Upstream Data transmission")
     }
 
@@ -267,9 +267,9 @@ extension BartlebyDocument {
 
      - parameter on: the iteration closure
      */
-    public func iterateOnCollections(on:(collection: BartlebyCollection)->()){
+    public func iterateOnCollections(_ on:(_ collection: BartlebyCollection)->()){
         for (_, collection) in self._collections {
-            on(collection: collection)
+            on(collection)
         }
     }
 

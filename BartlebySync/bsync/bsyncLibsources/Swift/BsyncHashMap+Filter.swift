@@ -21,7 +21,7 @@ extension BsyncHashMap{
 
      - returns: the BsyncHashMap
      */
-    public static func fromHashMap(hashMap:HashMap)->BsyncHashMap{
+    public static func fromHashMap(_ hashMap:HashMap)->BsyncHashMap{
         let instance=BsyncHashMap()
         instance.pathToHash=hashMap.dictionaryRepresentation()[pathToHashKey] as! Dictionary<String,String>
         return instance
@@ -35,7 +35,7 @@ extension BsyncHashMap{
      */
     public func toHashMap()->HashMap{
         var dictionary=[String:AnyObject]()
-        dictionary[pathToHashKey]=self.toJSON()
+        dictionary[pathToHashKey]=self.toJSON() as AnyObject?
         return HashMap.fromDictionary(dictionary)
     }
 
@@ -46,10 +46,10 @@ extension BsyncHashMap{
 
      - returns: the filtered BsyncHashMap
      */
-    public func filter(matches:(relativePath:String)->Bool)->BsyncHashMap{
+    public func filter(_ matches:(_ relativePath:String)->Bool)->BsyncHashMap{
         let filteredHashMap=BsyncHashMap()
         for (path,checksum) in self.pathToHash {
-            if matches(relativePath:path){
+            if matches(path){
                 filteredHashMap.pathToHash[path]=checksum
             }
         }

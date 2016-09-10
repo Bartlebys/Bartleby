@@ -22,7 +22,7 @@ import Foundation
 
 
 // TODO: @md #test write the Unit test for OSX and IOS + integrate in all the targets
-public class ImageTransform: TransformType {
+open class ImageTransform: TransformType {
 
     public typealias Object = BXImage
     public typealias JSON = String
@@ -31,22 +31,22 @@ public class ImageTransform: TransformType {
 
     }
 
-    public func transformFromJSON(value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: AnyObject?) -> Object? {
         if let string=value as? String {
-            if let data=NSData(base64EncodedString: string, options: [.IgnoreUnknownCharacters]) {
+            if let data=Data(base64Encoded: string, options: [.ignoreUnknownCharacters]) {
                 return BXImage.init(data: data)
             }
         }
         return nil
     }
 
-    public func transformToJSON(value: Object?) -> JSON? {
+    open func transformToJSON(_ value: Object?) -> JSON? {
         if let image=value {
             #if os(OSX)
                 // We use a tiff representation
-                let data=image.TIFFRepresentation
+                let data=image.tiffRepresentation
                 if let d=data {
-                    return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                    return d.base64EncodedString(options: .endLineWithCarriageReturn)
                 }
             #elseif os(iOS)
                 if let image=value {

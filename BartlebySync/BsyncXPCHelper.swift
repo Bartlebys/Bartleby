@@ -16,24 +16,24 @@ import Foundation
 
 // Simplifies the complex XPC workflow.
 // When using DMG.
-public class BsyncXPCHelper: NSObject, BartlebyFileIO {
+open class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
     static var masterFileName="Master"
 
     /// The BsyncXPC connection
     lazy var bsyncConnection: NSXPCConnection = {
         let connection = NSXPCConnection(serviceName: "fr.chaosmos.BsyncXPC")
-        connection.remoteObjectInterface = NSXPCInterface(withProtocol: BsyncXPCProtocol.self)
+        connection.remoteObjectInterface = NSXPCInterface(with: BsyncXPCProtocol.self)
         connection.resume()
         return connection
     }()
 
 
-    func touch(handlers: Handlers) {
+    func touch(_ handlers: Handlers) {
         if let xpc = self.bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
             xpc.touch(handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -59,8 +59,8 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter thenDo: what do you want to do when the dmg will be mounted block.
      - parameter completionBlock:        the completionBlock
      */
-    func createDMG(card: BsyncDMGCard,
-                   thenDo:(whenDone: Handlers)->(),
+    func createDMG(_ card: BsyncDMGCard,
+                   thenDo:@escaping (_ _ whenDone: Handlers)->(),
                    detachImageOnCompletion: Bool,
                    handlers: Handlers) {
 
@@ -92,7 +92,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
                     }.composedHandler())
             } else {
-                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
             }
         } else {
             handlers.on(validation)
@@ -106,7 +106,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    public func resizeDMG(size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+    open func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
         if let xpc = bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
             xpc.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
         }
@@ -135,8 +135,8 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter thenDo:           what do you want to do when the dmg will be mounted block.
      - parameter completionBlock:  the completion block
      */
-    func mountDMG(card: BsyncDMGCard,
-                  thenDo:(whenDone: Handlers)->(),
+    func mountDMG(_ card: BsyncDMGCard,
+                  thenDo:@escaping (_ _ whenDone: Handlers)->(),
                   detachImageOnCompletion: Bool,
                   handlers: Handlers) {
 
@@ -191,7 +191,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                             }
                                           }).composedHandler())
             } else {
-                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
             }
         } else {
             handlers.on(validation)
@@ -207,14 +207,14 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter volumeName: the volume name
      - parameter completion: the completion handler
      */
-    func unMountDMG(card: BsyncDMGCard, handlers: Handlers) {
+    func unMountDMG(_ card: BsyncDMGCard, handlers: Handlers) {
         // The card must be valid
         let validation=card.evaluate()
         if validation.success {
             if let xpc = bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
                 xpc.unMountDMG(card, handler: handlers.composedHandler())
             } else {
-                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
             }
         } else {
             handlers.on(validation)
@@ -236,7 +236,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: the card
      */
-    func cardFor(   user: User,
+    func cardFor(   _ user: User,
                     context: IdentifiableCardContext,
                     folderPath: String,
                     isMaster: Bool) -> BsyncDMGCard {
@@ -265,7 +265,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter card:     the card
      - parameter handlers: the handlers
      */
-    func runDirectivesFromCard(card: BsyncDMGCard, handlers: Handlers)->() {
+    func runDirectivesFromCard(_ card: BsyncDMGCard, handlers: Handlers)->() {
 
         // The card must be valid
         let validation=card.evaluate()
@@ -273,7 +273,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
             if let xpc = bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
                 xpc.runDirectives(card.standardDirectivesPath, secretKey:"", sharedSalt: "", handler: handlers.composedHandler())
             } else {
-                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+                handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
             }
         } else {
             handlers.on(validation)
@@ -294,7 +294,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func createDirectoryAtPath(path: String, handlers: Handlers) -> () {
+    open func createDirectoryAtPath(_ path: String, handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromError(error))
@@ -303,7 +303,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.createDirectoryAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -315,7 +315,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: NSData
      */
-    public func readData( contentsOfFile path: String,
+    open func readData( contentsOfFile path: String,
                                          handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromError(error))
@@ -324,7 +324,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.readData(contentsOfFile: path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -338,7 +338,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func writeData( data: NSData,
+    open func writeData( _ data: Data,
                            path: String,
                            handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -348,7 +348,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.writeData(data, path:path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -360,7 +360,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns : N/A
      */
-    public func readString(contentsOfFile path: String,
+    open func readString(contentsOfFile path: String,
                                           handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromError(error))
@@ -369,7 +369,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.readString(contentsOfFile: path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -383,7 +383,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func writeString( string: String,
+    open func writeString( _ string: String,
                              path: String,
                              handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -393,7 +393,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.writeString(string, path: path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -405,7 +405,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns:  N/A
      */
-    public func itemExistsAtPath(path: String,
+    open func itemExistsAtPath(_ path: String,
                                  handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -415,7 +415,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.itemExistsAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -427,7 +427,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns:  N/A
      */
-    public func fileExistsAtPath(path: String,
+    open func fileExistsAtPath(_ path: String,
                                  handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -437,7 +437,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.fileExistsAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
 
     }
@@ -450,7 +450,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns:  N/A
      */
-    public func directoryExistsAtPath(path: String,
+    open func directoryExistsAtPath(_ path: String,
                                       handlers: Handlers) -> () {
 
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -460,7 +460,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.directoryExistsAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -472,7 +472,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter path:     path
      - parameter handlers:            the progress and completion handlers
      */
-    public func removeItemAtPath(path: String,
+    open func removeItemAtPath(_ path: String,
                                  handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromError(error))
@@ -481,7 +481,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.removeItemAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -495,7 +495,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func copyItemAtPath(srcPath: String,
+    open func copyItemAtPath(_ srcPath: String,
                                toPath dstPath: String,
                                       handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -505,7 +505,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.copyItemAtPath(srcPath, toPath:dstPath, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -518,7 +518,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func moveItemAtPath(srcPath: String,
+    open func moveItemAtPath(_ srcPath: String,
                                toPath dstPath: String,
                                       handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -528,7 +528,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.moveItemAtPath(srcPath, toPath: dstPath, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 
@@ -541,7 +541,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    public func contentsOfDirectoryAtPath(path: String,
+    open func contentsOfDirectoryAtPath(_ path: String,
                                           handlers: Handlers) -> () {
         let remoteObjectProxy=bsyncConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
             handlers.on(Completion.failureStateFromError(error))
@@ -550,7 +550,7 @@ public class BsyncXPCHelper: NSObject, BartlebyFileIO {
         if let xpc = remoteObjectProxy as? BsyncXPCProtocol {
             xpc.contentsOfDirectoryAtPath(path, handler: handlers.composedHandler())
         } else {
-            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .Undefined))
+            handlers.on(Completion.failureState("Error connecting XPC", statusCode: .undefined))
         }
     }
 }

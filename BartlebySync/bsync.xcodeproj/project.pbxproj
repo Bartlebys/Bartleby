@@ -1653,9 +1653,11 @@
 					};
 					E5C0CED11C36CCDD00F3B7B8 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					E5FEE5BD1CBF5E5E006AFA2E = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -2634,6 +2636,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -2651,6 +2654,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -2671,6 +2675,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -2690,6 +2695,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

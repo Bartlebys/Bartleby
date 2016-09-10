@@ -15,25 +15,25 @@ import ObjectMapper
 
 
 
-@objc(ReadLockerById) public class ReadLockerById : JObject{
+@objc(ReadLockerById) open class ReadLockerById : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
            return "ReadLockerById"
     }
 
 
-    public static func execute(fromRegistryWithUID registryUID:String,
+    open static func execute(fromRegistryWithUID registryUID:String,
 						lockerId:String,
-						sucessHandler success:(locker:Locker)->(),
-						failureHandler failure:(context:JHTTPResponse)->()){
+						sucessHandler success:@escaping (_ locker:Locker)->(),
+						failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
 	
 
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
-            let pathURL=document.baseURL.URLByAppendingPathComponent("locker/\(lockerId)")
+            let pathURL=document.baseURL.appendingPathComponent("locker/\(lockerId)")
             let dictionary:Dictionary<String, AnyObject>=[:]
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
-            let r:Request=request(ParameterEncoding.URL.encode(urlRequest, parameters: dictionary).0)
+            let r:Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
             r.responseJSON{ response in
         
                 let request=response.request
@@ -45,17 +45,17 @@ import ObjectMapper
         
                 let context = JHTTPResponse( code: 1560507225,
                     caller: "ReadLockerById.execute",
-                    relatedURL:request?.URL,
+                    relatedURL:request?.url,
                     httpStatusCode: response?.statusCode ?? 0,
                     response: response,
                     result:result.value)
         
                 // React according to the situation
                 var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.Track(result: result.value, context: context)) // Tracking
+                reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
         
                 if result.isFailure {
-                   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
                         body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
@@ -70,7 +70,7 @@ import ObjectMapper
         					if let instance = Mapper <Locker>().map(result.value){					    
 					    success(locker: instance)
 					  }else{
-					   let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+					   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
 					        context: context,
 					        title: NSLocalizedString("Deserialization issue",
 					            comment: "Deserialization issue"),
@@ -85,7 +85,7 @@ import ObjectMapper
                         // Bartlby does not currenlty discriminate status codes 100 & 101
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
-                        let failureReaction =  Bartleby.Reaction.DispatchAdaptiveMessage(
+                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
                             body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
@@ -103,7 +103,7 @@ import ObjectMapper
       }else{
          let context = JHTTPResponse( code: 1,
                 caller: "ReadLockerById.execute",
-                relatedURL:NSURL(),
+                relatedURL:URL(),
                 httpStatusCode: 417,
                 response: nil,
                 result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")

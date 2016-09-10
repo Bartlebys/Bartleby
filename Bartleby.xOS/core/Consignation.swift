@@ -45,7 +45,7 @@ public struct Context: Consignable {
 public protocol ConsignableHTTPContext: Consignable {
 
     // The related url
-    var relatedURL: NSURL! { get set }
+    var relatedURL: URL! { get set }
 
     // The http status code
     var httpStatusCode: Int! { get set }
@@ -70,7 +70,7 @@ public struct HTTPContext: ConsignableHTTPContext {
     public var infos: AnyObject?
 
     // The related url
-    public var relatedURL: NSURL!
+    public var relatedURL: URL!
 
     // The http status code
     public var httpStatusCode: Int!
@@ -81,7 +81,7 @@ public struct HTTPContext: ConsignableHTTPContext {
     // The result
     public var result: AnyObject?
 
-    init(code: UInt!, caller: String!, relatedURL: NSURL?, httpStatusCode: Int?, response: AnyObject?, result: AnyObject="") {
+    init(code: UInt!, caller: String!, relatedURL: URL?, httpStatusCode: Int?, response: AnyObject?, result: AnyObject="") {
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
@@ -106,7 +106,7 @@ protocol Consignation {
 
     - returns: nil
     */
-    func presentInteractiveMessage(title: String, body: String, onSelectedIndex:(selectedIndex: UInt)->())->()
+    func presentInteractiveMessage(_ title: String, body: String, onSelectedIndex:(_ selectedIndex: UInt)->())->()
 
     /**
     Presents a message that will be displayed for a limited time
@@ -116,7 +116,7 @@ protocol Consignation {
 
     - returns: nil
     */
-    func presentVolatileMessage(title: String, body: String)->()
+    func presentVolatileMessage(_ title: String, body: String)->()
 
     /**
     Logs a message
@@ -126,7 +126,7 @@ protocol Consignation {
 
     - returns: nil
     */
-    func logMessage(title: String, body: String)->()
+    func logMessage(_ title: String, body: String)->()
 
 }
 
@@ -144,7 +144,7 @@ protocol AdaptiveConsignation {
 
     - returns: nil
     */
-    func dispatchAdaptiveMessage(context: Consignable, title: String, body: String, onSelectedIndex:(selectedIndex: UInt)->())->()
+    func dispatchAdaptiveMessage(_ context: Consignable, title: String, body: String, onSelectedIndex:(_ selectedIndex: UInt)->())->()
 
 }
 
@@ -154,12 +154,12 @@ protocol ConcreteConsignee {
 
     // You can perform multiple reaction
     // var reactions = Array<Consignee.Reaction> ()
-    func perform(reaction: Consignee.Reaction, forContext: Consignable)
+    func perform(_ reaction: Consignee.Reaction, forContext: Consignable)
 
     // You can perform multiple reaction
     // var reactions = Array<Consignee.Reaction> ()
 
-    func perform(reactions: [Consignee.Reaction], forContext: Consignable)
+    func perform(_ reactions: [Consignee.Reaction], forContext: Consignable)
 
 }
 
@@ -169,7 +169,7 @@ protocol ConcreteConsignee {
 protocol ConcreteTracker {
 
     // Tracks and possibibly records the results with title and body annotations
-    func track(result: AnyObject?, context: Consignable)
+    func track(_ result: AnyObject?, context: Consignable)
 
 }
 
@@ -184,36 +184,36 @@ protocol ConcreteTracker {
 // - ConcreteTracker
 // - Consignation
 // - AdaptiveConsignation (should be ovveriden per app)
-public class AbstractConsignee: NSObject {
+open class AbstractConsignee: NSObject {
 
     /// The display duration of volatile messages
-    static public let VOLATILE_DISPLAY_DURATION: Double=3
+    static open let VOLATILE_DISPLAY_DURATION: Double=3
 
     public enum Reaction {
 
         // No reaction
-        case Nothing
+        case nothing
 
         // Adaptive Message
         // The final behaviour is determined by the Consignee but
         // When the reaction will be completed the transmit will be called 
-        case DispatchAdaptiveMessage(context:Consignable, title:String, body:String, transmit:(selectedIndex:UInt)->())
+        case dispatchAdaptiveMessage(context:Consignable, title:String, body:String, transmit:(_ selectedIndex:UInt)->())
 
         //Explicit calls
 
         // Explicit interactive message
-        case PresentInteractiveMessage(title:String, body:String, transmit:(selectedIndex:UInt)->())
+        case presentInteractiveMessage(title:String, body:String, transmit:(_ selectedIndex:UInt)->())
 
         // Explicit volatile message
-        case PresentVolatileMessage(title:String, body:String)
+        case presentVolatileMessage(title:String, body:String)
 
         // Explicit message logging
-        case LogMessage(title:String, body:String)
+        case logMessage(title:String, body:String)
 
         // TRACKING
 
         // Tracks and possibly records the result for future inspection
-        case Track(result:AnyObject?, context:Consignable)
+        case track(result:AnyObject?, context:Consignable)
 
     }
 

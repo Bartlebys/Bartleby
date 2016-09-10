@@ -13,8 +13,8 @@ import Foundation
 #endif
 
 
-enum ExternalReferenceError: ErrorType {
-    case NotFound
+enum ExternalReferenceError: Error {
+    case notFound
 }
 
 
@@ -59,13 +59,13 @@ extension ExternalReference {
 
      - parameter instanceCallBack: the closure that returns the instance.
      */
-    public func fetchInstance<T: Collectible>(of: T.Type, instanceCallBack:((instance: T?)->())) {
+    public func fetchInstance<T: Collectible>(_ of: T.Type, instanceCallBack:((_ instance: T?)->())) {
         if let fetched = try? Registry.registredObjectByUID(self.iUID) as T {
             // Return the fetched instance.
             instanceCallBack(instance:fetched)
         } else {
             // Return nil
-            instanceCallBack(instance:nil)
+            instanceCallBack(nil)
         }
     }
 

@@ -19,13 +19,13 @@ extension User {
 
     public func login(withPassword password: String,
         sucessHandler success:()->(),
-        failureHandler failure:(context: JHTTPResponse)->()) {
+        failureHandler failure:(_ context: JHTTPResponse)->()) {
         LoginUser.execute(self, withPassword: password, sucessHandler:success, failureHandler:failure)
 
     }
 
     public func logout(sucessHandler success:()->(),
-            failureHandler failure:(context: JHTTPResponse)->()) {
+            failureHandler failure:(_ context: JHTTPResponse)->()) {
         LogoutUser.execute(self, sucessHandler: success, failureHandler: failure)
     }
 

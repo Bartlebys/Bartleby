@@ -22,7 +22,7 @@ public extension Completion {
 
      - parameter result: the serializable result
      */
-    func setResult<T: Serializable>(result: T) {
+    func setResult<T: Serializable>(_ result: T) {
         self.data=result.serialize()
     }
 
@@ -46,7 +46,7 @@ public extension Completion {
 
      - returns: the deserialized result
      */
-    func getResultFromSerializer<T: Serializable>(serializer: Serializer) -> T? {
+    func getResultFromSerializer<T: Serializable>(_ serializer: Serializer) -> T? {
         if let data=self.data {
             let s=try? JSerializer.deserialize(data)
             return s as? T
@@ -57,13 +57,13 @@ public extension Completion {
     // MARK: - String result
 
 
-    func setStringResult(s: String) {
-        self.data = s.dataUsingEncoding(Default.STRING_ENCODING)?.base64EncodedDataWithOptions(.EncodingEndLineWithCarriageReturn)
+    func setStringResult(_ s: String) {
+        self.data = s.data(using: Default.STRING_ENCODING)?.base64EncodedData(options: .endLineWithCarriageReturn)
     }
 
     func getStringResult() -> String? {
         if let b64data = self.data {
-            if let plainData = NSData(base64EncodedData: b64data, options: .IgnoreUnknownCharacters) {
+            if let plainData = Data(base64Encoded: b64data, options: .ignoreUnknownCharacters) {
                 return String(data: plainData, encoding: Default.STRING_ENCODING)
             }
         }
@@ -72,9 +72,9 @@ public extension Completion {
 
     // MARK: - Array of String result
     
-    func setStringArrayResult(stringArray: [String]) {
+    func setStringArrayResult(_ stringArray: [String]) {
         do {
-            self.data = try NSJSONSerialization.dataWithJSONObject(stringArray, options: .PrettyPrinted)
+            self.data = try JSONSerialization.data(withJSONObject: stringArray, options: .prettyPrinted)
         } catch {
             self.data = nil
         }
@@ -83,7 +83,7 @@ public extension Completion {
     func getStringArrayResult() -> [String]? {
         if let data = self.data {
             do {
-                if let stringArray = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String] {
+                if let stringArray = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String] {
                     return stringArray
                 }
             } catch {
@@ -95,9 +95,9 @@ public extension Completion {
     
     // MARK: - Dictionary result
     
-    func setDictionaryResult(dict: [String: String]) {
+    func setDictionaryResult(_ dict: [String: String]) {
         do {
-            self.data = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            self.data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
         } catch {
             self.data = nil
         }
@@ -106,7 +106,7 @@ public extension Completion {
     func getDictionaryResult() -> [String: String]? {
         if let data = self.data {
             do {
-                if let dict = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as? [String: String] {
+                if let dict = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String: String] {
                     return dict
                 }
             } catch {

@@ -20,7 +20,7 @@ public protocol BartlebyCollection:CollectibleCollection, SuperIterable, Committ
 // We add SequenceType Support to the collection Type.
 // 'SequenceType' can only be used as a generic constraint because it has Self or associated type requirements
 // So we use IterableCollectibleCollection for concrete  collection implementation and reference in the Registry `internal var _collections=[String:Collection]()`
-public protocol IterableCollectibleCollection:BartlebyCollection,CollectionType{
+public protocol IterableCollectibleCollection:BartlebyCollection,Collection{
 
 }
 
@@ -29,7 +29,7 @@ public protocol IterableCollectibleCollection:BartlebyCollection,CollectionType{
 public protocol CollectibleCollection: Collectible {
 
     // The undo manager (for automation)
-    weak var undoManager: NSUndoManager? { get set }
+    weak var undoManager: UndoManager? { get set }
 
 
     var registry:BartlebyDocument? { get set }
@@ -55,7 +55,7 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter item: the collectible item
      */
-    func upsert(item: Collectible, commit:Bool)
+    func upsert(_ item: Collectible, commit:Bool)
 
 
     /**
@@ -63,7 +63,7 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter item: the collectible item
      */
-    func add(item: Collectible,commit:Bool)
+    func add(_ item: Collectible,commit:Bool)
 
 
     /**
@@ -72,7 +72,7 @@ public protocol CollectibleCollection: Collectible {
      - parameter item:  the collectible item
      - parameter index: the insertion index
      */
-    func insertObject(item: Collectible, inItemsAtIndex index: Int,commit:Bool)
+    func insertObject(_ item: Collectible, inItemsAtIndex index: Int,commit:Bool)
 
 
     /**
@@ -80,14 +80,14 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter index: the index
      */
-    func removeObjectFromItemsAtIndex(index: Int,commit:Bool)
+    func removeObjectFromItemsAtIndex(_ index: Int,commit:Bool)
 
     /**
      Remove the item
 
      - parameter item: the collectible item.
      */
-    func removeObject(item: Collectible,commit:Bool)
+    func removeObject(_ item: Collectible,commit:Bool)
 
 
     /**
@@ -95,7 +95,7 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter items: the collectible items.
      */
-    func removeObjects(items: [Collectible],commit:Bool)
+    func removeObjects(_ items: [Collectible],commit:Bool)
 
 
     /**
@@ -103,7 +103,7 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter id: the UID
      */
-    func removeObjectWithID(id: String,commit:Bool)
+    func removeObjectWithID(_ id: String,commit:Bool)
 
 
     /**
@@ -111,10 +111,10 @@ public protocol CollectibleCollection: Collectible {
 
      - parameter id: the UID
      */
-    func removeObjectWithIDS(ids: [String],commit:Bool)
+    func removeObjectWithIDS(_ ids: [String],commit:Bool)
 
 
-    func itemAtIndex(index:Int)->Collectible
+    func itemAtIndex(_ index:Int)->Collectible
 
     var count:Int { get }
 

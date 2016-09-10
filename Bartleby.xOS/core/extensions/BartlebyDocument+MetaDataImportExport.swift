@@ -25,7 +25,7 @@ public extension BartlebyDocument{
      - parameter crypted : should the file be crypted? ( true is highly recommanded)
 
      */
-    public func exportMetadataTo(path:String,crypted:Bool, handlers: Handlers) {
+    public func exportMetadataTo(_ path:String,crypted:Bool, handlers: Handlers) {
         do{
             let data = try self._getSerializedMetadata(crypted)
             Bartleby.fileManager.writeData(data, path: path, handlers: Handlers(completionHandler: { (dataWritten) in
@@ -45,7 +45,7 @@ public extension BartlebyDocument{
      - parameter handlers: the handlers
      
      */
-    public func importMetadataFrom(path:String,crypted:Bool,handlers: Handlers) {
+    public func importMetadataFrom(_ path:String,crypted:Bool,handlers: Handlers) {
         let readDataHandler=Handlers { (dataCompletion) in
             if var data=dataCompletion.data{
                 do{
@@ -71,7 +71,7 @@ public extension BartlebyDocument{
 
                         handlers.on(Completion.successState())
                     }else{
-                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: StatusOfCompletion.Expectation_Failed))
+                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: StatusOfCompletion.expectation_Failed))
                     }
                 }catch{
                         handlers.on(Completion.failureStateFromError(error))
@@ -93,12 +93,12 @@ public extension BartlebyDocument{
 
      - returns: the NSData
      */
-    private func _getSerializedMetadata(crypted:Bool=true) throws -> NSData{
+    fileprivate func _getSerializedMetadata(_ crypted:Bool=true) throws -> Data{
         let serializedMetadata=self.registryMetadata.serialize()
         if crypted{
             return try Bartleby.cryptoDelegate.encryptData(serializedMetadata)
         }else{
-            return serializedMetadata
+            return serializedMetadata as Data
         }
     }
 
@@ -108,7 +108,7 @@ public extension BartlebyDocument{
 
      - throws: deserialization exceptions
      */
-    private func _useSerializedMetadata(data:NSData) throws {
+    fileprivate func _useSerializedMetadata(_ data:Data) throws {
         if let metadata = try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
             self.registryMetadata=metadata
         }

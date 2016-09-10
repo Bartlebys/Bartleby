@@ -28,7 +28,7 @@ public protocol BprintCategorizable {
 
  - returns: a string representing the category
  */
-public func bprintCategoryFor(subject: AnyObject) -> String {
+public func bprintCategoryFor(_ subject: AnyObject) -> String {
     if let s = subject as? Collectible {
         return s.d_collectionName
     }
@@ -47,7 +47,7 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
+public func bprint(_ message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
     Bartleby.bprint(message, file: file, function: function, line: line, category:category,decorative: decorative)
 }
 
@@ -65,15 +65,15 @@ public func bprint(message: AnyObject, file: String, function: String, line: Int
  - parameter instanceUID:        its UID
  - parameter externalReferences: the reference to the externalReferences collection
  */
-public func removeExternalReferenceWith(instanceUID: String, inout from externalReferences: [ExternalReference]) {
-    if let idx=externalReferences.indexOf({$0.iUID == instanceUID}){
-        externalReferences.removeAtIndex(idx)
+public func removeExternalReferenceWith(_ instanceUID: String, from externalReferences: inout [ExternalReference]) {
+    if let idx=externalReferences.index(where: {$0.iUID == instanceUID}){
+        externalReferences.remove(at: idx)
     }
 }
 
 
 
-public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [ExternalReference] {
+public func instancesToExternalReferences<T: Collectible>(_ instances: [T]) -> [ExternalReference] {
     var externalReferences=[ExternalReference]()
     for instance in instances {
         externalReferences.append(ExternalReference(from:instance))
@@ -82,7 +82,7 @@ public func instancesToExternalReferences<T: Collectible>(instances: [T]) -> [Ex
 }
 
 
-public func instancesFromExternalReferences<T: Collectible>(externalReferences: [ExternalReference]) -> [T] {
+public func instancesFromExternalReferences<T: Collectible>(_ externalReferences: [ExternalReference]) -> [T] {
     var instances=[T]()
     for reference in externalReferences {
         if let instance: T=reference.toLocalInstance() {
@@ -97,24 +97,24 @@ public func instancesFromExternalReferences<T: Collectible>(externalReferences: 
 
 public enum GlobalQueue {
 
-    case Main
-    case UserInteractive
-    case UserInitiated
-    case Utility
-    case Background
+    case main
+    case userInteractive
+    case userInitiated
+    case utility
+    case background
 
-     public func get() -> dispatch_queue_t {
+     public func get() -> DispatchQueue {
         switch self {
-        case .Main:
-            return dispatch_get_main_queue()
-        case .UserInteractive:
-            return dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
-        case .UserInitiated:
-            return dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
-        case .Utility:
-            return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
-        case .Background:
-            return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+        case .main:
+            return DispatchQueue.main
+        case .userInteractive:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInteractive)
+        case .userInitiated:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated)
+        case .utility:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.utility)
+        case .background:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
 
         }
     }

@@ -14,7 +14,7 @@ public protocol Editor:Identifiable{
 }
 
 
-public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDependent {
+open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDependent {
 
     static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
 
@@ -34,10 +34,10 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
 
     // We bind this index on the scopeSegmentedControl
-    public dynamic var selectedIndex:Int = -1{
+    open dynamic var selectedIndex:Int = -1{
         didSet{
             if oldValue != selectedIndex || (oldValue == -1  && selectedIndex >= 0 ){
-                self.globalTabView.selectTabViewItemAtIndex(selectedIndex)
+                self.globalTabView.selectTabViewItem(at: selectedIndex)
             }
         }
     }
@@ -46,7 +46,7 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
     dynamic weak var registry:BartlebyDocument?
 
 
-    public func getRegistry() -> BartlebyDocument?{
+    open func getRegistry() -> BartlebyDocument?{
         return self.registry
     }
 
@@ -54,18 +54,18 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
     //MARK : Window
 
-    override public func windowDidLoad() {
+    override open func windowDidLoad() {
         super.windowDidLoad()
     }
 
-    override public var windowNibName: String?{
+    override open var windowNibName: String?{
         return "RegistryInspector"
     }
 
 
     // MARK: RegistryDependent
 
-    public var registryDelegate: RegistryDelegate?{
+    open var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
                 self.registry=registry
@@ -89,16 +89,16 @@ public class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepe
 
 
 
-    @IBAction func openWebStack(sender:AnyObject)  {
+    @IBAction func openWebStack(_ sender:AnyObject)  {
         if let document=self.registry {
-            let url:NSURL=NSURL(string: document.baseURL.absoluteString.stringByReplacingOccurrencesOfString("/api/v1", withString: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)")!
-            NSWorkspace.sharedWorkspace().openURL(url)
+            let url:URL=URL(string: document.baseURL.absoluteString!.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)")!
+            NSWorkspace.shared().open(url)
         }
     }
 
 
 
-    @IBAction func pushOperations(sender: AnyObject) {
+    @IBAction func pushOperations(_ sender: AnyObject) {
             if let document=self.registry {
                 document.synchronizePendingOperations()
             }

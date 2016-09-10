@@ -12,13 +12,13 @@ import Foundation
     import ObjectMapper
 #endif
 
-public class JSerializer: Serializer {
+open class JSerializer: Serializer {
 
-    public static var autoDecrypt=false
+    open static var autoDecrypt=false
 
 
     /// The standard singleton shared instance
-    public static let sharedInstance: JSerializer = {
+    open static let sharedInstance: JSerializer = {
         let instance = JSerializer()
         return instance
     }()
@@ -34,7 +34,7 @@ public class JSerializer: Serializer {
 
      - returns: the deserialized instance
      */
-    static public func deserialize(data: NSData) throws -> Serializable {
+    static open func deserialize(_ data: Data) throws -> Serializable {
         return try JSerializer._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
     }
 
@@ -49,18 +49,18 @@ public class JSerializer: Serializer {
 
      - returns: the serializable instance
      */
-    static private func _deserializeFromData(data: NSData,autoDecrypt:Bool) throws -> Serializable{
+    static fileprivate func _deserializeFromData(_ data: Data,autoDecrypt:Bool) throws -> Serializable{
         do {
-            if let JSONDictionary = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.AllowFragments) as? [String:AnyObject] {
+            if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
                 return try JSerializer.deserializeFromDictionary(JSONDictionary)
             }
-            throw SerializableError.EnableToTransformDataToDictionary
+            throw SerializableError.enableToTransformDataToDictionary
         }catch{
             if (autoDecrypt){
                 let decrypted=try Bartleby.cryptoDelegate.decryptData(data)
                 return try JSerializer._deserializeFromData(decrypted, autoDecrypt: false)
             }else{
-                throw SerializableError.EnableToTransformDataToDictionary
+                throw SerializableError.enableToTransformDataToDictionary
             }
         }
     }
@@ -73,26 +73,26 @@ public class JSerializer: Serializer {
 
      - returns: an instance
      */
-    static public func deserializeFromDictionary(dictionary: [String:AnyObject]) throws -> Serializable {
+    static open func deserializeFromDictionary(_ dictionary: [String:AnyObject]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             typeName = Registry.resolveTypeName(from: typeName)
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .FromJSON, JSONDictionary : dictionary)
+                    let map=Map(mappingType: .fromJSON, JSONDictionary : dictionary)
                     mappable.mapping(map)
                     if let serializable = mappable as? Serializable {
                         return serializable
                     } else {
-                        throw SerializableError.TypeMissmatch
+                        throw SerializableError.typeMissmatch
                     }
                 } else {
-                    throw SerializableError.TypeMissmatch
+                    throw SerializableError.typeMissmatch
                 }
             } else {
-                throw SerializableError.TypeMissmatch
+                throw SerializableError.typeMissmatch
             }
         } else {
-            throw SerializableError.TypeNameUndefined
+            throw SerializableError.typeNameUndefined
         }
     }
 
@@ -106,18 +106,18 @@ public class JSerializer: Serializer {
 
      - returns: a volatile deep copy.
      */
-    static public func volatileDeepCopy<T: Collectible>(instance: T) throws -> T? {
-        let data: NSData=JSerializer.serialize(instance)
+    static open func volatileDeepCopy<T: Collectible>(_ instance: T) throws -> T? {
+        let data: Data=JSerializer.serialize(instance)
         return try JSerializer.deserialize(data) as? T
     }
 
 
-    static public func serialize(instance: Serializable) -> NSData {
-        return instance.serialize()
+    static open func serialize(_ instance: Serializable) -> Data {
+        return instance.serialize() as Data
     }
 
 
-    public static var fileExtension: String {
+    open static var fileExtension: String {
         get {
             return "json"
         }

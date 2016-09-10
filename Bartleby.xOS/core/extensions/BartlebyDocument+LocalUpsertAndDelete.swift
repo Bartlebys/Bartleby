@@ -22,7 +22,7 @@ public extension BartlebyDocument {
 
      - parameter instance: the instance
      */
-    public func upsert(instance: Collectible){
+    public func upsert(_ instance: Collectible){
         if let collection=self.collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.upsert(instance, commit:false)
         }
@@ -35,7 +35,7 @@ public extension BartlebyDocument {
 
      - parameter instances: the instances
      */
-    public func upsert(instances: [Collectible]){
+    public func upsert(_ instances: [Collectible]){
         for instance in instances {
             self.upsert(instance)
         }
@@ -54,7 +54,7 @@ public extension BartlebyDocument {
      - parameter instance: the instance
 
      */
-    public func delete(instance: Collectible){
+    public func delete(_ instance: Collectible){
         if let collection=self.collectionByName(instance.d_collectionName) as? CollectibleCollection {
             collection.removeObject(instance, commit:false)
         }
@@ -67,7 +67,7 @@ public extension BartlebyDocument {
 
      - parameter instances: the instances
      */
-    public func delete(instances: [Collectible]){
+    public func delete(_ instances: [Collectible]){
         for instance in instances {
             self.delete(instance)
         }
@@ -82,7 +82,7 @@ public extension BartlebyDocument {
      - parameter fromCollectionWithName : the collection name
 
      */
-    public func deleteById(instanceUID: String, fromCollectionWithName: String) {
+    public func deleteById(_ instanceUID: String, fromCollectionWithName: String) {
         if let collection=self.collectionByName(fromCollectionWithName) as? CollectibleCollection {
             collection.removeObjectWithID(instanceUID, commit:false)
         }
@@ -96,7 +96,7 @@ public extension BartlebyDocument {
      - parameter fromCollectionWithName : the collection name
 
      */
-    public func deleteByIds(instancesUIDs: [String], fromCollectionWithName: String){
+    public func deleteByIds(_ instancesUIDs: [String], fromCollectionWithName: String){
         for instanceUID in instancesUIDs {
             self.deleteById(instanceUID, fromCollectionWithName: fromCollectionWithName)
         }

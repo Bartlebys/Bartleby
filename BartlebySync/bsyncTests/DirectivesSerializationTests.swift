@@ -9,12 +9,12 @@
 import XCTest
 
 class DirectivesSerializationTests: TestCase {
-    private var _treeName = ""
-    private var _localSourcePath = ""
-    private var _localDestinationPath = ""
-    private var _directivesPath = ""
+    fileprivate var _treeName = ""
+    fileprivate var _localSourcePath = ""
+    fileprivate var _localDestinationPath = ""
+    fileprivate var _directivesPath = ""
 
-    private var _distantTreeURL = NSURL()
+    fileprivate var _distantTreeURL = URL()
     
     override func setUp() {
         super.setUp()
@@ -22,7 +22,7 @@ class DirectivesSerializationTests: TestCase {
         self._treeName = Bartleby.randomStringWithLength(6)
         self._localSourcePath = DirectivesSerializationTests.assetPath + self._treeName + "/Source"
         self._localDestinationPath = DirectivesSerializationTests.assetPath + self._treeName + "/Destination"
-        self._distantTreeURL = TestsConfiguration.API_BASE_URL.URLByAppendingPathComponent("BartlebySync/tree/\(self._treeName)")
+        self._distantTreeURL = TestsConfiguration.API_BASE_URL.appendingPathComponent("BartlebySync/tree/\(self._treeName)")
         self._directivesPath = DirectivesSerializationTests.assetPath + BsyncDirectives.DEFAULT_FILE_NAME
     }
 
@@ -36,7 +36,7 @@ class DirectivesSerializationTests: TestCase {
         XCTAssert(directives1.areValid().valid)
         XCTAssertEqual(directives1.areValid().message, "")
         XCTAssert(directives1.computeTheHashMap)
-        XCTAssertEqual(directives1.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
+        XCTAssertEqual(directives1.sourceURL, URL(fileURLWithPath: self._localSourcePath))
         XCTAssertNil(directives1.hashMapViewName)
         
         let admin = BsyncAdmin()
@@ -49,8 +49,8 @@ class DirectivesSerializationTests: TestCase {
             
             XCTAssert(directives2.computeTheHashMap)
             
-            XCTAssertEqual(directives2.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
-            XCTAssertEqual(directives2.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+            XCTAssertEqual(directives2.sourceURL, URL(fileURLWithPath: self._localSourcePath))
+            XCTAssertEqual(directives2.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
             
             XCTAssertNil(directives2.user)
             XCTAssertNil(directives2.password)
@@ -71,7 +71,7 @@ class DirectivesSerializationTests: TestCase {
         XCTAssert(directives1.areValid().valid)
         XCTAssertEqual(directives1.areValid().message, "")
         XCTAssert(directives1.computeTheHashMap)
-        XCTAssertEqual(directives1.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
+        XCTAssertEqual(directives1.sourceURL, URL(fileURLWithPath: self._localSourcePath))
         
         let admin = BsyncAdmin()
         do {
@@ -83,8 +83,8 @@ class DirectivesSerializationTests: TestCase {
             
             XCTAssert(directives2.computeTheHashMap)
             
-            XCTAssertEqual(directives2.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
-            XCTAssertEqual(directives2.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+            XCTAssertEqual(directives2.sourceURL, URL(fileURLWithPath: self._localSourcePath))
+            XCTAssertEqual(directives2.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
             
             XCTAssertNil(directives2.user)
             XCTAssertNil(directives2.password)
@@ -122,7 +122,7 @@ class DirectivesSerializationTests: TestCase {
         XCTAssert(directives1.areValid().valid)
         XCTAssertEqual(directives1.areValid().message, "")
         XCTAssert(directives1.computeTheHashMap)
-        XCTAssertEqual(directives1.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
+        XCTAssertEqual(directives1.sourceURL, URL(fileURLWithPath: self._localSourcePath))
         XCTAssertNil(directives1.hashMapViewName)
         
         let admin = BsyncAdmin()
@@ -135,7 +135,7 @@ class DirectivesSerializationTests: TestCase {
             
             XCTAssert(directives2.computeTheHashMap)
             
-            XCTAssertEqual(directives2.sourceURL, NSURL(fileURLWithPath: self._localSourcePath))
+            XCTAssertEqual(directives2.sourceURL, URL(fileURLWithPath: self._localSourcePath))
             XCTAssertEqual(directives2.destinationURL, self._distantTreeURL)
             
             //XCTAssert(directives2.user == user) // TODO: @md Wait for merge
@@ -194,7 +194,7 @@ class DirectivesSerializationTests: TestCase {
         XCTAssert(directives1.areValid().valid)
         XCTAssertEqual(directives1.areValid().message, "")
         XCTAssert(directives1.computeTheHashMap)
-        XCTAssertEqual(directives1.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+        XCTAssertEqual(directives1.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
         XCTAssertNil(directives1.hashMapViewName)
         
         let admin = BsyncAdmin()
@@ -208,7 +208,7 @@ class DirectivesSerializationTests: TestCase {
             XCTAssert(directives2.computeTheHashMap)
             
             XCTAssertEqual(directives2.sourceURL, self._distantTreeURL)
-            XCTAssertEqual(directives2.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+            XCTAssertEqual(directives2.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
             
             //XCTAssert(directives2.user == user) // TODO: @md Wait for merge
             XCTAssertEqual(directives2.user?.UID, user.UID)
@@ -238,7 +238,7 @@ class DirectivesSerializationTests: TestCase {
         XCTAssert(directives1.areValid().valid)
         XCTAssertEqual(directives1.areValid().message, "")
         XCTAssert(directives1.computeTheHashMap)
-        XCTAssertEqual(directives1.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+        XCTAssertEqual(directives1.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
         
         let admin = BsyncAdmin()
         do {
@@ -253,7 +253,7 @@ class DirectivesSerializationTests: TestCase {
             XCTAssert(directives2.computeTheHashMap)
             
             XCTAssertEqual(directives2.sourceURL, self._distantTreeURL)
-            XCTAssertEqual(directives2.destinationURL, NSURL(fileURLWithPath: self._localDestinationPath))
+            XCTAssertEqual(directives2.destinationURL, URL(fileURLWithPath: self._localDestinationPath))
             
             //XCTAssert(directives2.user == user) // TODO: @md Wait for merge
             XCTAssertEqual(directives2.user?.UID, user.UID)
