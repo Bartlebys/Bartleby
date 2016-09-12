@@ -223,7 +223,7 @@ open class  Bartleby: Consignee {
      - parameter category: a categorizer string
      - parameter decorative: if set to true only the message will be displayed.
      */
-    open static func bprint(_ message: AnyObject, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
+    open static func bprint(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=Bartleby.elapsedTime
             let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
@@ -391,9 +391,8 @@ open class  Bartleby: Consignee {
     open static func getSearchPath(_ searchPath: FileManager.SearchPathDirectory) -> String? {
         let urls = FileManager.default.urls(for: searchPath, in: .userDomainMask)
         if urls.count>0 {
-            if let path = urls[0].path {
-                return path + "/"
-            }
+            let path = urls[0].path
+            return path + "/"
         }
         return nil
     }

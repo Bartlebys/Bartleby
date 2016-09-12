@@ -262,6 +262,8 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5C5F2B01D86E21200C94AFA /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
+		E5C5F2B11D86E2A400C94AFA /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -982,6 +984,7 @@
 					};
 					E54999641C3A7D1B00C52A9D = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					E56C00451C8ED4A800BB6B19 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -1194,6 +1197,7 @@
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3E361D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
 				E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
+				E5C5F2B01D86E21200C94AFA /* Operation+Conveniences.swift in Sources */,
 				E50F3E4A1D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */,
 				E50F3EBC1D40D50400532B09 /* HTTPManager.swift in Sources */,
 				E50F3E061D40D50400532B09 /* ReadLockersByIds.swift in Sources */,
@@ -1252,6 +1256,7 @@
 				E50F3E761D40D50400532B09 /* Descriptible.swift in Sources */,
 				E50F3DE41D40D50400532B09 /* CreateLockers.swift in Sources */,
 				E50F3E521D40D50400532B09 /* NSNotification+Completion.swift in Sources */,
+				E5C5F2B11D86E2A400C94AFA /* BartlebyDocument+Operations.swift in Sources */,
 				E50F3DDA1D40D50400532B09 /* Trigger.swift in Sources */,
 				E50F3DE21D40D50400532B09 /* CreateLocker.swift in Sources */,
 				E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
@@ -1493,6 +1498,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1548,6 +1554,7 @@
 				PRODUCT_NAME = BartlebyKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -24,7 +24,7 @@ extension BartlebyDocument:SuperIterable{
         // We want to super superIterate on each collection
         for (_, collection) in self._collections {
             collection.superIterate({ (element) in
-                on(element: element)
+                on(element)
             })
         }
     }

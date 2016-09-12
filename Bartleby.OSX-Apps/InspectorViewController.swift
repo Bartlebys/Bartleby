@@ -74,7 +74,7 @@ import Cocoa
         if let document=self.registryDelegate?.getRegistry() {
             let currentUser=document.registryMetadata.currentUser!
             let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
-            let url:URL=URL(string: document.baseURL.absoluteString!.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
+            let url:URL=URL(string: document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
             NSWorkspace.shared().open(url)
         }
     }
@@ -89,7 +89,7 @@ import Cocoa
     @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for operation in registry.operations.reversed(){
-                registry.operations.removeObject(operation, commit: false)
+                registry.operations.removeObject(operation!, commit: false)
             }
         }
     }
@@ -169,8 +169,8 @@ import Cocoa
             }
         }
 
-        self._topViewController?.representedObject=selected as? AnyObject
-        self._bottomViewController?.representedObject=selected as? AnyObject
+        self._topViewController?.representedObject=selected
+        self._bottomViewController?.representedObject=selected
 
     }
 
@@ -231,13 +231,13 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if let collection  = item as? CollectibleCollection {
-            return collection.itemAtIndex(index) as! AnyObject
+            return collection.itemAtIndex(index) as AnyObject
         }else{
             if index==0{
                 return self._registry.registryMetadata
             }
             let collectionName=self._collectionNames[index - 1]
-            return self._registry.collectionByName(collectionName) as? AnyObject ?? "ERROR"
+            return self._registry.collectionByName(collectionName)
         }
     }
 
@@ -257,7 +257,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         if let deserializable = object as? Data {
             do {
                 let o = try JSerializer.deserialize(deserializable)
-                return o as? AnyObject
+                return o
             } catch {
                 bprint("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
             }

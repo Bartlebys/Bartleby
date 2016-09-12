@@ -54,7 +54,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
     // MARK: - ConcreteTracker protocol
 
-    open func track(_ result: AnyObject?, context: Consignable) {
+    open func track(_ result: Any?, context: Consignable) {
         if trackingIsEnabled == true {
             trackingStack.append((result:result, context:context))
         }
@@ -77,7 +77,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
     open var bprintTrackedEntries: Bool=false
 
-    open var trackingStack=[(result:AnyObject?, context:Consignable)]()
+    open var trackingStack=[(result:Any?, context:Consignable)]()
 
     open func dumpStack() {
         for (result, context) in trackingStack {
@@ -133,9 +133,9 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
         #elseif os(iOS)
 
-            let alert=UIAlertController(title: title, message: body, preferredStyle:.Alert)
-            let action=UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-                onSelectedIndex(selectedIndex: 0)
+            let alert=UIAlertController(title: title, message: body, preferredStyle:.alert)
+            let action=UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+                onSelectedIndex(0)
             })
             alert.addAction(action)
             if let popPresenter=alert.popoverPresentationController {
@@ -143,7 +143,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
                 popPresenter.sourceRect = self.rootViewController.view.bounds
             }
 
-            self.rootViewController.presentViewController(alert, animated: true, completion:nil)
+            self.rootViewController.present(alert, animated: true, completion:nil)
 
         #elseif os(watchOS)
         #elseif os(tvOS)
@@ -177,20 +177,21 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
         #elseif os(iOS)
 
-            let a=UIAlertController(title: title, message: body, preferredStyle:.Alert)
+            let a=UIAlertController(title: title, message: body, preferredStyle:.alert)
 
             if let popPresenter=a.popoverPresentationController {
                 popPresenter.sourceView = self.rootViewController.view
                 popPresenter.sourceRect = self.rootViewController.view.bounds
             }
 
-            self.rootViewController.presentViewController(a, animated: true, completion:nil)
+            self.rootViewController.present(a, animated: true, completion:nil)
 
-            let dispatchTime=dispatch_time(DISPATCH_TIME_NOW, Int64(Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC)))
-            dispatch_after(dispatchTime, dispatch_get_main_queue()) { () -> Void in
-                self.rootViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+            DispatchQueue.main.asyncAfter(deadline: .now() + Consignee.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC)) {
+                self.rootViewController.dismiss(animated: true, completion: { () -> Void in
                 })
             }
+
+
 
         #elseif os(watchOS)
         #elseif os(tvOS)
@@ -233,7 +234,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
     public var rootViewController: UIViewController {
         get {
-            let appDelegate  = UIApplication.sharedApplication().delegate
+            let appDelegate  = UIApplication.shared.delegate
             return appDelegate!.window!!.rootViewController!
         }
     }

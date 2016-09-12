@@ -13,16 +13,16 @@ import Alamofire
 import ObjectMapper
 #endif
 
-@objc(DeleteLockers) open class DeleteLockers : JObject,JHTTPCommand{
+@objc(DeleteLockers) public class DeleteLockers : JObject,JHTTPCommand{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "DeleteLockers"
     }
 
-    fileprivate var _ids:[String] = [String]()
+    private var _ids:[String] = [String]()
 
-    fileprivate var _registryUID:String=Default.NO_UID
+    private var _registryUID:String=Default.NO_UID
 
     required public convenience init(){
         self.init([String](), fromRegistryWithUID:Default.NO_UID)
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self._ids <- ( map["_ids"] )
@@ -52,20 +52,18 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self._ids=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "_ids")! as! [String]
-		self._registryUID=String(decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
-
-        self.enableSuperVisionAndCommit()
+		self._ids=decoder.decodeObject(of: [NSString.self], forKey: "_ids")! as! [String]
+		self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self._ids,forKey:"_ids")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -89,10 +87,10 @@ import ObjectMapper
 
      - returns: return the operation
      */
-    fileprivate func _getOperation()->Operation{
+    private func _getOperation()->Operation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             if let ic:OperationsCollectionController = try? document.getCollection(){
-                let operations=ic.filter({ (operation) -> Bool in
+                let operations=ic.items.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
                 })
                 if let operation=operations.first {
@@ -127,7 +125,7 @@ import ObjectMapper
                 let ic:OperationsCollectionController = try document.getCollection()
                 let operation=self._getOperation()
                 operation.counter += 1
-                operation.status=Operation.Status.Pending
+                operation.status=Operation.Status.pending
                 operation.creationDate=Date()
                 let stringIDS=PString.ltrim(self._ids.reduce("", { $0+","+$1 }),characters:",")
                 operation.summary="DeleteLockers(\(stringIDS))"
@@ -157,7 +155,7 @@ import ObjectMapper
         }
     }
 
-    open func push(sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
+    public func push(sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
         failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
         // The unitary operation are not always idempotent
         // so we do not want to push multiple times unintensionnaly.
@@ -165,12 +163,12 @@ import ObjectMapper
         let operation=self._getOperation()
         if  operation.canBePushed(){
             // We try to execute
-            operation.status=Operation.Status.InProgress
+            operation.status=Operation.Status.inProgress
             DeleteLockers.execute(self._ids,
                 fromRegistryWithUID:self._registryUID,
                 sucessHandler: { (context: JHTTPResponse) -> () in
                     operation.counter=operation.counter+1
-                    operation.status=Operation.Status.Completed
+                    operation.status=Operation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
                     let completion=Completion.successStateFromJHTTPResponse(context)
@@ -180,7 +178,7 @@ import ObjectMapper
                 },
                 failureHandler: {(context: JHTTPResponse) -> () in
                     operation.counter=operation.counter+1
-                    operation.status=Operation.Status.Completed
+                    operation.status=Operation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
                     let completion=Completion.failureStateFromJHTTPResponse(context)
@@ -200,17 +198,18 @@ import ObjectMapper
         }
     }
 
-    static open func execute(_ ids:[String],
+    static public func execute(_ ids:[String],
             fromRegistryWithUID registryUID:String,
-            sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
-            failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
+            sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
+            failureHandler failure: @escaping(_ context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.appendingPathComponent("lockers")
-                var parameters=Dictionary<String, AnyObject>()
-                parameters["ids"]=ids as AnyObject?
+                var parameters=Dictionary<String, Any>()
+                parameters["ids"]=ids
                 let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLockers" ,forMethod:"DELETE", and: pathURL)
-                let r:Request=request(ParameterEncoding.json.encode(urlRequest, parameters: parameters).0)
-                r.responseJSON{ response in
+                do {
+                    let r=try JSONEncoding().encode(urlRequest,with:parameters) // ??? TO BE VALIDATED
+                    request(resource:r).validate().responseJSON(completionHandler: { (response) in
 
                     // Store the response
                     let request=response.request
@@ -240,7 +239,7 @@ import ObjectMapper
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
-                        failure(context:context)
+                        failure(context)
                     }else{
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
@@ -249,12 +248,12 @@ import ObjectMapper
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
                                         document.acknowledgeOwnedTriggerIndex(index.intValue)
                                     }else{
-                                        bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                                        bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                                     }
                                 }else{
-                                    bprint("QA Trigger index dictionary is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                                    bprint("QA Trigger index dictionary is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                                 }
-                                success(context:context)
+                                success(context)
                             }else{
                                 // Bartlby does not currenlty discriminate status codes 100 & 101
                                 // and treats any status code >= 300 the same way
@@ -270,21 +269,31 @@ import ObjectMapper
                                     transmit:{ (selectedIndex) -> () in
                                     })
                                 reactions.append(failureReaction)
-                                failure(context:context)
+                                failure(context)
                             }
                         }
                      }
                     //Let's react according to the context.
                     Bartleby.sharedInstance.perform(reactions, forContext: context)
+                })
+                }catch{
+                    let context = JHTTPResponse( code:2 ,
+                    caller: "DeleteLockers.execute",
+                    relatedURL:nil,
+                    httpStatusCode:500,
+                    response:nil,
+                    result:"{\"message\":\"\(error)}")
+                    failure(context)
                 }
+
             }else{
                 let context = JHTTPResponse( code:1 ,
                     caller: "DeleteLockers.execute",
-                    relatedURL:URL(),
+                    relatedURL:nil,
                     httpStatusCode:417,
                     response:nil,
                     result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
-                    failure(context:context)
+                    failure(context)
             }
         }
 }

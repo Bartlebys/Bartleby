@@ -20,39 +20,39 @@ import ObjectMapper
 
 // This controller implements data automation features.
 
-@objc(LockersCollectionController) open class LockersCollectionController : JObject,IterableCollectibleCollection{
+@objc(LockersCollectionController) public class LockersCollectionController : JObject,IterableCollectibleCollection{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "LockersCollectionController"
     }
 
     // Registry is referenced on Collection Proxy Creation.
-    open var registry:BartlebyDocument?
+    public var registry:BartlebyDocument?
 
-    open var spaceUID:String {
+    public var spaceUID:String {
         get{
             return self.registry?.spaceUID ?? Default.NO_UID
         }
     }
 
-    open var registryUID:String{
+    public var registryUID:String{
         get{
             return self.registry?.UID ?? Default.NO_UID
         }
     }
 
-    weak open var undoManager:UndoManager?
+    weak public var undoManager:UndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
-    open weak var arrayController:NSArrayController?
+    public weak var arrayController:NSArrayController?
 
     #endif
 
-    weak open var tableView: BXTableView?
+    weak public var tableView: BXTableView?
 
-    open func makeIterator() -> AnyIterator<Locker> {
+    public func generate() -> AnyIterator<Locker> {
         var nextIndex = -1
         let limit=self.items.count-1
         return AnyIterator {
@@ -65,32 +65,42 @@ import ObjectMapper
     }
 
 
-    open subscript(index: Int) -> Locker {
+    public subscript(index: Int) -> Locker? {
         return self.items[index]
     }
 
-    open func itemAtIndex(_ index:Int)->Collectible{
+    public func itemAtIndex(_ index:Int)->Collectible?{
         return self[index]
     }
 
-    open var startIndex:Int {
+    public var startIndex:Int {
         return 0
     }
 
-    open var endIndex:Int {
+    public var endIndex:Int {
         return self.items.count
     }
 
-    open var count:Int {
+    /// Returns the position immediately after the given index.
+    ///
+    /// - Parameter i: A valid index of the collection. `i` must be less than
+    ///   `endIndex`.
+    /// - Returns: The index value immediately after `i`.
+    public func index(after i: Int) -> Int {
+        return i+1
+    }
+
+
+    public var count:Int {
         return self.items.count
     }
 
-    open func indexOf(predicate: (Locker) throws -> Bool) rethrows -> Int?{
-        return try self.items.index(where: predicate)
+    public func indexOf(predicate: (Locker) throws -> Bool) rethrows -> Int?{
+        return try self.items.index(where:predicate)
     }
 
-    open func indexOf(_ element: Locker) -> Int?{
-		return self.items.index(of: element)
+    public func indexOf(element: Locker) -> Int?{
+        return self.items.index(where:{$0.UID==element.UID})
     }
 
 
@@ -99,7 +109,7 @@ import ObjectMapper
     The Registry ignores the real types.
     - parameter on: the closure
     */
-    open func superIterate(_ on:(_ element: Collectible)->()){
+    public func superIterate(_ on:@escaping(_ element: Collectible)->()){
         for item in self.items {
             on(item)
         }
@@ -110,7 +120,7 @@ import ObjectMapper
     Commit all the changes in one bunch
     Marking commit on each item will toggle hasChanged flag.
     */
-    open func commitChanges() -> [String] {
+    public func commitChanges() -> [String] {
         var UIDS=[String]()
         if self.toBeCommitted{ // When one member has to be committed its collection _shouldBeCommited flag is turned to true
             let changedItems=self.items.filter { $0.toBeCommitted == true }
@@ -129,21 +139,21 @@ import ObjectMapper
     }
 
 
-    open dynamic var items:[Locker]=[Locker](){
+    public dynamic var items:[Locker]=[Locker](){
         didSet {
             if items != oldValue {
-                self.provisionChanges(forKey: "items",oldValue: oldValue as AnyObject?,newValue: items as AnyObject?)
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
             }
         }
     }
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return Locker.collectionName
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return Locker.collectionName
     }
 
@@ -155,13 +165,13 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.items <- ( map["items"] )
 		
         if map.mappingType == .fromJSON {
-            forEach { $0.collection=self }
+            forEach { $0?.collection=self }
         }
         self.enableSuperVisionAndCommit()
     }
@@ -172,20 +182,17 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.items=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),Locker.classForCoder()]), forKey: "items")! as! [Locker]
+		self.items=decoder.decodeObject(of: [Locker.classForCoder()], forKey: "items")! as! [Locker]
 		
-		forEach { $0.collection=self }
-
-        self.enableSuperVisionAndCommit()
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.items,forKey:"items")
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -194,9 +201,9 @@ import ObjectMapper
 
     // MARK: Upsert
 
-    open func upsert(_ item: Collectible, commit:Bool){
+    public func upsert(_ item: Collectible, commit:Bool){
 
-        if let idx=items.index(where: {return $0.UID == item.UID}){
+        if let idx=items.index(where:{return $0.UID == item.UID}){
             // it is an update
             // we must patch it
             let currentInstance=items[idx]
@@ -222,7 +229,7 @@ import ObjectMapper
     // MARK: Add
 
 
-    open func add(_ item:Collectible, commit:Bool){
+    public func add(_ item:Collectible, commit:Bool){
         self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
     }
 
@@ -235,7 +242,7 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the insertion?
     */
-    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
+    public func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? Locker{
 
             item.collection = self // Reference the collection
@@ -252,7 +259,7 @@ import ObjectMapper
 
             // Add the inverse of this invocation to the undo stack
             if let undoManager: UndoManager = undoManager {
-                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectFromItemsAtIndex(index, commit:commit)
+                (undoManager.prepare(withInvocationTarget: self) as! LockersCollectionController).removeObjectFromItemsAtIndex(index, commit:commit)
                 if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("AddLocker", comment: "AddLocker undo action"))
                 }
@@ -266,10 +273,10 @@ import ObjectMapper
                 arrayController.rearrangeObjects()
 
                 if let tableView = self.tableView{
-                    GlobalQueue.main.get().async(execute: {
+                    DispatchQueue.main.async(execute: {
                         let sorted=self.arrayController?.arrangedObjects as! [Locker]
                         // Find the object just added
-                        if let row=sorted.index(of: item){
+                        if let row=sorted.index(where:{ $0.UID==item.UID }){
                             // Start editing
                             tableView.editColumn(0, row: row, with: nil, select: true)
                         }
@@ -299,14 +306,14 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the removal?
     */
-    open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
-        if let item : Locker = items[index] {
+    public func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
+        if let item : Locker =  self[index] {
 
             // Add the inverse of this invocation to the undo stack
             if let undoManager: UndoManager = undoManager {
                 // We don't want to introduce a retain cycle
                 // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
-                // That's why we have added an registerUndo extension on NSUndoManager
+                // That's why we have added an registerUndo extension on UndoManager
                 undoManager.registerUndo({ () -> Void in
                    self.insertObject(item, inItemsAtIndex: index, commit:commit)
                 })
@@ -322,7 +329,7 @@ import ObjectMapper
             item.committed=false
 
             // Remove the item from the collection
-            self.items.remove(at: index)
+            self.items.remove(at:index)
 
         
             if commit==true{
@@ -334,28 +341,28 @@ import ObjectMapper
     }
 
 
-    open func removeObjects(_ items: [Collectible],commit:Bool){
-        for item in items{
+    public func removeObjects(_ items: [Collectible],commit:Bool){
+        for item in self.items{
             self.removeObject(item,commit:commit)
         }
     }
 
-    open func removeObject(_ item: Collectible, commit:Bool){
+    public func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? Locker{
-            if let idx=self.indexOf( { return $0.UID == instance.UID } ){
+            if let idx=self.index(where: { return $0?.UID == instance.UID } ){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }
     }
 
-    open func removeObjectWithIDS(_ ids: [String],commit:Bool){
+    public func removeObjectWithIDS(_ ids: [String],commit:Bool){
         for uid in ids{
             self.removeObjectWithID(uid,commit:commit)
         }
     }
 
-    open func removeObjectWithID(_ id:String, commit:Bool){
-        if let idx=self.indexOf( { return $0.UID==id } ){
+    public func removeObjectWithID(_ id:String, commit:Bool){
+        if let idx=self.index(where:{ return $0?.UID==id } ){
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }

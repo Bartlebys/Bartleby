@@ -92,7 +92,7 @@ class KeyValueStorageCommand: CryptedCommand {
 
                 switch op.value {
                 case .Upsert?:
-                    if let k=keyArg.value, v=value.value {
+                    if let k=keyArg.value, let v=value.value {
                         kvs.setStringValue(v, forKey: k)
                     } else {
                         print("We creating or updating a (key,value) pair")

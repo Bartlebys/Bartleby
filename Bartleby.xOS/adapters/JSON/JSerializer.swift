@@ -73,7 +73,7 @@ open class JSerializer: Serializer {
 
      - returns: an instance
      */
-    static open func deserializeFromDictionary(_ dictionary: [String:AnyObject]) throws -> Serializable {
+    static open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             typeName = Registry.resolveTypeName(from: typeName)
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {

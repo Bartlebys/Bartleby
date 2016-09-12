@@ -44,7 +44,7 @@ class RunDirectivesCommand: CommandBase {
                 Bartleby.configuration.API_BASE_URL = url
             }
             
-            if let filePath = filePath.value, key = secretKey.value, let salt = sharedSalt.value {
+            if let filePath = filePath.value, let key = secretKey.value, let salt = sharedSalt.value {
                 Bartleby.configuration.KEY = key
                 Bartleby.configuration.SHARED_SALT = salt
                 Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED = false

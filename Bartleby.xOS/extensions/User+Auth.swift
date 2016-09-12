@@ -18,14 +18,14 @@ extension User {
     }
 
     public func login(withPassword password: String,
-        sucessHandler success:()->(),
-        failureHandler failure:(_ context: JHTTPResponse)->()) {
+        sucessHandler success:@escaping()->(),
+        failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
         LoginUser.execute(self, withPassword: password, sucessHandler:success, failureHandler:failure)
 
     }
 
-    public func logout(sucessHandler success:()->(),
-            failureHandler failure:(_ context: JHTTPResponse)->()) {
+    public func logout(sucessHandler success:@escaping()->(),
+            failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
         LogoutUser.execute(self, sucessHandler: success, failureHandler: failure)
     }
 

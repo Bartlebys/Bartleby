@@ -16,7 +16,7 @@ class OperationViewController: NSViewController,Editor{
 
     dynamic weak var selectedItem:EditorOf?
 
-    override var representedObject: AnyObject?{
+    override var representedObject: Any?{
         willSet{
             if let _=self.selectedItem{
                 self.selectedItem?.removeChangesSuperviser(self)

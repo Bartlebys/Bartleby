@@ -19,7 +19,7 @@ open class CryptedStringKeyValueTransform: TransformType {
     public typealias JSON = String
 
 
-    open func transformFromJSON(_ value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: Any?) -> Dictionary<String, String>? {
 
         if let s = value as? String {
             if let jsonData=s.data(using: Default.STRING_ENCODING) {

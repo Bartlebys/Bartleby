@@ -14,76 +14,76 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not supervisable.
-@objc(RegistryMetadata) open class RegistryMetadata : JObject{
+@objc(RegistryMetadata) public class RegistryMetadata : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "RegistryMetadata"
     }
 
 	//The data space UID can be shared between multiple registries.
-	dynamic open var spaceUID:String = "\(Default.NO_UID)"
+	dynamic public var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
-	dynamic open var currentUser:User?
+	dynamic public var currentUser:User?
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
-		case Key = "Key"
-		case Cookie = "Cookie"
+		case key = "key"
+		case cookie = "cookie"
 	}
-	open var identificationMethod:IdentificationMethod = .Key
+	public var identificationMethod:IdentificationMethod = .key
 	//The current kvid identification value (injected in HTTP headers)
-	dynamic open var identificationValue:String?
+	dynamic public var identificationValue:String?
 	//The rootObject UID
-	dynamic open var rootObjectUID:String = "\(Default.NO_UID)"
+	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
-	dynamic open var collaborationServerURL:URL?
+	dynamic public var collaborationServerURL:URL?
 	//A collection of CollectionMetadatum
-	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 	//The State dictionary to insure registry persistency 
-	dynamic open var stateDictionary:[String:AnyObject] = [String:AnyObject]()
-	//The collection of serialized Security-Scoped Bookmarks (you should store NSData)
-	dynamic open var URLBookmarkData:[String:AnyObject] = [String:AnyObject]()
+	dynamic public var stateDictionary:[String:Any] = [String:AnyObject]()
+	//The collection of serialized Security-Scoped Bookmarks (you should store Data)
+	dynamic public var URLBookmarkData:[String:Any] = [String:AnyObject]()
 	//The preferred filename for this registry/document
-	dynamic open var preferredFileName:String?
+	dynamic public var preferredFileName:String?
 	//A collection of trigger Indexes (used to detect data holes)
-	dynamic open var triggersIndexes:[Int] = [Int]()
+	dynamic public var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	dynamic open var ownedTriggersIndexes:[Int] = [Int]()
+	dynamic public var ownedTriggersIndexes:[Int] = [Int]()
 	//The index of the last trigger that has been integrated
-	open var lastIntegratedTriggerIndex:Int = -1
+	public var lastIntegratedTriggerIndex:Int = -1
 	//A collection Triggers that are temporarly stored before data integration
-	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
+	dynamic public var receivedTriggers:[Trigger] = [Trigger]()
 	//The serialized version of loaded trigger data that are pending integration
-	open var triggeredDataBuffer:Data?
+	public var triggeredDataBuffer:Data?
 	//Do we have operations in progress in the current bunch ?
-	dynamic open var bunchInProgress:Bool = false
+	dynamic public var bunchInProgress:Bool = false
 	//The highest number that we may have counted
-	open var totalNumberOfOperations:Int = 0
+	public var totalNumberOfOperations:Int = 0
 	//The consolidated progression state of all pending operations
-	dynamic open var pendingOperationsProgressionState:Progression?
+	dynamic public var pendingOperationsProgressionState:Progression?
 	//is the user performing Online
-	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
+	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
 	       if online != oldValue {
-	            self.provisionChanges(forKey: "online",oldValue: oldValue as AnyObject?,newValue: online as AnyObject?)  
+	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
 	       } 
 	    }
 	}
 
 	//If set to true any object creation, update, or deletion will be pushed to the server immediately
-	dynamic open var pushOnChanges:Bool = true  {	 
+	dynamic public var pushOnChanges:Bool = true  {	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
-	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue as AnyObject?,newValue: pushOnChanges as AnyObject?)  
+	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
 	       } 
 	    }
 	}
 
 	//Save the password or not?
-	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
+	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
 	    didSet { 
 	       if saveThePassword != oldValue {
-	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue as AnyObject?,newValue: saveThePassword as AnyObject?)  
+	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
 	       } 
 	    }
 	}
@@ -96,7 +96,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.spaceUID <- ( map["spaceUID"] )
@@ -126,30 +126,29 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.spaceUID=String(decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
-		self.currentUser=decoder.decodeObject(of: User.self, forKey: "currentUser") 
-		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
+		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
+		self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
+		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 		self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
-		self.rootObjectUID=String(decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
-		self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
-		self.collectionsMetadata=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()]), forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-		self.stateDictionary=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "stateDictionary")as! [String:AnyObject]
-		self.URLBookmarkData=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "URLBookmarkData")as! [String:AnyObject]
+		self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
+		self.collaborationServerURL=URL(string:"")//NOT IMPLEMETED - decodeObject URL OPTIONNAL
+		self.collectionsMetadata=decoder.decodeObject(of: [CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
+		self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
+		self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
 		self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
-		self.triggersIndexes=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "triggersIndexes")! as! [Int]
-		self.ownedTriggersIndexes=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSNumber.self]), forKey: "ownedTriggersIndexes")! as! [Int]
-		self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey: "lastIntegratedTriggerIndex") 
-		self.receivedTriggers=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),Trigger.classForCoder()]), forKey: "receivedTriggers")! as! [Trigger]
-		self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
-		self.online=decoder.decodeBool(forKey: "online") 
-		self.pushOnChanges=decoder.decodeBool(forKey: "pushOnChanges") 
-		self.saveThePassword=decoder.decodeBool(forKey: "saveThePassword") 
-
-        self.enableSuperVisionAndCommit()
+		self.triggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "triggersIndexes")! as! [Int]
+		self.ownedTriggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
+		self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
+		self.receivedTriggers=decoder.decodeObject(of: [Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
+		self.triggeredDataBuffer=Data()//NOT IMPLEMETED - decodeObject DATA OPTIONNAL
+		self.online=decoder.decodeBool(forKey:"online") 
+		self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
+		self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		if let currentUser = self.currentUser {
 			coder.encode(currentUser,forKey:"currentUser")
@@ -180,8 +179,7 @@ import ObjectMapper
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -192,11 +190,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "registryMetadatas"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return RegistryMetadata.collectionName
     }
 

@@ -114,7 +114,7 @@ public protocol CollectibleCollection: Collectible {
     func removeObjectWithIDS(_ ids: [String],commit:Bool)
 
 
-    func itemAtIndex(_ index:Int)->Collectible
+    func itemAtIndex(_ index:Int)->Collectible?
 
     var count:Int { get }
 

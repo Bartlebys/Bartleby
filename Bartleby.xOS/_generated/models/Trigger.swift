@@ -14,33 +14,33 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
-@objc(Trigger) open class Trigger : JObject{
+@objc(Trigger) public class Trigger : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "Trigger"
     }
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
-	dynamic open var index:Int = -1
+	dynamic public var index:Int = -1
 	//The dataSpace UID
-	dynamic open var spaceUID:String?
+	dynamic public var spaceUID:String?
 	//The observation UID for a given document correspond  to the Registry.rootObjectUID
-	dynamic open var observationUID:String?
+	dynamic public var observationUID:String?
 	//The user.UID of the sender
-	dynamic open var senderUID:String?
+	dynamic public var senderUID:String?
 	//The UID of the instance of Bartleby client that has created the trigger.
-	dynamic open var runUID:String?
+	dynamic public var runUID:String?
 	//The action that has initiated the trigger
-	dynamic open var origin:String?
+	dynamic public var origin:String?
 	//The targetted collection name
-	dynamic open var targetCollectionName:String = ""
+	dynamic public var targetCollectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
-	dynamic open var creationDate:Date?
+	dynamic public var creationDate:Date?
 	//The action name
-	dynamic open var action:String = ""
+	dynamic public var action:String = ""
 	//A coma separated UIDS list
-	dynamic open var UIDS:String = ""
+	dynamic public var UIDS:String = ""
 
 
     // MARK: Mappable
@@ -49,7 +49,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.index <- ( map["index"] )
@@ -71,22 +71,21 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.index=decoder.decodeInteger(forKey: "index") 
+		self.index=decoder.decodeInteger(forKey:"index") 
 		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
 		self.observationUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"observationUID") as NSString?)
 		self.senderUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"senderUID") as NSString?)
 		self.runUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"runUID") as NSString?)
 		self.origin=String(describing: decoder.decodeObject(of: NSString.self, forKey:"origin") as NSString?)
-		self.targetCollectionName=String(decoder.decodeObject(of: NSString.self, forKey: "targetCollectionName")! as NSString)
-		self.creationDate=decoder.decodeObject(of: NSDate.self, forKey:"creationDate") as Date?
-		self.action=String(decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
-		self.UIDS=String(decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
-
-        self.enableSuperVisionAndCommit()
+		self.targetCollectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "targetCollectionName")! as NSString)
+		self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
+		self.action=String(describing: decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
+		self.UIDS=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.index,forKey:"index")
 		if let spaceUID = self.spaceUID {
 			coder.encode(spaceUID,forKey:"spaceUID")
@@ -111,8 +110,7 @@ import ObjectMapper
 		coder.encode(self.UIDS,forKey:"UIDS")
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -123,11 +121,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "triggers"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return Trigger.collectionName
     }
 

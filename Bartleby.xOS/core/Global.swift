@@ -28,7 +28,7 @@ public protocol BprintCategorizable {
 
  - returns: a string representing the category
  */
-public func bprintCategoryFor(_ subject: AnyObject) -> String {
+public func bprintCategoryFor(_ subject: Any) -> String {
     if let s = subject as? Collectible {
         return s.d_collectionName
     }
@@ -47,7 +47,7 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(_ message: AnyObject, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
+public func bprint(_ message: Any, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
     Bartleby.bprint(message, file: file, function: function, line: line, category:category,decorative: decorative)
 }
 

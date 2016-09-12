@@ -60,7 +60,7 @@ open class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter completionBlock:        the completionBlock
      */
     func createDMG(_ card: BsyncDMGCard,
-                   thenDo:@escaping (_ _ whenDone: Handlers)->(),
+                   thenDo:@escaping (_ whenDone: Handlers)->(),
                    detachImageOnCompletion: Bool,
                    handlers: Handlers) {
 
@@ -76,7 +76,7 @@ open class BsyncXPCHelper: NSObject, BartlebyFileIO {
 
                 xpc.createDMG(card, handler: Handlers { (creation) -> () in
                     if creation.success {
-                        thenDo(whenDone: Handlers { (done) in
+                        thenDo(Handlers { (done) in
                             if detachImageOnCompletion {
                                 xpc.detachVolume(card.volumeName, handler: Handlers { (detach) in
                                     handlers.on(detach)
@@ -136,7 +136,7 @@ open class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter completionBlock:  the completion block
      */
     func mountDMG(_ card: BsyncDMGCard,
-                  thenDo:@escaping (_ _ whenDone: Handlers)->(),
+                  thenDo:@escaping (_ whenDone: Handlers)->(),
                   detachImageOnCompletion: Bool,
                   handlers: Handlers) {
 
@@ -167,7 +167,7 @@ open class BsyncXPCHelper: NSObject, BartlebyFileIO {
                                             // Invoke the doWhen block
                                             // And wait for its result.
 
-                                            thenDo(whenDone: internalHandler)
+                                            thenDo(internalHandler)
 
                                         } else {
                                             // It is a failure.

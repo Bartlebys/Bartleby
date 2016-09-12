@@ -36,7 +36,7 @@ open class HTTPManager: NSObject {
     static open func configure()->() {
         if _hasBeenConfigured == false {
             let configuration = URLSessionConfiguration.default
-            _ = Manager(configuration:configuration)
+            _ = SessionManager(configuration:configuration)
             _hasBeenConfigured=true
         }
     }
@@ -52,8 +52,8 @@ open class HTTPManager: NSObject {
 
      - returns: the mutable request
      */
-    static open func mutableRequestWithHeaders(_ method: String, url: URL) -> NSMutableURLRequest {
-        let request=NSMutableURLRequest(url: url)
+    static open func mutableRequestWithHeaders(_ method: String, url: URL) -> URLRequest {
+        var request=URLRequest(url: url)
         request.httpMethod=method
         let headers=HTTPManager.baseHttpHeaders()
         for (k,v) in headers{
@@ -72,8 +72,8 @@ open class HTTPManager: NSObject {
 
      - returns: the mutable
      */
-    static open func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> NSMutableURLRequest {
-        let request=NSMutableURLRequest(url: url)
+    static open func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
+        var request=URLRequest(url: url)
         request.httpMethod=method
         let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID:registryUID, withActionName: actionName)
         for (k,v) in headers{
@@ -109,7 +109,7 @@ open class HTTPManager: NSObject {
             // SpaceUID
             headers[HTTPManager.SPACE_UID_KEY]=document.spaceUID
 
-            if document.registryMetadata.identificationMethod == .Key{
+            if document.registryMetadata.identificationMethod == .key{
                 if  let idv=document.registryMetadata.identificationValue {
                     headers["kvid"]=idv
                 }else{
@@ -160,20 +160,19 @@ open class HTTPManager: NSObject {
     static open func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/Reachable")
         let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
-        let r: Request=request(urlRequest)
-        r.responseString { response in
+        request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
             let result=response.result
             let response=response.response
 
             // Bartleby consignation
-
             let context = JHTTPResponse( code: 1,
-                caller: "Reachable",
-                relatedURL:request?.url,
-                httpStatusCode: response?.statusCode ?? 0,
-                response: response )
+                                         caller: "Reachable",
+                                         relatedURL:request?.url,
+                                         httpStatusCode: response?.statusCode ?? 0,
+                                         response: response ,
+                                         result:result)
 
             // React according to the situation
             var reactions = Array<Bartleby.Reaction> ()
@@ -182,16 +181,16 @@ open class HTTPManager: NSObject {
             let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                 context: context,
                 title: NSLocalizedString("Server is not reachable",
-                    comment: "Server is not reachable"),
+                                         comment: "Server is not reachable"),
                 body: NSLocalizedString("Please Check your connection or your configuration!",
-                    comment: "Please Check your connection or your configuration!"),
+                                        comment: "Please Check your connection or your configuration!"),
                 transmit: { (selectedIndex) -> () in
                     bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
             if result.isFailure {
                 reactions.append(failureReaction)
-                failureHandler(context:context)
+                failureHandler(context)
             } else {
                 if let statusCode=response?.statusCode {
                     if 200...299 ~= statusCode {
@@ -201,13 +200,12 @@ open class HTTPManager: NSObject {
                         if let value=result.value {
                             bprint(value, file: #file, function: #function, line: #line)
                         }
-                        failureHandler(context:context)
+                        failureHandler(context)
                     }
                 }
             }
             //Let's react according to the context.
             Bartleby.sharedInstance.perform(reactions, forContext: context)
-
         }
     }
 
@@ -222,8 +220,7 @@ open class HTTPManager: NSObject {
     static open func verifyCredentials(_ registryUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/verify/credentials")
         let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
-        let r: Request=request(urlRequest)
-        r.responseString { response in
+        request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
             let result=response.result
@@ -235,7 +232,8 @@ open class HTTPManager: NSObject {
                 caller: "verifyCredentials",
                 relatedURL:request?.url,
                 httpStatusCode: response?.statusCode ?? 0,
-                response: response )
+                response: response,
+                result:result)
 
             // React according to the situation
             var reactions = Array<Bartleby.Reaction> ()
@@ -253,7 +251,7 @@ open class HTTPManager: NSObject {
 
             if result.isFailure {
                 reactions.append(failureReaction)
-                failureHandler(context:context)
+                failureHandler(context)
             } else {
                 if let statusCode=response?.statusCode {
                     if 200...299 ~= statusCode {
@@ -263,7 +261,7 @@ open class HTTPManager: NSObject {
                         if let value=result.value {
                             bprint(value, file: #file, function: #function, line: #line)
                         }
-                        failureHandler(context:context)
+                        failureHandler(context)
                     }
                 }
             }

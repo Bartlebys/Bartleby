@@ -14,7 +14,7 @@ class SourceEditor: NSViewController,Editor {
 
     var UID:String=Bartleby.createUID()
 
-    override var representedObject: AnyObject?{
+    override var representedObject: Any?{
         didSet{
             self._selectedItem=representedObject as? Collectible
             if let collection = self._selectedItem as? CollectibleCollection{
@@ -72,11 +72,12 @@ class SourceEditor: NSViewController,Editor {
         if let data=newJsonString?.data(using: String.Encoding.utf8), let selectedItem=self._selectedItem{
             let previousData=selectedItem.serialize()
             do{
-                try selectedItem.updateData(data,provisionChanges: true)
+                let _=try selectedItem.updateData(data,provisionChanges: true)
             }catch{
                 do {
-                    try selectedItem.updateData(previousData,provisionChanges: true)
+                    let _=try selectedItem.updateData(previousData,provisionChanges: true)
                 }catch{
+                    //
                 }
             }
         }

@@ -79,7 +79,7 @@ public extension Completion {
 
 
     public static func successStateFromJHTTPResponse(_ context: JHTTPResponse) -> Completion {
-        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
+        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode ?? 0), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode ?? 0 ) ?? .undefined)
     }
 
 
@@ -101,11 +101,11 @@ public extension Completion {
     }
 
     public static func failureStateFromJHTTPResponse(_ context: JHTTPResponse) -> Completion {
-        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
+        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode ?? 0), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode ?? 0 ) ?? .undefined)
     }
 
 
-    public static func failureStateFromAlamofire<Value, Error:Error>(_ response: Response<Value, Error>) -> Completion {
+    public static func failureStateFromAlamofire<Value>(_ response: DataResponse<Value>) -> Completion {
         var status = StatusOfCompletion .undefined
         if let statusCode=response.response?.statusCode{
             status = StatusOfCompletion (rawValue:statusCode) ?? StatusOfCompletion .undefined
@@ -115,20 +115,8 @@ public extension Completion {
         }else{
             return Completion(success: false, message: "", statusCode: status )
         }
-
     }
 
 
 
-
-    /**
-     Returns self embedded in a progression Notification
-
-     - returns: a Progression notification
-     */
-    public var completionNotification: Notification {
-        get {
-            return Notification(name:self, object:nil)
-        }
-    }
 }

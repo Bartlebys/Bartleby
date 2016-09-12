@@ -142,14 +142,14 @@ public struct PString {
     public static func lcfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceSubrange(first, with:tstring.substringWithRange(first).lowercased())
+        tstring.replaceSubrange(first, with:tstring.substring(with: first).lowercased())
         return tstring
     }
 
     public static func ucfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceSubrange(first, with:tstring.substringWithRange(first).uppercased())
+        tstring.replaceSubrange(first, with:tstring.substring(with:first).uppercased())
         return tstring
     }
 
@@ -195,7 +195,6 @@ extension String {
         return (self.range(of: string) != nil)
     }
 
-
     func contains(_ string: String,compareOptions:NSString.CompareOptions) -> Bool {
         return (self.range(of: string, options: compareOptions, range: self.fullCharactersRange(), locale: Locale.current) != nil )
     }
@@ -223,15 +222,15 @@ extension String {
     }
 
     func fullCharactersRange() -> Range<Index> {
-        return Range<String.Index>(self.startIndex ... self.endIndex)
+        return Range(uncheckedBounds: (lower: self.startIndex, upper: self.endIndex))
     }
 
     func firstCharacterRange()->Range<Index> {
-        return Range<String.Index>(self.startIndex ... self.startIndex)
+        return Range(uncheckedBounds: (lower: self.startIndex, upper: self.startIndex))
     }
 
     func lastCharacterRange()->Range<Index> {
-        return Range<String.Index>(self.endIndex ... self.endIndex)
+        return Range(uncheckedBounds: (lower: self.endIndex, upper: self.endIndex))
     }
 
 }

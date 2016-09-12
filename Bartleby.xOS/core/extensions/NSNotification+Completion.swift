@@ -14,7 +14,7 @@ public let BARTLEBYS_COMPLETION_NOTIFICATION_NAME="BARTLEBYS_COMPLETION_NOTIFICA
 extension Notification {
 
     public init(completionState: Completion, object: AnyObject?) {
-        (self as NSNotification).init(name: BARTLEBYS_COMPLETION_NOTIFICATION_NAME, object: object, userInfo:completionState.dictionaryRepresentation())
+       self.init(name: Notification.Name(rawValue: BARTLEBYS_COMPLETION_NOTIFICATION_NAME), object: object, userInfo:completionState.dictionaryRepresentation())
     }
 
     public func getCompletionState() -> Completion? {

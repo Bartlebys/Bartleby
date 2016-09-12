@@ -28,7 +28,7 @@ public protocol Serializer {
      */
     static func deserialize(_ data: Data) throws -> Serializable
 
-    static func deserializeFromDictionary(_ dictionary: [String:AnyObject])throws ->Serializable
+    static func deserializeFromDictionary(_ dictionary: [String:Any])throws ->Serializable
 
     /**
      Serialize an instance

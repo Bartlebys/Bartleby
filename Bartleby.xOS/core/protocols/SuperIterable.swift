@@ -17,5 +17,5 @@ public protocol SuperIterable {
 
      - returns: return value description
      */
-    func superIterate(_ on:(_ element:Collectible)->())
+    func superIterate(_ on:@escaping(_ element:Collectible)->())
 }

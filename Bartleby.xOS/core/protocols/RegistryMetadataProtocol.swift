@@ -34,7 +34,7 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
     var rootObjectUID: String { get }
 
     // The state dictionary
-    var stateDictionary: [String:AnyObject] { get set }
+    var stateDictionary: [String:Any] { get set }
 
     // Store the metadatum of each collection.
     var collectionsMetadata: [CollectionMetadatumType] { get }

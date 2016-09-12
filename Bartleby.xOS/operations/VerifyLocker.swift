@@ -35,10 +35,10 @@ open class VerifyLocker: JObject {
      - parameter failure:   the failure closure
      */
     open static  func execute( _ lockerUID: String,
-                                inRegistryWithUID registryUID: String,
-                                code: String,
-                                accessGranted success:@escaping (_ locker: Locker)->(),
-                                accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
+                               inRegistryWithUID registryUID: String,
+                               code: String,
+                               accessGranted success:@escaping (_ locker: Locker)->(),
+                               accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             // Let's determine if we should verify locally or not.
@@ -54,11 +54,11 @@ open class VerifyLocker: JObject {
         }else{
             let context = JHTTPResponse( code: 1,
                                          caller: "VerifyLocker.execute",
-                                         relatedURL:URL(),
+                                         relatedURL:nil,
                                          httpStatusCode:417,
                                          response:nil,
                                          result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
-            failure(context:context)
+            failure(context)
 
         }
 
@@ -74,10 +74,10 @@ open class VerifyLocker: JObject {
      - parameter failure:   failure
      */
     fileprivate  func _proceedToLocalVerification(  _ lockerUID: String,
-                                                inRegistryWithUID registryUID: String,
-                                                           code: String,
-                                                           accessGranted success:@escaping (_ locker: Locker)->(),
-                                                                         accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
+                                                    inRegistryWithUID registryUID: String,
+                                                    code: String,
+                                                    accessGranted success:@escaping (_ locker: Locker)->(),
+                                                    accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         let context = JHTTPResponse( code: 900,
                                      caller: "VerifyLocker.proceedToLocalVerification",
@@ -90,19 +90,19 @@ open class VerifyLocker: JObject {
 
         lockerRef.fetchInstance(Locker.self) { (instance) in
             if let locker=instance {
-                locker.verificationMethod=Locker.VerificationMethod.Offline
+                locker.verificationMethod=Locker.VerificationMethod.offline
                 if locker.code==code {
                     self._verifyLockerBusinessLogic(locker, accessGranted: success, accessRefused: failure)
                 } else {
                     context.code = 1
                     context.result="bad code"
-                    failure(context:context)
+                    failure(context)
                 }
 
             } else {
                 context.code = 2
                 context.result="The locker do not exists locally"
-                failure(context:context)
+                failure(context)
             }
         }
     }
@@ -119,103 +119,114 @@ open class VerifyLocker: JObject {
      - parameter failure:   failure
      */
     fileprivate  func _proceedToDistantVerification( _ lockerUID: String,
-                                                 inRegistryWithUID registryUID: String,
-                                                            code: String,
-                                                            accessGranted success:@escaping (_ locker: Locker)->(),
-                                                                          accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
+                                                     inRegistryWithUID registryUID: String,
+                                                     code: String,
+                                                     accessGranted success:@escaping (_ locker: Locker)->(),
+                                                     accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             let pathURL=document.baseURL.appendingPathComponent("locker/verify")
             let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID as AnyObject, "code":code as AnyObject]
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
-            let r: Request=request(ParameterEncoding.json.encode(urlRequest, parameters: dictionary).0)
-            r.responseString { response in
+            do {
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                request(resource:r).validate().responseJSON(completionHandler: { (response) in
 
-                let request=response.request
-                let result=response.result
-                let response=response.response
 
-                // Bartleby consignation
+                    let request=response.request
+                    let result=response.result
+                    let response=response.response
 
-                let context = JHTTPResponse( code: 901,
-                    caller: "VerifyLocker.execute",
-                    relatedURL:request?.url,
-                    httpStatusCode: response?.statusCode ?? 0,
-                    response: response,
-                    result:result.value)
+                    // Bartleby consignation
 
-                // React according to the situation
-                var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+                    let context = JHTTPResponse( code: 901,
+                                                 caller: "VerifyLocker.execute",
+                                                 relatedURL:request?.url,
+                                                 httpStatusCode: response?.statusCode ?? 0,
+                                                 response: response,
+                                                 result:result.value)
 
-                if result.isFailure {
-                    let m = NSLocalizedString("locker verification",
-                        comment: "locker verification failure description")
-                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                        context: context,
-                        title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
-                            comment: "Unsuccessfull attempt"),
-                        body:"\(m) httpStatus code = \(response?.statusCode ?? 0 ) | \(result.value)" ,
-                        transmit: { (selectedIndex) -> () in
-                    })
-                    reactions.append(failureReaction)
-                    failure(context:context)
-                } else {
-                    if let statusCode=response?.statusCode {
-                        if 200...299 ~= statusCode {
-                            if let instance = Mapper <Locker>().map(result.value) {
-                                instance.verificationMethod=Locker.VerificationMethod.Online
-                                self._verifyLockerBusinessLogic(instance, accessGranted: success, accessRefused: failure)
+                    // React according to the situation
+                    var reactions = Array<Bartleby.Reaction> ()
+                    reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+
+                    if result.isFailure {
+                        let m = NSLocalizedString("locker verification",
+                                                  comment: "locker verification failure description")
+                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                            context: context,
+                            title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
+                                                     comment: "Unsuccessfull attempt"),
+                            body:"\(m) httpStatus code = \(response?.statusCode ?? 0 ) | \(result.value)" ,
+                            transmit: { (selectedIndex) -> () in
+                        })
+                        reactions.append(failureReaction)
+                        failure(context)
+                    } else {
+                        if let statusCode=response?.statusCode {
+                            if 200...299 ~= statusCode {
+                                if let instance = Mapper <Locker>().map(result.value) {
+                                    instance.verificationMethod=Locker.VerificationMethod.online
+                                    self._verifyLockerBusinessLogic(instance, accessGranted: success, accessRefused: failure)
+                                } else {
+                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                        context: context,
+                                        title: NSLocalizedString("Deserialization issue",
+                                                                 comment: "Deserialization issue"),
+                                        body:"(result.value)",
+                                        transmit: { (selectedIndex) -> () in
+                                    })
+                                    reactions.append(failureReaction)
+                                    failure(context)
+                                }
                             } else {
+                                // Bartlby does not currenlty discriminate status codes 100 & 101
+                                // and treats any status code >= 300 the same way
+                                // because we consider that failures differentiations could be done by the caller.
+                                let m = NSLocalizedString("locker verification",
+                                                          comment: "locker verification failure description")
                                 let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
-                                    title: NSLocalizedString("Deserialization issue",
-                                        comment: "Deserialization issue"),
-                                    body:"(result.value)",
+                                    title: NSLocalizedString("Unsuccessfull attempt",
+                                                             comment: "Unsuccessfull attempt"),
+                                    body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
-                                failure(context:context)
+                                failure(context)
                             }
-                        } else {
-                            // Bartlby does not currenlty discriminate status codes 100 & 101
-                            // and treats any status code >= 300 the same way
-                            // because we consider that failures differentiations could be done by the caller.
-                            let m = NSLocalizedString("locker verification",
-                                comment: "locker verification failure description")
-                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                                context: context,
-                                title: NSLocalizedString("Unsuccessfull attempt",
-                                    comment: "Unsuccessfull attempt"),
-                                body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
-                                transmit: { (selectedIndex) -> () in
-                            })
-                            reactions.append(failureReaction)
-                            failure(context:context)
                         }
                     }
-                }
-                //Let's react according to the context.
-                Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    //Let's react according to the context.
+                    Bartleby.sharedInstance.perform(reactions, forContext: context)
 
+                })
+            }catch{
+                let context = JHTTPResponse( code:2 ,
+                                             caller: "VerifyLocker._proceedToDistantVerification",
+                                             relatedURL:nil,
+                                             httpStatusCode:500,
+                                             response:nil,
+                                             result:"{\"message\":\"\(error)}")
+                failure(context)
             }
 
         }else{
 
             let context = JHTTPResponse( code: 1,
                                          caller: "VerifyLocker._proceedToDistantVerification",
-                                         relatedURL:URL(),
+                                         relatedURL:nil,
                                          httpStatusCode:417,
                                          response:nil,
                                          result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
-            failure(context:context)
+            failure(context)
         }
     }
 
 
     fileprivate func _verifyLockerBusinessLogic( _ locker: Locker,
-                                             accessGranted success:(_ locker: Locker)->(),
-                                                           accessRefused failure:(_ context: JHTTPResponse)->()) {
+                                                 accessGranted success:(_ locker: Locker)->(),
+                                                 accessRefused failure:(_ context: JHTTPResponse)->()) {
 
 
         let context = JHTTPResponse( code: 902,
@@ -227,7 +238,7 @@ open class VerifyLocker: JObject {
 
 
 
-        if locker.verificationMethod==Locker.VerificationMethod.Offline {
+        if locker.verificationMethod==Locker.VerificationMethod.offline {
             // Let find the current user
             if let registryUID=locker.registryUID {
                 // 1. Verify the data space consistency

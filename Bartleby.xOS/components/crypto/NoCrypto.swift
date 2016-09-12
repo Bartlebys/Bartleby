@@ -21,16 +21,13 @@ open class NoCrypto: NSObject, CryptoDelegate {
     }
 
 
-
     open func decryptString(_ string: String)throws->String {
         return string
     }
 
-
     open func encryptData(_ data: Data)throws ->Data {
         return data
     }
-
 
     open func decryptData(_ data: Data)throws ->Data {
         return data

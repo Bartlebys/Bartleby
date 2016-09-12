@@ -56,7 +56,7 @@ extension BartlebyDocument {
                     self._loadDataFrom(trigger)
                 }
             }else{
-                bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
             }
         }
 
@@ -76,7 +76,7 @@ extension BartlebyDocument {
      */
     public func acknowledgeOwnedTriggerIndex(_ index:Int){
         if self.registryMetadata.triggersIndexes.contains(index) {
-            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
         }else{
             // We want ownedTriggersIndexes to be sorted
             self.registryMetadata.ownedTriggersIndexes.sort { (lIdx, rIdx) -> Bool in
@@ -99,13 +99,13 @@ extension BartlebyDocument {
         for index in indexes{
             if index>=0{
                 if registryMetadata.triggersIndexes.contains(index) {
-                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                 }else{
-                    bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                    bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                     self.registryMetadata.triggersIndexes.append(index)
                 }
             }else{
-                bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger))
+                bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
             }
         }
     }
@@ -138,7 +138,7 @@ extension BartlebyDocument {
             let action = trigger.action
             let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercased()
             let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
-            var dictionary:Dictionary<String, AnyObject>=[:]
+            var dictionary:Dictionary<String, Any>=[:]
             var pathURL = baseURL
             if !multiple{
                 let UID=uids.first!
@@ -148,9 +148,10 @@ extension BartlebyDocument {
                 dictionary["ids"]=uids as AnyObject?
             }
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
-            let r:Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
+            do {
+                let r=try URLEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                request(resource:r).validate().responseJSON(completionHandler: { (response) in
 
-            r.responseJSON { (response) in
 
                 /////////////////////////
                 // Result Handling
@@ -172,14 +173,12 @@ extension BartlebyDocument {
                             if !alreadyLoaded{
                                 if multiple{
                                     // upsert a collection
-                                    if let dictionaries=result.value as? [[String : AnyObject]]{
-
-                                            self._triggeredDataBuffer[trigger]=dictionaries
-
+                                    if let dictionaries=result.value as? [[String : Any]]{
+                                        self._triggeredDataBuffer[trigger]=dictionaries
                                     }
                                 }else{
                                     // Unique entity
-                                    if let jsonDictionary=result.value as? [String : AnyObject]{
+                                    if let jsonDictionary=result.value as? [String : Any]{
                                         self._triggeredDataBuffer[trigger]=[jsonDictionary]
                                     }
                                 }
@@ -192,8 +191,12 @@ extension BartlebyDocument {
                         }
                     }
                 }
+                })
+            }catch{
+
             }
         }
+
 
     }
 
@@ -255,7 +258,7 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    fileprivate func _integrate(_ triggeredData:(Trigger,[[String : AnyObject]])){
+    fileprivate func _integrate(_ triggeredData:(Trigger,[[String : Any]])){
         // Integrate
         if triggeredData.1.count==0 {
             // It is a deletion.
@@ -276,7 +279,7 @@ extension BartlebyDocument {
                     self.upsert(collectibleItems)
                 }
             }catch{
-                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
+                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
             }
         }
 

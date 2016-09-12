@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 
-(BsyncCredentials) open class BsyncCredentials: JObject {
+@objc(BsyncCredentials) open class BsyncCredentials: JObject {
 
     override open class func typeName() -> String {
         return "BsyncCredentials"
@@ -66,7 +66,7 @@ import Foundation
     }
 
 
-    override open class func supportsSecureCoding() -> Bool {
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 

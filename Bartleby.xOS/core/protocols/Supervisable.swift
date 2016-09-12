@@ -9,7 +9,7 @@
 import Foundation
 
 
-public typealias SupervisionClosure = (_ key:String,_ oldValue:AnyObject?,_ newValue:AnyObject?)->()
+public typealias SupervisionClosure = (_ key:String,_ oldValue:Any?,_ newValue:Any?)->()
 
 public protocol Supervisable {
 
@@ -24,7 +24,7 @@ public protocol Supervisable {
      - parameter oldValue: the oldValue
      - parameter newValue: the newValue
      */
-    func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?)
+    func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?)
 
 
     /**
@@ -33,7 +33,7 @@ public protocol Supervisable {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    func addChangesSuperviser(_ superviser:Identifiable, closure:SupervisionClosure)
+    func addChangesSuperviser(_ superviser:Identifiable, closure:@escaping SupervisionClosure)
 
     /**
      Remove the observer's closure

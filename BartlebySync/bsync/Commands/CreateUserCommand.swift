@@ -43,7 +43,7 @@ class CreateUserCommand: CommandBase {
         addOptions(api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
         
         if parse() {
-            if let base = api.value, pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
+            if let base = api.value, let pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
                 
                 if let url = NSURL(string: base) {
                     

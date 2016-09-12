@@ -48,7 +48,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
 
 
         let port = (self.url as NSURL).port?.stringValue ?? ""
-        let relativePath = self.url.relativePath ?? ""
+        let relativePath = self.url.relativePath 
         let host = self.url.host ?? ""
 
         self.uniqueIdentifier = "\(self.url.scheme).\(host).\(port).\(relativePath)"
@@ -167,7 +167,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
             return
         }
 
-        if(error == nil || error!.code != -999) {
+        if(error == nil || error!._code != -999) {
             let nanoseconds = Double(self.retryTime) / 1000.0 * Double(NSEC_PER_SEC)
             let delayTime = DispatchTime.now() + Double(Int64(nanoseconds)) / Double(NSEC_PER_SEC);
             DispatchQueue.main.asyncAfter(deadline: delayTime) {

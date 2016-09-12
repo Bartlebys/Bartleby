@@ -14,18 +14,18 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: String Primitive Wrapper.
-@objc(JString) open class JString : JObject{
+@objc(JString) public class JString : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "JString"
     }
 
 	//the embedded String
-	dynamic open var string:String? {	 
+	dynamic public var string:String? {	 
 	    didSet { 
 	       if string != oldValue {
-	            self.provisionChanges(forKey: "string",oldValue: oldValue as AnyObject?,newValue: string as AnyObject?) 
+	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 
 	       } 
 	    }
 	}
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.string <- ( map["string"] )
@@ -52,19 +52,17 @@ import ObjectMapper
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
 		self.string=String(describing: decoder.decodeObject(of: NSString.self, forKey:"string") as NSString?)
-
-        self.enableSuperVisionAndCommit()
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let string = self.string {
 			coder.encode(string,forKey:"string")
 		}
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -75,11 +73,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "jStrings"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return JString.collectionName
     }
 

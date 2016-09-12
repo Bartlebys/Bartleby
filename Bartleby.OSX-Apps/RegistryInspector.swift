@@ -91,7 +91,7 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
 
     @IBAction func openWebStack(_ sender:AnyObject)  {
         if let document=self.registry {
-            let url:URL=URL(string: document.baseURL.absoluteString!.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)")!
+            let url:URL=URL(string: document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(document.registryMetadata.currentUser!.password)")!
             NSWorkspace.shared().open(url)
         }
     }

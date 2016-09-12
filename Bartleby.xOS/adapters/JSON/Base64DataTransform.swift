@@ -13,13 +13,14 @@ import Foundation
 #endif
 
 open class Base64DataTransform: TransformType {
+
     public typealias Object = Data
     public typealias JSON = String
 
     public init() {
     }
 
-    open func transformFromJSON(_ value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: Any?) -> Data? {
         if let string=value as? String {
             return Data(base64Encoded: string, options: [.ignoreUnknownCharacters])
         }

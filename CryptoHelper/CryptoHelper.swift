@@ -136,7 +136,7 @@ import Foundation
         let dataLength = Int(data.count)
         let dataBytes  = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
         let outData: NSMutableData! = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
-        let cryptPointer = UnsafeMutablePointer<UInt8>(outData.mutableBytes)
+        let cryptPointer = UnsafeMutableRawPointer(outData.mutableBytes)
         let cryptLength  = size_t(outData.length)
         let keyLength              = size_t(kCCKeySizeAES128)
         let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES128)

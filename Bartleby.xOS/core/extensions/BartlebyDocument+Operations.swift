@@ -117,7 +117,7 @@ extension BartlebyDocument {
 
     fileprivate func _getNextBunchOfPendingOperations()->[Operation]{
         var nextBunch=[Operation]()
-        let filtered=self.operations.filter { $0.canBePushed() }
+        let filtered=self.operations.items.filter { $0.canBePushed() }
         let filteredCount=filtered.count
         let maxBunchSize=Bartleby.configuration.MAX_OPERATIONS_BUNCH_SIZE
         if filteredCount > 0 {
@@ -207,7 +207,7 @@ extension BartlebyDocument {
         let currentOperationsCounter=self.operations.count
         if nbOfunCompletedOperationsInBunch == 0{
 
-            self._updateProgressionState(completedOperation,currentOperationsCounter)
+            let _=self._updateProgressionState(completedOperation,currentOperationsCounter)
 
             // All the operation of that bunch have been completed.
             let bunchCompletionState=Completion().identifiedBy("Operations", identity:identity)

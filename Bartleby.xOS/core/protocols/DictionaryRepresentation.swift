@@ -14,7 +14,7 @@ public protocol DictionaryRepresentation {
      
      - returns: the dictionary representation
      */
-    func dictionaryRepresentation()->[String:AnyObject]
+    func dictionaryRepresentation()->[String:Any]
 
 
     /**
@@ -22,6 +22,6 @@ public protocol DictionaryRepresentation {
 
      - parameter dictionaryRepresentation: a dictionary
      */
-    func patchFrom(_ dictionaryRepresentation:[String:AnyObject])
+    func patchFrom(_ dictionaryRepresentation:[String:Any])
     
 }

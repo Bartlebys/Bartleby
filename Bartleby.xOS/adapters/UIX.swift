@@ -38,24 +38,24 @@
 #elseif os(iOS)
     import UIKit
 
-    public class BXView:UIView,Identifiable{
+    open class BXView:UIView,Identifiable{
         public let UID=Bartleby.createUID()
     }
 
-    public class BXViewController:UIViewController,Identifiable{
+    open class BXViewController:UIViewController,Identifiable{
         public let UID=Bartleby.createUID()
     }
 
-    public class BXTableView:UITableView,Identifiable{
+    open class BXTableView:UITableView,Identifiable{
         public let UID=Bartleby.createUID()
     }
 
     // BXDocument is the base type of Registry
     // Registry implements Identifiable
-    public class BXDocument:UIDocument{
+    open class BXDocument:UIDocument{
     }
 
-    public class BXImage:UIImage,Identifiable{
+    open class BXImage:UIImage,Identifiable{
         public let UID=Bartleby.createUID()
     }
 

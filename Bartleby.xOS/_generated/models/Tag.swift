@@ -14,33 +14,33 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a tag can be used to classify instances.
-@objc(Tag) open class Tag : JObject{
+@objc(Tag) public class Tag : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "Tag"
     }
 
-	dynamic open var creationDate:String? {	 
+	dynamic public var creationDate:String? {	 
 	    didSet { 
 	       if creationDate != oldValue {
-	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue as AnyObject?,newValue: creationDate as AnyObject?) 
+	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
 	       } 
 	    }
 	}
 
-	dynamic open var color:String? {	 
+	dynamic public var color:String? {	 
 	    didSet { 
 	       if color != oldValue {
-	            self.provisionChanges(forKey: "color",oldValue: oldValue as AnyObject?,newValue: color as AnyObject?) 
+	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
 	       } 
 	    }
 	}
 
-	dynamic open var icon:String? {	 
+	dynamic public var icon:String? {	 
 	    didSet { 
 	       if icon != oldValue {
-	            self.provisionChanges(forKey: "icon",oldValue: oldValue as AnyObject?,newValue: icon as AnyObject?) 
+	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
 	       } 
 	    }
 	}
@@ -53,7 +53,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.creationDate <- ( map["creationDate"] )
@@ -71,12 +71,11 @@ import ObjectMapper
 		self.creationDate=String(describing: decoder.decodeObject(of: NSString.self, forKey:"creationDate") as NSString?)
 		self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
 		self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
-
-        self.enableSuperVisionAndCommit()
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let creationDate = self.creationDate {
 			coder.encode(creationDate,forKey:"creationDate")
 		}
@@ -88,8 +87,7 @@ import ObjectMapper
 		}
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -100,11 +98,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "tags"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return Tag.collectionName
     }
 

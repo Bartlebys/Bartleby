@@ -15,7 +15,7 @@ import Foundation
 
 
 // Swift Adapter to Objective C Hash Map
-(BsyncHashMap) open class BsyncHashMap:JObject {
+@objc(BsyncHashMap) class BsyncHashMap:JObject {
 
     open var pathToHash:Dictionary<String,String>=Dictionary<String,String>()
 
@@ -54,7 +54,7 @@ import Foundation
     }
 
 
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 

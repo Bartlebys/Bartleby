@@ -117,15 +117,5 @@ public extension Progression {
          return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentPercentProgress: 0, message: "", data: nil)
     }
 
-    /**
-     Returns self embedded in a progression Notification
-
-     - returns: a Progression notification
-     */
-    public var progressionNotification: Notification {
-        get {
-            return Notification(name:self, object:nil)
-        }
-    }
 
 }

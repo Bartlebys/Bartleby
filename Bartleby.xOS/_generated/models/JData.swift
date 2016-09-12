@@ -14,18 +14,18 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Data Primitive Wrapper.
-@objc(JData) open class JData : JObject{
+@objc(JData) public class JData : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "JData"
     }
 
 	//the data
-	dynamic open var data:Data? {	 
+	dynamic public var data:Data? {	 
 	    didSet { 
 	       if data != oldValue {
-	            self.provisionChanges(forKey: "data",oldValue: oldValue as AnyObject?,newValue: data as AnyObject?) 
+	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.data <- ( map["data"], Base64DataTransform() )
@@ -51,20 +51,18 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-
-        self.enableSuperVisionAndCommit()
+		self.data=Data()//NOT IMPLEMETED - decodeObject DATA OPTIONNAL
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let data = self.data {
 			coder.encode(data,forKey:"data")
 		}
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -75,11 +73,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "jDatas"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return JData.collectionName
     }
 

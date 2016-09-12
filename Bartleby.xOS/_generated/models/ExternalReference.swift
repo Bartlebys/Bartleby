@@ -14,27 +14,27 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: an ExternalReference stores all the necessary data to find a unique resource.
-@objc(ExternalReference) open class ExternalReference : JObject{
+@objc(ExternalReference) public class ExternalReference : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
         return "ExternalReference"
     }
 
 	//The UID of the referred instance
-	dynamic open var iUID:String = "\(Default.NO_UID)"{	 
+	dynamic public var iUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if iUID != oldValue {
-	            self.provisionChanges(forKey: "iUID",oldValue: oldValue as AnyObject?,newValue: iUID as AnyObject?) 
+	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
 	       } 
 	    }
 	}
 
 	//The typeName of the referred instance
-	dynamic open var iTypeName:String = "\(Default.NO_UID)"{	 
+	dynamic public var iTypeName:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if iTypeName != oldValue {
-	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue as AnyObject?,newValue: iTypeName as AnyObject?) 
+	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 
 	       } 
 	    }
 	}
@@ -47,7 +47,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.iUID <- ( map["iUID"] )
@@ -61,20 +61,18 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.iUID=String(decoder.decodeObject(of: NSString.self, forKey: "iUID")! as NSString)
-		self.iTypeName=String(decoder.decodeObject(of: NSString.self, forKey: "iTypeName")! as NSString)
-
-        self.enableSuperVisionAndCommit()
+		self.iUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iUID")! as NSString)
+		self.iTypeName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iTypeName")! as NSString)
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.iUID,forKey:"iUID")
 		coder.encode(self.iTypeName,forKey:"iTypeName")
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -85,11 +83,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override open class var collectionName:String{
+    override public class var collectionName:String{
         return "externalReferences"
     }
 
-    override open var d_collectionName:String{
+    override public var d_collectionName:String{
         return ExternalReference.collectionName
     }
 

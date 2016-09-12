@@ -119,6 +119,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     fileprivate var _supervisers=[String:SupervisionClosure]()
 
+
     /**
      Tags the changed keys
      And Mark that the instance requires to be committed if the auto commit observer is active
@@ -130,7 +131,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter oldValue: the oldValue
      - parameter newValue: the newValue
      */
-    open func provisionChanges(forKey key:String,oldValue:AnyObject?,newValue:AnyObject?){
+    open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
         if self._autoCommitIsEnabled == true {
             // Set up the commit flag
@@ -161,7 +162,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                             }
                         }
                         if key == "item" {
-                            let stringValue:String! = newValue?.UID ?? ""
+                            let stringValue:String! = (newValue as AnyObject).UID ?? ""
                             self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(stringValue) has changed"))
                         }
 
@@ -175,33 +176,33 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                         self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }else{
                         // Natives types
-                        let o = oldValue ?? "nil"
-                        let n = newValue ?? "nil"
-                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o!)->\(n!)"))
+                        let o = oldValue
+                        let n = newValue
+                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o)->\(n)"))
                         // Relay the as a global change to the collection
                         self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
                 }
                 // Invoke the closures (changes Observers)
                 for (_,supervisionClosure) in self._supervisers{
-                    supervisionClosure(key: key,oldValue: oldValue,newValue: newValue)
+                    supervisionClosure(key,oldValue,newValue)
                 }
             }
         }
 
     }
 
-
     /**
-     Adds a closure superviser
-     Supervision Closure are called on the Main Queue.
+     Adds a closure observer
 
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    open func addChangesSuperviser(_ superviser:Identifiable, closure:@escaping SupervisionClosure) {
-        _supervisers[superviser.UID]=closure
+    public func addChangesSuperviser(_ superviser: Identifiable, closure: @escaping (String, Any?, Any?) -> ()) {
+        self._supervisers[superviser.UID]=closure
     }
+
+
 
     /**
      Remove the observer's closure
@@ -449,31 +450,29 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     open func copy(with zone: NSZone?) -> Any {
         let data: Data=JSerializer.serialize(self)
         if let copied = try? JSerializer.deserialize(data) {
-            return copied as! AnyObject
+            return copied as AnyObject
         }
-        bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) ", file:#file, function:#function, line:#line)
+        bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line)
         return self as AnyObject
     }
 
 
-}
 
+    // MARK: - DictionaryRepresentation
 
-// MARK: - DictionaryRepresentation
-
-extension JObject:DictionaryRepresentation {
-
-    public func dictionaryRepresentation()->[String:AnyObject] {
+    open func dictionaryRepresentation()->[String:Any] {
         self.defineUID()
         return Mapper().toJSON(self)
     }
 
-    public func patchFrom(_ dictionaryRepresentation:[String:AnyObject]){
+    open func patchFrom(_ dictionaryRepresentation:[String:Any]){
         let mapped=Map(mappingType: .fromJSON, JSONDictionary: dictionaryRepresentation)
         self.mapping(mapped)
         self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
     }
+
 }
+
 
 
 /**

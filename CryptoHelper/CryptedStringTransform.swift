@@ -14,14 +14,12 @@ import Foundation
 #endif
 
 open class CryptedStringTransform: TransformType {
-    public init() {
 
-    }
 
     public typealias Object = String
     public typealias JSON = String
 
-    open func transformFromJSON(_ value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: Any?) -> String? {
         if let s=value as? String {
             do {
                 return try Bartleby.cryptoDelegate.decryptString(s)

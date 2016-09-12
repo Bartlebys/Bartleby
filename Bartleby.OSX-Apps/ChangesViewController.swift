@@ -17,7 +17,7 @@ import Cocoa
 
     @IBOutlet weak var tableView: NSTableView!
     
-    override var representedObject: AnyObject?{
+    override var representedObject: Any?{
         willSet{
             if let _=self._selectedItem{
                 self._selectedItem?.removeChangesSuperviser(self)

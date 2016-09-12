@@ -62,7 +62,7 @@ extension ExternalReference {
     public func fetchInstance<T: Collectible>(_ of: T.Type, instanceCallBack:((_ instance: T?)->())) {
         if let fetched = try? Registry.registredObjectByUID(self.iUID) as T {
             // Return the fetched instance.
-            instanceCallBack(instance:fetched)
+            instanceCallBack(fetched)
         } else {
             // Return nil
             instanceCallBack(nil)

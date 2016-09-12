@@ -81,7 +81,7 @@ open class Registry: BXDocument {
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive the collectible collection is set to nil
     // The key Trigger and the value any Collectible entity serialized to a dictionary representation
-    internal var _triggeredDataBuffer:[Trigger:[[String : AnyObject]]]=[Trigger:[[String : AnyObject]]]()
+    internal var _triggeredDataBuffer:[Trigger:[[String : Any]]]=[Trigger:[[String : Any]]]()
 
 
     // This is the Registry UID
@@ -316,11 +316,11 @@ open class Registry: BXDocument {
     #else
 
     public init() {
-    super.init(fileURL: NSURL())
+    super.init(fileURL: NSURL() as URL)
     }
 
     public init(fileUrl url: NSURL) {
-    super.init(fileURL: url)
+    super.init(fileURL: url as URL)
     self.configureSchema()
     // Setup the default collaboration server
     self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
@@ -424,7 +424,7 @@ open class Registry: BXDocument {
         #if os(OSX)
             self.updateChangeCount(NSDocumentChangeType.changeDone)
         #else
-            self.updateChangeCount(UIDocumentChangeKind.Done)
+            self.updateChangeCount(UIDocumentChangeKind.done)
         #endif
     }
 

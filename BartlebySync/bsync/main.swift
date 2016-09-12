@@ -23,7 +23,5 @@ let facade=CommandsFacade()
 facade.actOnArguments()
 
 var holdOn=true
-let runLoop=NSRunLoop.currentRunLoop()
-while (holdOn && runLoop.runMode(NSDefaultRunLoopMode, beforeDate: NSDate.distantFuture()) ) {}
-
-
+let runLoop=RunLoop.current
+while (holdOn && runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: NSDate.distantFuture) ) {}

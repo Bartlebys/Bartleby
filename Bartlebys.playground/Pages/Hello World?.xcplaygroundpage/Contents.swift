@@ -1,5 +1,35 @@
+import Cocoa
+
+/*
 import Alamofire
 import ObjectMapper
+
+if let u=URL(string:  "https://demo.bartlebys.org/www/api/v1/reachable/"){
+    let r=URLRequest(url: u)
+
+    try JSONEncoding().encode(r,with:[String:Any]())
+
+    request(resource: r).responseJSON(completionHandler: { (s) in
+        print(s)
+    })
+    request(resource: r).validate().responseString(completionHandler: { (s) in
+        print(s)
+    })
+}*/
+
+
+
+
+//let sessionManager = SessionManager()
+//request(resource: r)
+
+
+/*
+request("https://demo.bartlebys.org/www/api/v1/reachable/").validate().responseJSON { response in
+    print(response)
+}*/
+
+/*
 import BartlebyKit
 
 
@@ -54,4 +84,4 @@ PString.ltrim(",A,B,C",characterSet: NSCharacterSet(charactersInString:","))
 let r = 0..<1
 r.count
 
-
+*/

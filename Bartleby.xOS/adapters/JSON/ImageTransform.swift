@@ -31,10 +31,11 @@ open class ImageTransform: TransformType {
 
     }
 
-    open func transformFromJSON(_ value: AnyObject?) -> Object? {
+    open func transformFromJSON(_ value: Any?) -> BXImage? {
         if let string=value as? String {
             if let data=Data(base64Encoded: string, options: [.ignoreUnknownCharacters]) {
-                return BXImage.init(data: data)
+                return nil
+                // return BXImage(data:data) // NOT_IMPLEMENTED
             }
         }
         return nil
@@ -52,7 +53,7 @@ open class ImageTransform: TransformType {
                 if let image=value {
                     let data = UIImagePNGRepresentation(image)
                     if let d=data {
-                        return d.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                        return d.base64EncodedString(options:.endLineWithCarriageReturn)
                     }
                 }
             #elseif os(watchOS)

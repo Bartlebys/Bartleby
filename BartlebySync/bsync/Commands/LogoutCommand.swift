@@ -64,9 +64,9 @@ class LogoutCommand: CommandBase {
                 Bartleby.configuration.API_BASE_URL = baseApiURL!
                 Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
-              let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
+              let document=self.virtualDocumentFor(spaceUID: spaceUID.value!,rootObjectUID: nil)
                 
-                let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
+                let applicationSupportURL = FileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
                 let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
                 let kvs = BsyncKeyValueStorage(url: kvsUrl)
                 do {

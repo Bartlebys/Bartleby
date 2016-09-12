@@ -12,18 +12,18 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadLockersByQueryParameters) open class ReadLockersByQueryParameters : JObject {
+@objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : JObject {
 	
 	// Universal type support
-	override open class func typeName() -> String {
+	override public class func typeName() -> String {
 		 return "ReadLockersByQueryParameters"
 	}
 	// 
-	open var result_fields:[String]?
+	public var result_fields:[String]?
 	// the sort (MONGO DB)
-	open var sort:[String:AnyObject]?
+	public var sort:[String:Any]?
 	// the query (MONGO DB)
-	open var query:[String:AnyObject]?
+	public var query:[String:Any]?
 
     required public init(){
         super.init()
@@ -36,7 +36,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override open func mapping(_ map: Map) {
+    override public func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.result_fields <- ( map["result_fields"] )
@@ -51,15 +51,14 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.result_fields=decoder.decodeObject(of: NSSet(array: [NSArray.classForCoder(),NSString.self]), forKey: "result_fields") as? [String]
-		self.sort=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "sort")as? [String:AnyObject]
-		self.query=decoder.decodeObject(of: NSSet(array: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()]), forKey: "query")as? [String:AnyObject]
-
-        self.enableSuperVisionAndCommit()
+		self.result_fields=decoder.decodeObject(of: [NSString.self], forKey: "result_fields") as? [String]
+		self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
+		self.query=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "query")as? [String:Any]
+        self.disableSupervisionAndCommit()
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with: coder)
+    override public func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let result_fields = self.result_fields {
 			coder.encode(result_fields,forKey:"result_fields")
 		}
@@ -71,8 +70,7 @@ import ObjectMapper
 		}
     }
 
-
-    override open class func supportsSecureCoding() -> Bool{
+    override public class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -80,60 +78,61 @@ import ObjectMapper
 
 
 
-@objc(ReadLockersByQuery) open class ReadLockersByQuery : JObject{
+@objc(ReadLockersByQuery) public class ReadLockersByQuery : JObject{
 
     // Universal type support
-    override open class func typeName() -> String {
+    override public class func typeName() -> String {
            return "ReadLockersByQuery"
     }
 
 
-    open static func execute(fromRegistryWithUID registryUID:String,
+    public static func execute(fromRegistryWithUID registryUID:String,
 						parameters:ReadLockersByQueryParameters,
-						sucessHandler success:@escaping (_ lockers:[Locker])->(),
-						failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
+						sucessHandler success:@escaping(_ lockers:[Locker])->(),
+						failureHandler failure:@escaping(_ context:JHTTPResponse)->()){
 	
 
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("lockersByQuery")
-            let dictionary:Dictionary<String, AnyObject>?=Mapper().toJSON(parameters)
+            let dictionary:Dictionary<String, Any>?=Mapper().toJSON(parameters)
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadLockersByQuery" ,forMethod:"GET", and: pathURL)
-            let r:Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
-            r.responseJSON{ response in
-        
-                let request=response.request
-                let result=response.result
-                let response=response.response
-        
-        
-                // Bartleby consignation
-        
-                let context = JHTTPResponse( code: 1469328942,
-                    caller: "ReadLockersByQuery.execute",
-                    relatedURL:request?.url,
-                    httpStatusCode: response?.statusCode ?? 0,
-                    response: response,
-                    result:result.value)
-        
-                // React according to the situation
-                var reactions = Array<Bartleby.Reaction> ()
-                reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
-        
-                if result.isFailure {
-                   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                        context: context,
-                        title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                        body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
-                        transmit:{ (selectedIndex) -> () in
-                    })
-                    reactions.append(failureReaction)
-                    failure(context:context)
-        
-                }else{
-                    if let statusCode=response?.statusCode {
-                        if 200...299 ~= statusCode {
-        					if let instance = Mapper <Locker>().mapArray(result.value){					    
-					    success(lockers: instance)
+            
+            do {
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                request(resource:r).validate().responseJSON(completionHandler: { (response) in
+                    
+                    let request=response.request
+                    let result=response.result
+                    let response=response.response
+            
+                    // Bartleby consignation
+            
+                    let context = JHTTPResponse( code: 1469328942,
+                        caller: "ReadLockersByQuery.execute",
+                        relatedURL:request?.url,
+                        httpStatusCode: response?.statusCode ?? 0,
+                        response: response,
+                        result:result.value)
+            
+                    // React according to the situation
+                    var reactions = Array<Bartleby.Reaction> ()
+                    reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
+            
+                    if result.isFailure {
+                       let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                            context: context,
+                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                            body:NSLocalizedString("Explicit Failure",comment: "Explicit Failure"),
+                            transmit:{ (selectedIndex) -> () in
+                        })
+                        reactions.append(failureReaction)
+                        failure(context)
+            
+                    }else{
+                        if let statusCode=response?.statusCode {
+                            if 200...299 ~= statusCode {
+            					if let instance = Mapper <Locker>().mapArray(result.value){					    
+					    success(instance)
 					  }else{
 					   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
 					        context: context,
@@ -143,36 +142,45 @@ import ObjectMapper
 					        transmit:{ (selectedIndex) -> () in
 					    })
 					   reactions.append(failureReaction)
-					   failure(context:context)
+					   failure(context)
 					}
 
-                    }else{
-                        // Bartlby does not currenlty discriminate status codes 100 & 101
-                        // and treats any status code >= 300 the same way
-                        // because we consider that failures differentiations could be done by the caller.
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                            context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                            body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
-                            transmit:{ (selectedIndex) -> () in
-                        })
-                       reactions.append(failureReaction)
-                       failure(context:context)
+                        }else{
+                            // Bartlby does not currenlty discriminate status codes 100 & 101
+                            // and treats any status code >= 300 the same way
+                            // because we consider that failures differentiations could be done by the caller.
+                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                                body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
+                                transmit:{ (selectedIndex) -> () in
+                            })
+                           reactions.append(failureReaction)
+                           failure(context)
+                        }
                     }
-                }
-             }
-        
-             //Let s react according to the context.
-             Bartleby.sharedInstance.perform(reactions, forContext: context)
+                 }
+            
+                 //Let s react according to the context.
+                 Bartleby.sharedInstance.perform(reactions, forContext: context)
+            })
+        }catch{
+                let context = JHTTPResponse( code:2 ,
+                caller: "<?php echo$baseClassName ?>.execute",
+                relatedURL:nil,
+                httpStatusCode:500,
+                response:nil,
+                result:"{\"message\":\"\(error)}")
+                failure(context)
         }
       }else{
          let context = JHTTPResponse( code: 1,
                 caller: "ReadLockersByQuery.execute",
-                relatedURL:URL(),
+                relatedURL:nil,
                 httpStatusCode: 417,
                 response: nil,
                 result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
-         failure(context:context)
+         failure(context)
        }
     }
 }

@@ -46,9 +46,8 @@ extension BartlebyDocument {
             DispatchQueue.main.async(execute: {
                 if result==NSFileHandlingPanelOKButton{
                     if let url = savePanel.url {
-                        if let filePath=url.path {
-                            self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
-                        }
+                        let filePath=url.path
+                        self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
                     }
                 }
             })
@@ -72,9 +71,9 @@ extension BartlebyDocument {
             DispatchQueue.main.async(execute: {
                 if result==NSFileHandlingPanelOKButton{
                     if let url = openPanel.url {
-                        if let filePath=url.path {
-                            self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
-                        }
+                        let filePath=url.path
+                        self.importMetadataFrom(filePath,crypted: crypted,handlers:handlers)
+                
                     }
                 }
             })
@@ -96,30 +95,32 @@ extension BartlebyDocument {
         self.currentUser.login(withPassword: password, sucessHandler: {
 
             let pathURL=self.baseURL.appendingPathComponent("/Export")
-            let dictionary:Dictionary<String, AnyObject>=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
+            let dictionary=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
 
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
-            let r: Request=request(ParameterEncoding.url.encode(urlRequest, parameters: dictionary).0)
-            r.responseJSON { response in
+
+            do {
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                request(resource:r).validate().responseJSON(completionHandler: { (response) in
 
                 let result=response.result
                 let httpResponse=response.response
 
                 if result.isFailure {
-                    Completion.failureStateFromAlamofire(response)
-
+                   let completionState = Completion.failureStateFromAlamofire(response)
+                    handlers.on(completionState)
                 } else {
 
                     if let statusCode=httpResponse?.statusCode {
                         if 200...299 ~= statusCode {
                             var issues=[String]()
-                            if let dictionary=result.value as? [String:AnyObject]{
-                                if let collections=dictionary["collections"] as? [String:AnyObject] {
+                            if let dictionary=result.value as? [String:Any]{
+                                if let collections=dictionary["collections"] as? [String:Any] {
                                     for (collectionName,collectionData) in collections{
                                         if let proxy=self.collectionByName(collectionName) as? CollectibleCollection,
-                                            let collectionDictionary=collectionData as? [AnyObject]{
+                                            let collectionDictionary=collectionData as? [Any]{
                                             for itemRep in collectionDictionary{
-                                                if let itemRepDictionary = itemRep as? [String:AnyObject]{
+                                                if let itemRepDictionary = itemRep as? [String:Any]{
                                                     do {
                                                         if let instance=try Bartleby.defaultSerializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
                                                             if let user:User=instance as? User{
@@ -131,8 +132,6 @@ extension BartlebyDocument {
                                                                 // We want to upsert any object
                                                                 proxy.upsert(instance,commit:false)
                                                             }
-
-
                                                         }
                                                     }catch{
                                                         issues.append("\(error)")
@@ -157,10 +156,12 @@ extension BartlebyDocument {
                         }
                     }
                 }
+            })
+            }catch{
+                handlers.on(Completion.failureStateFromError(error))
             }
-            
+
         }) { (context) in
-            
             handlers.on(Completion.failureStateFromJHTTPResponse(context))
         }
         

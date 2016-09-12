@@ -27,17 +27,17 @@ import Foundation
     open var caller: String=Default.NO_NAME
 
     // The related url
-    open var relatedURL: URL!
+    open var relatedURL: URL?
 
     // The http status code
-    open var httpStatusCode: Int!
+    open var httpStatusCode: Int?
 
     // The response
-    open var response: AnyObject?
+    open var response: Any?
 
-    open var result: AnyObject?
+    open var result: Any?
 
-    public init(code: UInt!, caller: String!, relatedURL: URL!, httpStatusCode: Int!, response: AnyObject?, result: AnyObject?="") {
+    public init(code: UInt!, caller: String!, relatedURL: URL?, httpStatusCode: Int, response: Any?, result: Any?) {
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
@@ -48,7 +48,7 @@ import Foundation
     }
 
     required public convenience  init() {
-        self.init(code: 0, caller: "", relatedURL: URL(), httpStatusCode: Int.max, response: nil, result:"")
+        self.init(code: 0, caller: "", relatedURL: nil, httpStatusCode: Int.max, response: nil, result:"")
     }
 
     // MARK: Mappable

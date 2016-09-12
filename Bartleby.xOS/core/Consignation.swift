@@ -45,13 +45,13 @@ public struct Context: Consignable {
 public protocol ConsignableHTTPContext: Consignable {
 
     // The related url
-    var relatedURL: URL! { get set }
+    var relatedURL: URL? { get set }
 
     // The http status code
-    var httpStatusCode: Int! { get set }
+    var httpStatusCode: Int? { get set }
 
     // The response
-    var response: AnyObject? { get set }
+    var response: Any? { get set }
 
 }
 
@@ -67,21 +67,21 @@ public struct HTTPContext: ConsignableHTTPContext {
     public var caller: String=Default.NO_NAME
 
     // Supplementary infos for developpers
-    public var infos: AnyObject?
+    public var infos: Any?
 
     // The related url
-    public var relatedURL: URL!
+    public var relatedURL: URL?
 
     // The http status code
-    public var httpStatusCode: Int!
+    public var httpStatusCode: Int?
 
     // The response
-    public var response: AnyObject?
+    public var response: Any?
 
     // The result
-    public var result: AnyObject?
+    public var result: Any?
 
-    init(code: UInt!, caller: String!, relatedURL: URL?, httpStatusCode: Int?, response: AnyObject?, result: AnyObject="") {
+    init(code: UInt!, caller: String!, relatedURL: URL?, httpStatusCode: Int?, response: Any?, result: Any?) {
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
@@ -106,7 +106,7 @@ protocol Consignation {
 
     - returns: nil
     */
-    func presentInteractiveMessage(_ title: String, body: String, onSelectedIndex:(_ selectedIndex: UInt)->())->()
+    func presentInteractiveMessage(_ title: String, body: String, onSelectedIndex:@escaping(_ selectedIndex: UInt)->())->()
 
     /**
     Presents a message that will be displayed for a limited time
@@ -144,7 +144,7 @@ protocol AdaptiveConsignation {
 
     - returns: nil
     */
-    func dispatchAdaptiveMessage(_ context: Consignable, title: String, body: String, onSelectedIndex:(_ selectedIndex: UInt)->())->()
+    func dispatchAdaptiveMessage(_ context: Consignable, title: String, body: String, onSelectedIndex:@escaping(_ selectedIndex: UInt)->())->()
 
 }
 
@@ -169,11 +169,9 @@ protocol ConcreteConsignee {
 protocol ConcreteTracker {
 
     // Tracks and possibibly records the results with title and body annotations
-    func track(_ result: AnyObject?, context: Consignable)
+    func track(_ result: Any?, context: Consignable)
 
 }
-
-
 
 
 // MARK: - Consignee base class
@@ -213,7 +211,7 @@ open class AbstractConsignee: NSObject {
         // TRACKING
 
         // Tracks and possibly records the result for future inspection
-        case track(result:AnyObject?, context:Consignable)
+        case track(result:Any?, context:Consignable)
 
     }
 

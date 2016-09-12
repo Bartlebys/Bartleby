@@ -18,7 +18,7 @@ import Foundation
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-(BsyncDMGCard) open class BsyncDMGCard: JObject {
+@objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
 
     override open class func typeName() -> String {
         return "BsyncDMGCard"
@@ -141,10 +141,10 @@ import Foundation
         self.enableSupervision()
     }
 
-    open override static func supportsSecureCoding() -> Bool {
+    override public class var supportsSecureCoding:Bool{
         return true
     }
-
+    
     /**
      Returns a password.
      To be valid the userUID, contextUID must be consistant
