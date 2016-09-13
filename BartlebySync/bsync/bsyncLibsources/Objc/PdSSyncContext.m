@@ -8,9 +8,7 @@
 
 #import "PdSSyncContext.h"
 
-@implementation PdSSyncContext{
-
-}
+@implementation PdSSyncContext
 
 @synthesize repositoryPath = _repositoryPath;
 @synthesize syncID = _syncID;
@@ -35,7 +33,7 @@
  *
  *  @return the context
  */
--(instancetype)initWithSourceNSURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype)initWithSourceUrl:(NSURL*_Nonnull)sourceUrl
                          andDestinationUrl:(NSURL*_Nonnull)destinationUrl
                               restrictedTo:(NSString*_Nullable)hashMapViewName{
     if(self){
@@ -60,9 +58,9 @@
  *
  *  @return the context
  */
--(instancetype)initWithSourceNSURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype)initWithSourceUrl:(NSURL*_Nonnull)sourceUrl
                andDestinationUrl:(NSURL*_Nonnull)destinationUrl{
-    return  [self initWithSourceNSURL:sourceUrl andDestinationUrl:destinationUrl restrictedTo:nil];
+    return  [self initWithSourceUrl:sourceUrl andDestinationUrl:destinationUrl restrictedTo:nil];
 }
 
 - (BOOL)isValid{

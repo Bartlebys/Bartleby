@@ -42,7 +42,7 @@ import Foundation
     }
 
     init(sourceURL: URL, andDestinationUrl: URL, restrictedTo hashMapViewName: String?, autoCreateTrees: Bool=false) {
-        super.init(sourceURL: sourceURL, andDestinationUrl: andDestinationUrl, restrictedTo: hashMapViewName)
+        super.init(sourceUrl: sourceURL, andDestinationUrl: andDestinationUrl, restrictedTo: hashMapViewName)
         self.autoCreateTrees=autoCreateTrees
     }
 

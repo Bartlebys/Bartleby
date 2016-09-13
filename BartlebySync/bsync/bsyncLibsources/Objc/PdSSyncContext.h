@@ -61,7 +61,7 @@
  *
  *  @return the context or nil if the configuration is not valid
  */
--(instancetype _Nonnull)initWithSourceURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype _Nonnull)initWithSourceUrl:(NSURL*_Nonnull)sourceUrl
                         andDestinationUrl:(NSURL*_Nonnull)destinationUrl
                              restrictedTo:(NSString*_Nullable)hashMapViewName;
 
@@ -74,7 +74,7 @@
  *
  *  @return the context or nil if the configuration is not valid
  */
--(instancetype _Nonnull)initWithSourceURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype _Nonnull)initWithSourceUrl:(NSURL*_Nonnull)sourceUrl
                         andDestinationUrl:(NSURL*_Nonnull)destinationUrl;
 
 
