@@ -31,13 +31,13 @@ import ObjectMapper
 
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("locker/\(lockerId)")
-            let dictionary:Dictionary<String, Any>=[:]
+            let dictionary:Dictionary<String, Any>=Dictionary<String, Any>()
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
             
             do {
-                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
-                request(r).validate().responseJSON(completionHandler: { (response) in
-                    
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
+                request(r).responseJSON(completionHandler: { (response) in
+                  
                     let request=response.request
                     let result=response.result
                     let response=response.response
