@@ -8,7 +8,6 @@
 
 import Foundation
 import XCTest
-import BartlebyKit
 
 /// Dummy synchronization class where the source and the destination are the same folder
 class SyncTestCase : TestCase {

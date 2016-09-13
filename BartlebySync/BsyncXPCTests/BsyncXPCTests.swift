@@ -17,21 +17,21 @@ class BsyncXPCTests: TestCase {
         let folder = BsyncXPCTests.assetPath + contextName
         
         // Checking no items (directory or file) exists
-        let directoryShouldNotExist1 = self.expectationWithDescription("Directory should not exist")
+        let directoryShouldNotExist1 = self.expectation(description: "Directory should not exist")
         xpc.directoryExistsAtPath(folder,
                                   handlers: Handlers { (existence) in
                                     directoryShouldNotExist1.fulfill()
                                     XCTAssertFalse(existence.success)
                                     XCTAssertEqual(404, existence.statusCode)
             })
-        let itemShouldNotExist = self.expectationWithDescription("Directory should not exist")
+        let itemShouldNotExist = self.expectation(description: "Directory should not exist")
         xpc.itemExistsAtPath(folder,
                              handlers: Handlers { (existence) in
                                 itemShouldNotExist.fulfill()
                                 XCTAssertFalse(existence.success)
                                 XCTAssertEqual(404, existence.statusCode)
             })
-        let fileShouldNotExist = self.expectationWithDescription("Directory should not exist")
+        let fileShouldNotExist = self.expectation(description: "Directory should not exist")
         xpc.fileExistsAtPath(folder,
                              handlers: Handlers { (existence) in
                                 fileShouldNotExist.fulfill()
@@ -40,27 +40,27 @@ class BsyncXPCTests: TestCase {
             })
         
         // Create directory
-        let directoryShouldBeCreated = self.expectationWithDescription("Directory should be created")
+        let directoryShouldBeCreated = self.expectation(description: "Directory should be created")
         xpc.createDirectoryAtPath(folder, handlers: Handlers { (creation) in
             directoryShouldBeCreated.fulfill()
             XCTAssert(creation.success, creation.message)
             
             // Check the new directory exists
-            let directoryShouldExist = self.expectationWithDescription("Directory should exist")
+            let directoryShouldExist = self.expectation(description: "Directory should exist")
             xpc.directoryExistsAtPath(folder,
                 handlers: Handlers { (existence) in
                     directoryShouldExist.fulfill()
                     XCTAssertTrue(existence.success)
                     XCTAssertEqual(200, existence.statusCode)
                 })
-            let itemShouldExist1 = self.expectationWithDescription("Item should exist")
+            let itemShouldExist1 = self.expectation(description: "Item should exist")
             xpc.itemExistsAtPath(folder,
                 handlers: Handlers { (existence) in
                     itemShouldExist1.fulfill()
                     XCTAssertTrue(existence.success)
                     XCTAssertEqual(200, existence.statusCode)
                 })
-            let itemIsNotAFile = self.expectationWithDescription("Item is not a file")
+            let itemIsNotAFile = self.expectation(description: "Item is not a file")
             xpc.fileExistsAtPath(folder,
                 handlers: Handlers { (existence) in
                     itemIsNotAFile.fulfill()
@@ -71,27 +71,27 @@ class BsyncXPCTests: TestCase {
             // Create file
             let aaa = Bartleby.randomStringWithLength(6)
             let filePath = folder + "test.txt"
-            let writeExpectation = self.expectationWithDescription("A string should be written")
+            let writeExpectation = self.expectation(description: "A string should be written")
             xpc.writeString(aaa, path: filePath, handlers: Handlers { (write) in
                 writeExpectation.fulfill()
                 XCTAssert(write.success, write.message)
                 
                 // Check the new file exists
-                let directoryShouldNotExist2 = self.expectationWithDescription("Directory should not exist")
+                let directoryShouldNotExist2 = self.expectation(description: "Directory should not exist")
                 xpc.directoryExistsAtPath(filePath,
                     handlers: Handlers { (existence) in
                         directoryShouldNotExist2.fulfill()
                         XCTAssertFalse(existence.success)
                         XCTAssertEqual(415, existence.statusCode)
                     })
-                let itemShouldExist2 = self.expectationWithDescription("Item should exist")
+                let itemShouldExist2 = self.expectation(description: "Item should exist")
                 xpc.itemExistsAtPath(filePath,
                     handlers: Handlers { (existence) in
                         itemShouldExist2.fulfill()
                         XCTAssertTrue(existence.success)
                         XCTAssertEqual(200, existence.statusCode)
                     })
-                let itemIsNotADirectory = self.expectationWithDescription("Item is not a directory")
+                let itemIsNotADirectory = self.expectation(description: "Item is not a directory")
                 xpc.fileExistsAtPath(filePath,
                     handlers: Handlers { (existence) in
                         itemIsNotADirectory.fulfill()
@@ -100,10 +100,10 @@ class BsyncXPCTests: TestCase {
                     })
                 
                 // Check the file content
-                let readExpectation = self.expectationWithDescription("A string shoudl be read")
+                let readExpectation = self.expectation(description: "A string shoudl be read")
                 xpc.readString(contentsOfFile: filePath, handlers: Handlers { (read) in
                     readExpectation.fulfill()
-                    if let bbb = read.getStringResult() where read.success {
+                    if let bbb = read.getStringResult() , read.success {
                         XCTAssertEqual(bbb, aaa)
                     } else {
                         XCTFail(read.message)
@@ -111,11 +111,11 @@ class BsyncXPCTests: TestCase {
                     })
                 
                 // Retrieve the folder content
-                let listExpectation = self.expectationWithDescription("A list should be returned")
+                let listExpectation = self.expectation(description: "A list should be returned")
                 xpc.contentsOfDirectoryAtPath(folder, handlers: Handlers { (content) in
                     listExpectation.fulfill()
                     XCTAssertEqual(200, content.statusCode)
-                    if let list = content.getStringArrayResult() where content.success {
+                    if let list = content.getStringArrayResult() , content.success {
                         XCTAssertEqual(list, ["test.txt"])
                     } else {
                         XCTFail(content.message)
@@ -127,23 +127,23 @@ class BsyncXPCTests: TestCase {
             
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: DMG manipulation
     func test_DMG_without_password() {
-        let expectation = expectationWithDescription("create attach detach")
+        let expected = expectation(description: "create attach detach")
         let xpc = BsyncXPC()
         let name = Bartleby.randomStringWithLength(6)
         let path = BsyncXPCTests.assetPath + name
         // Create disk
         xpc.createImageDisk(path, volumeName: name, size: "1g", password: nil, handlers: Handlers { (createDisk) in
-            if let imagePath = createDisk.getStringResult() where createDisk.success {
+            if let imagePath = createDisk.getStringResult() , createDisk.success {
                 xpc.attachVolume(from: imagePath, withPassword: nil, handlers: Handlers { (attach) in
                     XCTAssert(attach.success, attach.message)
                     xpc.detachVolume(name, handlers: Handlers { (detach) in
                         XCTAssert(detach.success, detach.message)
-                        expectation.fulfill()
+                        expected.fulfill()
                         })
                     })
             } else {
@@ -151,23 +151,23 @@ class BsyncXPCTests: TestCase {
             }
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test_DMG_with_password() {
-        let expectation = expectationWithDescription("create attach detach")
+        let expected = expectation(description: "create attach detach")
         let xpc = BsyncXPC()
         let name = Bartleby.randomStringWithLength(6)
         let path = BsyncXPCTests.assetPath + name
         let password = Bartleby.randomStringWithLength(6)
         // Create disk
         xpc.createImageDisk(path, volumeName: name, size: "1g", password: password, handlers: Handlers { (createDisk) in
-            if let imagePath = createDisk.getStringResult() where createDisk.success {
+            if let imagePath = createDisk.getStringResult() , createDisk.success {
                 xpc.attachVolume(from: imagePath, withPassword: password, handlers: Handlers { (attach) in
                     XCTAssert(attach.success, attach.message)
                     xpc.detachVolume(name, handlers: Handlers { (detach) in
                         XCTAssert(detach.success, detach.message)
-                        expectation.fulfill()
+                        expected.fulfill()
                         })
                     })
             } else {
@@ -175,6 +175,6 @@ class BsyncXPCTests: TestCase {
             }
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

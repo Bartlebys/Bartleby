@@ -9,41 +9,44 @@
 import XCTest
 
 
-class TestContext: Identifiable {
+class TestContext: IdentifiableCardContext {
     let UID: String = Bartleby.createUID()
-    
+    var name: String = Default.NO_NAME
 }
+
+
+
 class BsyncXPCHelperTests: TestCase {
     let fm = BFileManager()
     
     func test_touch() {
-        let expectation = expectationWithDescription("Should call back")
+        let expected = expectation(description: "Should call back")
         
         let helper = BsyncXPCHelper()
         
         helper.touch(Handlers {(touch) in
-            expectation.fulfill()
+            expected.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test_UnMountDMG_unexistingPath() {
-        let expectation = expectationWithDescription("Should failed")
+        let expected = expectation(description: "Should failed")
         
         let helper = BsyncXPCHelper()
-        let card = helper.cardFor(User(), context: TestContext(), folderPath: "/unexisting/path", isMaster: false)
+        let card = helper.cardFor(User(), context: TestContext() as! IdentifiableCardContext, folderPath: "/unexisting/path", isMaster: false)
         helper.unMountDMG(card, handlers: Handlers { (unmount) in
             XCTAssertFalse(unmount.success)
-            expectation.fulfill()
+            expected.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test_Create_then_UnMount() {
-        let expectation1 = expectationWithDescription("should do")
-        let expectation2 = expectationWithDescription("should unmount")
+        let expectation1 = expectation(description: "should do")
+        let expectation2 = expectation(description: "should unmount")
         
         
         let helper = BsyncXPCHelper()
@@ -59,11 +62,11 @@ class BsyncXPCHelperTests: TestCase {
                 expectation2.fulfill()
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_master_detach() {
-        let expectation = expectationWithDescription("detach")
+        let expected = expectation(description: "detach")
         let user = User()
         user.creatorUID = user.UID
         let context = TestContext()
@@ -83,15 +86,15 @@ class BsyncXPCHelperTests: TestCase {
                 // Check volume has been detach
                 self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                     XCTAssertFalse(existence.success)
-                    expectation.fulfill()
+                    expected.fulfill()
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_master_dont_detach() {
-        let expectation = expectationWithDescription("detach")
+        let expected = expectation(description: "detach")
         let user = User()
         user.creatorUID = user.UID
         let context = TestContext()
@@ -115,17 +118,17 @@ class BsyncXPCHelperTests: TestCase {
                     XCTAssertTrue(existence.success)
                     // Detach the volume for cleaning purpose
                     helper.unMountDMG(card, handlers: Handlers { (unmount) in
-                        expectation.fulfill()
+                        expected.fulfill()
                         XCTAssert(unmount.success, unmount.message)
                         })
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_slave_detach() {
-        let expectation = expectationWithDescription("detach")
+        let expected = expectation(description: "detach")
         let user = User()
         user.creatorUID = user.UID
         let context = TestContext()
@@ -145,15 +148,15 @@ class BsyncXPCHelperTests: TestCase {
                 // Check volume has been detach
                 self.fm.directoryExistsAtPath(card.volumePath, handlers: Handlers { (existence) in
                     XCTAssertFalse(existence.success)
-                    expectation.fulfill()
+                    expected.fulfill()
                     })
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_slave_dont_detach() {
-        let expectation = expectationWithDescription("detach")
+        let expected = expectation(description: "detach")
         let user = User()
         user.creatorUID = user.UID
         let context = TestContext()
@@ -175,12 +178,12 @@ class BsyncXPCHelperTests: TestCase {
                     XCTAssertTrue(existence.success)
                     // Detach the volume for cleaning purpose
                     helper.unMountDMG(card, handlers: Handlers { (detach) in
-                        expectation.fulfill()
+                        expected.fulfill()
                         XCTAssert(detach.success, detach.message)
                         })
                     })
             })
-        
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

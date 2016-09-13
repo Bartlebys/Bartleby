@@ -53,6 +53,10 @@
 		E53E28F41CA572F40079ED23 /* CommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7CF1C3D4EA6001CD53B /* CommandsFacade.swift */; };
 		E53E28F51CA572F40079ED23 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C0CEC71C36CC2900F3B7B8 /* main.swift */; };
 		E53E28F61CA572F40079ED23 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5091D9C1C4F8DB200E640A2 /* Configuration.swift */; };
+		E548A48A1D8807A5006FF410 /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
+		E548A48B1D8807A6006FF410 /* BsyncXPCProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E91CBF5FA2006AFA2E /* BsyncXPCProtocol.swift */; };
+		E548A48D1D88081D006FF410 /* BsyncXPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FEE5E81CBF5FA2006AFA2E /* BsyncXPC.swift */; };
+		E548A48E1D8808E4006FF410 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		E54920121D63539E00961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920101D63539E00961796 /* JString+Conveniences.swift */; };
 		E54920131D63539E00961796 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920111D63539E00961796 /* JData+Conveniences.swift */; };
 		E54920191D6353B100961796 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54920101D63539E00961796 /* JString+Conveniences.swift */; };
@@ -1683,6 +1687,7 @@
 				TargetAttributes = {
 					5B5D08FB1CDC8D91001FB281 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 					E5C0CEC31C36CC2900F3B7B8 = {
 						CreatedOnToolsVersion = 7.2;
@@ -1857,6 +1862,7 @@
 				E5CC26611D84698500F7C783 /* SessionDelegate.swift in Sources */,
 				E58807461D51E06A00FEA71F /* JString.swift in Sources */,
 				E58807321D51E06A00FEA71F /* CollectionMetadatum.swift in Sources */,
+				E548A48E1D8808E4006FF410 /* BsyncXPCHelper.swift in Sources */,
 				E5CC27A61D84698500F7C783 /* TransformType.swift in Sources */,
 				E58808EA1D51E06A00FEA71F /* StatusOfCompletion.swift in Sources */,
 				E58808561D51E06A00FEA71F /* ExternalReference+Resolution.swift in Sources */,
@@ -1877,6 +1883,7 @@
 				E588082E1D51E06A00FEA71F /* EventSource.swift in Sources */,
 				E5CC276B1D84698500F7C783 /* Map.swift in Sources */,
 				E58808C21D51E06A00FEA71F /* Invocable.swift in Sources */,
+				E548A48D1D88081D006FF410 /* BsyncXPC.swift in Sources */,
 				E588091E1D51E06A00FEA71F /* TriggersForIndexes.swift in Sources */,
 				E5CC278A1D84698500F7C783 /* DateFormatterTransform.swift in Sources */,
 				E5CC273C1D84698500F7C783 /* Option.swift in Sources */,
@@ -1893,6 +1900,7 @@
 				E5CC26591D84698500F7C783 /* Result.swift in Sources */,
 				E58808AE1D51E06A00FEA71F /* ForwardableState.swift in Sources */,
 				E58808221D51E06A00FEA71F /* RegistryMetadata+Protocol.swift in Sources */,
+				E548A48B1D8807A6006FF410 /* BsyncXPCProtocol.swift in Sources */,
 				E58809411D51E08200FEA71F /* CryptedStringTransform.swift in Sources */,
 				E58809421D51E08200FEA71F /* CryptoHelper.swift in Sources */,
 				E588090A1D51E06A00FEA71F /* User+Auth.swift in Sources */,
@@ -2211,6 +2219,7 @@
 				E5CC27A81D84698500F7C783 /* URLTransform.swift in Sources */,
 				E58809041D51E06A00FEA71F /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E58807D81D51E06A00FEA71F /* ReadUsersByIds.swift in Sources */,
+				E548A48A1D8807A5006FF410 /* BsyncXPCProtocol.swift in Sources */,
 				E58808581D51E06A00FEA71F /* NSNotification+Completion.swift in Sources */,
 				E58808041D51E06A00FEA71F /* CollectionMetadatum+Proxy.swift in Sources */,
 				E58808601D51E06A00FEA71F /* Progression+Conveniences.swift in Sources */,
@@ -2523,7 +2532,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -2541,7 +2551,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BsyncXPCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "bsync-Swift.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -2683,7 +2694,7 @@
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.bsyncTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";
@@ -2701,7 +2712,7 @@
 				INFOPLIST_FILE = bsyncTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				OTHER_CFLAGS = "-DUSE_EMBEDDED_OBJC";
-				OTHER_SWIFT_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "-DUSE_EMBEDDED_MODULES";
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.bsyncTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bsync-Bridging-Header.h";

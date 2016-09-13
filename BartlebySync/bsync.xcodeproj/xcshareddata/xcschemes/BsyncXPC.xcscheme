@@ -38,6 +38,11 @@
                BlueprintName = "BsyncXPCTests"
                ReferencedContainer = "container:bsync.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "TestCase">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">
