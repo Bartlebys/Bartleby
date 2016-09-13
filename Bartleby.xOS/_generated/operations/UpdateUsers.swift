@@ -221,7 +221,7 @@ import ObjectMapper
                 let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateUsers" ,forMethod:"PUT", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
-                    request(resource:r).validate().responseJSON(completionHandler: { (response) in
+                    request(r).validate().responseJSON(completionHandler: { (response) in
 
                     // Store the response
                     let request=response.request

@@ -150,7 +150,7 @@ extension BartlebyDocument {
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
-                request(resource:r).validate().responseJSON(completionHandler: { (response) in
+                request(r).validate().responseJSON(completionHandler: { (response) in
 
 
                 /////////////////////////

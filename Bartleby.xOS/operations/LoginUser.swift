@@ -34,7 +34,7 @@ open class LoginUser: JObject {
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary) 
-                request(resource:r).validate().responseJSON(completionHandler: { (response) in
+                request(r).validate().responseJSON(completionHandler: { (response) in
 
                     let request=response.request
                     let result=response.result
