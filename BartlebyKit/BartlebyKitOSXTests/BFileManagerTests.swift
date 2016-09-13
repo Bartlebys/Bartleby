@@ -20,14 +20,14 @@ class BFileManagerTests: TestCase {
     func test100_folder_should_not_exists() {
 
         // Checking no items (directory or file) exists
-        let directoryShouldNotExist = self.expectationWithDescription("Directory should not exist")
+        let directoryShouldNotExist = self.expectation(description: "Directory should not exist")
         self.fm.directoryExistsAtPath(BFileManagerTests.folder,
                                       handlers: Handlers { (existence) in
                                         directoryShouldNotExist.fulfill()
                                         XCTAssertFalse(existence.success)
                                         XCTAssertEqual(404, existence.statusCode)
         })
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 

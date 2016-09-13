@@ -31,15 +31,15 @@ class BsyncKeyValueStorage {
 
     func open() throws {
         let fm = FileManager.default
-        if let path = _url.path {
-            if fm.fileExists(atPath: path) {
-                if let data=try? Data(contentsOf: URL(fileURLWithPath: path)) {
-                    if let kvs = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: String] {
-                        _kvs = kvs
-                    }
+        let path = _url.path
+        if fm.fileExists(atPath: path) {
+            if let data=try? Data(contentsOf: URL(fileURLWithPath: path)) {
+                if let kvs = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: String] {
+                    _kvs = kvs
                 }
             }
         }
+
     }
 
     func save() throws {
@@ -47,14 +47,14 @@ class BsyncKeyValueStorage {
             let json = try JSONSerialization.data(withJSONObject: _kvs, options: JSONSerialization.WritingOptions.prettyPrinted)
 
             let fm = FileManager.default
-            if let folderUrl = _url.deletingLastPathComponent() {
-                if let folderPath = folderUrl.path {
-                    if !fm.fileExists(atPath: folderPath) {
-                        try fm.createDirectory(at: folderUrl, withIntermediateDirectories: false, attributes: [:])
-                    }
-                }
-                try json.write(to: _url, options: NSData.WritingOptions.atomicWrite)
+            let folderUrl = _url.deletingLastPathComponent()
+            let folderPath = folderUrl.path
+            if !fm.fileExists(atPath: folderPath) {
+                try fm.createDirectory(at: folderUrl, withIntermediateDirectories: false, attributes: [:])
             }
+
+            try json.write(to: _url, options: NSData.WritingOptions.atomicWrite)
+
 
         }
     }
@@ -143,5 +143,5 @@ extension BsyncKeyValueStorage{
         }
         return nil
     }
-
+    
 }

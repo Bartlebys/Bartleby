@@ -35,7 +35,7 @@ import ObjectMapper
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
             
             do {
-                let r=try JSONEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in
                     
                     let request=response.request

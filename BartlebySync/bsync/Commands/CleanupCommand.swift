@@ -20,13 +20,13 @@ class CleanupCommand: CommandBase {
                               helpMessage: "Prints a help message.")
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
                                    helpMessage: "Print verbose messages.\n\n")
-        addOptions(folderPath, help, verbosity)
+        addOptions(options: folderPath, help, verbosity)
         if parse() {
             self.isVerbose=verbosity.value
             do {
                 let messages=try BsyncAdmin.cleanupFolder(folderPath.value!)
                 for message in messages {
-                    self.printVerbose(message)
+                    self.printVerbose(string: message)
                 }
                 exit(EX_OK)
             } catch {

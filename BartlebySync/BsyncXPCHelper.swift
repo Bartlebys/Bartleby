@@ -106,7 +106,7 @@ open class BsyncXPCHelper: NSObject, BartlebyFileIO {
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    open func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+    open func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:@escaping CompletionHandler){
         if let xpc = bsyncConnection.remoteObjectProxy as? BsyncXPCProtocol {
             xpc.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
         }

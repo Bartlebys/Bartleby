@@ -31,7 +31,7 @@ import ObjectMapper
 
 
 
-public class BartlebyDocument : Registry {
+open class BartlebyDocument : Registry {
 
     #if os(OSX)
 
@@ -44,19 +44,17 @@ public class BartlebyDocument : Registry {
 
     private var _fileURL: URL
 
-
-    override init(fileUrl url: NSURL) {
-        self._fileURL = url as URL
-        super.init(fileUrl: url)
+    override public init(fileURL url: URL) {
+        self._fileURL = url
+        super.init(fileURL: url)
         BartlebyDocument.declareTypes()
     }
-
     #endif
 
 
     // MARK  Universal Type Support
 
-    override public class func declareTypes() {
+    override open class func declareTypes() {
         super.declareTypes()
     }
 
@@ -68,21 +66,21 @@ public class BartlebyDocument : Registry {
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	public dynamic var users=UsersCollectionController(){
+	open dynamic var users=UsersCollectionController(){
 		didSet{
 			users.registry=self
 		}
 	}
 	
-	public dynamic var lockers=LockersCollectionController(){
+	open dynamic var lockers=LockersCollectionController(){
 		didSet{
 			lockers.registry=self
 		}
 	}
 	
-	public dynamic var operations=OperationsCollectionController(){
+	open dynamic var pushOperations=PushOperationsCollectionController(){
 		didSet{
-			operations.registry=self
+			pushOperations.registry=self
 		}
 	}
 	
@@ -96,7 +94,7 @@ public class BartlebyDocument : Registry {
     // Those view Controller are observed here to insure a consistent persitency
 
 
-    public var usersArrayController: NSArrayController?{
+    open var usersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
             usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
@@ -115,7 +113,7 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public var lockersArrayController: NSArrayController?{
+    open var lockersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
             lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
@@ -134,20 +132,20 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public var operationsArrayController: NSArrayController?{
+    open var pushOperationsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
-            operationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+            pushOperationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
             // Setup the Array Controller in the CollectionController
-            self.operations.arrayController=operationsArrayController
+            self.pushOperations.arrayController=pushOperationsArrayController
             // Add observer
-            operationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationsIndexesKey] as? [Int]{
+            pushOperationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
-                self.operationsArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+                self.pushOperationsArrayController?.setSelectionIndexes(indexesSet as IndexSet)
              }
         }
     }
@@ -160,9 +158,9 @@ public class BartlebyDocument : Registry {
     // indexes persistency
 
     
-    static public let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
-    static public let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedUsers:[User]?{
+    static open let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
+    static open let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedUsers:[User]?{
         didSet{
             if let users = selectedUsers {
                  let indexes:[Int]=users.map({ (user) -> Int in
@@ -178,9 +176,9 @@ public class BartlebyDocument : Registry {
         
 
     
-    static public let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
-    static public let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedLockers:[Locker]?{
+    static open let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
+    static open let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedLockers:[Locker]?{
         didSet{
             if let lockers = selectedLockers {
                  let indexes:[Int]=lockers.map({ (locker) -> Int in
@@ -196,20 +194,20 @@ public class BartlebyDocument : Registry {
         
 
     
-    static public let kSelectedOperationsIndexesKey="selectedOperationsIndexesKey"
-    static public let OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic public var selectedOperations:[Operation]?{
+    static open let kSelectedPushOperationsIndexesKey="selectedPushOperationsIndexesKey"
+    static open let PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedPushOperations:[PushOperation]?{
         didSet{
-            if let operations = selectedOperations {
-                 let indexes:[Int]=operations.map({ (operation) -> Int in
-                    return self.operations.items.index(where:{ return $0.UID == operation.UID })!
+            if let pushOperations = selectedPushOperations {
+                 let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
+                    return self.pushOperations.items.index(where:{ return $0.UID == pushOperation.UID })!
                 })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedOperationsIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.OPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
             }
         }
     }
-    var firstSelectedOperation:Operation? { return self.selectedOperations?.first }
+    var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
         
         
 
@@ -226,7 +224,7 @@ public class BartlebyDocument : Registry {
     #2  Register the collections
 
     */
-    override public func configureSchema(){
+    override open func configureSchema(){
 
         // #1  Defines the Schema
         super.configureSchema()
@@ -249,13 +247,13 @@ public class BartlebyDocument : Registry {
         lockerDefinition.inMemory = false
         
 
-        let operationDefinition = CollectionMetadatum()
-        operationDefinition.proxy = self.operations
+        let pushOperationDefinition = CollectionMetadatum()
+        pushOperationDefinition.proxy = self.pushOperations
         // By default we group the observation via the rootObjectUID
-        operationDefinition.collectionName = Operation.collectionName
-        operationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        operationDefinition.allowDistantPersistency = false
-        operationDefinition.inMemory = false
+        pushOperationDefinition.collectionName = PushOperation.collectionName
+        pushOperationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        pushOperationDefinition.allowDistantPersistency = false
+        pushOperationDefinition.inMemory = false
         
 
 
@@ -264,7 +262,7 @@ public class BartlebyDocument : Registry {
 
 			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
-			try self.registryMetadata.configureSchema(operationDefinition)
+			try self.registryMetadata.configureSchema(pushOperationDefinition)
 
         }catch RegistryError.duplicatedCollectionName(let collectionName){
             bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
@@ -286,7 +284,7 @@ public class BartlebyDocument : Registry {
     // MARK: KVO
 
 
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
             // If the context does not match, this message
             // must be intended for our superclass.
@@ -325,14 +323,14 @@ public class BartlebyDocument : Registry {
             
 
             
-            if keyPath=="selectionIndexes" && self.operationsArrayController == object as? NSArrayController {
-                if let operations = self.operationsArrayController?.selectedObjects as? [Operation] {
-                     if let selectedOperation = self.selectedOperations{
-                        if selectedOperation == operations{
+            if keyPath=="selectionIndexes" && self.pushOperationsArrayController == object as? NSArrayController {
+                if let pushOperations = self.pushOperationsArrayController?.selectedObjects as? [PushOperation] {
+                     if let selectedPushOperation = self.selectedPushOperations{
+                        if selectedPushOperation == pushOperations{
                             return // No changes
                         }
                      }
-                    self.selectedOperations=operations
+                    self.selectedPushOperations=pushOperations
                 }
                 return
             }
@@ -344,7 +342,7 @@ public class BartlebyDocument : Registry {
 
     // MARK:  Delete currently selected items
     
-    public func deleteSelectedUsers() {
+    open func deleteSelectedUsers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedUsers{
             for item in selected{
@@ -354,7 +352,7 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public func deleteSelectedLockers() {
+    open func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLockers{
             for item in selected{
@@ -364,11 +362,11 @@ public class BartlebyDocument : Registry {
     }
         
 
-    public func deleteSelectedOperations() {
+    open func deleteSelectedPushOperations() {
         // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedOperations{
+        if let selected=self.selectedPushOperations{
             for item in selected{
-                 self.operations.removeObject(item, commit:true)
+                 self.pushOperations.removeObject(item, commit:true)
             }
         }
     }
@@ -394,7 +392,7 @@ public class BartlebyDocument : Registry {
     *       self.users.add(user, commit:true)
     *   }
     */
-    public func newUser() -> User {
+    open func newUser() -> User {
         let user=User()
         if let creator=self.registryMetadata.currentUser {
             user.creatorUID = creator.UID
@@ -412,12 +410,12 @@ public class BartlebyDocument : Registry {
 
 
     // The EventSource URL for Server Sent Events
-    public dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
+    open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
 
     // The online flag is driving the "connection" process
     // It connects to the SSE and starts the supervisionLoop
-    public var online:Bool=false{
+    open var online:Bool=false{
         willSet{
             // Transition on line
             if newValue==true && online==false{
@@ -438,7 +436,7 @@ public class BartlebyDocument : Registry {
         }
     }
 
-    public var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
+    open var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
 
     internal var _timer:Timer?
 
@@ -589,7 +587,7 @@ public class BartlebyDocument : Registry {
 
      - returns: a bunch information on the current Buffer.
      */
-    public func getTriggerBufferInformations()->String{
+    open func getTriggerBufferInformations()->String{
 
         var informations="#Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
 
@@ -641,7 +639,7 @@ public class BartlebyDocument : Registry {
     // MARK:  NSDocument
 
     // MARK: Serialization
-     override public func fileWrapper(ofType typeName: String) throws -> FileWrapper {
+     override open func fileWrapper(ofType typeName: String) throws -> FileWrapper {
 
         self.registryWillSave()
         let fileWrapper=FileWrapper(directoryWithFileWrappers:[:])
@@ -717,7 +715,7 @@ public class BartlebyDocument : Registry {
 
      - throws: misc exceptions
      */
-    override public func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
+    override open func read(from fileWrapper: FileWrapper, ofType typeName: String) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
 
             // ##############
@@ -793,22 +791,20 @@ public class BartlebyDocument : Registry {
     
     #else
     
-    
     // MARK: iOS UIDocument serialization / deserialization
     
     // TODO: @bpds(#IOS) UIDocument support
     
     // SAVE content
-    override public func contents(forType typeName: String) throws -> Any {
+    override open func contents(forType typeName: String) throws -> Any {
         return ""
     }
-    
+
     // READ content
-    public override func load(fromContents contents: Any, ofType typeName: String?) throws {
+    open override func load(fromContents contents: Any, ofType typeName: String?) throws {
 
     }
     
     #endif  
- }
-         
-        
+ 
+}

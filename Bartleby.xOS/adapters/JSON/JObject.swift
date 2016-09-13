@@ -439,7 +439,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    public class var supportsSecureCoding : Bool {
+    open class var supportsSecureCoding : Bool {
         return true
     }
 

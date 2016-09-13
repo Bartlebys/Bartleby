@@ -14,55 +14,55 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not supervisable.
-@objc(RegistryMetadata) public class RegistryMetadata : JObject{
+@objc(RegistryMetadata) open class RegistryMetadata : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "RegistryMetadata"
     }
 
 	//The data space UID can be shared between multiple registries.
-	dynamic public var spaceUID:String = "\(Default.NO_UID)"
+	dynamic open var spaceUID:String = "\(Default.NO_UID)"
 	//The user currently associated to the local instance of the registry
-	dynamic public var currentUser:User?
+	dynamic open var currentUser:User?
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"
 		case cookie = "cookie"
 	}
-	public var identificationMethod:IdentificationMethod = .key
+	open var identificationMethod:IdentificationMethod = .key
 	//The current kvid identification value (injected in HTTP headers)
-	dynamic public var identificationValue:String?
+	dynamic open var identificationValue:String?
 	//The rootObject UID
-	dynamic public var rootObjectUID:String = "\(Default.NO_UID)"
+	dynamic open var rootObjectUID:String = "\(Default.NO_UID)"
 	//The url of the collaboration server
-	dynamic public var collaborationServerURL:URL?
+	dynamic open var collaborationServerURL:URL?
 	//A collection of CollectionMetadatum
-	dynamic public var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 	//The State dictionary to insure registry persistency 
-	dynamic public var stateDictionary:[String:Any] = [String:AnyObject]()
+	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
 	//The collection of serialized Security-Scoped Bookmarks (you should store Data)
-	dynamic public var URLBookmarkData:[String:Any] = [String:AnyObject]()
+	dynamic open var URLBookmarkData:[String:Any] = [String:AnyObject]()
 	//The preferred filename for this registry/document
-	dynamic public var preferredFileName:String?
+	dynamic open var preferredFileName:String?
 	//A collection of trigger Indexes (used to detect data holes)
-	dynamic public var triggersIndexes:[Int] = [Int]()
+	dynamic open var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	dynamic public var ownedTriggersIndexes:[Int] = [Int]()
+	dynamic open var ownedTriggersIndexes:[Int] = [Int]()
 	//The index of the last trigger that has been integrated
-	public var lastIntegratedTriggerIndex:Int = -1
+	open var lastIntegratedTriggerIndex:Int = -1
 	//A collection Triggers that are temporarly stored before data integration
-	dynamic public var receivedTriggers:[Trigger] = [Trigger]()
+	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
 	//The serialized version of loaded trigger data that are pending integration
-	public var triggeredDataBuffer:Data?
+	open var triggeredDataBuffer:Data?
 	//Do we have operations in progress in the current bunch ?
-	dynamic public var bunchInProgress:Bool = false
+	dynamic open var bunchInProgress:Bool = false
 	//The highest number that we may have counted
-	public var totalNumberOfOperations:Int = 0
+	open var totalNumberOfOperations:Int = 0
 	//The consolidated progression state of all pending operations
-	dynamic public var pendingOperationsProgressionState:Progression?
+	dynamic open var pendingOperationsProgressionState:Progression?
 	//is the user performing Online
-	dynamic public var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
+	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
 	       if online != oldValue {
 	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
@@ -71,7 +71,7 @@ import ObjectMapper
 	}
 
 	//If set to true any object creation, update, or deletion will be pushed to the server immediately
-	dynamic public var pushOnChanges:Bool = true  {	 
+	dynamic open var pushOnChanges:Bool = true  {	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
@@ -80,7 +80,7 @@ import ObjectMapper
 	}
 
 	//Save the password or not?
-	dynamic public var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
+	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
 	    didSet { 
 	       if saveThePassword != oldValue {
 	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
@@ -96,7 +96,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.spaceUID <- ( map["spaceUID"] )
@@ -131,7 +131,7 @@ import ObjectMapper
 		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 		self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
 		self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
-		self.collaborationServerURL=URL(string:"")//NOT IMPLEMETED - decodeObject URL OPTIONNAL
+		self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 		self.collectionsMetadata=decoder.decodeObject(of: [CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
 		self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
 		self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
@@ -140,14 +140,14 @@ import ObjectMapper
 		self.ownedTriggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
 		self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
 		self.receivedTriggers=decoder.decodeObject(of: [Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
-		self.triggeredDataBuffer=Data()//NOT IMPLEMETED - decodeObject DATA OPTIONNAL
+		self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
 		self.online=decoder.decodeBool(forKey:"online") 
 		self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
 		self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		if let currentUser = self.currentUser {
@@ -179,7 +179,7 @@ import ObjectMapper
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -190,11 +190,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "registryMetadatas"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return RegistryMetadata.collectionName
     }
 

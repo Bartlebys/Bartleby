@@ -4,5 +4,5 @@ It embedds BartlebyKit
 
 # Targets 
 
-- bsync : the standalone commandline tool
+- bsync : the standalone CommandLine tool
 - BsyncXPC an XPC service for OSX.

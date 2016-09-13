@@ -11,12 +11,12 @@ import BartlebyKit
 
 class LockerTests: XCTestCase {
 
-    private static let _document = BartlebyDocument()
-    private static var _spaceUID = Default.NO_UID
+    fileprivate static let _document = BartlebyDocument()
+    fileprivate static var _spaceUID = Default.NO_UID
 
     static let rootObjectUID=Bartleby.createUID()
 
-    private static var _creatorUser: User? {
+    fileprivate static var _creatorUser: User? {
         didSet {
             if let user = _creatorUser {
                 user.creatorUID = user.UID
@@ -26,22 +26,22 @@ class LockerTests: XCTestCase {
             }
         }
     }
-    private static var _creatorUserID: String="UNDEFINED"
-    private static var _creatorUserPassword: String="UNDEFINED"
-    private static let _creatorEmail = "Creator@LockerTests"
+    fileprivate static var _creatorUserID: String="UNDEFINED"
+    fileprivate static var _creatorUserPassword: String="UNDEFINED"
+    fileprivate static let _creatorEmail = "Creator@LockerTests"
 
-    private static var _consumerUser: User?
-    private static var _consumerUserID: String="UNDEFINED"
-    private static var _consumerUserPassword: String="UNDEFINED"
-    private static let _consumerPhone = "Consumer@LockerTests"
+    fileprivate static var _consumerUser: User?
+    fileprivate static var _consumerUserID: String="UNDEFINED"
+    fileprivate static var _consumerUserPassword: String="UNDEFINED"
+    fileprivate static let _consumerPhone = "Consumer@LockerTests"
 
-    private static var _locker: Locker?
-    private static var _lockerID: String="UNDEFINED"
-    private static var _lockerCode: String="UNDEFINED"
+    fileprivate static var _locker: Locker?
+    fileprivate static var _lockerID: String="UNDEFINED"
+    fileprivate static var _lockerCode: String="UNDEFINED"
 
     override static func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         let document=LockerTests._document
         let _ = try? document.setRootObjectUID(LockerTests.rootObjectUID)
         Bartleby.sharedInstance.declare(document)
@@ -57,7 +57,7 @@ class LockerTests: XCTestCase {
     // MARK: 1 - Creation of users and a locker
 
     func test101_CreateUser_Creator() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
 
         if let creator=LockerTests._creatorUser {
             LockerTests._creatorUser = creator
@@ -72,14 +72,14 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test102_CreateUser_Consumer() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
         let consumer = LockerTests._document.newUser()
         consumer.creatorUID = LockerTests._creatorUserID
         consumer.spaceUID = LockerTests._spaceUID
@@ -97,11 +97,11 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test103_LoginUser_Creator() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
             user.login(withPassword: LockerTests._creatorUserPassword,
                        sucessHandler: { () -> () in
@@ -111,19 +111,19 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test104_CreateLocker() {
-        let expectation = expectationWithDescription("CreateLocker should respond")
+        let expectation = self.expectation(description: "CreateLocker should respond")
         let locker = Locker()
         locker.registryUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID
-        locker.verificationMethod = .Online
+        locker.verificationMethod = .online
         LockerTests._locker = locker
         LockerTests._lockerCode = locker.code
         LockerTests._lockerID = locker.UID
@@ -137,11 +137,11 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test105_ReadLockerById_ShouldFail_fromCreator() {
-        let expectation = expectationWithDescription("ReadLockerById should respond")
+        let expectation = self.expectation(description: "ReadLockerById should respond")
 
         ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
@@ -154,11 +154,11 @@ class LockerTests: XCTestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test105_ReadLockersByIds_ShouldFail_fromCreator() {
-        let expectation = expectationWithDescription("ReadLockersByIds should respond")
+        let expectation = self.expectation(description: "ReadLockersByIds should respond")
 
         let p = ReadLockersByIdsParameters()
         p.ids = [LockerTests._lockerID]
@@ -173,11 +173,11 @@ class LockerTests: XCTestCase {
                 XCTAssertEqual(context.httpStatusCode, 403)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test199_LogOut_Creator() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
@@ -186,13 +186,13 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Test with consumer
 
     func test201_LogIn_Consumer() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
 
         if let consumerUser = LockerTests._consumerUser {
 
@@ -207,14 +207,14 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test202_ReadLockerById() {
-        let expectation = expectationWithDescription("ReadLockerById should always fail")
+        let expectation = self.expectation(description: "ReadLockerById should always fail")
 
         ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
@@ -227,12 +227,12 @@ class LockerTests: XCTestCase {
 
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
     func test203_VerifyLocker_online() {
-        let expectation = expectationWithDescription("VerifyLocker should respond")
+        let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
                              inRegistryWithUID: LockerTests._document.UID,
@@ -244,11 +244,11 @@ class LockerTests: XCTestCase {
             XCTFail("\(context.result)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test299_LogOut_Consumer() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._consumerUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
@@ -257,7 +257,7 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
@@ -266,7 +266,7 @@ class LockerTests: XCTestCase {
 
 
     func test302_VerifyLocker_BadCode() {
-        let expectation = expectationWithDescription("VerifyLocker should respond")
+        let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
                                                 inRegistryWithUID: LockerTests._document.UID,
@@ -279,11 +279,11 @@ class LockerTests: XCTestCase {
             XCTAssertEqual(context.code, 1)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test303_VerifyLocker_BadLocker() {
-        let expectation = expectationWithDescription("VerifyLocker should respond")
+        let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute( "BADID",
                                                  inRegistryWithUID: LockerTests._document.UID,
@@ -295,13 +295,13 @@ class LockerTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 4 - Cleanup
 
     func test401_LoginUser_Creator() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
             user.login(withPassword: LockerTests._creatorUserPassword,
                        sucessHandler: { () -> () in
@@ -311,7 +311,7 @@ class LockerTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -319,7 +319,7 @@ class LockerTests: XCTestCase {
 
     func test402_DeleteLocker() {
 
-        let expectation = expectationWithDescription("DeleteLocker should respond")
+        let expectation = self.expectation(description: "DeleteLocker should respond")
 
         DeleteLocker.execute(LockerTests._lockerID, fromRegistryWithUID: LockerTests._document.UID, sucessHandler: { (context) in
             expectation.fulfill()
@@ -328,12 +328,12 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test403_DeleteUser_Consumer() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._consumerUserID,
                            fromRegistryWithUID:LockerTests._document.UID,
@@ -344,12 +344,12 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test404_DeleteUser_Creator() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._creatorUserID,
                            fromRegistryWithUID:LockerTests._document.UID,
@@ -360,11 +360,11 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test405_LogOut_Creator() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
@@ -373,6 +373,6 @@ class LockerTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

@@ -11,7 +11,7 @@ import Cocoa
 
 public struct CommandsFacade {
 
-    static let args = Process.arguments
+    static let args = Swift.CommandLine.arguments
 
     let executableName = NSString(string: args.first!).pathComponents.last!
     let firstArgumentAfterExecutablePath: String? = (args.count >= 2) ? args[1] : nil
@@ -88,7 +88,7 @@ public struct CommandsFacade {
                 "create-dmg", "create-disk-image",
                 "resize-dmg" , "resize-disk-image"
             ]
-            let bestCandidate=self.bestCandidate(firstArgumentAfterExecutablePath!, reference: reference)
+            let bestCandidate=self.bestCandidate(string: firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bsync \(firstArgumentAfterExecutablePath!)\" is unexpected!")
             print("Did you mean:\"bsync \(bestCandidate)\"?")
             exit(EX__BASE)
@@ -161,7 +161,7 @@ public struct CommandsFacade {
     }
 
     private func min(numbers: Int...) -> Int {
-        return numbers.reduce(numbers[0], combine: {$0 < $1 ? $0 : $1})
+        return numbers.reduce(numbers[0], {$0 < $1 ? $0 : $1})
     }
 
     private class Array2D {
@@ -171,7 +171,7 @@ public struct CommandsFacade {
         init(cols: Int, rows: Int) {
             self.cols = cols
             self.rows = rows
-            matrix = Array(count:cols*rows, repeatedValue:0)
+            matrix = Array(repeating:0, count:cols*rows)
         }
 
         subscript(col: Int, row: Int) -> Int {
@@ -192,7 +192,7 @@ public struct CommandsFacade {
         }
     }
 
-    private func levenshtein(aStr: String, _ bStr: String) -> Int {
+    private func levenshtein(_ aStr: String, _ bStr: String) -> Int {
         let a = Array(aStr.utf16)
         let b = Array(bStr.utf16)
 
@@ -210,7 +210,7 @@ public struct CommandsFacade {
                 if a[i-1] == b[j-1] {
                     dist[i, j] = dist[i-1, j-1]  // noop
                 } else {
-                    dist[i, j] = min(
+                    dist[i, j] = min(numbers:
                         dist[i-1, j] + 1,  // deletion
                         dist[i, j-1] + 1,  // insertion
                         dist[i-1, j-1] + 1  // substitution

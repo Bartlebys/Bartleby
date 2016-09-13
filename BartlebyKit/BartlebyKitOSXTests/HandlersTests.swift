@@ -35,11 +35,11 @@ class CompletionWithResultTests: TestCase {
         self.completionWitResult(handlers)
     }
 
-    func completionWitResult(handlers: Handlers) {
+    func completionWitResult(_ handlers: Handlers) {
         let user=User()
         user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
-        user.verificationMethod=User.VerificationMethod.ByEmail
+        user.verificationMethod=User.VerificationMethod.byEmail
 
         let completion=Completion.successState()
         completion.setResult(user)

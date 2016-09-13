@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self._lockerId <- ( map["_lockerId"] )
@@ -57,13 +57,13 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._lockerId,forKey:"_lockerId")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -87,9 +87,9 @@ import ObjectMapper
 
      - returns: return the operation
      */
-    private func _getOperation()->Operation{
+    private func _getOperation()->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
-            if let ic:OperationsCollectionController = try? document.getCollection(){
+            if let ic:PushOperationsCollectionController = try? document.getCollection(){
                 let operations=ic.items.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
                 })
@@ -97,7 +97,7 @@ import ObjectMapper
                     return operation
                 }}
         }
-        let operation=Operation()
+        let operation=PushOperation()
         operation.disableSupervision()
         operation.commandUID=self.UID
         operation.defineUID()
@@ -122,10 +122,10 @@ import ObjectMapper
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             // Provision the operation.
             do{
-                let ic:OperationsCollectionController = try document.getCollection()
+                let ic:PushOperationsCollectionController = try document.getCollection()
                 let operation=self._getOperation()
                 operation.counter += 1
-                operation.status=Operation.Status.pending
+                operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
                 operation.summary="DeleteLocker(\(self._lockerId))"
                 if let currentUser=document.registryMetadata.currentUser{
@@ -162,12 +162,12 @@ import ObjectMapper
         let operation=self._getOperation()
         if  operation.canBePushed(){
             // We try to execute
-            operation.status=Operation.Status.inProgress
+            operation.status=PushOperation.Status.inProgress
             DeleteLocker.execute(self._lockerId,
                 fromRegistryWithUID:self._registryUID,
                 sucessHandler: { (context: JHTTPResponse) -> () in
                     operation.counter=operation.counter+1
-                    operation.status=Operation.Status.completed
+                    operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
                     let completion=Completion.successStateFromJHTTPResponse(context)
@@ -177,7 +177,7 @@ import ObjectMapper
                 },
                 failureHandler: {(context: JHTTPResponse) -> () in
                     operation.counter=operation.counter+1
-                    operation.status=Operation.Status.completed
+                    operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
                     let completion=Completion.failureStateFromJHTTPResponse(context)
@@ -207,7 +207,7 @@ import ObjectMapper
                 parameters["lockerId"]=lockerId
                 let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)
                 do {
-                    let r=try JSONEncoding().encode(urlRequest,with:parameters) // ??? TO BE VALIDATED
+                    let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in
 
                     // Store the response

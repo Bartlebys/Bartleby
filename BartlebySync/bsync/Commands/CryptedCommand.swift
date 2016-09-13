@@ -16,7 +16,7 @@ public class CryptedCommand: CommandBase {
     private let _secretKeyOption, _sharedSaltOption: StringOption
 
     public required init(completionHandler: CompletionHandler?) {
-        let env = NSProcessInfo.processInfo().environment
+        let env = ProcessInfo.processInfo.environment
         
         self.secretKey = env["BARTLEBY_SECRET_KEY"] ?? ""
         
@@ -31,7 +31,7 @@ public class CryptedCommand: CommandBase {
 
         super.init(completionHandler: completionHandler)
         
-        addOptions(self._secretKeyOption,self._sharedSaltOption)
+        addOptions(options: self._secretKeyOption,self._sharedSaltOption)
     }
     
     override func parse() -> Bool {
@@ -45,12 +45,12 @@ public class CryptedCommand: CommandBase {
             }
             
             if !Bartleby.isValidKey(self.secretKey) {
-                self.on(Completion.failureState("Bad encryption key: \(self.secretKey)", statusCode: .Bad_Request))
+                self.on(Completion.failureState("Bad encryption key: \(self.secretKey)", statusCode: .bad_Request))
                 return false
             }
             
             if self.sharedSalt.isEmpty {
-                self.on(Completion.failureState("Bad shared salt: \(self.sharedSalt)", statusCode: .Bad_Request))
+                self.on(Completion.failureState("Bad shared salt: \(self.sharedSalt)", statusCode: .bad_Request))
                 return false
             }
 

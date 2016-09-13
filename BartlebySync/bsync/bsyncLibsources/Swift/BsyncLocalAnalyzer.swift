@@ -22,7 +22,7 @@ public enum BsyncLocalAnalyzerError: Error {
     case invalidURL(explanations:String)
 }
 
-public struct BsyncLocalAnalyzer {
+open class  BsyncLocalAnalyzer {
 
     /// Used if saveHashInAFile=true to determinate if the hash should be recomputed even if there is a hash file
     var recomputeHash=false
@@ -30,12 +30,13 @@ public struct BsyncLocalAnalyzer {
     /// if set to true we use one hash file for each file.
     var saveHashInAFile=false
 
-    fileprivate lazy var _localAnalyzer: PdSLocalAnalyzer=PdSLocalAnalyzer()
+    fileprivate var _localAnalyzer: PdSLocalAnalyzer=PdSLocalAnalyzer()
 
 
-    mutating public func createHashMapFromLocalPath(_ folderPath: String, handlers: Handlers) {
+    public func createHashMapFromLocalPath(_ folderPath: String, handlers: Handlers) {
 
         let fm = BFileManager()
+
         fm.directoryExistsAtPath(folderPath, handlers: Handlers { (exists) in
             if exists.success {
                 self._localAnalyzer.recomputeHash=self.recomputeHash
@@ -54,5 +55,6 @@ public struct BsyncLocalAnalyzer {
             }
         })
     }
+
 }
 

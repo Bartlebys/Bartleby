@@ -66,7 +66,7 @@ import Foundation
     }
 
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 

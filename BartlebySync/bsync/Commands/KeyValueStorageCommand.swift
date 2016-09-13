@@ -2,7 +2,7 @@
 //  DefaultCommand.swift
 //  Bartleby's generic command.
 //
-//  Used in Bsync and repackagable has a standalone commandline.
+//  Used in Bsync and repackagable has a standalone CommandLine.
 //  Allows to manipulate crypted key value storage.
 //
 //  Created by Benoit Pereira da Silva on 06/01/2016.
@@ -51,7 +51,7 @@ class KeyValueStorageCommand: CryptedCommand {
         let help = BoolOption(shortFlag: "h", longFlag: "help",
                               helpMessage: "\nBartleby's standard command\nReads and write persitent key-values for a given path.\nAll the values are Crypted Using AES128 with a different key for each folder\n")
 
-        addOptions( op,
+        addOptions( options: op,
                     keyArg,
                     value,
                     path,
@@ -72,10 +72,10 @@ class KeyValueStorageCommand: CryptedCommand {
 
             let folderPath=path.value!+"/"
             let filePath=folderPath + "kvs.json"
-            let fm=NSFileManager.defaultManager()
+            let fm=FileManager.default
             var isAFolder: ObjCBool = false
-            if fm.fileExistsAtPath(folderPath, isDirectory: &isAFolder) {
-                if !isAFolder {
+            if fm.fileExists(atPath: folderPath, isDirectory: &isAFolder) {
+                if !isAFolder.boolValue {
                     print("\(folderPath) is not a directory")
                     exit(EX__BASE)
                 }
@@ -84,7 +84,7 @@ class KeyValueStorageCommand: CryptedCommand {
                 exit(EX__BASE)
             }
 
-            let kvs = BsyncKeyValueStorage(url: NSURL(fileURLWithPath: filePath))
+            let kvs = BsyncKeyValueStorage(url: URL(fileURLWithPath: filePath))
 
             do {
                 try kvs.open()
@@ -134,7 +134,7 @@ class KeyValueStorageCommand: CryptedCommand {
                     } else {
                         print("This deletion is irreversible - Do you want to delete all the data Y/N?")
                         if let s=input() {
-                            if s.lowercaseString == "y" {
+                            if s.lowercased() == "y" {
                                 try kvs.removeAll()
                             }
                         } else {
@@ -155,9 +155,9 @@ class KeyValueStorageCommand: CryptedCommand {
     }
 
     func input() -> String? {
-        let keyboard = NSFileHandle.fileHandleWithStandardInput()
+        let keyboard = FileHandle.standardInput
         let inputData = keyboard.availableData
-        return NSString(data: inputData, encoding:Default.STRING_ENCODING) as? String
+        return NSString(data: inputData, encoding:Default.STRING_ENCODING.rawValue) as? String
     }
 
 }

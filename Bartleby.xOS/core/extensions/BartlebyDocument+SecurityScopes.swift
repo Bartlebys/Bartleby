@@ -41,7 +41,7 @@ extension BartlebyDocument {
      Returns the securized URL
      If the Securirty scoped Bookmark do not exists, it creates one.
      You must call this method after a user explicit intent (NSOpenPanel ...)
-     You cannot get security scoped bookmark for an arbritrary NSURL.
+     You cannot get security scoped bookmark for an arbritrary URL.
 
      NOTE : Don't forget that you must call startAccessingToSecurityScopedResourceAtURL(scopedURL) as soon as you use the URL, and stopAccessingToSecurityScopedResourceAtURL(scopedURL) as soon as you can release the resource.
 
@@ -203,7 +203,7 @@ extension BartlebyDocument {
     fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false, documentfileURL: URL?) throws -> Data {
         do {
             #if os(OSX)
-                let data = try (fileURL as NSURL).bookmarkData(options: NSURL.BookmarkCreationOptions.withSecurityScope,
+                let data = try (fileURL as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
                                                                includingResourceValuesForKeys:nil,
                                                                relativeTo: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
             #else
@@ -212,7 +212,7 @@ extension BartlebyDocument {
                                                       relativeTo: appScoped ? nil : ( documentfileURL ?? self.fileURL ))
 
             #endif
-            // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSURL_Class/index.html#//apple_ref/occ/instm/NSURL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
+            // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/URL_Class/index.html#//apple_ref/occ/instm/URL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
             // The URL that the bookmark data will be relative to.
             // If you are creating a security-scoped bookmark to support App Sandbox, use this parameter as follows:
             //To create an app-scoped bookmark, use a value of nil.

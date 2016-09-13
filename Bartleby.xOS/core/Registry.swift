@@ -315,17 +315,14 @@ open class Registry: BXDocument {
     }
     #else
 
-    public init() {
-    super.init(fileURL: NSURL() as URL)
-    }
 
-    public init(fileUrl url: NSURL) {
-    super.init(fileURL: url as URL)
-    self.configureSchema()
-    // Setup the default collaboration server
-    self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-    // First registration
-    Bartleby.sharedInstance.declare(self)
+    public override init(fileURL url: URL) {
+        super.init(fileURL: url as URL)
+        self.configureSchema()
+        // Setup the default collaboration server
+        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
+        // First registration
+        Bartleby.sharedInstance.declare(self)
     }
 
     #endif

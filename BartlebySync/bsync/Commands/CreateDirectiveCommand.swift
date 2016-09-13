@@ -52,7 +52,7 @@ class CreateDirectiveCommand: CommandBase {
                                    helpMessage: "Print verbose messages.")
         
         
-        addOptions( sourceURLString,
+        addOptions( options: sourceURLString,
                     destinationURLString,
                     userUID,
                     password,
@@ -72,7 +72,7 @@ class CreateDirectiveCommand: CommandBase {
                 print("Nil source URL")
                 exit(EX__BASE)
             }
-            guard let sourceURL=NSURL(string: source) else {
+            guard let sourceURL=URL(string: source) else {
                 print("Invalid source URL \(source)")
                 exit(EX__BASE)
             }
@@ -81,19 +81,19 @@ class CreateDirectiveCommand: CommandBase {
                 exit(EX__BASE)
             }
             
-            guard let destinationURL=NSURL(string: destination) else {
+            guard let destinationURL=URL(string: destination) else {
                 print("Invalid destination URL \(destination)")
                 exit(EX__BASE)
             }
             
-            let folderPath=NSString(string: filePath.value!).stringByDeletingLastPathComponent
-            let _=NSURL(fileURLWithPath:folderPath, isDirectory:true)
+            let folderPath=NSString(string: filePath.value!).deletingLastPathComponent
+            let _=URL(fileURLWithPath:folderPath, isDirectory:true)
             
-            guard  NSFileManager.defaultManager().fileExistsAtPath(folderPath) else {
+            guard  FileManager.default.fileExists(atPath: folderPath) else {
                 print("Directives file folder does not exist \(folderPath)")
                 exit(EX__BASE)
             }
-            
+
             let key = secretKey.value!
             let salt = sharedSalt.value!
             
@@ -124,8 +124,8 @@ class CreateDirectiveCommand: CommandBase {
             }
             
             // TODO: @md #bsync Update with Bartleby helper
-            let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-            let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+            let applicationSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            let kvsUrl = applicationSupportURL[0].appendingPathComponent("bsync/kvs.json")
             let kvs = BsyncKeyValueStorage(url: kvsUrl)
             
             do {
@@ -144,11 +144,11 @@ class CreateDirectiveCommand: CommandBase {
                         exit(EX__BASE)
                     }
                     
-                    if var JSONString: NSString = Mapper().toJSONString(directives) {
+                    if var JSONString: String = directives.toJSONString() {
                         let filePath=filePath.value!
                         do {
                             JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                            try JSONString.writeToFile(filePath, atomically: true, encoding: Default.STRING_ENCODING)
+                            try JSONString.write(toFile: filePath, atomically: true, encoding:  Default.STRING_ENCODING)
                         } catch {
                             print("\(error)")
                             exit(EX__BASE)

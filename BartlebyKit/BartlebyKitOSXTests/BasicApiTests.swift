@@ -13,12 +13,12 @@ import BartlebyKit
 class BasicApiTests: TestCase {
 
 
-    private static let _email="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
-    private static let _newEmail="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
-    private static let _password=Bartleby.randomStringWithLength(6)
-    private static let _newPassword=Bartleby.randomStringWithLength(6)
-    private static var _userID: String="UNDEFINED"
-    private static var _createdUser: User?
+    fileprivate static let _email="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
+    fileprivate static let _newEmail="\(Bartleby.randomStringWithLength(5))@BasicApiTests"
+    fileprivate static let _password=Bartleby.randomStringWithLength(6)
+    fileprivate static let _newPassword=Bartleby.randomStringWithLength(6)
+    fileprivate static var _userID: String="UNDEFINED"
+    fileprivate static var _createdUser: User?
 
      override class func setUp() {
         super.setUp()
@@ -27,11 +27,11 @@ class BasicApiTests: TestCase {
     // MARK: 1 - User Creation
 
     func test101_createUser() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
 
         let user=BasicApiTests.document.newUser()
         user.email=BasicApiTests._email
-        user.verificationMethod = .ByEmail
+        user.verificationMethod = .byEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=BasicApiTests._password
         user.spaceUID=TestCase.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
@@ -49,13 +49,13 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 2 - Login Logout
 
     func test201_LoginUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser {
             user.login(withPassword: BasicApiTests._password,
                        sucessHandler: { () -> () in
@@ -65,7 +65,7 @@ class BasicApiTests: TestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -73,7 +73,7 @@ class BasicApiTests: TestCase {
 
 
     func test202_LogoutUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(BasicApiTests._createdUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
@@ -82,14 +82,14 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 3 - Read User while not auth.
 
     func test301_ReadUserByID_ShouldFail_Because_of_Logout() {
 
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
 
         ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
@@ -101,14 +101,14 @@ class BasicApiTests: TestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
 
     // MARK: 4 - Reauth and read
 
     func test401_re_LoginUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser {
             user.login(withPassword: BasicApiTests._password,
                               sucessHandler: { () -> () in
@@ -118,7 +118,7 @@ class BasicApiTests: TestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -127,7 +127,7 @@ class BasicApiTests: TestCase {
 
     func test402_ReadUserByID_Should_Succeed() {
 
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
 
         ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
@@ -140,7 +140,7 @@ class BasicApiTests: TestCase {
                                 XCTAssertTrue(uidMatchs, "UID should match")
 
                                 let password=user.password
-                                let passwordIsMasked=(password.lengthOfBytesUsingEncoding(Default.STRING_ENCODING)==0)
+                                let passwordIsMasked=(password.lengthOfBytes(using: Default.STRING_ENCODING)==0)
                                 XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
         }) { (context) -> () in
@@ -148,12 +148,12 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test403_ReadUsersByIds_Should_Succeed() {
 
-        let expectation = expectationWithDescription("ReadUsersByIds should respond")
+        let expectation = self.expectation(description: "ReadUsersByIds should respond")
         let p=ReadUsersByIdsParameters()
         p.ids=[BasicApiTests._userID]
 
@@ -165,7 +165,7 @@ class BasicApiTests: TestCase {
                                     let uidMatchs=(user.UID==BasicApiTests._createdUser!.UID)
                                     XCTAssertTrue(uidMatchs, "UID  should match")
 
-                                    let passwordIsMasked=(user.password.lengthOfBytesUsingEncoding(Default.STRING_ENCODING)==0)
+                                    let passwordIsMasked=(user.password.lengthOfBytes(using: Default.STRING_ENCODING)==0)
                                     XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
                                 } else {
@@ -176,12 +176,12 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test404_ReadUserByID_WithUnexistingId_ShouldFail() {
 
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
 
         ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:"Unexisting ID",
@@ -193,14 +193,14 @@ class BasicApiTests: TestCase {
             XCTAssertEqual(context.httpStatusCode, 404)
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 5 - Update
 
     func test501_updateUserEmail() {
 
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
 
         let user=BasicApiTests._createdUser!
         XCTAssertNotEqual(BasicApiTests._email, BasicApiTests._newEmail, "Make sure new email is different")
@@ -215,11 +215,11 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test502_checkUserHasBeenUpdated() {
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
 
         ReadUserById.execute(fromRegistryWithUID: TestCase.document.UID,
                              userId:BasicApiTests._userID,
@@ -236,12 +236,12 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test503_updateUserPassword() {
 
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
 
         let user=BasicApiTests._createdUser!
         XCTAssertNotEqual(BasicApiTests._password, BasicApiTests._newPassword, "Make sure new password is different")
@@ -256,11 +256,11 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test504_LogoutUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
          let user=BasicApiTests._createdUser!
         LogoutUser.execute( user,
                             sucessHandler: { () -> () in
@@ -270,11 +270,11 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test505_re_LoginUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser { // (!) Maybe we need to update the email there
             user.login(withPassword: BasicApiTests._newPassword,
                               sucessHandler: { () -> () in
@@ -284,7 +284,7 @@ class BasicApiTests: TestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -296,7 +296,7 @@ class BasicApiTests: TestCase {
 
     func test601_DeleteUser() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(BasicApiTests._userID,
                            fromRegistryWithUID:TestCase.document.UID,
@@ -307,11 +307,11 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test602_LogoutUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         let user=BasicApiTests._createdUser!
         LogoutUser.execute(
             user,
@@ -322,6 +322,6 @@ class BasicApiTests: TestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

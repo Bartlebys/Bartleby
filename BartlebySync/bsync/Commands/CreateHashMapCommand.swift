@@ -23,12 +23,12 @@ class CreateHashMapCommand: CommandBase {
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
 
-        addOptions(folderPath, help, verbosity)
+        addOptions(options: folderPath, help, verbosity)
 
         if parse() {
             self.isVerbose=verbosity.value
             if let path=folderPath.value {
-                var analyzer=BsyncLocalAnalyzer()
+                let analyzer=BsyncLocalAnalyzer()
                 analyzer.createHashMapFromLocalPath(path, handlers: self)
             } else {
                 print("Invalid folder path \(folderPath.value)")

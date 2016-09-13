@@ -18,6 +18,8 @@ open class CryptedSerializableTransform<T: Serializable>: TransformType {
     public typealias Object = T
     public typealias JSON = String
 
+    public init(){}
+
     fileprivate let _CRYPTED_OBJECT_KEY = "o"
 
     open func transformFromJSON(_ value: Any?) -> T? {

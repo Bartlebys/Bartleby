@@ -46,8 +46,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
         self.receivedString = nil
         self.receivedDataBuffer = NSMutableData()
 
-
-        let port = (self.url as NSURL).port?.stringValue ?? ""
+        let port = self.url.port ?? 0
         let relativePath = self.url.relativePath 
         let host = self.url.host ?? ""
 
@@ -127,7 +126,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
         self.eventListeners[event] = handler
     }
 
-    //MARK: NSURLSessionDataDelegate
+    //MARK: URLSessionDataDelegate
 
     open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         if self.receivedMessageToClose(dataTask.response as? HTTPURLResponse) {

@@ -91,8 +91,8 @@ public enum BsyncAdminError: Error {
             guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING.rawValue) else {
                 throw BsyncAdminError.hashMapViewError(explanations: "Data encoding as failed")
             }
-            let crypted: NSString=try Bartleby.cryptoDelegate.encryptString(string as String)
-            try crypted.write(toFile: hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING.rawValue)
+            let crypted=try Bartleby.cryptoDelegate.encryptString(string as String)
+            try crypted.write(toFile: hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING)
         }
     }
 
@@ -255,51 +255,46 @@ public enum BsyncAdminError: Error {
 
             if directives.computeTheHashMap {
 
-                var analyzer = BsyncLocalAnalyzer()
+                let analyzer = BsyncLocalAnalyzer()
 
                 switch context.mode() {
                 case BsyncMode.SourceIsLocalDestinationIsDistant:
-                    if let sourcePath = sourceURL.path {
-                        analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers(completionHandler: { (result) in
-                            if result.success {
-                                self.synchronize(context, handlers: handlers)
-                            } else {
-                                handlers.on(result)
-                            }
-                            }, progressionHandler: handlers.notify))
-                    } else {
-                        handlers.on(Completion.failureState("Bad source URL: \(sourceURL)", statusCode: .bad_Request))
-                    }
+                    let sourcePath = sourceURL.path
+                    analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers(completionHandler: { (result) in
+                        if result.success {
+                            self.synchronize(context, handlers: handlers)
+                        } else {
+                            handlers.on(result)
+                        }
+                        }, progressionHandler: handlers.notify))
+
                 case BsyncMode.SourceIsDistantDestinationIsLocal:
-                    if let destinationPath = destinationURL.path {
-                        analyzer.createHashMapFromLocalPath(destinationPath, handlers: Handlers { (result) in
-                            if result.success {
-                                self.synchronize(context, handlers: handlers)
-                            } else {
-                                handlers.on(result)
-                            }
-                            })
-                    } else {
-                        handlers.on(Completion.failureState("Bad destination URL: \(destinationURL)", statusCode: .bad_Request))
-                    }
+                    let destinationPath = destinationURL.path
+                    analyzer.createHashMapFromLocalPath(destinationPath, handlers: Handlers { (result) in
+                        if result.success {
+                            self.synchronize(context, handlers: handlers)
+                        } else {
+                            handlers.on(result)
+                        }
+                    })
+
                 case BsyncMode.SourceIsLocalDestinationIsLocal:
-                    if let sourcePath = sourceURL.path, let destinationPath = destinationURL.path {
-                        analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers { (result) in
-                            if result.success {
-                                analyzer.createHashMapFromLocalPath(destinationPath, handlers: Handlers { (result) in
-                                    if result.success {
-                                        self.synchronize(context, handlers: handlers)
-                                    } else {
-                                        handlers.on(result)
-                                    }
-                                    })
-                            } else {
-                                handlers.on(result)
-                            }
+                    let sourcePath = sourceURL.path
+                    let destinationPath = destinationURL.path
+                    analyzer.createHashMapFromLocalPath(sourcePath, handlers: Handlers { (result) in
+                        if result.success {
+                            analyzer.createHashMapFromLocalPath(destinationPath, handlers: Handlers { (result) in
+                                if result.success {
+                                    self.synchronize(context, handlers: handlers)
+                                } else {
+                                    handlers.on(result)
+                                }
                             })
-                    } else {
-                        handlers.on(Completion.failureState("Bad source or destination URL: \(sourceURL) /  \(destinationURL)", statusCode: .bad_Request))
-                    }
+                        } else {
+                            handlers.on(result)
+                        }
+                    })
+
                 default:
                     handlers.on(Completion.failureState("Unsupported mode \(context.mode())", statusCode: .bad_Request))
                 }
@@ -339,6 +334,6 @@ public enum BsyncAdminError: Error {
         } else {
             self.synchronizeWithprogressBlock(context, handlers: handlers)
         }
-
+        
     }
 }

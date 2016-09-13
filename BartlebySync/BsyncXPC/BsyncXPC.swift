@@ -20,15 +20,15 @@ import Foundation
     
     // MARK: Minimal protocol
     
-    func touch(_ handler: ComposedHandler) {
+    func touch(_ handler:@escaping ComposedHandler) {
         handler(nil, Completion.successState())
     }
-    func createDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
+    func createDMG(_ card: BsyncDMGCard, handler: @escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         createDMG(card, handlers: handlers)
     }
     
-    func createDMG(_ card: BsyncDMGCard, handlers: Handlers) {
+    func createDMG(_ card: BsyncDMGCard, handlers:Handlers) {
         // The card must be valid
         let validation = card.evaluate()
         if validation.success {
@@ -77,7 +77,7 @@ import Foundation
         }
     }
     
-    func mountDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
+    func mountDMG(_ card: BsyncDMGCard, handler:@escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         mountDMG(card, handlers: handlers)
     }
@@ -107,7 +107,7 @@ import Foundation
         }
     }
     
-    func unMountDMG(_ card: BsyncDMGCard, handler: ComposedHandler) {
+    func unMountDMG(_ card: BsyncDMGCard, handler:@escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         unMountDMG(card, handlers: handlers)
     }
@@ -136,7 +136,7 @@ import Foundation
      - returns: nothing
      */
     func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?,
-                         handler: ComposedHandler) {
+                         handler:@escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         createImageDisk(imageFilePath, volumeName: volumeName, size: size, password: password, handlers: handlers)
     }
@@ -154,7 +154,7 @@ import Foundation
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler){
+    func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:@escaping CompletionHandler){
         self._dm.resizeDMG(size, imageFilePath: imageFilePath, password: password, completionHandler: completionHandler)
     }
 
@@ -168,7 +168,7 @@ import Foundation
      
      - returns: return value description
      */
-    func attachVolume(from path: String, withPassword: String?, handler: ComposedHandler) {
+    func attachVolume(from path: String, withPassword: String?, handler:@escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         attachVolume(from: path, withPassword: withPassword, handlers: handlers)
     }
@@ -186,7 +186,7 @@ import Foundation
      
      - returns: N/A
      */
-    func attachVolume(identifiedBy card: BsyncDMGCard, handler: ComposedHandler) {
+    func attachVolume(identifiedBy card: BsyncDMGCard, handler:@escaping ComposedHandler) {
         let password=card.getPasswordForDMG()
         attachVolume(from: card.imagePath, withPassword: password, handler: handler)
         
@@ -205,7 +205,7 @@ import Foundation
      - parameter handler:       the composed handler for progress and completion
      
      */
-    func detachVolume(_ named: String, handler: ComposedHandler) {
+    func detachVolume(_ named: String, handler:@escaping ComposedHandler) {
         let handlers = Handlers.handlersFrom(handler)
         detachVolume(named, handlers: handlers)
     }
@@ -230,7 +230,7 @@ import Foundation
      - returns: N/A
      */
     func createDirectives(_ directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
-                          handler: (ComposedHandler)) {
+                          handler: @escaping(ComposedHandler)) {
         
         let handlers = Handlers.handlersFrom(handler)
         // Check the validity
@@ -249,10 +249,10 @@ import Foundation
         Bartleby.sharedInstance.configureWith(Bartleby.configuration)
         
         // Save the file
-        if var JSONString: NSString = Mapper().toJSONString(directives) {
+        if var JSONString: String = directives.toJSONString() {
             do {
-                JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString as String)
-                try JSONString.write(toFile: filePath, atomically: true, encoding: Default.STRING_ENCODING.rawValue)
+                JSONString = try Bartleby.cryptoDelegate.encryptString(JSONString )
+                try JSONString.write(toFile: filePath, atomically: true, encoding: Default.STRING_ENCODING)
             } catch {
                 handlers.on(Completion.failureState("\(error)", statusCode: .undefined))
                 return
@@ -274,7 +274,7 @@ import Foundation
      
      - returns: N/A
      */
-    func runDirectives(_ filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler) {
+    func runDirectives(_ filePath: String, secretKey: String, sharedSalt: String, handler:@escaping ComposedHandler) {
         
         // Those handlers produce an adaptation
         // From the unique handler form
@@ -296,51 +296,51 @@ import Foundation
     }
     
     // MARK: File IO
-    func createDirectoryAtPath(_ path: String, handler: ComposedHandler) {
+    func createDirectoryAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.createDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func readData(contentsOfFile path: String, handler: ComposedHandler) {
+    func readData(contentsOfFile path: String, handler:@escaping ComposedHandler) {
         self.readData(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func writeData(_ data: Data, path: String, handler: ComposedHandler) {
+    func writeData(_ data: Data, path: String, handler:@escaping ComposedHandler) {
         self.writeData(data, path: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func readString(contentsOfFile path: String, handler: ComposedHandler) {
+    func readString(contentsOfFile path: String, handler:@escaping ComposedHandler) {
         self.readString(contentsOfFile: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func writeString(_ string: String, path: String, handler: ComposedHandler) {
+    func writeString(_ string: String, path: String, handler:@escaping ComposedHandler) {
         self.writeString(string, path: path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func itemExistsAtPath(_ path: String, handler: ComposedHandler) {
+    func itemExistsAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.itemExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func directoryExistsAtPath(_ path: String, handler: ComposedHandler) {
+    func directoryExistsAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.directoryExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func fileExistsAtPath(_ path: String, handler: ComposedHandler) {
+    func fileExistsAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.fileExistsAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func removeItemAtPath(_ path: String, handler: ComposedHandler) {
+    func removeItemAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.removeItemAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     
-    func copyItemAtPath(_ path: String, toPath: String, handler: ComposedHandler) {
+    func copyItemAtPath(_ path: String, toPath: String, handler:@escaping ComposedHandler) {
         self.copyItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
     
-    func moveItemAtPath(_ path: String, toPath: String, handler: ComposedHandler) {
+    func moveItemAtPath(_ path: String, toPath: String, handler:@escaping ComposedHandler) {
         self.moveItemAtPath(path, toPath: toPath, handlers: Handlers.handlersFrom(handler))
     }
     
-    func contentsOfDirectoryAtPath(_ path: String, handler: ComposedHandler) {
+    func contentsOfDirectoryAtPath(_ path: String, handler:@escaping ComposedHandler) {
         self.contentsOfDirectoryAtPath(path, handlers: Handlers.handlersFrom(handler))
     }
     

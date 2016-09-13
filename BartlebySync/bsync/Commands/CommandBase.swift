@@ -39,7 +39,7 @@ public class CommandBase: Handlers {
 
     func printVerbose(string: String) {
         if isVerbose {
-            self.printVersatile(string)
+            self.printVersatile(string: string)
         }
     }
 
@@ -54,7 +54,7 @@ public class CommandBase: Handlers {
 
 
     /**
-     Creates a virtual Document to be able to use Bartleby's stack in Commandlines sequential commands.
+     Creates a virtual Document to be able to use Bartleby's stack in CommandLines sequential commands.
 
      - parameter spaceUID: the spaceUID
 

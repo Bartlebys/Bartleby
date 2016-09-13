@@ -26,13 +26,13 @@ class LoginCommand: CommandBase {
                                       helpMessage: "The salt used for authentication.")
         
         
-        addOptions(api, userUID, password, secretKey, sharedSalt)
+        addOptions(options: api, userUID, password, secretKey, sharedSalt)
         
         if parse() {
             if let api = api.value, let userUID = userUID.value, let password = password.value,
                 let secretKey = secretKey.value, let sharedSalt = sharedSalt.value {
 
-                if let apiUrl = NSURL(string: api) {
+                if let apiUrl = URL(string: api) {
                     // We prefer to configure completly Bartleby
                     // When using it's api.
                     // For future extensions
@@ -43,14 +43,14 @@ class LoginCommand: CommandBase {
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
 
-                    let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-                    let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                    let applicationSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+                    let kvsUrl = applicationSupportURL[0].appendingPathComponent("bsync/kvs.json")
                     let kvs = BsyncKeyValueStorage(url: kvsUrl)
                     
                     do {
                         try kvs.open()
                         if let user = kvs[userUID] as? User {
-                            let document=self.virtualDocumentFor(user.spaceUID,rootObjectUID:user.registryUID)
+                            let document=self.virtualDocumentFor(spaceUID: user.spaceUID,rootObjectUID:user.registryUID)
                             LoginUser.execute(user, withPassword: password, sucessHandler: {
                                 kvs.setStringValue(document.registryMetadata.identificationValue, forKey: "kvid.\(user.UID)")
                                 print ("Successful login")

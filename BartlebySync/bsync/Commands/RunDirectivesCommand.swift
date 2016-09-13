@@ -18,7 +18,7 @@ class RunDirectivesCommand: CommandBase {
     }
     
     /**
-     The commandline mode execution
+     The CommandLine mode execution
      */
     func executeCMD() {
         
@@ -38,9 +38,9 @@ class RunDirectivesCommand: CommandBase {
         let help = BoolOption(shortFlag: "h", longFlag: "help",
                               helpMessage: "Prints a help message.")
         
-        addOptions(filePath, secretKey, sharedSalt, help)
+        addOptions(options: filePath, secretKey, sharedSalt, help)
         if parse() {
-            if let api = api.value, let url = NSURL(string: api) {
+            if let api = api.value, let url = URL(string: api) {
                 Bartleby.configuration.API_BASE_URL = url
             }
             
@@ -59,7 +59,7 @@ class RunDirectivesCommand: CommandBase {
                     self.on(Completion.failureStateFromError(error))
                 }
             } else {
-                self.on(Completion.failureState("Unwrapping error", statusCode: .Undefined))
+                self.on(Completion.failureState("Unwrapping error", statusCode: .undefined))
             }
         }
     }

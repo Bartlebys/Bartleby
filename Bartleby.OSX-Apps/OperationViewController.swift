@@ -10,7 +10,7 @@ import Cocoa
 
 class OperationViewController: NSViewController,Editor{
 
-    typealias EditorOf=Operation
+    typealias EditorOf=PushOperation
 
     var UID:String=Bartleby.createUID()
 
@@ -36,7 +36,7 @@ class OperationViewController: NSViewController,Editor{
 
     @IBAction func pushSelectedOperation(_ sender: AnyObject) {
         if let operation=self.selectedItem{
-            var ops=[Operation]()
+            var ops=[PushOperation]()
             ops.append(operation)
             let handlers=Handlers(completionHandler: { (completion) in
                 bprint("\(completion)", file:#file, function:#function, line:#line)

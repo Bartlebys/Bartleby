@@ -35,7 +35,7 @@
  *
  *  @return the context
  */
--(instancetype)initWithSourceURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype)initWithSourceNSURL:(NSURL*_Nonnull)sourceUrl
                          andDestinationUrl:(NSURL*_Nonnull)destinationUrl
                               restrictedTo:(NSString*_Nullable)hashMapViewName{
     if(self){
@@ -55,14 +55,14 @@
 /**
  *  Initializer used for retro-compatibility purposes
  *
- *  @param sourceUrl      the source URL
- *  @param destinationUrl the destination URL
+ *  @param sourceUrl      the source NSURL
+ *  @param destinationUrl the destination NSURL
  *
  *  @return the context
  */
--(instancetype)initWithSourceURL:(NSURL*_Nonnull)sourceUrl
+-(instancetype)initWithSourceNSURL:(NSURL*_Nonnull)sourceUrl
                andDestinationUrl:(NSURL*_Nonnull)destinationUrl{
-    return  [self initWithSourceURL:sourceUrl andDestinationUrl:destinationUrl restrictedTo:nil];
+    return  [self initWithSourceNSURL:sourceUrl andDestinationUrl:destinationUrl restrictedTo:nil];
 }
 
 - (BOOL)isValid{
@@ -129,10 +129,10 @@
     
     if(url){
         // LOCAL FILES
-        NSURL*parentFolderURL=[url URLByDeletingLastPathComponent];
-        NSString*path=[parentFolderURL path];
-        NSURL*baseURL=[NSURL fileURLWithPath:path];
-        return baseURL;
+        NSURL*parentFolderNSURL=[url URLByDeletingLastPathComponent];
+        NSString*path=[parentFolderNSURL path];
+        NSURL*baseNSURL=[NSURL fileURLWithPath:path];
+        return baseNSURL;
     }
     return nil;
 }

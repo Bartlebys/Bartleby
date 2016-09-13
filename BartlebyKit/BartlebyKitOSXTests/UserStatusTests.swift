@@ -12,15 +12,15 @@ import BartlebyKit
 
 class UserStatusTests: XCTestCase {
 
-    private static var _creatorUser: User?
-    private static var _creatorUserID: String="UNDEFINED"
-    private static let _creatorUserEmail="Creator@UserStatusTests"
-    private static let _creatorUserPassword=Bartleby.randomStringWithLength(6)
+    fileprivate static var _creatorUser: User?
+    fileprivate static var _creatorUserID: String="UNDEFINED"
+    fileprivate static let _creatorUserEmail="Creator@UserStatusTests"
+    fileprivate static let _creatorUserPassword=Bartleby.randomStringWithLength(6)
 
-    private static var _suspendedUser: User?
-    private static var _suspendedUserID: String="UNDEFINED"
-    private static let _suspendedUserEmail="SuspendedUser@UserStatusTests"
-    private static let _suspendedUserPassword=Bartleby.randomStringWithLength(6)
+    fileprivate static var _suspendedUser: User?
+    fileprivate static var _suspendedUserID: String="UNDEFINED"
+    fileprivate static let _suspendedUserEmail="SuspendedUser@UserStatusTests"
+    fileprivate static let _suspendedUserPassword=Bartleby.randomStringWithLength(6)
 
 
     // We need a real local document to login.
@@ -29,15 +29,15 @@ class UserStatusTests: XCTestCase {
 
     override class func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         UserStatusTests.document.configureSchema()
         Bartleby.sharedInstance.declare(UserStatusTests.document)
-        UserStatusTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Cookie
+        UserStatusTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.cookie
 
         // Purge cookie for the domain
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
             for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
         
@@ -48,7 +48,7 @@ class UserStatusTests: XCTestCase {
     // MARK: 1 - Users Creation
 
     func test101_createUser_Creator() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
 
         let user=UserStatusTests.document.newUser()
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
@@ -68,11 +68,11 @@ class UserStatusTests: XCTestCase {
             XCTFail("\(context.response)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test102_createUser_UserThatWillBeSuspendedLater() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
 
         let user = UserStatusTests.document.newUser()
         user.creatorUID = UserStatusTests._creatorUserID
@@ -92,13 +92,13 @@ class UserStatusTests: XCTestCase {
             XCTFail("\(context.response)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // User login/logout before suspension
 
     func test201_Login_UserNotSuspendedYet() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.login(withPassword: UserStatusTests._suspendedUserPassword,
                        sucessHandler: {
@@ -108,14 +108,14 @@ class UserStatusTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test299_Logout_UserNotSuspendedYet() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.logout(sucessHandler: {
                 expectation.fulfill()
@@ -125,7 +125,7 @@ class UserStatusTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -134,7 +134,7 @@ class UserStatusTests: XCTestCase {
 
     // MARK: 3 - Creator login and update user status and logout
     func test301_Login_Creator() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
                        sucessHandler: {
@@ -144,7 +144,7 @@ class UserStatusTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -152,10 +152,10 @@ class UserStatusTests: XCTestCase {
 
     func test302_Update_StatusToSuspended() {
 
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
 
         if let user=UserStatusTests._suspendedUser {
-            user.status = .Suspended
+            user.status = .suspended
 
             UpdateUser.execute(user,
                                inRegistryWithUID: UserStatusTests.document.UID,
@@ -166,14 +166,14 @@ class UserStatusTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test399_Logout_Creator() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(UserStatusTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
@@ -182,12 +182,12 @@ class UserStatusTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // MARK: 4 - Try to login suspended user
     func test401_Login_SuspendedUser_ShouldFail() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
                        sucessHandler: {
@@ -198,7 +198,7 @@ class UserStatusTests: XCTestCase {
                     XCTAssertEqual(context.httpStatusCode, 401)
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -206,7 +206,7 @@ class UserStatusTests: XCTestCase {
 
     // MARK: 5 - Cleanup
     func test501_Login_Creator() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.login(withPassword: UserStatusTests._creatorUserPassword,
                        sucessHandler: {
@@ -216,7 +216,7 @@ class UserStatusTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -224,7 +224,7 @@ class UserStatusTests: XCTestCase {
 
     func test502_Delete_SuspendedUser() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._suspendedUserID,
                            fromRegistryWithUID:UserStatusTests.document.UID,
@@ -235,12 +235,12 @@ class UserStatusTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test503_Delete_Creator() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._creatorUserID,
                            fromRegistryWithUID:UserStatusTests.document.UID,
@@ -251,11 +251,11 @@ class UserStatusTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test504_Logout_Creator() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         if let user = UserStatusTests._creatorUser {
             user.logout(sucessHandler: {
                 expectation.fulfill()
@@ -264,7 +264,7 @@ class UserStatusTests: XCTestCase {
                     XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }

@@ -71,10 +71,10 @@
  */
 -(void)synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nonnull message,NSData* _Nullable data))progressBlock
                  andCompletionBlock:(void(^_Nonnull)(BOOL success,NSInteger statusCode, NSString*_Nonnull message))completionBlock{
-    
-    
+
+
     [self.finalizationDelegate progressMessage:[self.syncContext contextDescription]];
-    
+
     if ( _syncContext.hashMapViewName ) {
         BsyncMode mode=[_syncContext mode];
         if(mode==SourceIsLocalDestinationIsDistant || mode==SourceIsDistantDestinationIsDistant){
@@ -83,7 +83,7 @@
             return;
         }
     }
-    
+
     int attempts=0;
     [self _prepareAndSynchronizeWithprogressBlock:progressBlock
                                andCompletionBlock:completionBlock
@@ -106,7 +106,7 @@
                 bprint(@"Tree exists!");
                 [self _synchronizeWithprogressBlock:progressBlock
                                  andCompletionBlock:completionBlock];
-                
+
             }else{
                 if (statusCode==404){
                     bprint(@"Auto creation of tree");
@@ -136,26 +136,26 @@
 
 - (void)_synchronizeWithprogressBlock:(void(^_Nullable)(NSInteger taskIndex,NSInteger totalTaskCount,double progress,NSString* _Nonnull message,NSData* _Nullable data))progressBlock
                    andCompletionBlock:(void(^)(BOOL success, NSInteger statusCode,NSString*_Nonnull message))completionBlock{
-    
-    
+
+
     [self _hashMapsForTreesWithCompletionBlock:^(HashMap *sourceHashMap, HashMap *destinationHashMap, NSInteger statusCode) {
         if(sourceHashMap && destinationHashMap ){
-            
-    
+
+
             DeltaPathMap*dpm=[sourceHashMap deltaPathMapWithSource:sourceHashMap
                                                     andDestination:destinationHashMap
                                                         withFilter:self.filteringBlock];
-            
+
             NSMutableArray*commands=[PdSCommandInterpreter commandsFromDeltaPathMap:dpm];
             NSInteger cmdCounts=(NSInteger)commands.count;
-            
+
             NSString*s=[NSString stringWithFormat:@"Source\n%@",[sourceHashMap dictionaryRepresentation]];
             NSString*d=[NSString stringWithFormat:@"Destination\n%@",[destinationHashMap dictionaryRepresentation]];
             progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"# SYNCRONIZATION #"],nil);
             progressBlock(0,cmdCounts,0.f,s,nil);
             progressBlock(0,cmdCounts,0.f,d,nil);
-            
-            
+
+
             progressBlock(0,cmdCounts,0.f,[NSString stringWithFormat:@"DeltaPathMap\n%@",[dpm dictionaryRepresentation]],nil);
             NSMutableString*cmdString=[NSMutableString string];
             [cmdString appendString:@"## Commands to be executed : ##\n"];
@@ -170,25 +170,25 @@
             }
             [cmdString appendString:@"## End of Commands List ##"];
             progressBlock(0,cmdCounts,0.f,cmdString,nil);
-            
-            
+
+
             _interpreter= [PdSCommandInterpreter interpreterWithBunchOfCommand:commands context:self->_syncContext
                                                                  progressBlock:^(uint taskIndex, double progress) {
                                                                      NSString*cmd=([commands count]>taskIndex)?[commands objectAtIndex:taskIndex]:@"POST CMD";
                                                                      progressBlock(taskIndex,cmdCounts,progress,cmd,nil);
                                                                  } andCompletionBlock:completionBlock];
-            
+
             _interpreter.finalizationDelegate=self.finalizationDelegate;
-            
-            
+
+
         }else{
-            
+
             BOOL sourceHashMapIsNil=(!sourceHashMap);
             BOOL destinationHashMapIsNil=(!destinationHashMap);
             NSString *m=[NSString stringWithFormat:@"Failure on hashMapsForTreesWithCompletionBlock with statusCode %i\nSource HashMap Is Nil? %@ \ndestination HashMap Is Nil? %@\n"
                          ,(int)statusCode,sourceHashMapIsNil?@"YES":@"NO",destinationHashMapIsNil?@"YES":@"NO"];
             completionBlock(NO, statusCode, m);
-            
+
         }
     }];
 }
@@ -204,13 +204,13 @@
  */
 - (void)installWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
-        
+
         NSURL*url=[_syncContext.destinationBaseUrl URLByAppendingPathComponent: [NSString stringWithFormat:@"/install?repositoryPath=%@", _syncContext.repositoryPath]];
-        
+
         // REQUEST
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
         request.HTTPMethod = @"POST";
-        
+
         // TASK
         [self addCurrentTaskAndResume:[self.urlSession uploadTaskWithRequest:request
                                                                     fromData:nil
@@ -244,11 +244,11 @@
  *  @param block      the completion block
  */
 - (void)createTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
-    
+
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         if([self _createOrConfirmTreeLocalUrl:_syncContext.sourceBaseUrl
                                        withId:_syncContext.sourceTreeId]){
-            
+
             [self _createTreeDistantUrl:_syncContext.destinationBaseUrl
                                  withId:_syncContext.destinationTreeId
                      andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
@@ -260,7 +260,7 @@
     }else if(_syncContext.mode==SourceIsDistantDestinationIsLocal){
         if([self _createOrConfirmTreeLocalUrl:_syncContext.destinationBaseUrl
                                        withId:_syncContext.destinationTreeId]){
-            
+
             [self _createTreeDistantUrl:_syncContext.sourceBaseUrl
                                  withId:_syncContext.sourceTreeId
                      andCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
@@ -287,8 +287,8 @@
 -(void)_createTreeDistantUrl:(NSURL*)baseUrl withId:(NSString*)identifier
           andCompletionBlock:(void (^)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
 
-    
-    
+
+
     if(! _syncContext.credentials.user ){
         block(NO, @"Invalid context credentials.user",0);
     }else{
@@ -298,11 +298,11 @@
 
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
-                                                                           withActionName:@"BartlebySyncCreateTree"
-                                                                                forMethod:@"POST"
-                                                                                      and:baseUrl];
+                                                                              withActionName:@"BartlebySyncCreateTree"
+                                                                                   forMethod:@"POST"
+                                                                                         and:baseUrl];
         bprint(@"BartlebySyncCreateTree: %@", baseUrl);
-        
+
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if(!error && response){
                 bprint(@"=> %@", response);
@@ -318,15 +318,15 @@
             block(NO, [[NSString alloc]initWithFormat:@"%@",error], 0);
         }]];
     }
-        
-        
+
+
 
 
 }
 
 -(BOOL)_createOrConfirmTreeLocalUrl:(NSURL*)baseUrl
                              withId:(NSString*)identifier{
-    
+
     NSString*p=[baseUrl path];
     p=[p stringByAppendingFormat:@"/%@",identifier];
     if ([_fileManager fileExistsAtPath:p]) {
@@ -350,7 +350,7 @@
  *  @param block      the completion block
  */
 - (void)touchTreesWithCompletionBlock:(void (^_Nonnull)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
-    
+
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         if( [self _touchLocalUrl:_syncContext.sourceBaseUrl
                    andTreeWithId:_syncContext.sourceTreeId]){
@@ -373,7 +373,7 @@
         }else{
             block(NO, [NSString stringWithFormat: @"Unexisting destination: %@", _syncContext.sourceBaseUrl], 404);
         }
-        
+
     }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
         if([self _touchLocalUrl:_syncContext.sourceBaseUrl andTreeWithId:_syncContext.sourceTreeId]) {
             if ([self _touchLocalUrl:_syncContext.destinationBaseUrl andTreeWithId:_syncContext.destinationTreeId]) {
@@ -392,43 +392,43 @@
 -(void)_touchDistantUrl:(NSURL*)baseUrl
          withTreeWithId:(NSString*)identifier
      andCompletionBlock:(void (^)(BOOL success, NSString*_Nonnull message, NSInteger statusCode))block{
-    
+
     if (!_syncContext.credentials.user) {
         block(NO, @"Invalid context credentials.user must be set", 0);
     } else {
         // URL
         baseUrl = [baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
-    
+
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
-                                                                           withActionName:@"BartlebySyncTouchTree"
-                                                                                forMethod:@"POST"
-                                                                                      and:baseUrl];
-        
+                                                                              withActionName:@"BartlebySyncTouchTree"
+                                                                                   forMethod:@"POST"
+                                                                                         and:baseUrl];
+
         bprint(@"BartlebySyncTouchTree: %@", baseUrl);
 
 
-    // TASK
-    [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
-                                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                         if(!error && response){
-                                                             bprint(@"=> %@", response);
-                                                             NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
-                                                             if (HTTPStatusCode>=200 && HTTPStatusCode<300){
-                                                                 block(YES, @"", HTTPStatusCode);
-                                                                 return;
-                                                             }else{
-                                                                 NSString *message=[NSString stringWithFormat:@"Fault on touch distant url: %@",
-                                                                                    [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]];
-                                                                 block(NO, message, HTTPStatusCode);
-                                                                 return;
+        // TASK
+        [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
+                                                         completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                                             if(!error && response){
+                                                                 bprint(@"=> %@", response);
+                                                                 NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
+                                                                 if (HTTPStatusCode>=200 && HTTPStatusCode<300){
+                                                                     block(YES, @"", HTTPStatusCode);
+                                                                     return;
+                                                                 }else{
+                                                                     NSString *message=[NSString stringWithFormat:@"Fault on touch distant url: %@",
+                                                                                        [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]];
+                                                                     block(NO, message, HTTPStatusCode);
+                                                                     return;
+                                                                 }
                                                              }
-                                                         }
-                                                         NSString *message = [[NSString alloc]initWithFormat:@"Error on touch distant url: %@", error];
-                                                         block(NO, message, 0);
-                                                     }]];
+                                                             NSString *message = [[NSString alloc]initWithFormat:@"Error on touch distant url: %@", error];
+                                                             block(NO, message, 0);
+                                                         }]];
     }
-    
+
 }
 
 -(BOOL)_touchLocalUrl:(NSURL*)baseUrl
@@ -459,7 +459,7 @@
                         PdSSyncAdmin* strongSelf=weakSelf;
                         HashMap*sourceHashMap=[strongSelf  _localHashMapForUrl:strongSelf->_syncContext.sourceBaseUrl
                                                                  andTreeWithId:strongSelf->_syncContext.sourceTreeId];
-                        
+
                         HashMap*destinationHashMap=hashMap;
                         [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
                         if(!destinationHashMap && statusCode==404){
@@ -483,7 +483,7 @@
                         [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
                         block(sourceHashMap,destinationHashMap,statusCode);
                     }];
-            
+
         }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
             HashMap*sourceHashMap=[self _localHashMapForUrl:_syncContext.sourceBaseUrl
                                               andTreeWithId:_syncContext.sourceTreeId];
@@ -503,29 +503,29 @@
             // NOT SUPPORTED
             block(NO, nil, 501);
         }
- 
+
     }
 }
 
 
 -(HashMap*)_localHashMapForUrl:(NSURL*)url
                  andTreeWithId:(NSString*)identifier{
-    
+
     NSString*hashMapRelativePath=[NSString stringWithFormat:@"%@/%@/%@/%@",[url path],identifier,kBsyncMetadataFolder,kBsyncHashMashMapFileName];
     hashMapRelativePath=hashMapRelativePath;
     NSURL *hashMapUrl=[NSURL fileURLWithPath:hashMapRelativePath];
-    
+
     NSError*stringLoadingError=nil;
-    
+
     NSString *hashMapCryptedString=[NSString stringWithContentsOfURL:hashMapUrl
-                                              encoding:NSUTF8StringEncoding
-                                                 error:&stringLoadingError];
-    
+                                                            encoding:NSUTF8StringEncoding
+                                                               error:&stringLoadingError];
+
     bprint(@"crypted hashmap: %@", hashMapCryptedString);
 
     if(!stringLoadingError){
         NSError*cryptoError=nil;
-        
+
         NSString *hashMapJsonString = [[Bartleby cryptoDelegate] decryptString:hashMapCryptedString error:&cryptoError];
         if (cryptoError){
             bprint(@"Get local hash map crypto error %@", cryptoError);
@@ -540,8 +540,8 @@
                 result=[NSJSONSerialization JSONObjectWithData:data
                                                        options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves|NSJSONReadingAllowFragments
                                                          error:&errorJson];
-                
-                
+
+
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
@@ -553,7 +553,7 @@
             }
         }
     }
-    
+
     // There is no hashMap or we have encoutered an issue
     [_fileManager createRecursivelyRequiredFolderForPath:hashMapRelativePath];
     return [[HashMap alloc] init];// Return a void HashMap
@@ -562,74 +562,74 @@
 -(void)_distantHashMapForUrl:(NSURL*)url
                andTreeWithId:(NSString*)identifier
          withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
-    
+
     if( ! _syncContext.credentials.user ){
         bprint(@"Invalid context credentials.user ");
         block(NO,0);
     }else{
         // URL
         url=[url URLByAppendingPathComponent:[NSString stringWithFormat:@"/hashMap/tree/%@", identifier]];
-        
+
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
-                                                                           withActionName:@"BartlebySyncGetHashMap"
-                                                                                forMethod:@"GET"
-                                                                                      and:url];
+                                                                              withActionName:@"BartlebySyncGetHashMap"
+                                                                                   forMethod:@"GET"
+                                                                                         and:url];
         bprint(@"BartlebySyncGetHashMap: %@", url);
-        
+
         // TASK
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
-                                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                         bprint(@"=> %@", response);
-                                                         if(!error && response){
-                                                             double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
-                                                             if (httpStatusCode==200) {
-                                                                 NSError *cryptoError = nil;
-                                                                 NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
-                                                                 if(cryptoError){
-                                                                     bprint(@"Post decrypt String decryption error");
-                                                                     block(nil,PdSStatusErrorHashMapDecryptFailure);
-                                                                 } else {
-                                                                     @try {
-                                                                         NSError *parseError = nil;
-                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
-                                                                                                                                            options:0
-                                                                                                                                              error:&parseError];
-                                                                         if(parseError){
-                                                                             bprint(@"Hash map JSON deserialization error");
-                                                                             block(nil,PdSStatusErrorHashMapDeserialization);
-                                                                         } else if ( [responseDictionary isKindOfClass:[NSDictionary class]]){
-                                                                             HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
-                                                                             bprint(@"Distant hashmap:");
-                                                                             for (id key in responseDictionary) {
-                                                                                 bprint(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
+                                                         completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                                             bprint(@"=> %@", response);
+                                                             if(!error && response){
+                                                                 double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
+                                                                 if (httpStatusCode==200) {
+                                                                     NSError *cryptoError = nil;
+                                                                     NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
+                                                                     if(cryptoError){
+                                                                         bprint(@"Post decrypt String decryption error");
+                                                                         block(nil,PdSStatusErrorHashMapDecryptFailure);
+                                                                     } else {
+                                                                         @try {
+                                                                             NSError *parseError = nil;
+                                                                             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
+                                                                                                                                                options:0
+                                                                                                                                                  error:&parseError];
+                                                                             if(parseError){
+                                                                                 bprint(@"Hash map JSON deserialization error");
+                                                                                 block(nil,PdSStatusErrorHashMapDeserialization);
+                                                                             } else if ( [responseDictionary isKindOfClass:[NSDictionary class]]){
+                                                                                 HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
+                                                                                 bprint(@"Distant hashmap:");
+                                                                                 for (id key in responseDictionary) {
+                                                                                     bprint(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
+                                                                                 }
+                                                                                 block(hashMap,((NSHTTPURLResponse*)response).statusCode);
+                                                                             } else {
+                                                                                 bprint(@"Hash map deserialization type miss match");
+                                                                                 block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
                                                                              }
-                                                                             block(hashMap,((NSHTTPURLResponse*)response).statusCode);
-                                                                         } else {
-                                                                             bprint(@"Hash map deserialization type miss match");
-                                                                             block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
+                                                                         }
+                                                                         @catch (NSException *exception) {
+                                                                             bprint(@"Exception on get distant hash map %@", exception);
+                                                                             block(nil,PdSStatusErrorHashMapFailure);
                                                                          }
                                                                      }
-                                                                     @catch (NSException *exception) {
-                                                                         bprint(@"Exception on get distant hash map %@", exception);
-                                                                         block(nil,PdSStatusErrorHashMapFailure);
+
+
+                                                                 }else{
+                                                                     if (data!=nil) {
+                                                                         NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                                                         bprint(@"Fault on get distant hash map: %@", message);
                                                                      }
+                                                                     block(nil,httpStatusCode);
                                                                  }
-                                                                 
-                                                                 
+
                                                              }else{
-                                                                 if (data!=nil) {
-                                                                     NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                     bprint(@"Fault on get distant hash map: %@", message);
-                                                                 }
-                                                                 block(nil,httpStatusCode);
+                                                                 bprint(@"Error on get distant hash map :%@",error);
+                                                                 block(nil,0);
                                                              }
-                                                             
-                                                         }else{
-                                                             bprint(@"Error on get distant hash map :%@",error);
-                                                             block(nil,0);
-                                                         }
-                                                     }]];
+                                                         }]];
     }
 }
 
@@ -649,42 +649,42 @@
     PdSSyncAdmin*__block weakSelf=self;
     if(_syncContext.mode==SourceIsLocalDestinationIsDistant){
         [self _distantHashMapViewForUrl:_syncContext.destinationBaseUrl
-                      andTreeWithId:_syncContext.destinationTreeId  
-                withCompletionBlock:^(HashMap *hashMap, NSInteger statusCode) {
-                    PdSSyncAdmin* strongSelf=weakSelf;
-                    HashMap*sourceHashMap=[strongSelf  _localHashMapViewForUrl:strongSelf->_syncContext.sourceBaseUrl
-                                                             andTreeWithId:strongSelf->_syncContext.sourceTreeId];
-                    
-                    HashMap*destinationHashMap=hashMap;
-                    [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
-                    if(!destinationHashMap && statusCode==404){
-                        // There is currently no destination hashMap let's create a void one.
-                        destinationHashMap=[[HashMap alloc] init];
-                    }
-                    block(sourceHashMap,destinationHashMap,statusCode);
-                }];
+                          andTreeWithId:_syncContext.destinationTreeId
+                    withCompletionBlock:^(HashMap *hashMap, NSInteger statusCode) {
+                        PdSSyncAdmin* strongSelf=weakSelf;
+                        HashMap*sourceHashMap=[strongSelf  _localHashMapViewForUrl:strongSelf->_syncContext.sourceBaseUrl
+                                                                     andTreeWithId:strongSelf->_syncContext.sourceTreeId];
+
+                        HashMap*destinationHashMap=hashMap;
+                        [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
+                        if(!destinationHashMap && statusCode==404){
+                            // There is currently no destination hashMap let's create a void one.
+                            destinationHashMap=[[HashMap alloc] init];
+                        }
+                        block(sourceHashMap,destinationHashMap,statusCode);
+                    }];
     }else if (_syncContext.mode==SourceIsDistantDestinationIsLocal){
         [self _distantHashMapViewForUrl:_syncContext.sourceBaseUrl
-                      andTreeWithId:_syncContext.sourceTreeId
-                withCompletionBlock:^(HashMap *hashMap, NSInteger statusCode) {
-                    PdSSyncAdmin* strongSelf=weakSelf;
-                    HashMap*sourceHashMap=hashMap;
-                    HashMap*destinationHashMap=[strongSelf  _localHashMapViewForUrl:strongSelf->_syncContext.destinationBaseUrl
-                                                                  andTreeWithId:strongSelf->_syncContext.destinationTreeId];
-                    if(!sourceHashMap && statusCode==404){
-                        // There is currently no destination hashMap let's create a void one.
-                        sourceHashMap=[[HashMap alloc] init];
-                    }
-                    [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
-                    block(sourceHashMap,destinationHashMap,statusCode);
-                }];
-        
+                          andTreeWithId:_syncContext.sourceTreeId
+                    withCompletionBlock:^(HashMap *hashMap, NSInteger statusCode) {
+                        PdSSyncAdmin* strongSelf=weakSelf;
+                        HashMap*sourceHashMap=hashMap;
+                        HashMap*destinationHashMap=[strongSelf  _localHashMapViewForUrl:strongSelf->_syncContext.destinationBaseUrl
+                                                                          andTreeWithId:strongSelf->_syncContext.destinationTreeId];
+                        if(!sourceHashMap && statusCode==404){
+                            // There is currently no destination hashMap let's create a void one.
+                            sourceHashMap=[[HashMap alloc] init];
+                        }
+                        [strongSelf->_syncContext setFinalHashMap:sourceHashMap];
+                        block(sourceHashMap,destinationHashMap,statusCode);
+                    }];
+
     }else if (_syncContext.mode==SourceIsLocalDestinationIsLocal){
         HashMap*sourceHashMap=[self _localHashMapViewForUrl:_syncContext.sourceBaseUrl
-                                          andTreeWithId:_syncContext.sourceTreeId];
+                                              andTreeWithId:_syncContext.sourceTreeId];
         _syncContext.finalHashMap=sourceHashMap;
         HashMap*destinationHashMap=[self _localHashMapViewForUrl:_syncContext.destinationBaseUrl
-                                               andTreeWithId:_syncContext.sourceTreeId];
+                                                   andTreeWithId:_syncContext.sourceTreeId];
         if(!destinationHashMap){
             // There is currently no destination hashMap let's create a void one.
             destinationHashMap=[[HashMap alloc] init];
@@ -701,11 +701,11 @@
 }
 
 -(HashMap*)_localHashMapViewForUrl:(NSURL*)url
-                 andTreeWithId:(NSString*)identifier{
-    
+                     andTreeWithId:(NSString*)identifier{
+
     NSString*hashMapRelativePath=[NSString stringWithFormat:@"%@/%@/%@%@",[url path],identifier,kBsyncHashmapViewPrefixSignature,_syncContext.hashMapViewName];
     NSURL *hashMapUrl=[NSURL fileURLWithPath:hashMapRelativePath];
-    
+
     NSError*stringLoadingError=nil;
     NSString *string=[NSString stringWithContentsOfURL:hashMapUrl
                                               encoding:NSUTF8StringEncoding
@@ -725,8 +725,8 @@
                 result=[NSJSONSerialization JSONObjectWithData:data
                                                        options:NSJSONReadingMutableContainers|NSJSONReadingMutableLeaves|NSJSONReadingAllowFragments
                                                          error:&errorJson];
-                
-                
+
+
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
@@ -738,87 +738,87 @@
             }
         }
     }
-    
+
     // There is no hashMap or we have encoutered an issue
     [_fileManager createRecursivelyRequiredFolderForPath:hashMapRelativePath];
     return [[HashMap alloc] init];// Return a void HashMap
 }
 
 -(void)_distantHashMapViewForUrl:(NSURL*)baseURL
-               andTreeWithId:(NSString*)identifier
-         withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
-    
+                   andTreeWithId:(NSString*)identifier
+             withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
+
     if( !_syncContext.hashMapViewName || !_syncContext.sourceTreeId || ! _syncContext.credentials.user  ){
         bprint(@"Invalid context hashMapViewName, sourceTreeId and credentials.user must be set");
         block(NO,0);
     } else {
-        
-    // DOWNLOAD
-    NSString*treeId =_syncContext.sourceTreeId;
-    // Decompose in a GET for the URI then a download task
-    NSURL*url=[baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@%@&redirect=true&returnValue=false",
-                                                    treeId,
-                                                    kBsyncHashmapViewPrefixSignature,
-                                                    _syncContext.hashMapViewName
-                                                    ]];
 
-    // REQUEST
-    NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
-                                                                           withActionName:@"BartlebySyncGetFile"
-                                                                                forMethod:@"GET"
-                                                                                      and:url];
+        // DOWNLOAD
+        NSString*treeId =_syncContext.sourceTreeId;
+        // Decompose in a GET for the URI then a download task
+        NSURL*url=[baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"/file/tree/%@?path=%@%@&redirect=true&returnValue=false",
+                                                        treeId,
+                                                        kBsyncHashmapViewPrefixSignature,
+                                                        _syncContext.hashMapViewName
+                                                        ]];
 
-    // TASK
-    
-    [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
-                                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                         if(!error && response){
-                                                             double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
-                                                             if (httpStatusCode==200) {
-                                                                 NSError *cryptoError = nil;
-                                                                 NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
-                                                                 if(cryptoError){
-                                                                     bprint(@"Post decrypt String decryption error");
-                                                                     block(nil,PdSStatusErrorHashMapDecryptFailure);
-                                                                 } else {
-                                                                                                                                          @try {
-                                                                         NSError *parseError = nil;
-                                                                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
-                                                                                                                                            options:0
-                                                                                                                                              error:&parseError];
-                                                                         if(parseError){
-                                                                             bprint(@"Hash map JSON deserialization error");
-                                                                             block(nil,PdSStatusErrorHashMapDeserialization);
-                                                                         }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
-                                                                             HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
-                                                                             block(hashMap,((NSHTTPURLResponse*)response).statusCode);
-                                                                         }else{
-                                                                             bprint(@"Hash map deserialization type miss match");
-                                                                             block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
+        // REQUEST
+        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
+                                                                              withActionName:@"BartlebySyncGetFile"
+                                                                                   forMethod:@"GET"
+                                                                                         and:url];
+
+        // TASK
+
+        [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
+                                                         completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                                             if(!error && response){
+                                                                 double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
+                                                                 if (httpStatusCode==200) {
+                                                                     NSError *cryptoError = nil;
+                                                                     NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
+                                                                     if(cryptoError){
+                                                                         bprint(@"Post decrypt String decryption error");
+                                                                         block(nil,PdSStatusErrorHashMapDecryptFailure);
+                                                                     } else {
+                                                                         @try {
+                                                                             NSError *parseError = nil;
+                                                                             NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:decryptedData
+                                                                                                                                                options:0
+                                                                                                                                                  error:&parseError];
+                                                                             if(parseError){
+                                                                                 bprint(@"Hash map JSON deserialization error");
+                                                                                 block(nil,PdSStatusErrorHashMapDeserialization);
+                                                                             }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
+                                                                                 HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
+                                                                                 block(hashMap,((NSHTTPURLResponse*)response).statusCode);
+                                                                             }else{
+                                                                                 bprint(@"Hash map deserialization type miss match");
+                                                                                 block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
+                                                                             }
+                                                                         }
+                                                                         @catch (NSException *exception) {
+                                                                             bprint(@"Exception on get distant hash map %@", exception);
+                                                                             block(nil,PdSStatusErrorHashMapFailure);
                                                                          }
                                                                      }
-                                                                     @catch (NSException *exception) {
-                                                                         bprint(@"Exception on get distant hash map %@", exception);
-                                                                         block(nil,PdSStatusErrorHashMapFailure);
+
+
+                                                                 }else{
+                                                                     if (data!=nil) {
+                                                                         NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                                                         bprint(@"Fault on get distant hash map: %@", message);
                                                                      }
+                                                                     block(nil,httpStatusCode);
                                                                  }
-                                                                 
-                                                                 
+
                                                              }else{
-                                                                 if (data!=nil) {
-                                                                     NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                     bprint(@"Fault on get distant hash map: %@", message);
-                                                                 }
-                                                                 block(nil,httpStatusCode);
+                                                                 bprint(@"Error on get distant hash map :%@",error);
+                                                                 block(nil,0);
                                                              }
-                                                             
-                                                         }else{
-                                                             bprint(@"Error on get distant hash map :%@",error);
-                                                             block(nil,0);
-                                                         }
-                                                     }]];
+                                                         }]];
     }
-    
+
 }
 
 
@@ -845,7 +845,7 @@
 }
 
 
-#pragma  mark - Utilities 
+#pragma  mark - Utilities
 
 /**
  *  Used by swift.
@@ -857,14 +857,14 @@
 + (NSString*_Nullable)valueForConst:(NSString*_Nonnull)name{
     if ([name isEqualToString:@"kBsyncPrefixSignature"])
         return kBsyncPrefixSignature;
-   else if ([name isEqualToString:@"kBsyncMetadataFolder"])
+    else if ([name isEqualToString:@"kBsyncMetadataFolder"])
         return kBsyncMetadataFolder;
-   else if ([name isEqualToString:@"kBsyncHashFileExtension"])
-       return kBsyncHashFileExtension;
-   else if ([name isEqualToString:@"kBsyncHashMashMapFileName"])
-       return kBsyncHashMashMapFileName;
-   else if ([name isEqualToString:@"kBsyncHashmapViewPrefixSignature"])
-       return kBsyncHashmapViewPrefixSignature;
+    else if ([name isEqualToString:@"kBsyncHashFileExtension"])
+        return kBsyncHashFileExtension;
+    else if ([name isEqualToString:@"kBsyncHashMashMapFileName"])
+        return kBsyncHashMashMapFileName;
+    else if ([name isEqualToString:@"kBsyncHashmapViewPrefixSignature"])
+        return kBsyncHashmapViewPrefixSignature;
     return nil;
 }
 

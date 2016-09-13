@@ -40,12 +40,12 @@ class CreateUserCommand: CommandBase {
                                    helpMessage: "Print verbose messages.")
         
         
-        addOptions(api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
+        addOptions(options: api, password, spaceUID, secretKey, sharedSalt, email, phone, verbosity)
         
         if parse() {
             if let base = api.value, let pw = password.value, let space = spaceUID.value, let key = secretKey.value, let salt = sharedSalt.value {
                 
-                if let url = NSURL(string: base) {
+                if let url = URL(string: base) {
                     
                     Bartleby.configuration.API_BASE_URL=url
                     Bartleby.configuration.KEY=key
@@ -54,20 +54,20 @@ class CreateUserCommand: CommandBase {
                     Bartleby.configuration.ENABLE_BPRINT=verbosity.value
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
-                    let document=self.virtualDocumentFor(spaceUID.value!,rootObjectUID: nil)
+                    let document=self.virtualDocumentFor(spaceUID: spaceUID.value!,rootObjectUID: nil)
                     let user=document.newUser()
                     user.spaceUID = space
                     user.creatorUID = user.UID
                     user.password = pw
-                    user.verificationMethod = .None
+                    user.verificationMethod = .none
 
                     if let email = email.value {
                         user.email = email
-                        user.verificationMethod = .ByEmail
+                        user.verificationMethod = .byEmail
                     }
                     if let phone = phone.value {
                         user.phoneNumber = phone
-                        user.verificationMethod = .ByPhoneNumber
+                        user.verificationMethod = .byPhoneNumber
                     }
                     
                     CreateUser.execute(user, inRegistryWithUID: document.UID,
@@ -75,8 +75,8 @@ class CreateUserCommand: CommandBase {
                                         print (user.UID)
                                         
                                         // Storing user in the KVS:
-                                        let applicationSupportURL = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-                                        let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                                        let applicationSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+                                        let kvsUrl = applicationSupportURL[0].appendingPathComponent("bsync/kvs.json")
                                         let kvs = BsyncKeyValueStorage(url: kvsUrl)
                                         do {
                                             try kvs.open()

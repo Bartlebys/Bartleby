@@ -78,13 +78,13 @@ class TestCase: XCTestCase {
         super.setUp()
 
 
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         TestCase._document=BartlebyDocument()
         TestCase.document.configureSchema()
         let _ = try? TestCase.document.setRootObjectUID(TestCase.rootObjectUID)
         Bartleby.sharedInstance.declare(TestCase.document)
         // By default we use kvid auth.
-        TestCase.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Key
+        TestCase.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.key
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
@@ -194,7 +194,7 @@ class TestCase: XCTestCase {
             TestCase._creator = user
         }
         if let email = email {
-            user.verificationMethod = .ByEmail
+            user.verificationMethod = .byEmail
             user.email = email
         }
         TestCase._createdUsers.append(user)
@@ -215,7 +215,7 @@ class TestCase: XCTestCase {
                 handlers.on(Completion.successState())
             }
         }) { (context) in
-             bprint("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+            bprint("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
             handlers.on(Completion.failureStateFromJHTTPResponse(context))
         }
 
@@ -283,13 +283,12 @@ class TestCase: XCTestCase {
      */
     func writeStrinToPath(_ string:String,path:String,createIntermediaryFolders:Bool=true) throws -> () {
         let fileURL=URL(fileURLWithPath:path)
-        if let folderURL=fileURL.deletingLastPathComponent(){
-            if createIntermediaryFolders{
-                try self._fm.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: [:])
-            }
-            try string.write(to: fileURL, atomically: true, encoding: Default.STRING_ENCODING)
+        let folderURL=fileURL.deletingLastPathComponent()
+        if createIntermediaryFolders{
+            try self._fm.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: [:])
         }
+        try string.write(to: fileURL, atomically: true, encoding: Default.STRING_ENCODING)
     }
-
-
+    
+    
 }

@@ -25,7 +25,7 @@ class CreateDmgCommand: CommandBase {
                               helpMessage: "Prints a help message.")
         let password = StringOption(shortFlag: "p", longFlag: "password",
                                     helpMessage: "Set a password if you want to create a crypted disk image")
-        addOptions(path, help, volumeName, size, password)
+        addOptions(options: path, help, volumeName, size, password)
         if parse() {
             let dmgManager=BsyncImageDiskManager()
             
@@ -37,7 +37,7 @@ class CreateDmgCommand: CommandBase {
                 })
                 dmgManager.createImageDisk(path + name, volumeName:name, size:size, password:password.value, handlers: self)
             } else {
-                self.on(Completion.failureState("Error unwrapping option", statusCode: .Undefined))
+                self.on(Completion.failureState("Error unwrapping option", statusCode: .undefined))
             }
         }
     }

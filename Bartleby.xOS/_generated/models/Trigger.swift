@@ -14,33 +14,33 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
-@objc(Trigger) public class Trigger : JObject{
+@objc(Trigger) open class Trigger : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Trigger"
     }
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
-	dynamic public var index:Int = -1
+	dynamic open var index:Int = -1
 	//The dataSpace UID
-	dynamic public var spaceUID:String?
+	dynamic open var spaceUID:String?
 	//The observation UID for a given document correspond  to the Registry.rootObjectUID
-	dynamic public var observationUID:String?
+	dynamic open var observationUID:String?
 	//The user.UID of the sender
-	dynamic public var senderUID:String?
+	dynamic open var senderUID:String?
 	//The UID of the instance of Bartleby client that has created the trigger.
-	dynamic public var runUID:String?
+	dynamic open var runUID:String?
 	//The action that has initiated the trigger
-	dynamic public var origin:String?
+	dynamic open var origin:String?
 	//The targetted collection name
-	dynamic public var targetCollectionName:String = ""
+	dynamic open var targetCollectionName:String = ""
 	//The server side creation date ( informative, use index for ranking)
-	dynamic public var creationDate:Date?
+	dynamic open var creationDate:Date?
 	//The action name
-	dynamic public var action:String = ""
+	dynamic open var action:String = ""
 	//A coma separated UIDS list
-	dynamic public var UIDS:String = ""
+	dynamic open var UIDS:String = ""
 
 
     // MARK: Mappable
@@ -49,7 +49,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.index <- ( map["index"] )
@@ -84,7 +84,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.index,forKey:"index")
 		if let spaceUID = self.spaceUID {
@@ -110,7 +110,7 @@ import ObjectMapper
 		coder.encode(self.UIDS,forKey:"UIDS")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -121,11 +121,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "triggers"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Trigger.collectionName
     }
 

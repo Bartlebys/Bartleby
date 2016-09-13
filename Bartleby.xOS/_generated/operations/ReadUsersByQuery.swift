@@ -36,7 +36,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.result_fields <- ( map["result_fields"] )
@@ -57,7 +57,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		if let result_fields = self.result_fields {
 			coder.encode(result_fields,forKey:"result_fields")
@@ -70,7 +70,7 @@ import ObjectMapper
 		}
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -98,7 +98,7 @@ import ObjectMapper
             let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUsersByQuery" ,forMethod:"GET", and: pathURL)
             
             do {
-                let r=try JSONEncoding().encode(urlRequest,with:dictionary) // ??? TO BE VALIDATED
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in
                     
                     let request=response.request

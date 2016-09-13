@@ -24,17 +24,17 @@ class LogoutCommand: CommandBase {
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.")
 
-        addOptions(sourceURLString,spaceUID,userUID, sharedSalt)
+        addOptions(options: sourceURLString,spaceUID,userUID, sharedSalt)
         
         if parse() {
             
-            var baseApiURL: NSURL?=nil
+            var baseApiURL: URL?=nil
             
             guard let source=sourceURLString.value else {
                 print("Nil source URL")
                 exit(EX__BASE)
             }
-            guard let _=NSURL(string: source) else {
+            guard let _=URL(string: source) else {
                 print("Invalid source URL \(source)")
                 exit(EX__BASE)
             }
@@ -50,12 +50,12 @@ class LogoutCommand: CommandBase {
             // eg.: http://yd.local/api/v1/BartlebySync
             
             
-            let r=source.rangeOfString("/BartlebySync")
-            if let foundIndex=r?.startIndex {
+            let r=source.range(of:"/BartlebySync")
+            if let foundIndex=r?.lowerBound {
                 // extract the base URL
-                baseApiURL=NSURL(string: source.substringToIndex(foundIndex))
+                baseApiURL=URL(string: source.substring(to:foundIndex))
             }
-            
+
             if baseApiURL != nil {
                 
                 // We prefer to configure completly Bartleby
@@ -66,8 +66,8 @@ class LogoutCommand: CommandBase {
 
               let document=self.virtualDocumentFor(spaceUID: spaceUID.value!,rootObjectUID: nil)
                 
-                let applicationSupportURL = FileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
-                let kvsUrl = applicationSupportURL[0].URLByAppendingPathComponent("bsync/kvs.json")
+                let applicationSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+                let kvsUrl = applicationSupportURL[0].appendingPathComponent("bsync/kvs.json")
                 let kvs = BsyncKeyValueStorage(url: kvsUrl)
                 do {
                     try kvs.open()

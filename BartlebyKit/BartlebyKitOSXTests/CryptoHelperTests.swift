@@ -11,13 +11,14 @@ import XCTest
 import BartlebyKit
 
 class CryptoHelperTests: TestCase {
-    private static let _cryptoHelper = CryptoHelper(key:TestsConfiguration.KEY, salt:TestsConfiguration.SHARED_SALT)
+
+    fileprivate static let _cryptoHelper = CryptoHelper(key:TestsConfiguration.KEY, salt:TestsConfiguration.SHARED_SALT)
 
     func testEncryptDataDecryptData() {
         // Given a buffer defined by a base64 string
         let base64dString = "SGkh"
         // that is converted to a NSData
-        if let data = NSData(base64EncodedString: base64dString, options: [.IgnoreUnknownCharacters]) {
+        if let data = Data(base64Encoded: base64dString, options: [.ignoreUnknownCharacters]) {
             do {
                 // If we encrypt it
                 let encryptedData = try CryptoHelperTests._cryptoHelper.encryptData(data)
@@ -25,7 +26,7 @@ class CryptoHelperTests: TestCase {
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)
                 // we get back our original buffer
-                XCTAssertEqual("SGkh", decryptedData.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn))
+                XCTAssertEqual("SGkh",  decryptedData.base64EncodedString(options:.endLineWithCarriageReturn))
             } catch {
                 XCTFail("\(error)")
             }
@@ -67,7 +68,7 @@ class CryptoHelperTests: TestCase {
         do {
 
             // Let's convert the encrypted base64 string to an encrypted buffer
-            if let encryptedData = encryptedString.dataUsingEncoding(Default.STRING_ENCODING) {
+            if let encryptedData = encryptedString.data(using: Default.STRING_ENCODING) {
                 // If we decrypt it
                 let decryptedData = try CryptoHelperTests._cryptoHelper.decryptData(encryptedData)
                 // And convert its content to a string
@@ -85,7 +86,7 @@ class CryptoHelperTests: TestCase {
 
     func testEncryptDataDecrypString() {
         let string = "martin"
-        if let data = string.dataUsingEncoding(Default.STRING_ENCODING) {
+        if let data = string.data(using: Default.STRING_ENCODING) {
             do {
                 let encryptedData = try CryptoHelperTests._cryptoHelper.encryptData(data)
                 if let dataString=String(data: encryptedData, encoding: Default.STRING_ENCODING) {

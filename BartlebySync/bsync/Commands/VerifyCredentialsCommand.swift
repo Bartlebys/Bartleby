@@ -19,16 +19,16 @@ class VerifyCredentialsCommand: CommandBase {
                                     helpMessage: "A registryUID is required authentication")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.\n\t If salt is set; email, password and spaceUID, must be set too!\n\n")
-        addOptions(sourceURLString, registryUID, sharedSalt)
+        addOptions(options: sourceURLString, registryUID, sharedSalt)
         
         if parse() {
-            var baseApiURL: NSURL?=nil
+            var baseApiURL: URL?=nil
             
             guard let source=sourceURLString.value else {
                 print("Nil source URL")
                 exit(EX__BASE)
             }
-            guard let _=NSURL(string: source) else {
+            guard let _=URL(string: source) else {
                 print("Invalid source URL \(source)")
                 exit(EX__BASE)
             }
@@ -39,10 +39,10 @@ class VerifyCredentialsCommand: CommandBase {
             // eg.: http://yd.local/api/v1/BartlebySync
             
             
-            let r=source.rangeOfString("/BartlebySync")
-            if let foundIndex=r?.startIndex {
+            let r=source.range(of:"/BartlebySync")
+            if let foundIndex=r?.lowerBound {
                 // extract the base URL
-                baseApiURL=NSURL(string: source.substringToIndex(foundIndex))
+                baseApiURL=URL(string: source.substring(to:foundIndex))
             }
             
             if baseApiURL != nil {

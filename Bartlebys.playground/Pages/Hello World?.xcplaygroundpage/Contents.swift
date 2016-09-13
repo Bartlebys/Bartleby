@@ -1,35 +1,4 @@
 import Cocoa
-
-/*
-import Alamofire
-import ObjectMapper
-
-if let u=URL(string:  "https://demo.bartlebys.org/www/api/v1/reachable/"){
-    let r=URLRequest(url: u)
-
-    try JSONEncoding().encode(r,with:[String:Any]())
-
-    request(resource: r).responseJSON(completionHandler: { (s) in
-        print(s)
-    })
-    request(resource: r).validate().responseString(completionHandler: { (s) in
-        print(s)
-    })
-}*/
-
-
-
-
-//let sessionManager = SessionManager()
-//request(resource: r)
-
-
-/*
-request("https://demo.bartlebys.org/www/api/v1/reachable/").validate().responseJSON { response in
-    print(response)
-}*/
-
-/*
 import BartlebyKit
 
 
@@ -76,12 +45,12 @@ if let u:Tag=ext.toLocalInstance(){
 
 PString.ltrim("    *   Hello    *    ")
 PString.rtrim("    *   Hello    *    ")
-PString.ltrim("*,    *   Hello    *    ",characterSet: NSCharacterSet(charactersInString:",* "))
-PString.ltrim(",A,B,C",characterSet: NSCharacterSet(charactersInString:","))
+
+PString.ltrim("*,    *   Hello    *    ",characterSet: CharacterSet(charactersIn:",* "))
+PString.ltrim(",A,B,C",characterSet: CharacterSet(charactersIn:","))
 
 //: [Go to externalReferences 
 
 let r = 0..<1
 r.count
 
-*/

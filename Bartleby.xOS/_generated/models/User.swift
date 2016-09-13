@@ -14,15 +14,15 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a user in a specified data Space
-@objc(User) public class User : JObject{
+@objc(User) open class User : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "User"
     }
 
 	//An external unique identifier
-	dynamic public var externalID:String? {	 
+	dynamic open var externalID:String? {	 
 	    didSet { 
 	       if externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	dynamic public var spaceUID:String = "\(Bartleby.createUID())"{	 
+	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    didSet { 
 	       if spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -45,7 +45,7 @@ import ObjectMapper
 		case byPhoneNumber = "byPhoneNumber"
 		case byEmail = "byEmail"
 	}
-	public var verificationMethod:VerificationMethod = .byPhoneNumber  {	 
+	open var verificationMethod:VerificationMethod = .byPhoneNumber  {	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -53,7 +53,7 @@ import ObjectMapper
 	    }
 	}
 
-	dynamic public var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -61,7 +61,7 @@ import ObjectMapper
 	    }
 	}
 
-	dynamic public var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -70,7 +70,7 @@ import ObjectMapper
 	}
 
 	//The user's email. Can be the secondary Identification source 
-	dynamic public var email:String? {	 
+	dynamic open var email:String? {	 
 	    didSet { 
 	       if email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -79,7 +79,7 @@ import ObjectMapper
 	}
 
 	//The user's phone number. Can be the secondary Identification source 
-	dynamic public var phoneNumber:String? {	 
+	dynamic open var phoneNumber:String? {	 
 	    didSet { 
 	       if phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -88,7 +88,7 @@ import ObjectMapper
 	}
 
 	//The hashed version of the user password
-	dynamic public var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -97,7 +97,7 @@ import ObjectMapper
 	}
 
 	//An activation code
-	dynamic public var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
 	       if activationCode != oldValue {
 	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
@@ -111,7 +111,7 @@ import ObjectMapper
 		case actived = "actived"
 		case suspended = "suspended"
 	}
-	public var status:Status = .new  {	 
+	open var status:Status = .new  {	 
 	    didSet { 
 	       if status != oldValue {
 	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
@@ -120,7 +120,7 @@ import ObjectMapper
 	}
 
 	//The user Tags. External reference to Tags instances
-	dynamic public var tags:[ExternalReference] = [ExternalReference]()  {	 
+	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {	 
 	    didSet { 
 	       if tags != oldValue {
 	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
@@ -129,7 +129,7 @@ import ObjectMapper
 	}
 
 	//Notes
-	dynamic public var notes:String? {	 
+	dynamic open var notes:String? {	 
 	    didSet { 
 	       if notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
@@ -138,7 +138,7 @@ import ObjectMapper
 	}
 
 	//set to true on the first successfull login in the session (this property is not serialized)
-	dynamic public var loginHasSucceed:Bool = false
+	dynamic open var loginHasSucceed:Bool = false
 
 
     // MARK: Mappable
@@ -147,7 +147,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.externalID <- ( map["externalID"] )
@@ -186,7 +186,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		if let externalID = self.externalID {
 			coder.encode(externalID,forKey:"externalID")
@@ -210,7 +210,7 @@ import ObjectMapper
 		}
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -221,11 +221,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "users"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return User.collectionName
     }
 

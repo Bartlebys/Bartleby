@@ -165,7 +165,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.items <- ( map["items"] )
@@ -187,12 +187,12 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.items,forKey:"items")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -259,7 +259,7 @@ import ObjectMapper
 
             // Add the inverse of this invocation to the undo stack
             if let undoManager: UndoManager = undoManager {
-                (undoManager.prepare(withInvocationTarget: self) as! LockersCollectionController).removeObjectFromItemsAtIndex(index, commit:commit)
+                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectFromItemsAtIndex(index, commit:commit)
                 if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("AddLocker", comment: "AddLocker undo action"))
                 }

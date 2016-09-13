@@ -14,15 +14,15 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: String Primitive Wrapper.
-@objc(JString) public class JString : JObject{
+@objc(JString) open class JString : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "JString"
     }
 
 	//the embedded String
-	dynamic public var string:String? {	 
+	dynamic open var string:String? {	 
 	    didSet { 
 	       if string != oldValue {
 	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.string <- ( map["string"] )
@@ -55,14 +55,14 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		if let string = self.string {
 			coder.encode(string,forKey:"string")
 		}
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -73,11 +73,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "jStrings"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return JString.collectionName
     }
 

@@ -88,8 +88,8 @@ import Cocoa
 
     @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
-            for operation in registry.operations.reversed(){
-                registry.operations.removeObject(operation!, commit: false)
+            for operation in registry.pushOperations.reversed(){
+                registry.pushOperations.removeObject(operation!, commit: false)
             }
         }
     }

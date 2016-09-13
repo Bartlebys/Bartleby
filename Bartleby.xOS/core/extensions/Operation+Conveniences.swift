@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension Operation{
+public extension PushOperation{
 
     public func canBePushed()->Bool{
 

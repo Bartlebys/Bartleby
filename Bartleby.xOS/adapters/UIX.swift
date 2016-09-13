@@ -30,9 +30,6 @@
     open class BXDocument:NSDocument{
     }
 
-    open class BXImage:NSImage,Identifiable{
-        open let UID=Bartleby.createUID()
-    }
 
 
 #elseif os(iOS)
@@ -55,9 +52,6 @@
     open class BXDocument:UIDocument{
     }
 
-    open class BXImage:UIImage,Identifiable{
-        public let UID=Bartleby.createUID()
-    }
 
 #elseif os(watchOS)
 #elseif os(tvOS)

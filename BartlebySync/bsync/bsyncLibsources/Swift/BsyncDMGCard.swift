@@ -18,7 +18,7 @@ import Foundation
 /**
  *  A DMG card enable store the data required to unlock the DMG.
  */
-@objc(BsyncDMGCard) public class BsyncDMGCard: JObject {
+@objc(BsyncDMGCard) open class BsyncDMGCard: JObject {
 
     override open class func typeName() -> String {
         return "BsyncDMGCard"
@@ -141,7 +141,7 @@ import Foundation
         self.enableSupervision()
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
     

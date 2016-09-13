@@ -13,7 +13,7 @@ class TransformTests: XCTestCase {
 
     override static func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
     }
 
     func test_CryptedStringTransform() {
@@ -52,7 +52,7 @@ class TransformTests: XCTestCase {
         let transform = Base64DataTransform()
 
         let s1 = "Une année de plus"
-        let data1 = s1.dataUsingEncoding(Default.STRING_ENCODING)
+        let data1 = s1.data(using: Default.STRING_ENCODING)
 
         let json = transform.transformToJSON(data1)
 

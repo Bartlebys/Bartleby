@@ -23,23 +23,38 @@ import Foundation
 
 // TODO: @md #test write the Unit test for OSX and IOS + integrate in all the targets
 open class ImageTransform: TransformType {
-
-    public typealias Object = BXImage
+    #if os(OSX)
+    public typealias Object = NSImage
+    #elseif os(iOS)
+    public typealias Object = UIImage
+    #elseif os(watchOS)
+    #elseif os(tvOS)
+    #endif
     public typealias JSON = String
 
-    public init() {
+    public init() {}
 
+    #if os(OSX)
+    open func transformFromJSON(_ value: Any?) -> NSImage? {
+    if let string=value as? String {
+        if let data=Data(base64Encoded: string, options: [.ignoreUnknownCharacters]) {
+            return NSImage(data:data)
+        }
     }
-
-    open func transformFromJSON(_ value: Any?) -> BXImage? {
+    return nil
+    }
+    #elseif os(iOS)
+    open func transformFromJSON(_ value: Any?) -> UIImage? {
         if let string=value as? String {
             if let data=Data(base64Encoded: string, options: [.ignoreUnknownCharacters]) {
-                return nil
-                // return BXImage(data:data) // NOT_IMPLEMENTED
+                return UIImage(data:data)
             }
         }
         return nil
     }
+    #elseif os(watchOS)
+    #elseif os(tvOS)
+    #endif
 
     open func transformToJSON(_ value: Object?) -> JSON? {
         if let image=value {
@@ -60,6 +75,6 @@ open class ImageTransform: TransformType {
             #elseif os(tvOS)
             #endif
         }
-         return nil
+        return nil
     }
 }

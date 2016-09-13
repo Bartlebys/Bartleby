@@ -14,15 +14,15 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a locker
-@objc(Locker) public class Locker : JObject{
+@objc(Locker) open class Locker : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Locker"
     }
 
 	//The associated registry UID.
-	dynamic public var registryUID:String? {	 
+	dynamic open var registryUID:String? {	 
 	    didSet { 
 	       if registryUID != oldValue {
 	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
@@ -31,7 +31,7 @@ import ObjectMapper
 	}
 
 	//The subject UID you want to lock
-	dynamic public var subjectUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var subjectUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -40,7 +40,7 @@ import ObjectMapper
 	}
 
 	//The userUID that can unlock the locker
-	dynamic public var userUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var userUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
 	       if userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -53,7 +53,7 @@ import ObjectMapper
 		case autoDestructive = "autoDestructive"
 		case persistent = "persistent"
 	}
-	public var mode:Mode = .autoDestructive  {	 
+	open var mode:Mode = .autoDestructive  {	 
 	    didSet { 
 	       if mode != oldValue {
 	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
@@ -66,7 +66,7 @@ import ObjectMapper
 		case online = "online"
 		case offline = "offline"
 	}
-	public var verificationMethod:VerificationMethod = .online  {	 
+	open var verificationMethod:VerificationMethod = .online  {	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -75,7 +75,7 @@ import ObjectMapper
 	}
 
 	//This code should be crypted / decrypted
-	dynamic public var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
+	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
 	    didSet { 
 	       if code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -84,7 +84,7 @@ import ObjectMapper
 	}
 
 	//The number of attempts
-	dynamic public var numberOfAttempt:Int = 3  {	 
+	dynamic open var numberOfAttempt:Int = 3  {	 
 	    didSet { 
 	       if numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
@@ -92,7 +92,7 @@ import ObjectMapper
 	    }
 	}
 
-	dynamic public var startDate:Date = Date.distantPast  {	 
+	dynamic open var startDate:Date = Date.distantPast  {	 
 	    didSet { 
 	       if startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -100,7 +100,7 @@ import ObjectMapper
 	    }
 	}
 
-	dynamic public var endDate:Date = Date.distantFuture  {	 
+	dynamic open var endDate:Date = Date.distantFuture  {	 
 	    didSet { 
 	       if endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
@@ -109,7 +109,7 @@ import ObjectMapper
 	}
 
 	//Thoses data gems will be return on success
-	dynamic public var gems:String = "\(Default.NO_GEM)"{	 
+	dynamic open var gems:String = "\(Default.NO_GEM)"{	 
 	    didSet { 
 	       if gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
@@ -125,7 +125,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.registryUID <- ( map["registryUID"] )
@@ -160,7 +160,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		if let registryUID = self.registryUID {
 			coder.encode(registryUID,forKey:"registryUID")
@@ -176,7 +176,7 @@ import ObjectMapper
 		coder.encode(self.gems,forKey:"gems")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -187,11 +187,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "lockers"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return Locker.collectionName
     }
 

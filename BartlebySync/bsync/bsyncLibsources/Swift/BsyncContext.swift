@@ -67,4 +67,5 @@ import Foundation
         self.numberOfCommands <- map["numberOfCommands"]
         self.autoCreateTrees <- map["autoCreateTrees"]
     }
+
 }

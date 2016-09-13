@@ -28,14 +28,14 @@ class RevealDirectivesCommand: CommandBase {
         let verbosity = BoolOption(shortFlag: "v", longFlag: "verbose",
             helpMessage: "Print verbose messages.\n\n")
 
-        addOptions(filePath, secretKey, sharedSalt, help, verbosity)
+        addOptions(options: filePath, secretKey, sharedSalt, help, verbosity)
         if parse() {
             self.isVerbose=verbosity.value
             let key = secretKey.value!
             let salt = sharedSalt.value!
 
 
-            RevealDirectivesCommand.revealDirectives(filePath.value!, secretKey: key, sharedSalt: salt, verbose: verbosity.value)
+            RevealDirectivesCommand.revealDirectives(filePath: filePath.value!, secretKey: key, sharedSalt: salt, verbose: verbosity.value)
         }
     }
 
@@ -58,7 +58,7 @@ class RevealDirectivesCommand: CommandBase {
 
 
         let fp: String=filePath
-        guard NSFileManager.defaultManager().fileExistsAtPath(fp)==true else {
+        guard FileManager.default.fileExists(atPath: fp)==true else {
             print("Unexisting path \(fp)")
             exit(EX__BASE)
         }
@@ -67,7 +67,7 @@ class RevealDirectivesCommand: CommandBase {
         var JSONString="{}"
         do {
             // If the file is named .json the file is deleted.
-            JSONString = try NSString(contentsOfFile: fp, encoding: Default.STRING_ENCODING) as String
+            JSONString = try NSString(contentsOfFile: fp, encoding: Default.STRING_ENCODING.rawValue) as String
             JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString) // Decrypt
         } catch {
             print("Deserialization of directives has failed \(fp) \(JSONString)")

@@ -1,5 +1,5 @@
 # Barteby's CLI
-Is a commandline tool that allow to create and update bartleby's apps. It is written in Swift 2.X and php.
+Is a CommandLine tool that allow to create and update bartleby's apps. It is written in Swift 2.X and php.
 
 # Commands
 

@@ -99,7 +99,7 @@ extension BartlebyDocument {
         // Push next bunch if there is no bunch in progress
         if !self.registryMetadata.bunchInProgress {
             // We donnot want to schedule anything if there is nothing to do.
-            if self.operations.count > 0 {
+            if self.pushOperations.count > 0 {
                 let nextBunchOfOperations=self._getNextBunchOfPendingOperations()
                 if nextBunchOfOperations.count>0{
                     bprint("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
@@ -115,9 +115,9 @@ extension BartlebyDocument {
     }
 
 
-    fileprivate func _getNextBunchOfPendingOperations()->[Operation]{
-        var nextBunch=[Operation]()
-        let filtered=self.operations.items.filter { $0.canBePushed() }
+    fileprivate func _getNextBunchOfPendingOperations()->[PushOperation]{
+        var nextBunch=[PushOperation]()
+        let filtered=self.pushOperations.items.filter { $0.canBePushed() }
         let filteredCount=filtered.count
         let maxBunchSize=Bartleby.configuration.MAX_OPERATIONS_BUNCH_SIZE
         if filteredCount > 0 {
@@ -142,13 +142,13 @@ extension BartlebyDocument {
      - parameter operations: the sorted operations to be excecuted
      - parameter handlers:   the handlers to hook the completion / Progression
      */
-    public func pushSortedOperations(_ bunchOfOperations: [Operation], handlers: Handlers?)->() {
+    public func pushSortedOperations(_ bunchOfOperations: [PushOperation], handlers: Handlers?)->() {
 
-        let totalNumberOfOperations=self.operations.count
+        let totalNumberOfOperations=self.pushOperations.count
 
         if self.registryMetadata.pendingOperationsProgressionState==nil{
             // It is the first Bunch
-            self.registryMetadata.totalNumberOfOperations=self.operations.count
+            self.registryMetadata.totalNumberOfOperations=self.pushOperations.count
             self.registryMetadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
         }
 
@@ -185,7 +185,7 @@ extension BartlebyDocument {
                     let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.precondition_Failed)
                     bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
                     handlers?.on(completion)
-                }
+               } 
             }
         } else {
             let completion=Completion.successState()
@@ -202,9 +202,9 @@ extension BartlebyDocument {
      - parameter handlers:           the global handlers
      - parameter identity:           the bunch identity
      */
-    fileprivate func _onCompletion(_ completedOperation:Operation,within bunchOfOperations:[Operation], handlers:Handlers?,identity:String){
+    fileprivate func _onCompletion(_ completedOperation:PushOperation,within bunchOfOperations:[PushOperation], handlers:Handlers?,identity:String){
         let nbOfunCompletedOperationsInBunch=Double(bunchOfOperations.filter { $0.completionState==nil }.count)
-        let currentOperationsCounter=self.operations.count
+        let currentOperationsCounter=self.pushOperations.count
         if nbOfunCompletedOperationsInBunch == 0{
 
             let _=self._updateProgressionState(completedOperation,currentOperationsCounter)
@@ -239,7 +239,7 @@ extension BartlebyDocument {
         }
     }
 
-    fileprivate func _updateProgressionState(_ completedOperation:Operation,_ currentOperationsCounter:Int)->Progression?{
+    fileprivate func _updateProgressionState(_ completedOperation:PushOperation,_ currentOperationsCounter:Int)->Progression?{
         if let progressionState=self.registryMetadata.pendingOperationsProgressionState{
             let total=Double(self.registryMetadata.totalNumberOfOperations)
             let completed=Double(self.registryMetadata.totalNumberOfOperations-currentOperationsCounter)
@@ -257,7 +257,7 @@ extension BartlebyDocument {
     }
 
 
-    fileprivate func _messageForOperation(_ operation:Operation?)->String{
+    fileprivate func _messageForOperation(_ operation:PushOperation?)->String{
         return NSLocalizedString("Upstream Data transmission", tableName:"operations", comment: "Upstream Data transmission")
     }
 

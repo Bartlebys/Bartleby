@@ -19,11 +19,11 @@ import Foundation
 @objc public protocol BsyncXPCProtocol {
 
     // MARK: Minimal protocol
-    func createDMG(_ card: BsyncDMGCard, handler: ComposedHandler)
-    func mountDMG(_ card: BsyncDMGCard, handler: ComposedHandler)
-    func unMountDMG(_ card: BsyncDMGCard, handler: ComposedHandler)
+    func createDMG(_ card: BsyncDMGCard, handler: @escaping ComposedHandler)
+    func mountDMG(_ card: BsyncDMGCard, handler: @escaping ComposedHandler)
+    func unMountDMG(_ card: BsyncDMGCard, handler: @escaping ComposedHandler)
 
-    func touch(_ handler: ComposedHandler)
+    func touch(_ handler: @escaping ComposedHandler)
 
     // MARK:- Disk Image Management
 
@@ -40,7 +40,7 @@ import Foundation
 
     - returns: N/A
      */
-    func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?, handler: ComposedHandler)
+    func createImageDisk(_ imageFilePath: String, volumeName: String, size: String, password: String?, handler:@escaping ComposedHandler)
 
 
     /* 
@@ -50,7 +50,7 @@ import Foundation
      - parameter volumePath: the volume path
      - parameter handler:    the handler
      */
-    func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:CompletionHandler)
+    func resizeDMG(_ size:String,imageFilePath:String,password:String?,completionHandler:@escaping CompletionHandler)
 
     /**
      Attaches a Volume from a Dmg path
@@ -62,7 +62,7 @@ import Foundation
 
      - returns: N/A
      */
-    func attachVolume(from path: String, withPassword: String?, handler: ComposedHandler)
+    func attachVolume(from path: String, withPassword: String?, handler:@escaping ComposedHandler)
 
     /**
      Attaches a Volume identified by its card
@@ -73,7 +73,7 @@ import Foundation
 
      - returns: N/A
      */
-    func attachVolume(identifiedBy card: BsyncDMGCard, handler: ComposedHandler)
+    func attachVolume(identifiedBy card: BsyncDMGCard, handler:@escaping ComposedHandler)
 
     /**
      Detaches the volume
@@ -82,7 +82,7 @@ import Foundation
      - parameter handler:       the composed handler for progress and completion
 
      */
-    func detachVolume(_ named: String, handler: ComposedHandler)
+    func detachVolume(_ named: String, handler:@escaping ComposedHandler)
 
 
     // MARK: - Directives
@@ -98,7 +98,7 @@ import Foundation
     - returns: N/A
     */
     func createDirectives(_ directives: BsyncDirectives, secretKey: String, sharedSalt: String, filePath: String,
-        handler: (ComposedHandler))
+        handler:@escaping ComposedHandler)
 
     /**
      Runs the directives.
@@ -111,7 +111,7 @@ import Foundation
 
      - returns: N/A
      */
-    func runDirectives(_ filePath: String, secretKey: String, sharedSalt: String, handler: ComposedHandler)
+    func runDirectives(_ filePath: String, secretKey: String, sharedSalt: String, handler:@escaping ComposedHandler)
 
     // MARK: File IO
 
@@ -124,7 +124,7 @@ import Foundation
 
      - returns: N/A
      */
-    func createDirectoryAtPath(_ path: String, handler: ComposedHandler)
+    func createDirectoryAtPath(_ path: String, handler:@escaping ComposedHandler)
 
     /**
      Reads the data with options
@@ -135,7 +135,7 @@ import Foundation
 
      - returns: N/A
      */
-    func readData(contentsOfFile path: String, handler: ComposedHandler)
+    func readData(contentsOfFile path: String, handler:@escaping ComposedHandler)
 
     /**
      Writes data to the given path
@@ -147,7 +147,7 @@ import Foundation
 
      - returns: N/A
      */
-    func writeData(_ data: Data, path: String, handler: ComposedHandler)
+    func writeData(_ data: Data, path: String, handler:@escaping ComposedHandler)
 
     /**
      Reads the data with options
@@ -168,7 +168,7 @@ import Foundation
      }
      }
      */
-    func readString(contentsOfFile path: String, handler: ComposedHandler)
+    func readString(contentsOfFile path: String, handler:@escaping ComposedHandler)
 
     /**
      Writes String to the given path using utf8 encoding
@@ -181,7 +181,7 @@ import Foundation
 
      - returns: N/A
      */
-    func writeString(_ string: String, path: String, handler: ComposedHandler)
+    func writeString(_ string: String, path: String, handler:@escaping ComposedHandler)
 
 
     /**
@@ -192,7 +192,7 @@ import Foundation
 
      - returns: N/A
      */
-    func itemExistsAtPath(_ path: String, handler: ComposedHandler)
+    func itemExistsAtPath(_ path: String, handler:@escaping ComposedHandler)
 
     /**
      Determines if a file exists and is a directory.
@@ -202,7 +202,7 @@ import Foundation
 
      - returns: N/A
      */
-    func fileExistsAtPath(_ path: String, handler: ComposedHandler)
+    func fileExistsAtPath(_ path: String, handler:@escaping ComposedHandler)
 
     /**
      Determines if a directory exists.
@@ -212,7 +212,7 @@ import Foundation
 
      - returns: N/A
      */
-    func directoryExistsAtPath(_ path: String, handler: ComposedHandler)
+    func directoryExistsAtPath(_ path: String, handler:@escaping ComposedHandler)
 
     /**
      Removes the item at a given path
@@ -221,7 +221,7 @@ import Foundation
      - parameter path:     path
      - parameter handlers: The progress and completion handler
      */
-    func removeItemAtPath(_ path: String, handler: ComposedHandler)
+    func removeItemAtPath(_ path: String, handler:@escaping ComposedHandler)
 
     /**
      Copies the file
@@ -232,7 +232,7 @@ import Foundation
 
      - returns: N/A
      */
-    func copyItemAtPath(_ srcPath: String, toPath dstPath: String, handler: ComposedHandler)
+    func copyItemAtPath(_ srcPath: String, toPath dstPath: String, handler:@escaping ComposedHandler)
 
     /**
      Moves the file
@@ -243,7 +243,7 @@ import Foundation
 
      - returns: N/A
      */
-    func moveItemAtPath(_ srcPath: String, toPath dstPath: String, handler: ComposedHandler)
+    func moveItemAtPath(_ srcPath: String, toPath dstPath: String, handler:@escaping ComposedHandler)
 
 
     /**
@@ -265,5 +265,5 @@ import Foundation
             }
         }
      */
-    func contentsOfDirectoryAtPath(_ path: String, handler: ComposedHandler)
+    func contentsOfDirectoryAtPath(_ path: String, handler:@escaping ComposedHandler)
 }

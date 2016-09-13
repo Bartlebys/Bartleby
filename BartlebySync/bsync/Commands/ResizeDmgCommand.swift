@@ -26,7 +26,7 @@ class ResizeDmgCommand: CommandBase {
             let help = BoolOption(shortFlag: "h", longFlag: "help",
                                   helpMessage: "Prints a help message.")
 
-            addOptions(path, help, size, password)
+            addOptions(options: path, help, size, password)
             if parse() {
 
                 if let path = path.value, let size = size.value {
@@ -38,7 +38,7 @@ class ResizeDmgCommand: CommandBase {
                     })
                     dmgManager.resizeDMG(size, imageFilePath: path, password: password.value, completionHandler: completionHandler!)
                 } else {
-                    self.on(Completion.failureState("Error unwrapping option", statusCode: .Undefined))
+                    self.on(Completion.failureState("Error unwrapping option", statusCode: .undefined))
                 }
             }
         }

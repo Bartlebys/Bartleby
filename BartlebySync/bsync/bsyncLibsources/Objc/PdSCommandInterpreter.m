@@ -372,7 +372,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
 - (void)_nextCommand{
     dispatch_async(dispatch_get_main_queue(), ^{
-         [_queue setSuspended:NO];
+        [_queue setSuspended:NO];
     });
 
 }
@@ -397,9 +397,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
-                                                                        withActionName:@"BartlebySyncUploadFileTo"
-                                                                             forMethod:@"POST"
-                                                                                   and:url];
+                                                                              withActionName:@"BartlebySyncUploadFileTo"
+                                                                                   forMethod:@"POST"
+                                                                                         and:url];
 
 
         NSString*lastChar=[source substringFromIndex:[source length]-1];
@@ -512,9 +512,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
             // REQUEST
             NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
-                                                                            withActionName:@"BartlebySyncGetFile"
-                                                                                 forMethod:@"GET"
-                                                                                       and:url];
+                                                                                  withActionName:@"BartlebySyncGetFile"
+                                                                                       forMethod:@"GET"
+                                                                                             and:url];
 
 
             [self _progressMessage:@"Downloading %@", url];
@@ -568,7 +568,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         BOOL isAFolder= [[destination substringFromIndex:[destination length]-1] isEqualToString:@"/"];
 
-            
+
 
         // Copy the destination file with a Sync Prefix
 
@@ -646,9 +646,9 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         // REQUEST
         NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
-                                                                        withActionName:@"BartlebySyncFinalizeTransactionIn"
-                                                                             forMethod:@"POST"
-                                                                                   and:url];
+                                                                              withActionName:@"BartlebySyncFinalizeTransactionIn"
+                                                                                   forMethod:@"POST"
+                                                                                         and:url];
 
         [request setHTTPBody:jsonBodyData];
 
@@ -847,13 +847,13 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                               toPath:absoluteDestination
                                error:&error];
         /*
-        if(error){
-            if(![_fileManager fileExistsAtPath:absoluteDestination]){
-                // NSFileManagerDelegate seems not to handle correctly this case
-                [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
-            }
-            [self _interruptOnFault:[error localizedDescription]];
-        }*/
+         if(error){
+         if(![_fileManager fileExistsAtPath:absoluteDestination]){
+         // NSFileManagerDelegate seems not to handle correctly this case
+         [self _progressMessage:@"Error on copyItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination ,[error localizedDescription]];
+         }
+         [self _interruptOnFault:[error localizedDescription]];
+         }*/
 
     }
 }
@@ -886,12 +886,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
                               toPath:absoluteDestination
                                error:&error];
         /*
-        if(error){
-            if(![_fileManager fileExistsAtPath:absoluteDestination]){
-                [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error localizedDescription]];
-                [self _interruptOnFault:[error localizedDescription]];
-            }
-        }*/
+         if(error){
+         if(![_fileManager fileExistsAtPath:absoluteDestination]){
+         [self _progressMessage:@"Error on moveItemAtPath \nfrom %@ \nto %@ \n%@ ",absoluteSource,absoluteDestination,[error localizedDescription]];
+         [self _interruptOnFault:[error localizedDescription]];
+         }
+         }*/
     }
 }
 

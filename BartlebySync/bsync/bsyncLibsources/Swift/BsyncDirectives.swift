@@ -46,8 +46,11 @@ import Foundation
     
     open func areValid()->(valid: Bool, message: String) {
         if let sourceURL = self.sourceURL, let destinationURL = self.destinationURL {
-            let destinationIsDistant = BsyncDirectives.distantSchemes.index(of: destinationURL.scheme) != nil
-            let sourceIsDistant = BsyncDirectives.distantSchemes.index(of: sourceURL.scheme) != nil
+
+            let destinationScheme=destinationURL.scheme ?? "NOT_FOUND"
+            let sourceScheme=sourceURL.scheme ?? "NOT_FOUND"
+            let destinationIsDistant = BsyncDirectives.distantSchemes.index(of: destinationScheme) != nil
+            let sourceIsDistant = BsyncDirectives.distantSchemes.index(of: sourceScheme) != nil
             
             if (sourceIsDistant || destinationIsDistant) {
                 if self.user == nil {

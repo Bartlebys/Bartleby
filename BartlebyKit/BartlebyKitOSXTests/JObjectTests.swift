@@ -15,7 +15,7 @@ class JObjectTests: XCTestCase {
         let user=User()
         user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
-        user.verificationMethod=User.VerificationMethod.ByEmail
+        user.verificationMethod=User.VerificationMethod.byEmail
         // Test NSCopying on JObject
         if let copiedUser=user.copy() as? User {
             XCTAssert(user.email == copiedUser.email, "users should be equivalent")
@@ -29,7 +29,7 @@ class JObjectTests: XCTestCase {
         let user=User()
         user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
-        user.verificationMethod=User.VerificationMethod.ByEmail
+        user.verificationMethod=User.VerificationMethod.byEmail
         // Test NSCopying on JObject
         do {
             if let copiedUser = try JSerializer.volatileDeepCopy(user) {

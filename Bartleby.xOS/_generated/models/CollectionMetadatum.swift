@@ -14,10 +14,10 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) public class CollectionMetadatum : JObject{
+@objc(CollectionMetadatum) open class CollectionMetadatum : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "CollectionMetadatum"
     }
 
@@ -25,15 +25,15 @@ import ObjectMapper
 	public enum Storage:String{
 		case monolithicFileStorage = "monolithicFileStorage"
 	}
-	public var storage:Storage = .monolithicFileStorage
+	open var storage:Storage = .monolithicFileStorage
 	//The holding collection name
-	dynamic public var collectionName:String = "\(Default.NO_NAME)"
+	dynamic open var collectionName:String = "\(Default.NO_NAME)"
 	//The proxy object (not serializable, not supervisable)
-	dynamic public var proxy:JObject?
+	dynamic open var proxy:JObject?
 	//Allow distant persistency?
-	dynamic public var allowDistantPersistency:Bool = true
+	dynamic open var allowDistantPersistency:Bool = true
 	//In Memory?
-	dynamic public var inMemory:Bool = true
+	dynamic open var inMemory:Bool = true
 
 
     // MARK: Mappable
@@ -42,7 +42,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.storage <- ( map["storage"] )
@@ -65,7 +65,7 @@ import ObjectMapper
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.storage.rawValue ,forKey:"storage")
 		coder.encode(self.collectionName,forKey:"collectionName")
@@ -73,7 +73,7 @@ import ObjectMapper
 		coder.encode(self.inMemory,forKey:"inMemory")
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -84,11 +84,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "collectionMetadata"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return CollectionMetadatum.collectionName
     }
 

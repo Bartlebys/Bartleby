@@ -11,10 +11,10 @@ import BartlebyKit
 
 class AuthCookiesTests: XCTestCase {
 
-    private static let _email="\(Bartleby.randomStringWithLength(6))@AuthCookiesTests"
-    private static let _password=Bartleby.randomStringWithLength(6)
-    private static var _userID: String="UNDEFINED"
-    private static var _createdUser: User?
+    fileprivate static let _email="\(Bartleby.randomStringWithLength(6))@AuthCookiesTests"
+    fileprivate static let _password=Bartleby.randomStringWithLength(6)
+    fileprivate static var _userID: String="UNDEFINED"
+    fileprivate static var _createdUser: User?
 
 
     // We need a real local document to login.
@@ -22,15 +22,15 @@ class AuthCookiesTests: XCTestCase {
 
     override class func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self.self)
         AuthCookiesTests.document.configureSchema()
         Bartleby.sharedInstance.declare(AuthCookiesTests.document)
-        AuthCookiesTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.Cookie
+        AuthCookiesTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.cookie
 
         // Purge cookie for the domain
-        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
             for cookie in cookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
 
@@ -39,10 +39,10 @@ class AuthCookiesTests: XCTestCase {
     // MARK: - User Creation
 
     func test001_createUser() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
         let user=AuthCookiesTests.document.newUser()
         user.email=AuthCookiesTests._email
-        user.verificationMethod = .ByEmail
+        user.verificationMethod = .byEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.password=AuthCookiesTests._password
         AuthCookiesTests._userID=user.UID // We store the UID for future deletion
@@ -58,17 +58,17 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test002_LoginUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AuthCookiesTests._createdUser {
             user.login(withPassword: AuthCookiesTests._password,
                        sucessHandler: { () -> () in
                         expectation.fulfill()
 
-                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                             XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
                         } else {
                             XCTFail("Auth requires a cookie")
@@ -79,18 +79,18 @@ class AuthCookiesTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
 
     func test003_LogoutUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(AuthCookiesTests._createdUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                            if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in
@@ -98,17 +98,17 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test004_LoginUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AuthCookiesTests._createdUser {
             user.login(withPassword: AuthCookiesTests._password,
                        sucessHandler: { () -> () in
                         expectation.fulfill()
 
-                        if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                             XCTAssertTrue((cookies.count>0), "We should  have at least one cookie  #\(cookies.count)")
                         } else {
                             XCTFail("Auth requires a cookie")
@@ -118,7 +118,7 @@ class AuthCookiesTests: XCTestCase {
                 XCTFail("\(context)")
             }
 
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -127,7 +127,7 @@ class AuthCookiesTests: XCTestCase {
 
     func test008_DeleteUser() {
 
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(AuthCookiesTests._userID,
                            fromRegistryWithUID: AuthCookiesTests.document.UID,
@@ -138,15 +138,15 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test009_LogoutUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(AuthCookiesTests._createdUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                            if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in
@@ -154,6 +154,6 @@ class AuthCookiesTests: XCTestCase {
             XCTFail("\(context)")
         }
 
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

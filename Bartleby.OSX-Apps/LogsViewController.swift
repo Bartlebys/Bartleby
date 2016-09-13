@@ -133,7 +133,6 @@ extension LogsViewController:NSTableViewDataSource{
 extension LogsViewController:NSTableViewDelegate{
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        // ??? to be verified
         guard let item = (self.arrayController.arrangedObjects as? NSArray)?.object(at:row) as? BprintEntry else {
             return 20
         }

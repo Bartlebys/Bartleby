@@ -14,15 +14,15 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Data Primitive Wrapper.
-@objc(JData) public class JData : JObject{
+@objc(JData) open class JData : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "JData"
     }
 
 	//the data
-	dynamic public var data:Data? {	 
+	dynamic open var data:Data? {	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
@@ -38,7 +38,7 @@ import ObjectMapper
         super.init(map)
     }
 
-    override public func mapping(_ map: Map) {
+    override open func mapping(_ map: Map) {
         super.mapping(map)
         self.disableSupervisionAndCommit()
 		self.data <- ( map["data"], Base64DataTransform() )
@@ -51,18 +51,18 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.disableSupervisionAndCommit()
-		self.data=Data()//NOT IMPLEMETED - decodeObject DATA OPTIONNAL
+		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
         self.disableSupervisionAndCommit()
     }
 
-    override public func encode(with coder: NSCoder) {
+    override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		if let data = self.data {
 			coder.encode(data,forKey:"data")
 		}
     }
 
-    override public class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
@@ -73,11 +73,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return "jDatas"
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return JData.collectionName
     }
 

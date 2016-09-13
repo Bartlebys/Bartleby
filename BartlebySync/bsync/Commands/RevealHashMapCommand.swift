@@ -17,7 +17,7 @@ class RevealHashMapCommand: CryptedCommand {
                                              helpMessage: "Path to the hashmap file.")
         let hashMapURLOption = StringOption(shortFlag: "u", longFlag: "url", required: false, helpMessage: "URL to the hashmap")
         
-        addOptions(hashMapPathOption, hashMapURLOption)
+        addOptions(options: hashMapPathOption, hashMapURLOption)
         if parse() {
             // Configure Bartleby without a specific URL
             Bartleby.configuration.KEY = secretKey
@@ -38,18 +38,18 @@ class RevealHashMapCommand: CryptedCommand {
             do {
                 if let path = hashMapPathOption.value {
                     let cryptedHashMap = try String(contentsOfFile: path)
-                    printHashMap(cryptedHashMap)
+                    printHashMap(cryptedHashMap: cryptedHashMap)
                 } else if let urlString = hashMapURLOption.value {
-                    let r = request(.GET, urlString)
+                    let r = request(urlString, method:HTTPMethod.get )
                     r.responseString(completionHandler: { (response) in
                         if let cryptedHashMap = response.result.value {
-                            printHashMap(cryptedHashMap)
+                            printHashMap(cryptedHashMap: cryptedHashMap)
                         } else {
-                            self.on(Completion.failureState("Error when retrieving the file", statusCode: .Undefined))
+                            self.on(Completion.failureState("Error when retrieving the file", statusCode: .undefined))
                         }
                     })
                 } else {
-                    self.on(Completion.failureState("You must specify a file path or a valid URL to the hashmap", statusCode: .Undefined))
+                    self.on(Completion.failureState("You must specify a file path or a valid URL to the hashmap", statusCode: .undefined))
                 }
             } catch {
                 self.on(Completion.failureStateFromError(error))

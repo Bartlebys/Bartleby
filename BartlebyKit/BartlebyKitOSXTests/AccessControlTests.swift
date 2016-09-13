@@ -12,22 +12,22 @@ import BartlebyKit
 class AccessControlTests: TestCase {
 
     
-    private static let _creatorEmail="Creator@AccessControlTests"
-    private static var _creatorUserID: String="UNDEFINED"
-    private static var _creatorUser: User?
+    fileprivate static let _creatorEmail="Creator@AccessControlTests"
+    fileprivate static var _creatorUserID: String="UNDEFINED"
+    fileprivate static var _creatorUser: User?
     
-    private static let _otherUserEmail="OtherUser@AccessControlTests"
-    private static var _otherUserID: String="UNDEFINED"
-    private static var _otherUser: User?
+    fileprivate static let _otherUserEmail="OtherUser@AccessControlTests"
+    fileprivate static var _otherUserID: String="UNDEFINED"
+    fileprivate static var _otherUser: User?
     
-    private static let _thirdUserEmail="ThirdUser@AccessControlTests"
-    private static let _thirdUserNewEmail="ThirdUserNewEmail@lylo.tv"
-    private static var _thirdUserID: String="UNDEFINED"
-    private static var _thirdUser: User?
+    fileprivate static let _thirdUserEmail="ThirdUser@AccessControlTests"
+    fileprivate static let _thirdUserNewEmail="ThirdUserNewEmail@lylo.tv"
+    fileprivate static var _thirdUserID: String="UNDEFINED"
+    fileprivate static var _thirdUser: User?
     
     // MARK: 1 - Creator actions
     func test101_createUser_Creator() {
-        let expectation = expectationWithDescription("CreateUser should respond")
+        let expectation = self.expectation(description: "CreateUser should respond")
         
         let user = self.createUser(TestCase.document.spaceUID,
                                    email: AccessControlTests._creatorEmail,
@@ -42,12 +42,12 @@ class AccessControlTests: TestCase {
         AccessControlTests._creatorUserID = user.UID // We store the UID for future deletion
         
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test103_CreateUser_OtherUser() {
         if let creator = AccessControlTests._creatorUser {
-            let expectation = expectationWithDescription("CreateUser should respond")
+            let expectation = self.expectation(description: "CreateUser should respond")
             
             let user = self.createUser(TestCase.document.spaceUID,
                                        creator: creator,
@@ -61,7 +61,7 @@ class AccessControlTests: TestCase {
             AccessControlTests._otherUserID=user.UID // We store the UID for future deletion
             AccessControlTests._otherUser = user
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Bad creator")
         }
@@ -69,7 +69,7 @@ class AccessControlTests: TestCase {
     
     func test104_CreateUser_ThirdUser() {
         if let creator = AccessControlTests._creatorUser {
-            let expectation = expectationWithDescription("CreateUser should respond")
+            let expectation = self.expectation(description: "CreateUser should respond")
             
             let user = self.createUser(TestCase.document.spaceUID,
                                        creator: creator,
@@ -83,7 +83,7 @@ class AccessControlTests: TestCase {
             AccessControlTests._thirdUser = user
             AccessControlTests._thirdUserID=user.UID // We store the UID for future deletion
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Bad creator")
         }
@@ -91,7 +91,7 @@ class AccessControlTests: TestCase {
     
     func test105_ReadUserByID_byCreator_ShouldNotRetrievePassword() {
         
-        let expectation = expectationWithDescription("ReadUserById replay")
+        let expectation = self.expectation(description: "ReadUserById replay")
         
         ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:AccessControlTests._otherUserID,
@@ -104,7 +104,7 @@ class AccessControlTests: TestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
@@ -113,10 +113,10 @@ class AccessControlTests: TestCase {
     
     func test106_UpdateUser_ThirdUserEmail_byCreator() {
         
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
         
         if let user=AccessControlTests._thirdUser {
-            user.status=User.Status.Suspended
+            user.status=User.Status.suspended
             XCTAssertNotEqual(AccessControlTests._thirdUserEmail, AccessControlTests._thirdUserNewEmail, "Make sure new email is different")
             user.email=AccessControlTests._thirdUserNewEmail
             
@@ -129,14 +129,14 @@ class AccessControlTests: TestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
     
     func test107_Check_ThirdUserEmail_HasBeenUpdated() {
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
         
         ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId: AccessControlTests._thirdUserID,
@@ -148,13 +148,13 @@ class AccessControlTests: TestCase {
                                 XCTAssertEqual(user.UID, AccessControlTests._thirdUserID, "UID  should match")
                                 
                                 XCTAssertEqual(user.email, AccessControlTests._thirdUserNewEmail, "The email should have been updated")
-                                XCTAssertEqual(user.status, User.Status.Suspended, "The status should have been updated")
+                                XCTAssertEqual(user.status, User.Status.suspended, "The status should have been updated")
         }) { (context) -> () in
             expectation.fulfill()
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
                 bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
@@ -163,7 +163,7 @@ class AccessControlTests: TestCase {
     
     func test108_DeleteUser_UnexistingUser_ShouldFail() {
         
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute("unexisting id",
                            fromRegistryWithUID:  TestCase.document.UID,
@@ -175,15 +175,15 @@ class AccessControlTests: TestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test199_LogoutUser_Creator() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute( AccessControlTests._creatorUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                            if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in
@@ -191,18 +191,18 @@ class AccessControlTests: TestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 2 - Other user action
     func test201_LoginUser_OtherUser() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AccessControlTests._otherUser {
             user.login(withPassword: user.password,
                        sucessHandler: { () -> () in
                         expectation.fulfill()
-                        if TestCase.document.registryMetadata.identificationMethod == .Cookie{
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                        if TestCase.document.registryMetadata.identificationMethod == .cookie{
+                            if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
                             } else {
                                 XCTFail("Auth requires a cookie")
@@ -215,14 +215,14 @@ class AccessControlTests: TestCase {
                 XCTFail("\(context)")
             }
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
     
     func test202_ReadUserByID_Creator_byOtherUser_ShouldNotRetrievePassword() {
-        let expectation = expectationWithDescription("ReadUserById should respond")
+        let expectation = self.expectation(description: "ReadUserById should respond")
         
         ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
                              userId:AccessControlTests._creatorUserID,
@@ -236,11 +236,11 @@ class AccessControlTests: TestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test203_DeleteUser_Creator_byOtherUser_ShouldFail() {
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._creatorUserID,
                            fromRegistryWithUID: AccessControlTests.document.UID,
@@ -252,11 +252,11 @@ class AccessControlTests: TestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test204_DeleteUser_ThirdUser_byOtherUser_ShouldFail() {
-        let expectation = expectationWithDescription("DeleteUser should respond")
+        let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._thirdUserID,
                            fromRegistryWithUID: AccessControlTests.document.UID,
@@ -268,11 +268,11 @@ class AccessControlTests: TestCase {
             XCTAssertEqual(context.httpStatusCode, 403)
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test205_UpdateUser_Creator_byOtherUser_ShouldFail() {
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
         
         if let user = AccessControlTests._creatorUser {
             user.email = "badmail@lylo.tv"
@@ -288,14 +288,14 @@ class AccessControlTests: TestCase {
                 user.email = AccessControlTests._creatorEmail
             }
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
     
     func test206_UpdateUser_ThirdUser_byOtherUser_ShouldFail() {
-        let expectation = expectationWithDescription("UpdateUser should respond")
+        let expectation = self.expectation(description: "UpdateUser should respond")
         
         if let user = AccessControlTests._thirdUser {
             user.email = "otherbadmail@lylo.tv"
@@ -311,19 +311,19 @@ class AccessControlTests: TestCase {
                 user.email = AccessControlTests._thirdUserEmail
             }
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
     }
     
     func test299_LogoutUser_OtherUser() {
-        let expectation = expectationWithDescription("LogoutUser should respond")
+        let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(AccessControlTests._otherUser!,
                            sucessHandler: { () -> () in
                             expectation.fulfill()
                             
-                            if let cookies=NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(TestsConfiguration.API_BASE_URL) {
+                            if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count==0), "We should not have any cookie set found #\(cookies.count)")
                             }
         }) { (context) -> () in
@@ -331,13 +331,13 @@ class AccessControlTests: TestCase {
             XCTFail("\(context)")
         }
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 3 - Try login with suspended user
     
     func test301_LoginUser_ThirdUser_ShouldFailBecauseOfSuspend() {
-        let expectation = expectationWithDescription("LoginUser should respond")
+        let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AccessControlTests._thirdUser {
             user.login(withPassword: user.password,
                        sucessHandler: { () -> () in
@@ -348,7 +348,7 @@ class AccessControlTests: TestCase {
                 XCTAssertEqual(context.httpStatusCode, 423)
             }
             
-            waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } else {
             XCTFail("Invalid user")
         }
@@ -358,12 +358,12 @@ class AccessControlTests: TestCase {
     // MARK: 4 - Cleanup
     
     func test401_Delete_users() {
-        let expectation = expectationWithDescription("Users should be deleted")
+        let expectation = self.expectation(description: "Users should be deleted")
         self.deleteCreatedUsers(Handlers { (deletion) in
             expectation.fulfill()
             XCTAssert(deletion.success, deletion.message)
             })
         
-        waitForExpectationsWithTimeout(TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }
