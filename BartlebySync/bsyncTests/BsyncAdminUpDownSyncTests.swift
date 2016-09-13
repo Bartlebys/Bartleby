@@ -32,7 +32,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
     
     fileprivate var _upFolderPath = ""
 
-    fileprivate var _distantTreeURL = URL()
+    fileprivate var _distantTreeURL = TestsConfiguration.API_BASE_URL
 
     fileprivate var _downFolderPath = ""
 
@@ -59,7 +59,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
             })
         BsyncAdminUpDownSyncTests._user = user
             
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 2 - Prepare folder and directives
@@ -80,26 +80,26 @@ class BsyncAdminUpDownSyncTests: TestCase {
     
     func test301_RunLocalAnalyser_UpPath() {
         let expectation = self.expectation(description: "Local analyser should complete")
-        var analyzer = BsyncLocalAnalyzer()
+        let analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_upFolderPath, handlers: Handlers { (analyze) in
             expectation.fulfill()
             XCTAssert(analyze.success, analyze.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test302_RunLocalAnalyser_DownPath() {
         let expectation = self.expectation(description: "Local analyser should complete")
-        var analyzer = BsyncLocalAnalyzer()
+        let analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_downFolderPath, handlers: Handlers { (analyze) in
             expectation.fulfill()
             XCTAssert(analyze.success, analyze.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 4 - Run synchronization
@@ -124,7 +124,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test402_RunDirectives_DistantToDown() {
@@ -147,7 +147,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
         }))
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test403_CheckFileHasBeenDownloaded() {
@@ -175,26 +175,26 @@ class BsyncAdminUpDownSyncTests: TestCase {
     
     func test601_RunLocalAnalyser_UpPath() {
         let expectation = self.expectation(description: "Local analyser should complete")
-        var analyzer = BsyncLocalAnalyzer()
+        let analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_upFolderPath, handlers: Handlers { (analyze) in
             expectation.fulfill()
             XCTAssert(analyze.success, analyze.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test602_RunLocalAnalyser_DownPath() {
         let expectation = self.expectation(description: "Local analyser should complete")
-        var analyzer = BsyncLocalAnalyzer()
+        let analyzer = BsyncLocalAnalyzer()
         
         analyzer.createHashMapFromLocalPath(_downFolderPath, handlers: Handlers { (analyze) in
             expectation.fulfill()
             XCTAssert(analyze.success, analyze.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: 7 - Run synchronization
@@ -219,7 +219,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test702_RunDirectives_DistantToDown() {
@@ -242,7 +242,7 @@ class BsyncAdminUpDownSyncTests: TestCase {
             expectation.fulfill()
         }))
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test703_Check_file_has_been_delete() {
@@ -263,6 +263,6 @@ class BsyncAdminUpDownSyncTests: TestCase {
             XCTAssert(deletion.success, deletion.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

@@ -36,7 +36,7 @@ class BsyncKeyValueStorageTests: TestCase {
     }
 
     func test101_Upsert1() {
-        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
+        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path))
         let user = User()
         user.creatorUID = user.UID
         user.spaceUID = BsyncKeyValueStorageTests._spaceUID
@@ -44,7 +44,7 @@ class BsyncKeyValueStorageTests: TestCase {
         _kvs["user1"] = user
     }
     func test102_Upsert2() {
-       XCTAssertTrue(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
+       XCTAssertTrue(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path))
         let s=JString()
         s.string="value2"
        _kvs["key2"] = s
@@ -82,7 +82,7 @@ class BsyncKeyValueStorageTests: TestCase {
     func test108_RemoveAll() {
         do {
             try _kvs.removeAll()
-            XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
+            XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path))
         } catch {
             XCTFail("\(error)")
         }
@@ -90,7 +90,7 @@ class BsyncKeyValueStorageTests: TestCase {
 
     func test109_EnumerateAfterRemoveAll() {
         let kvs = BsyncKeyValueStorage(url: BsyncKeyValueStorageTests._kvsUrl)
-        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path!))
+        XCTAssertFalse(_fm.fileExists(atPath: BsyncKeyValueStorageTests._kvsUrl.path))
 
         do {
             try kvs.open()

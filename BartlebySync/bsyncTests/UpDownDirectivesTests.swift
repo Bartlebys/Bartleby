@@ -19,7 +19,7 @@ class UpDownDirectivesTestsNoCrypto: UpDownDirectivesTests {
 
 class UpDownDirectivesTests: SyncTestCase {
 
-    fileprivate var _distantTreeURL = URL()
+    fileprivate var _distantTreeURL = TestsConfiguration.API_BASE_URL
 
     fileprivate static var _upDirectives = BsyncDirectives()
     fileprivate static var _downDirectives = BsyncDirectives()

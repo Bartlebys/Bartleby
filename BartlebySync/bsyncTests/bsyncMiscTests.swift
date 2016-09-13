@@ -36,7 +36,7 @@ class bsyncMiscTests: TestCase {
                 }
                 })
             
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("Error: \(error)")
         }
@@ -46,7 +46,7 @@ class bsyncMiscTests: TestCase {
         
         let expectation = self.expectation(description: "hash_sample_folder")
         
-        var analyzer=BsyncLocalAnalyzer()
+        let analyzer=BsyncLocalAnalyzer()
         analyzer.saveHashInAFile=false
         analyzer.recomputeHash=true
         
@@ -97,7 +97,7 @@ class bsyncMiscTests: TestCase {
                 })
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func randomStringWithLength (_ len: Int) -> String {

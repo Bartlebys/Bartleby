@@ -14,7 +14,7 @@ class DirectivesSerializationTests: TestCase {
     fileprivate var _localDestinationPath = ""
     fileprivate var _directivesPath = ""
 
-    fileprivate var _distantTreeURL = URL()
+    fileprivate var _distantTreeURL = TestsConfiguration.API_BASE_URL
     
     override func setUp() {
         super.setUp()

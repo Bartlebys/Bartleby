@@ -44,7 +44,7 @@ class SyncTestCase : TestCase {
 
     func sync(_ handlers: Handlers) {
         // We don't perform sync, we just check the source and destination hashmap the same
-        var analyzer = BsyncLocalAnalyzer()
+        let analyzer = BsyncLocalAnalyzer()
         analyzer.recomputeHash = true
         analyzer.saveHashInAFile = false
         analyzer.createHashMapFromLocalPath(self.sourceFolderPath, handlers: Handlers { (computeSrc) in
@@ -126,7 +126,7 @@ class SyncTestCase : TestCase {
 
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -161,7 +161,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -195,7 +195,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
 
         } catch {
@@ -242,7 +242,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -279,7 +279,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
 
         } catch {
             XCTFail("\(error)")
@@ -323,7 +323,7 @@ class SyncTestCase : TestCase {
             }
             })
 
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     // @bpds: func test008_Remove_one_file()
@@ -357,7 +357,7 @@ class SyncTestCase : TestCase {
                 }
                 })
 
-            self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+            self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         } catch {
             XCTFail("\(error)")
         }
@@ -370,6 +370,6 @@ class SyncTestCase : TestCase {
             XCTAssert(dispose.success, dispose.message)
             })
 
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }

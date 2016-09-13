@@ -17,14 +17,14 @@ class LocalDMGSyncTests: LocalSyncTests {
     fileprivate var _masterDMGFullPath = ""
     fileprivate let _masterDMGPassword = "12345"
     fileprivate var _masterVolumePath = ""
-    fileprivate var _masterVolumeURL = URL()
+    fileprivate var _masterVolumeURL = TestsConfiguration.API_BASE_URL
     
     fileprivate var _slaveDMGName = ""
     fileprivate var _slaveDMGPath = ""
     fileprivate var _slaveDMGFullPath = ""
     fileprivate let _slaveDMGPassword = "67890"
     fileprivate var _slaveVolumePath = ""
-    fileprivate var _slaveVolumeURL = URL()
+    fileprivate var _slaveVolumeURL = TestsConfiguration.API_BASE_URL
 
 
     fileprivate static var _prefix=Bartleby.createUID()

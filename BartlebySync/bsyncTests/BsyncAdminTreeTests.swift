@@ -50,7 +50,7 @@ class BsyncAdminTreeTests: TestCase {
                 XCTFail("\(context)")
         }
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test101_loginUser() {
@@ -63,7 +63,7 @@ class BsyncAdminTreeTests: TestCase {
                 XCTFail("\(context)")
         }
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test102_touchUnexistingTree() {
@@ -74,7 +74,7 @@ class BsyncAdminTreeTests: TestCase {
             XCTAssertFalse(touch.success, "Tree shouldn't exists")
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test103_createTree() {
@@ -85,7 +85,7 @@ class BsyncAdminTreeTests: TestCase {
             XCTAssert(create.success, create.message + " with error code: \(create.statusCode)")
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
     func test104_touchExistingTree() {
@@ -96,7 +96,7 @@ class BsyncAdminTreeTests: TestCase {
             XCTAssert(touch.success, touch.message)
             })
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     // MARK: Cleanup
@@ -111,7 +111,7 @@ class BsyncAdminTreeTests: TestCase {
                 XCTFail("\(context)")
         }
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
     
     func test502_LogoutUser() {
@@ -127,6 +127,6 @@ class BsyncAdminTreeTests: TestCase {
             XCTFail("\(context)")
         }
         
-        self.waitForExpectations(withTimeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+        self.waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 }
