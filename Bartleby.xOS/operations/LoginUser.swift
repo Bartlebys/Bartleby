@@ -31,7 +31,7 @@ open class LoginUser: JObject {
             // So you must create a Document and use its spaceUID before to login.
             let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(password)) ?? password
             let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":cryptoPassword as AnyObject, "identification":registry.registryMetadata.identificationMethod.rawValue as AnyObject]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary) 
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in

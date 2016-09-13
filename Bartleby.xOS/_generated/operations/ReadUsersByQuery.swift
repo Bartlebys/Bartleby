@@ -95,7 +95,7 @@ import ObjectMapper
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("usersByQuery")
             let dictionary:Dictionary<String, Any>?=Mapper().toJSON(parameters)
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUsersByQuery" ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUsersByQuery" ,forMethod:"GET", and: pathURL)
             
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)

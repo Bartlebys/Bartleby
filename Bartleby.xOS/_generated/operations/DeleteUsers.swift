@@ -206,7 +206,7 @@ import ObjectMapper
                 let pathURL = document.baseURL.appendingPathComponent("users")
                 var parameters=Dictionary<String, Any>()
                 parameters["ids"]=ids
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteUsers" ,forMethod:"DELETE", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteUsers" ,forMethod:"DELETE", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in

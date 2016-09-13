@@ -127,7 +127,7 @@ open class VerifyLocker: JObject {
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             let pathURL=document.baseURL.appendingPathComponent("locker/verify")
             let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID as AnyObject, "code":code as AnyObject]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in

@@ -97,7 +97,7 @@ extension BartlebyDocument {
             let pathURL=self.baseURL.appendingPathComponent("/Export")
             let dictionary=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
 
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
 
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)

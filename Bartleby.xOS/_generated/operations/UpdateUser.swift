@@ -207,7 +207,7 @@ import ObjectMapper
                 let pathURL = document.baseURL.appendingPathComponent("user")
                 var parameters=Dictionary<String, Any>()
                 parameters["user"]=Mapper<User>().toJSON(user)
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateUser" ,forMethod:"PUT", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateUser" ,forMethod:"PUT", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in

@@ -147,7 +147,7 @@ extension BartlebyDocument {
                 pathURL = baseURL.appendingPathComponent("\(entityName)")
                 dictionary["ids"]=uids as AnyObject?
             }
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in

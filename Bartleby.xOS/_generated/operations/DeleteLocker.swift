@@ -205,7 +205,7 @@ import ObjectMapper
                 let pathURL = document.baseURL.appendingPathComponent("locker")
                 var parameters=Dictionary<String, Any>()
                 parameters["lockerId"]=lockerId
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLocker" ,forMethod:"DELETE", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in

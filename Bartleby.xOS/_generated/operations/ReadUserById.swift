@@ -32,7 +32,7 @@ import ObjectMapper
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("user/\(userId)")
             let dictionary:Dictionary<String, Any>=[:]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUserById" ,forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"ReadUserById" ,forMethod:"GET", and: pathURL)
             
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)

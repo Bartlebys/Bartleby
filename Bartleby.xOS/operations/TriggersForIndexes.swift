@@ -35,7 +35,7 @@ import Foundation
 
             let pathURL=document.baseURL.appendingPathComponent("triggers")
             let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject,"ignoreHoles": ignoreHoles as AnyObject]
-            let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
                 request(resource:r).validate().responseJSON(completionHandler: { (response) in

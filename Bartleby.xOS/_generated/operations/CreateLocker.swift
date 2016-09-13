@@ -207,7 +207,7 @@ import ObjectMapper
                 let pathURL = document.baseURL.appendingPathComponent("locker")
                 var parameters=Dictionary<String, Any>()
                 parameters["locker"]=Mapper<Locker>().toJSON(locker)
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateLocker" ,forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateLocker" ,forMethod:"POST", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in

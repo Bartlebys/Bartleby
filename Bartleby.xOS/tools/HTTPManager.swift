@@ -72,7 +72,7 @@ open class HTTPManager: NSObject {
 
      - returns: the mutable
      */
-    static open func mutableRequestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
+    static open func requestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
         var request=URLRequest(url: url)
         request.httpMethod=method
         let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID:registryUID, withActionName: actionName)
@@ -159,7 +159,7 @@ open class HTTPManager: NSObject {
      */
     static open func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/Reachable")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
@@ -219,7 +219,7 @@ open class HTTPManager: NSObject {
      */
     static open func verifyCredentials(_ registryUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/verify/credentials")
-        let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
 
             let request=response.request

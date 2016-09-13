@@ -396,10 +396,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
                                                                               withActionName:@"BartlebySyncUploadFileTo"
                                                                                    forMethod:@"POST"
                                                                                          and:url];
+
+        NSMutableURLRequest*request=[immutableRequest mutableCopy];
 
 
         NSString*lastChar=[source substringFromIndex:[source length]-1];
@@ -511,7 +513,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSURL *url = [NSURL URLWithString:urlString];
 
             // REQUEST
-            NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+            NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
                                                                                   withActionName:@"BartlebySyncGetFile"
                                                                                        forMethod:@"GET"
                                                                                              and:url];
@@ -645,10 +647,12 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         NSURL*url = [NSURL URLWithString:URLString];
 
         // REQUEST
-        NSMutableURLRequest *request = [HTTPManager mutableRequestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
                                                                               withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                                    forMethod:@"POST"
                                                                                          and:url];
+
+        NSMutableURLRequest*request=[immutableRequest mutableCopy];
 
         [request setHTTPBody:jsonBodyData];
 

@@ -218,7 +218,7 @@ import ObjectMapper
                     collection.append(serializedInstance)
                 }
                 parameters["lockers"]=collection
-                let urlRequest=HTTPManager.mutableRequestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateLockers" ,forMethod:"PUT", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"UpdateLockers" ,forMethod:"PUT", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(resource:r).validate().responseJSON(completionHandler: { (response) in
