@@ -22,7 +22,7 @@ class AuthCookiesTests: XCTestCase {
 
     override class func setUp() {
         super.setUp()
-        Bartleby.sharedInstance.configureWith(TestsConfiguration.self.self)
+        Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         AuthCookiesTests.document.configureSchema()
         Bartleby.sharedInstance.declare(AuthCookiesTests.document)
         AuthCookiesTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.cookie
