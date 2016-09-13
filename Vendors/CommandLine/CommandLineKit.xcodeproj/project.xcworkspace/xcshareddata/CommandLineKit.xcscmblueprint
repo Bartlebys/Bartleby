@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C7575CE4A52424D6C48BB376B4D4C2095D15C083",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "3A417116595880486B2184BA5371F6CBC6B00291" : 9223372036854775807,
+    "C7575CE4A52424D6C48BB376B4D4C2095D15C083" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "7EB6AC68-6121-4AA5-BA89-3BCBA122E8CC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "3A417116595880486B2184BA5371F6CBC6B00291" : "",
+    "C7575CE4A52424D6C48BB376B4D4C2095D15C083" : "Bartleby\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CommandLineKit",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Vendors\/CommandLine\/CommandLineKit.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "gitlab.lylo.tv:YouDub\/YouDubOSX.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3A417116595880486B2184BA5371F6CBC6B00291"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Bartlebys\/Bartleby.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C7575CE4A52424D6C48BB376B4D4C2095D15C083"
+    }
+  ]
+}
