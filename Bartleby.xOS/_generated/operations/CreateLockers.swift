@@ -16,13 +16,13 @@ import ObjectMapper
 @objc(CreateLockers) public class CreateLockers : JObject,JHTTPCommand{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "CreateLockers"
     }
 
-    private var _lockers:[Locker] = [Locker]()
+    fileprivate var _lockers:[Locker] = [Locker]()
 
-    private var _registryUID:String=Default.NO_UID
+    fileprivate var _registryUID:String=Default.NO_UID
 
     required public convenience init(){
         self.init([Locker](), inRegistryWithUID:Default.NO_UID)
@@ -87,7 +87,7 @@ import ObjectMapper
 
      - returns: return the operation
      */
-    private func _getOperation()->PushOperation{
+    fileprivate func _getOperation()->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             if let ic:PushOperationsCollectionController = try? document.getCollection(){
                 let operations=ic.items.filter({ (operation) -> Bool in
@@ -158,7 +158,7 @@ import ObjectMapper
         }
     }
 
-    public func push(sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
+    open func push(sucessHandler success:@escaping (_ context:JHTTPResponse)->(),
         failureHandler failure:@escaping (_ context:JHTTPResponse)->()){
         // The unitary operation are not always idempotent
         // so we do not want to push multiple times unintensionnaly.
@@ -204,7 +204,7 @@ import ObjectMapper
         }
     }
 
-    static public func execute(_ lockers:[Locker],
+    static open func execute(_ lockers:[Locker],
             inRegistryWithUID registryUID:String,
             sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
             failureHandler failure: @escaping(_ context:JHTTPResponse)->()){

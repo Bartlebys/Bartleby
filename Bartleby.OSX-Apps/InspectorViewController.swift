@@ -89,7 +89,7 @@ import Cocoa
     @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for operation in registry.pushOperations.reversed(){
-                registry.pushOperations.removeObject(operation!, commit: false)
+                registry.pushOperations.removeObject(operation, commit: false)
             }
         }
     }
@@ -102,10 +102,8 @@ import Cocoa
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
-                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { (selected) in
-                    DispatchQueue.main.async {
-                        self.updateRepresentedObject(selected)
-                    }
+                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { [unowned self](selected) in
+                    self.updateRepresentedObject(selected)
                 })
 
                 self._topViewController=self.sourceEditor
@@ -145,32 +143,37 @@ import Cocoa
 
      - parameter selected: the outline selected Object
      */
-    func updateRepresentedObject(_ selected:Collectible) -> () {
+    func updateRepresentedObject(_ selected:Any?) -> () {
 
-        // Did the type of represented object changed.
-        if selected.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
+        if selected==nil {
+            print("NIL")
+        }
+        if let object=selected as? JObject{
+            // Did the type of represented object changed.
+            if object.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
 
-            switch selected {
+                switch object {
+                case _  where object is PushOperation :
+                    //self._bottomViewController=self.changesViewController
+                    self._bottomViewController=self.operationViewController
+                    break
+                default:
+                    self._bottomViewController=self.changesViewController
+                }
 
-            case let selected  where selected is Operation :
-                //self._bottomViewController=self.changesViewController
-                self._bottomViewController=self.operationViewController
-                break
-            default:
-                self._bottomViewController=self.changesViewController
+                if self.topBox.contentView != self._topViewController!.view{
+                    self.topBox.contentView=self._topViewController!.view
+                }
+
+                if self.bottomBox.contentView != self._bottomViewController!.view{
+                    self.bottomBox.contentView=self._bottomViewController!.view
+                }
             }
-
-            if self.topBox.contentView != self._topViewController!.view{
-                self.topBox.contentView=self._topViewController!.view
-            }
-
-            if self.bottomBox.contentView != self._bottomViewController!.view{
-                self.bottomBox.contentView=self._bottomViewController!.view
-            }
+            
+            self._topViewController?.representedObject=selected
+            self._bottomViewController?.representedObject=selected
         }
 
-        self._topViewController?.representedObject=selected
-        self._bottomViewController?.representedObject=selected
 
     }
 
@@ -214,45 +217,73 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             selectedIndexes=IndexSet(integer: 0)
         }
         self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
-
-
     }
 
-
-    //MARK: NSOutlineViewDataSource
-
+    //MARK: - NSOutlineViewDataSource
 
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let collection  = item as? CollectibleCollection {
-            return collection.count
+
+        if item==nil{
+            return self._collectionNames.count + 1
         }
-        return self._collectionNames.count + 1
+
+
+        if let object=item as? JObject{
+            if let collection  = object as?  BartlebyCollection {
+                return collection.count
+            }
+        }
+
+        return 0
+
     }
 
+
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let collection  = item as? CollectibleCollection {
-            return collection.itemAtIndex(index) as AnyObject
-        }else{
+        if item==nil{
+            // Root of the tree
+            // Return the Metadata
             if index==0{
                 return self._registry.registryMetadata
+            }else{
+                // Return the collections
+                let collectionName=self._collectionNames[index-1]
+                return self._registry.collectionByName(collectionName)
             }
-            let collectionName=self._collectionNames[index - 1]
-            return self._registry.collectionByName(collectionName)
         }
+
+        if let object=item as? JObject{
+            if let collection  = object as? BartlebyCollection {
+                if let element=collection.item(at: index){
+                    return element
+                }
+                return "NOTHING"
+            }
+        }
+        return "ERROR"
     }
 
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        return (item is CollectibleCollection)
+        if let object=item as? JObject{
+            return object is BartlebyCollection
+        }
+        return false
     }
 
+    /*
+     NOTE: Returning nil indicates that the item's state will not be persisted.
+     */
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-        if let serializable = item as? Serializable {
-            return JSerializer.serialize(serializable)
+        if let object=item as? JObject{
+            return JSerializer.serialize(object)
         }
         return nil
     }
 
+    /*
+     NOTE: Returning nil indicates the item no longer exists, and won't be re-expanded.
+     */
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         if let deserializable = object as? Data {
             do {
@@ -265,74 +296,80 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         return nil
     }
 
-    //MARK: NSOutlineViewDelegate
+    //MARK: - NSOutlineViewDelegate
 
-
-    func outlineView(_ outlineView: NSOutlineView, viewFor viewForTableColumn: NSTableColumn?, item: Any) -> NSView? {
-        switch item {
-        case let element where element is CollectibleCollection :
-            let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
-            if let textField = view.textField {
-                textField.stringValue = (element as! CollectibleCollection).d_collectionName
-            }
-            self.configureInlineButton(view, casted: element as! JObject)
-            return view
-        case let element  where element is RegistryMetadata :
-            let casted=(element as! RegistryMetadata)
-            let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
-            if let textField = view.textField {
-                textField.stringValue = "Registry Metadata"
-            }
-            self.configureInlineButton(view, casted: casted)
-            return view
-        case let element  where element is User :
-            let casted=(element as! User)
-            let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
-            if let textField = view.textField {
-                if casted.creatorUID==casted.UID{
-                    textField.stringValue = "Current User"
-                }else{
+    public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+        if let object = item as? JObject{
+            if let casted=object as? BartlebyCollection {
+                let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
+                    textField.stringValue = casted.d_collectionName
+                }
+                self.configureInlineButton(view, object: casted)
+                return view
+            }else if let casted=object as? RegistryMetadata {
+                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
+                    textField.stringValue = "Registry Metadata"
+                }
+                self.configureInlineButton(view, object: casted)
+                return view
+            }else if  let casted=object as? User {
+                let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
+                    if casted.creatorUID==casted.UID{
+                        textField.stringValue = "Current User"
+                    }else{
+                        textField.stringValue = casted.UID
+                    }
+                }
+                self.configureInlineButton(view, object: casted)
+                return view
+            }else{
+                let casted=object
+                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
                     textField.stringValue = casted.UID
                 }
+                self.configureInlineButton(view, object: casted)
+                return view
             }
-            self.configureInlineButton(view, casted: casted)
-            return view
-        case let element  where element is Collectible :
-            let casted=(element as! JObject)
+        }else{
             let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
-                textField.stringValue = casted.UID
+                textField.stringValue = "ERROR"
             }
-            self.configureInlineButton(view, casted: casted)
             return view
-
-        default:
-            return  NSView()
         }
     }
 
 
-
-    fileprivate func configureInlineButton(_ view:NSView,casted:JObject){
+    fileprivate func configureInlineButton(_ view:NSView,object:Any){
         if let inlineButton = view.viewWithTag(2) as? NSButton{
-            if casted.changedKeys.count > 0 {
-                inlineButton.isHidden=false
-                inlineButton.title="\(casted.changedKeys.count)"
+            if let casted=object as? JObject{
+                if casted.changedKeys.count > 0 {
+                    inlineButton.isHidden=false
+                    inlineButton.title="\(casted.changedKeys.count)"
+                }else{
+                    inlineButton.isHidden=true
+                }
             }else{
                 inlineButton.isHidden=true
             }
         }
-
     }
 
 
-
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        if let _ = item as? CollectibleCollection {
-            return 20
-        }else{
-            return 20
+        if let object=item as? JObject {
+            if object is BartlebyCollection {
+                return 20
+            }
+            if object is RegistryMetadata {
+                return 20
+            }
         }
+        return 80
     }
     
     
@@ -342,8 +379,16 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        if let item=self._outlineView.item(atRow: _outlineView.selectedRow) as? Collectible{
-            self._selectionHandler(item)
+        let selected=self._outlineView.selectedRow
+        if let item=self._outlineView.item(atRow:selected){
+            if let object=item as? JObject{
+                self._selectionHandler(object)
+            }else{
+                print("*\(item)*")
+            }
+
+        }else{
+            print("*\(selected)*")
         }
     }
     

@@ -15,7 +15,7 @@ import ObjectMapper
 @objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : JObject {
 	
 	// Universal type support
-	override public class func typeName() -> String {
+	override open class func typeName() -> String {
 		 return "ReadLockersByQueryParameters"
 	}
 	// 
@@ -78,10 +78,10 @@ import ObjectMapper
 
 
 
-@objc(ReadLockersByQuery) public class ReadLockersByQuery : JObject{
+@objc(ReadLockersByQuery) open class ReadLockersByQuery : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
            return "ReadLockersByQuery"
     }
 

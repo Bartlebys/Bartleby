@@ -198,7 +198,7 @@ open class  Bartleby: Consignee {
         // We need to encode them we have choosen base64
         let uid=UUID().uuidString
         let utf8str = uid.data(using: Default.STRING_ENCODING)
-        return utf8str!.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue:0))
+        return utf8str!.base64EncodedString(options: Data.Base64EncodingOptions(rawValue:0))
     }
 
     open static var elapsedTime:Double {

@@ -15,10 +15,10 @@ import ObjectMapper
 
 
 
-@objc(ReadUserById) public class ReadUserById : JObject{
+@objc(ReadUserById) open class ReadUserById : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
            return "ReadUserById"
     }
 

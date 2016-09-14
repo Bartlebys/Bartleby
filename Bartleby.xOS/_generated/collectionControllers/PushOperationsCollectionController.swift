@@ -20,39 +20,39 @@ import ObjectMapper
 
 // This controller implements data automation features.
 
-@objc(PushOperationsCollectionController) public class PushOperationsCollectionController : JObject,IterableCollectibleCollection{
+@objc(PushOperationsCollectionController) open class PushOperationsCollectionController : JObject,IterableCollectibleCollection{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
         return "PushOperationsCollectionController"
     }
 
     // Registry is referenced on Collection Proxy Creation.
-    public var registry:BartlebyDocument?
+    open var registry:BartlebyDocument?
 
-    public var spaceUID:String {
+    open var spaceUID:String {
         get{
             return self.registry?.spaceUID ?? Default.NO_UID
         }
     }
 
-    public var registryUID:String{
+    open var registryUID:String{
         get{
             return self.registry?.UID ?? Default.NO_UID
         }
     }
 
-    weak public var undoManager:UndoManager?
+    weak open var undoManager:UndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
-    public weak var arrayController:NSArrayController?
+    open weak var arrayController:NSArrayController?
 
     #endif
 
-    weak public var tableView: BXTableView?
+    weak open var tableView: BXTableView?
 
-    public func generate() -> AnyIterator<PushOperation> {
+    open func generate() -> AnyIterator<PushOperation> {
         var nextIndex = -1
         let limit=self.items.count-1
         return AnyIterator {
@@ -65,19 +65,15 @@ import ObjectMapper
     }
 
 
-    public subscript(index: Int) -> PushOperation {
+    open subscript(index: Int) -> PushOperation {
         return self.items[index]
     }
 
-    public func itemAtIndex(_ index:Int)->Collectible?{
-        return self[index]
-    }
-
-    public var startIndex:Int {
+    open var startIndex:Int {
         return 0
     }
 
-    public var endIndex:Int {
+    open var endIndex:Int {
         return self.items.count
     }
 
@@ -86,22 +82,27 @@ import ObjectMapper
     /// - Parameter i: A valid index of the collection. `i` must be less than
     ///   `endIndex`.
     /// - Returns: The index value immediately after `i`.
-    public func index(after i: Int) -> Int {
+    open func index(after i: Int) -> Int {
         return i+1
     }
 
 
-    public var count:Int {
+    open var count:Int {
         return self.items.count
     }
 
-    public func indexOf(predicate: (PushOperation) throws -> Bool) rethrows -> Int?{
+    open func indexOf(predicate: (PushOperation) throws -> Bool) rethrows -> Int?{
         return try self.items.index(where:predicate)
     }
 
-    public func indexOf(element: PushOperation) -> Int?{
+    open func indexOf(element: PushOperation) -> Int?{
         return self.items.index(where:{$0.UID==element.UID})
     }
+
+    open func item(at index:Int)->Collectible?{
+        return self[index]
+    }
+
 
 
     /**
@@ -109,7 +110,7 @@ import ObjectMapper
     The Registry ignores the real types.
     - parameter on: the closure
     */
-    public func superIterate(_ on:@escaping(_ element: Collectible)->()){
+    open func superIterate(_ on:@escaping(_ element: Collectible)->()){
         for item in self.items {
             on(item)
         }
@@ -121,7 +122,7 @@ import ObjectMapper
      Commit is ignored because
      Distant persistency is not allowed for PushOperation
     */
-    public func commitChanges() ->[String] {
+    open func commitChanges() ->[String] {
         return [String]()
     }
     
@@ -131,7 +132,7 @@ import ObjectMapper
     }
 
 
-    public dynamic var items:[PushOperation]=[PushOperation](){
+    open dynamic var items:[PushOperation]=[PushOperation](){
         didSet {
             if items != oldValue {
                 self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
@@ -141,11 +142,11 @@ import ObjectMapper
 
     // MARK: Identifiable
 
-    override public class var collectionName:String{
+    override open class var collectionName:String{
         return PushOperation.collectionName
     }
 
-    override public var d_collectionName:String{
+    override open var d_collectionName:String{
         return PushOperation.collectionName
     }
 
@@ -193,7 +194,7 @@ import ObjectMapper
 
     // MARK: Upsert
 
-    public func upsert(_ item: Collectible, commit:Bool){
+    open func upsert(_ item: Collectible, commit:Bool){
 
         if let idx=items.index(where:{return $0.UID == item.UID}){
             // it is an update
@@ -221,7 +222,7 @@ import ObjectMapper
     // MARK: Add
 
 
-    public func add(_ item:Collectible, commit:Bool){
+    open func add(_ item:Collectible, commit:Bool){
         self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
     }
 
@@ -234,7 +235,7 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the insertion?
     */
-    public func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
+    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool) {
         if let item=item as? PushOperation{
 
             item.collection = self // Reference the collection
@@ -279,7 +280,7 @@ import ObjectMapper
     - parameter index:  the index in the collection (not the ArrayController arranged object)
     - parameter commit: should we commit the removal?
     */
-    public func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
+    open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
        let item : PushOperation =  self[index]
 
         // Unregister the item
@@ -297,13 +298,13 @@ import ObjectMapper
             }
 
 
-    public func removeObjects(_ items: [Collectible],commit:Bool){
+    open func removeObjects(_ items: [Collectible],commit:Bool){
         for item in self.items{
             self.removeObject(item,commit:commit)
         }
     }
 
-    public func removeObject(_ item: Collectible, commit:Bool){
+    open func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? PushOperation{
             if let idx=self.indexOf(element:instance){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
@@ -311,18 +312,16 @@ import ObjectMapper
         }
     }
 
-    public func removeObjectWithIDS(_ ids: [String],commit:Bool){
+    open func removeObjectWithIDS(_ ids: [String],commit:Bool){
         for uid in ids{
             self.removeObjectWithID(uid,commit:commit)
         }
     }
 
-    public func removeObjectWithID(_ id:String, commit:Bool){
+    open func removeObjectWithID(_ id:String, commit:Bool){
         if let idx=self.index(where:{ return $0.UID==id } ){
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
 
-
-    
 }

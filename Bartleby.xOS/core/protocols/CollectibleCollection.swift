@@ -113,9 +113,15 @@ public protocol CollectibleCollection: Collectible {
      */
     func removeObjectWithIDS(_ ids: [String],commit:Bool)
 
+    ///
+    /// Returns the Collectible instance at a given index.
+    /// - parameter index: the instance
+    ///
+    /// - returns: a Collectible Instance
+    func item(at index:Int)->Collectible?
 
-    func itemAtIndex(_ index:Int)->Collectible?
 
+    /// Return the  number of items
     var count:Int { get }
 
 

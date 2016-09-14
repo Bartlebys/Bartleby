@@ -15,7 +15,7 @@ import ObjectMapper
 @objc(ReadUsersByQueryParameters) public class ReadUsersByQueryParameters : JObject {
 	
 	// Universal type support
-	override public class func typeName() -> String {
+	override open class func typeName() -> String {
 		 return "ReadUsersByQueryParameters"
 	}
 	// 
@@ -78,10 +78,10 @@ import ObjectMapper
 
 
 
-@objc(ReadUsersByQuery) public class ReadUsersByQuery : JObject{
+@objc(ReadUsersByQuery) open class ReadUsersByQuery : JObject{
 
     // Universal type support
-    override public class func typeName() -> String {
+    override open class func typeName() -> String {
            return "ReadUsersByQuery"
     }
 

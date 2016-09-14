@@ -61,7 +61,7 @@ open class BartlebyDocument : Registry {
 
     // MARK: - Collection Controllers
 
-    private var _KVOContext: Int = 0
+    fileprivate var _KVOContext: Int = 0
 
     // The initial instances are proxies
     // On document deserialization the collection are populated.
@@ -547,7 +547,7 @@ open class BartlebyDocument : Registry {
 
     // To insure persistency of non integrated data.
 
-    private func _dataFrom_triggeredDataBuffer()->Data?{
+    fileprivate func _dataFrom_triggeredDataBuffer()->Data?{
         // We use a super dictionary to store the Trigger as JSON as key
         // and the collectible items as value
         var superDictionary=[String:[[String : Any]]]()
@@ -565,7 +565,7 @@ open class BartlebyDocument : Registry {
         }
     }
 
-    private func _setUp_triggeredDataBuffer(from:Data?){
+    fileprivate func _setUp_triggeredDataBuffer(from:Data?){
         if let data=from{
             do{
                 if let superDictionary:[String:[[String : Any]]] = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:[[String : Any]]]{
