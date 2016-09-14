@@ -738,7 +738,7 @@ open class BartlebyDocument : Registry {
                     self.registryMetadata.currentUser?.document=self
 
                     // Setup the triggered data buffer
-                    self._setUp_triggeredDataBuffer(from: self.registryMetadata.triggeredDataBuffer)
+                    self._setUp_triggeredDataBuffer(from:self.registryMetadata.triggeredDataBuffer)
                 }
             } else {
                 // ERROR
