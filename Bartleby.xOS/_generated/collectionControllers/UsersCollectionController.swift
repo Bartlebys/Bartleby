@@ -65,7 +65,7 @@ import ObjectMapper
     }
 
 
-    public subscript(index: Int) -> User? {
+    public subscript(index: Int) -> User {
         return self.items[index]
     }
 
@@ -171,7 +171,7 @@ import ObjectMapper
 		self.items <- ( map["items"] )
 		
         if map.mappingType == .fromJSON {
-            forEach { $0?.collection=self }
+            forEach { $0.collection=self }
         }
         self.enableSuperVisionAndCommit()
     }
@@ -307,36 +307,33 @@ import ObjectMapper
     - parameter commit: should we commit the removal?
     */
     public func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
-        if let item : User =  self[index] {
+       let item : User =  self[index]
 
-            // Add the inverse of this invocation to the undo stack
-            if let undoManager: UndoManager = undoManager {
-                // We don't want to introduce a retain cycle
-                // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
-                // That's why we have added an registerUndo extension on UndoManager
-                undoManager.registerUndo({ () -> Void in
-                   self.insertObject(item, inItemsAtIndex: index, commit:commit)
-                })
-                if !undoManager.isUndoing {
-                    undoManager.setActionName(NSLocalizedString("RemoveUser", comment: "Remove User undo action"))
-                }
+        // Add the inverse of this invocation to the undo stack
+        if let undoManager: UndoManager = undoManager {
+            // We don't want to introduce a retain cycle
+            // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
+            // That's why we have added an registerUndo extension on UndoManager
+            undoManager.registerUndo({ () -> Void in
+               self.insertObject(item, inItemsAtIndex: index, commit:commit)
+            })
+            if !undoManager.isUndoing {
+                undoManager.setActionName(NSLocalizedString("RemoveUser", comment: "Remove User undo action"))
             }
-            
-            // Unregister the item
-            Registry.unRegister(item)
-
-            //Update the commit flag
-            item.committed=false
-
-            // Remove the item from the collection
-            self.items.remove(at:index)
-
+        }
         
-            if commit==true{
-                DeleteUser.commit(item.UID,fromRegistryWithUID:self.registryUID) 
-            }
+        // Unregister the item
+        Registry.unRegister(item)
 
+        //Update the commit flag
+        item.committed=false
 
+        // Remove the item from the collection
+        self.items.remove(at:index)
+
+    
+        if commit==true{
+            DeleteUser.commit(item.UID,fromRegistryWithUID:self.registryUID) 
         }
     }
 
@@ -349,7 +346,7 @@ import ObjectMapper
 
     public func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? User{
-            if let idx=self.index(where: { return $0?.UID == instance.UID } ){
+            if let idx=self.indexOf(element:instance){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }
@@ -362,7 +359,7 @@ import ObjectMapper
     }
 
     public func removeObjectWithID(_ id:String, commit:Bool){
-        if let idx=self.index(where:{ return $0?.UID==id } ){
+        if let idx=self.index(where:{ return $0.UID==id } ){
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }

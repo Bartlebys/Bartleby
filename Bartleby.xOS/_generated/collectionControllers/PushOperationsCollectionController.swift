@@ -65,7 +65,7 @@ import ObjectMapper
     }
 
 
-    public subscript(index: Int) -> PushOperation? {
+    public subscript(index: Int) -> PushOperation {
         return self.items[index]
     }
 
@@ -163,7 +163,7 @@ import ObjectMapper
 		self.items <- ( map["items"] )
 		
         if map.mappingType == .fromJSON {
-            forEach { $0?.collection=self }
+            forEach { $0.collection=self }
         }
         self.enableSuperVisionAndCommit()
     }
@@ -280,24 +280,21 @@ import ObjectMapper
     - parameter commit: should we commit the removal?
     */
     public func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
-        if let item : PushOperation =  self[index] {
+       let item : PushOperation =  self[index]
 
-            // Unregister the item
-            Registry.unRegister(item)
+        // Unregister the item
+        Registry.unRegister(item)
 
-            //Update the commit flag
-            item.committed=false
+        //Update the commit flag
+        item.committed=false
 
-            // Remove the item from the collection
-            self.items.remove(at:index)
+        // Remove the item from the collection
+        self.items.remove(at:index)
 
-        
-            // Commit is ignored because
-            // Distant persistency is not allowed for PushOperation
-            
-
-        }
-    }
+    
+        // Commit is ignored because
+        // Distant persistency is not allowed for PushOperation
+            }
 
 
     public func removeObjects(_ items: [Collectible],commit:Bool){
@@ -308,7 +305,7 @@ import ObjectMapper
 
     public func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? PushOperation{
-            if let idx=self.index(where: { return $0?.UID == instance.UID } ){
+            if let idx=self.indexOf(element:instance){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }
@@ -321,7 +318,7 @@ import ObjectMapper
     }
 
     public func removeObjectWithID(_ id:String, commit:Bool){
-        if let idx=self.index(where:{ return $0?.UID==id } ){
+        if let idx=self.index(where:{ return $0.UID==id } ){
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
