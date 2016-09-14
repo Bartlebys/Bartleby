@@ -143,12 +143,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         // Supervision Closures are invoked on the main queue asynchronously
         if self._supervisionIsEnabled{
             GlobalQueue.main.get().async {
-                if key=="*" && !(self is CollectibleCollection){
+                if key=="*" && !(self is BartlebyCollection){
                     // Dictionnary or NSData Patch
                     self.changedKeys.append(KeyedChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched"))
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }else{
-                    if let collection = self as? CollectibleCollection {
+                    if let collection = self as? BartlebyCollection {
                         let entityName=Pluralization.singularize(collection.d_collectionName)
                         if key=="items"{
                             if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
@@ -161,10 +161,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                             }
                         }
                         if key == "item" {
-                            let stringValue:String! = (newValue as AnyObject).UID ?? ""
-                            self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(stringValue) has changed"))
+                            if let o = newValue as? JObject{
+                                self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(o.UID) has changed"))
+                            }else{
+                                 self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) has changed anomaly"))
+                            }
                         }
-
                         if key == "*" {
                             self.changedKeys.append(KeyedChanges(key:key,changes:"This collection has been patched"))
                         }
@@ -175,9 +177,9 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                         self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }else{
                         // Natives types
-                        let o = oldValue
-                        let n = newValue
-                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o)->\(n)"))
+                        let o = oldValue ?? "void"
+                        let n = newValue ?? "void"
+                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o) ->\(n)"))
                         // Relay the as a global change to the collection
                         self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
