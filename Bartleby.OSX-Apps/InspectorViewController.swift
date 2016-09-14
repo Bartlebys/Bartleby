@@ -11,11 +11,11 @@ import Cocoa
 @objc class InspectorViewController: NSViewController,RegistryDependent{
 
 
-    @IBOutlet weak var listOutlineView: NSOutlineView!
+    @IBOutlet var listOutlineView: NSOutlineView!
 
-    @IBOutlet weak var topBox: NSBox!
+    @IBOutlet var topBox: NSBox!
 
-    @IBOutlet weak var bottomBox: NSBox!
+    @IBOutlet var bottomBox: NSBox!
 
     // Provisionned View controllers
 
@@ -29,11 +29,7 @@ import Cocoa
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         return true
-        //return super.validateMenuItem(menuItem)
     }
-
-
-
 
     // The currently associated View Controller
     fileprivate var _topViewController:NSViewController?
@@ -102,9 +98,9 @@ import Cocoa
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
-                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { [unowned self](selected) in
+                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { [unowned self] (selected) in
                     self.updateRepresentedObject(selected)
-                })
+                    })
 
                 self._topViewController=self.sourceEditor
                 self._bottomViewController=self.changesViewController
@@ -129,12 +125,13 @@ import Cocoa
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) {(notification) in
             self._collectionListDelegate?.reloadData()
         }
     }
 
     override func viewWillDisappear() {
+        super.viewWillDisappear()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -154,7 +151,6 @@ import Cocoa
 
                 switch object {
                 case _  where object is PushOperation :
-                    //self._bottomViewController=self.changesViewController
                     self._bottomViewController=self.operationViewController
                     break
                 default:
@@ -169,7 +165,7 @@ import Cocoa
                     self.bottomBox.contentView=self._bottomViewController!.view
                 }
             }
-            
+
             self._topViewController?.representedObject=selected
             self._bottomViewController?.representedObject=selected
         }
@@ -185,24 +181,26 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     fileprivate var _registry:BartlebyDocument
 
-    fileprivate weak var _outlineView:NSOutlineView!
+    fileprivate var _outlineView:NSOutlineView!
 
-    fileprivate var _collectionNames=[String]()
 
     fileprivate var _selectionHandler:((_ selected:Collectible)->())
+
+    fileprivate var _collections:[BartlebyCollection]=[BartlebyCollection]()
+
 
     var UID: String = Bartleby.createUID()
 
     required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Collectible)->())) {
         self._registry=registry
         self._outlineView=outlineView
-        self._collectionNames=registry.getCollectionsNames()
         self._selectionHandler=onSelection
         super.init()
-        self._registry.registryMetadata.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
+        self._registry.registryMetadata.addChangesSuperviser(self, closure: {(key, oldValue, newValue) in
             self.reloadData()
         })
-        self._registry.iterateOnCollections { (collection) in
+        self._registry.iterateOnCollections { [unowned self] (collection) in
+            self._collections.append(collection)
             collection.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                 self.reloadData()
             })
@@ -211,31 +209,29 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func reloadData(){
-        var selectedIndexes=self._outlineView.selectedRowIndexes
-        self._outlineView.reloadData()
-        if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
-            selectedIndexes=IndexSet(integer: 0)
+        GlobalQueue.main.get().async { [unowned self] in
+            var selectedIndexes=self._outlineView.selectedRowIndexes
+            self._outlineView.reloadData()
+            if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
+                selectedIndexes=IndexSet(integer: 0)
+            }
+            self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
         }
-        self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
     }
 
     //MARK: - NSOutlineViewDataSource
 
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-
         if item==nil{
-            return self._collectionNames.count + 1
+            return self._collections.count + 1
         }
-
 
         if let object=item as? JObject{
             if let collection  = object as?  BartlebyCollection {
                 return collection.count
             }
         }
-
         return 0
-
     }
 
 
@@ -246,9 +242,8 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             if index==0{
                 return self._registry.registryMetadata
             }else{
-                // Return the collections
-                let collectionName=self._collectionNames[index-1]
-                return self._registry.collectionByName(collectionName)
+                // Return the collections with a shifted index
+                return self._collections[index-1]
             }
         }
 
@@ -260,7 +255,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 return "NOTHING"
             }
         }
-        return "ERROR"
+        return "ERROR #\(index)"
     }
 
 
@@ -337,7 +332,11 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         }else{
             let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
             if let textField = view.textField {
-                textField.stringValue = "ERROR"
+                if let s=item as? String{
+                    textField.stringValue = s
+                }else{
+                    textField.stringValue = "Anomaly"
+                }
             }
             return view
         }
@@ -368,11 +367,17 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             if object is RegistryMetadata {
                 return 20
             }
+            // Any JOB
+            return 20
+        }
+        if item is String{
+            return 20
         }
         return 80
     }
-    
-    
+
+
+
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
         return true
     }
@@ -380,15 +385,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let selected=self._outlineView.selectedRow
-        if let item=self._outlineView.item(atRow:selected){
-            if let object=item as? JObject{
-                self._selectionHandler(object)
+        if let item=_outlineView.item(atRow: selected) {
+            if let item=self._outlineView.item(atRow:selected) as? JObject{
+                self._selectionHandler(item)
             }else{
                 print("*\(item)*")
             }
-
-        }else{
-            print("*\(selected)*")
+            
+            
         }
     }
     

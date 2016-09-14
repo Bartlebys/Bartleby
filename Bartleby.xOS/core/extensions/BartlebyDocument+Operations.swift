@@ -162,12 +162,12 @@ extension BartlebyDocument {
                 if let serialized=operation.toDictionary {
                     if let command = try? JSerializer.deserializeFromDictionary(serialized) {
                         if let jCommand=command as? JHTTPCommand {
-                            DispatchQueue.main.async(execute: { [unowned self] in
+                            DispatchQueue.main.async(execute: {
                                 // Push the command.
-                                jCommand.push(sucessHandler: {  [unowned self] (context) in
+                                jCommand.push(sucessHandler: {  (context) in
                                     self.delete(operation)
                                     self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
-                                    }, failureHandler: {  [unowned self] (context) in
+                                    }, failureHandler: { (context) in
                                         self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
                                 })
                             })

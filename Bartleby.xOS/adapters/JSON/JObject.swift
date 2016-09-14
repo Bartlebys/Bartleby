@@ -143,7 +143,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         // Supervision Closures are invoked on the main queue asynchronously
         if self._supervisionIsEnabled{
             GlobalQueue.main.get().async {
-
                 if key=="*" && !(self is CollectibleCollection){
                     // Dictionnary or NSData Patch
                     self.changedKeys.append(KeyedChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched"))
