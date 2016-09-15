@@ -98,26 +98,26 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.spaceUID <- ( map["spaceUID"] )
-		self.currentUser <- ( map["currentUser"] )
-		self.identificationMethod <- ( map["identificationMethod"] )
-		self.identificationValue <- ( map["identificationValue"] )
-		self.rootObjectUID <- ( map["rootObjectUID"] )
-		self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
-		self.collectionsMetadata <- ( map["collectionsMetadata"] )
-		self.stateDictionary <- ( map["stateDictionary"] )
-		self.URLBookmarkData <- ( map["URLBookmarkData"] )
-		self.preferredFileName <- ( map["preferredFileName"] )
-		self.triggersIndexes <- ( map["triggersIndexes"] )
-		self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
-		self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
-		self.receivedTriggers <- ( map["receivedTriggers"] )
-		self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
-		self.online <- ( map["online"] )
-		self.pushOnChanges <- ( map["pushOnChanges"] )
-		self.saveThePassword <- ( map["saveThePassword"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.spaceUID <- ( map["spaceUID"] )
+			self.currentUser <- ( map["currentUser"] )
+			self.identificationMethod <- ( map["identificationMethod"] )
+			self.identificationValue <- ( map["identificationValue"] )
+			self.rootObjectUID <- ( map["rootObjectUID"] )
+			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
+			self.collectionsMetadata <- ( map["collectionsMetadata"] )
+			self.stateDictionary <- ( map["stateDictionary"] )
+			self.URLBookmarkData <- ( map["URLBookmarkData"] )
+			self.preferredFileName <- ( map["preferredFileName"] )
+			self.triggersIndexes <- ( map["triggersIndexes"] )
+			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
+			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
+			self.receivedTriggers <- ( map["receivedTriggers"] )
+			self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
+			self.online <- ( map["online"] )
+			self.pushOnChanges <- ( map["pushOnChanges"] )
+			self.saveThePassword <- ( map["saveThePassword"] )
+        }
     }
 
 
@@ -125,26 +125,26 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
-		self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
-		self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
-		self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
-		self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
-		self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
-		self.collectionsMetadata=decoder.decodeObject(of: [CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-		self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
-		self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
-		self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
-		self.triggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "triggersIndexes")! as! [Int]
-		self.ownedTriggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
-		self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
-		self.receivedTriggers=decoder.decodeObject(of: [Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
-		self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
-		self.online=decoder.decodeBool(forKey:"online") 
-		self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
-		self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
+			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
+			self.identificationMethod=RegistryMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
+			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
+			self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
+			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
+			self.collectionsMetadata=decoder.decodeObject(of: [CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
+			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
+			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
+			self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
+			self.triggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "triggersIndexes")! as! [Int]
+			self.ownedTriggersIndexes=decoder.decodeObject(of: [NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
+			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
+			self.receivedTriggers=decoder.decodeObject(of: [Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
+			self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
+			self.online=decoder.decodeBool(forKey:"online") 
+			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
+			self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
+        }
     }
 
     override open func encode(with coder: NSCoder) {

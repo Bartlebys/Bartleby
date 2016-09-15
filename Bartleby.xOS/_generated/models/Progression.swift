@@ -91,17 +91,17 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.startTime <- ( map["startTime"] )
-		self.currentTaskIndex <- ( map["currentTaskIndex"] )
-		self.totalTaskCount <- ( map["totalTaskCount"] )
-		self.currentPercentProgress <- ( map["currentPercentProgress"] )
-		self.message <- ( map["message"] )
-		self.informations <- ( map["informations"] )
-		self.data <- ( map["data"], Base64DataTransform() )
-		self.category <- ( map["category"] )
-		self.externalIdentifier <- ( map["externalIdentifier"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.startTime <- ( map["startTime"] )
+			self.currentTaskIndex <- ( map["currentTaskIndex"] )
+			self.totalTaskCount <- ( map["totalTaskCount"] )
+			self.currentPercentProgress <- ( map["currentPercentProgress"] )
+			self.message <- ( map["message"] )
+			self.informations <- ( map["informations"] )
+			self.data <- ( map["data"], Base64DataTransform() )
+			self.category <- ( map["category"] )
+			self.externalIdentifier <- ( map["externalIdentifier"] )
+        }
     }
 
 
@@ -109,17 +109,17 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.startTime=decoder.decodeDouble(forKey:"startTime") 
-		self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
-		self.totalTaskCount=decoder.decodeInteger(forKey:"totalTaskCount") 
-		self.currentPercentProgress=decoder.decodeDouble(forKey:"currentPercentProgress") 
-		self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
-		self.informations=String(describing: decoder.decodeObject(of: NSString.self, forKey: "informations")! as NSString)
-		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-		self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
-		self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.startTime=decoder.decodeDouble(forKey:"startTime") 
+			self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
+			self.totalTaskCount=decoder.decodeInteger(forKey:"totalTaskCount") 
+			self.currentPercentProgress=decoder.decodeDouble(forKey:"currentPercentProgress") 
+			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
+			self.informations=String(describing: decoder.decodeObject(of: NSString.self, forKey: "informations")! as NSString)
+			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
+			self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
+			self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

@@ -55,11 +55,11 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.creationDate <- ( map["creationDate"] )
-		self.color <- ( map["color"] )
-		self.icon <- ( map["icon"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.creationDate <- ( map["creationDate"] )
+			self.color <- ( map["color"] )
+			self.icon <- ( map["icon"] )
+        }
     }
 
 
@@ -67,11 +67,11 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.creationDate=String(describing: decoder.decodeObject(of: NSString.self, forKey:"creationDate") as NSString?)
-		self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
-		self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.creationDate=String(describing: decoder.decodeObject(of: NSString.self, forKey:"creationDate") as NSString?)
+			self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
+			self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

@@ -168,13 +168,13 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.items <- ( map["items"] )
-		
-        if map.mappingType == .fromJSON {
-            forEach { $0.collection=self }
+        self.silentGroupedChanges {
+			self.items <- ( map["items"] )
+			
+          if map.mappingType == .fromJSON {
+                forEach { $0.collection=self }
+            }
         }
-        self.enableSuperVisionAndCommit()
     }
 
 
@@ -182,10 +182,10 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.items=decoder.decodeObject(of: [User.classForCoder()], forKey: "items")! as! [User]
-		
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.items=decoder.decodeObject(of: [User.classForCoder()], forKey: "items")! as! [User]
+			
+        }
     }
 
     override open func encode(with coder: NSCoder) {

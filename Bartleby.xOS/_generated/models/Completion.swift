@@ -71,14 +71,14 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.success <- ( map["success"] )
-		self.statusCode <- ( map["statusCode"] )
-		self.message <- ( map["message"] )
-		self.data <- ( map["data"], Base64DataTransform() )
-		self.category <- ( map["category"] )
-		self.externalIdentifier <- ( map["externalIdentifier"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.success <- ( map["success"] )
+			self.statusCode <- ( map["statusCode"] )
+			self.message <- ( map["message"] )
+			self.data <- ( map["data"], Base64DataTransform() )
+			self.category <- ( map["category"] )
+			self.externalIdentifier <- ( map["externalIdentifier"] )
+        }
     }
 
 
@@ -86,14 +86,14 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.success=decoder.decodeBool(forKey:"success") 
-		self.statusCode=decoder.decodeInteger(forKey:"statusCode") 
-		self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
-		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-		self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
-		self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.success=decoder.decodeBool(forKey:"success") 
+			self.statusCode=decoder.decodeInteger(forKey:"statusCode") 
+			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
+			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
+			self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
+			self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

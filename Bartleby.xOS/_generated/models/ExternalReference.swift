@@ -49,10 +49,10 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.iUID <- ( map["iUID"] )
-		self.iTypeName <- ( map["iTypeName"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.iUID <- ( map["iUID"] )
+			self.iTypeName <- ( map["iTypeName"] )
+        }
     }
 
 
@@ -60,10 +60,10 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.iUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iUID")! as NSString)
-		self.iTypeName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iTypeName")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.iUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iUID")! as NSString)
+			self.iTypeName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iTypeName")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

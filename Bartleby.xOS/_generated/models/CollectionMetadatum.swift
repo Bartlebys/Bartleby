@@ -44,12 +44,12 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.storage <- ( map["storage"] )
-		self.collectionName <- ( map["collectionName"] )
-		self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
-		self.inMemory <- ( map["inMemory"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.storage <- ( map["storage"] )
+			self.collectionName <- ( map["collectionName"] )
+			self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
+			self.inMemory <- ( map["inMemory"] )
+        }
     }
 
 
@@ -57,12 +57,12 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
-		self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
-		self.allowDistantPersistency=decoder.decodeBool(forKey:"allowDistantPersistency") 
-		self.inMemory=decoder.decodeBool(forKey:"inMemory") 
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
+			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
+			self.allowDistantPersistency=decoder.decodeBool(forKey:"allowDistantPersistency") 
+			self.inMemory=decoder.decodeBool(forKey:"inMemory") 
+        }
     }
 
     override open func encode(with coder: NSCoder) {

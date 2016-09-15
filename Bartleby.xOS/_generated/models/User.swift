@@ -149,20 +149,20 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.externalID <- ( map["externalID"] )
-		self.spaceUID <- ( map["spaceUID"] )
-		self.verificationMethod <- ( map["verificationMethod"] )
-		self.firstname <- ( map["firstname"] )
-		self.lastname <- ( map["lastname"] )
-		self.email <- ( map["email"] )
-		self.phoneNumber <- ( map["phoneNumber"] )
-		self.password <- ( map["password"], CryptedStringTransform() )
-		self.activationCode <- ( map["activationCode"] )
-		self.status <- ( map["status"] )
-		self.tags <- ( map["tags"] )
-		self.notes <- ( map["notes"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.externalID <- ( map["externalID"] )
+			self.spaceUID <- ( map["spaceUID"] )
+			self.verificationMethod <- ( map["verificationMethod"] )
+			self.firstname <- ( map["firstname"] )
+			self.lastname <- ( map["lastname"] )
+			self.email <- ( map["email"] )
+			self.phoneNumber <- ( map["phoneNumber"] )
+			self.password <- ( map["password"], CryptedStringTransform() )
+			self.activationCode <- ( map["activationCode"] )
+			self.status <- ( map["status"] )
+			self.tags <- ( map["tags"] )
+			self.notes <- ( map["notes"] )
+        }
     }
 
 
@@ -170,20 +170,20 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
-		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
-		self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
-		self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
-		self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
-		self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
-		self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
-		self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
-		self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
-		self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-		self.tags=decoder.decodeObject(of: [ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
-		self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
+			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
+			self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
+			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
+			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
+			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
+			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
+			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
+			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
+			self.tags=decoder.decodeObject(of: [ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
+			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

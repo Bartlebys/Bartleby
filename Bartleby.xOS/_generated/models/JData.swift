@@ -40,9 +40,9 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.data <- ( map["data"], Base64DataTransform() )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.data <- ( map["data"], Base64DataTransform() )
+        }
     }
 
 
@@ -50,9 +50,9 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
+        }
     }
 
     override open func encode(with coder: NSCoder) {

@@ -127,18 +127,18 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.registryUID <- ( map["registryUID"] )
-		self.subjectUID <- ( map["subjectUID"] )
-		self.userUID <- ( map["userUID"] )
-		self.mode <- ( map["mode"] )
-		self.verificationMethod <- ( map["verificationMethod"] )
-		self.code <- ( map["code"] )
-		self.numberOfAttempt <- ( map["numberOfAttempt"] )
-		self.startDate <- ( map["startDate"], ISO8601DateTransform() )
-		self.endDate <- ( map["endDate"], ISO8601DateTransform() )
-		self.gems <- ( map["gems"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.registryUID <- ( map["registryUID"] )
+			self.subjectUID <- ( map["subjectUID"] )
+			self.userUID <- ( map["userUID"] )
+			self.mode <- ( map["mode"] )
+			self.verificationMethod <- ( map["verificationMethod"] )
+			self.code <- ( map["code"] )
+			self.numberOfAttempt <- ( map["numberOfAttempt"] )
+			self.startDate <- ( map["startDate"], ISO8601DateTransform() )
+			self.endDate <- ( map["endDate"], ISO8601DateTransform() )
+			self.gems <- ( map["gems"] )
+        }
     }
 
 
@@ -146,18 +146,18 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"registryUID") as NSString?)
-		self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
-		self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
-		self.mode=Locker.Mode(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
-		self.verificationMethod=Locker.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
-		self.code=String(describing: decoder.decodeObject(of: NSString.self, forKey: "code")! as NSString)
-		self.numberOfAttempt=decoder.decodeInteger(forKey:"numberOfAttempt") 
-		self.startDate=decoder.decodeObject(of: NSDate.self , forKey: "startDate")! as Date
-		self.endDate=decoder.decodeObject(of: NSDate.self , forKey: "endDate")! as Date
-		self.gems=String(describing: decoder.decodeObject(of: NSString.self, forKey: "gems")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"registryUID") as NSString?)
+			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
+			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
+			self.mode=Locker.Mode(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
+			self.verificationMethod=Locker.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+			self.code=String(describing: decoder.decodeObject(of: NSString.self, forKey: "code")! as NSString)
+			self.numberOfAttempt=decoder.decodeInteger(forKey:"numberOfAttempt") 
+			self.startDate=decoder.decodeObject(of: NSDate.self , forKey: "startDate")! as Date
+			self.endDate=decoder.decodeObject(of: NSDate.self , forKey: "endDate")! as Date
+			self.gems=String(describing: decoder.decodeObject(of: NSString.self, forKey: "gems")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

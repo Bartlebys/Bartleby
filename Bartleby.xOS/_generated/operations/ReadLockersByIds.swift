@@ -38,11 +38,11 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.ids <- ( map["ids"] )
-		self.result_fields <- ( map["result_fields"] )
-		self.sort <- ( map["sort"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.ids <- ( map["ids"] )
+			self.result_fields <- ( map["result_fields"] )
+			self.sort <- ( map["sort"] )
+        }
     }
 
 
@@ -50,11 +50,11 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.ids=decoder.decodeObject(of: [NSString.self], forKey: "ids") as? [String]
-		self.result_fields=decoder.decodeObject(of: [NSString.self], forKey: "result_fields") as? [String]
-		self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.ids=decoder.decodeObject(of: [NSString.self], forKey: "ids") as? [String]
+			self.result_fields=decoder.decodeObject(of: [NSString.self], forKey: "result_fields") as? [String]
+			self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
+        }
     }
 
     override open func encode(with coder: NSCoder) {

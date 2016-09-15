@@ -54,16 +54,16 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.commandUID <- ( map["commandUID"] )
-		self.toDictionary <- ( map["toDictionary"] )
-		self.responseDictionary <- ( map["responseDictionary"] )
-		self.completionState <- ( map["completionState"] )
-		self.status <- ( map["status"] )
-		self.counter <- ( map["counter"] )
-		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-		self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.commandUID <- ( map["commandUID"] )
+			self.toDictionary <- ( map["toDictionary"] )
+			self.responseDictionary <- ( map["responseDictionary"] )
+			self.completionState <- ( map["completionState"] )
+			self.status <- ( map["status"] )
+			self.counter <- ( map["counter"] )
+			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
+			self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
+        }
     }
 
 
@@ -71,16 +71,16 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
-		self.toDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "toDictionary")as? [String:Any]
-		self.responseDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "responseDictionary")as? [String:Any]
-		self.completionState=decoder.decodeObject(of:Completion.self, forKey: "completionState") 
-		self.status=PushOperation.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-		self.counter=decoder.decodeInteger(forKey:"counter") 
-		self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
-		self.lastInvocationDate=decoder.decodeObject(of: NSDate.self , forKey:"lastInvocationDate") as Date?
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
+			self.toDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "toDictionary")as? [String:Any]
+			self.responseDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "responseDictionary")as? [String:Any]
+			self.completionState=decoder.decodeObject(of:Completion.self, forKey: "completionState") 
+			self.status=PushOperation.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
+			self.counter=decoder.decodeInteger(forKey:"counter") 
+			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
+			self.lastInvocationDate=decoder.decodeObject(of: NSDate.self , forKey:"lastInvocationDate") as Date?
+        }
     }
 
     override open func encode(with coder: NSCoder) {

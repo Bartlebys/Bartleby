@@ -40,10 +40,10 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self._users <- ( map["_users"] )
-		self._registryUID <- ( map["_registryUID"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self._users <- ( map["_users"] )
+			self._registryUID <- ( map["_registryUID"] )
+        }
     }
 
 
@@ -51,10 +51,10 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self._users=decoder.decodeObject(of: [User.classForCoder()], forKey: "_users")! as! [User]
-		self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self._users=decoder.decodeObject(of: [User.classForCoder()], forKey: "_users")! as! [User]
+			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {

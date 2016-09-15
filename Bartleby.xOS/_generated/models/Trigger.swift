@@ -51,18 +51,18 @@ import ObjectMapper
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervisionAndCommit()
-		self.index <- ( map["index"] )
-		self.spaceUID <- ( map["spaceUID"] )
-		self.observationUID <- ( map["observationUID"] )
-		self.senderUID <- ( map["senderUID"] )
-		self.runUID <- ( map["runUID"] )
-		self.origin <- ( map["origin"] )
-		self.targetCollectionName <- ( map["targetCollectionName"] )
-		self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-		self.action <- ( map["action"] )
-		self.UIDS <- ( map["UIDS"] )
-        self.enableSuperVisionAndCommit()
+        self.silentGroupedChanges {
+			self.index <- ( map["index"] )
+			self.spaceUID <- ( map["spaceUID"] )
+			self.observationUID <- ( map["observationUID"] )
+			self.senderUID <- ( map["senderUID"] )
+			self.runUID <- ( map["runUID"] )
+			self.origin <- ( map["origin"] )
+			self.targetCollectionName <- ( map["targetCollectionName"] )
+			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
+			self.action <- ( map["action"] )
+			self.UIDS <- ( map["UIDS"] )
+        }
     }
 
 
@@ -70,18 +70,18 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervisionAndCommit()
-		self.index=decoder.decodeInteger(forKey:"index") 
-		self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
-		self.observationUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"observationUID") as NSString?)
-		self.senderUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"senderUID") as NSString?)
-		self.runUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"runUID") as NSString?)
-		self.origin=String(describing: decoder.decodeObject(of: NSString.self, forKey:"origin") as NSString?)
-		self.targetCollectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "targetCollectionName")! as NSString)
-		self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
-		self.action=String(describing: decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
-		self.UIDS=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
-        self.disableSupervisionAndCommit()
+        self.silentGroupedChanges {
+			self.index=decoder.decodeInteger(forKey:"index") 
+			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
+			self.observationUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"observationUID") as NSString?)
+			self.senderUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"senderUID") as NSString?)
+			self.runUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"runUID") as NSString?)
+			self.origin=String(describing: decoder.decodeObject(of: NSString.self, forKey:"origin") as NSString?)
+			self.targetCollectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "targetCollectionName")! as NSString)
+			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
+			self.action=String(describing: decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
+			self.UIDS=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
+        }
     }
 
     override open func encode(with coder: NSCoder) {
