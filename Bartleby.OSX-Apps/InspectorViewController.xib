@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
         <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
@@ -31,7 +31,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" autosaveExpandedItems="YES" outlineTableColumn="63I-7z-MT7" id="nzd-mn-3O1">
-                                <rect key="frame" x="0.0" y="0.0" width="198" height="0.0"/>
+                                <rect key="frame" x="0.0" y="0.0" width="198" height="961"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -56,6 +56,7 @@
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yGy-Tt-mO1">
                                                         <rect key="frame" x="0.0" y="1" width="145" height="14"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="03F-m3-5wv">
                                                             <font key="font" metaFont="smallSystemBold"/>
                                                             <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -73,6 +74,7 @@
                                                 <subviews>
                                                     <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2d-0f-RR8">
                                                         <rect key="frame" x="3" y="0.0" width="17" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="1052-database" id="EgU-yX-OqQ"/>
                                                     </imageView>
                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="dy3-GW-dXI">
@@ -111,6 +113,7 @@
                                                 <subviews>
                                                     <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jj8-B1-f3u">
                                                         <rect key="frame" x="3" y="0.0" width="17" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="973-user" id="hEs-fg-IUG"/>
                                                     </imageView>
                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="PqG-gq-8zZ">
@@ -149,6 +152,7 @@
                                                 <subviews>
                                                     <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uK1-Mq-sId">
                                                         <rect key="frame" x="3" y="0.0" width="17" height="17"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="916-planet" id="x4g-Rg-hHU"/>
                                                     </imageView>
                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="cmq-b7-nUr">
@@ -207,17 +211,15 @@
                         <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="8gB-cF-KPk">
                             <rect key="frame" x="0.0" y="0.0" width="869" height="963"/>
                             <subviews>
-                                <box fixedFrame="YES" title="Box" borderType="line" titlePosition="noTitle" id="S2N-V4-Pw4">
+                                <box fixedFrame="YES" borderType="line" title="Box" titlePosition="noTitle" id="S2N-V4-Pw4">
                                     <rect key="frame" x="-3" y="-2" width="875" height="765"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <view key="contentView" id="Tn7-en-zhK">
                                         <rect key="frame" x="1" y="1" width="873" height="763"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
-                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </box>
-                                <box title="Box" borderType="line" titlePosition="noTitle" id="1AX-jR-v4E">
+                                <box borderType="line" title="Box" titlePosition="noTitle" id="1AX-jR-v4E">
                                     <rect key="frame" x="-3" y="767" width="875" height="200"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     <view key="contentView" id="Tj9-hV-QT0">
@@ -227,8 +229,6 @@
                                     <constraints>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="6Ll-b6-YVU"/>
                                     </constraints>
-                                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </box>
                             </subviews>
                             <holdingPriorities>
@@ -285,12 +285,18 @@
                         <action selector="openWebStack:" target="-1" id="6IE-w4-o6G"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Print triggers informations" id="BC0-Ah-3bh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="printTriggersInformations:" target="-2" id="1SP-5J-KdT"/>
+                    </connections>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="dL6-t0-Jas"/>
                 <menuItem title="Destructive Actions" id="rFy-pc-iNG">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Destructive Actions" id="oti-Ly-LKz">
                         <items>
-                            <menuItem title="Delete Operations" id="Dru-Kf-MPX">
+                            <menuItem title="Delete Pending Operations" id="Dru-Kf-MPX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="deleteOperations:" target="-2" id="ymM-cZ-2Fq"/>

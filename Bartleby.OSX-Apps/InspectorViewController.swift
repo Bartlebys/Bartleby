@@ -80,6 +80,13 @@ import Cocoa
         }
     }
 
+    @IBAction func printTriggersInformations(_ sender: AnyObject) {
+        if let registry=self.registryDelegate?.getRegistry(){
+            bprint(registry.getTriggerBufferInformations(),file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+        }
+
+
+    }
 
     @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
@@ -88,6 +95,8 @@ import Cocoa
             }
         }
     }
+
+
 
 
     //MARK:-  Collections
