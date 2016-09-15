@@ -34,7 +34,6 @@ public extension BartlebyDocument{
         }catch{
             handlers.on(Completion.failureStateFromError(error))
         }
-
     }
 
     /**
@@ -114,9 +113,4 @@ public extension BartlebyDocument{
         }
     }
 
-
-
-
-
-    
 }
