@@ -39,11 +39,11 @@ import Foundation
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervision()
-        user <- (map["user"], CryptedSerializableTransform())
-        password <- (map ["password"], CryptedStringTransform())
-        salt <- (map ["salt"], CryptedStringTransform())
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            user <- (map["user"], CryptedSerializableTransform())
+            password <- (map ["password"], CryptedStringTransform())
+            salt <- (map ["salt"], CryptedStringTransform())
+        }
     }
 
 
@@ -58,11 +58,11 @@ import Foundation
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervision()
-        self.user=User(coder: decoder)
-        self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
-        self.salt=String(describing: decoder.decodeObject(of: NSString.self, forKey:"salt") as NSString?)
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            self.user=User(coder: decoder)
+            self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
+            self.salt=String(describing: decoder.decodeObject(of: NSString.self, forKey:"salt") as NSString?)
+        }
     }
 
 

@@ -97,7 +97,7 @@ import Cocoa
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
-                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: { [unowned self] (selected) in
+                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: {(selected) in
                     self.updateRepresentedObject(selected)
                     })
 
@@ -198,7 +198,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         self._registry.registryMetadata.addChangesSuperviser(self, closure: {(key, oldValue, newValue) in
             self.reloadData()
         })
-        self._registry.iterateOnCollections { [unowned self] (collection) in
+        self._registry.iterateOnCollections { (collection) in
             self._collections.append(collection)
             collection.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                 self.reloadData()
@@ -208,7 +208,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func reloadData(){
-        GlobalQueue.main.get().async { [unowned self] in
+        GlobalQueue.main.get().async {
             var selectedIndexes=self._outlineView.selectedRowIndexes
             self._outlineView.reloadData()
             if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {

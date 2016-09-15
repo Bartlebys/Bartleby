@@ -58,7 +58,7 @@ import Foundation
     open var standardDirectivesPath: String {
         get {
             if self.directivesRelativePath != BsyncDMGCard.NO_PATH {
-                 return self.volumePath+"\(self.directivesRelativePath)"
+                return self.volumePath+"\(self.directivesRelativePath)"
             } else {
                 return self.volumePath+"\(BsyncDirectives.DEFAULT_FILE_NAME)"
             }
@@ -106,14 +106,14 @@ import Foundation
 
     open override func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervision()
-        userUID <- (map["userUID"], CryptedStringTransform())
-        contextUID <- (map["contextUID"], CryptedStringTransform())
-        imagePath <- (map["path"], CryptedStringTransform())
-        volumeName <- (map["volumeName"], CryptedStringTransform())
-        directivesRelativePath <- (map["directivesRelativePath"], CryptedStringTransform())
-        size <- map["size"]
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            userUID <- (map["userUID"], CryptedStringTransform())
+            contextUID <- (map["contextUID"], CryptedStringTransform())
+            imagePath <- (map["path"], CryptedStringTransform())
+            volumeName <- (map["volumeName"], CryptedStringTransform())
+            directivesRelativePath <- (map["directivesRelativePath"], CryptedStringTransform())
+            size <- map["size"]
+        }
     }
 
     // MARK: NSecureCoding
@@ -131,20 +131,20 @@ import Foundation
 
     public required init?(coder decoder: NSCoder) {
         super.init(coder:decoder)
-        self.disableSupervision()
-        self.userUID=String(decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
-        self.contextUID=String(decoder.decodeObject(of: NSString.self, forKey: "contextUID")! as NSString)
-        self.imagePath=String(decoder.decodeObject(of: NSString.self, forKey: "path")! as NSString)
-        self.volumeName=String(decoder.decodeObject(of: NSString.self, forKey: "volumeName")! as NSString)
-        self.directivesRelativePath=String(decoder.decodeObject(of: NSString.self, forKey: "directivesRelativePath")! as NSString)
-        self.size=String(decoder.decodeObject(of: NSString.self, forKey: "size")! as NSString)
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            self.userUID=String(decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
+            self.contextUID=String(decoder.decodeObject(of: NSString.self, forKey: "contextUID")! as NSString)
+            self.imagePath=String(decoder.decodeObject(of: NSString.self, forKey: "path")! as NSString)
+            self.volumeName=String(decoder.decodeObject(of: NSString.self, forKey: "volumeName")! as NSString)
+            self.directivesRelativePath=String(decoder.decodeObject(of: NSString.self, forKey: "directivesRelativePath")! as NSString)
+            self.size=String(decoder.decodeObject(of: NSString.self, forKey: "size")! as NSString)
+        }
     }
 
     override open class var supportsSecureCoding:Bool{
         return true
     }
-    
+
     /**
      Returns a password.
      To be valid the userUID, contextUID must be consistant
@@ -168,10 +168,10 @@ import Foundation
     override open class var collectionName: String {
         return "BsyncDMGCard"
     }
-
+    
     override open var d_collectionName: String {
         return BsyncDMGCard.collectionName
     }
-
-
+    
+    
 }

@@ -34,18 +34,19 @@ import Foundation
 
     override open func mapping(_ map: Map) {
         super.mapping(map)
-        self.disableSupervision()
-        self.pathToHash <- ( map["pathToHash"] )
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            self.pathToHash <- ( map["pathToHash"] )
+        }
     }
+
 
     // MARK: NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.disableSupervision()
-        self.pathToHash=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "pathToHash") as! Dictionary<String,String>
-        self.enableSupervision()
+        self.silentGroupedChanges {
+            self.pathToHash=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "pathToHash") as! Dictionary<String,String>
+        }
     }
 
     override open func encode(with coder: NSCoder) {
@@ -72,5 +73,5 @@ import Foundation
     override open var d_collectionName:String{
         return BsyncHashMap.collectionName
     }
-
+    
 }

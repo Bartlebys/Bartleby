@@ -406,6 +406,17 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
+    /// Performs some changes silently 
+    /// Supervision and auto commit is disabled.
+    ///
+    /// - parameter changes: the changes closure
+    open func silentGroupedChanges(_ changes:()->()){
+        self.disableSupervisionAndCommit()
+        changes()
+        self.enableSuperVisionAndCommit()
+    }
+
+
 
     // MARK: - NSecureCoding
 

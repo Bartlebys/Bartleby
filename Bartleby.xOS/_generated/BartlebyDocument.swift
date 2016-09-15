@@ -394,17 +394,18 @@ open class BartlebyDocument : Registry {
     */
     open func newUser() -> User {
         let user=User()
-        if let creator=self.registryMetadata.currentUser {
-            user.creatorUID = creator.UID
-        }else{
-            // Autopoiesis.
-            user.creatorUID = user.UID
+        user.silentGroupedChanges {
+            if let creator=self.registryMetadata.currentUser {
+                user.creatorUID = creator.UID
+            }else{
+                // Autopoiesis.
+                user.creatorUID = user.UID
+            }
+            user.spaceUID = self.registryMetadata.spaceUID
+            user.document = self // Very important for the  document registry metadata current User
         }
-        user.spaceUID = self.registryMetadata.spaceUID
-        user.document = self // Very important for the  document registry metadata current User
         return user
     }
-       
      
     // MARK: - Synchronization
 
