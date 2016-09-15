@@ -100,7 +100,7 @@ extension BartlebyDocument {
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
 
             do {
-                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
                 request(r).validate().responseJSON(completionHandler: { (response) in
 
                 let result=response.result
