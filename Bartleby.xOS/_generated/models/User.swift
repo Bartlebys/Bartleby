@@ -181,7 +181,7 @@ import ObjectMapper
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
 			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-			self.tags=decoder.decodeObject(of: [ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
+			self.tags=decoder.decodeObject(of: [NSArray.classForCoder(),ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
         }
     }

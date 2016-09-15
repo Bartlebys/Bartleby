@@ -175,7 +175,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.items=decoder.decodeObject(of: [PushOperation.classForCoder()], forKey: "items")! as! [PushOperation]
+			self.items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "items")! as! [PushOperation]
 			
         }
     }

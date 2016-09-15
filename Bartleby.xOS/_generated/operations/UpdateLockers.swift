@@ -52,7 +52,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._lockers=decoder.decodeObject(of: [Locker.classForCoder()], forKey: "_lockers")! as! [Locker]
+			self._lockers=decoder.decodeObject(of: [NSArray.classForCoder(),Locker.classForCoder()], forKey: "_lockers")! as! [Locker]
 			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
         }
     }

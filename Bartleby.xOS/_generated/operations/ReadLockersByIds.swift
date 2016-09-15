@@ -51,8 +51,8 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.ids=decoder.decodeObject(of: [NSString.self], forKey: "ids") as? [String]
-			self.result_fields=decoder.decodeObject(of: [NSString.self], forKey: "result_fields") as? [String]
+			self.ids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ids") as? [String]
+			self.result_fields=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "result_fields") as? [String]
 			self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
         }
     }
