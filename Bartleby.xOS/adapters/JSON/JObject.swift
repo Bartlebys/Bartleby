@@ -145,43 +145,45 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             GlobalQueue.main.get().async {
                 if key=="*" && !(self is BartlebyCollection){
                     // Dictionnary or NSData Patch
-                    self.changedKeys.append(KeyedChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched"))
+                    self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }else{
-                    if let collection = self as? BartlebyCollection {
-                        let entityName=Pluralization.singularize(collection.d_collectionName)
-                        if key=="items"{
-                            if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
-                                if oldArray.count < newArray.count{
-                                    let stringValue:String! = (newArray.last?.UID ?? "")
-                                    self.changedKeys.append(KeyedChanges(key:key,changes:"Added a new \(entityName) \(stringValue))"))
-                                }else{
-                                    self.changedKeys.append(KeyedChanges(key:key,changes:"Removed One \(entityName)"))
+                    if Bartleby.changesAreInspectables{
+                        if let collection = self as? BartlebyCollection {
+                            let entityName=Pluralization.singularize(collection.d_collectionName)
+                            if key=="items"{
+                                if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
+                                    if oldArray.count < newArray.count{
+                                        let stringValue:String! = (newArray.last?.UID ?? "")
+                                        self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
+                                    }else{
+                                        self._appendChanges(key:key,changes:"Removed One \(entityName)")
+                                    }
                                 }
                             }
-                        }
-                        if key == "item" {
-                            if let o = newValue as? JObject{
-                                self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) \(o.UID) has changed"))
-                            }else{
-                                 self.changedKeys.append(KeyedChanges(key:key,changes:"\(entityName) has changed anomaly"))
+                            if key == "item" {
+                                if let o = newValue as? JObject{
+                                    self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
+                                }else{
+                                    self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
+                                }
                             }
+                            if key == "*" {
+                                self._appendChanges(key:key,changes:"This collection has been patched")
+                            }
+                        }else if let collectibleNewValue = newValue as? Collectible{
+                            // Collectible objects
+                            self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
+                            // Relay the as a global change to the collection
+                            self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                        }else{
+                            // Natives types
+                            let o = oldValue ?? "void"
+                            let n = newValue ?? "void"
+                            self._appendChanges(key:key,changes:"\(o) ->\(n)")
+                            // Relay the as a global change to the collection
+                            self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                         }
-                        if key == "*" {
-                            self.changedKeys.append(KeyedChanges(key:key,changes:"This collection has been patched"))
-                        }
-                    }else if let collectibleNewValue = newValue as? Collectible{
-                        // Collectible objects
-                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed"))
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                    }else{
-                        // Natives types
-                        let o = oldValue ?? "void"
-                        let n = newValue ?? "void"
-                        self.changedKeys.append( KeyedChanges(key:key,changes:"\(o) ->\(n)"))
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
                 }
                 // Invoke the closures (changes Observers)
@@ -190,7 +192,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                 }
             }
         }
+    }
 
+
+    private func _appendChanges(key:String,changes:String){
+        self.changedKeys.append(KeyedChanges(key:key,changes:changes))
     }
 
     /**
@@ -406,7 +412,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
-    /// Performs some changes silently 
+    /// Performs some changes silently
     /// Supervision and auto commit is disabled.
     ///
     /// - parameter changes: the changes closure
@@ -482,7 +488,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.mapping(mapped)
         self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
     }
-
+    
 }
 
 

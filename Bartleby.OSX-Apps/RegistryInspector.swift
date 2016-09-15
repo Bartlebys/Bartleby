@@ -56,6 +56,7 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
 
     override open func windowDidLoad() {
         super.windowDidLoad()
+        Bartleby.changesAreInspectables=true
     }
 
     override open var windowNibName: String?{

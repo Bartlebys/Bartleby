@@ -99,7 +99,7 @@ import Cocoa
             if let registry=self.registryDelegate?.getRegistry(){
                 self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: {(selected) in
                     self.updateRepresentedObject(selected)
-                    })
+                })
 
                 self._topViewController=self.sourceEditor
                 self._bottomViewController=self.changesViewController
@@ -208,14 +208,13 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func reloadData(){
-        GlobalQueue.main.get().async {
-            var selectedIndexes=self._outlineView.selectedRowIndexes
-            self._outlineView.reloadData()
-            if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
-                selectedIndexes=IndexSet(integer: 0)
-            }
-            self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
+        var selectedIndexes=self._outlineView.selectedRowIndexes
+        self._outlineView.reloadData()
+        if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
+            selectedIndexes=IndexSet(integer: 0)
         }
+        self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
+
     }
 
     //MARK: - NSOutlineViewDataSource
@@ -269,7 +268,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
      NOTE: Returning nil indicates that the item's state will not be persisted.
      */
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-        if let object=item as? JObject{
+        if let object=item as? Serializable{
             return JSerializer.serialize(object)
         }
         return nil
@@ -360,19 +359,12 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let object=item as? JObject {
-            if object is BartlebyCollection {
-                return 20
-            }
-            if object is RegistryMetadata {
-                return 20
-            }
-            // Any JOB
-            return 20
+            if object is BartlebyCollection { return 20 }
+            if object is RegistryMetadata { return 20 }
+            return 20 // Any JObject
         }
-        if item is String{
-            return 20
-        }
-        return 80
+        if item is String{ return 20 }
+        return 30 // This is not normal.
     }
 
 
@@ -380,8 +372,8 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
         return true
     }
-    
-    
+
+
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let selected=self._outlineView.selectedRow
         if let item=_outlineView.item(atRow: selected) {

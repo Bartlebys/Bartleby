@@ -60,6 +60,9 @@ public protocol BartlebyConfiguration {
     // Should the registries metadata be crypted on export
     static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool { get set }
 
+    // If set to true the keyed changes are stored in the JObject - When opening the Inspector this default value is remplaced by true
+    static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool { get set }
+
 }
 
 
@@ -114,6 +117,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // Should the registries metadata be crypted on export (should be true)!
     public static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool = true
+
+    // If set to true the keyed changes are stored in the JObject - When opening the Inspector this default value is remplaced by true
+    public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
 
 }
