@@ -144,8 +144,10 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         if self._supervisionIsEnabled{
             GlobalQueue.main.get().async {
                 if key=="*" && !(self is BartlebyCollection){
-                    // Dictionnary or NSData Patch
-                    self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
+                    if Bartleby.changesAreInspectables{
+                        // Dictionnary or NSData Patch
+                        self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
+                    }
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }else{
                     if Bartleby.changesAreInspectables{
@@ -186,7 +188,9 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                         }
                     }
                 }
+
                 // Invoke the closures (changes Observers)
+                // note that it occurs even changes are not inspectable.
                 for (_,supervisionClosure) in self._supervisers{
                     supervisionClosure(key,oldValue,newValue)
                 }
@@ -495,6 +499,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 /**
  *  A simple Objc compliant object to keep track of changes in memory
+
  */
 @objc(KeyedChanges) open class KeyedChanges:NSObject {
     
