@@ -206,7 +206,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    open func addChangesSuperviser(_ superviser: Identifiable, closure: @escaping (String, Any?, Any?) -> ()) {
+    open func addChangesSuperviser(_ superviser: Identifiable, closure: @escaping (_ key:String,_ oldValue:Any?,_ newValue:Any?) -> ()) {
         self._supervisers[superviser.UID]=closure
     }
 
