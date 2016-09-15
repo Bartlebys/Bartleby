@@ -26,6 +26,9 @@ public protocol BartlebyConfiguration {
     // Bartleby Bprint
     static var ENABLE_BPRINT: Bool { get set }
 
+    // Should Bprint entries be printed
+    static var PRINT_BPRINT_ENTRIES: Bool { get set }
+
     // Use NoCrypto as CryptoDelegate
     static var DISABLE_DATA_CRYPTO: Bool { get }
 
@@ -83,6 +86,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // Bartleby Bprint
     public static var ENABLE_BPRINT: Bool=true
+
+    // Should Bprint entries be printed
+    public static var PRINT_BPRINT_ENTRIES: Bool=true
 
     // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool { return false }

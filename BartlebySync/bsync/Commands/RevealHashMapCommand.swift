@@ -23,6 +23,7 @@ class RevealHashMapCommand: CryptedCommand {
             Bartleby.configuration.KEY = secretKey
             Bartleby.configuration.SHARED_SALT = sharedSalt
             Bartleby.configuration.ENABLE_BPRINT = false
+            Bartleby.configuration.PRINT_BPRINT_ENTRIES = true
             Bartleby.sharedInstance.configureWith(Bartleby.configuration)
             
             func printHashMap(cryptedHashMap: String) {

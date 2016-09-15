@@ -54,5 +54,12 @@ public protocol Supervisable {
      Unlock the auto commit observer
      */
     func enableSupervision()
+
+    /// Performs some changes silently
+    /// Supervision and autocommit (if implementing Distribuable) should be disabled during changes invocation
+    ///
+    /// - parameter changes: the changes closure
+    func silentGroupedChanges(_ changes:()->())
+
 }
 

@@ -52,6 +52,7 @@ class CreateUserCommand: CommandBase {
                     Bartleby.configuration.SHARED_SALT=salt
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
                     Bartleby.configuration.ENABLE_BPRINT=verbosity.value
+                    Bartleby.configuration.PRINT_BPRINT_ENTRIES=true
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
                     let document=self.virtualDocumentFor(spaceUID: spaceUID.value!,rootObjectUID: nil)

@@ -9,7 +9,7 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable, Serializable, Distribuable, Supervisable, DictionaryRepresentation, UniversalType, JSONString {
+public protocol Collectible:  Identifiable, Serializable, Distribuable, Supervisable,ChangesInspectable, DictionaryRepresentation, UniversalType, JSONString {
 
     var collection:CollectibleCollection? { get set }
 
@@ -29,5 +29,26 @@ public protocol Collectible:  Identifiable, Serializable, Distribuable, Supervis
 
     // An accessor to the static collectionName
     var d_collectionName: String { get }
+
 }
 
+// TODO Create files 
+
+public protocol ChangesInspectable{
+    var changedKeys:[KeyedChanges] { get set }
+}
+
+/**
+ *  A simple Objc compliant object to keep track of changes in memory
+ */
+@objc(KeyedChanges) open class KeyedChanges:NSObject {
+
+    var elapsed=Bartleby.elapsedTime
+    var key:String
+    var changes:String
+
+    init(key:String,changes:String) {
+        self.key=key
+        self.changes=changes
+    }
+}

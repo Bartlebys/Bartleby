@@ -54,7 +54,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: UniversalType
 
     // Used to store the type name on serialization
-    fileprivate var _typeName: String?
+    fileprivate lazy var _typeName: String = type(of: self).typeName()
 
     // The type name is Universal and used when serializing the instance
     open class func typeName() -> String {
@@ -105,10 +105,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             if newValue==true{
                 // The changes have been committed
                 self._shouldBeCommitted=false
-                self.changedKeys.removeAll()
             }
-        }
-        didSet {
         }
     }
 
@@ -306,7 +303,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
             let map=Map(mappingType: .fromJSON, JSONDictionary: JSONDictionary)
             self.mapping(map)
-            if provisionChanges{
+            if provisionChanges && Bartleby.changesAreInspectables {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }
 
@@ -380,27 +377,25 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     open func mapping(_ map: Map) {
-        self.disableSupervisionAndCommit()
-        // store the changedKeys in memory
-        let changedKeys=self.changedKeys
-        if map.mappingType == .toJSON {
-            // Define if necessary the UID
-            self.defineUID()
-            // Store the universal type Name
-            self._typeName=type(of: self).typeName()
-        }
-        self._id <- map[Default.UID_KEY]
-        self._typeName <- map[Default.TYPE_NAME_KEY]
-        self.committed <- map["committed"]
-        self.distributed <- map["distributed"]
-        self.creatorUID <- map["creatorUID"]
-        self.summary <- map["summary"]
-        self._shouldBeCommitted <- map["_toBeCommitted"]
-        self.ephemeral <- map["ephemeral"]
+        self.silentGroupedChanges {
+            // store the changedKeys in memory
+            let changedKeys=self.changedKeys
+            if map.mappingType == .toJSON {
+                // Define if necessary the UID
+                self.defineUID()
+            }
+            self._id <- map[Default.UID_KEY]
+            self._typeName <- map[Default.TYPE_NAME_KEY]
+            self.committed <- map["committed"]
+            self.distributed <- map["distributed"]
+            self.creatorUID <- map["creatorUID"]
+            self.summary <- map["summary"]
+            self._shouldBeCommitted <- map["_toBeCommitted"]
+            self.ephemeral <- map["ephemeral"]
 
-        // Changed keys are not serialized
-        self.changedKeys=changedKeys
-        self.enableSuperVisionAndCommit()
+            // Changed keys are not serialized
+            self.changedKeys=changedKeys
+        }
 
     }
 
@@ -494,22 +489,3 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
     
 }
-
-
-
-/**
- *  A simple Objc compliant object to keep track of changes in memory
-
- */
-@objc(KeyedChanges) open class KeyedChanges:NSObject {
-    
-    var elapsed=Bartleby.elapsedTime
-    var key:String
-    var changes:String
-    
-    init(key:String,changes:String) {
-        self.key=key
-        self.changes=changes
-    }
-}
-

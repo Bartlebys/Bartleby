@@ -208,7 +208,10 @@ open class  Bartleby: Consignee {
     }
 
     // MARK: - bprint
+
     fileprivate static var _enableBPrint: Bool=false
+    fileprivate static var _printBPrintEntries: Bool=false
+
     open static let startTime=CFAbsoluteTimeGetCurrent()
     open static  var bprintCollection=BprintCollection()
 
@@ -233,7 +236,10 @@ open class  Bartleby: Consignee {
             for observers in bPrintObservers{
                 observers.acknowledge(entry)
             }
-            print(entry)
+            if (self._printBPrintEntries){
+                print(entry)
+            }
+
         }
     }
 

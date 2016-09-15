@@ -208,13 +208,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func reloadData(){
-        var selectedIndexes=self._outlineView.selectedRowIndexes
-        self._outlineView.reloadData()
-        if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
-            selectedIndexes=IndexSet(integer: 0)
+        GlobalQueue.main.get().async {
+            var selectedIndexes=self._outlineView.selectedRowIndexes
+            self._outlineView.reloadData()
+            if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
+                selectedIndexes=IndexSet(integer: 0)
+            }
+            self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
         }
-        self._outlineView.selectRowIndexes(selectedIndexes, byExtendingSelection: false)
-
     }
 
     //MARK: - NSOutlineViewDataSource
@@ -343,16 +344,15 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     fileprivate func configureInlineButton(_ view:NSView,object:Any){
         if let inlineButton = view.viewWithTag(2) as? NSButton{
-            if let casted=object as? JObject{
+            if let casted=object as? Collectible{
                 if casted.changedKeys.count > 0 {
                     inlineButton.isHidden=false
                     inlineButton.title="\(casted.changedKeys.count)"
-                }else{
-                    inlineButton.isHidden=true
+                    return
                 }
-            }else{
-                inlineButton.isHidden=true
+
             }
+            inlineButton.isHidden=true
         }
     }
 
@@ -373,7 +373,6 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         return true
     }
 
-
     func outlineViewSelectionDidChange(_ notification: Notification) {
         let selected=self._outlineView.selectedRow
         if let item=_outlineView.item(atRow: selected) {
@@ -382,8 +381,6 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }else{
                 print("*\(item)*")
             }
-            
-            
         }
     }
     

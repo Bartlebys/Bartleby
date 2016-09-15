@@ -29,6 +29,9 @@ open class TestsConfiguration: BartlebyConfiguration {
     // Bartleby Bprint
     open static var ENABLE_BPRINT: Bool=true
 
+    // Should Bprint entries be printed
+    public static var PRINT_BPRINT_ENTRIES: Bool=true
+
     // Use NoCrypto as CryptoDelegate (should be false)
     open static var DISABLE_DATA_CRYPTO: Bool=false
 
