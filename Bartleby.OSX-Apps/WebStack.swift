@@ -25,8 +25,7 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
         didSet{
             if let document=self.registryDelegate?.getRegistry(){
                 if let currentUser=document.registryMetadata.currentUser{
-                    let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
-                    self.URL=Foundation.URL(string: document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)");
+                    self.URL=currentUser.signInURL(for:document)
                 }
             }
         }

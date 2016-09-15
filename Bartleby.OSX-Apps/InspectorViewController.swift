@@ -68,10 +68,9 @@ import Cocoa
 
     @IBAction func openWebStack(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry() {
-            let currentUser=document.registryMetadata.currentUser!
-            let cryptoPassword:String = (try? Bartleby.cryptoDelegate.encryptString(currentUser.password)) ?? currentUser.password
-            let url:URL=URL(string: document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(document.registryMetadata.currentUser!.UID)&password=\(cryptoPassword)")!
-            NSWorkspace.shared().open(url)
+            if let url=document.registryMetadata.currentUser?.signInURL(for:document){
+                NSWorkspace.shared().open(url)
+            }
         }
     }
 
