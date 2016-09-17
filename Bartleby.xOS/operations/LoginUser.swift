@@ -18,7 +18,6 @@ open class LoginUser: JObject {
     }
 
     static open func execute(  _ user: User,
-                               withPassword password: String,
                                sucessHandler success:@escaping ()->(),
                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 

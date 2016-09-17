@@ -79,7 +79,7 @@ class UsersCreationLoadTest: TestCase {
 
 
         func __login(_ user:User){
-            LoginUser.execute(user, withPassword: user.password, sucessHandler: {
+            user.login(sucessHandler: {
                 __update(user)
             }) { (context) in
                 __fullFill()

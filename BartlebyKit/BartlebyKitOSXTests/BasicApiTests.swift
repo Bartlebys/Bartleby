@@ -57,8 +57,7 @@ class BasicApiTests: TestCase {
     func test201_LoginUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser {
-            user.login(withPassword: BasicApiTests._password,
-                       sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()
@@ -110,8 +109,7 @@ class BasicApiTests: TestCase {
     func test401_re_LoginUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser {
-            user.login(withPassword: BasicApiTests._password,
-                              sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                                 expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()
@@ -276,8 +274,7 @@ class BasicApiTests: TestCase {
     func test505_re_LoginUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = BasicApiTests._createdUser { // (!) Maybe we need to update the email there
-            user.login(withPassword: BasicApiTests._newPassword,
-                              sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                                 expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()

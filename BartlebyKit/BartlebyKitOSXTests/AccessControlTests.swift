@@ -198,8 +198,7 @@ class AccessControlTests: TestCase {
     func test201_LoginUser_OtherUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AccessControlTests._otherUser {
-            user.login(withPassword: user.password,
-                       sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
                         if TestCase.document.registryMetadata.identificationMethod == .cookie{
                             if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
@@ -339,8 +338,7 @@ class AccessControlTests: TestCase {
     func test301_LoginUser_ThirdUser_ShouldFailBecauseOfSuspend() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AccessControlTests._thirdUser {
-            user.login(withPassword: user.password,
-                       sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
                         XCTFail("LoginUser should fail because user is suspended")
             }) { (context) ->() in

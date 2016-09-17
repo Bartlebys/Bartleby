@@ -204,7 +204,7 @@ class TestCase: XCTestCase {
 
             if autologin {
                 // Login if needed
-                user.login(withPassword: user.password, sucessHandler: {
+                user.login( sucessHandler: {
                     handlers.on(Completion.successState())
 
                     }, failureHandler: { (context) in
@@ -260,7 +260,7 @@ class TestCase: XCTestCase {
     func deleteCreatedUsers(_ handlers: Handlers) {
         if let creator = TestCase._creator {
             // Login the creator
-            creator.login(withPassword: creator.password, sucessHandler: {
+            creator.login( sucessHandler: {
                 // Delete each user with a recursive method
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in

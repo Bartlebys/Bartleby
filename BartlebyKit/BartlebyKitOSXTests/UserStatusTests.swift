@@ -100,8 +100,7 @@ class UserStatusTests: XCTestCase {
     func test201_Login_UserNotSuspendedYet() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
-            user.login(withPassword: UserStatusTests._suspendedUserPassword,
-                       sucessHandler: {
+            user.login(sucessHandler: {
                         expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()
@@ -136,8 +135,7 @@ class UserStatusTests: XCTestCase {
     func test301_Login_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
-            user.login(withPassword: UserStatusTests._creatorUserPassword,
-                       sucessHandler: {
+            user.login(sucessHandler: {
                         expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()
@@ -189,13 +187,12 @@ class UserStatusTests: XCTestCase {
     func test401_Login_SuspendedUser_ShouldFail() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._suspendedUser {
-            user.login(withPassword: UserStatusTests._creatorUserPassword,
-                       sucessHandler: {
+            user.login(sucessHandler: {
                         expectation.fulfill()
                         XCTFail("A suspended user shou")
                 }) { (context) ->() in
                     expectation.fulfill()
-                    XCTAssertEqual(context.httpStatusCode, 401)
+                    XCTAssertEqual(context.httpStatusCode, 423)
             }
 
             waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
@@ -208,8 +205,7 @@ class UserStatusTests: XCTestCase {
     func test501_Login_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = UserStatusTests._creatorUser {
-            user.login(withPassword: UserStatusTests._creatorUserPassword,
-                       sucessHandler: {
+            user.login(sucessHandler: {
                         expectation.fulfill()
                 }) { (context) ->() in
                     expectation.fulfill()

@@ -315,14 +315,14 @@ public enum BsyncAdminError: Error {
      - parameter context:      the synchronization context
      - parameter handlers: the progress and completion handlers
 
+     
 
      */
     func synchronize(_ context: BsyncContext, handlers: Handlers) {
         if (context.mode() == BsyncMode.SourceIsLocalDestinationIsDistant) || (context.mode() == BsyncMode.SourceIsDistantDestinationIsLocal) {
             // We need to login before performing sync
-            if let user = context.credentials?.user, let password = context.credentials?.password {
-
-                LoginUser.execute(user, withPassword: password, sucessHandler: {
+            if let user = context.credentials?.user {
+                user.login(sucessHandler: {
                     print ("Successful login")
                     self.synchronizeWithprogressBlock(context, handlers: handlers)
                     }, failureHandler: { (context) in

@@ -89,10 +89,7 @@ extension BartlebyDocument {
      - parameter handlers: the handlers
      */
     public func importCollectionsFromCollaborativeServer(_ handlers: Handlers){
-
-        let password=self.currentUser.password
-
-        self.currentUser.login(withPassword: password, sucessHandler: {
+        self.currentUser.login( sucessHandler: {
 
             let pathURL=self.baseURL.appendingPathComponent("/Export")
             let dictionary=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];

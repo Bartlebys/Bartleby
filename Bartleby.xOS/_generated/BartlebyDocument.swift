@@ -454,7 +454,7 @@ import ObjectMapper
         bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
         // The connection is restricted to identified users
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
-        LoginUser.execute(self.currentUser, withPassword: self.currentUser.password, sucessHandler: {
+        LoginUser.execute(self.currentUser, sucessHandler: {
 
             let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
             self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)

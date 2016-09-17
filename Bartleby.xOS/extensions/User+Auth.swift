@@ -35,10 +35,9 @@ extension User {
     }
 
 
-    open func login(withPassword password: String,
-        sucessHandler success:@escaping()->(),
+    open func login(sucessHandler success:@escaping()->(),
         failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
-        LoginUser.execute(self, withPassword: password, sucessHandler:success, failureHandler:failure)
+        LoginUser.execute(self, sucessHandler:success, failureHandler:failure)
     }
 
     open func logout(sucessHandler success:@escaping()->(),

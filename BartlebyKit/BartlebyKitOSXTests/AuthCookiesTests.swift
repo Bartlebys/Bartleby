@@ -64,8 +64,7 @@ class AuthCookiesTests: XCTestCase {
     func test002_LoginUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AuthCookiesTests._createdUser {
-            user.login(withPassword: AuthCookiesTests._password,
-                       sucessHandler: { () -> () in
+            user.login( sucessHandler: { () -> () in
                         expectation.fulfill()
 
                         if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
@@ -104,8 +103,7 @@ class AuthCookiesTests: XCTestCase {
     func test004_LoginUser() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = AuthCookiesTests._createdUser {
-            user.login(withPassword: AuthCookiesTests._password,
-                       sucessHandler: { () -> () in
+            user.login( sucessHandler: { () -> () in
                         expectation.fulfill()
 
                         if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {

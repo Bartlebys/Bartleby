@@ -56,7 +56,7 @@ class BsyncAdminTreeTests: TestCase {
     func test101_loginUser() {
         let expectation = self.expectation(description: "Login user")
         
-        BsyncAdminTreeTests._user.login(withPassword: BsyncAdminTreeTests._user.password, sucessHandler: { 
+        BsyncAdminTreeTests._user.login(sucessHandler: {
             expectation.fulfill()
             }) { (context) in
                 expectation.fulfill()

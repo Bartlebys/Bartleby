@@ -65,7 +65,7 @@ extension BartlebyDocument {
                     self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.expectation_Failed))
                 }
             }else{
-                currentUser.login(withPassword: currentUser.password, sucessHandler: {
+                currentUser.login( sucessHandler: {
                     do {
                         try self._commitAndPushPendingOperations()
                     } catch {

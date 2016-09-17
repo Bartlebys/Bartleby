@@ -103,8 +103,7 @@ class LockerTests: XCTestCase {
     func test103_LoginUser_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
-            user.login(withPassword: LockerTests._creatorUserPassword,
-                       sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
             }) { (context) -> () in
                 expectation.fulfill()
@@ -199,8 +198,7 @@ class LockerTests: XCTestCase {
             // (!) TO BECOME THE MAIN USER
             LockerTests._document.registryMetadata.currentUser=consumerUser
 
-            consumerUser.login(withPassword: LockerTests._consumerUserPassword,
-                       sucessHandler: { () -> () in
+            consumerUser.login(sucessHandler: { () -> () in
                         expectation.fulfill()
             }) { (context) -> () in
                 expectation.fulfill()
@@ -303,8 +301,7 @@ class LockerTests: XCTestCase {
     func test401_LoginUser_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
-            user.login(withPassword: LockerTests._creatorUserPassword,
-                       sucessHandler: { () -> () in
+            user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
             }) { (context) -> () in
                 expectation.fulfill()

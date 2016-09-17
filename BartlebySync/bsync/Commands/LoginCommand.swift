@@ -18,18 +18,16 @@ class LoginCommand: CommandBase {
                                helpMessage: "API url e.g http://yd.local/api/v1")
         let userUID = StringOption(shortFlag: "u", longFlag: "user", required: true,
                                    helpMessage: "A user UID for the authentication.")
-        let password = StringOption(shortFlag: "p", longFlag: "password", required: true,
-                                    helpMessage: "A password is  required for authentication.")
         let secretKey = StringOption(shortFlag: "y", longFlag: "secretKey", required: true,
                                      helpMessage: "The secret key to encryp the data (if not set we use bsync's default)")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.")
         
         
-        addOptions(options: api, userUID, password, secretKey, sharedSalt)
+        addOptions(options: api, userUID, secretKey, sharedSalt)
         
         if parse() {
-            if let api = api.value, let userUID = userUID.value, let password = password.value,
+            if let api = api.value, let userUID = userUID.value,
                 let secretKey = secretKey.value, let sharedSalt = sharedSalt.value {
 
                 if let apiUrl = URL(string: api) {
@@ -51,7 +49,7 @@ class LoginCommand: CommandBase {
                         try kvs.open()
                         if let user = kvs[userUID] as? User {
                             let document=self.virtualDocumentFor(spaceUID: user.spaceUID,rootObjectUID:user.registryUID)
-                            LoginUser.execute(user, withPassword: password, sucessHandler: {
+                            LoginUser.execute(user, sucessHandler: {
                                 kvs.setStringValue(document.registryMetadata.identificationValue, forKey: "kvid.\(user.UID)")
                                 print ("Successful login")
                                 exit(EX_OK)
