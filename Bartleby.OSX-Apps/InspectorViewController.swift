@@ -382,13 +382,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         return true
     }
 
+
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        let selected=self._outlineView.selectedRow
-        if let item=_outlineView.item(atRow: selected) {
-            if let item=self._outlineView.item(atRow:selected) as? JObject{
-                self._selectionHandler(item)
-            }else{
-                print("*\(item)*")
+        GlobalQueue.main.get().async {
+            let selected=self._outlineView.selectedRow
+            if let item=self._outlineView.item(atRow: selected) {
+                if let item=self._outlineView.item(atRow:selected) as? JObject{
+                    self._selectionHandler(item)
+                }
             }
         }
     }
