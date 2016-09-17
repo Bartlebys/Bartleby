@@ -34,12 +34,9 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         super.init()
     }
 
-    // A reference to the document
-    // Most of the JObject contains a reference to the document
-    open var document:BartlebyDocument?
 
 
-    // MARK: - Collectible = Identifiable, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString
+    // MARK: - Collectible = Identifiable, Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString
 
     // MARK:  Collectible
 
@@ -48,7 +45,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // On newUser we setup directly user.document.
     open var collection:CollectibleCollection?{
         didSet{
-            if let registry=collection?.registry{
+            if let registry=collection?.document{
                 self.document=registry
             }
         }
@@ -126,8 +123,13 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
+    // MARK: Referenced
 
-    // MARK: Serializable
+
+    // A reference to the document
+    // Most of the JObject contains a reference to the document
+    open var document:BartlebyDocument?
+
 
     open func serialize() -> Data {
         let dictionaryRepresentation = self.dictionaryRepresentation()

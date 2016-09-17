@@ -27,18 +27,15 @@ import ObjectMapper
         return "PushOperationsCollectionController"
     }
 
-    // Registry is referenced on Collection Proxy Creation.
-    open var registry:BartlebyDocument?
-
     open var spaceUID:String {
         get{
-            return self.registry?.spaceUID ?? Default.NO_UID
+            return self.document?.spaceUID ?? Default.NO_UID
         }
     }
 
     open var registryUID:String{
         get{
-            return self.registry?.UID ?? Default.NO_UID
+            return self.document?.UID ?? Default.NO_UID
         }
     }
 
@@ -63,7 +60,7 @@ import ObjectMapper
     // We auto configure most of the array controller.
     open weak var arrayController:NSArrayController? {
         didSet{
-            //(self.registry as AnyObject).setValue(self, forKey: "PushOperations")
+            //(self.document as AnyObject).setValue(self, forKey: "pushOperations")
             arrayController?.objectClass=PushOperation.self
             arrayController?.entityName=PushOperation.className()
             arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)

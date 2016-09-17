@@ -27,18 +27,15 @@ import ObjectMapper
         return "LockersCollectionController"
     }
 
-    // Registry is referenced on Collection Proxy Creation.
-    open var registry:BartlebyDocument?
-
     open var spaceUID:String {
         get{
-            return self.registry?.spaceUID ?? Default.NO_UID
+            return self.document?.spaceUID ?? Default.NO_UID
         }
     }
 
     open var registryUID:String{
         get{
-            return self.registry?.UID ?? Default.NO_UID
+            return self.document?.UID ?? Default.NO_UID
         }
     }
 
@@ -63,7 +60,7 @@ import ObjectMapper
     // We auto configure most of the array controller.
     open weak var arrayController:NSArrayController? {
         didSet{
-            //(self.registry as AnyObject).setValue(self, forKey: "Lockers")
+            //(self.document as AnyObject).setValue(self, forKey: "lockers")
             arrayController?.objectClass=Locker.self
             arrayController?.entityName=Locker.className()
             arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)
@@ -330,9 +327,12 @@ import ObjectMapper
                 }
             }
             #endif
+
+
             if item.committed==false && commit==true{
                CreateLocker.commit(item, inRegistryWithUID:self.registryUID)
             }
+
         }else{
            
         }

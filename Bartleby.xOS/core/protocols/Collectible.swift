@@ -9,7 +9,7 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString {
+public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString {
     // The collection of the item
     var collection:CollectibleCollection? { get set }
 
@@ -38,6 +38,10 @@ public protocol Collectible:  Identifiable, Serializable,DictionaryRepresentatio
 }
 
 // TODO Create files 
+
+public protocol Referenced{
+    var document:BartlebyDocument? { get set }
+}
 
 public protocol ChangesInspectable{
     var changedKeys:[KeyedChanges] { get set }

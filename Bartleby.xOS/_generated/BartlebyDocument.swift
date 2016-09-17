@@ -31,7 +31,7 @@ import ObjectMapper
 
 
 
-open class BartlebyDocument : Registry {
+@objc(BartlebyDocument) open class BartlebyDocument : Registry {
 
     #if os(OSX)
 
@@ -67,20 +67,20 @@ open class BartlebyDocument : Registry {
     // On document deserialization the collection are populated.
 
 	open dynamic var users=UsersCollectionController(){
-		didSet{
-			users.registry=self
+		willSet{
+			users.document=self
 		}
 	}
 	
 	open dynamic var lockers=LockersCollectionController(){
-		didSet{
-			lockers.registry=self
+		willSet{
+			lockers.document=self
 		}
 	}
 	
 	open dynamic var pushOperations=PushOperationsCollectionController(){
-		didSet{
-			pushOperations.registry=self
+		willSet{
+			pushOperations.document=self
 		}
 	}
 	

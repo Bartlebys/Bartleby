@@ -64,7 +64,7 @@ public protocol RegistryDependent {
  Documents can be shared between iOS, tvOS and OSX.
 
  */
-open class Registry: BXDocument {
+@objc(Registry) open class Registry: BXDocument {
 
     // The file extension for crypted data
     open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
@@ -370,7 +370,7 @@ open class Registry: BXDocument {
 
     fileprivate func _refreshIdentifier(_ collectionProxy: inout BartlebyCollection) {
         collectionProxy.undoManager=self.undoManager
-        collectionProxy.registry=self as? BartlebyDocument
+        collectionProxy.document=self as? BartlebyDocument
     }
 
 
