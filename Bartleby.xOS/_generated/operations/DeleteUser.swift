@@ -90,7 +90,7 @@ import ObjectMapper
     fileprivate func _getOperation()->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             if let ic:PushOperationsCollectionController = try? document.getCollection(){
-                let operations=ic.items.filter({ (operation) -> Bool in
+                let operations=ic.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
                 })
                 if let operation=operations.first {

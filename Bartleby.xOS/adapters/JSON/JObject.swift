@@ -38,6 +38,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // Most of the JObject contains a reference to the document
     open var document:BartlebyDocument?
 
+
+    // MARK: - Collectible = Identifiable, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString
+
+    // MARK:  Collectible
+
     // On object insertion or Registry deserialization
     // We setup this collection reference
     // On newUser we setup directly user.document.
@@ -49,33 +54,120 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         }
     }
 
-    // MARK: - Collectible = Identifiable, Serializable, Supervisable,DictionaryRepresentation, UniversalType
+    // Reflects the index of of the item in the collection initial value is -1
+    // During it life cycle the collection updates if necessary its real value.
+    // It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
+    open var collectedIndex:Int = -1
 
-    // MARK: UniversalType
-
-    // Used to store the type name on serialization
-    fileprivate lazy var _typeName: String = type(of: self).typeName()
-
-    // The type name is Universal and used when serializing the instance
-    open class func typeName() -> String {
-        return "JObject"
-    }
-
-    internal var _runTimeTypeName: String?
-
-    // The runTypeName is used when deserializing the instance.
-    open func runTimeTypeName() -> String {
-        guard let _ = self._runTimeTypeName  else {
-            self._runTimeTypeName = NSStringFromClass(type(of: self))
-            return self._runTimeTypeName!
+    //Collectible protocol: The Creator UID
+    open var creatorUID: String = "\(Default.NO_UID)" {
+        didSet{
+            if creatorUID != oldValue{
+                self.provisionChanges(forKey: "creatorUID",oldValue: oldValue as AnyObject?,newValue: creatorUID as AnyObject?)
+            }
         }
-        return self._runTimeTypeName!
     }
 
-    /// The internal flag for auto commit
-    fileprivate var _shouldBeCommitted: Bool = false
+    // The object summary can be used for example by externalReferences to describe the JObject instance.
+    // If you want to disclose more information you can adopt the Descriptible protocol.
+    open var summary: String? {
+        didSet{
+            if summary != oldValue{
+                self.provisionChanges(forKey: "summary",oldValue: oldValue as AnyObject?,newValue: summary as AnyObject?)
+            }
+        }
+    }
 
-    open var changedKeys=[KeyedChanges]()
+
+    // An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.
+    // This flag allows for example to remove entities that have been for example created by unit-tests.
+    open var ephemeral: Bool=false
+
+
+    // Needs to be overriden to determine in wich collection the instances will be 'stored
+    class open var collectionName: String {
+        return "JObjects"
+    }
+
+    open var d_collectionName: String {
+        return JObject.collectionName
+    }
+
+
+    // MARK: Identifiable
+
+    // This  id is always  created locally and used as primary index by MONGODB
+    fileprivate var _id: String=Default.NO_UID {
+        didSet {
+            // tag ephemeral instance
+            if Bartleby.ephemeral {
+                self.ephemeral=true
+            }
+            // And register.
+            Registry.register(self)
+        }
+    }
+
+
+    /**
+     The creation of a Unique Identifier is ressource intensive.
+     We create the UID only if necessary.
+     */
+    open func defineUID() {
+        if self._id == Default.NO_UID {
+            self._id=Bartleby.createUID()
+        }
+    }
+
+    final public var UID: String {
+        get {
+            self.defineUID()
+            return self._id
+        }
+    }
+
+
+    // MARK: Serializable
+
+    open func serialize() -> Data {
+        let dictionaryRepresentation = self.dictionaryRepresentation()
+        do {
+            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
+                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[JSONSerialization.WritingOptions.prettyPrinted])
+            } else {
+                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[])
+            }
+        } catch {
+            return Data()
+        }
+    }
+
+
+    open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
+        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
+            let map=Map(mappingType: .fromJSON, JSONDictionary: JSONDictionary)
+            self.mapping(map)
+            if provisionChanges && Bartleby.changesAreInspectables {
+                self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
+            }
+
+        }
+        return self
+    }
+
+    // MARK: DictionaryRepresentation
+
+    open func dictionaryRepresentation()->[String:Any] {
+        self.defineUID()
+        return Mapper().toJSON(self)
+    }
+
+    open func patchFrom(_ dictionaryRepresentation:[String:Any]){
+        let mapped=Map(mappingType: .fromJSON, JSONDictionary: dictionaryRepresentation)
+        self.mapping(mapped)
+        self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
+    }
+
 
     // MARK: Distribuable
 
@@ -115,6 +207,10 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: Supervisable
 
     fileprivate var _supervisers=[String:SupervisionClosure]()
+
+
+    /// The internal flag for auto commit
+    fileprivate var _shouldBeCommitted: Bool = false
 
 
     /**
@@ -246,102 +342,43 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self._supervisionIsEnabled=true
     }
 
+    // MARK: ChangesInspectable
 
-    //Collectible protocol: The Creator UID
-    open var creatorUID: String = "\(Default.NO_UID)" {
-        didSet{
-            if creatorUID != oldValue{
-                self.provisionChanges(forKey: "creatorUID",oldValue: oldValue as AnyObject?,newValue: creatorUID as AnyObject?)
-            }
+    open var changedKeys=[KeyedChanges]()
+
+
+    // MARK: UniversalType
+
+    // Used to store the type name on serialization
+    fileprivate lazy var _typeName: String = type(of: self).typeName()
+
+    // The type name is Universal and used when serializing the instance
+    open class func typeName() -> String {
+        return "JObject"
+    }
+
+    internal var _runTimeTypeName: String?
+
+    // The runTypeName is used when deserializing the instance.
+    open func runTimeTypeName() -> String {
+        guard let _ = self._runTimeTypeName  else {
+            self._runTimeTypeName = NSStringFromClass(type(of: self))
+            return self._runTimeTypeName!
+        }
+        return self._runTimeTypeName!
+    }
+
+
+    // MARK: JSONString
+
+    open func toJSONString(_ prettyPrint:Bool)->String{
+        if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
+            return j
+        } else {
+            return "{}"
         }
     }
 
-    // The object summary can be used for example by externalReferences to describe the JObject instance.
-    // If you want to disclose more information you can adopt the Descriptible protocol.
-    open var summary: String? {
-        didSet{
-            if summary != oldValue{
-                self.provisionChanges(forKey: "summary",oldValue: oldValue as AnyObject?,newValue: summary as AnyObject?)
-            }
-        }
-    }
-
-    // MARK: Collection Name
-
-    // Needs to be overriden to determine in wich collection the instances will be 'stored
-    class open var collectionName: String {
-        return "JObjects"
-    }
-
-    open var d_collectionName: String {
-        return JObject.collectionName
-    }
-
-
-    // An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.
-    // This flag allows for example to remove entities that have been for example created by unit-tests.
-    open var ephemeral: Bool=false
-
-
-    // MARK: Serializable
-
-    open func serialize() -> Data {
-        let dictionaryRepresentation = self.dictionaryRepresentation()
-        do {
-            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
-                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[JSONSerialization.WritingOptions.prettyPrinted])
-            } else {
-                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[])
-            }
-        } catch {
-            return Data()
-        }
-    }
-
-
-    open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
-        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-            let map=Map(mappingType: .fromJSON, JSONDictionary: JSONDictionary)
-            self.mapping(map)
-            if provisionChanges && Bartleby.changesAreInspectables {
-                self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
-            }
-
-        }
-        return self
-    }
-
-    // MARK: Identifiable
-
-    // This  id is always  created locally and used as primary index by MONGODB
-    fileprivate var _id: String=Default.NO_UID {
-        didSet {
-            // tag ephemeral instance
-            if Bartleby.ephemeral {
-                self.ephemeral=true
-            }
-            // And register.
-            Registry.register(self)
-        }
-    }
-
-
-    /**
-     The creation of a Unique Identifier is ressource intensive.
-     We create the UID only if necessary.
-     */
-    open func defineUID() {
-        if self._id == Default.NO_UID {
-            self._id=Bartleby.createUID()
-        }
-    }
-
-    final public var UID: String {
-        get {
-            self.defineUID()
-            return self._id
-        }
-    }
 
     // MARK: - CustomStringConvertible
 
@@ -356,16 +393,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             } else {
                 return "{}"
             }
-        }
-    }
-
-    // MARK: - ToJSON
-
-    open func toJSONString(_ prettyPrint:Bool)->String{
-        if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
-            return j
-        } else {
-            return "{}"
         }
     }
 
@@ -396,7 +423,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             // Changed keys are not serialized
             self.changedKeys=changedKeys
         }
-
     }
 
 
@@ -473,19 +499,5 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         return self as AnyObject
     }
 
-
-
-    // MARK: - DictionaryRepresentation
-
-    open func dictionaryRepresentation()->[String:Any] {
-        self.defineUID()
-        return Mapper().toJSON(self)
-    }
-
-    open func patchFrom(_ dictionaryRepresentation:[String:Any]){
-        let mapped=Map(mappingType: .fromJSON, JSONDictionary: dictionaryRepresentation)
-        self.mapping(mapped)
-        self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
-    }
     
 }

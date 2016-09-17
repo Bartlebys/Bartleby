@@ -164,7 +164,7 @@ open class BartlebyDocument : Registry {
         didSet{
             if let users = selectedUsers {
                  let indexes:[Int]=users.map({ (user) -> Int in
-                    return self.users.items.index(where:{ return $0.UID == user.UID })!
+                    return self.users.index(where:{ return $0.UID == user.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
@@ -182,7 +182,7 @@ open class BartlebyDocument : Registry {
         didSet{
             if let lockers = selectedLockers {
                  let indexes:[Int]=lockers.map({ (locker) -> Int in
-                    return self.lockers.items.index(where:{ return $0.UID == locker.UID })!
+                    return self.lockers.index(where:{ return $0.UID == locker.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
@@ -200,7 +200,7 @@ open class BartlebyDocument : Registry {
         didSet{
             if let pushOperations = selectedPushOperations {
                  let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
-                    return self.pushOperations.items.index(where:{ return $0.UID == pushOperation.UID })!
+                    return self.pushOperations.index(where:{ return $0.UID == pushOperation.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)

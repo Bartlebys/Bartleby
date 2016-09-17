@@ -42,15 +42,46 @@ import ObjectMapper
         }
     }
 
+    /// Init with prefetched content
+    ///
+    /// - parameter items: itels
+    ///
+    /// - returns: the instance
+    required public init(items:[PushOperation]) {
+        super.init()
+        self.items=items
+    }
+
+    required public init() {
+        super.init()
+    }
+
     weak open var undoManager:UndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
-    open weak var arrayController:NSArrayController?
+    // We auto configure most of the array controller.
+    open weak var arrayController:NSArrayController? {
+        didSet{
+            //(self.registry as AnyObject).setValue(self, forKey: "PushOperations")
+            arrayController?.objectClass=PushOperation.self
+            arrayController?.entityName=PushOperation.className()
+            arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)
+        }
+    }
 
     #endif
 
     weak open var tableView: BXTableView?
+
+    // The underling items storage
+    fileprivate dynamic var items:[PushOperation]=[PushOperation](){
+        didSet {
+            if items != oldValue {
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            }
+        }
+    }
 
     open func generate() -> AnyIterator<PushOperation> {
         var nextIndex = -1
@@ -91,12 +122,8 @@ import ObjectMapper
         return self.items.count
     }
 
-    open func indexOf(predicate: (PushOperation) throws -> Bool) rethrows -> Int?{
-        return try self.items.index(where:predicate)
-    }
-
-    open func indexOf(element: PushOperation) -> Int?{
-        return self.items.index(where:{$0.UID==element.UID})
+    open func indexOf(element:@escaping(PushOperation) throws -> Bool) rethrows -> Int?{
+        return self._getIndexOf(element as! Collectible)
     }
 
     open func item(at index:Int)->Collectible?{
@@ -104,7 +131,35 @@ import ObjectMapper
     }
 
 
+    fileprivate func _getIndexOf(_ item:Collectible)->Int?{
+        if item.collectedIndex >= 0 {
+            return item.collectedIndex
+        }else{
+            if let idx=items.index(where:{return $0.UID == item.UID}){
+                self[idx].collectedIndex=idx
+                return idx
+            }
+        }
+        return nil
+    }
 
+    fileprivate func _incrementIndexes(greaterThan lowerIndex:Int){
+        let count=items.count
+        if count > lowerIndex{
+            for i in lowerIndex...count-1{
+                self[i].collectedIndex += 1
+            }
+        }
+    }
+
+    fileprivate func _decrementIndexes(greaterThan lowerIndex:Int){
+        let count=items.count
+        if count > lowerIndex{
+            for i in lowerIndex...count-1{
+                self[i].collectedIndex -= 1
+            }
+        }
+    }
     /**
     An iterator that permit dynamic approaches.
     The Registry ignores the real types.
@@ -126,19 +181,6 @@ import ObjectMapper
         return [String]()
     }
     
-
-    required public init() {
-        super.init()
-    }
-
-
-    open dynamic var items:[PushOperation]=[PushOperation](){
-        didSet {
-            if items != oldValue {
-                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
-            }
-        }
-    }
 
     // MARK: Identifiable
 
@@ -239,6 +281,9 @@ import ObjectMapper
         if let item=item as? PushOperation{
 
             item.collection = self // Reference the collection
+            item.collectedIndex = index // Update the index
+            self._incrementIndexes(greaterThan:index)
+
             // Insert the item
             self.items.insert(item, at: index)
             #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -282,6 +327,7 @@ import ObjectMapper
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
        let item : PushOperation =  self[index]
+        self._decrementIndexes(greaterThan:index)
 
         // Unregister the item
         Registry.unRegister(item)
@@ -306,7 +352,7 @@ import ObjectMapper
 
     open func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? PushOperation{
-            if let idx=self.indexOf(element:instance){
+            if let idx=self._getIndexOf(instance){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }

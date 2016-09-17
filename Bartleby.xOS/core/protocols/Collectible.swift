@@ -9,9 +9,14 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable, Serializable, Distribuable, Supervisable,ChangesInspectable, DictionaryRepresentation, UniversalType, JSONString {
-
+public protocol Collectible:  Identifiable, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString {
+    // The collection of the item
     var collection:CollectibleCollection? { get set }
+
+    // Reflects the index of of the item in the collection initial value is -1 
+    // During it life cycle the collection updates if necessary its real value.
+    // It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
+    var collectedIndex: Int { get set }
 
     // The creator UID
     var creatorUID: String { get set }

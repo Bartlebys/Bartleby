@@ -42,15 +42,46 @@ import ObjectMapper
         }
     }
 
+    /// Init with prefetched content
+    ///
+    /// - parameter items: itels
+    ///
+    /// - returns: the instance
+    required public init(items:[User]) {
+        super.init()
+        self.items=items
+    }
+
+    required public init() {
+        super.init()
+    }
+
     weak open var undoManager:UndoManager?
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
 
-    open weak var arrayController:NSArrayController?
+    // We auto configure most of the array controller.
+    open weak var arrayController:NSArrayController? {
+        didSet{
+            //(self.registry as AnyObject).setValue(self, forKey: "Users")
+            arrayController?.objectClass=User.self
+            arrayController?.entityName=User.className()
+            arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)
+        }
+    }
 
     #endif
 
     weak open var tableView: BXTableView?
+
+    // The underling items storage
+    fileprivate dynamic var items:[User]=[User](){
+        didSet {
+            if items != oldValue {
+                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            }
+        }
+    }
 
     open func generate() -> AnyIterator<User> {
         var nextIndex = -1
@@ -91,12 +122,8 @@ import ObjectMapper
         return self.items.count
     }
 
-    open func indexOf(predicate: (User) throws -> Bool) rethrows -> Int?{
-        return try self.items.index(where:predicate)
-    }
-
-    open func indexOf(element: User) -> Int?{
-        return self.items.index(where:{$0.UID==element.UID})
+    open func indexOf(element:@escaping(User) throws -> Bool) rethrows -> Int?{
+        return self._getIndexOf(element as! Collectible)
     }
 
     open func item(at index:Int)->Collectible?{
@@ -104,7 +131,35 @@ import ObjectMapper
     }
 
 
+    fileprivate func _getIndexOf(_ item:Collectible)->Int?{
+        if item.collectedIndex >= 0 {
+            return item.collectedIndex
+        }else{
+            if let idx=items.index(where:{return $0.UID == item.UID}){
+                self[idx].collectedIndex=idx
+                return idx
+            }
+        }
+        return nil
+    }
 
+    fileprivate func _incrementIndexes(greaterThan lowerIndex:Int){
+        let count=items.count
+        if count > lowerIndex{
+            for i in lowerIndex...count-1{
+                self[i].collectedIndex += 1
+            }
+        }
+    }
+
+    fileprivate func _decrementIndexes(greaterThan lowerIndex:Int){
+        let count=items.count
+        if count > lowerIndex{
+            for i in lowerIndex...count-1{
+                self[i].collectedIndex -= 1
+            }
+        }
+    }
     /**
     An iterator that permit dynamic approaches.
     The Registry ignores the real types.
@@ -133,19 +188,6 @@ import ObjectMapper
             self.committed=true
         }
         return UIDS
-    }
-
-    required public init() {
-        super.init()
-    }
-
-
-    open dynamic var items:[User]=[User](){
-        didSet {
-            if items != oldValue {
-                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
-            }
-        }
     }
 
     // MARK: Identifiable
@@ -247,6 +289,9 @@ import ObjectMapper
         if let item=item as? User{
 
             item.collection = self // Reference the collection
+            item.collectedIndex = index // Update the index
+            self._incrementIndexes(greaterThan:index)
+
 
             if let undoManager = self.undoManager{
                 // Has an edit occurred already in this event?
@@ -309,6 +354,7 @@ import ObjectMapper
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool) {
        let item : User =  self[index]
+        self._decrementIndexes(greaterThan:index)
 
         // Add the inverse of this invocation to the undo stack
         if let undoManager: UndoManager = undoManager {
@@ -347,7 +393,7 @@ import ObjectMapper
 
     open func removeObject(_ item: Collectible, commit:Bool){
         if let instance=item as? User{
-            if let idx=self.indexOf(element:instance){
+            if let idx=self._getIndexOf(instance){
                 self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }

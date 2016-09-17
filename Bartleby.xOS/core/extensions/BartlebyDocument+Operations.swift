@@ -117,7 +117,7 @@ extension BartlebyDocument {
 
     fileprivate func _getNextBunchOfPendingOperations()->[PushOperation]{
         var nextBunch=[PushOperation]()
-        let filtered=self.pushOperations.items.filter { $0.canBePushed() }
+        let filtered=self.pushOperations.filter { $0.canBePushed() }
         let filteredCount=filtered.count
         let maxBunchSize=Bartleby.configuration.MAX_OPERATIONS_BUNCH_SIZE
         if filteredCount > 0 {
