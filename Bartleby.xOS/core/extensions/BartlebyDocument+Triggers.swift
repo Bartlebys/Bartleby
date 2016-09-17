@@ -59,7 +59,6 @@ extension BartlebyDocument {
                 bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
             }
         }
-
         self._integrateContiguousData()
 
     }

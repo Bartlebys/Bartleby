@@ -116,7 +116,7 @@ open class HTTPManager: NSObject {
                     headers["kvid"]=Default.VOID_STRING
                 }
             }
-            // We add the observationUID
+            // We add the document observationUID
             headers["observationUID"]=document.UID
 
         }

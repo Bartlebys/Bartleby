@@ -57,7 +57,7 @@ public protocol BartlebyConfiguration {
     // Supervision loop interval (1 second min )
     static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
 
-    // Delay between chained operations
+     // To guarantee the sequential Execution use 1 (!)
     static var MAX_OPERATIONS_BUNCH_SIZE: Int { get set }
 
     // Should the registries metadata be crypted on export
@@ -115,7 +115,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Supervision loop interval (1 second min )
     public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
-    // Delay between chained operations
+    // To guarantee the sequential Execution use 1
     public static var MAX_OPERATIONS_BUNCH_SIZE: Int=10
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
