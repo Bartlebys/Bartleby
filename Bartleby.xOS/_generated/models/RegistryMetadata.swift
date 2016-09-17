@@ -70,8 +70,8 @@ import ObjectMapper
 	    }
 	}
 
-	//If set to true any object creation, update, or deletion will be pushed to the server immediately
-	dynamic open var pushOnChanges:Bool = true  {	 
+	//If set to true any object creation, update, or deletion will be pushed as soon as possible.
+	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
