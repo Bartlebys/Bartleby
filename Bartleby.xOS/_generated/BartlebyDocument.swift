@@ -20,13 +20,13 @@
 import Foundation
 
 #if os(OSX)
-import AppKit
+    import AppKit
 #else
-import UIKit
+    import UIKit
 #endif
 
 #if !USE_EMBEDDED_MODULES
-import ObjectMapper
+    import ObjectMapper
 #endif
 
 
@@ -45,9 +45,9 @@ import ObjectMapper
     private var _fileURL: URL
 
     override public init(fileURL url: URL) {
-        self._fileURL = url
-        super.init(fileURL: url)
-        BartlebyDocument.declareTypes()
+    self._fileURL = url
+    super.init(fileURL: url)
+    BartlebyDocument.declareTypes()
     }
     #endif
 
@@ -66,27 +66,27 @@ import ObjectMapper
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var users=UsersCollectionController(){
-		willSet{
-			users.document=self
-		}
-	}
-	
-	open dynamic var lockers=LockersCollectionController(){
-		willSet{
-			lockers.document=self
-		}
-	}
-	
-	open dynamic var pushOperations=PushOperationsCollectionController(){
-		willSet{
-			pushOperations.document=self
-		}
-	}
-	
+    open dynamic var users=UsersCollectionController(){
+        willSet{
+            users.document=self
+        }
+    }
+
+    open dynamic var lockers=LockersCollectionController(){
+        willSet{
+            lockers.document=self
+        }
+    }
+
+    open dynamic var pushOperations=PushOperationsCollectionController(){
+        willSet{
+            pushOperations.document=self
+        }
+    }
+
 
     // MARK: - Array Controllers and automation (OSX)
- #if os(OSX) && !USE_EMBEDDED_MODULES
+    #if os(OSX) && !USE_EMBEDDED_MODULES
 
 
     // KVO
@@ -95,75 +95,75 @@ import ObjectMapper
 
 
     open var usersArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.users.arrayController=usersArrayController
-            // Add observer
-            usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                self.usersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
-        }
+    willSet{
+    // Remove observer on previous array Controller
+    usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
     }
-        
+    didSet{
+    // Setup the Array Controller in the CollectionController
+    self.users.arrayController=usersArrayController
+    // Add observer
+    usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+    if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
+    let indexesSet = NSMutableIndexSet()
+    indexes.forEach{ indexesSet.add($0) }
+    self.usersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+    }
+    }
+    }
+
 
     open var lockersArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.lockers.arrayController=lockersArrayController
-            // Add observer
-            lockersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                self.lockersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
-        }
+    willSet{
+    // Remove observer on previous array Controller
+    lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
     }
-        
+    didSet{
+    // Setup the Array Controller in the CollectionController
+    self.lockers.arrayController=lockersArrayController
+    // Add observer
+    lockersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+    if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey] as? [Int]{
+    let indexesSet = NSMutableIndexSet()
+    indexes.forEach{ indexesSet.add($0) }
+    self.lockersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+    }
+    }
+    }
+
 
     open var pushOperationsArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            pushOperationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.pushOperations.arrayController=pushOperationsArrayController
-            // Add observer
-            pushOperationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                self.pushOperationsArrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
-        }
+    willSet{
+    // Remove observer on previous array Controller
+    pushOperationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
     }
-        
+    didSet{
+    // Setup the Array Controller in the CollectionController
+    self.pushOperations.arrayController=pushOperationsArrayController
+    // Add observer
+    pushOperationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+    if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey] as? [Int]{
+    let indexesSet = NSMutableIndexSet()
+    indexes.forEach{ indexesSet.add($0) }
+    self.pushOperationsArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+    }
+    }
+    }
 
 
 
-#endif
+
+    #endif
 
     // indexes persistency
 
-    
+
     static open let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
     static open let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic open var selectedUsers:[User]?{
         didSet{
             if let users = selectedUsers {
-                 let indexes:[Int]=users.map({ (user) -> Int in
+                let indexes:[Int]=users.map({ (user) -> Int in
                     return self.users.index(where:{ return $0.UID == user.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
@@ -172,16 +172,16 @@ import ObjectMapper
         }
     }
     var firstSelectedUser:User? { return self.selectedUsers?.first }
-        
-        
 
-    
+
+
+
     static open let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
     static open let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic open var selectedLockers:[Locker]?{
         didSet{
             if let lockers = selectedLockers {
-                 let indexes:[Int]=lockers.map({ (locker) -> Int in
+                let indexes:[Int]=lockers.map({ (locker) -> Int in
                     return self.lockers.index(where:{ return $0.UID == locker.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
@@ -190,16 +190,16 @@ import ObjectMapper
         }
     }
     var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
-        
-        
 
-    
+
+
+
     static open let kSelectedPushOperationsIndexesKey="selectedPushOperationsIndexesKey"
     static open let PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic open var selectedPushOperations:[PushOperation]?{
         didSet{
             if let pushOperations = selectedPushOperations {
-                 let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
+                let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
                     return self.pushOperations.index(where:{ return $0.UID == pushOperation.UID })!
                 })
                 self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey]=indexes
@@ -208,8 +208,8 @@ import ObjectMapper
         }
     }
     var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
-        
-        
+
+
 
 
 
@@ -218,12 +218,12 @@ import ObjectMapper
 
     /**
 
-    In this func you should :
+     In this func you should :
 
-    #1  Define the Schema
-    #2  Register the collections
+     #1  Define the Schema
+     #2  Register the collections
 
-    */
+     */
     override open func configureSchema(){
 
         // #1  Defines the Schema
@@ -236,7 +236,7 @@ import ObjectMapper
         userDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         userDefinition.allowDistantPersistency = true
         userDefinition.inMemory = false
-        
+
 
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
@@ -245,7 +245,7 @@ import ObjectMapper
         lockerDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         lockerDefinition.allowDistantPersistency = true
         lockerDefinition.inMemory = false
-        
+
 
         let pushOperationDefinition = CollectionMetadatum()
         pushOperationDefinition.proxy = self.pushOperations
@@ -254,15 +254,15 @@ import ObjectMapper
         pushOperationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         pushOperationDefinition.allowDistantPersistency = false
         pushOperationDefinition.inMemory = false
-        
+
 
 
         // Proceed to configuration
         do{
 
-			try self.registryMetadata.configureSchema(userDefinition)
-			try self.registryMetadata.configureSchema(lockerDefinition)
-			try self.registryMetadata.configureSchema(pushOperationDefinition)
+            try self.registryMetadata.configureSchema(userDefinition)
+            try self.registryMetadata.configureSchema(lockerDefinition)
+            try self.registryMetadata.configureSchema(pushOperationDefinition)
 
         }catch RegistryError.duplicatedCollectionName(let collectionName){
             bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
@@ -279,98 +279,98 @@ import ObjectMapper
 
     // MARK: - OSX specific
 
- #if os(OSX) && !USE_EMBEDDED_MODULES
+    #if os(OSX) && !USE_EMBEDDED_MODULES
 
     // MARK: KVO
 
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &_KVOContext else {
-            // If the context does not match, this message
-            // must be intended for our superclass.
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        // We prefer to centralize the KVO for selection indexes at the top level
-        if let keyPath = keyPath, let object = object {
+    guard context == &_KVOContext else {
+    // If the context does not match, this message
+    // must be intended for our superclass.
+    super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+    return
+    }
+    // We prefer to centralize the KVO for selection indexes at the top level
+    if let keyPath = keyPath, let object = object {
 
-                    
-            if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
-                if let users = self.usersArrayController?.selectedObjects as? [User] {
-                     if let selectedUser = self.selectedUsers{
-                        if selectedUser == users{
-                            return // No changes
-                        }
-                     }
-                    self.selectedUsers=users
-                }
-                return
-            }
-            
 
-            
-            if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
-                if let lockers = self.lockersArrayController?.selectedObjects as? [Locker] {
-                     if let selectedLocker = self.selectedLockers{
-                        if selectedLocker == lockers{
-                            return // No changes
-                        }
-                     }
-                    self.selectedLockers=lockers
-                }
-                return
-            }
-            
+    if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
+    if let users = self.usersArrayController?.selectedObjects as? [User] {
+    if let selectedUser = self.selectedUsers{
+    if selectedUser == users{
+    return // No changes
+    }
+    }
+    self.selectedUsers=users
+    }
+    return
+    }
 
-            
-            if keyPath=="selectionIndexes" && self.pushOperationsArrayController == object as? NSArrayController {
-                if let pushOperations = self.pushOperationsArrayController?.selectedObjects as? [PushOperation] {
-                     if let selectedPushOperation = self.selectedPushOperations{
-                        if selectedPushOperation == pushOperations{
-                            return // No changes
-                        }
-                     }
-                    self.selectedPushOperations=pushOperations
-                }
-                return
-            }
-            
 
-        }
+
+    if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
+    if let lockers = self.lockersArrayController?.selectedObjects as? [Locker] {
+    if let selectedLocker = self.selectedLockers{
+    if selectedLocker == lockers{
+    return // No changes
+    }
+    }
+    self.selectedLockers=lockers
+    }
+    return
+    }
+
+
+
+    if keyPath=="selectionIndexes" && self.pushOperationsArrayController == object as? NSArrayController {
+    if let pushOperations = self.pushOperationsArrayController?.selectedObjects as? [PushOperation] {
+    if let selectedPushOperation = self.selectedPushOperations{
+    if selectedPushOperation == pushOperations{
+    return // No changes
+    }
+    }
+    self.selectedPushOperations=pushOperations
+    }
+    return
+    }
+
+
+    }
 
     }
 
     // MARK:  Delete currently selected items
-    
+
     open func deleteSelectedUsers() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedUsers{
-            for item in selected{
-                 self.users.removeObject(item, commit:true)
-            }
-        }
+    // you should override this method if you want to cascade the deletion(s)
+    if let selected=self.selectedUsers{
+    for item in selected{
+    self.users.removeObject(item, commit:true)
     }
-        
+    }
+    }
+
 
     open func deleteSelectedLockers() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedLockers{
-            for item in selected{
-                 self.lockers.removeObject(item, commit:true)
-            }
-        }
+    // you should override this method if you want to cascade the deletion(s)
+    if let selected=self.selectedLockers{
+    for item in selected{
+    self.lockers.removeObject(item, commit:true)
     }
-        
+    }
+    }
+
 
     open func deleteSelectedPushOperations() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedPushOperations{
-            for item in selected{
-                 self.pushOperations.removeObject(item, commit:true)
-            }
-        }
+    // you should override this method if you want to cascade the deletion(s)
+    if let selected=self.selectedPushOperations{
+    for item in selected{
+    self.pushOperations.removeObject(item, commit:true)
     }
-        
+    }
+    }
+
 
 
     #else
@@ -378,20 +378,20 @@ import ObjectMapper
 
     #endif
 
-    
-   
-    // MARK : new User facility 
-    
+
+
+    // MARK : new User facility
+
     /**
-    * Creates a new user
-    * 
-    * you should override this method to customize default (name, email, ...)
-    * and call before returning :
-    *   if(user.creatorUID != user.UID){
-    *       // We don't want to add the current user to user list
-    *       self.users.add(user, commit:true)
-    *   }
-    */
+     * Creates a new user
+     *
+     * you should override this method to customize default (name, email, ...)
+     * and call before returning :
+     *   if(user.creatorUID != user.UID){
+     *       // We don't want to add the current user to user list
+     *       self.users.add(user, commit:true)
+     *   }
+     */
     open func newUser() -> User {
         let user=User()
         user.silentGroupedChanges {
@@ -406,7 +406,7 @@ import ObjectMapper
         }
         return user
     }
-     
+
     // MARK: - Synchronization
 
 
@@ -454,7 +454,7 @@ import ObjectMapper
         bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
         // The connection is restricted to identified users
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
-        LoginUser.execute(self.currentUser, sucessHandler: {
+        self.currentUser.login(sucessHandler: {
 
             let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
             self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
@@ -562,7 +562,7 @@ import ObjectMapper
             return data
         }catch{
             bprint("Serialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
-            return nil                                                                                                                   
+            return nil
         }
     }
 
@@ -640,7 +640,7 @@ import ObjectMapper
     // MARK:  NSDocument
 
     // MARK: Serialization
-     override open func fileWrapper(ofType typeName: String) throws -> FileWrapper {
+    override open func fileWrapper(ofType typeName: String) throws -> FileWrapper {
 
         self.registryWillSave()
         let fileWrapper=FileWrapper(directoryWithFileWrappers:[:])
@@ -765,7 +765,7 @@ import ObjectMapper
                                             collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                         }
                                     }
-                                  let _ = try proxy.updateData(collectionData,provisionChanges: false)
+                                    let _ = try proxy.updateData(collectionData,provisionChanges: false)
                                 }
                             } else {
                                 throw RegistryError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
@@ -783,29 +783,29 @@ import ObjectMapper
             } catch {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
-           
+
             DispatchQueue.main.async(execute: {
                 self.registryDidLoad()
             })
         }
     }
-    
+
     #else
-    
+
     // MARK: iOS UIDocument serialization / deserialization
-    
+
     // TODO: @bpds(#IOS) UIDocument support
     
     // SAVE content
     override open func contents(forType typeName: String) throws -> Any {
-        return ""
+    return ""
     }
-
+    
     // READ content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-
+    
     }
     
     #endif  
- 
+    
 }
