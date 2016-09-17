@@ -60,7 +60,7 @@ import ObjectMapper
     // We auto configure most of the array controller.
     open weak var arrayController:NSArrayController? {
         didSet{
-            //(self.document as AnyObject).setValue(self, forKey: "pushOperations")
+            self.document?.setValue(self, forKey: "pushOperations")
             arrayController?.objectClass=PushOperation.self
             arrayController?.entityName=PushOperation.className()
             arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)
