@@ -255,15 +255,11 @@ import ObjectMapper
                     }else{
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
-                                // Acknowledge the trigger and log QA issue
+                                // Acknowledge the trigger if there is one
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
                                         document.acknowledgeOwnedTriggerIndex(index.intValue)
-                                    }else{
-                                        bprint("QA Trigger index is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                                     }
-                                }else{
-                                    bprint("QA Trigger index dictionary is missing \(context)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
                                 }
                                 success(context)
                             }else{

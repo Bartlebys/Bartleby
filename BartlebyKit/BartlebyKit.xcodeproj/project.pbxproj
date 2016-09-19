@@ -562,6 +562,7 @@
 			isa = PBXGroup;
 			children = (
 				E50F3D131D40D50400532B09 /* BartlebyDocument.swift */,
+				E50F3D2D1D40D50400532B09 /* operations */,
 				E50F3D141D40D50400532B09 /* collectionControllers */,
 				E50F3D1C1D40D50400532B09 /* models */,
 			);
@@ -593,7 +594,6 @@
 				E50F3D281D40D50400532B09 /* Tag.swift */,
 				E50F3D2B1D40D50400532B09 /* Trigger.swift */,
 				E50F3D2C1D40D50400532B09 /* User.swift */,
-				E50F3D2D1D40D50400532B09 /* operations */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -620,8 +620,7 @@
 				E50F3D501D40D50400532B09 /* UpdateUser.swift */,
 				E50F3D511D40D50400532B09 /* UpdateUsers.swift */,
 			);
-			name = operations;
-			path = ../operations;
+			path = operations;
 			sourceTree = "<group>";
 		};
 		E50F3D521D40D50400532B09 /* adapters */ = {
