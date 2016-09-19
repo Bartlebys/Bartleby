@@ -24,11 +24,13 @@ Most of the entities are using the URD model, with only one exception: the "user
   
 # Principles
 
-1. Operations are IdemPotent. (e.g **Void to Void** Already **Deleted** entity can be "re-deleted")
-2. The **Last Operation Wins** and determines the valid state of an entity.
-3. An **Update** of a **Deleted** entity recreates the entity (UPSERT).
-4. If two client invoke a **Create** operation of an entity with same UID, it first state is updated by the second (UPSERT).
+1. Operations are IdemPotents. (e.g **Void to Void** Already **Deleted** entity can be "re-deleted")
+2. The **Last Operation Wins** and determines the state of an entity (deletion included).
+3. An **Update** of a **Deleted** entity recreates the entity (because excepted for users CREATE == UPSERT).
+4. If two client invoke a **Create** operation of an entity with same UID, it first state is updated by the second (because excepted for users CREATE == UPSERT).
 5. **Construction prevails on demolition**
+
+*Principle #3 and #4 do not apply to Users*
 
 ## Let's suppose that User A & B are online
  
@@ -109,5 +111,18 @@ Each trigger has a unique primary trigger index per observationUID.
 - B **CREATES** Z2.0 -> A (should not Read )  
 - B **CREATES** Zn.0 =-> *OPTIONAL* A could compress Z(1,2,n) and integrate automatically the previous triggers)
 
+## Transition Sequence 
 
+1. we proceed to UpStream Sync.
+2. then integrate all the Triggers by calling `TriggersAfterIndex.execute(...)`
+3. then we connect to SSE.
+
+## Risks of long Off-line periods
+
+According to Principle #2:
+> The **Last Operation Wins** and determines the state of an entity (deletion included).
+
+If You have Deleted or Updated some entity offline, let's say entity the "E1" a few day ago, and another user has updated 139 times this Entity "E1.139" since then, when you'll transition online your operation will delete his stuff.
+
+**That's Why we should encourage Online session!**
 
