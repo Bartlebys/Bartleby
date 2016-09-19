@@ -28,6 +28,11 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 // This is due to the impossibility to link a FrameWork to an XPC services.
 @objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
+
+    /// Each time the state of this object is pushed 
+    /// This counter is incremented.
+    open var pushCounter:Int=0
+
     // MARK: - Initializable
 
     override required public init() {
@@ -413,6 +418,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
                 // Define if necessary the UID
                 self.defineUID()
             }
+            self.pushCounter <- map["pushCounter"]
             self._id <- map[Default.UID_KEY]
             self._typeName <- map[Default.TYPE_NAME_KEY]
             self.committed <- map["committed"]
@@ -458,6 +464,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         super.init()
         self.disableSupervisionAndCommit()
         self.defineUID()
+        self.pushCounter=Int(decoder.decodeInt32(forKey: "pushCounter"))
         self._id=String(decoder.decodeObject(of: NSString.self, forKey: Default.UID_KEY)! as NSString)
         self._typeName=type(of: self).typeName()
         self.committed=decoder.decodeBool(forKey: "committed")
@@ -471,6 +478,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     open func encode(with coder: NSCoder) {
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
+        coder.encode(self.pushCounter, forKey: "pushCounter")
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
         coder.encode(self.committed, forKey:"committed")
