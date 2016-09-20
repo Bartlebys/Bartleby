@@ -260,7 +260,7 @@
         <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <menu id="c12-ge-CBZ">
             <items>
-                <menuItem title="Reset Counters" id="p08-AH-Eqj">
+                <menuItem title="Reset Changes Counters" id="p08-AH-Eqj">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="resetAllSupervisionCounter:" target="-2" id="JFg-eQ-hDp"/>

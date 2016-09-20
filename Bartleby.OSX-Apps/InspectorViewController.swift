@@ -354,12 +354,17 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     fileprivate func configureInlineButton(_ view:NSView,object:Any){
         if let inlineButton = view.viewWithTag(2) as? NSButton{
             if let casted=object as? Collectible{
-                if casted.changedKeys.count > 0 {
+                if let casted=object as? BartlebyCollection {
                     inlineButton.isHidden=false
-                    inlineButton.title="\(casted.changedKeys.count)"
+                    inlineButton.title="\(casted.count) | \(casted.changedKeys.count)"
                     return
+                }else{
+                    if casted.changedKeys.count > 0 {
+                        inlineButton.isHidden=false
+                        inlineButton.title="\(casted.changedKeys.count)"
+                        return
+                    }
                 }
-
             }
             inlineButton.isHidden=true
         }
