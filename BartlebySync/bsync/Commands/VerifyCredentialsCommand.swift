@@ -14,7 +14,7 @@ class VerifyCredentialsCommand: CommandBase {
         super.init(completionHandler: completionHandler)
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
-                                           helpMessage: "BartlebySync base url e.g http://yd.local/api/v1/BartlebySync")
+                                           helpMessage: "BartlebySync base url e.g http://localhost/api/v1/BartlebySync")
         let registryUID = StringOption(shortFlag: "r", longFlag: "registryUID", required: true,
                                     helpMessage: "A registryUID is required authentication")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
@@ -36,7 +36,7 @@ class VerifyCredentialsCommand: CommandBase {
             
             // If there is an url let's determine the API base url.
             // it should be before baseAPI_URL/BartlebySync/tree/...
-            // eg.: http://yd.local/api/v1/BartlebySync
+            // eg.: http://localhost/api/v1/BartlebySync
             
             
             let r=source.range(of:"/BartlebySync")

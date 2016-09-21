@@ -33,7 +33,7 @@ class RunDirectivesCommand: CommandBase {
         
         // Optional
         let api = StringOption(shortFlag: "a", longFlag: "api",
-                               helpMessage: "Bartleby base url e.g http://yd.local/api/v1")
+                               helpMessage: "Bartleby base url e.g http://localhost/api/v1")
 
         let help = BoolOption(shortFlag: "h", longFlag: "help",
                               helpMessage: "Prints a help message.")

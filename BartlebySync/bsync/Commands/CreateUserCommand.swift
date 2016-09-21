@@ -15,7 +15,7 @@ class CreateUserCommand: CommandBase {
         super.init(completionHandler: completionHandler)
         
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
-                               helpMessage: "Bartleby base url e.g http://yd.local/api/v1")
+                               helpMessage: "Bartleby base url e.g http://localhost/api/v1")
         
         let password = StringOption(shortFlag: "p", longFlag: "password", required: true,
                                     helpMessage: "A password is  required for authentication.")

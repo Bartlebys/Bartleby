@@ -46,13 +46,13 @@
 /**
  * The url are considerated as the file tree root
  *
- *  for example     : http://yd.local/api/v1/BartlebySync/tree/nameOfTree/
+ *  for example     : http://localhost/api/v1/BartlebySync/tree/nameOfTree/
  *  or              : file:///~/Desktop/test/
  *
  *  If the url is distant we extract the tree id.
  *  And determine the base url by truncated before the /tree/ component
- *  eg :    http://yd.local/api/v1/BartlebySync/tree/nameOfTree/
- *          => base url is : http://yd.local/api/v1/BartlebySync/
+ *  eg :    http://localhost/api/v1/BartlebySync/tree/nameOfTree/
+ *          => base url is : http://localhost/api/v1/BartlebySync/
  *          => tree id is : nameOfTree
  *
  *  @param sourceUrl        the sourceUrl

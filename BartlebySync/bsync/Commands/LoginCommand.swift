@@ -15,7 +15,7 @@ class LoginCommand: CommandBase {
         super.init(completionHandler: completionHandler)
         
         let api = StringOption(shortFlag: "a", longFlag: "api", required: true,
-                               helpMessage: "API url e.g http://yd.local/api/v1")
+                               helpMessage: "API url e.g http://localhost/api/v1")
         let userUID = StringOption(shortFlag: "u", longFlag: "user", required: true,
                                    helpMessage: "A user UID for the authentication.")
         let secretKey = StringOption(shortFlag: "y", longFlag: "secretKey", required: true,

@@ -14,7 +14,7 @@ class LogoutCommand: CommandBase {
         super.init(completionHandler: completionHandler)
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
-                                           helpMessage: "BartlebySync base url e.g http://yd.local/api/v1/BartlebySync")
+                                           helpMessage: "BartlebySync base url e.g http://localhost/api/v1/BartlebySync")
 
         let spaceUID = StringOption(shortFlag: "i", longFlag: "spaceUID", required: true,
                                     helpMessage: "A spaceUID is required for authentication")
@@ -47,7 +47,7 @@ class LogoutCommand: CommandBase {
 
             // If there is an url let's determine the API base url.
             // it should be before baseAPI_URL/BartlebySync/tree/...
-            // eg.: http://yd.local/api/v1/BartlebySync
+            // eg.: http://localhost/api/v1/BartlebySync
             
             
             let r=source.range(of:"/BartlebySync")

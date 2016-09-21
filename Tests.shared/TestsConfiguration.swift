@@ -84,7 +84,7 @@ open class TestsConfiguration: BartlebyConfiguration {
         get {
             switch currentEnvironment {
             case .local:
-                return URL(string:"http://yd.local/api/v1")!
+                return URL(string:"http://localhost/api/v1")!
             case .development:
                 return URL(string:"https://dev.api.lylo.tv/api/v1")!
             case .alternative:
