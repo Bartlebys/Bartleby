@@ -1,40 +1,23 @@
-# Bartleby's - Swift stack
 
+Bartleby Is a full stack generative suite to build fault tolerant native distributed applications that can perform "*on*" and "*off line*". Client side components are Written in Swift 3.0, Server side relies on PHP 5.X + MongoDB, Generative tools are written in PHP 5.x and wrapped to a Swift CLI. [bartlebys.org](https://bartlebys.org)
+
+# Bartleby's - Swift Stack
 
 ## Components 
 
-+ **BartlebyKit**: A client Framework for (OSX, iOS, ... ).
-+ **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules.
-+ **BartlebySync**: A file system Delta synchronizer module.
++ **BartlebyKit**: A Swift 3 client Framework for (OSX, iOS, ... ).
++ **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules (written in Swift 3) 
++ **BartlebySync**: A file system Delta synchronizer module (Swift 3 and Objc 2.X)
+
+# Resources
+
+- [How data synchronization works?](ttps://github.com/Bartlebys/Bartleby/blob/master/DataSynchronization.md)
 
 # Road Map 
 Bartleby Major version should increment each 12 / 24 months.
 
 ## Bartleby Stack 1.x
 Publicly available this fall (late 2016).
-
-### BartlebyKit
-- Registries are monolithic
-- Model Supports JSON + NSecureCoding Serialization.
-
-### BartlebySync
--  robust and reliable implementation
-- 	optimized for master-slave topologies
--  simple "hashmap views" to support sub-set distributions.
-
-## Bartleby Stack 2.x
-Delivery late 2017 
-
-### BartlebyKit
-- Registries support of local Incremental Storage
-- Swift3.0 and linux target
-- Server side swift scripting
-
-### BartlebySync
-- files system event support
-- sessions management ( discreet resume)
-- crypted chunk & server node encryption
-- optimized for multi-directionnal synchronization topologies
 
 ## Contact 
 [Contact Benoit Pereira Da Silva] (https://pereira-da-silva.com/contact/)

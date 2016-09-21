@@ -264,6 +264,7 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5C5F2B01D86E21200C94AFA /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
 		E5C5F2B11D86E2A400C94AFA /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */; };
+		E5F9F6AB1D91896000C4FF0B /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1192,6 +1193,7 @@
 				E50F3E1C1D40D50400532B09 /* UpdateLockers.swift in Sources */,
 				E50F3E281D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E50F3EBE1D40D50400532B09 /* Pluralization.swift in Sources */,
+				E5F9F6AB1D91896000C4FF0B /* InspectorViewController.swift in Sources */,
 				E549200F1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3E361D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
