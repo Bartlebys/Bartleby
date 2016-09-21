@@ -96,7 +96,7 @@ X3.21 ReadOperation may fail if it has been deleted after being updated 20 times
  
 ### Status code 404 on Read Operation.
 
-If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityHasBeenDeleted(entityUID)` 
+If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityExistsById(entityUID)`
 - if the entity has been deleted reference the entity as deleted (in the volatile deletedUID var) not to recall the EndPoint 
 - If the Entity has not been deleted put the ReadTrigger in quarantine *State may be divergent!*
 

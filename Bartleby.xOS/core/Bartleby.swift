@@ -48,7 +48,7 @@ open class  Bartleby: Consignee {
     }()
 
     static let b_version = "1.0"
-    static let b_release = "beta2"
+    static let b_release = "RC"
 
     /// The version string of Bartleby framework
     open static var versionString: String {

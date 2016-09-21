@@ -55,6 +55,10 @@ import ObjectMapper
 	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
 	//The serialized version of loaded trigger data that are pending integration
 	open var triggeredDataBuffer:Data?
+	//A collection Triggers that are  stored for analysis (check DataSynchronization.md "Faults on READ related to deletions" section for details) 
+	dynamic open var triggersQuarantine:[Trigger] = [Trigger]()
+	//Not serialiazable collection of UIDS used to reduce the number of EntityExistsById endpoint calls when we encounter 404 Faults on READ related to deletions
+	dynamic open var deletedUIDs:[String] = [String]()
 	//Do we have operations in progress in the current bunch ?
 	dynamic open var bunchInProgress:Bool = false
 	//The highest number that we may have counted
@@ -114,6 +118,7 @@ import ObjectMapper
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 			self.receivedTriggers <- ( map["receivedTriggers"] )
 			self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
+			self.triggersQuarantine <- ( map["triggersQuarantine"] )
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )
 			self.saveThePassword <- ( map["saveThePassword"] )
@@ -141,6 +146,7 @@ import ObjectMapper
 			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
 			self.receivedTriggers=decoder.decodeObject(of: [NSArray.classForCoder(),Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
 			self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
+			self.triggersQuarantine=decoder.decodeObject(of: [NSArray.classForCoder(),Trigger.classForCoder()], forKey: "triggersQuarantine")! as! [Trigger]
 			self.online=decoder.decodeBool(forKey:"online") 
 			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
 			self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
@@ -174,6 +180,7 @@ import ObjectMapper
 		if let triggeredDataBuffer = self.triggeredDataBuffer {
 			coder.encode(triggeredDataBuffer,forKey:"triggeredDataBuffer")
 		}
+		coder.encode(self.triggersQuarantine,forKey:"triggersQuarantine")
 		coder.encode(self.online,forKey:"online")
 		coder.encode(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")
