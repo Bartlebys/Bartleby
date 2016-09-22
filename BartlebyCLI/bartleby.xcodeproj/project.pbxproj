@@ -158,6 +158,7 @@
 		E5D0869C1C550E1900F0090E /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D085F81C550E1900F0090E /* CryptedStringKeyValueTransform.swift */; };
 		E5D0869D1C550E1900F0090E /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D085F91C550E1900F0090E /* CryptedStringTransform.swift */; };
 		E5D0869E1C550E1900F0090E /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D085FA1C550E1900F0090E /* CryptoHelper.swift */; };
+		E5DE8E231D94222C0018E2F5 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E221D94222C0018E2F5 /* RegistryMetadata+Facilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -330,6 +331,7 @@
 		E5D085F91C550E1900F0090E /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E5D085FA1C550E1900F0090E /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		E5D086D01C550EFD00F0090E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5DE8E221D94222C0018E2F5 /* RegistryMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Facilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -551,6 +553,7 @@
 		E50F40CA1D40D5FF00532B09 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5DE8E221D94222C0018E2F5 /* RegistryMetadata+Facilities.swift */,
 				E56EC0761D7EEC3900D5CD81 /* Operation+Conveniences.swift */,
 				E50F40CB1D40D5FF00532B09 /* BartlebyDocument+AppFacilities.swift */,
 				E50F40CC1D40D5FF00532B09 /* BartlebyDocument+Operations.swift */,
@@ -941,6 +944,7 @@
 				E50F41351D40D5FF00532B09 /* DeleteUsers.swift in Sources */,
 				E50F41691D40D5FF00532B09 /* Global.swift in Sources */,
 				E50F41241D40D5FF00532B09 /* Trigger.swift in Sources */,
+				E5DE8E231D94222C0018E2F5 /* RegistryMetadata+Facilities.swift in Sources */,
 				E5D0869A1C550E1900F0090E /* CryptedDataTransform.swift in Sources */,
 				E50F417B1D40D5FF00532B09 /* JSONString.swift in Sources */,
 				E50F417A1D40D5FF00532B09 /* Invocable.swift in Sources */,
@@ -1205,6 +1209,7 @@
 				E548A4881D880577006FF410 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

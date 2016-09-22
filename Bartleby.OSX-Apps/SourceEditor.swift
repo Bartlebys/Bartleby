@@ -20,6 +20,10 @@ class SourceEditor: NSViewController,Editor {
             if let collection = self._selectedItem as? CollectibleCollection{
                 self.enableEdition=false
                 self.textView.string="{\"numberOfItems\":\(collection.count)}"
+            }else if self._selectedItem is RegistryMetadata{
+                let selectedJSON=self._selectedItem!.toJSONString(true)
+                self.textView.string=selectedJSON
+                self.enableEdition=false
             }else{
                 self.enableEdition=true
                 let selectedJSON=self._selectedItem!.toJSONString(true)
@@ -87,5 +91,5 @@ class SourceEditor: NSViewController,Editor {
         super.viewDidLoad()
         // Do view setup here.
     }
-
+    
 }

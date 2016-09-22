@@ -25,6 +25,8 @@ import Cocoa
 
     @IBOutlet var changesViewController: ChangesViewController!
 
+    @IBOutlet var metadataViewController: MetadataDetails!
+
     @IBOutlet var contextualMenu: NSMenu!
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
@@ -159,12 +161,17 @@ import Cocoa
 
                 switch object {
                 case _  where object is PushOperation :
+                    self._topViewController=self.sourceEditor
                     self._bottomViewController=self.operationViewController
                     break
+                case _  where object is RegistryMetadata :
+                    self._topViewController=self.sourceEditor
+                    self._bottomViewController=self.metadataViewController
+                    break
                 default:
+                    self._topViewController=self.sourceEditor
                     self._bottomViewController=self.changesViewController
                 }
-
                 if self.topBox.contentView != self._topViewController!.view{
                     self.topBox.contentView=self._topViewController!.view
                 }
@@ -310,12 +317,12 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 }
                 self.configureInlineButton(view, object: casted)
                 return view
-            }else if let casted=object as? RegistryMetadata {
+            }else if object is RegistryMetadata {
                 let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     textField.stringValue = "Registry Metadata"
                 }
-                self.configureInlineButton(view, object: casted)
+                self.configureInlineButton(view, object: object)
                 return view
             }else if  let casted=object as? User {
                 let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
@@ -358,6 +365,9 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                     inlineButton.isHidden=false
                     inlineButton.title="\(casted.count) | \(casted.changedKeys.count)"
                     return
+                }else if object is RegistryMetadata{
+                    inlineButton.isHidden=true
+                    inlineButton.title=""
                 }else{
                     if casted.changedKeys.count > 0 {
                         inlineButton.isHidden=false

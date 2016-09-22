@@ -708,6 +708,7 @@
 		E5CC27AA1D84698500F7C783 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC25D41D84698500F7C783 /* URLTransform.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		E5D9B7BE1D788C8900BB8900 /* ResizeDmgCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */; };
+		E5DE8E251D9422440018E2F5 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */; };
 		E5F654611D42749100A40A9B /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652051D42749100A40A9B /* CryptedDataTransform.swift */; };
 		E5F654621D42749100A40A9B /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652051D42749100A40A9B /* CryptedDataTransform.swift */; };
 		E5F654651D42749100A40A9B /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F652061D42749100A40A9B /* CryptedKeyValueStorage.swift */; };
@@ -981,6 +982,7 @@
 		E5CC25D31D84698500F7C783 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
 		E5CC25D41D84698500F7C783 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
 		E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizeDmgCommand.swift; sourceTree = "<group>"; };
+		E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Facilities.swift"; sourceTree = "<group>"; };
 		E5F192CF1D4258C100624249 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../BartlebyKit/build/Debug-iphoneos/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5F652051D42749100A40A9B /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		E5F652061D42749100A40A9B /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
@@ -1323,6 +1325,7 @@
 				E58806D21D51E06A00FEA71F /* NSNotification+Completion.swift */,
 				E58806D31D51E06A00FEA71F /* NSNotification+Progression.swift */,
 				E58806D41D51E06A00FEA71F /* Progression+Conveniences.swift */,
+				E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */,
 				E58806D51D51E06A00FEA71F /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E58806D61D51E06A00FEA71F /* BartlebyDocument+MetaDataImportExport.swift */,
 				E58806D71D51E06A00FEA71F /* BartlebyDocument+SecurityScopes.swift */,
@@ -1977,6 +1980,7 @@
 				E5CC265E1D84698500F7C783 /* SessionDelegate.swift in Sources */,
 				E58808331D51E06A00FEA71F /* Consignation.swift in Sources */,
 				E58807331D51E06A00FEA71F /* Completion.swift in Sources */,
+				E5DE8E251D9422440018E2F5 /* RegistryMetadata+Facilities.swift in Sources */,
 				E5CC26421D84698500F7C783 /* Notifications.swift in Sources */,
 				E5CC264A1D84698500F7C783 /* Request.swift in Sources */,
 				E588079B1D51E06A00FEA71F /* DeleteLockers.swift in Sources */,

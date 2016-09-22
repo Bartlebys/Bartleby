@@ -264,7 +264,10 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5C5F2B01D86E21200C94AFA /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
 		E5C5F2B11D86E2A400C94AFA /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */; };
-		E5F9F6AB1D91896000C4FF0B /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */; };
+		E5C611441D94267D00AECEEA /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */; };
+		E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */; };
+		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
+		E5DE8E211D9421E40018E2F5 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -454,6 +457,9 @@
 		E591324F1D87108D00EE09D2 /* PushOperationsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationsCollectionController.swift; sourceTree = "<group>"; };
 		E59132511D87109200EE09D2 /* PushOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperation.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetails.swift; sourceTree = "<group>"; };
+		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
+		E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Facilities.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -529,6 +535,8 @@
 				E50F3AE31D40D27F00532B09 /* InspectorViewController.xib */,
 				E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */,
 				E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */,
+				E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */,
+				E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */,
 				E50F3AE41D40D27F00532B09 /* LogsViewController.swift */,
 				E50F3AE51D40D27F00532B09 /* LogsViewController.xib */,
 				E50F3AE71D40D27F00532B09 /* OperationViewController.swift */,
@@ -712,6 +720,7 @@
 				E50F3D761D40D50400532B09 /* BartlebyDocument+SuperIterable.swift */,
 				E50F3D6D1D40D50400532B09 /* Completion+Conveniences.swift */,
 				E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */,
+				E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */,
 				E50F3D6E1D40D50400532B09 /* Completion+Result.swift */,
 				E50F3D6F1D40D50400532B09 /* ExternalReference+Resolution.swift */,
 				E50F3D701D40D50400532B09 /* NSNotification+Completion.swift */,
@@ -1037,6 +1046,7 @@
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
 				E50F3AF91D40D27F00532B09 /* RegistryInspector.xib in Resources */,
+				E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */,
 				E50F3AF41D40D27F00532B09 /* LogsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1108,6 +1118,7 @@
 				E50F3DCF1D40D50400532B09 /* Progression.swift in Sources */,
 				E50F3E451D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E50F3E391D40D50400532B09 /* NoCrypto.swift in Sources */,
+				E5DE8E211D9421E40018E2F5 /* RegistryMetadata+Facilities.swift in Sources */,
 				E50F3E2F1D40D50400532B09 /* JHTTPResponse.swift in Sources */,
 				E50F3E851D40D50400532B09 /* Invocable.swift in Sources */,
 				E50F3E8F1D40D50400532B09 /* SuperIterable.swift in Sources */,
@@ -1151,6 +1162,7 @@
 				E50F3DC91D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3EA71D40D50400532B09 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E50F3DBD1D40D50400532B09 /* CollectionMetadatum.swift in Sources */,
+				E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */,
 				E50F3E411D40D50400532B09 /* Consignee.swift in Sources */,
 				E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E50F3E871D40D50400532B09 /* JSONString.swift in Sources */,
@@ -1193,13 +1205,13 @@
 				E50F3E1C1D40D50400532B09 /* UpdateLockers.swift in Sources */,
 				E50F3E281D40D50400532B09 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E50F3EBE1D40D50400532B09 /* Pluralization.swift in Sources */,
-				E5F9F6AB1D91896000C4FF0B /* InspectorViewController.swift in Sources */,
 				E549200F1D6351EF00961796 /* JString+Conveniences.swift in Sources */,
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,
 				E50F3E361D40D50400532B09 /* RegistryMetadata+Protocol.swift in Sources */,
 				E50F3E461D40D50400532B09 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E5C5F2B01D86E21200C94AFA /* Operation+Conveniences.swift in Sources */,
 				E50F3E4A1D40D50400532B09 /* BartlebyDocument+Triggers.swift in Sources */,
+				E5C611441D94267D00AECEEA /* RegistryMetadata+Facilities.swift in Sources */,
 				E50F3EBC1D40D50400532B09 /* HTTPManager.swift in Sources */,
 				E50F3E061D40D50400532B09 /* ReadLockersByIds.swift in Sources */,
 				E50F3EB21D40D50400532B09 /* TriggersByIds.swift in Sources */,

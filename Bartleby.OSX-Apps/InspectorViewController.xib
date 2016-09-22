@@ -11,6 +11,7 @@
                 <outlet property="bottomBox" destination="1AX-jR-v4E" id="IYi-xo-tT7"/>
                 <outlet property="changesViewController" destination="3kS-31-sl3" id="Coo-mf-yFN"/>
                 <outlet property="listOutlineView" destination="nzd-mn-3O1" id="qzA-8p-G59"/>
+                <outlet property="metadataViewController" destination="maX-jp-4xo" id="9z8-mm-0e6"/>
                 <outlet property="operationViewController" destination="rF1-h1-Fwc" id="nwY-ll-kgW"/>
                 <outlet property="sourceEditor" destination="A1J-3y-mLd" id="Sjo-L1-Gwj"/>
                 <outlet property="topBox" destination="S2N-V4-Pw4" id="hPF-w4-sAj"/>
@@ -227,7 +228,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                     <constraints>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="6Ll-b6-YVU"/>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="350" id="6Ll-b6-YVU"/>
                                     </constraints>
                                 </box>
                             </subviews>
@@ -258,6 +259,7 @@
         <viewController id="A1J-3y-mLd" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="rF1-h1-Fwc" customClass="OperationViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="maX-jp-4xo" customClass="MetadataDetails" customModule="BartlebyKit" customModuleProvider="target"/>
         <menu id="c12-ge-CBZ">
             <items>
                 <menuItem title="Reset Changes Counters" id="p08-AH-Eqj">
