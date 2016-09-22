@@ -29,7 +29,7 @@ Most of the entities are using the **URD** model, with only one exception: the "
 3. UPSERT == CREATE == UPDATE. We use **UPSERT** for **CREATE** and **UPDATE** (excepted for users) 
 	- An **Update** of a **Deleted** entity recreates the entity
 	- If two client invoke a **Create** operation of an entity with same UID, it first state is updated by the second.
-5. **Construction prevails on demolition**
+4. **Construction prevails on demolition**
 
 *Principle #3 do not apply to Users*
 
@@ -59,7 +59,7 @@ Most of the entities are using the **URD** model, with only one exception: the "
 - A **CREATES** Y2.0 -> B **READS** Y2.0
 - (B **UPDATES** Y2.0 to Y2.2 ||  A **UPDATES** Y2.0 to Y2.1)
 + A **READS** B Y2.2 *A IS VALID!* 
-+ B **READS** Y2.1 -> **B IS NOT VALID!**
++ B **READS** Y2.1 -> **B IS NOT VALID!** B is divergent.
 
 **Principle #1 infers that the valid state of Y2 is Y2.2**
 
@@ -96,9 +96,14 @@ X3.21 ReadOperation may fail if it has been deleted after being updated 20 times
  
 ### Status code 404 on Read Operation.
 
-If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityExistsById(entityUID)`
-- if the entity has been deleted reference the entity as deleted (in the volatile deletedUID var) not to recall the EndPoint 
-- If the Entity has not been deleted put the ReadTrigger in quarantine *State may be divergent!*
+If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityExistsById(entityUID)`if the entity has been deleted reference the entity as deleted (in the volatile deletedUID var) not to recall the EndPoint, put the Trigger in quarantine *State may be divergent!*
+
+### 404 fault on Batch operations (!)
+ 
+We have removed [grouped Auto-commit support from Collection Controllers] (https://github.com/Bartlebys/Bartleby/issues/19) to prevent read divergence due to partial deletion.
+
+The 
+ 
 
 ## Faults related to ACL 
 
@@ -109,6 +114,17 @@ If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityExists
 
 ### time out or NetworkReachabilityManager listener call back
 - In case of Reachability issue transition on -> off (and then possibly back off->on) [issue 15] (https://github.com/Bartlebys/Bartleby/issues/15)
+
+## Triggers Quarantine 
+
+
+On "Faults on READ related to deletions" some triggers may be stuck in quarantine.
+Let's imagine we Updated a Bunch Of entities.Then on ReadEntitiesById one of the entity has been deleted. The relevant trigger would be placed in Quarantine.
+
+### Quarantine clean up procedure
+
+**@TODO** 
+
 
 #Transitions off-line/on-line and vice versa 
 

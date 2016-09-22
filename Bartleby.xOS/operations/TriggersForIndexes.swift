@@ -26,15 +26,12 @@ import Foundation
 
     open static func execute(  fromRegistryWithUID registryUID: String,
                                indexes: [Int],
-                               ignoreHoles:Bool,
                                sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
-
-
             let pathURL=document.baseURL.appendingPathComponent("triggers")
-            let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject,"ignoreHoles": ignoreHoles as AnyObject]
+            let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject]
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
