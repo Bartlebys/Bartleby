@@ -16,10 +16,13 @@ import Foundation
 
  This extension implements the logic that loads and integrate consistently the data.
  Data from Consecutive Received triggers are integrated.
- 
+
  We try to load the data as soon as possible.
 
-*/
+ Check the Data Sync Document for more informations.
+ https://github.com/Bartlebys/Bartleby/blob/master/DataSynchronization.md
+
+ */
 extension BartlebyDocument {
 
     // MARK: - Triggers Receipts
@@ -29,7 +32,7 @@ extension BartlebyDocument {
 
      The Server Sent Event is decoded by the registry
      or the Triggers are received via an EndPoint.
-     
+
      Then this method is called.
 
      - parameter triggers: the collection of Trigger
@@ -118,7 +121,7 @@ extension BartlebyDocument {
 
      - parameter trigger: the trigger.
      */
-    fileprivate func _loadDataFrom(_ trigger:Trigger){
+    fileprivate func _loadDataFrom(_ trigger:Trigger, doNotReactOnFault:Bool=false){
 
         let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
         if !alreadyLoaded {
@@ -141,62 +144,124 @@ extension BartlebyDocument {
             var pathURL = baseURL
             if !multiple{
                 let UID=uids.first!
-                pathURL = baseURL.appendingPathComponent("\(entityName)/\(UID)")//("group/\(groupId)")
+                pathURL = baseURL.appendingPathComponent("\(entityName)/\(UID)")
             }else{
                 pathURL = baseURL.appendingPathComponent("\(entityName)")
                 dictionary["ids"]=uids as AnyObject?
             }
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
             do {
-                let r=try URLEncoding().encode(urlRequest,with:dictionary) 
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
                 request(r).validate().responseJSON(completionHandler: { (response) in
 
+                    /////////////////////////
+                    // Result Handling
+                    ////////////////////////
 
-                /////////////////////////
-                // Result Handling
-                ////////////////////////
+                    let request=response.request
+                    let result=response.result
+                    let response=response.response
 
-                let request=response.request
-                let result=response.result
-                let response=response.response
-
-                if result.isFailure {
-                    // ERROR
-                    bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-
-                }else{
-                    if let statusCode=response?.statusCode {
-                        if 200...299 ~= statusCode {
-                            // In case of concurrent loading we prefer to test again if the trigger as not been already loaded
-                            let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
-                            if !alreadyLoaded{
-                                if multiple{
-                                    // upsert a collection
-                                    if let dictionaries=result.value as? [[String : Any]]{
-                                        self._triggeredDataBuffer[trigger]=dictionaries
-                                    }
-                                }else{
-                                    // Unique entity
-                                    if let jsonDictionary=result.value as? [String : Any]{
-                                        self._triggeredDataBuffer[trigger]=[jsonDictionary]
-                                    }
+                    if result.isFailure {
+                        if let statusCode=response?.statusCode {
+                            if statusCode==404{
+                                if !doNotReactOnFault{
+                                    self._onRead404Fault(trigger)
                                 }
-                                self._integrateContiguousData()
-                            }else{
-                                // ERROR
-                                bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+                                return
                             }
+                        }
+                        // ERROR
+                        bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
 
+                    }else{
+                        if let statusCode=response?.statusCode {
+                            if 200...299 ~= statusCode {
+                                // In case of concurrent loading we prefer to test again if the trigger as not been already loaded
+                                let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
+                                if !alreadyLoaded{
+                                    if multiple{
+                                        // upsert a collection
+                                        if let dictionaries=result.value as? [[String : Any]]{
+                                            self._triggeredDataBuffer[trigger]=dictionaries
+                                        }
+                                    }else{
+                                        // Unique entity
+                                        if let jsonDictionary=result.value as? [String : Any]{
+                                            self._triggeredDataBuffer[trigger]=[jsonDictionary]
+                                        }
+                                    }
+                                    self._integrateContiguousData()
+                                }else{
+                                    // ERROR
+                                    bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
+                                }
+                            }
                         }
                     }
-                }
                 })
             }catch{
 
             }
         }
+    }
 
+    /// Implements the READ 404 fault logic
+    /// Check https://github.com/Bartlebys/Bartleby/issues/17
+    /// For detailled explanations.
+    /// - parameter trigger: the trigger
+    fileprivate func _onRead404Fault(_ trigger:Trigger){
+        let UIDS=trigger.UIDS.components(separatedBy:",")
+        /// We proceed for each UID.
+        for UID in UIDS{
+            if !self.registryMetadata.deletedUIDs.contains(UID){ // Call the EntityExistsById endPoints once.
+                let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
+                let pathURL = baseURL.appendingPathComponent("exists")
+                let dictionary:Dictionary<String, Any>=["id":UID]
+                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:"EntityExistsById" ,forMethod:"GET", and: pathURL)
+                do {
+                    let r=try URLEncoding().encode(urlRequest,with:dictionary)
+                    request(r).validate().responseJSON(completionHandler: { (response) in
+                        let result=response.result
+                        let response=response.response
+                        GlobalQueue.main.get().async {
+                            if result.isFailure {
+                                if let statusCode=response?.statusCode {
+                                    if statusCode==404{
+                                        // Every thing is ok for this UID 
+                                        // For performance purposes cache this reponse by adding the UID to the known deletedUIDs
+                                        self.registryMetadata.deletedUIDs.append(UID)
+                                        return
+                                    }
+                                }
+                            }else{
+                                if let statusCode=response?.statusCode {
+                                    if 200...299 ~= statusCode {
+                                        if let index=self.registryMetadata.deletedUIDs.index(of:UID){
+                                            self.registryMetadata.deletedUIDs.remove(at: index)
+                                        }
+                                    }
+                                }
+                            }
+                            if !self.registryMetadata.triggersQuarantine.contains(trigger){
+                                // We were not in a 4O4 case
+                                // It is not normal
+                                // So let's put the trigger in Quarantine
+                                self.registryMetadata.triggersQuarantine.append(trigger)
+                            }
+                        }
 
+                    })
+                }catch{
+                    bprint("O, Read404Fault exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
+                }
+            }
+        }
+
+        /// In any case we cleanup the trigger on 404 faults
+        GlobalQueue.main.get().async {
+            self._cleanUPTrigger(trigger)
+        }
     }
 
     // MARK: - Local Data Integration
@@ -281,21 +346,26 @@ extension BartlebyDocument {
                 bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
             }
         }
+        self._cleanUPTrigger(triggeredData.0)
+    }
+
+
+    fileprivate func _cleanUPTrigger(_ trigger:Trigger){
 
         // Remove the trigger from the collection.
-        if let idx=self.registryMetadata.receivedTriggers.index(of: triggeredData.0){
+        if let idx=self.registryMetadata.receivedTriggers.index(of: trigger){
             self.registryMetadata.receivedTriggers.remove(at: idx)
         }
 
         //CleanUp the triggerData
         if let idx=self._triggeredDataBuffer.index(where: { (data) -> Bool in
-            return triggeredData.0.index == data.0.index
+            return trigger.index == data.0.index
         }){
             // Remove the triggered data
             self._triggeredDataBuffer.remove(at: idx)
         }
-
     }
+
 
     // MARK: -
 
@@ -336,7 +406,7 @@ extension BartlebyDocument {
         let missingTriggersIndexes=self.missingContiguousTriggersIndexes()
         // Todo compute missingTriggersIndexes
         if missingTriggersIndexes.count>0{
-            TriggersForIndexes.execute(fromRegistryWithUID:self.UID, indexes:missingTriggersIndexes, ignoreHoles: true, sucessHandler: { (triggers) in
+            TriggersForIndexes.execute(fromRegistryWithUID:self.UID, indexes:missingTriggersIndexes, sucessHandler: { (triggers) in
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
                 // What to do in case of failure.
@@ -346,7 +416,7 @@ extension BartlebyDocument {
     }
 
     /**
-    
+
      This method is the ultimate to fix a blocked / corrupted data.
      It may be destructive.
 
@@ -354,7 +424,6 @@ extension BartlebyDocument {
      And integrates all the triggered data
      */
     public func forceDataIntegration(){
-
         let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
             return lEntry.0.index < rEntry.0.index
         }
@@ -363,23 +432,22 @@ extension BartlebyDocument {
         }
         // Reinitialize
         self.registryMetadata.triggersIndexes=[Int]()
-
         // Set the lastIntegratedTriggerIndex to the highest possible value
         let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
         let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
         self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
     }
-
-
-
-
+    
+    
+    
+    
     // MARK: - API triggers on demand
-
+    
     /**
      Tries to load new triggers if some
      */
     public func loadNewTriggers() {
-
+        
         // Grab all the triggers > lastIndex
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
@@ -389,5 +457,5 @@ extension BartlebyDocument {
             // What to do on failure
         }
     }
-
+    
 } 
