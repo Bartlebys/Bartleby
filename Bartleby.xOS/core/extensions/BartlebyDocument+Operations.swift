@@ -17,7 +17,11 @@ extension BartlebyDocument {
 
     func startSupervisionLoopIfNecessary() {
         if self._timer==nil{
-            self._timer=Timer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS, target: self, selector: #selector(BartlebyDocument.superVisionLoop), userInfo: nil, repeats: true)
+            self._timer=Timer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS,
+                              target: self,
+                              selector: #selector(BartlebyDocument.superVisionLoop),
+                              userInfo: nil,
+                              repeats: true)
             RunLoop.current.add(self._timer!, forMode: RunLoopMode.commonModes)
         }
     }
@@ -165,10 +169,29 @@ extension BartlebyDocument {
                             DispatchQueue.main.async(execute: {
                                 // Push the command.
                                 jCommand.push(sucessHandler: {  (context) in
+                                    //////////////////////////////////////////////////
+                                    // Delete the operation from self.pushOperations
+                                    //////////////////////////////////////////////////
                                     self.delete(operation)
+                                    // Update the completion / Progression
                                     self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
                                     }, failureHandler: { (context) in
+
+                                        if let statusCode=context.httpStatusCode{
+                                            // Operations Quarantine
+                                            // According to https://github.com/Bartlebys/Bartleby/issues/23
+                                            if [403,406,412,417].contains(statusCode) {
+                                                //////////////////////////////////////////////////
+                                                // Put the operation in Quarantine
+                                                // Delete the operation from self.pushOperations
+                                                //////////////////////////////////////////////////
+                                                self.registryMetadata.operationsQuarantine.append(operation)
+                                                self.delete(operation)
+                                            }
+                                        }
+                                        // Update the completion / Progression
                                         self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
+
                                 })
                             })
                         } else {
@@ -206,7 +229,6 @@ extension BartlebyDocument {
         let nbOfunCompletedOperationsInBunch=Double(bunchOfOperations.filter { $0.completionState==nil }.count)
         let currentOperationsCounter=self.pushOperations.count
         if nbOfunCompletedOperationsInBunch == 0{
-
             let _=self._updateProgressionState(completedOperation,currentOperationsCounter)
 
             // All the operation of that bunch have been completed.
