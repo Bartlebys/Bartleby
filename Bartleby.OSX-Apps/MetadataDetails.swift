@@ -8,30 +8,36 @@
 
 import Cocoa
 
-class MetadataDetails: NSViewController , Editor, Identifiable{
+class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate{
 
     typealias EditorOf=RegistryMetadata
 
     var UID:String=Bartleby.createUID()
 
-
-    @IBOutlet var receivedTriggersTextView: NSTextView!{
+    @IBOutlet weak var tabView: NSTabView!{
         didSet{
-            receivedTriggersTextView.textColor=NSColor.white
+            tabView.delegate=self
+        }
+    }
+    // No Bindings we "observe" the selected index ( NSTabViewDelegate)
+    @IBOutlet var triggersDiagnosticTextView: NSTextView!{
+        didSet{
+            triggersDiagnosticTextView.textColor=NSColor.textColor
         }
     }
 
     @IBOutlet var triggersQuarantineTextView: NSTextView!{
         didSet{
-            triggersQuarantineTextView.textColor=NSColor.white
+            triggersQuarantineTextView.textColor=NSColor.textColor
         }
     }
 
     @IBOutlet var operationsQuarantineTextView: NSTextView!{
         didSet{
-            operationsQuarantineTextView.textColor=NSColor.white
+            operationsQuarantineTextView.textColor=NSColor.textColor
         }
     }
+
 
 
     override func viewDidLoad() {
@@ -50,6 +56,22 @@ class MetadataDetails: NSViewController , Editor, Identifiable{
         didSet{
             self._metadata=representedObject as? EditorOf
         }
+    }
+
+
+    // MARK: NSTabViewDelegate
+
+    public func tabView(_ tabView: NSTabView, willSelect tabViewItem: NSTabViewItem?){
+        if let tabViewItem = tabViewItem{
+            if let identifier=tabViewItem.identifier as? String{
+                if identifier == "TriggersAnalysis"  {
+                    if let registry=self._metadata?.document{
+                        self.triggersDiagnosticTextView.string=registry.getTriggerBufferInformations()
+                    }
+                }
+            }
+        }
+        
     }
     
 }

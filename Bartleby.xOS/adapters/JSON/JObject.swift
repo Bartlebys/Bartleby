@@ -126,8 +126,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     // MARK: Referenced
 
 
-    // A reference to the document
-    // Most of the JObject contains a reference to the document
+    // An optionnal Quick reference to the document
     open var document:BartlebyDocument?
 
 

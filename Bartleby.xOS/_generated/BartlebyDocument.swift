@@ -584,54 +584,7 @@ import ObjectMapper
         }
     }
 
-    /**
-
-     - returns: a bunch information on the current Buffer.
-     */
-    open func getTriggerBufferInformations()->String{
-
-        var informations="#Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
-
-        // Data buffer
-        for (trigger,dictionary) in self._triggeredDataBuffer {
-            let s = try?JSONSerialization.data(withJSONObject: dictionary, options: [])
-            let n = (s?.count ?? 0)
-            informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)  \(n)\n"
-        }
-
-        // Missing
-        let missing=self.missingContiguousTriggersIndexes()
-        informations += missing.reduce("Missing indexes (\(missing.count)): ", { (string, index) -> String in
-            return "\(string) \(index)"
-        })
-        informations += "\n"
-
-        // TriggerIndexes
-        let triggersIndexes=self.registryMetadata.triggersIndexes
-
-        informations += "Trigger Indexes (\(triggersIndexes.count)): "
-        informations += triggersIndexes.reduce("", { (string, index) -> String in
-            return "\(string) \(index)"
-        })
-        informations += "\n"
-
-        // Owned Indexes
-        let ownedTriggersIndexes=self.registryMetadata.ownedTriggersIndexes
-
-        informations += "Owned Indexes (\(ownedTriggersIndexes.count)): "
-        informations += ownedTriggersIndexes.reduce("", { (string, index) -> String in
-            return "\(string) \(index)"
-        })
-        informations += "\n"
-        informations += "Last integrated trigger Index = \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
-
-
-        return informations
-    }
-
-
-
-
+   
     // MARK: - Local Persistency
 
     #if os(OSX)

@@ -457,5 +457,55 @@ extension BartlebyDocument {
             // What to do on failure
         }
     }
+
+
+    // MARK: -
+
+
+    /**
+
+     - returns: a bunch information on the current Buffer.
+     */
+    open func getTriggerBufferInformations()->String{
+
+        var informations = "Last integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
+        // Missing
+        let missing=self.missingContiguousTriggersIndexes()
+        informations += missing.reduce("Missing indexes (\(missing.count)): ", { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        informations += "\n"
+
+        // TriggerIndexes
+        let triggersIndexes=self.registryMetadata.triggersIndexes
+
+        informations += "Trigger Indexes (\(triggersIndexes.count)): "
+        informations += triggersIndexes.reduce("", { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        informations += "\n"
+
+        // Data buffer
+        informations += "\n"
+        informations += "Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
+        let sorted=self._triggeredDataBuffer.sorted { (l, r) -> Bool in
+            return l.0.index > r.0.index
+        }
+        for (trigger,dictionary) in sorted {
+            let s = try?JSONSerialization.data(withJSONObject: dictionary, options: [])
+            let n = (s?.count ?? 0)
+            informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)    [\(n / 8) Bytes]\n"
+        }
+
+        // Owned Indexes
+        informations += "\n"
+        let ownedTriggersIndexes=self.registryMetadata.ownedTriggersIndexes
+        informations += "Owned Indexes (\(ownedTriggersIndexes.count)): "
+        informations += ownedTriggersIndexes.reduce("", { (string, index) -> String in
+            return "\(string) \(index)"
+        })
+        
+        return informations
+    }
     
 } 

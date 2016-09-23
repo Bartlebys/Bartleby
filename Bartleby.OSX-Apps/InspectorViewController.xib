@@ -287,12 +287,6 @@
                         <action selector="openWebStack:" target="-1" id="6IE-w4-o6G"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Print triggers informations" id="BC0-Ah-3bh">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="printTriggersInformations:" target="-2" id="1SP-5J-KdT"/>
-                    </connections>
-                </menuItem>
                 <menuItem isSeparatorItem="YES" id="dL6-t0-Jas"/>
                 <menuItem title="Destructive Actions" id="rFy-pc-iNG">
                     <modifierMask key="keyEquivalentModifierMask"/>
@@ -304,11 +298,23 @@
                                     <action selector="deleteOperations:" target="-2" id="ymM-cZ-2Fq"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Clean Up Operations In Quarantine" id="Tmw-Ev-TsM">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="cleanupOperationQuarantine:" target="-2" id="8EZ-WU-qMN"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Clean Up Triggers In Quarantine" id="Geq-Im-3zl">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="cleanupTriggersQuarantine:" target="-2" id="sp4-4N-M01"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
             </items>
-            <point key="canvasLocation" x="394.5" y="354.5"/>
+            <point key="canvasLocation" x="165" y="288"/>
         </menu>
     </objects>
     <resources>

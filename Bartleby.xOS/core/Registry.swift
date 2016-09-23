@@ -75,9 +75,12 @@ public protocol RegistryDependent {
     // By default the registry uses Json based implementations
     // JRegistryMetadata and JSerializer
 
-    // We use a  JRegistryMetadata
-    dynamic open var registryMetadata=RegistryMetadata()
-
+    // We use a  RegistryMetadata
+    dynamic open var registryMetadata=RegistryMetadata(){
+        didSet{
+            registryMetadata.document=self as? BartlebyDocument
+        }
+    }
     // Triggered Data is used to store data before data integration
     // If the trigger is destructive the collectible collection is set to nil
     // The key Trigger and the value any Collectible entity serialized to a dictionary representation
@@ -300,6 +303,7 @@ public protocol RegistryDependent {
 
     required public override init() {
         super.init()
+
         // Setup the spaceUID if necessary
         if (self.registryMetadata.spaceUID==Default.NO_UID) {
             self.registryMetadata.spaceUID=self.registryMetadata.UID
@@ -318,10 +322,19 @@ public protocol RegistryDependent {
 
     public override init(fileURL url: URL) {
         super.init(fileURL: url as URL)
-        self.configureSchema()
+
+        // Setup the spaceUID if necessary
+        if (self.registryMetadata.spaceUID==Default.NO_UID) {
+            self.registryMetadata.spaceUID=self.registryMetadata.UID
+        }
+
         // Setup the default collaboration server
         self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-        // First registration
+
+        // Configure the schemas
+        self.configureSchema()
+
+        //Declare the registry
         Bartleby.sharedInstance.declare(self)
     }
 

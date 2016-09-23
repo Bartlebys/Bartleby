@@ -101,8 +101,10 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
 
 
     @IBAction func pushOperations(_ sender: AnyObject) {
-            if let document=self.registry {
-                document.synchronizePendingOperations()
-            }
+        if let document=self.registry {
+            document.synchronizePendingOperations()
+        }
     }
+
+
 }

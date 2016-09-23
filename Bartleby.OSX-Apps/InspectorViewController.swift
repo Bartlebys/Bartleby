@@ -8,7 +8,7 @@
 
 import Cocoa
 
-@objc class InspectorViewController: NSViewController,RegistryDependent{
+@objc class InspectorViewController: NSViewController,RegistryDependent,NSWindowDelegate{
 
 
     @IBOutlet var listOutlineView: NSOutlineView!
@@ -82,14 +82,6 @@ import Cocoa
         }
     }
 
-    @IBAction func printTriggersInformations(_ sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            bprint(registry.getTriggerBufferInformations(),file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
-        }
-
-
-    }
-
     @IBAction func deleteOperations(_ sender: AnyObject) {
         if let registry=self.registryDelegate?.getRegistry(){
             for operation in registry.pushOperations.reversed(){
@@ -98,6 +90,17 @@ import Cocoa
         }
     }
 
+    @IBAction func cleanupOperationQuarantine(_ sender: AnyObject) {
+        if let document=self.registryDelegate?.getRegistry() {
+            document.registryMetadata.operationsQuarantine.removeAll()
+        }
+    }
+
+    @IBAction func cleanupTriggersQuarantine(_ sender: AnyObject) {
+        if let document=self.registryDelegate?.getRegistry(){
+            document.registryMetadata.triggersQuarantine.removeAll()
+        }
+    }
 
 
 
