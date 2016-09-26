@@ -231,7 +231,7 @@ extension BartlebyDocument {
                             if result.isFailure {
                                 if let statusCode=response?.statusCode {
                                     if statusCode==404{
-                                        // Every thing is ok for this UID 
+                                        // Every thing is ok for this UID
                                         // For performance purposes cache this reponse by adding the UID to the known deletedUIDs
                                         self.registryMetadata.deletedUIDs.append(UID)
                                         return
@@ -270,18 +270,29 @@ extension BartlebyDocument {
     // MARK: - Local Data Integration
 
     /**
+
      Integrates the data and re-computes: lastIntegratedTriggerIndex, triggersIndexes
-     Continuity of triggers is required to insure data consistency.
+     Continuity of triggers indexes is required to insure data consistency.
+
      */
     fileprivate func _integrateContiguousData(){
+
+        // @TODO this method uses a lot o resources.
+        // It should  be optimized .
+        // May be by using a [Int:(Trigger,data)] where the int is the index (sorted)
+        // NEED TO BE QUALIFIED
+
+
+        // We proceed on the main queue
         GlobalQueue.main.get().async {
 
-            // Sort the triggered data
+            // #1 Sort the triggered data
             let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
                 return lEntry.0.index < rEntry.0.index
             }
 
-            // Integrate contigous data
+            // #2 Integrate contigous data
+
             var lastIntegratedTriggerIndex=self.registryMetadata.lastIntegratedTriggerIndex
             for data  in sortedData{
                 let triggerIndex=data.0.index
@@ -289,15 +300,14 @@ extension BartlebyDocument {
                 if triggerIndex == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
                     self._integrate(data)
                     lastIntegratedTriggerIndex = triggerIndex
-                }else{
-                    //bprint("Integration is currently suspended at \(data.0)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger), decorative: false)
-                    break
                 }
             }
 
-            // Verify the continuity with currently ownedTriggersIndexes
+
+            // #3 Verify the continuity with the currently ownedTriggersIndexes
             // ownedTriggersIndexes is sorted
-            if  let  maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
+
+            if  let maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
                 let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.min(){
                 if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
                     for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
@@ -308,10 +318,10 @@ extension BartlebyDocument {
                 }
             }
 
-            // Update the lastIntegratedTriggerIndex
+            // #4 setup the lastIntegratedTriggerIndex
             self.registryMetadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
 
-            // Remove the integrated Indexes
+            // #5 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
             let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
             self.registryMetadata.triggersIndexes=filteredIndexes
         }
@@ -349,10 +359,15 @@ extension BartlebyDocument {
                 bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
             }
         }
+
+        //Clean up the integrated Trigger
         self._cleanUPTrigger(triggeredData.0)
     }
 
 
+    /// Removes the trigger from the buffer and received triggers.
+    ///
+    /// - parameter trigger: the trigger to cleanup
     fileprivate func _cleanUPTrigger(_ trigger:Trigger){
         // Remove the trigger from the collection.
         if let idx=self.registryMetadata.receivedTriggers.index(of: trigger){
@@ -412,7 +427,7 @@ extension BartlebyDocument {
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
                 // What to do in case of failure.
-                Bartleby.todo("What to do?", message: "")
+                Bartleby.todo("What to do?", message: "From BartlebyDocument+Triggers.swift func grabMissingTriggerIndexes() line \(#line)")
             }
         }
     }
@@ -426,30 +441,34 @@ extension BartlebyDocument {
      And integrates all the triggered data
      */
     public func forceDataIntegration(){
-        let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
-            return lEntry.0.index < rEntry.0.index
+        GlobalQueue.main.get().async {
+
+            let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
+                return lEntry.0.index < rEntry.0.index
+            }
+            for data  in sortedData{
+                self._integrate(data)
+            }
+            // Reinitialize
+            self.registryMetadata.triggersIndexes=[Int]()
+            // Set the lastIntegratedTriggerIndex to the highest possible value
+            let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
+            let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
+            self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
+
         }
-        for data  in sortedData{
-            self._integrate(data)
-        }
-        // Reinitialize
-        self.registryMetadata.triggersIndexes=[Int]()
-        // Set the lastIntegratedTriggerIndex to the highest possible value
-        let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
-        let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
-        self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
     }
-    
-    
-    
-    
+
+
+
+
     // MARK: - API triggers on demand
-    
+
     /**
      Tries to load new triggers if some
      */
     public func loadNewTriggers() {
-        
+
         // Grab all the triggers > lastIndex
         // TriggersAfterIndex
         // AND Call triggersHasBeenReceived(...)
@@ -461,7 +480,7 @@ extension BartlebyDocument {
     }
 
 
-    // MARK: - Maintenance (Called from inspector Menu)
+    // MARK: - Tools (Called from inspector Menu)
 
     public func cleanUpOutDatedDataTriggers(){
         for (t,_) in  self._triggeredDataBuffer.reversed(){
@@ -474,8 +493,7 @@ extension BartlebyDocument {
     }
 
 
-    // MARK: -
-
+    // MARK: - Informations
 
     /**
 
@@ -533,9 +551,9 @@ extension BartlebyDocument {
 
 
         informations += "\n\n"
-        informations += "-----------\n"
+        informations += "-----------------------\n"
         informations += "Diagnostic:\n"
-        informations += "-----------\n"
+        informations += "\n"
         var noProblem=true
 
         // Trigger data That should be deleted
@@ -547,24 +565,22 @@ extension BartlebyDocument {
             }
         }
         let nba=anomaliesTriggerDataThatShouldBeDeleted.count
-
+        
         if nba > 0{
             informations += "Nb Of trigger Data that should have been deleted :(\(anomaliesTriggerDataThatShouldBeDeleted.count))\n"
-
+            
             for idx in anomaliesTriggerDataThatShouldBeDeleted.sorted(){
-                 informations += "\(idx) "
+                informations += "\(idx) "
             }
             informations += "\n"
         }
-
+        
         noProblem = (noProblem && (nba == 0 ))
-
         if noProblem{
-             return  "**Everything is OK!**\n\n" + informations
+            return  "**Everything is OK!**\n" + informations
         }else{
-            return "**We have encountered issues please check the details below!**\n\n" + informations
+            return "**We have encountered issues please check the details below!**\n" + informations
         }
-
     }
     
 } 
