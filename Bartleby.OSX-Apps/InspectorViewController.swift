@@ -103,6 +103,16 @@ import Cocoa
     }
 
 
+    @IBAction func cleanupOutDatedTriggerData(_ sender: AnyObject) {
+        if let document=self.registryDelegate?.getRegistry(){
+            document.cleanUpOutDatedDataTriggers()
+        }
+    }
+
+
+
+
+
 
     //MARK:-  Collections
 

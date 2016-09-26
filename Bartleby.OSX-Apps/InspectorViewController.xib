@@ -298,6 +298,14 @@
                                     <action selector="deleteOperations:" target="-2" id="ymM-cZ-2Fq"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="gCY-ud-6k8"/>
+                            <menuItem title="Delete OutDated Triggers Data" id="2MK-XZ-vzd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="cleanupOutDatedTriggerData:" target="-2" id="yhm-G4-fSt"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="gcI-Jh-Elx"/>
                             <menuItem title="Clean Up Operations In Quarantine" id="Tmw-Ev-TsM">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

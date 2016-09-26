@@ -706,6 +706,9 @@
 		E5CC27A81D84698500F7C783 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC25D41D84698500F7C783 /* URLTransform.swift */; };
 		E5CC27A91D84698500F7C783 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC25D41D84698500F7C783 /* URLTransform.swift */; };
 		E5CC27AA1D84698500F7C783 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC25D41D84698500F7C783 /* URLTransform.swift */; };
+		E5D3F76B1D99475B0008D224 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */; };
+		E5D3F76C1D99475C0008D224 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */; };
+		E5D3F76D1D99475C0008D224 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */; };
 		E5D7973A1CCE3CED00B0F7F6 /* BsyncXPCHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5833A901CC0CA1B00A97E01 /* BsyncXPCHelper.swift */; };
 		E5D9B7BE1D788C8900BB8900 /* ResizeDmgCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9B7BD1D788C8900BB8900 /* ResizeDmgCommand.swift */; };
 		E5DE8E251D9422440018E2F5 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E241D9422440018E2F5 /* RegistryMetadata+Facilities.swift */; };
@@ -1830,6 +1833,7 @@
 				E588076E1D51E06A00FEA71F /* User.swift in Sources */,
 				E588084A1D51E06A00FEA71F /* BartlebyDocument+Triggers.swift in Sources */,
 				E588087E1D51E06A00FEA71F /* Global.swift in Sources */,
+				E5D3F76D1D99475C0008D224 /* RegistryMetadata+Facilities.swift in Sources */,
 				E58807361D51E06A00FEA71F /* Completion.swift in Sources */,
 				E58807DA1D51E06A00FEA71F /* ReadUsersByIds.swift in Sources */,
 				E58807121D51E06A00FEA71F /* BartlebyDocument.swift in Sources */,
@@ -2293,6 +2297,7 @@
 				E5CC27651D84698500F7C783 /* FromJSON.swift in Sources */,
 				E591ACFF1D42643B00748FF4 /* BsyncHashMap+Filter.swift in Sources */,
 				E591ACEE1D42632800748FF4 /* bsyncMiscTests.swift in Sources */,
+				E5D3F76B1D99475B0008D224 /* RegistryMetadata+Facilities.swift in Sources */,
 				E5CC27881D84698500F7C783 /* DateFormatterTransform.swift in Sources */,
 				E58809301D51E06A00FEA71F /* Pluralization.swift in Sources */,
 				E591ACF51D42643B00748FF4 /* NSData+CRC.m in Sources */,
@@ -2379,6 +2384,7 @@
 				E5CC266C1D84698500F7C783 /* Timeline.swift in Sources */,
 				E58807491D51E06A00FEA71F /* Locker.swift in Sources */,
 				E58808A51D51E06A00FEA71F /* DictionaryRepresentation.swift in Sources */,
+				E5D3F76C1D99475C0008D224 /* RegistryMetadata+Facilities.swift in Sources */,
 				E58807591D51E06A00FEA71F /* RegistryMetadata.swift in Sources */,
 				E58807D51D51E06A00FEA71F /* ReadUserById.swift in Sources */,
 				E58809291D51E06A00FEA71F /* BFileManager.swift in Sources */,

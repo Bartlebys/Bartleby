@@ -45,6 +45,8 @@ import ObjectMapper
 	dynamic open var URLBookmarkData:[String:Any] = [String:AnyObject]()
 	//The preferred filename for this registry/document
 	dynamic open var preferredFileName:String?
+	//used for Core Debug , stores all the indexes by order of reception.
+	dynamic open var triggersIndexesDebugHistory:[Int] = [Int]()
 	//A collection of trigger Indexes (used to detect data holes)
 	dynamic open var triggersIndexes:[Int] = [Int]()
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
@@ -115,6 +117,7 @@ import ObjectMapper
 			self.stateDictionary <- ( map["stateDictionary"] )
 			self.URLBookmarkData <- ( map["URLBookmarkData"] )
 			self.preferredFileName <- ( map["preferredFileName"] )
+			self.triggersIndexesDebugHistory <- ( map["triggersIndexesDebugHistory"] )
 			self.triggersIndexes <- ( map["triggersIndexes"] )
 			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
@@ -144,6 +147,7 @@ import ObjectMapper
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
 			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
 			self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
+			self.triggersIndexesDebugHistory=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "triggersIndexesDebugHistory")! as! [Int]
 			self.triggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "triggersIndexes")! as! [Int]
 			self.ownedTriggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
 			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
@@ -177,6 +181,7 @@ import ObjectMapper
 		if let preferredFileName = self.preferredFileName {
 			coder.encode(preferredFileName,forKey:"preferredFileName")
 		}
+		coder.encode(self.triggersIndexesDebugHistory,forKey:"triggersIndexesDebugHistory")
 		coder.encode(self.triggersIndexes,forKey:"triggersIndexes")
 		coder.encode(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
 		coder.encode(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")

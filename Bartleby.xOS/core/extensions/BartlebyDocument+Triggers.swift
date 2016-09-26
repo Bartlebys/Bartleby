@@ -99,6 +99,9 @@ extension BartlebyDocument {
      */
     public func acknowledgeTriggerIndexes(_ indexes:[Int]) {
         for index in indexes{
+            if (self.registryMetadata.debugTriggersHistory) {
+                registryMetadata.triggersIndexesDebugHistory.append(index)
+            }
             if index>=0{
                 if registryMetadata.triggersIndexes.contains(index) {
                     bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
@@ -351,7 +354,6 @@ extension BartlebyDocument {
 
 
     fileprivate func _cleanUPTrigger(_ trigger:Trigger){
-
         // Remove the trigger from the collection.
         if let idx=self.registryMetadata.receivedTriggers.index(of: trigger){
             self.registryMetadata.receivedTriggers.remove(at: idx)
@@ -459,6 +461,19 @@ extension BartlebyDocument {
     }
 
 
+    // MARK: - Maintenance (Called from inspector Menu)
+
+    public func cleanUpOutDatedDataTriggers(){
+        for (t,_) in  self._triggeredDataBuffer.reversed(){
+            if t.index<=self.registryMetadata.lastIntegratedTriggerIndex{
+                if let idx=self._triggeredDataBuffer.index(forKey: t){
+                    self._triggeredDataBuffer.remove(at: idx)
+                }
+            }
+        }
+    }
+
+
     // MARK: -
 
 
@@ -468,7 +483,7 @@ extension BartlebyDocument {
      */
     open func getTriggerBufferInformations()->String{
 
-        var informations = "Last integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
+        var informations = "\nLast integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
         // Missing
         let missing=self.missingContiguousTriggersIndexes()
         informations += missing.reduce("Missing indexes (\(missing.count)): ", { (string, index) -> String in
@@ -487,14 +502,14 @@ extension BartlebyDocument {
 
         // Data buffer
         informations += "\n"
-        informations += "Triggers to be integrated \(self._triggeredDataBuffer.count)\n"
+        informations += "Triggers to be integrated (\(self._triggeredDataBuffer.count)):\n"
         let sorted=self._triggeredDataBuffer.sorted { (l, r) -> Bool in
             return l.0.index > r.0.index
         }
         for (trigger,dictionary) in sorted {
             let s = try?JSONSerialization.data(withJSONObject: dictionary, options: [])
             let n = (s?.count ?? 0)
-            informations += "\(trigger.index) \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)    [\(n / 8) Bytes]\n"
+            informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
         }
 
         // Owned Indexes
@@ -504,8 +519,52 @@ extension BartlebyDocument {
         informations += ownedTriggersIndexes.reduce("", { (string, index) -> String in
             return "\(string) \(index)"
         })
-        
-        return informations
+
+        if (self.registryMetadata.debugTriggersHistory) {
+            // Owned Indexes
+            informations += "\n\n"
+            let history=self.registryMetadata.triggersIndexesDebugHistory
+            informations += "History Triggers Indexes (\(history.count)): "
+            informations += history.reduce("", { (string, index) -> String in
+                let owned=self.registryMetadata.ownedTriggersIndexes.contains(index)
+                return "\(string) \(owned ? "[":"")\(index)\(owned ? "]":"")"
+            })
+        }
+
+
+        informations += "\n\n"
+        informations += "-----------\n"
+        informations += "Diagnostic:\n"
+        informations += "-----------\n"
+        var noProblem=true
+
+        // Trigger data That should be deleted
+
+        var anomaliesTriggerDataThatShouldBeDeleted=[Int]()
+        for (t,_) in self._triggeredDataBuffer {
+            if t.index <= self.registryMetadata.lastIntegratedTriggerIndex{
+                anomaliesTriggerDataThatShouldBeDeleted.append(t.index)
+            }
+        }
+        let nba=anomaliesTriggerDataThatShouldBeDeleted.count
+
+        if nba > 0{
+            informations += "Nb Of trigger Data that should have been deleted :(\(anomaliesTriggerDataThatShouldBeDeleted.count))\n"
+
+            for idx in anomaliesTriggerDataThatShouldBeDeleted.sorted(){
+                 informations += "\(idx) "
+            }
+            informations += "\n"
+        }
+
+        noProblem = (noProblem && (nba == 0 ))
+
+        if noProblem{
+             return  "**Everything is OK!**\n\n" + informations
+        }else{
+            return "**We have encountered issues please check the details below!**\n\n" + informations
+        }
+
     }
     
 } 

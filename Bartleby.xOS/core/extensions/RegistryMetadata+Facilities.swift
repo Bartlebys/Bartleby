@@ -10,6 +10,8 @@ import Foundation
 
 extension RegistryMetadata{
 
+    var debugTriggersHistory:Bool{ return true } // Should be set to False
+
     dynamic var jsonReceivedTrigger:String{
         return self.receivedTriggers.toJSONString(true)!
     }
