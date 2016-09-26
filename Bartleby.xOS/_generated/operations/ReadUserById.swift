@@ -68,21 +68,21 @@ import ObjectMapper
                     }else{
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
-            					if let instance = Mapper <User>().map(result.value){					    
-					    success(instance)
-					  }else{
-					   let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-					        context: context,
-					        title: NSLocalizedString("Deserialization issue",
-					            comment: "Deserialization issue"),
-					        body:"(result.value)",
-					        transmit:{ (selectedIndex) -> () in
-					    })
-					   reactions.append(failureReaction)
-					   failure(context)
-					}
-
-                        }else{
+            	                if let instance = Mapper <User>().map(result.value){
+	                
+	                                success(instance)
+	                            }else{
+	                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+	                                    context: context,
+	                                    title: NSLocalizedString("Deserialization issue",
+	                                        comment: "Deserialization issue"),
+	                                    body:"(result.value)",
+	                                    transmit:{ (selectedIndex) -> () in
+	                                })
+	                                reactions.append(failureReaction)
+	                                failure(context)
+	                            }
+                         }else{
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
