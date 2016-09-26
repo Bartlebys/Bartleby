@@ -307,7 +307,7 @@ import ObjectMapper
             // Distant persistency is not allowed for PushOperation
             
         }else{
-           
+
         }
     }
 
