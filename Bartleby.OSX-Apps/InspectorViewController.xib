@@ -298,31 +298,22 @@
                                     <action selector="forceDataIntegration:" target="-2" id="sK3-2v-7dG"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="GhZ-jn-Pf9"/>
                             <menuItem title="Delete Pending Operations" id="Dru-Kf-MPX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="deleteOperations:" target="-2" id="ymM-cZ-2Fq"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="gCY-ud-6k8"/>
                             <menuItem title="Delete OutDated Triggers Data" id="2MK-XZ-vzd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="cleanupOutDatedTriggerData:" target="-2" id="yhm-G4-fSt"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="gcI-Jh-Elx"/>
                             <menuItem title="Clean Up Operations In Quarantine" id="Tmw-Ev-TsM">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="cleanupOperationQuarantine:" target="-2" id="8EZ-WU-qMN"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Clean Up Triggers In Quarantine" id="Geq-Im-3zl">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="cleanupTriggersQuarantine:" target="-2" id="sp4-4N-M01"/>
                                 </connections>
                             </menuItem>
                         </items>

@@ -29,12 +29,8 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
             triggersDiagnosticTextView.textColor=NSColor.textColor
         }
     }
-    // No Bindings we "observe" the selected index ( NSTabViewDelegate)
-    @IBOutlet var triggersQuarantineTextView: NSTextView!{
-        didSet{
-            triggersQuarantineTextView.textColor=NSColor.textColor
-        }
-    }
+
+
     // No Bindings we "observe" the selected index ( NSTabViewDelegate)
     @IBOutlet var operationsQuarantineTextView: NSTextView!{
         didSet{
@@ -86,9 +82,6 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
                     if identifier == "OperationsQuarantine" {
                         self.operationsQuarantineTextView.string=registry.registryMetadata.jsonOperationsQuarantine
                     }
-                    if identifier == "TriggersQuarantine" {
-                        self.triggersQuarantineTextView.string=registry.registryMetadata.jsonTriggersQuarantine
-                    }
                 }
             }
         }
@@ -99,7 +92,6 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
         if let registry=self._metadata?.document{
             self.triggersDiagnosticTextView.string=registry.getTriggerBufferInformations()
             self.operationsQuarantineTextView.string=registry.registryMetadata.jsonOperationsQuarantine
-            self.triggersQuarantineTextView.string=registry.registryMetadata.jsonTriggersQuarantine
         }
     }
     

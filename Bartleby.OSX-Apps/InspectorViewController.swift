@@ -98,12 +98,7 @@ import Cocoa
         }
     }
 
-    @IBAction func cleanupTriggersQuarantine(_ sender: AnyObject) {
-        if let document=self.registryDelegate?.getRegistry(){
-            document.registryMetadata.triggersQuarantine.removeAll()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
-        }
-    }
+
 
 
     @IBAction func cleanupOutDatedTriggerData(_ sender: AnyObject) {

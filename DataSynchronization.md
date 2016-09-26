@@ -94,26 +94,11 @@ Each trigger has a unique primary trigger index per observationUID.
 1. "Deletions divergences" **resolution**:when receiving an owned delete trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
 2. "Concurrent updates" case **resolution**: when receiving an owned update trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
 
-## Faults on READ related to deletions.
+## HTTP Status Code 404 on Trigger READ & UPDATE operation
 
-Let's take an example in witch A will transition online.
-During A's offline session B did create X(1..n) ressources.
-Then B deleted a sub set of X(1..n)
-X3.21 ReadOperation may fail if it has been deleted after being updated 20 times.
+404 on UPDATE operations and Triggers Read are not faults.
+Note This behavior do not apply to UPSERTS because there are no 404 on Upserts
  
-### Status Code 404 on Read Operation.
-
-If the UID is not in `RegistryMetadata.deletedUIDs` Call End Point `EntityExistsById(entityUID)`if the entity has been deleted reference the entity as deleted (in the volatile deletedUID var) not to recall the EndPoint, put the Trigger in quarantine *State may be divergent!*
-
-### Note on fault on Batch Operations 
- 
-We have removed [grouped Auto-commit support from Collection Controllers] (https://github.com/Bartlebys/Bartleby/issues/19) to prevent read divergence due to partial deletion.
-This approach improves the fault resilience of system and reduces its performance.
-It enforces the Atomicity of current operations and simplifies fault resilience. 
-
-You can still use `UpsertEntities` operations but keep in mind that single fault can put a whole trigger in quarantine.
- 
-
 ## Faults related to ACL 
 
 ### Status Code 403 on UPSERT and DELETE (extension possible to 406,412,417)
@@ -123,26 +108,20 @@ On ACL related fault we do not propagate the *blocked changes*, so the problem i
 On Status code 403 we could cancel automatically the action because *If the user is not authorized to do something we could reflect the ACL locally.* But we prefer currently to put the operation in Quarantine and give the user a chance to resolve a conflict with other users or arbitrate what to do.
 
 
-## Triggers & Operations Quarantines (Non automatic fault resolution)
-
-Triggers that produces Fault that cannot currently be resolved automatically, are put in Quarantine.
+## Operations Quarantines (Non automatic fault resolution)
 
 We want to reduce as much as possible the Quarantine cases!
-
-On "Faults on READ related to deletions" some triggers may be stuck in quarantine.
-Let's imagine we Updated a Bunch Of entities. Then on ReadEntitiesById one of the entity has been deleted. The relevant trigger would be placed in Quarantine.
-
 An ACL Faults Operations are placed in Quarantine.
 
 ### Interactive Quarantine clean up procedure
 
 To be implemented [Issue #22](https://github.com/Bartlebys/Bartleby/issues/22)
 
-When a trigger is in quarantine we should present a Synthesis to the user and Ask what to do.
+When an operation is in quarantine we should present a Synthesis to the user and Ask what to do.
 
-- A **synthesis** will explain the problem with the trigger (Deletion of part of A Bunch Update, ACL issue). 
-- The system will offer solutions candidats like : "Delete entity X locally."
-- The user must arbitrate or defer the Arbitration 
+A synthesis will explain the problem with the operation (Deletion of part of A Bunch Update, ACL issue).
+The system will offer solutions candidats like : "Delete entity X locally."
+The user must arbitrate or defer the Arbitration
 
 
 #Transitions off-line/on-line and vice versa 

@@ -20,8 +20,4 @@ extension RegistryMetadata{
         return self.operationsQuarantine.toJSONString(true)!
     }
 
-    var jsonTriggersQuarantine:String{
-        return self.triggersQuarantine.toJSONString(true)!
-    }
-
 }

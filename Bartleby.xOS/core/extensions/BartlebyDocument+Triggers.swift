@@ -124,7 +124,7 @@ extension BartlebyDocument {
 
      - parameter trigger: the trigger.
      */
-    fileprivate func _loadDataFrom(_ trigger:Trigger, doNotReactOnFault:Bool=false){
+    fileprivate func _loadDataFrom(_ trigger:Trigger){
 
         let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
         if !alreadyLoaded {
@@ -168,9 +168,8 @@ extension BartlebyDocument {
                     if result.isFailure {
                         if let statusCode=response?.statusCode {
                             if statusCode==404{
-                                if !doNotReactOnFault{
-                                    self._onRead404Fault(trigger)
-                                }
+                                // Add a  Neutral Void dictionary
+                                self._triggeredDataBuffer[trigger]=[[String:Any]]()
                                 return
                             }
                         }
@@ -209,63 +208,6 @@ extension BartlebyDocument {
         }
     }
 
-    /// Implements the READ & UPDATE 404 fault logic
-    /// Check : #17 https://github.com/Bartlebys/Bartleby/issues/17
-    /// For detailled explanations.
-    /// - parameter trigger: the trigger
-    fileprivate func _onRead404Fault(_ trigger:Trigger){
-        let UIDS=trigger.UIDS.components(separatedBy:",")
-        /// We proceed for each UID.
-        for UID in UIDS{
-            if !self.registryMetadata.deletedUIDs.contains(UID){ // Call the EntityExistsById endPoints once.
-                let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
-                let pathURL = baseURL.appendingPathComponent("exists")
-                let dictionary:Dictionary<String, Any>=["id":UID]
-                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:"EntityExistsById" ,forMethod:"GET", and: pathURL)
-                do {
-                    let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                    request(r).validate().responseJSON(completionHandler: { (response) in
-                        let result=response.result
-                        let response=response.response
-                        GlobalQueue.main.get().async {
-                            if result.isFailure {
-                                if let statusCode=response?.statusCode {
-                                    if statusCode==404{
-                                        // Every thing is ok for this UID
-                                        // For performance purposes cache this reponse by adding the UID to the known deletedUIDs
-                                        self.registryMetadata.deletedUIDs.append(UID)
-                                        return
-                                    }
-                                }
-                            }else{
-                                if let statusCode=response?.statusCode {
-                                    if 200...299 ~= statusCode {
-                                        if let index=self.registryMetadata.deletedUIDs.index(of:UID){
-                                            self.registryMetadata.deletedUIDs.remove(at: index)
-                                        }
-                                    }
-                                }
-                            }
-                            if !self.registryMetadata.triggersQuarantine.contains(trigger){
-                                // We were not in a 4O4 case
-                                // It is not normal
-                                // So let's put the trigger in Quarantine
-                                self.registryMetadata.triggersQuarantine.append(trigger)
-                            }
-                        }
-
-                    })
-                }catch{
-                    bprint("O, Read404Fault exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
-                }
-            }
-        }
-
-        /// In any case we cleanup the trigger on 404 faults
-        GlobalQueue.main.get().async {
-            self._cleanUPTrigger(trigger)
-        }
-    }
 
     // MARK: - Local Data Integration
 
