@@ -209,8 +209,8 @@ extension BartlebyDocument {
         }
     }
 
-    /// Implements the READ 404 fault logic
-    /// Check https://github.com/Bartlebys/Bartleby/issues/17
+    /// Implements the READ & UPDATE 404 fault logic
+    /// Check : #17 https://github.com/Bartlebys/Bartleby/issues/17
     /// For detailled explanations.
     /// - parameter trigger: the trigger
     fileprivate func _onRead404Fault(_ trigger:Trigger){

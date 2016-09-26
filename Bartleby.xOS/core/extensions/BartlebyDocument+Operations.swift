@@ -187,6 +187,17 @@ extension BartlebyDocument {
                                                 //////////////////////////////////////////////////
                                                 self.registryMetadata.operationsQuarantine.append(operation)
                                                 self.delete(operation)
+                                            }else if statusCode == 404 {
+                                                //////////////////////////////////////////////////
+                                                // UPDATE operation with 404 is normal on deleted entity
+                                                // According to https://github.com/Bartlebys/Bartleby/issues/24
+                                                //////////////////////////////////////////////////
+                                                let commandName=jCommand.runTimeTypeName()
+                                                if commandName.contains("Update"){
+                                                    // We delete the operation 
+                                                    // And The local entity will be deleted by a trigger later.
+                                                    self.delete(operation)
+                                                }
                                             }
                                         }
                                         // Update the completion / Progression
