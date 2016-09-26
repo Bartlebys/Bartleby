@@ -109,6 +109,11 @@ import Cocoa
         }
     }
 
+    @IBAction func forceDataIntegration(_ sender: AnyObject) {
+        if let document=self.registryDelegate?.getRegistry(){
+            document.forceDataIntegration()
+        }
+    }
 
 
 

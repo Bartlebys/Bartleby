@@ -292,6 +292,13 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Destructive Actions" id="oti-Ly-LKz">
                         <items>
+                            <menuItem title="Force Data Integration" id="bg9-lR-knh">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="forceDataIntegration:" target="-2" id="sK3-2v-7dG"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="GhZ-jn-Pf9"/>
                             <menuItem title="Delete Pending Operations" id="Dru-Kf-MPX">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
