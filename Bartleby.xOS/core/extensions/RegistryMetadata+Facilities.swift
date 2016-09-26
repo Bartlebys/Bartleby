@@ -12,15 +12,15 @@ extension RegistryMetadata{
 
     var debugTriggersHistory:Bool{ return true } // Should be set to False
 
-    dynamic var jsonReceivedTrigger:String{
+    var jsonReceivedTrigger:String{
         return self.receivedTriggers.toJSONString(true)!
     }
 
-    dynamic var jsonOperationsQuarantine:String{
+    var jsonOperationsQuarantine:String{
         return self.operationsQuarantine.toJSONString(true)!
     }
 
-    dynamic var jsonTriggersQuarantine:String{
+    var jsonTriggersQuarantine:String{
         return self.triggersQuarantine.toJSONString(true)!
     }
 

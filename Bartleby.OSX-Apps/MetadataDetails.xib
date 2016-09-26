@@ -24,7 +24,7 @@
                     <rect key="frame" x="13" y="10" width="925" height="637"/>
                     <font key="font" metaFont="system"/>
                     <tabViewItems>
-                        <tabViewItem label="Infos" identifier="1" id="57B-S5-aXh">
+                        <tabViewItem label="Infos" identifier="Infos" id="57B-S5-aXh">
                             <view key="view" id="z3f-fd-UOW">
                                 <rect key="frame" x="10" y="33" width="905" height="591"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -200,7 +200,7 @@
                                 </subviews>
                             </view>
                         </tabViewItem>
-                        <tabViewItem label="Current User" identifier="1" id="wmN-v1-idB">
+                        <tabViewItem label="Current User" identifier="CurrentUser" id="wmN-v1-idB">
                             <view key="view" id="1ao-Bd-4TH">
                                 <rect key="frame" x="10" y="33" width="905" height="591"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1167,7 +1167,7 @@
                                 </constraints>
                             </view>
                         </tabViewItem>
-                        <tabViewItem label="Operations' Quarantine" identifier="2" id="ziY-zh-YxR">
+                        <tabViewItem label="Operations' Quarantine" identifier="OperationsQuarantine" id="ziY-zh-YxR">
                             <view key="view" id="28h-ua-E5w">
                                 <rect key="frame" x="10" y="33" width="905" height="591"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1918,9 +1918,6 @@
                                                         <string>et</string>
                                                         <string>uk_UA</string>
                                                     </allowedInputSourceLocales>
-                                                    <connections>
-                                                        <binding destination="-2" name="value" keyPath="self._metadata.jsonOperationsQuarantine" id="cif-31-Not"/>
-                                                    </connections>
                                                 </textView>
                                             </subviews>
                                         </clipView>
@@ -1942,7 +1939,7 @@
                                 </constraints>
                             </view>
                         </tabViewItem>
-                        <tabViewItem label="Triggers' Quarantine" identifier="2" id="ufv-OV-J9c">
+                        <tabViewItem label="Triggers' Quarantine" identifier="TriggersQuarantine" id="ufv-OV-J9c">
                             <view key="view" id="4jl-yD-5Ry">
                                 <rect key="frame" x="10" y="33" width="905" height="591"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2693,9 +2690,6 @@
                                                         <string>et</string>
                                                         <string>uk_UA</string>
                                                     </allowedInputSourceLocales>
-                                                    <connections>
-                                                        <binding destination="-2" name="value" keyPath="self._metadata.jsonTriggersQuarantine" id="NE6-Y7-D41"/>
-                                                    </connections>
                                                 </textView>
                                             </subviews>
                                         </clipView>

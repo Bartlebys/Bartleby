@@ -377,7 +377,7 @@
 		E50F3D681D40D50400532B09 /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 		E50F3D6A1D40D50400532B09 /* BartlebyDocument+AppFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+AppFacilities.swift"; sourceTree = "<group>"; };
 		E50F3D6B1D40D50400532B09 /* BartlebyDocument+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Operations.swift"; sourceTree = "<group>"; };
-		E50F3D6C1D40D50400532B09 /* BartlebyDocument+Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Triggers.swift"; sourceTree = "<group>"; };
+		E50F3D6C1D40D50400532B09 /* BartlebyDocument+Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Triggers.swift"; sourceTree = "<group>"; wrapsLines = 0; };
 		E50F3D6D1D40D50400532B09 /* Completion+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Conveniences.swift"; sourceTree = "<group>"; };
 		E50F3D6E1D40D50400532B09 /* Completion+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Result.swift"; sourceTree = "<group>"; };
 		E50F3D6F1D40D50400532B09 /* ExternalReference+Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExternalReference+Resolution.swift"; sourceTree = "<group>"; };

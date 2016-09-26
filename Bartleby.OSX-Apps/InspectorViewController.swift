@@ -87,18 +87,21 @@ import Cocoa
             for operation in registry.pushOperations.reversed(){
                 registry.pushOperations.removeObject(operation, commit: false)
             }
+            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
     @IBAction func cleanupOperationQuarantine(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry() {
             document.registryMetadata.operationsQuarantine.removeAll()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
     @IBAction func cleanupTriggersQuarantine(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry(){
             document.registryMetadata.triggersQuarantine.removeAll()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
@@ -106,12 +109,14 @@ import Cocoa
     @IBAction func cleanupOutDatedTriggerData(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry(){
             document.cleanUpOutDatedDataTriggers()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
     @IBAction func forceDataIntegration(_ sender: AnyObject) {
         if let document=self.registryDelegate?.getRegistry(){
             document.forceDataIntegration()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 

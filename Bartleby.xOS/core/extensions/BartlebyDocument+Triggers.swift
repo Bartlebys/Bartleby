@@ -449,6 +449,8 @@ extension BartlebyDocument {
             for data  in sortedData{
                 self._integrate(data)
             }
+
+            
             // Reinitialize
             self.registryMetadata.triggersIndexes=[Int]()
             // Set the lastIntegratedTriggerIndex to the highest possible value

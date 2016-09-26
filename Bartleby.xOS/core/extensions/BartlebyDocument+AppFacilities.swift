@@ -19,12 +19,9 @@ import Foundation
 #endif
 
 
-
 extension BartlebyDocument {
 
-
     #if os(OSX)
-
 
     //MARK: - APP KIT FACILITIES
 
