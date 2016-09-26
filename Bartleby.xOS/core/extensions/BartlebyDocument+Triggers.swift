@@ -167,8 +167,21 @@ extension BartlebyDocument {
 
                     if result.isFailure {
                         if let statusCode=response?.statusCode {
+
                             if statusCode==404{
-                                // Add a  Neutral Void dictionary
+
+                                /////////////////////////////////////////////////////////////
+                                // Handling https://github.com/Bartlebys/Bartleby/issues/24
+                                /////////////////////////////////////////////////////////////
+
+                                if let dictionary=(result.value as? [String:Any]){
+                                    if let found=dictionary["found"] as? [[String:Any]] {
+                                        // In case of Partial 404 we store the entities we have Found
+                                        self._triggeredDataBuffer[trigger]=found
+                                        return
+                                    }
+                                }
+                                // Add a  Neutral Void dictionary or the found instances.
                                 self._triggeredDataBuffer[trigger]=[[String:Any]]()
                                 return
                             }

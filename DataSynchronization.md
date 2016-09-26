@@ -98,6 +98,36 @@ Each trigger has a unique primary trigger index per observationUID.
 
 404 on UPDATE operations and Triggers Read are not faults.
 Note This behavior do not apply to UPSERTS because there are no 404 on Upserts
+
+### How do we support partial 404 in Collections' READ endpoints
+
+Current generative implementation returns 200 on full fetch and 404 including `found` / `notFound` keys in the response.
+
+```php
+if (count($r)==count($ids)) {
+   //All the entity has been found.
+   return new JsonResponse($r,200);
+} else {
+    $foundIds=array();
+    $notFoundIds=array();
+    foreach ($r as $o) {
+        if (array_key_exists('_id', $r)) {
+            $id = $o['_id'];
+            $foundIds[] = $id;
+        }
+    }
+    foreach ($ids as $id) {
+        if ( !in_array($id,$foundIds)){
+            $notFoundIds=$id;
+        }
+    }
+    $details=array('found'=>$r,'notFound'=>$notFoundIds);
+    return new JsonResponse($details,404);
+}
+```
+
+On trigger data Integration we integrate the found entities.
+
  
 ## Faults related to ACL 
 
