@@ -19,7 +19,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     return lhs.UID==rhs.UID
 }
 
-
 // JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
 // Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
 // During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
@@ -33,7 +32,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     override required public init() {
         super.init()
     }
-
 
 
     // MARK: - Collectible = Identifiable, Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString

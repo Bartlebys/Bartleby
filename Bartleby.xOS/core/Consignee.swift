@@ -191,8 +191,6 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
                 })
             }
 
-
-
         #elseif os(watchOS)
         #elseif os(tvOS)
 

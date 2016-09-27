@@ -13,9 +13,5 @@ import Foundation
     import ObjectMapper
 #endif
 
-
-// The underlining model has been implemented by flexions in BaseCollectionMetadatum
-extension CollectionMetadatum:CollectionMetadatumProtocol {
-
-
-}
+// Formal conformance to CollectionMetadatumProtocol
+extension CollectionMetadatum:CollectionMetadatumProtocol {}

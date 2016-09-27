@@ -25,22 +25,6 @@ import Foundation
 // Bartleby 2.0 will implement storage layers for larger data set, and distant external references
 open class  Bartleby: Consignee {
 
-    // The configuration
-    static open var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
-
-    // The crypto delegate
-    static open var cryptoDelegate: CryptoDelegate=NoCrypto()
-
-    // The File manager
-    static open var fileManager: BartlebyFileIO=BFileManager()
-
-    static open var changesAreInspectables:Bool=configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
-
-
-    //The default serializer
-    static open var defaultSerializer: Serializer.Type=JSerializer.self
-
-
     /// The standard singleton shared instance
     open static let sharedInstance: Bartleby = {
         let instance = Bartleby()
@@ -60,6 +44,19 @@ open class  Bartleby: Consignee {
     // A unique run identifier that changes each time Bartleby is launched
     open static let runUID: String=Bartleby.createUID()
 
+    // The configuration
+    static open var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
+
+    // The crypto delegate
+    static open var cryptoDelegate: CryptoDelegate=NoCrypto()
+
+    // The File manager
+    static open var fileManager: BartlebyFileIO=BFileManager()
+
+    static open var changesAreInspectables:Bool=configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
+
+    //The default serializer
+    static open var defaultSerializer: Serializer.Type=JSerializer.self
 
     /**
      This method should be only used to cleanup in core unit test
