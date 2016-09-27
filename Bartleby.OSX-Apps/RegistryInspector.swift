@@ -61,11 +61,6 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
         Bartleby.changesAreInspectables=true
     }
 
-    override open var windowNibName: String?{
-        return "RegistryInspector"
-    }
-
-
     // MARK: RegistryDependent
 
     open var registryDelegate: RegistryDelegate?{
