@@ -65,17 +65,17 @@ import ObjectMapper
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map: Map) {
+        super.init(map:map)
     }
 
-    override open func mapping(_ map: Map) {
-        super.mapping(map)
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.silentGroupedChanges {
 			self.success <- ( map["success"] )
 			self.statusCode <- ( map["statusCode"] )
 			self.message <- ( map["message"] )
-			self.data <- ( map["data"], Base64DataTransform() )
+			self.data <- ( map["data"], DataTransform() )
 			self.category <- ( map["category"] )
 			self.externalIdentifier <- ( map["externalIdentifier"] )
         }

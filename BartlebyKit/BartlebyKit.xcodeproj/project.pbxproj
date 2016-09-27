@@ -227,7 +227,6 @@
 		E58158F61D9A55A400034B62 /* JObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158EC1D9A55A400034B62 /* JObject.swift */; };
 		E58158F71D9A55A400034B62 /* JSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158ED1D9A55A400034B62 /* JSerializer.swift */; };
 		E58158F81D9A55A400034B62 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158EE1D9A55A400034B62 /* JString+Conveniences.swift */; };
-		E58158F91D9A55A400034B62 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158F01D9A55A400034B62 /* Base64DataTransform.swift */; };
 		E58158FA1D9A55A400034B62 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158F11D9A55A400034B62 /* ImageTransform.swift */; };
 		E58158FC1D9A55DC00034B62 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158FB1D9A55DC00034B62 /* RegistryMetadata+Protocol.swift */; };
 		E58158FE1D9A565100034B62 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158FD1D9A565100034B62 /* CollectionMetadatum+Proxy.swift */; };
@@ -237,7 +236,6 @@
 		E58159021D9A5C4300034B62 /* JHTTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158EB1D9A55A400034B62 /* JHTTPResponse.swift */; };
 		E58159031D9A5C4300034B62 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158E91D9A55A400034B62 /* JData+Conveniences.swift */; };
 		E58159041D9A5C4300034B62 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158EE1D9A55A400034B62 /* JString+Conveniences.swift */; };
-		E58159051D9A5C4800034B62 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158F01D9A55A400034B62 /* Base64DataTransform.swift */; };
 		E58159061D9A5C4800034B62 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158F11D9A55A400034B62 /* ImageTransform.swift */; };
 		E58159091D9A5C4D00034B62 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158FD1D9A565100034B62 /* CollectionMetadatum+Proxy.swift */; };
 		E581590A1D9A5C4D00034B62 /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6D1D40D50400532B09 /* Completion+Conveniences.swift */; };
@@ -450,7 +448,6 @@
 		E58158EC1D9A55A400034B62 /* JObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObject.swift; sourceTree = "<group>"; };
 		E58158ED1D9A55A400034B62 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
 		E58158EE1D9A55A400034B62 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
-		E58158F01D9A55A400034B62 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E58158F11D9A55A400034B62 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
 		E58158FB1D9A55DC00034B62 /* RegistryMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Protocol.swift"; sourceTree = "<group>"; };
 		E58158FD1D9A565100034B62 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
@@ -894,7 +891,6 @@
 		E58158EF1D9A55A400034B62 /* transforms */ = {
 			isa = PBXGroup;
 			children = (
-				E58158F01D9A55A400034B62 /* Base64DataTransform.swift */,
 				E58158F11D9A55A400034B62 /* ImageTransform.swift */,
 			);
 			path = transforms;
@@ -1167,7 +1163,6 @@
 				E50F3E831D40D50400532B09 /* Initializable.swift in Sources */,
 				E50F3EBD1D40D50400532B09 /* Pluralization.swift in Sources */,
 				E50F3E4B1D40D50400532B09 /* Completion+Conveniences.swift in Sources */,
-				E58158F91D9A55A400034B62 /* Base64DataTransform.swift in Sources */,
 				E59132521D87109200EE09D2 /* PushOperation.swift in Sources */,
 				E50F3E031D40D50400532B09 /* ReadLockerById.swift in Sources */,
 				E50F3DC91D40D50400532B09 /* Locker.swift in Sources */,
@@ -1219,7 +1214,6 @@
 				E58159021D9A5C4300034B62 /* JHTTPResponse.swift in Sources */,
 				E50F3E6E1D40D50400532B09 /* CollectionMetadatumProtocol.swift in Sources */,
 				E50F3E6C1D40D50400532B09 /* CollectibleCollection.swift in Sources */,
-				E58159051D9A5C4800034B62 /* Base64DataTransform.swift in Sources */,
 				E50F3E1C1D40D50400532B09 /* UpdateLockers.swift in Sources */,
 				E50F3EBE1D40D50400532B09 /* Pluralization.swift in Sources */,
 				E50F3DCA1D40D50400532B09 /* Locker.swift in Sources */,

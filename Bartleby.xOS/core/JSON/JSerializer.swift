@@ -78,8 +78,8 @@ open class JSerializer: Serializer {
             typeName = Registry.resolveTypeName(from: typeName)
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .fromJSON, JSONDictionary : dictionary)
-                    mappable.mapping(map)
+                    let map=Map(mappingType: .fromJSON, JSON : dictionary)
+                    mappable.mapping(map: map)
                     if let serializable = mappable as? Serializable {
                         return serializable
                     } else {

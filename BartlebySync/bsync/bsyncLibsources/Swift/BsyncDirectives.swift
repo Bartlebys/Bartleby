@@ -122,13 +122,13 @@ import Foundation
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
-        super.init(map)
-        self.mapping(map)
+    required public init?(map: Map) {
+        super.init(map:map)
+        self.mapping(map:map)
     }
 
-    open override func mapping(_ map: Map) {
-        super.mapping(map)
+    open override func mapping(map: Map) {
+        super.mapping(map:map)
         self.silentGroupedChanges {
             sourceURL <- (map["sourceURL"], URLTransform())
             destinationURL <- (map["destinationURL"], URLTransform())

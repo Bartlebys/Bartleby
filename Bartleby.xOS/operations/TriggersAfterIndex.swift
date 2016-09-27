@@ -32,7 +32,7 @@ import Foundation
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
-                request(r).validate().responseJSON(completionHandler: { (response) in
+                request(r).validate().responseString(completionHandler: { (response) in
 
                     let request=response.request
                     let result=response.result
@@ -59,13 +59,25 @@ import Foundation
                     } else {
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
-                                if let instance = Mapper <Trigger>().mapArray(result.value) {
-                                    success(instance)
-                                } else {
+                                if let string=result.value{
+                                    if let instance = Mapper <Trigger>().mapArray(JSONString:string){
+                                        success(instance)
+                                    }else{
+                                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                            context: context,
+                                            title: NSLocalizedString("Deserialization issue",
+                                                                     comment: "Deserialization issue"),
+                                            body:"(result.value)",
+                                            transmit:{ (selectedIndex) -> () in
+                                        })
+                                        reactions.append(failureReaction)
+                                        failure(context)
+                                    }
+                                }else{
                                     let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                         context: context,
-                                        title: NSLocalizedString("Deserialization issue",
-                                                                 comment: "Deserialization issue"),
+                                        title: NSLocalizedString("No String Deserialization issue",
+                                                                 comment: "No String Deserialization issue"),
                                         body:"(result.value)",
                                         transmit: { (selectedIndex) -> () in
                                     })

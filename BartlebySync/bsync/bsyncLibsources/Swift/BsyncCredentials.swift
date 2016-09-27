@@ -32,13 +32,13 @@ import Foundation
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         super.init()
-        self.mapping(map)
+        self.mapping(map:map)
     }
 
-    override open func mapping(_ map: Map) {
-        super.mapping(map)
+    override open func mapping(map: Map) {
+        super.mapping(map:map)
         self.silentGroupedChanges {
             user <- (map["user"], CryptedSerializableTransform())
             password <- (map ["password"], CryptedStringTransform())

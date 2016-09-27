@@ -96,12 +96,12 @@ import ObjectMapper
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map: Map) {
+        super.init(map:map)
     }
 
-    override open func mapping(_ map: Map) {
-        super.mapping(map)
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.silentGroupedChanges {
 			self.spaceUID <- ( map["spaceUID"] )
 			self.currentUser <- ( map["currentUser"] )
@@ -118,7 +118,7 @@ import ObjectMapper
 			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 			self.receivedTriggers <- ( map["receivedTriggers"] )
-			self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], Base64DataTransform() )
+			self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], DataTransform() )
 			self.operationsQuarantine <- ( map["operationsQuarantine"] )
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )

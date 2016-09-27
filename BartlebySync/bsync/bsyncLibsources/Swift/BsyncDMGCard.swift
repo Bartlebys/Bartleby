@@ -73,9 +73,9 @@ import Foundation
         super.init()
     }
 
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         super.init()
-        self.mapping(map)
+        self.mapping(map:map)
     }
 
 
@@ -104,8 +104,8 @@ import Foundation
     }
 
 
-    open override func mapping(_ map: Map) {
-        super.mapping(map)
+    open override func mapping(map: Map) {
+        super.mapping(map:map)
         self.silentGroupedChanges {
             userUID <- (map["userUID"], CryptedStringTransform())
             contextUID <- (map["contextUID"], CryptedStringTransform())

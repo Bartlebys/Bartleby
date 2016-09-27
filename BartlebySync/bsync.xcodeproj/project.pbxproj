@@ -350,10 +350,6 @@
 		E5734CBC1D9A5D720056E429 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B881D9A5D720056E429 /* JString+Conveniences.swift */; };
 		E5734CBD1D9A5D720056E429 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B881D9A5D720056E429 /* JString+Conveniences.swift */; };
 		E5734CBE1D9A5D720056E429 /* JString+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B881D9A5D720056E429 /* JString+Conveniences.swift */; };
-		E5734CBF1D9A5D720056E429 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */; };
-		E5734CC01D9A5D720056E429 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */; };
-		E5734CC11D9A5D720056E429 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */; };
-		E5734CC21D9A5D720056E429 /* Base64DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */; };
 		E5734CC31D9A5D720056E429 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8B1D9A5D720056E429 /* ImageTransform.swift */; };
 		E5734CC41D9A5D720056E429 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8B1D9A5D720056E429 /* ImageTransform.swift */; };
 		E5734CC51D9A5D720056E429 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B8B1D9A5D720056E429 /* ImageTransform.swift */; };
@@ -886,7 +882,6 @@
 		E5734B861D9A5D720056E429 /* JObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JObject.swift; sourceTree = "<group>"; };
 		E5734B871D9A5D720056E429 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
 		E5734B881D9A5D720056E429 /* JString+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JString+Conveniences.swift"; sourceTree = "<group>"; };
-		E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base64DataTransform.swift; sourceTree = "<group>"; };
 		E5734B8B1D9A5D720056E429 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
 		E5734B8D1D9A5D720056E429 /* BartlebyFileIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyFileIO.swift; sourceTree = "<group>"; };
 		E5734B8E1D9A5D720056E429 /* Collectible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collectible.swift; sourceTree = "<group>"; };
@@ -967,8 +962,8 @@
 		E5CC25AE1D84698500F7C783 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		E5CC25C11D84698500F7C783 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
 		E5CC25C21D84698500F7C783 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		E5CC25C31D84698500F7C783 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
-		E5CC25C41D84698500F7C783 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
+		E5CC25C31D84698500F7C783 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		E5CC25C41D84698500F7C783 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E5CC25C51D84698500F7C783 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		E5CC25C61D84698500F7C783 /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
 		E5CC25CA1D84698500F7C783 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
@@ -1317,7 +1312,6 @@
 		E5734B891D9A5D720056E429 /* transforms */ = {
 			isa = PBXGroup;
 			children = (
-				E5734B8A1D9A5D720056E429 /* Base64DataTransform.swift */,
 				E5734B8B1D9A5D720056E429 /* ImageTransform.swift */,
 			);
 			path = transforms;
@@ -1897,7 +1891,6 @@
 				E5734CF21D9A5D720056E429 /* HTTPCommand.swift in Sources */,
 				E548A48B1D8807A6006FF410 /* BsyncXPCProtocol.swift in Sources */,
 				E5734D4A1D9A5D720056E429 /* TriggersForIndexes.swift in Sources */,
-				E5734CC21D9A5D720056E429 /* Base64DataTransform.swift in Sources */,
 				E5734D5E1D9A5D730056E429 /* Pluralization.swift in Sources */,
 				E5734CE21D9A5D720056E429 /* Descriptible.swift in Sources */,
 				E5734CCE1D9A5D720056E429 /* Collectible.swift in Sources */,
@@ -2033,7 +2026,6 @@
 				E5734D571D9A5D720056E429 /* HTTPManager.swift in Sources */,
 				E5734D371D9A5D720056E429 /* LoginUser.swift in Sources */,
 				E5734CCB1D9A5D720056E429 /* Collectible.swift in Sources */,
-				E5734CBF1D9A5D720056E429 /* Base64DataTransform.swift in Sources */,
 				E53E28EC1CA572E80079ED23 /* CreateDirectiveCommand.swift in Sources */,
 				E5734C6F1D9A5D720056E429 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E53E28E11CA572E20079ED23 /* BsyncImageDiskManager.swift in Sources */,
@@ -2246,7 +2238,6 @@
 				E5734CBC1D9A5D720056E429 /* JString+Conveniences.swift in Sources */,
 				E5CC27801D84698500F7C783 /* CustomDateFormatTransform.swift in Sources */,
 				E5CC265F1D84698500F7C783 /* SessionDelegate.swift in Sources */,
-				E5734CC01D9A5D720056E429 /* Base64DataTransform.swift in Sources */,
 				E5734CD01D9A5D720056E429 /* CollectibleCollection.swift in Sources */,
 				E5734C041D9A5D720056E429 /* CreateUsers.swift in Sources */,
 				E5734C8C1D9A5D720056E429 /* NSNotification+Progression.swift in Sources */,
@@ -2473,7 +2464,6 @@
 				E5734CED1D9A5D720056E429 /* ForwardableState.swift in Sources */,
 				E5734D151D9A5D720056E429 /* Serializer.swift in Sources */,
 				E5734CF91D9A5D720056E429 /* Identifiable.swift in Sources */,
-				E5734CC11D9A5D720056E429 /* Base64DataTransform.swift in Sources */,
 				E5734CA11D9A5D720056E429 /* Global.swift in Sources */,
 				E5CC26641D84698500F7C783 /* SessionManager.swift in Sources */,
 				E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,

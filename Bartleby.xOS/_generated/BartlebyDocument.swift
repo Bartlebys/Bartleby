@@ -571,7 +571,7 @@ import ObjectMapper
             do{
                 if let superDictionary:[String:[[String : Any]]] = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:[[String : Any]]]{
                     for (jsonTrigger,dictionary) in superDictionary{
-                        if let trigger:Trigger = Mapper<Trigger>().map(jsonTrigger){
+                        if let trigger:Trigger = Mapper<Trigger>().map(JSONString:jsonTrigger){
                             self._triggeredDataBuffer[trigger]=dictionary
                         }else{
                             bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)

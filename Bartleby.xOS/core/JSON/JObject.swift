@@ -144,8 +144,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
         if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-            let map=Map(mappingType: .fromJSON, JSONDictionary: JSONDictionary)
-            self.mapping(map)
+            let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
+            self.mapping(map: map)
             if provisionChanges && Bartleby.changesAreInspectables {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }
@@ -162,8 +162,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
     open func patchFrom(_ dictionaryRepresentation:[String:Any]){
-        let mapped=Map(mappingType: .fromJSON, JSONDictionary: dictionaryRepresentation)
-        self.mapping(mapped)
+        let mapped=Map(mappingType: .fromJSON, JSON: dictionaryRepresentation)
+        self.mapping(map: mapped)
         self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
     }
 
@@ -397,12 +397,12 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
     // MARK: - Mappable
 
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
         super.init()
     }
 
 
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         self.silentGroupedChanges {
             // store the changedKeys in memory
             let changedKeys=self.changedKeys

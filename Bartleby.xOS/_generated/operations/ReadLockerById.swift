@@ -36,7 +36,7 @@ import ObjectMapper
             
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                request(r).responseJSON(completionHandler: { (response) in
+                request(r).responseString(completionHandler: { (response) in
                   
                     let request=response.request
                     let result=response.result
@@ -67,37 +67,47 @@ import ObjectMapper
             
                     }else{
                         if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-            	                if let instance = Mapper <Locker>().map(result.value){
-	                
-	                                success(instance)
+                              if 200...299 ~= statusCode {
+	                            if let string=result.value{
+	                                if let instance = Mapper <Locker>().map(JSONString:string){
+	                                    success(instance)
+	                                }else{
+	                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+	                                        context: context,
+	                                        title: NSLocalizedString("Deserialization issue",
+	                                        comment: "Deserialization issue"),
+	                                        body:"(result.value)",
+	                                        transmit:{ (selectedIndex) -> () in
+	                                    })
+	                                    reactions.append(failureReaction)
+	                                    failure(context)
+	                                }
 	                            }else{
 	                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
 	                                    context: context,
-	                                    title: NSLocalizedString("Deserialization issue",
-	                                        comment: "Deserialization issue"),
+	                                    title: NSLocalizedString("No String Deserialization issue",
+	                                                             comment: "No String Deserialization issue"),
 	                                    body:"(result.value)",
-	                                    transmit:{ (selectedIndex) -> () in
+	                                    transmit: { (selectedIndex) -> () in
 	                                })
 	                                reactions.append(failureReaction)
 	                                failure(context)
 	                            }
                          }else{
-                            // Bartlby does not currenlty discriminate status codes 100 & 101
-                            // and treats any status code >= 300 the same way
-                            // because we consider that failures differentiations could be done by the caller.
-                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                                context: context,
-                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                                body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
-                                transmit:{ (selectedIndex) -> () in
-                            })
-                           reactions.append(failureReaction)
-                           failure(context)
+                                // Bartlby does not currenlty discriminate status codes 100 & 101
+                                // and treats any status code >= 300 the same way
+                                // because we consider that failures differentiations could be done by the caller.
+                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                    context: context,
+                                    title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                                    body:NSLocalizedString("Implicit Failure",comment: "Implicit Failure"),
+                                    transmit:{ (selectedIndex) -> () in
+                                })
+                               reactions.append(failureReaction)
+                               failure(context)
+                            }
                         }
-                    }
                  }
-            
                  //Let s react according to the context.
                  Bartleby.sharedInstance.perform(reactions, forContext: context)
             })

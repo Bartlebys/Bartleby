@@ -18,11 +18,11 @@ open class CryptedKeyValueStorage: Mappable {
 
     // MARK: Mappable
 
-    public required init?(_ map: Map) {
-        self.mapping(map)
+    public required init?(map: Map) {
+        self.mapping(map: map)
     }
 
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         storage <- (map["storage"], CryptedStringKeyValueTransform())
     }
 

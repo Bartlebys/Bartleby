@@ -28,12 +28,12 @@ import Foundation
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
-        super.init(map)
+    required public init?(map: Map) {
+        super.init(map:map)
     }
 
-    override open func mapping(_ map: Map) {
-        super.mapping(map)
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.silentGroupedChanges {
             self.pathToHash <- ( map["pathToHash"] )
         }

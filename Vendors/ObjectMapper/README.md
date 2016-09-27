@@ -27,12 +27,10 @@ ObjectMapper is a framework written in Swift that makes it easy for you to conve
 - Struct support
 
 # The Basics
-To support mapping, a class or struct just needs to implement the ```Mappable``` protocol.
+To support mapping, a class or struct just needs to implement the ```Mappable``` protocol which includes the following functions:
 ```swift
-public protocol Mappable {
-    init?(_ map: Map)
-    mutating func mapping(map: Map)
-}
+init?(_ map: Map)
+mutating func mapping(map: Map)
 ```
 ObjectMapper uses the ```<-``` operator to define how each member variable maps to and from JSON.
 
@@ -79,15 +77,23 @@ struct Temperature: Mappable {
 }
 ```
 
-Once your class implements `Mappable`, the Mapper class handles everything else for you:
+Once your class implements `Mappable`, ObjectMapper allows you to easily convert to and from JSON. 
 
 Convert a JSON string to a model object:
 ```swift
-let user = Mapper<User>().map(JSONString)
+let user = User(JSONString: JSONString)
 ```
 
 Convert a model object to a JSON string:
 ```swift
+let JSONString = user.toJSONString(prettyPrint: true)
+```
+
+Alternatively, the `Mapper.swift` class can also be used to accomplish the above (it also provides extra functionality for other situations):
+```
+// Convert JSON String to Model
+let user = Mapper<User>().map(JSONString: JSONString)
+// Create JSON String from Model
 let JSONString = Mapper().toJSONString(user, prettyPrint: true)
 ```
 
@@ -173,11 +179,11 @@ The above transform will convert the JSON Int value to an NSDate when reading JS
 You can easily create your own custom transforms by adopting and implementing the methods in the ```TransformType``` protocol:
 ```swift
 public protocol TransformType {
-    typealias Object
-    typealias JSON
+    associatedtype Object
+    associatedtype JSON
 
-    func transformFromJSON(value: AnyObject?) -> Object?
-    func transformToJSON(value: Object?) -> JSON?
+    func transformFromJSON(_ value: Any?) -> Object?
+    func transformToJSON(_ value: Object?) -> JSON?
 }
 ```
 
@@ -326,12 +332,12 @@ Before submitting any pull request, please ensure you have run the included test
 ObjectMapper can be added to your project using [CocoaPods 0.36 or later](http://blog.cocoapods.org/Pod-Authors-Guide-to-CocoaPods-Frameworks/) by adding the following line to your `Podfile`:
 
 ```ruby
-pod 'ObjectMapper', '~> 1.3'
+pod 'ObjectMapper', '~> 2.0'
 ```
 
 If you're using [Carthage](https://github.com/Carthage/Carthage) you can add a dependency on ObjectMapper by adding it to your `Cartfile`:
 ```
-github "Hearst-DD/ObjectMapper" ~> 1.3
+github "Hearst-DD/ObjectMapper" ~> 2.0
 ```
 
 Otherwise, ObjectMapper can be added as a submodule:

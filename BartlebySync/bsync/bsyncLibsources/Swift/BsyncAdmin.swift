@@ -192,7 +192,7 @@ public enum BsyncAdminError: Error {
         // TODO: @bpds @md #crypto Since we already crypt json content, do we need to encrypt again directives? (currently not symetric btw
         //        JSONString = try Bartleby.cryptoDelegate.decryptString(JSONString as String)
 
-        if let directives: BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString) {
+        if let directives: BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString:JSONString) {
             return directives
         } else {
             throw BsyncAdminError.deserializationError

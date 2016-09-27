@@ -437,10 +437,10 @@ public protocol BprintObserver{
 
     // MARK: - Mappable
 
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         self.entries <- map["entries"]
     }
 
@@ -507,11 +507,11 @@ public protocol BprintObserver{
 
     // MARK: - Mappable
 
-    public required init?(_ map: Map) {
+    public required init?(map: Map) {
     }
 
 
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         self.counter <- map["counter"]
         self.message <- map["message"]
         self.file <- map["file"]

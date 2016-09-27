@@ -48,21 +48,4 @@ class TransformTests: XCTestCase {
         }
     }
 
-    func test_Base64DataTransform() {
-        let transform = Base64DataTransform()
-
-        let s1 = "Une année de plus"
-        let data1 = s1.data(using: Default.STRING_ENCODING)
-
-        let json = transform.transformToJSON(data1)
-
-        print("json:\(json)")
-
-        if let data2 = transform.transformFromJSON(json) {
-            let s2 = String(data: data2, encoding: Default.STRING_ENCODING)
-            XCTAssertEqual(s1, s2)
-        } else {
-            XCTFail("Error transforming string")
-        }
-    }
 }

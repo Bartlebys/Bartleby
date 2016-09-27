@@ -74,7 +74,7 @@ class RevealDirectivesCommand: CommandBase {
             exit(EX__BASE)
         }
 
-        if let _ : BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString) {
+        if let _ : BsyncDirectives = Mapper<BsyncDirectives>().map(JSONString:JSONString) {
             print("# Directives \(fp) #\n\(JSONString)\n# End of Directives #")
             exit(EX_OK)
 

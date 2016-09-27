@@ -13,11 +13,11 @@ extension RegistryMetadata{
     var debugTriggersHistory:Bool{ return true } // Should be set to False
 
     var jsonReceivedTrigger:String{
-        return self.receivedTriggers.toJSONString(true)!
+        return self.receivedTriggers.toJSONString(prettyPrint: true)!
     }
 
     var jsonOperationsQuarantine:String{
-        return self.operationsQuarantine.toJSONString(true)!
+        return self.operationsQuarantine.toJSONString(prettyPrint: true)!
     }
 
 }

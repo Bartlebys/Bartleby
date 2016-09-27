@@ -49,12 +49,12 @@ import Foundation
 
     // MARK: Mappable
 
-    required public init?(_ map: Map) {
+    required public init?(map: Map) {
         super.init()
-        self.mapping(map)
+        self.mapping(map:map)
     }
 
-    open func mapping(_ map: Map) {
+    open func mapping(map: Map) {
         self.credentials <- map ["credentials"]
         self.hashmapAsADictionary <- map["hashmapAsADictionary"]
         self.repositoryPath <- map["repositoryPath"]

@@ -130,7 +130,7 @@ open class VerifyLocker: JObject {
             let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)
-                request(r).validate().responseJSON(completionHandler: { (response) in
+                request(r).validate().responseString(completionHandler: { (response) in
 
 
                     let request=response.request
@@ -165,14 +165,25 @@ open class VerifyLocker: JObject {
                     } else {
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
-                                if let instance = Mapper <Locker>().map(result.value) {
-                                    instance.verificationMethod=Locker.VerificationMethod.online
-                                    self._verifyLockerBusinessLogic(instance, accessGranted: success, accessRefused: failure)
-                                } else {
+                                if let string=result.value{
+                                    if let instance = Mapper <Locker>().map(JSONString:string){
+                                        success(instance)
+                                    }else{
+                                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                            context: context,
+                                            title: NSLocalizedString("Deserialization issue",
+                                                                     comment: "Deserialization issue"),
+                                            body:"(result.value)",
+                                            transmit:{ (selectedIndex) -> () in
+                                        })
+                                        reactions.append(failureReaction)
+                                        failure(context)
+                                    }
+                                }else{
                                     let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                         context: context,
-                                        title: NSLocalizedString("Deserialization issue",
-                                                                 comment: "Deserialization issue"),
+                                        title: NSLocalizedString("No String Deserialization issue",
+                                                                 comment: "No String Deserialization issue"),
                                         body:"(result.value)",
                                         transmit: { (selectedIndex) -> () in
                                     })
