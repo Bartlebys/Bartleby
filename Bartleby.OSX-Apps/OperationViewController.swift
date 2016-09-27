@@ -14,6 +14,8 @@ class OperationViewController: NSViewController,Editor{
 
     var UID:String=Bartleby.createUID()
 
+    override var nibName : String { return "OperationViewController" }
+
     dynamic weak var selectedItem:EditorOf?
 
     override var representedObject: Any?{

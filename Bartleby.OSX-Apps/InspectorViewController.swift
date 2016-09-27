@@ -10,6 +10,7 @@ import Cocoa
 
 @objc class InspectorViewController: NSViewController,RegistryDependent,NSWindowDelegate{
 
+    override var nibName : String { return "InspectorViewController" }
 
     @IBOutlet var listOutlineView: NSOutlineView!
 

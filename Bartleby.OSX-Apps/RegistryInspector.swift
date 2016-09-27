@@ -16,6 +16,8 @@ public protocol Editor:Identifiable{
 
 open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDependent {
 
+    override open var windowNibName: String?{ return "RegistryInspector" }
+
     static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
 
     // In the tool bar

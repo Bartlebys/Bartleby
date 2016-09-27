@@ -11,6 +11,8 @@ import WebKit
 
 class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
 
+    override var nibName : String { return "WebStack" }
+
     @IBOutlet weak var webView: WebView!{
         didSet{
             webView.frameLoadDelegate=self

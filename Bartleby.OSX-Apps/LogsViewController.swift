@@ -10,6 +10,8 @@ import Cocoa
 
 class LogsViewController: NSViewController,RegistryDependent{
 
+    override var nibName : String { return "LogsViewController" }
+
     @IBOutlet weak var messageColumn: NSTableColumn!
     var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize())
 

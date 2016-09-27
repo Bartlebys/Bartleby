@@ -14,6 +14,7 @@ import Cocoa
 
     var UID:String=Bartleby.createUID()
 
+    override var nibName : String { return "ChangesViewController" }
 
     @IBOutlet weak var tableView: NSTableView!
     

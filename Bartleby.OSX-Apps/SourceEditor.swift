@@ -14,6 +14,8 @@ class SourceEditor: NSViewController,Editor {
 
     var UID:String=Bartleby.createUID()
 
+    override var nibName : String { return "SourceEditor" }
+
     override var representedObject: Any?{
         didSet{
             self._selectedItem=representedObject as? Collectible

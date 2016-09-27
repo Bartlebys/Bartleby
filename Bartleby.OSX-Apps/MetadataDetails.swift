@@ -17,6 +17,8 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     var UID:String=Bartleby.createUID()
 
+    override var nibName : String { return "MetadataDetails" }
+
     @IBOutlet weak var tabView: NSTabView!{
         didSet{
             tabView.delegate=self
