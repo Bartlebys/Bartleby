@@ -5,11 +5,11 @@
 # Up and Down Streams
 
 1. *UpStream* data Synchronization is performed by calling A Restful API (the collaboration server) 
-2. *DownStream* data Synchronization is mediated by 'Server Sent Event' triggers that Transmit Restful **READ** operations demands, or local **DELETION** commands. 
+2. *DownStream* data Synchronization is mediated by 'Server Sent Event' triggers that Transmit the operations **payloads** to the concerned members. 
 
 *UpStream changes* are operated by the Client Supervision Loop `BartlebyDocument+Operations.swift` generally at 1Hz (total duration = 1 second + data upload + trigger index consignation. Operations are grouped by bunch in a FIFO sequential stack)
 
-*DownStream Changes* are operated by the SSE server side and refreshed at 1hz (total duration : 1 second + transmission of the trigger + loading of the data + integration)
+*DownStream Changes* are operated by the SSE server side and refreshed at 1hz (total duration : 1 second + transmission of the trigger + local integration)
 
 Frequency can be changed client side and server side if necessary.
 
@@ -94,44 +94,7 @@ Each trigger has a unique primary trigger index per observationUID.
 1. "Deletions divergences" **resolution**:when receiving an owned delete trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
 2. "Concurrent updates" case **resolution**: when receiving an owned update trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
 
-## HTTP Status Code 404 on Trigger READ & UPDATE operation
 
-404 on UPDATE operations and Triggers Read are not faults.
-
-
-### How do we support partial 404 in Collections' READ endpoints
-
-Current generative implementation returns 200 on full successful fetch 
-On 404 it includes a `found` / `notFound` keys in the response.
-
-```php
-if (count($r)==count($ids)) {
-   //All the entity has been found.
-   return new JsonResponse($r,200);
-} else {
-    $foundIds=array();
-    $notFoundIds=array();
-    foreach ($r as $o) {
-        if (array_key_exists('_id', $r)) {
-            $id = $o['_id'];
-            $foundIds[] = $id;
-        }
-    }
-    foreach ($ids as $id) {
-        if ( !in_array($id,$foundIds)){
-            $notFoundIds=$id;
-        }
-    }
-    $details=array('found'=>$r,'notFound'=>$notFoundIds);
-    return new JsonResponse($details,404);
-}
-```
-
-### Notes
-
-1. On trigger data Integration we Upsert locally the found entities and do not take account of the not found entities.
-2. There are no 404 on Upserts.
- 
 ## Faults related to ACL 
 
 ### Status Code 403 on UPSERT and DELETE (extension possible to 406,412,417)
