@@ -154,6 +154,8 @@ extension BartlebyDocument {
             let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
             self.registryMetadata.triggersIndexes=filteredIndexes
 
+            // If necessary we grab the missing indexes
+            self.grabMissingTriggerIndexes()
         }
 
     }
@@ -228,6 +230,8 @@ extension BartlebyDocument {
         return missingIndexes
     }
 
+
+
     // MARK: - Recovery methods
 
     /**
@@ -238,10 +242,13 @@ extension BartlebyDocument {
         // Todo compute missingTriggersIndexes
         if missingTriggersIndexes.count>0{
             TriggersForIndexes.execute(fromRegistryWithUID:self.UID, indexes:missingTriggersIndexes, sucessHandler: { (triggers) in
+                let s=missingTriggersIndexes.reduce("", { (r,index) -> String in
+                    return "\(r) \(index) "
+                })
+                bprint("Fault correction on reintegration of\(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
-                // What to do in case of failure.
-                Bartleby.todo("What to do?", message: "From BartlebyDocument+Triggers.swift func grabMissingTriggerIndexes() line \(#line)")
+                bprint("Failure \(context)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
             }
         }
     }
@@ -315,19 +322,11 @@ extension BartlebyDocument {
         var informations = "\nLast integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
         // Missing
         let missing=self.missingContiguousTriggersIndexes()
-        informations += missing.reduce("Missing indexes (\(missing.count)): ", { (string, index) -> String in
+        informations += missing.reduce("Missing indexes to insure continuity (\(missing.count)): ", { (string, index) -> String in
             return "\(string) \(index)"
         })
         informations += "\n"
 
-        // TriggerIndexes
-        let triggersIndexes=self.registryMetadata.triggersIndexes
-
-        informations += "Trigger Indexes (\(triggersIndexes.count)): "
-        informations += triggersIndexes.reduce("", { (string, index) -> String in
-            return "\(string) \(index)"
-        })
-        informations += "\n"
 
         // Data buffer
         informations += "\n"
@@ -393,7 +392,7 @@ extension BartlebyDocument {
 
 
 
-    // MARK : - SSE
+    // MARK: - SSE
 
     // The online flag is driving the "connection" process
     // It connects to the SSE and starts the supervisionLoop

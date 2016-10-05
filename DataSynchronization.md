@@ -43,6 +43,7 @@ Most of the entities are using the **URD** model, with only one exception: the "
 - (A **DELETES** X2.2 || B **DELETES** X2.2)  ->  B **DELETES** X2, A **DELETES** X2 **Resilient by Principle #1** 
 - ... 
 
+
 # Faults 
 
 ## Faults related to Reachability 
@@ -118,6 +119,15 @@ When an operation is in quarantine we should present a Synthesis to the user and
 A synthesis will explain the problem with the operation (Deletion of part of A Bunch Update, ACL issue).
 The system will offer solutions candidats like : "Delete entity X locally."
 The user must arbitrate or defer the Arbitration
+
+
+# Trigger Continuity issues.
+
+Trigger continuity issues are not real faults, but should remain rare. If this mecanism is used at high frequency it means there is a systemic problem that needs to be analyzed. 
+
+We integrating a trigger if there is a *trigger index hole* bartleby tries to fill the gap. 
+E.g : `BartlebyDocument+Triggers.swift grabMissingTriggerIndexes()` Continuity issues are logged via `bprint` under `TriggerContinuity` category.
+
 
 
 #Transitions off-line/on-line and vice versa 
