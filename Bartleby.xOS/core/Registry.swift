@@ -82,9 +82,7 @@ public protocol RegistryDependent {
         }
     }
     // Triggered Data is used to store data before data integration
-    // If the trigger is destructive the collectible collection is set to nil
-    // The key Trigger and the value any Collectible entity serialized to a dictionary representation
-    internal var _triggeredDataBuffer:[Trigger:[[String : Any]]]=[Trigger:[[String : Any]]]()
+    internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
 
 
     // This is the Registry UID

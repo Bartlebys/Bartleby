@@ -14,10 +14,7 @@ import Foundation
 
 /*
 
- This extension implements the logic that loads and integrate consistently the data.
- Data from Consecutive Received triggers are integrated.
-
- We try to load the data as soon as possible.
+ This extension implements the logic that integrate consistently the data.
 
  Check the Data Sync Document for more informations.
  https://github.com/Bartlebys/Bartleby/blob/master/DataSynchronization.md
@@ -42,26 +39,20 @@ extension BartlebyDocument {
         let indexes=triggers.map {$0.index}
         self.acknowledgeTriggerIndexes(indexes)
 
-        self.registryMetadata.receivedTriggers.append(contentsOf: triggers)
-        self.registryMetadata.receivedTriggers.sort { (lTrigger, rTrigger) -> Bool in
-            return lTrigger.index<rTrigger.index
-        }
 
         // Proceed to loading or direct insertion of triggers.
         for trigger in triggers{
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
-                if trigger.action.contains("Delete"){
-                    // it is a destructive action.
-                    self._triggeredDataBuffer[trigger]=[[String:AnyObject]]()
-                }else{
-                    // It is creation action
-                    // Load data for un owned triggers only.
-                    self._loadDataFrom(trigger)
-                }
+                self.registryMetadata.receivedTriggers.append(trigger)
             }else{
                 bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
             }
         }
+
+        self.registryMetadata.receivedTriggers.sort { (lTrigger, rTrigger) -> Bool in
+            return lTrigger.index<rTrigger.index
+        }
+
         self._integrateContiguousData()
 
     }
@@ -117,111 +108,6 @@ extension BartlebyDocument {
 
 
 
-    // MARK: - Triggers Data Loading
-
-    /**
-     Loads the data for the given trigger.
-
-     - parameter trigger: the trigger.
-     */
-    fileprivate func _loadDataFrom(_ trigger:Trigger){
-
-        let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
-        if !alreadyLoaded {
-
-            /////////////////////////
-            // Request Interpreter
-            ////////////////////////
-
-            let uids = trigger.UIDS.components(separatedBy: ",")
-            if (uids.count==0){
-                bprint("Trigger interpretation issue uids are void! \(trigger)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-                return
-            }
-
-            let multiple = uids.count > 1
-            let action = trigger.action
-            let entityName = Pluralization.singularize(trigger.targetCollectionName).lowercased()
-            let baseURL = Bartleby.sharedInstance.getCollaborationURL(self.UID)
-            var dictionary:Dictionary<String, Any>=[:]
-            var pathURL = baseURL
-            if !multiple{
-                let UID=uids.first!
-                pathURL = baseURL.appendingPathComponent("\(entityName)/\(UID)")
-            }else{
-                pathURL = baseURL.appendingPathComponent("\(entityName)")
-                dictionary["ids"]=uids as AnyObject?
-            }
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID,withActionName:action ,forMethod:"GET", and: pathURL)
-            do {
-                let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                request(r).validate().responseJSON(completionHandler: { (response) in
-
-                    /////////////////////////
-                    // Result Handling
-                    ////////////////////////
-
-                    let request=response.request
-                    let result=response.result
-                    let response=response.response
-
-                    if result.isFailure {
-                        if let statusCode=response?.statusCode {
-
-                            if statusCode==404{
-
-                                /////////////////////////////////////////////////////////////
-                                // Handling https://github.com/Bartlebys/Bartleby/issues/24
-                                /////////////////////////////////////////////////////////////
-
-                                if let dictionary=(result.value as? [String:Any]){
-                                    if let found=dictionary["found"] as? [[String:Any]] {
-                                        // In case of Partial 404 we store the entities we have Found
-                                        self._triggeredDataBuffer[trigger]=found
-                                        return
-                                    }
-                                }
-                                // Add a  Neutral Void dictionary or the found instances.
-                                self._triggeredDataBuffer[trigger]=[[String:Any]]()
-                                return
-                            }
-                        }
-                        // ERROR
-                        bprint("Trigger failure \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-
-                    }else{
-                        if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-                                // In case of concurrent loading we prefer to test again if the trigger as not been already loaded
-                                let alreadyLoaded=self._triggeredDataBuffer.contains(where: { $0.0.index == trigger.index })
-                                if !alreadyLoaded{
-                                    if multiple{
-                                        // upsert a collection
-                                        if let dictionaries=result.value as? [[String : Any]]{
-                                            self._triggeredDataBuffer[trigger]=dictionaries
-                                        }
-                                    }else{
-                                        // Unique entity
-                                        if let jsonDictionary=result.value as? [String : Any]{
-                                            self._triggeredDataBuffer[trigger]=[jsonDictionary]
-                                        }
-                                    }
-                                    self._integrateContiguousData()
-                                }else{
-                                    // ERROR
-                                    bprint("Trigger error \(request) \(result) \(response)", file: #file, function: #function, line:#line , category: bprintCategoryFor(trigger), decorative: false)
-                                }
-                            }
-                        }
-                    }
-                })
-            }catch{
-
-            }
-        }
-    }
-
-
     // MARK: - Local Data Integration
 
     /**
@@ -232,34 +118,22 @@ extension BartlebyDocument {
      */
     fileprivate func _integrateContiguousData(){
 
-        // @TODO this method uses a lot o resources.
-        // It should  be optimized .
-        // May be by using a [Int:(Trigger,data)] where the int is the index (sorted)
-        // NEED TO BE QUALIFIED
-
-
         // We proceed on the main queue
         GlobalQueue.main.get().async {
 
-            // #1 Sort the triggered data
-            let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
-                return lEntry.0.index < rEntry.0.index
-            }
-
-            // #2 Integrate contigous data
+            // #1 Integrate contigous data
 
             var lastIntegratedTriggerIndex=self.registryMetadata.lastIntegratedTriggerIndex
-            for data  in sortedData{
-                let triggerIndex=data.0.index
+            for trigger  in self.registryMetadata.receivedTriggers{
+
                 // Integrate continuous data
-                if triggerIndex == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
-                    self._integrate(data)
-                    lastIntegratedTriggerIndex = triggerIndex
+                if trigger.index == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
+                    self._integrate(trigger)
+                    lastIntegratedTriggerIndex = trigger.index
                 }
             }
 
-
-            // #3 Verify the continuity with the currently ownedTriggersIndexes
+            // #2 Verify the continuity with the currently ownedTriggersIndexes
             // ownedTriggersIndexes is sorted
 
             if  let maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
@@ -273,13 +147,15 @@ extension BartlebyDocument {
                 }
             }
 
-            // #4 setup the lastIntegratedTriggerIndex
+            // #3 setup the lastIntegratedTriggerIndex
             self.registryMetadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
 
-            // #5 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
+            // #4 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
             let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
             self.registryMetadata.triggersIndexes=filteredIndexes
+
         }
+
     }
 
 
@@ -290,51 +166,34 @@ extension BartlebyDocument {
 
      - parameter triggeredData: the triggered data
      */
-    fileprivate func _integrate(_ triggeredData:(Trigger,[[String : Any]])){
+    fileprivate func _integrate(_ trigger:Trigger){
         // Integrate
-        if triggeredData.1.count==0 {
+        if trigger.action.contains("Delete") {
             // It is a deletion.
-            let UIDS=triggeredData.0.UIDS.components(separatedBy: ",")
-            let collectionName=triggeredData.0.targetCollectionName
+            let UIDS=trigger.UIDS.components(separatedBy: ",")
+            let collectionName=trigger.targetCollectionName
             self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
         }else{
             // it is a creation or un update
-            let jsonDictionaries=triggeredData.1
-            var collectibleItems=[Collectible]()
-            do {
-                for jsonDictionary in jsonDictionaries{
-                    if let collectible = try Bartleby.defaultSerializer.deserializeFromDictionary(jsonDictionary) as? Collectible{
-                        collectibleItems.append(collectible)
+            if let jsonDictionaries=trigger.payloads{
+                var collectibleItems=[Collectible]()
+                do {
+                    for jsonDictionary in jsonDictionaries{
+                        if let collectible = try Bartleby.defaultSerializer.deserializeFromDictionary(jsonDictionary) as? Collectible{
+                            collectibleItems.append(collectible)
+                        }
                     }
+                    if collectibleItems.count>0{
+                        self.upsert(collectibleItems)
+                    }
+                }catch{
+                    bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
                 }
-                if collectibleItems.count>0{
-                    self.upsert(collectibleItems)
-                }
-            }catch{
-                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
             }
         }
-
-        //Clean up the integrated Trigger
-        self._cleanUPTrigger(triggeredData.0)
-    }
-
-
-    /// Removes the trigger from the buffer and received triggers.
-    ///
-    /// - parameter trigger: the trigger to cleanup
-    fileprivate func _cleanUPTrigger(_ trigger:Trigger){
         // Remove the trigger from the collection.
         if let idx=self.registryMetadata.receivedTriggers.index(of: trigger){
             self.registryMetadata.receivedTriggers.remove(at: idx)
-        }
-
-        //CleanUp the triggerData
-        if let idx=self._triggeredDataBuffer.index(where: { (data) -> Bool in
-            return trigger.index == data.0.index
-        }){
-            // Remove the triggered data
-            self._triggeredDataBuffer.remove(at: idx)
         }
     }
 
@@ -397,22 +256,15 @@ extension BartlebyDocument {
      */
     public func forceDataIntegration(){
         GlobalQueue.main.get().async {
-
-            let sortedData=self._triggeredDataBuffer.sorted { (lEntry, rEntry) -> Bool in
-                return lEntry.0.index < rEntry.0.index
+            for trigger  in self.registryMetadata.receivedTriggers{
+                self._integrate(trigger)
             }
-            for data  in sortedData{
-                self._integrate(data)
-            }
-
-            
             // Reinitialize
             self.registryMetadata.triggersIndexes=[Int]()
             // Set the lastIntegratedTriggerIndex to the highest possible value
             let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
             let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
             self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
-
         }
     }
 
@@ -440,10 +292,10 @@ extension BartlebyDocument {
     // MARK: - Tools (Called from inspector Menu)
 
     public func cleanUpOutDatedDataTriggers(){
-        for (t,_) in  self._triggeredDataBuffer.reversed(){
+        for t in  self.registryMetadata.receivedTriggers.reversed(){
             if t.index<=self.registryMetadata.lastIntegratedTriggerIndex{
-                if let idx=self._triggeredDataBuffer.index(forKey: t){
-                    self._triggeredDataBuffer.remove(at: idx)
+                if let idx=self.registryMetadata.receivedTriggers.index(of: t){
+                    self.registryMetadata.receivedTriggers.remove(at:idx)
                 }
             }
         }
@@ -457,6 +309,8 @@ extension BartlebyDocument {
      - returns: a bunch information on the current Buffer.
      */
     open func getTriggerBufferInformations()->String{
+
+
 
         var informations = "\nLast integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
         // Missing
@@ -477,12 +331,9 @@ extension BartlebyDocument {
 
         // Data buffer
         informations += "\n"
-        informations += "Triggers to be integrated (\(self._triggeredDataBuffer.count)):\n"
-        let sorted=self._triggeredDataBuffer.sorted { (l, r) -> Bool in
-            return l.0.index > r.0.index
-        }
-        for (trigger,dictionary) in sorted {
-            let s = try?JSONSerialization.data(withJSONObject: dictionary, options: [])
+        informations += "Triggers to be integrated (\(self.registryMetadata.receivedTriggers.count)):\n"
+        for trigger in self.registryMetadata.receivedTriggers {
+            let s = try?JSONSerialization.data(withJSONObject: trigger.payloads, options: [])
             let n = (s?.count ?? 0)
             informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
         }
@@ -516,15 +367,15 @@ extension BartlebyDocument {
         // Trigger data That should be deleted
 
         var anomaliesTriggerDataThatShouldBeDeleted=[Int]()
-        for (t,_) in self._triggeredDataBuffer {
-            if t.index <= self.registryMetadata.lastIntegratedTriggerIndex{
-                anomaliesTriggerDataThatShouldBeDeleted.append(t.index)
+        for trigger in self.registryMetadata.receivedTriggers {
+            if trigger.index <= self.registryMetadata.lastIntegratedTriggerIndex{
+                anomaliesTriggerDataThatShouldBeDeleted.append(trigger.index)
             }
         }
         let nba=anomaliesTriggerDataThatShouldBeDeleted.count
         
         if nba > 0{
-            informations += "Nb Of trigger Data that should have been deleted :(\(anomaliesTriggerDataThatShouldBeDeleted.count))\n"
+            informations += "Nb Of trigger that should have been deleted :(\(anomaliesTriggerDataThatShouldBeDeleted.count))\n"
             
             for idx in anomaliesTriggerDataThatShouldBeDeleted.sorted(){
                 informations += "\(idx) "
@@ -602,19 +453,19 @@ extension BartlebyDocument {
                  "n":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
                  "a":"ReadUserbyId",                                        <- action   : The action to be triggered
                  "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
-                 "p":"{}"                                                   <- the payload : The payload may be "{}"
+                 "p":"[]"                                                   <- the payloads : The payloads of the original operation
                  ```
 
                  */
                 do {
                     if let dataFromString=data?.data(using: String.Encoding.utf8){
-                        if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:AnyObject] {
+                        if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:Any] {
                             if  let index:Int=JSONDictionary["i"] as? Int,
                                 let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,
                                 let collectionName=JSONDictionary["c"] as? String,
                                 let uids=JSONDictionary["u"] as? String,
-                                let payload=JSONDictionary["p"] as? String{
+                                let payloads=JSONDictionary["p"] as? String{
 
                                 let trigger=Trigger()
                                 trigger.spaceUID=self.spaceUID
@@ -625,7 +476,15 @@ extension BartlebyDocument {
                                 trigger.action=action
                                 trigger.targetCollectionName=collectionName
                                 trigger.UIDS=uids
-                                trigger.payload=payload
+                                if let datafromPayloadString=payloads.data(using: String.Encoding.utf8){
+                                    if let payloadDictionary=try JSONSerialization.jsonObject(with: datafromPayloadString, options:.allowFragments) as? [[String:Any]]{
+                                        trigger.payloads=payloadDictionary
+                                    }else{
+                                        bprint("Payloads issue on trigger \(trigger)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+                                    }
+                                }else{
+                                     bprint("String payloads issue on trigger \(trigger)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+                                }
 
                                 // Optional data
                                 // That may be omitted on triggering
@@ -662,46 +521,6 @@ extension BartlebyDocument {
         if let sse=self._sse{
             sse.close()
             self._sse=nil
-        }
-    }
-
-    // MARK: triggered data buffer serialization support
-
-    // To insure persistency of non integrated data.
-
-    internal func _dataFrom_triggeredDataBuffer()->Data?{
-        // We use a super dictionary to store the Trigger as JSON as key
-        // and the collectible items as value
-        var superDictionary=[String:[[String : Any]]]()
-        for (trigger,dictionary) in self._triggeredDataBuffer{
-            if let k=trigger.toJSONString(){
-                superDictionary[k]=dictionary
-            }
-        }
-        do{
-            let data = try JSONSerialization.data(withJSONObject: superDictionary, options:[])
-            return data
-        }catch{
-            bprint("Serialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
-            return nil
-        }
-    }
-
-    internal func _setUp_triggeredDataBuffer(from:Data?){
-        if let data=from{
-            do{
-                if let superDictionary:[String:[[String : Any]]] = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:[[String : Any]]]{
-                    for (jsonTrigger,dictionary) in superDictionary{
-                        if let trigger:Trigger = Mapper<Trigger>().map(JSONString:jsonTrigger){
-                            self._triggeredDataBuffer[trigger]=dictionary
-                        }else{
-                            bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
-                        }
-                    }
-                }
-            }catch{
-                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
-            }
         }
     }
 }

@@ -41,8 +41,8 @@ import ObjectMapper
 	dynamic open var action:String = ""
 	//A coma separated UIDS list
 	dynamic open var UIDS:String = ""
-	//The JSON payload of the trigger for CREATE, UPDATE and UPSERT calls (void on DELETE)
-	dynamic open var payload:String?
+	//A collection of JSON payload
+	dynamic open var payloads:[[String:Any]]?
 
 
     // MARK: Mappable
@@ -64,7 +64,7 @@ import ObjectMapper
 			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 			self.action <- ( map["action"] )
 			self.UIDS <- ( map["UIDS"] )
-			self.payload <- ( map["payload"] )
+			self.payloads <- ( map["payloads"] )
         }
     }
 
@@ -84,7 +84,7 @@ import ObjectMapper
 			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.action=String(describing: decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
 			self.UIDS=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
-			self.payload=String(describing: decoder.decodeObject(of: NSString.self, forKey:"payload") as NSString?)
+			self.payloads=decoder.decodeObject(of: [NSArray.classForCoder(),NSDictionary.classForCoder()], forKey: "payloads") as? [[String:Any]]
         }
     }
 
@@ -112,8 +112,8 @@ import ObjectMapper
 		}
 		coder.encode(self.action,forKey:"action")
 		coder.encode(self.UIDS,forKey:"UIDS")
-		if let payload = self.payload {
-			coder.encode(payload,forKey:"payload")
+		if let payloads = self.payloads {
+			coder.encode(payloads,forKey:"payloads")
 		}
     }
 

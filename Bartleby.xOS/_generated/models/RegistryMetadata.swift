@@ -55,8 +55,6 @@ import ObjectMapper
 	open var lastIntegratedTriggerIndex:Int = -1
 	//A collection Triggers that are temporarly stored before data integration
 	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
-	//The serialized version of loaded trigger data that are pending integration
-	open var triggeredDataBuffer:Data?
 	//A collection of PushOperations in Quarantine (check DataSynchronization.md "Faults" section for details) 
 	dynamic open var operationsQuarantine:[PushOperation] = [PushOperation]()
 	//Do we have operations in progress in the current bunch ?
@@ -118,7 +116,6 @@ import ObjectMapper
 			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 			self.receivedTriggers <- ( map["receivedTriggers"] )
-			self.triggeredDataBuffer <- ( map["triggeredDataBuffer"], DataTransform() )
 			self.operationsQuarantine <- ( map["operationsQuarantine"] )
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )
@@ -147,7 +144,6 @@ import ObjectMapper
 			self.ownedTriggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
 			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
 			self.receivedTriggers=decoder.decodeObject(of: [NSArray.classForCoder(),Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
-			self.triggeredDataBuffer=decoder.decodeObject(of: NSData.self, forKey:"triggeredDataBuffer") as Data?
 			self.operationsQuarantine=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "operationsQuarantine")! as! [PushOperation]
 			self.online=decoder.decodeBool(forKey:"online") 
 			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
@@ -180,9 +176,6 @@ import ObjectMapper
 		coder.encode(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
 		coder.encode(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encode(self.receivedTriggers,forKey:"receivedTriggers")
-		if let triggeredDataBuffer = self.triggeredDataBuffer {
-			coder.encode(triggeredDataBuffer,forKey:"triggeredDataBuffer")
-		}
 		coder.encode(self.operationsQuarantine,forKey:"operationsQuarantine")
 		coder.encode(self.online,forKey:"online")
 		coder.encode(self.pushOnChanges,forKey:"pushOnChanges")

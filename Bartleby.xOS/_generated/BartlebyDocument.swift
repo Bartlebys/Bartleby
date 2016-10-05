@@ -439,8 +439,6 @@ import ObjectMapper
 
             // Try to store a preferred filename
             self.registryMetadata.preferredFileName=self.fileURL?.lastPathComponent
-            // Save the triggered Data Buffer
-            self.registryMetadata.triggeredDataBuffer=self._dataFrom_triggeredDataBuffer()
             var metadataData=self.registryMetadata.serialize()
 
             metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
@@ -524,9 +522,6 @@ import ObjectMapper
                     let registryUID=self.registryMetadata.rootObjectUID
                     Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: registryUID)
                     self.registryMetadata.currentUser?.document=self
-
-                    // Setup the triggered data buffer
-                    self._setUp_triggeredDataBuffer(from:self.registryMetadata.triggeredDataBuffer)
                 }
             } else {
                 // ERROR
