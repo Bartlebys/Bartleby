@@ -219,7 +219,7 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
-		E56EC0731D7ED38400D5CD81 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
+		E56EC0731D7ED38400D5CD81 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* PushOperation+Conveniences.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E58158F31D9A55A400034B62 /* JData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158E91D9A55A400034B62 /* JData+Conveniences.swift */; };
 		E58158F41D9A55A400034B62 /* JHTTPCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158EA1D9A55A400034B62 /* JHTTPCommand.swift */; };
@@ -243,7 +243,7 @@
 		E581590C1D9A5C4D00034B62 /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D6F1D40D50400532B09 /* ExternalReference+Resolution.swift */; };
 		E581590D1D9A5C4D00034B62 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D701D40D50400532B09 /* NSNotification+Completion.swift */; };
 		E581590E1D9A5C4D00034B62 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D711D40D50400532B09 /* NSNotification+Progression.swift */; };
-		E581590F1D9A5C4D00034B62 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */; };
+		E581590F1D9A5C4D00034B62 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56EC0721D7ED38400D5CD81 /* PushOperation+Conveniences.swift */; };
 		E58159101D9A5C4D00034B62 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3D721D40D50400532B09 /* Progression+Conveniences.swift */; };
 		E58159111D9A5C4D00034B62 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */; };
 		E58159121D9A5C4D00034B62 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58158FB1D9A55DC00034B62 /* RegistryMetadata+Protocol.swift */; };
@@ -440,7 +440,7 @@
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
+		E56EC0721D7ED38400D5CD81 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E58158E91D9A55A400034B62 /* JData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JData+Conveniences.swift"; sourceTree = "<group>"; };
 		E58158EA1D9A55A400034B62 /* JHTTPCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JHTTPCommand.swift; sourceTree = "<group>"; };
@@ -705,7 +705,7 @@
 				E50F3D6F1D40D50400532B09 /* ExternalReference+Resolution.swift */,
 				E50F3D701D40D50400532B09 /* NSNotification+Completion.swift */,
 				E50F3D711D40D50400532B09 /* NSNotification+Progression.swift */,
-				E56EC0721D7ED38400D5CD81 /* Operation+Conveniences.swift */,
+				E56EC0721D7ED38400D5CD81 /* PushOperation+Conveniences.swift */,
 				E50F3D721D40D50400532B09 /* Progression+Conveniences.swift */,
 				E5DE8E201D9421E40018E2F5 /* RegistryMetadata+Facilities.swift */,
 				E58158FB1D9A55DC00034B62 /* RegistryMetadata+Protocol.swift */,
@@ -1152,7 +1152,7 @@
 				E50F3DC51D40D50400532B09 /* JData.swift in Sources */,
 				E50F3E631D40D50400532B09 /* Global.swift in Sources */,
 				E50F3E6B1D40D50400532B09 /* CollectibleCollection.swift in Sources */,
-				E56EC0731D7ED38400D5CD81 /* Operation+Conveniences.swift in Sources */,
+				E56EC0731D7ED38400D5CD81 /* PushOperation+Conveniences.swift in Sources */,
 				E50F3E911D40D50400532B09 /* Supervisable.swift in Sources */,
 				E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */,
 				E58158F81D9A55A400034B62 /* JString+Conveniences.swift in Sources */,
@@ -1263,7 +1263,7 @@
 				E50F3DC61D40D50400532B09 /* JData.swift in Sources */,
 				E50F3E5E1D40D50400532B09 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E50F3E3E1D40D50400532B09 /* Bartleby.swift in Sources */,
-				E581590F1D9A5C4D00034B62 /* Operation+Conveniences.swift in Sources */,
+				E581590F1D9A5C4D00034B62 /* PushOperation+Conveniences.swift in Sources */,
 				E58159001D9A5C4300034B62 /* JSerializer.swift in Sources */,
 				E50F3DFA1D40D50400532B09 /* DeleteUser.swift in Sources */,
 				E50F3DD41D40D50400532B09 /* Tag.swift in Sources */,

@@ -64,7 +64,7 @@
 		E5734E131D9A5D8C0056E429 /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA21D9A5D8C0056E429 /* ExternalReference+Resolution.swift */; };
 		E5734E141D9A5D8C0056E429 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA31D9A5D8C0056E429 /* NSNotification+Completion.swift */; };
 		E5734E151D9A5D8C0056E429 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA41D9A5D8C0056E429 /* NSNotification+Progression.swift */; };
-		E5734E161D9A5D8C0056E429 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA51D9A5D8C0056E429 /* Operation+Conveniences.swift */; };
+		E5734E161D9A5D8C0056E429 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA51D9A5D8C0056E429 /* PushOperation+Conveniences.swift */; };
 		E5734E171D9A5D8C0056E429 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA61D9A5D8C0056E429 /* Progression+Conveniences.swift */; };
 		E5734E181D9A5D8C0056E429 /* RegistryMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA71D9A5D8C0056E429 /* RegistryMetadata+Facilities.swift */; };
 		E5734E191D9A5D8C0056E429 /* RegistryMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734DA81D9A5D8C0056E429 /* RegistryMetadata+Protocol.swift */; };
@@ -234,7 +234,7 @@
 		E5734DA21D9A5D8C0056E429 /* ExternalReference+Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExternalReference+Resolution.swift"; sourceTree = "<group>"; };
 		E5734DA31D9A5D8C0056E429 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
 		E5734DA41D9A5D8C0056E429 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
-		E5734DA51D9A5D8C0056E429 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
+		E5734DA51D9A5D8C0056E429 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E5734DA61D9A5D8C0056E429 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
 		E5734DA71D9A5D8C0056E429 /* RegistryMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Facilities.swift"; sourceTree = "<group>"; };
 		E5734DA81D9A5D8C0056E429 /* RegistryMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Protocol.swift"; sourceTree = "<group>"; };
@@ -556,7 +556,7 @@
 				E5734DA21D9A5D8C0056E429 /* ExternalReference+Resolution.swift */,
 				E5734DA31D9A5D8C0056E429 /* NSNotification+Completion.swift */,
 				E5734DA41D9A5D8C0056E429 /* NSNotification+Progression.swift */,
-				E5734DA51D9A5D8C0056E429 /* Operation+Conveniences.swift */,
+				E5734DA51D9A5D8C0056E429 /* PushOperation+Conveniences.swift */,
 				E5734DA61D9A5D8C0056E429 /* Progression+Conveniences.swift */,
 				E5734DA71D9A5D8C0056E429 /* RegistryMetadata+Facilities.swift */,
 				E5734DA81D9A5D8C0056E429 /* RegistryMetadata+Protocol.swift */,
@@ -957,7 +957,7 @@
 				E5734E261D9A5D8C0056E429 /* CollectibleCollection.swift in Sources */,
 				E5CC29301D846CB300F7C783 /* DateTransform.swift in Sources */,
 				E5D0869A1C550E1900F0090E /* CryptedDataTransform.swift in Sources */,
-				E5734E161D9A5D8C0056E429 /* Operation+Conveniences.swift in Sources */,
+				E5734E161D9A5D8C0056E429 /* PushOperation+Conveniences.swift in Sources */,
 				E5734DEC1D9A5D8C0056E429 /* RegistryMetadata.swift in Sources */,
 				E5734DEE1D9A5D8C0056E429 /* Trigger.swift in Sources */,
 				E5734E301D9A5D8C0056E429 /* Identifiable.swift in Sources */,

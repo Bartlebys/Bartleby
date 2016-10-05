@@ -539,5 +539,169 @@ extension BartlebyDocument {
             return "**We have encountered issues please check the details below!**\n" + informations
         }
     }
-    
-} 
+
+
+
+    // MARK : - SSE
+
+    // The online flag is driving the "connection" process
+    // It connects to the SSE and starts the supervisionLoop
+    override open var online:Bool{
+        willSet{
+            // Transition on line
+            if newValue==true && online==false{
+                self._connectToSSE()
+            }
+            // Transition off line
+            if newValue==false && online==true{
+                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
+                self._closeSSE()
+            }
+            if newValue==online{
+                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
+            }
+        }
+        didSet{
+            self.registryMetadata.online=online
+            self.startSupervisionLoopIfNecessary()
+        }
+    }
+
+
+    /**
+     Connect to SSE
+     */
+    internal func _connectToSSE() {
+        bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
+        // The connection is restricted to identified users
+        // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
+        self.currentUser.login(sucessHandler: {
+
+            let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
+            self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
+
+            bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
+
+            self._sse!.addEventListener("relay") { (id, event, data) in
+                bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+
+                // Parse the Data
+
+                /*
+
+                 ```
+                 id: 1466684879     <- the Event ID
+                 event: relay       <- the Event Name
+                 data: {            <- the data
+
+                 "i":1,                                                     <- the trigger index
+                 "o":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The observation UID
+                 "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+                 "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID
+                 "c":"users",                                               <- The collection name
+                 "n":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
+                 "a":"ReadUserbyId",                                        <- action   : The action to be triggered
+                 "u":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE"     <- the uids : The concerned UIDS
+                 "p":"{}"                                                   <- the payload : The payload may be "{}"
+                 ```
+
+                 */
+                do {
+                    if let dataFromString=data?.data(using: String.Encoding.utf8){
+                        if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:AnyObject] {
+                            if  let index:Int=JSONDictionary["i"] as? Int,
+                                let observationUID:String=JSONDictionary["o"] as? String,
+                                let action:String=JSONDictionary["a"] as? String,
+                                let collectionName=JSONDictionary["c"] as? String,
+                                let uids=JSONDictionary["u"] as? String,
+                                let payload=JSONDictionary["p"] as? String{
+
+                                let trigger=Trigger()
+                                trigger.spaceUID=self.spaceUID
+
+                                // Mandatory Trigger Data
+                                trigger.index=index
+                                trigger.observationUID=observationUID
+                                trigger.action=action
+                                trigger.targetCollectionName=collectionName
+                                trigger.UIDS=uids
+                                trigger.payload=payload
+
+                                // Optional data
+                                // That may be omitted on triggering
+
+                                trigger.runUID=JSONDictionary["r"] as? String
+                                trigger.senderUID=JSONDictionary["s"] as? String
+                                trigger.origin=JSONDictionary["n"] as? String
+
+
+                                var triggers=[Trigger]()
+                                triggers.append(trigger)
+                                // Uses BartlebyDocument+Triggers extension.
+                                self._triggersHasBeenReceived(triggers)
+                            }
+                        }
+                    }
+
+                }catch{
+                    bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+                }
+            }
+
+        }) { (context) in
+            bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
+            self.registryMetadata.online=false
+        }
+
+    }
+
+    /**
+     Closes the Server sent EventSource
+     */
+    internal func _closeSSE() {
+        if let sse=self._sse{
+            sse.close()
+            self._sse=nil
+        }
+    }
+
+    // MARK: triggered data buffer serialization support
+
+    // To insure persistency of non integrated data.
+
+    internal func _dataFrom_triggeredDataBuffer()->Data?{
+        // We use a super dictionary to store the Trigger as JSON as key
+        // and the collectible items as value
+        var superDictionary=[String:[[String : Any]]]()
+        for (trigger,dictionary) in self._triggeredDataBuffer{
+            if let k=trigger.toJSONString(){
+                superDictionary[k]=dictionary
+            }
+        }
+        do{
+            let data = try JSONSerialization.data(withJSONObject: superDictionary, options:[])
+            return data
+        }catch{
+            bprint("Serialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
+            return nil
+        }
+    }
+
+    internal func _setUp_triggeredDataBuffer(from:Data?){
+        if let data=from{
+            do{
+                if let superDictionary:[String:[[String : Any]]] = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:[[String : Any]]]{
+                    for (jsonTrigger,dictionary) in superDictionary{
+                        if let trigger:Trigger = Mapper<Trigger>().map(JSONString:jsonTrigger){
+                            self._triggeredDataBuffer[trigger]=dictionary
+                        }else{
+                            bprint("Trigger json mapping issue \(jsonTrigger)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
+                        }
+                    }
+                }
+            }catch{
+                bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
+            }
+        }
+    }
+}

@@ -302,10 +302,10 @@
 		E5734C8C1D9A5D720056E429 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7B1D9A5D720056E429 /* NSNotification+Progression.swift */; };
 		E5734C8D1D9A5D720056E429 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7B1D9A5D720056E429 /* NSNotification+Progression.swift */; };
 		E5734C8E1D9A5D720056E429 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7B1D9A5D720056E429 /* NSNotification+Progression.swift */; };
-		E5734C8F1D9A5D720056E429 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */; };
-		E5734C901D9A5D720056E429 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */; };
-		E5734C911D9A5D720056E429 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */; };
-		E5734C921D9A5D720056E429 /* Operation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */; };
+		E5734C8F1D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */; };
+		E5734C901D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */; };
+		E5734C911D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */; };
+		E5734C921D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */; };
 		E5734C931D9A5D720056E429 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7D1D9A5D720056E429 /* Progression+Conveniences.swift */; };
 		E5734C941D9A5D720056E429 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7D1D9A5D720056E429 /* Progression+Conveniences.swift */; };
 		E5734C951D9A5D720056E429 /* Progression+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5734B7D1D9A5D720056E429 /* Progression+Conveniences.swift */; };
@@ -870,7 +870,7 @@
 		E5734B791D9A5D720056E429 /* ExternalReference+Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExternalReference+Resolution.swift"; sourceTree = "<group>"; };
 		E5734B7A1D9A5D720056E429 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
 		E5734B7B1D9A5D720056E429 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
-		E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Operation+Conveniences.swift"; sourceTree = "<group>"; };
+		E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E5734B7D1D9A5D720056E429 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
 		E5734B7E1D9A5D720056E429 /* RegistryMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Facilities.swift"; sourceTree = "<group>"; };
 		E5734B7F1D9A5D720056E429 /* RegistryMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegistryMetadata+Protocol.swift"; sourceTree = "<group>"; };
@@ -1287,7 +1287,7 @@
 				E5734B791D9A5D720056E429 /* ExternalReference+Resolution.swift */,
 				E5734B7A1D9A5D720056E429 /* NSNotification+Completion.swift */,
 				E5734B7B1D9A5D720056E429 /* NSNotification+Progression.swift */,
-				E5734B7C1D9A5D720056E429 /* Operation+Conveniences.swift */,
+				E5734B7C1D9A5D720056E429 /* PushOperation+Conveniences.swift */,
 				E5734B7D1D9A5D720056E429 /* Progression+Conveniences.swift */,
 				E5734B7E1D9A5D720056E429 /* RegistryMetadata+Facilities.swift */,
 				E5734B7F1D9A5D720056E429 /* RegistryMetadata+Protocol.swift */,
@@ -1835,7 +1835,7 @@
 				E5734CA21D9A5D720056E429 /* Global.swift in Sources */,
 				E5734CD21D9A5D720056E429 /* CollectibleCollection.swift in Sources */,
 				E5734C961D9A5D720056E429 /* Progression+Conveniences.swift in Sources */,
-				E5734C921D9A5D720056E429 /* Operation+Conveniences.swift in Sources */,
+				E5734C921D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */,
 				E5734CAE1D9A5D720056E429 /* JHTTPCommand.swift in Sources */,
 				E54B7FE01D2B8A8D001F7AB3 /* HashMap.m in Sources */,
 				E5CC262F1D84698500F7C783 /* Alamofire.swift in Sources */,
@@ -2098,7 +2098,7 @@
 				E5734D071D9A5D720056E429 /* Monitoring.swift in Sources */,
 				E5734BBB1D9A5D720056E429 /* LockersCollectionController.swift in Sources */,
 				E5CC264E1D84698500F7C783 /* Response.swift in Sources */,
-				E5734C8F1D9A5D720056E429 /* Operation+Conveniences.swift in Sources */,
+				E5734C8F1D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */,
 				E5734C571D9A5D720056E429 /* Default.swift in Sources */,
 				E5734C971D9A5D720056E429 /* RegistryMetadata+Facilities.swift in Sources */,
 				E5CC27641D84698500F7C783 /* FromJSON.swift in Sources */,
@@ -2251,7 +2251,7 @@
 				E5734C181D9A5D720056E429 /* ReadLockerById.swift in Sources */,
 				E591ACF41D42643B00748FF4 /* HashMap.m in Sources */,
 				E591ACE51D42632100748FF4 /* TestCase.swift in Sources */,
-				E5734C901D9A5D720056E429 /* Operation+Conveniences.swift in Sources */,
+				E5734C901D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */,
 				E591ACEB1D42632800748FF4 /* LocalSyncTests.swift in Sources */,
 				E591AD031D42643B00748FF4 /* IdentifableCardContext.swift in Sources */,
 				E5734D3C1D9A5D720056E429 /* LogoutUser.swift in Sources */,
@@ -2422,7 +2422,7 @@
 				E5734CDD1D9A5D720056E429 /* CryptoDelegate.swift in Sources */,
 				E5F6546A1D42749100A40A9B /* CryptedSerializableTransform.swift in Sources */,
 				E5734BE11D9A5D720056E429 /* Progression.swift in Sources */,
-				E5734C911D9A5D720056E429 /* Operation+Conveniences.swift in Sources */,
+				E5734C911D9A5D720056E429 /* PushOperation+Conveniences.swift in Sources */,
 				E5734C2D1D9A5D720056E429 /* ReadUsersByQuery.swift in Sources */,
 				E5734D411D9A5D720056E429 /* TriggersAfterIndex.swift in Sources */,
 				E5F654721D42749100A40A9B /* CryptedStringTransform.swift in Sources */,

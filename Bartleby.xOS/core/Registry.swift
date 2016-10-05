@@ -140,8 +140,8 @@ public protocol RegistryDependent {
     // The collection server base URL
     open dynamic lazy var baseURL:URL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
 
-
-
+    // Used by BartlebyDocument+Triggers to
+    open var online:Bool=false
 
 
     // MARK:
