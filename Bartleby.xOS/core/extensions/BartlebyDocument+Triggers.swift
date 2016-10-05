@@ -333,8 +333,8 @@ extension BartlebyDocument {
         informations += "\n"
         informations += "Triggers to be integrated (\(self.registryMetadata.receivedTriggers.count)):\n"
         for trigger in self.registryMetadata.receivedTriggers {
-            let s = try?JSONSerialization.data(withJSONObject: trigger.payloads, options: [])
-            let n = (s?.count ?? 0)
+            let s = trigger.serialize()
+            let n = s.count // We can should the trigger envelop.
             informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
         }
 
@@ -460,12 +460,13 @@ extension BartlebyDocument {
                 do {
                     if let dataFromString=data?.data(using: String.Encoding.utf8){
                         if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:Any] {
+                             bprint("\(JSONDictionary)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
                             if  let index:Int=JSONDictionary["i"] as? Int,
                                 let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,
                                 let collectionName=JSONDictionary["c"] as? String,
                                 let uids=JSONDictionary["u"] as? String,
-                                let payloads=JSONDictionary["p"] as? String{
+                                let payloads=JSONDictionary["p"] as? [[String:Any]]{
 
                                 let trigger=Trigger()
                                 trigger.spaceUID=self.spaceUID
@@ -476,15 +477,7 @@ extension BartlebyDocument {
                                 trigger.action=action
                                 trigger.targetCollectionName=collectionName
                                 trigger.UIDS=uids
-                                if let datafromPayloadString=payloads.data(using: String.Encoding.utf8){
-                                    if let payloadDictionary=try JSONSerialization.jsonObject(with: datafromPayloadString, options:.allowFragments) as? [[String:Any]]{
-                                        trigger.payloads=payloadDictionary
-                                    }else{
-                                        bprint("Payloads issue on trigger \(trigger)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
-                                    }
-                                }else{
-                                     bprint("String payloads issue on trigger \(trigger)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
-                                }
+                                trigger.payloads=payloads
 
                                 // Optional data
                                 // That may be omitted on triggering
