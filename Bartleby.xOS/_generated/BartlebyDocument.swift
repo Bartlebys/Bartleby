@@ -66,12 +66,6 @@ import ObjectMapper
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var users=UsersCollectionController(){
-		willSet{
-			users.document=self
-		}
-	}
-	
 	open dynamic var lockers=LockersCollectionController(){
 		willSet{
 			lockers.document=self
@@ -84,6 +78,12 @@ import ObjectMapper
 		}
 	}
 	
+	open dynamic var users=UsersCollectionController(){
+		willSet{
+			users.document=self
+		}
+	}
+	
 
     // MARK: - Array Controllers and automation (OSX)
  #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -93,25 +93,6 @@ import ObjectMapper
     // Those array controllers are Owned by their respective ViewControllers
     // Those view Controller are observed here to insure a consistent persitency
 
-
-    open var usersArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the CollectionController
-            self.users.arrayController=usersArrayController
-            // Add observer
-            usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                self.usersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
-        }
-    }
-        
 
     open var lockersArrayController: NSArrayController?{
         willSet{
@@ -151,29 +132,30 @@ import ObjectMapper
     }
         
 
+    open var usersArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the CollectionController
+            self.users.arrayController=usersArrayController
+            // Add observer
+            usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                self.usersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+        
+
 
 
 #endif
 
     // indexes persistency
-
-    
-    static open let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
-    static open let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic open var selectedUsers:[User]?{
-        didSet{
-            if let users = selectedUsers {
-                 let indexes:[Int]=users.map({ (user) -> Int in
-                    return self.users.index(where:{ return $0.UID == user.UID })!
-                })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
-            }
-        }
-    }
-    var firstSelectedUser:User? { return self.selectedUsers?.first }
-        
-        
 
     
     static open let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
@@ -211,6 +193,24 @@ import ObjectMapper
         
         
 
+    
+    static open let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
+    static open let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedUsers:[User]?{
+        didSet{
+            if let users = selectedUsers {
+                 let indexes:[Int]=users.map({ (user) -> Int in
+                    return self.users.index(where:{ return $0.UID == user.UID })!
+                })
+                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
+            }
+        }
+    }
+    var firstSelectedUser:User? { return self.selectedUsers?.first }
+        
+        
+
 
 
 
@@ -228,15 +228,6 @@ import ObjectMapper
 
         // #1  Defines the Schema
         super.configureSchema()
-
-        let userDefinition = CollectionMetadatum()
-        userDefinition.proxy = self.users
-        // By default we group the observation via the rootObjectUID
-        userDefinition.collectionName = User.collectionName
-        userDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        userDefinition.allowDistantPersistency = true
-        userDefinition.inMemory = false
-        
 
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
@@ -256,13 +247,22 @@ import ObjectMapper
         pushOperationDefinition.inMemory = false
         
 
+        let userDefinition = CollectionMetadatum()
+        userDefinition.proxy = self.users
+        // By default we group the observation via the rootObjectUID
+        userDefinition.collectionName = User.collectionName
+        userDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        userDefinition.allowDistantPersistency = true
+        userDefinition.inMemory = false
+        
+
 
         // Proceed to configuration
         do{
 
-			try self.registryMetadata.configureSchema(userDefinition)
 			try self.registryMetadata.configureSchema(lockerDefinition)
 			try self.registryMetadata.configureSchema(pushOperationDefinition)
+			try self.registryMetadata.configureSchema(userDefinition)
 
         }catch RegistryError.duplicatedCollectionName(let collectionName){
             bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
@@ -295,20 +295,6 @@ import ObjectMapper
         if let keyPath = keyPath, let object = object {
 
                     
-            if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
-                if let users = self.usersArrayController?.selectedObjects as? [User] {
-                     if let selectedUser = self.selectedUsers{
-                        if selectedUser == users{
-                            return // No changes
-                        }
-                     }
-                    self.selectedUsers=users
-                }
-                return
-            }
-            
-
-            
             if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
                 if let lockers = self.lockersArrayController?.selectedObjects as? [Locker] {
                      if let selectedLocker = self.selectedLockers{
@@ -336,22 +322,26 @@ import ObjectMapper
             }
             
 
+            
+            if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
+                if let users = self.usersArrayController?.selectedObjects as? [User] {
+                     if let selectedUser = self.selectedUsers{
+                        if selectedUser == users{
+                            return // No changes
+                        }
+                     }
+                    self.selectedUsers=users
+                }
+                return
+            }
+            
+
         }
 
     }
 
     // MARK:  Delete currently selected items
     
-    open func deleteSelectedUsers() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedUsers{
-            for item in selected{
-                 self.users.removeObject(item, commit:true)
-            }
-        }
-    }
-        
-
     open func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLockers{
@@ -367,6 +357,16 @@ import ObjectMapper
         if let selected=self.selectedPushOperations{
             for item in selected{
                  self.pushOperations.removeObject(item, commit:true)
+            }
+        }
+    }
+        
+
+    open func deleteSelectedUsers() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedUsers{
+            for item in selected{
+                 self.users.removeObject(item, commit:true)
             }
         }
     }
