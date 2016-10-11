@@ -1093,6 +1093,7 @@
 		E552B7A21C3D4E49001CD53B /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				E5EAC84C1DAD17BE00985F8D /* _generated */,
 				E552B7A31C3D4E49001CD53B /* BsyncAdmin.swift */,
 				E552B7A41C3D4E49001CD53B /* BsyncContext.swift */,
 				E50A742F1C64F52D00A18FC4 /* BsyncCredentials.swift */,
@@ -1563,6 +1564,13 @@
 				E5CC25D41D84698500F7C783 /* URLTransform.swift */,
 			);
 			path = Transforms;
+			sourceTree = "<group>";
+		};
+		E5EAC84C1DAD17BE00985F8D /* _generated */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = _generated;
 			sourceTree = "<group>";
 		};
 		E5F652041D42749100A40A9B /* CryptoHelper */ = {
