@@ -21,17 +21,22 @@ import ObjectMapper
         return "CollectionMetadatum"
     }
 
+
 	//the used file storage
 	public enum Storage:String{
 		case monolithicFileStorage = "monolithicFileStorage"
 	}
 	open var storage:Storage = .monolithicFileStorage
+
 	//The holding collection name
 	dynamic open var collectionName:String = "\(Default.NO_NAME)"
+
 	//The proxy object (not serializable, not supervisable)
 	dynamic open var proxy:JObject?
+
 	//Allow distant persistency?
-	dynamic open var allowDistantPersistency:Bool = true
+	dynamic open var persistsDistantly:Bool = true
+
 	//In Memory?
 	dynamic open var inMemory:Bool = true
 
@@ -46,7 +51,7 @@ import ObjectMapper
         self.silentGroupedChanges {
 			self.storage <- ( map["storage"] )
 			self.collectionName <- ( map["collectionName"] )
-			self.allowDistantPersistency <- ( map["allowDistantPersistency"] )
+			self.persistsDistantly <- ( map["persistsDistantly"] )
 			self.inMemory <- ( map["inMemory"] )
         }
     }
@@ -59,7 +64,7 @@ import ObjectMapper
         self.silentGroupedChanges {
 			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
 			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
-			self.allowDistantPersistency=decoder.decodeBool(forKey:"allowDistantPersistency") 
+			self.persistsDistantly=decoder.decodeBool(forKey:"persistsDistantly") 
 			self.inMemory=decoder.decodeBool(forKey:"inMemory") 
         }
     }
@@ -68,7 +73,7 @@ import ObjectMapper
         super.encode(with:coder)
 		coder.encode(self.storage.rawValue ,forKey:"storage")
 		coder.encode(self.collectionName,forKey:"collectionName")
-		coder.encode(self.allowDistantPersistency,forKey:"allowDistantPersistency")
+		coder.encode(self.persistsDistantly,forKey:"persistsDistantly")
 		coder.encode(self.inMemory,forKey:"inMemory")
     }
 

@@ -16,7 +16,7 @@ public protocol CollectionMetadatumProtocol: Serializable {
     var collectionName: String { get }
 
     // Allow Bartleby server to insure persistency
-    var allowDistantPersistency: Bool { get set }
+    var persistsDistantly: Bool { get set }
 
     // Should the collection be volatile ? == persist in memory only
     var inMemory: Bool { get set }

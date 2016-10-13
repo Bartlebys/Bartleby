@@ -21,6 +21,7 @@ import ObjectMapper
         return "JString"
     }
 
+
 	//the embedded String
 	dynamic open var string:String? {	 
 	    didSet { 

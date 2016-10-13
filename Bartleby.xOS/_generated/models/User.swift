@@ -21,6 +21,7 @@ import ObjectMapper
         return "User"
     }
 
+
 	//An external unique identifier
 	dynamic open var externalID:String? {	 
 	    didSet { 
@@ -30,6 +31,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{	 
 	    didSet { 
@@ -38,6 +40,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//the verification method
 	public enum VerificationMethod:String{
@@ -53,6 +56,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if firstname != oldValue {
@@ -61,6 +65,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
 	    didSet { 
 	       if lastname != oldValue {
@@ -68,6 +73,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The user's email. Can be the secondary Identification source 
 	dynamic open var email:String? {	 
@@ -78,6 +84,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The user's phone number. Can be the secondary Identification source 
 	dynamic open var phoneNumber:String? {	 
 	    didSet { 
@@ -86,6 +93,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The hashed version of the user password
 	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
@@ -96,6 +104,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//An activation code
 	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
 	    didSet { 
@@ -104,6 +113,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//User Status
 	public enum Status:String{
@@ -119,6 +129,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The user Tags. External reference to Tags instances
 	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {	 
 	    didSet { 
@@ -128,6 +139,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//Notes
 	dynamic open var notes:String? {	 
 	    didSet { 
@@ -136,6 +148,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//set to true on the first successfull login in the session (this property is not serialized)
 	dynamic open var loginHasSucceed:Bool = false

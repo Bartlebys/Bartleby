@@ -234,7 +234,7 @@ import ObjectMapper
         // By default we group the observation via the rootObjectUID
         lockerDefinition.collectionName = Locker.collectionName
         lockerDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        lockerDefinition.allowDistantPersistency = true
+        lockerDefinition.persistsDistantly = true
         lockerDefinition.inMemory = false
         
 
@@ -243,7 +243,7 @@ import ObjectMapper
         // By default we group the observation via the rootObjectUID
         pushOperationDefinition.collectionName = PushOperation.collectionName
         pushOperationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        pushOperationDefinition.allowDistantPersistency = false
+        pushOperationDefinition.persistsDistantly = false
         pushOperationDefinition.inMemory = false
         
 
@@ -252,7 +252,7 @@ import ObjectMapper
         // By default we group the observation via the rootObjectUID
         userDefinition.collectionName = User.collectionName
         userDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        userDefinition.allowDistantPersistency = true
+        userDefinition.persistsDistantly = true
         userDefinition.inMemory = false
         
 

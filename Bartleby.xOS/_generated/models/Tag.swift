@@ -21,13 +21,15 @@ import ObjectMapper
         return "Tag"
     }
 
-	dynamic open var creationDate:String? {	 
+
+	dynamic open var creationDate:Date? {	 
 	    didSet { 
 	       if creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
 	       } 
 	    }
 	}
+
 
 	dynamic open var color:String? {	 
 	    didSet { 
@@ -36,6 +38,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	dynamic open var icon:String? {	 
 	    didSet { 
@@ -55,7 +58,7 @@ import ObjectMapper
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self.creationDate <- ( map["creationDate"] )
+			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 			self.color <- ( map["color"] )
 			self.icon <- ( map["icon"] )
         }
@@ -67,7 +70,7 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.creationDate=String(describing: decoder.decodeObject(of: NSString.self, forKey:"creationDate") as NSString?)
+			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
 			self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
         }

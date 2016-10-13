@@ -21,26 +21,37 @@ import ObjectMapper
         return "Trigger"
     }
 
+
 	//The index is injected server side (each dataspace-registry) has it own counter)
 	dynamic open var index:Int = -1
+
 	//The dataSpace UID
 	dynamic open var spaceUID:String?
+
 	//The observation UID for a given document correspond  to the Registry.rootObjectUID
 	dynamic open var observationUID:String?
+
 	//The user.UID of the sender
 	dynamic open var senderUID:String?
+
 	//The UID of the instance of Bartleby client that has created the trigger.
 	dynamic open var runUID:String?
+
 	//The action that has initiated the trigger
 	dynamic open var origin:String?
+
 	//The targetted collection name
 	dynamic open var targetCollectionName:String = ""
+
 	//The server side creation date ( informative, use index for ranking)
 	dynamic open var creationDate:Date?
+
 	//The action name
 	dynamic open var action:String = ""
+
 	//A coma separated UIDS list
 	dynamic open var UIDS:String = ""
+
 	//A collection of JSON payload
 	dynamic open var payloads:[[String:Any]]?
 

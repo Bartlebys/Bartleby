@@ -21,6 +21,7 @@ import ObjectMapper
         return "ExternalReference"
     }
 
+
 	//The UID of the referred instance
 	dynamic open var iUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
@@ -29,6 +30,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The typeName of the referred instance
 	dynamic open var iTypeName:String = "\(Default.NO_UID)"{	 

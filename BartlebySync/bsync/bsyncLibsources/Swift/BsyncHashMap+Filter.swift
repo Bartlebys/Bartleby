@@ -23,7 +23,7 @@ extension BsyncHashMap{
      */
     public static func fromHashMap(_ hashMap:HashMap)->BsyncHashMap{
         let instance=BsyncHashMap()
-        instance.pathToHash=hashMap.dictionaryRepresentation()[pathToHashKey] as! Dictionary<String,String>
+        instance.pathToHash=hashMap.dictionaryRepresentation()[pathToHashKey] as! [String:Any]
         return instance
     }
 

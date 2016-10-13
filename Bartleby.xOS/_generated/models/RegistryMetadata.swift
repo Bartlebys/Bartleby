@@ -21,48 +21,68 @@ import ObjectMapper
         return "RegistryMetadata"
     }
 
+
 	//The data space UID can be shared between multiple registries.
 	dynamic open var spaceUID:String = "\(Default.NO_UID)"
+
 	//The user currently associated to the local instance of the registry
 	dynamic open var currentUser:User?
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"
 		case cookie = "cookie"
 	}
 	open var identificationMethod:IdentificationMethod = .key
+
 	//The current kvid identification value (injected in HTTP headers)
 	dynamic open var identificationValue:String?
+
 	//The rootObject UID
 	dynamic open var rootObjectUID:String = "\(Default.NO_UID)"
+
 	//The url of the collaboration server
 	dynamic open var collaborationServerURL:URL?
+
 	//A collection of CollectionMetadatum
 	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+
 	//The State dictionary to insure registry persistency 
 	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
+
 	//The collection of serialized Security-Scoped Bookmarks (you should store Data)
 	dynamic open var URLBookmarkData:[String:Any] = [String:AnyObject]()
+
 	//The preferred filename for this registry/document
 	dynamic open var preferredFileName:String?
+
 	//used for Core Debug , stores all the indexes by order of reception.
 	dynamic open var triggersIndexesDebugHistory:[Int] = [Int]()
+
 	//A collection of trigger Indexes (used to detect data holes)
 	dynamic open var triggersIndexes:[Int] = [Int]()
+
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
 	dynamic open var ownedTriggersIndexes:[Int] = [Int]()
+
 	//The index of the last trigger that has been integrated
 	open var lastIntegratedTriggerIndex:Int = -1
+
 	//A collection Triggers that are temporarly stored before data integration
 	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
+
 	//A collection of PushOperations in Quarantine (check DataSynchronization.md "Faults" section for details) 
 	dynamic open var operationsQuarantine:[PushOperation] = [PushOperation]()
+
 	//Do we have operations in progress in the current bunch ?
 	dynamic open var bunchInProgress:Bool = false
+
 	//The highest number that we may have counted
 	open var totalNumberOfOperations:Int = 0
+
 	//The consolidated progression state of all pending operations
 	dynamic open var pendingOperationsProgressionState:Progression?
+
 	//is the user performing Online
 	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
@@ -72,6 +92,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//If set to true any object creation, update, or deletion will be pushed as soon as possible.
 	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
 	    didSet { 
@@ -80,6 +101,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//Save the password or not?
 	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 

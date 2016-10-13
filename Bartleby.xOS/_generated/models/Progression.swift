@@ -21,8 +21,10 @@ import ObjectMapper
         return "Progression"
     }
 
+
 	//The start time of the progression state
 	open var startTime:Double?
+
 	//Index of the task
 	dynamic open var currentTaskIndex:Int = 0  {	 
 	    didSet { 
@@ -31,6 +33,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//Total number of tasks
 	dynamic open var totalTaskCount:Int = 0  {	 
@@ -41,6 +44,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//0 to 100
 	dynamic open var currentPercentProgress:Double = 0  {	 
 	    didSet { 
@@ -49,6 +53,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The Message
 	dynamic open var message:String = ""{	 
@@ -59,6 +64,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The consolidated information (may include the message)
 	dynamic open var informations:String = ""{	 
 	    didSet { 
@@ -67,6 +73,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The associated data
 	dynamic open var data:Data? {	 
@@ -77,8 +84,10 @@ import ObjectMapper
 	    }
 	}
 
+
 	//A category to discriminate bunch of progression states
 	dynamic open var category:String = ""
+
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 

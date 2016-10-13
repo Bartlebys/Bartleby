@@ -20,29 +20,7 @@ import Foundation
  *  and we use its parent folder as tree root
  *  It suppports NSSecureCoding as it can be to perform XPC calls.
  */
-@objc(BsyncDirectives) open class  BsyncDirectives: BsyncCredentials {
-
-    override open class func typeName() -> String {
-        return "BsyncDirectives"
-    }
-
-    open static let distantSchemes: [String]=["http", "https", "ftp", "ftps"]
-
-
-    /// The default file name is just a convention
-    open static let DEFAULT_FILE_NAME=".directives"
-
-    // TODO: @bpds @md #bsync Change url to not optionnal
-    open var sourceURL: URL?
-    open var destinationURL: URL?
-    open var hashMapViewName: String?
-
-    open var computeTheHashMap: Bool=true
-    open var automaticTreeCreation: Bool=false
-
-    public required init() {
-        super.init()
-    }
+extension BsyncDirectives{
 
     open func areValid()->(valid: Bool, message: String) {
         if let sourceURL = self.sourceURL, let destinationURL = self.destinationURL {
@@ -120,56 +98,4 @@ import Foundation
         return directives
     }
 
-    // MARK: Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-        self.mapping(map:map)
-    }
-
-    open override func mapping(map: Map) {
-        super.mapping(map:map)
-        self.silentGroupedChanges {
-            sourceURL <- (map["sourceURL"], URLTransform())
-            destinationURL <- (map["destinationURL"], URLTransform())
-            computeTheHashMap <- map["computeTheHashMap"]
-            automaticTreeCreation <- map["automaticTreeCreation"]
-            hashMapViewName <- (map["hashMapViewName"], CryptedStringTransform()) // Crypted to prevent discovery
-        }
-    }
-
-
-    // MARK: NSecureCoding
-
-
-    open override func encode(with coder: NSCoder) {
-        super.encode(with: coder)
-        coder.encode(sourceURL, forKey: "sourceURL")
-        coder.encode(destinationURL, forKey: "destinationURL")
-        coder.encode(hashMapViewName, forKey: "hashMapViewName")
-        coder.encode(computeTheHashMap, forKey: "computeTheHashMap")
-        coder.encode(automaticTreeCreation, forKey: "automaticTreeCreation")
-
-    }
-
-    public required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.silentGroupedChanges {
-            self.sourceURL=decoder.decodeObject(of: NSURL.self, forKey:"sourceURL") as URL?
-            self.destinationURL=decoder.decodeObject(of: NSURL.self, forKey:"destinationURL") as URL?
-            self.hashMapViewName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"hashMapViewName") as NSString?)
-            self.computeTheHashMap=decoder.decodeBool(forKey: "computeTheHashMap")
-            self.automaticTreeCreation=decoder.decodeBool(forKey: "automaticTreeCreation")
-        }
-    }
-
-    // MARK: Identifiable
-
-    override open class var collectionName: String {
-        return "BsyncDirectives"
-    }
-
-    override open var d_collectionName: String {
-        return BsyncDirectives.collectionName
-    }
 }

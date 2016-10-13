@@ -21,14 +21,19 @@ import ObjectMapper
         return "PushOperation"
     }
 
+
 	//The unique identifier of the related Command
 	dynamic open var commandUID:String?
+
 	//The dictionary representation of a serialized action call
 	dynamic open var toDictionary:[String:Any]?
+
 	//The dictionary representation of the last response serialized data
 	open var responseDictionary:[String:Any]?
+
 	//The completion state of the operation
 	dynamic open var completionState:Completion?
+
 	//The invocation Status None: on creation, Pending: can be pushed, Provisionned: is currently in an operation bunch, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
 		case none = "none"
@@ -38,10 +43,13 @@ import ObjectMapper
 		case completed = "completed"
 	}
 	open var status:Status = .none
+
 	//The invocation counter
 	dynamic open var counter:Int = -1
+
 	//The creationdate
 	dynamic open var creationDate:Date?
+
 	//The last invocation date
 	dynamic open var lastInvocationDate:Date?
 

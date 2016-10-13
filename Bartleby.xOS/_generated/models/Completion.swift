@@ -21,6 +21,7 @@ import ObjectMapper
         return "Completion"
     }
 
+
 	//Success if set to true
 	dynamic open var success:Bool = true  {	 
 	    didSet { 
@@ -29,6 +30,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The status
 	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {	 
@@ -39,6 +41,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The Message
 	dynamic open var message:String = ""{	 
 	    didSet { 
@@ -47,6 +50,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//completion data
 	dynamic open var data:Data? {	 
@@ -57,8 +61,10 @@ import ObjectMapper
 	    }
 	}
 
+
 	//A category to discriminate bunch of completion states
 	dynamic open var category:String = ""
+
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 

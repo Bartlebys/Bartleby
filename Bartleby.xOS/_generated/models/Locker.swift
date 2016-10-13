@@ -21,6 +21,7 @@ import ObjectMapper
         return "Locker"
     }
 
+
 	//The associated registry UID.
 	dynamic open var registryUID:String? {	 
 	    didSet { 
@@ -29,6 +30,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The subject UID you want to lock
 	dynamic open var subjectUID:String = "\(Default.NO_UID)"{	 
@@ -39,6 +41,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//The userUID that can unlock the locker
 	dynamic open var userUID:String = "\(Default.NO_UID)"{	 
 	    didSet { 
@@ -47,6 +50,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//the locker mode
 	public enum Mode:String{
@@ -61,6 +65,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//the locker mode
 	public enum VerificationMethod:String{
 		case online = "online"
@@ -74,6 +79,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	//This code should be crypted / decrypted
 	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
 	    didSet { 
@@ -82,6 +88,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//The number of attempts
 	dynamic open var numberOfAttempt:Int = 3  {	 
@@ -92,6 +99,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	dynamic open var startDate:Date = Date.distantPast  {	 
 	    didSet { 
 	       if startDate != oldValue {
@@ -100,6 +108,7 @@ import ObjectMapper
 	    }
 	}
 
+
 	dynamic open var endDate:Date = Date.distantFuture  {	 
 	    didSet { 
 	       if endDate != oldValue {
@@ -107,6 +116,7 @@ import ObjectMapper
 	       } 
 	    }
 	}
+
 
 	//Thoses data gems will be return on success
 	dynamic open var gems:String = "\(Default.NO_GEM)"{	 
