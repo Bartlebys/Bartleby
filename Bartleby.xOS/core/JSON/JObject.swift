@@ -19,20 +19,30 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     return lhs.UID==rhs.UID
 }
 
-// JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
-// Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
-// During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
-// NSecureCoding does not implement Universal Strategy the module is prepended to the name.
-// By putting @objc(name) we fix the serialization name.
-// This is due to the impossibility to link a FrameWork to an XPC services.
-@objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
+
+/*
+
+IMPORTANT NOTE 
+
+ - you should always update the properties of a jobject on the main thread.
+ - you should always manipulate registries  on the main thread
+
+
+JObject is primary object of any Bartleby model.
+JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
+Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
+During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
+NSecureCoding does not implement Universal Strategy the module is prepended to the name.
+By putting @objc(name) we fix the serialization name.
+This is due to the impossibility to link a FrameWork to an XPC services.
+*/
+ @objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
     // MARK: - Initializable
 
     override required public init() {
         super.init()
     }
-
 
     // MARK: - Collectible = Identifiable, Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString
 
@@ -213,11 +223,20 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     /**
-     Tags the changed keys
-     And Mark that the instance requires to be committed if the auto commit observer is active
-     This method stores in memory changed Keys to allow Bartleby's runtime inspections
+     The change provisionning is related to multiple essential notions.
 
-     Supervisers closure call and properties uses the Main queue.
+     **Supervision** is a local  "observation" mecanism
+     We use supervision to determine if an object has changed.
+     
+     **Commit** is the first phase of the **distribution** mecanism (the second is Push, and the Third Trigger and integration on another node)
+     If auto-commit is enabled on any supervised change an object is marked  to be committed `_shouldBeCommitted=true`
+
+     You can add **supervisers** to any JObject.
+     On supervised change the closure of the supervisers will be invoked.
+     
+     **Inspection** During debbuging or when using Bartleby's inspector we record the changes
+     If Bartleby.changesAreInspectables we store in memory the changes changed Keys to allow Bartleby's runtime inspections
+     (we use  `KeyedChanges` objects)
 
      - parameter key:      the key
      - parameter oldValue: the oldValue
@@ -230,63 +249,58 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
             self._shouldBeCommitted=true
         }
 
-        // Commit is related to distribution
-        // Supervision is a local  "observation" mecanism
-        // Supervision Closures are invoked on the main queue asynchronously
         if self._supervisionIsEnabled{
-            GlobalQueue.main.get().async {
-                if key=="*" && !(self is BartlebyCollection){
-                    if Bartleby.changesAreInspectables{
-                        // Dictionnary or NSData Patch
-                        self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
-                    }
-                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                }else{
-                    if Bartleby.changesAreInspectables{
-                        if let collection = self as? BartlebyCollection {
-                            let entityName=Pluralization.singularize(collection.d_collectionName)
-                            if key=="items"{
-                                if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
-                                    if oldArray.count < newArray.count{
-                                        let stringValue:String! = (newArray.last?.UID ?? "")
-                                        self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
-                                    }else{
-                                        self._appendChanges(key:key,changes:"Removed One \(entityName)")
-                                    }
-                                }
-                            }
-                            if key == "item" {
-                                if let o = newValue as? JObject{
-                                    self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
-                                }else{
-                                    self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
-                                }
-                            }
-                            if key == "*" {
-                                self._appendChanges(key:key,changes:"This collection has been patched")
-                            }
-                        }else if let collectibleNewValue = newValue as? Collectible{
-                            // Collectible objects
-                            self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
-                            // Relay the as a global change to the collection
-                            self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                        }else{
-                            // Natives types
-                            let o = oldValue ?? "void"
-                            let n = newValue ?? "void"
-                            self._appendChanges(key:key,changes:"\(o) ->\(n)")
-                            // Relay the as a global change to the collection
-                            self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                        }
-                    }
+            if key=="*" && !(self is BartlebyCollection){
+                if Bartleby.changesAreInspectables{
+                    // Dictionnary or NSData Patch
+                    self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
                 }
-
-                // Invoke the closures (changes Observers)
-                // note that it occurs even changes are not inspectable.
-                for (_,supervisionClosure) in self._supervisers{
-                    supervisionClosure(key,oldValue,newValue)
+                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+            }else{
+                if Bartleby.changesAreInspectables{
+                    if let collection = self as? BartlebyCollection {
+                        let entityName=Pluralization.singularize(collection.d_collectionName)
+                        if key=="items"{
+                            if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
+                                if oldArray.count < newArray.count{
+                                    let stringValue:String! = (newArray.last?.UID ?? "")
+                                    self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
+                                }else{
+                                    self._appendChanges(key:key,changes:"Removed One \(entityName)")
+                                }
+                            }
+                        }
+                        if key == "item" {
+                            if let o = newValue as? JObject{
+                                self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
+                            }else{
+                                self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
+                            }
+                        }
+                        if key == "*" {
+                            self._appendChanges(key:key,changes:"This collection has been patched")
+                        }
+                    }else if let collectibleNewValue = newValue as? Collectible{
+                        // Collectible objects
+                        self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
+                        // Relay the as a global change to the collection
+                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                    }else{
+                        // Natives types
+                        let o = oldValue ?? "void"
+                        let n = newValue ?? "void"
+                        self._appendChanges(key:key,changes:"\(o) ->\(n)")
+                        // Relay the as a global change to the collection
+                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                    }
                 }
             }
+            // Invoke the closures (changes Observers)
+            // note that it occurs even changes are not inspectable.
+            for (_,supervisionClosure) in self._supervisers{
+                supervisionClosure(key,oldValue,newValue)
+            }
+
         }
     }
 
@@ -498,5 +512,4 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         return self as AnyObject
     }
 
-    
 }
