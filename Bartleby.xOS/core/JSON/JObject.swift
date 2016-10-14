@@ -22,21 +22,21 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 /*
 
-IMPORTANT NOTE 
+ IMPORTANT NOTE
 
  - you should always update the properties of a jobject on the main thread.
  - you should always manipulate registries  on the main thread
 
 
-JObject is primary object of any Bartleby model.
-JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
-Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
-During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
-NSecureCoding does not implement Universal Strategy the module is prepended to the name.
-By putting @objc(name) we fix the serialization name.
-This is due to the impossibility to link a FrameWork to an XPC services.
-*/
- @objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
+ JObject is primary object of any Bartleby model.
+ JOBjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
+ Currently the name Mangling @objc(JObject) is necessary to be able to pass a JObject in an XPC call.
+ During XPC calls the Module varies (BartlebyKit in the framework, BSyncXPC, ...)
+ NSecureCoding does not implement Universal Strategy the module is prepended to the name.
+ By putting @objc(name) we fix the serialization name.
+ This is due to the impossibility to link a FrameWork to an XPC services.
+ */
+@objc(JObject) open class JObject: NSObject,Collectible, Mappable, NSCopying, NSSecureCoding {
 
     // MARK: - Initializable
 
@@ -225,18 +225,21 @@ This is due to the impossibility to link a FrameWork to an XPC services.
     /**
      The change provisionning is related to multiple essential notions.
 
-     **Supervision** is a local  "observation" mecanism
+     ## **Supervision** is a local  "observation" mecanism
      We use supervision to determine if an object has changed.
-     
-     **Commit** is the first phase of the **distribution** mecanism (the second is Push, and the Third Trigger and integration on another node)
+     Properties that are declared `supervisable` provision their changes using this method.
+
+     ## **Commit** is the first phase of the **distribution** mecanism (the second is Push, and the Third Trigger and integration on another node)
      If auto-commit is enabled on any supervised change an object is marked  to be committed `_shouldBeCommitted=true`
 
-     You can add **supervisers** to any JObject.
+     ## You can add **supervisers** to any JObject.
      On supervised change the closure of the supervisers will be invoked.
-     
-     **Inspection** During debbuging or when using Bartleby's inspector we record the changes
+
+     ## **Inspection** During debbuging or when  Bartleby's inspector is opened we record and analyse the changes
      If Bartleby.changesAreInspectables we store in memory the changes changed Keys to allow Bartleby's runtime inspections
      (we use  `KeyedChanges` objects)
+
+     `provisionChanges` is the entry point of those mecanisms.
 
      - parameter key:      the key
      - parameter oldValue: the oldValue
@@ -257,8 +260,8 @@ This is due to the impossibility to link a FrameWork to an XPC services.
                 }
                 self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }else{
-                if Bartleby.changesAreInspectables{
-                    if let collection = self as? BartlebyCollection {
+                if let collection = self as? BartlebyCollection {
+                    if Bartleby.changesAreInspectables{
                         let entityName=Pluralization.singularize(collection.d_collectionName)
                         if key=="items"{
                             if let oldArray=oldValue as? [JObject], let newArray=newValue as? [JObject]{
@@ -280,21 +283,26 @@ This is due to the impossibility to link a FrameWork to an XPC services.
                         if key == "*" {
                             self._appendChanges(key:key,changes:"This collection has been patched")
                         }
-                    }else if let collectibleNewValue = newValue as? Collectible{
+                    }
+                }else if let collectibleNewValue = newValue as? Collectible{
+                    if Bartleby.changesAreInspectables{
                         // Collectible objects
                         self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                    }else{
-                        // Natives types
-                        let o = oldValue ?? "void"
-                        let n = newValue ?? "void"
-                        self._appendChanges(key:key,changes:"\(o) ->\(n)")
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                     }
+                    // Relay the as a global change to the collection
+                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                }else{
+                    // Natives types
+                    let o = oldValue ?? "void"
+                    let n = newValue ?? "void"
+                    if Bartleby.changesAreInspectables{
+                        self._appendChanges(key:key,changes:"\(o) ->\(n)")
+                    }
+                    // Relay the as a global change to the collection
+                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }
             }
+
             // Invoke the closures (changes Observers)
             // note that it occurs even changes are not inspectable.
             for (_,supervisionClosure) in self._supervisers{
@@ -305,6 +313,11 @@ This is due to the impossibility to link a FrameWork to an XPC services.
     }
 
 
+    /// **Inspection**
+    /// Appends the change to the changedKey
+    ///
+    /// - parameter key:     the key
+    /// - parameter changes: the description of the changes
     private func _appendChanges(key:String,changes:String){
         self.changedKeys.append(KeyedChanges(key:key,changes:changes))
     }
@@ -460,8 +473,6 @@ This is due to the impossibility to link a FrameWork to an XPC services.
         self.enableSuperVisionAndCommit()
     }
 
-
-
     // MARK: - NSecureCoding
 
 
@@ -501,8 +512,8 @@ This is due to the impossibility to link a FrameWork to an XPC services.
 
 
     // MARK: - NSCopying
-
-
+    
+    
     open func copy(with zone: NSZone?) -> Any {
         let data: Data=JSerializer.serialize(self)
         if let copied = try? JSerializer.deserialize(data) {
@@ -511,5 +522,5 @@ This is due to the impossibility to link a FrameWork to an XPC services.
         bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line)
         return self as AnyObject
     }
-
+    
 }
