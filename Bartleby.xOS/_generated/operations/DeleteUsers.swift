@@ -191,7 +191,7 @@ import ObjectMapper
             let context=Context(code:748685131, caller: "DeleteUsers.push")
             Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
                 title: NSLocalizedString("Push error", comment: "Push error"),
-                body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"",
+                body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"" + "\n\(#file)\n\(#function)",
                 onSelectedIndex: { (selectedIndex) -> () in
             })
         }
@@ -234,7 +234,7 @@ import ObjectMapper
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
-                            body:"\(m) \n \(response)" ,
+                            body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
@@ -260,7 +260,7 @@ import ObjectMapper
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
-                                    body: "\(m) \n \(response)",
+                                    body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                                     transmit:{ (selectedIndex) -> () in
                                     })
                                 reactions.append(failureReaction)

@@ -76,7 +76,7 @@ import ObjectMapper
 	                                        context: context,
 	                                        title: NSLocalizedString("Deserialization issue",
 	                                        comment: "Deserialization issue"),
-	                                        body:"(result.value)",
+	                                        body:"(result.value)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
 	                                        transmit:{ (selectedIndex) -> () in
 	                                    })
 	                                    reactions.append(failureReaction)
@@ -87,7 +87,7 @@ import ObjectMapper
 	                                    context: context,
 	                                    title: NSLocalizedString("No String Deserialization issue",
 	                                                             comment: "No String Deserialization issue"),
-	                                    body:"(result.value)",
+	                                    body: "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
 	                                    transmit: { (selectedIndex) -> () in
 	                                })
 	                                reactions.append(failureReaction)
