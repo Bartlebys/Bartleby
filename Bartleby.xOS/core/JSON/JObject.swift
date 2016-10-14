@@ -13,6 +13,10 @@ import Foundation
 #endif
 
 
+public enum JObjectExpositionError:Error {
+    case UnknownKey(key:String)
+}
+
 // MARK: - Equatable
 
 public func ==(lhs: JObject, rhs: JObject) -> Bool {
@@ -99,6 +103,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
+
     // MARK: Identifiable
 
     // This  id is always  created locally and used as primary index by MONGODB
@@ -178,6 +183,19 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     }
 
 
+    /// Merge the instance with another
+    ///
+    /// - parameter instance: the instance
+    open func mergeWith(_ instance: Exposed) throws {
+        for key in instance.exposedKeys{
+            if self.exposedKeys.contains(key){
+                if let value = try instance.getExposedValueForKey(key) {
+                    try self.setExposedValue(value, forKey: key)
+                }
+            }
+        }
+    }
+
     // MARK: Distribuable
 
     open var toBeCommitted: Bool { return self._shouldBeCommitted }
@@ -189,6 +207,7 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
      Locks the auto commit observer
      */
     open func disableAutoCommit(){
+        // Lock the auto commit observer
         self._autoCommitIsEnabled=false
     }
 
@@ -394,6 +413,86 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         return self._runTimeTypeName!
     }
 
+    // MARK: Exposed is a GENERATIVE alternative to KVC
+
+    /// Return all the exposed instance variables and constants names. Exposed == public and modifiable.
+    open var exposedKeys:[String] {
+        return ["collection", "collectedIndex","creatorUID","summary","ephemeral","document","distributed"]
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+        case "collection":
+            if let casted=value as? CollectibleCollection{
+                self.collection=casted
+            }
+        case "collectedIndex":
+            if let casted=value as? Int{
+                self.collectedIndex=casted
+            }
+        case "creatorUID":
+            if let casted=value as? String{
+                self.creatorUID=casted
+            }
+        case "summary":
+            if let casted=value as? String{
+                self.summary=casted
+            }
+        case "ephemeral":
+            if let casted=value as? Bool{
+                self.ephemeral=casted
+            }
+        case "document":
+            if let casted=value as? BartlebyDocument{
+                self.document=casted
+            }
+        case "distributed":
+            if let casted=value as? Bool{
+                self.distributed=casted
+            }
+        default:
+            throw JObjectExpositionError.UnknownKey(key: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+        case "collection":
+            return self.collection
+        case "collectedIndex":
+            return self.collectedIndex
+        case "creatorUID":
+          return self.creatorUID
+        case "summary":
+            return self.summary
+        case "ephemeral":
+            return self.ephemeral
+        case "document":
+            return self.document
+        case "distributed":
+            return self.distributed
+        default:
+            throw JObjectExpositionError.UnknownKey(key: key)
+        }
+    }
+    
+
+
 
     // MARK: JSONString
 
@@ -464,13 +563,18 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
 
 
     /// Performs some changes silently
-    /// Supervision and auto commit is disabled.
+    /// Supervision and auto commit are disabled.
+    /// Then supervision and auto commit availability is restored
     ///
     /// - parameter changes: the changes closure
     open func silentGroupedChanges(_ changes:()->()){
+        let autoCommitIsEnabled = self._autoCommitIsEnabled
+        let supervisionIsEnabled = self._supervisionIsEnabled
         self.disableSupervisionAndCommit()
         changes()
-        self.enableSuperVisionAndCommit()
+        self._autoCommitIsEnabled = autoCommitIsEnabled
+        self._supervisionIsEnabled = supervisionIsEnabled
+
     }
 
     // MARK: - NSecureCoding

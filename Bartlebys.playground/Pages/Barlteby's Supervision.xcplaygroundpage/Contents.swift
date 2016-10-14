@@ -22,4 +22,16 @@ userA.firstname="Jimmy"
 userA.removeChangesSuperviser(spy)
 userA.firstname="Zorro"
 
+
+// Merge sample
+var benoit=User()
+benoit.firstname="Benoit"
+benoit.lastname="Pereira da Silva"
+var melanie=User()
+melanie.firstname="Melanie"
+melanie.lastname="Le Neveu"
+try? benoit.mergeWith(melanie)
+benoit.firstname
+benoit.lastname
+
 //: [Next](@ne

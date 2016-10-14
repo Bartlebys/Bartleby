@@ -9,7 +9,7 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType, JSONString {
+public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRepresentation, Distribuable, Supervisable,ChangesInspectable, UniversalType,Exposed, JSONString {
 
     // The collection of the item
     var collection:CollectibleCollection? { get set }
@@ -35,8 +35,33 @@ public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRe
 
     // An accessor to the static collectionName
     var d_collectionName: String { get }
+}
+
+public protocol Exposed{
+
+    /// Return all the exposed instance variables names. Exposed means public and modifiable.
+    var exposedKeys:[String] { get }
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    func setExposedValue(_ value:Any?, forKey key: String) throws
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    func getExposedValueForKey(_ key:String) throws -> Any?
 
 }
+
 
 // TODO Create files 
 

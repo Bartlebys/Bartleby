@@ -119,44 +119,44 @@ extension BartlebyDocument {
     fileprivate func _integrateContiguousData(){
 
         // We proceed on the main queue
-        GlobalQueue.main.get().async {
+        //GlobalQueue.main.get().async {
 
-            // #1 Integrate contigous data
+        // #1 Integrate contigous data
 
-            var lastIntegratedTriggerIndex=self.registryMetadata.lastIntegratedTriggerIndex
-            for trigger  in self.registryMetadata.receivedTriggers{
+        var lastIntegratedTriggerIndex=self.registryMetadata.lastIntegratedTriggerIndex
+        for trigger  in self.registryMetadata.receivedTriggers{
 
-                // Integrate continuous data
-                if trigger.index == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
-                    self._integrate(trigger)
-                    lastIntegratedTriggerIndex = trigger.index
-                }
+            // Integrate continuous data
+            if trigger.index == (lastIntegratedTriggerIndex+1)  || self.registryMetadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
+                self._integrate(trigger)
+                lastIntegratedTriggerIndex = trigger.index
             }
+        }
 
-            // #2 Verify the continuity with the currently ownedTriggersIndexes
-            // ownedTriggersIndexes is sorted
+        // #2 Verify the continuity with the currently ownedTriggersIndexes
+        // ownedTriggersIndexes is sorted
 
-            if  let maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
-                let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.min(){
-                if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
-                    for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
-                        if index == (lastIntegratedTriggerIndex+1) {
-                            lastIntegratedTriggerIndex = index
-                        }
+        if  let maxOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.max(),
+            let minOwnedTriggerIndex=self.registryMetadata.ownedTriggersIndexes.min(){
+            if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
+                for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
+                    if index == (lastIntegratedTriggerIndex+1) {
+                        lastIntegratedTriggerIndex = index
                     }
                 }
             }
-
-            // #3 setup the lastIntegratedTriggerIndex
-            self.registryMetadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
-
-            // #4 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
-            let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
-            self.registryMetadata.triggersIndexes=filteredIndexes
-
-            // If necessary we grab the missing indexes
-            self.grabMissingTriggerIndexes()
         }
+
+        // #3 setup the lastIntegratedTriggerIndex
+        self.registryMetadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
+
+        // #4 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
+        let filteredIndexes=self.registryMetadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
+        self.registryMetadata.triggersIndexes=filteredIndexes
+
+        // If necessary we grab the missing indexes
+        self.grabMissingTriggerIndexes()
+        // }
 
     }
 
@@ -241,6 +241,10 @@ extension BartlebyDocument {
         let missingTriggersIndexes=self.missingContiguousTriggersIndexes()
         // Todo compute missingTriggersIndexes
         if missingTriggersIndexes.count>0{
+            let s=missingTriggersIndexes.reduce("", { (string, index) -> String in
+                return string + ",\(index) "
+            })
+            bprint("Grabbing missing trigger index \(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
             TriggersForIndexes.execute(fromRegistryWithUID:self.UID, indexes:missingTriggersIndexes, sucessHandler: { (triggers) in
                 let s=missingTriggersIndexes.reduce("", { (r,index) -> String in
                     return "\(r) \(index) "
@@ -262,17 +266,16 @@ extension BartlebyDocument {
      And integrates all the triggered data
      */
     public func forceDataIntegration(){
-        GlobalQueue.main.get().async {
-            for trigger  in self.registryMetadata.receivedTriggers{
-                self._integrate(trigger)
-            }
-            // Reinitialize
-            self.registryMetadata.triggersIndexes=[Int]()
-            // Set the lastIntegratedTriggerIndex to the highest possible value
-            let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
-            let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
-            self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
+        for trigger  in self.registryMetadata.receivedTriggers{
+            self._integrate(trigger)
         }
+        // Reinitialize
+        self.registryMetadata.triggersIndexes=[Int]()
+        // Set the lastIntegratedTriggerIndex to the highest possible value
+        let highestTriggerIndex:Int=self.registryMetadata.receivedTriggers.last?.index ?? 0
+        let higestOwned:Int=self.registryMetadata.ownedTriggersIndexes.max() ?? 0
+        self.registryMetadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
+
     }
 
 
@@ -316,8 +319,6 @@ extension BartlebyDocument {
      - returns: a bunch information on the current Buffer.
      */
     open func getTriggerBufferInformations()->String{
-
-
 
         var informations = "\nLast integrated trigger Index: \(self.registryMetadata.lastIntegratedTriggerIndex)\n"
         // Missing
@@ -372,16 +373,16 @@ extension BartlebyDocument {
             }
         }
         let nba=anomaliesTriggerDataThatShouldBeDeleted.count
-        
+
         if nba > 0{
             informations += "Nb Of trigger that should have been deleted :(\(anomaliesTriggerDataThatShouldBeDeleted.count))\n"
-            
+
             for idx in anomaliesTriggerDataThatShouldBeDeleted.sorted(){
                 informations += "\(idx) "
             }
             informations += "\n"
         }
-        
+
         noProblem = (noProblem && (nba == 0 ))
         if noProblem{
             return  "**Everything is OK!**\n" + informations
@@ -459,7 +460,7 @@ extension BartlebyDocument {
                 do {
                     if let dataFromString=data?.data(using: String.Encoding.utf8){
                         if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:Any] {
-                             bprint("\(JSONDictionary)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+                            bprint("\(JSONDictionary)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
                             if  let index:Int=JSONDictionary["i"] as? Int,
                                 let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,
@@ -493,19 +494,19 @@ extension BartlebyDocument {
                             }
                         }
                     }
-
+                    
                 }catch{
                     bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
                 }
             }
-
+            
         }) { (context) in
             bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
             self.registryMetadata.online=false
         }
-
+        
     }
-
+    
     /**
      Closes the Server sent EventSource
      */
