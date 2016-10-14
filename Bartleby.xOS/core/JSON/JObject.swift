@@ -386,6 +386,43 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self._supervisionIsEnabled=true
     }
 
+
+    /// Performs some changes silently
+    /// Supervision and auto commit are disabled.
+    /// Then supervision and auto commit availability is restored
+    ///
+    /// - parameter changes: the changes closure
+    open func silentGroupedChanges(_ changes:()->()){
+        let autoCommitIsEnabled = self._autoCommitIsEnabled
+        let supervisionIsEnabled = self._supervisionIsEnabled
+        self.disableSupervisionAndCommit()
+        changes()
+        self._autoCommitIsEnabled = autoCommitIsEnabled
+        self._supervisionIsEnabled = supervisionIsEnabled
+
+    }
+
+    /// Perform changes without commit
+    ///
+    /// - parameter changes: the changes
+    open func doNotCommit(_ changes:()->()){
+        let autoCommitIsEnabled = self._autoCommitIsEnabled
+        self.disableAutoCommit()
+        changes()
+        self._autoCommitIsEnabled = autoCommitIsEnabled
+    }
+
+    /// Perform changes without supervision
+    ///
+    /// - parameter changes: the changes
+    open func doNotSupervise(_ changes:()->()){
+        let supervisionIsEnabled = self._supervisionIsEnabled
+        self.disableSupervision()
+        changes()
+        self._supervisionIsEnabled = supervisionIsEnabled
+    }
+
+
     // MARK: ChangesInspectable
 
     open var changedKeys=[KeyedChanges]()
@@ -560,21 +597,6 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
         self.enableAutoCommit()
     }
 
-
-    /// Performs some changes silently
-    /// Supervision and auto commit are disabled.
-    /// Then supervision and auto commit availability is restored
-    ///
-    /// - parameter changes: the changes closure
-    open func silentGroupedChanges(_ changes:()->()){
-        let autoCommitIsEnabled = self._autoCommitIsEnabled
-        let supervisionIsEnabled = self._supervisionIsEnabled
-        self.disableSupervisionAndCommit()
-        changes()
-        self._autoCommitIsEnabled = autoCommitIsEnabled
-        self._supervisionIsEnabled = supervisionIsEnabled
-
-    }
 
     // MARK: - NSecureCoding
 
