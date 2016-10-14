@@ -51,7 +51,7 @@ import Foundation
                         let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body:NSLocalizedString("Explicit Failure", comment: "Explicit Failure"),
+                            body:NSLocalizedString("Explicit Failure in ",comment: "Explicit Failure in ") + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                             transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
@@ -91,7 +91,7 @@ import Foundation
                                 let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                                    body:NSLocalizedString("Implicit Failure", comment: "Implicit Failure"),
+                                    body:NSLocalizedString("Implicit Failure", comment: "Implicit Failure") + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
