@@ -273,8 +273,8 @@ import ObjectMapper
 
     // MARK: Upsert
 
-    open func upsert(_ item: Collectible, commit:Bool){
 
+    open func upsert(_ item: Collectible, commit:Bool){
         if let idx=items.index(where:{return $0.UID == item.UID}){
             // it is an update
             // we must patch it
@@ -284,13 +284,11 @@ import ObjectMapper
                 // We do not want to produce Larsen effect on data.
                 // So we lock the auto commit observer before applying the patch
                 // And we unlock the autoCommit Observer after the patch.
-                currentInstance.disableAutoCommit()
-            }
-
-            let dictionary=item.dictionaryRepresentation()
-            currentInstance.patchFrom(dictionary)
-            if commit==false{
-                currentInstance.enableAutoCommit()
+                currentInstance.doNotCommit {
+                    try? currentInstance.mergeWith(item)
+                }
+            }else{
+                try? currentInstance.mergeWith(item)
             }
         }else{
             // It is a creation
