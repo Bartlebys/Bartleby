@@ -189,9 +189,8 @@ public func ==(lhs: JObject, rhs: JObject) -> Bool {
     open func mergeWith(_ instance: Exposed) throws {
         for key in instance.exposedKeys{
             if self.exposedKeys.contains(key){
-                if let value = try instance.getExposedValueForKey(key) {
-                    try self.setExposedValue(value, forKey: key)
-                }
+                let value = try instance.getExposedValueForKey(key)
+                try self.setExposedValue(value, forKey: key)
             }
         }
     }
