@@ -79,7 +79,8 @@ import ObjectMapper
             case "icon":
                 if let casted=value as? String{
                     self.icon=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -100,7 +101,8 @@ import ObjectMapper
             case "color":
                return self.color
             case "icon":
-               return self.icon            default:
+               return self.icon
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -59,7 +59,8 @@ import ObjectMapper
             case "sort":
                 if let casted=value as? [String:Any]{
                     self.sort=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -80,7 +81,8 @@ import ObjectMapper
             case "result_fields":
                return self.result_fields
             case "sort":
-               return self.sort            default:
+               return self.sort
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

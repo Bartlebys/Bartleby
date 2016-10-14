@@ -78,7 +78,8 @@ import ObjectMapper
             case "inMemory":
                 if let casted=value as? Bool{
                     self.inMemory=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -103,7 +104,8 @@ import ObjectMapper
             case "persistsDistantly":
                return self.persistsDistantly
             case "inMemory":
-               return self.inMemory            default:
+               return self.inMemory
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

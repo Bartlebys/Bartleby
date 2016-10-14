@@ -186,7 +186,8 @@ import ObjectMapper
             case "gems":
                 if let casted=value as? String{
                     self.gems=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -221,7 +222,8 @@ import ObjectMapper
             case "endDate":
                return self.endDate
             case "gems":
-               return self.gems            default:
+               return self.gems
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

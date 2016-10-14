@@ -212,7 +212,8 @@ import ObjectMapper
             case "items":
                 if let casted=value as? [PushOperation]{
                     self.items=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -229,7 +230,8 @@ import ObjectMapper
         switch key {
 
             case "items":
-               return self.items            default:
+               return self.items
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

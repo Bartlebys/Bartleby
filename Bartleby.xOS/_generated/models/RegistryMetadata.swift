@@ -219,7 +219,8 @@ import ObjectMapper
             case "saveThePassword":
                 if let casted=value as? Bool{
                     self.saveThePassword=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -278,7 +279,8 @@ import ObjectMapper
             case "pushOnChanges":
                return self.pushOnChanges
             case "saveThePassword":
-               return self.saveThePassword            default:
+               return self.saveThePassword
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

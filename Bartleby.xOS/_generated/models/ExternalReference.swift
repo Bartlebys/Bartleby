@@ -68,7 +68,8 @@ import ObjectMapper
             case "iTypeName":
                 if let casted=value as? String{
                     self.iTypeName=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -87,7 +88,8 @@ import ObjectMapper
             case "iUID":
                return self.iUID
             case "iTypeName":
-               return self.iTypeName            default:
+               return self.iTypeName
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -223,7 +223,8 @@ import ObjectMapper
             case "loginHasSucceed":
                 if let casted=value as? Bool{
                     self.loginHasSucceed=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -264,7 +265,8 @@ import ObjectMapper
             case "notes":
                return self.notes
             case "loginHasSucceed":
-               return self.loginHasSucceed            default:
+               return self.loginHasSucceed
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -54,7 +54,8 @@ import ObjectMapper
             case "string":
                 if let casted=value as? String{
                     self.string=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -71,7 +72,8 @@ import ObjectMapper
         switch key {
 
             case "string":
-               return self.string            default:
+               return self.string
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

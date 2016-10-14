@@ -47,7 +47,8 @@ import BartlebyKit
             case "pathToHash":
                 if let casted=value as? [String:Any]{
                     self.pathToHash=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -64,7 +65,8 @@ import BartlebyKit
         switch key {
 
             case "pathToHash":
-               return self.pathToHash            default:
+               return self.pathToHash
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

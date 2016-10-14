@@ -82,7 +82,8 @@ import BartlebyKit
             case "automaticTreeCreation":
                 if let casted=value as? Bool{
                     self.automaticTreeCreation=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -107,7 +108,8 @@ import BartlebyKit
             case "computeTheHashMap":
                return self.computeTheHashMap
             case "automaticTreeCreation":
-               return self.automaticTreeCreation            default:
+               return self.automaticTreeCreation
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -59,7 +59,8 @@ import ObjectMapper
             case "query":
                 if let casted=value as? [String:Any]{
                     self.query=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -80,7 +81,8 @@ import ObjectMapper
             case "sort":
                return self.sort
             case "query":
-               return self.query            default:
+               return self.query
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

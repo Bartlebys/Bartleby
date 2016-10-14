@@ -57,7 +57,8 @@ import ObjectMapper
             case "_registryUID":
                 if let casted=value as? String{
                     self._registryUID=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -76,7 +77,8 @@ import ObjectMapper
             case "_user":
                return self._user
             case "_registryUID":
-               return self._registryUID            default:
+               return self._registryUID
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

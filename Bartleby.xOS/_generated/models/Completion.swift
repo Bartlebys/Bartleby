@@ -110,7 +110,8 @@ import ObjectMapper
             case "externalIdentifier":
                 if let casted=value as? String{
                     self.externalIdentifier=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -137,7 +138,8 @@ import ObjectMapper
             case "category":
                return self.category
             case "externalIdentifier":
-               return self.externalIdentifier            default:
+               return self.externalIdentifier
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -62,7 +62,8 @@ import BartlebyKit
             case "salt":
                 if let casted=value as? String{
                     self.salt=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -83,7 +84,8 @@ import BartlebyKit
             case "password":
                return self.password
             case "salt":
-               return self.salt            default:
+               return self.salt
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

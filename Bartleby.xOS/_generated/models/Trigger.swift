@@ -117,7 +117,8 @@ import ObjectMapper
             case "payloads":
                 if let casted=value as? [[String:Any]]{
                     self.payloads=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -154,7 +155,8 @@ import ObjectMapper
             case "UIDS":
                return self.UIDS
             case "payloads":
-               return self.payloads            default:
+               return self.payloads
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -103,7 +103,8 @@ import ObjectMapper
             case "lastInvocationDate":
                 if let casted=value as? Date{
                     self.lastInvocationDate=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -134,7 +135,8 @@ import ObjectMapper
             case "creationDate":
                return self.creationDate
             case "lastInvocationDate":
-               return self.lastInvocationDate            default:
+               return self.lastInvocationDate
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }

@@ -131,7 +131,8 @@ import BartlebyKit
             case "size":
                 if let casted=value as? String{
                     self.size=casted
-                }            default:
+                }
+            default:
                 try super.setExposedValue(value, forKey: key)
         }
     }
@@ -158,7 +159,8 @@ import BartlebyKit
             case "directivesRelativePath":
                return self.directivesRelativePath
             case "size":
-               return self.size            default:
+               return self.size
+            default:
                 return try super.getExposedValueForKey(key)
         }
     }
