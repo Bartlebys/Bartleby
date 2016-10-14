@@ -30,22 +30,64 @@ import BartlebyKit
 	static open let DMG_EXTENSION:String = "sparseimage"
 
 	//The user Unique Identifier
-	dynamic open var userUID:String = "BsyncDMGCard.NOT_SET"
+	dynamic open var userUID:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	    didSet { 
+	       if userUID != oldValue {
+	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
+	       } 
+	    }
+	}
+
 
 	//Associated to a context (e.g. project UID)
-	dynamic open var contextUID:String = "BsyncDMGCard.NOT_SET"
+	dynamic open var contextUID:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	    didSet { 
+	       if contextUID != oldValue {
+	            self.provisionChanges(forKey: "contextUID",oldValue: oldValue,newValue: contextUID) 
+	       } 
+	    }
+	}
+
 
 	//The last kwnow path (if not correct the client should ask for a path  The full path including the ".sparseimage" extension.
-	dynamic open var imagePath:String = "BsyncDMGCard.NO_PATH"
+	dynamic open var imagePath:String = "\(BsyncDMGCard.NO_PATH)"{	 
+	    didSet { 
+	       if imagePath != oldValue {
+	            self.provisionChanges(forKey: "imagePath",oldValue: oldValue,newValue: imagePath) 
+	       } 
+	    }
+	}
+
 
 	//The associated volumeName
-	dynamic open var volumeName:String = "BsyncDMGCard.NOT_SET"
+	dynamic open var volumeName:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	    didSet { 
+	       if volumeName != oldValue {
+	            self.provisionChanges(forKey: "volumeName",oldValue: oldValue,newValue: volumeName) 
+	       } 
+	    }
+	}
+
 
 	// You can provide an optionnal sync directive path
-	dynamic open var directivesRelativePath:String = "BsyncDMGCard.NO_PATH"
+	dynamic open var directivesRelativePath:String = "\(BsyncDMGCard.NO_PATH)"{	 
+	    didSet { 
+	       if directivesRelativePath != oldValue {
+	            self.provisionChanges(forKey: "directivesRelativePath",oldValue: oldValue,newValue: directivesRelativePath) 
+	       } 
+	    }
+	}
+
 
 	//The size of the disk image : "1g" == 1 GB 
-	dynamic open var size:String = "10g"
+	dynamic open var size:String = "10g"{	 
+	    didSet { 
+	       if size != oldValue {
+	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size) 
+	       } 
+	    }
+	}
+
 
     // MARK: Mappable
 

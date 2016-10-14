@@ -212,7 +212,6 @@ import Foundation
     
     func detachVolume(_ named: String, handlers: Handlers) {
         handlers.appendCompletionHandler { (test) in
-            print("test")
         }
         self._dm.detachVolume(named, handlers: handlers)
     }
