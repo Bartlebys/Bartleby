@@ -29,7 +29,62 @@ import ObjectMapper
         super.init()
     }
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["ids","result_fields","sort"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "ids":
+                if let casted=value as? [String]{
+                    self.ids=casted
+                }
+            case "result_fields":
+                if let casted=value as? [String]{
+                    self.result_fields=casted
+                }
+            case "sort":
+                if let casted=value as? [String:Any]{
+                    self.sort=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "ids":
+               return self.ids
+            case "result_fields":
+               return self.result_fields
+            case "sort":
+               return self.sort            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -45,7 +100,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

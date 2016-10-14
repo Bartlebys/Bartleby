@@ -55,7 +55,110 @@ import ObjectMapper
 	//A collection of JSON payload
 	dynamic open var payloads:[[String:Any]]?
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["index","spaceUID","observationUID","senderUID","runUID","origin","targetCollectionName","creationDate","action","UIDS","payloads"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "index":
+                if let casted=value as? Int{
+                    self.index=casted
+                }
+            case "spaceUID":
+                if let casted=value as? String{
+                    self.spaceUID=casted
+                }
+            case "observationUID":
+                if let casted=value as? String{
+                    self.observationUID=casted
+                }
+            case "senderUID":
+                if let casted=value as? String{
+                    self.senderUID=casted
+                }
+            case "runUID":
+                if let casted=value as? String{
+                    self.runUID=casted
+                }
+            case "origin":
+                if let casted=value as? String{
+                    self.origin=casted
+                }
+            case "targetCollectionName":
+                if let casted=value as? String{
+                    self.targetCollectionName=casted
+                }
+            case "creationDate":
+                if let casted=value as? Date{
+                    self.creationDate=casted
+                }
+            case "action":
+                if let casted=value as? String{
+                    self.action=casted
+                }
+            case "UIDS":
+                if let casted=value as? String{
+                    self.UIDS=casted
+                }
+            case "payloads":
+                if let casted=value as? [[String:Any]]{
+                    self.payloads=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "index":
+               return self.index
+            case "spaceUID":
+               return self.spaceUID
+            case "observationUID":
+               return self.observationUID
+            case "senderUID":
+               return self.senderUID
+            case "runUID":
+               return self.runUID
+            case "origin":
+               return self.origin
+            case "targetCollectionName":
+               return self.targetCollectionName
+            case "creationDate":
+               return self.creationDate
+            case "action":
+               return self.action
+            case "UIDS":
+               return self.UIDS
+            case "payloads":
+               return self.payloads            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -79,7 +182,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

@@ -113,7 +113,176 @@ import ObjectMapper
 	}
 
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","triggersIndexes","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "spaceUID":
+                if let casted=value as? String{
+                    self.spaceUID=casted
+                }
+            case "currentUser":
+                if let casted=value as? User{
+                    self.currentUser=casted
+                }
+            case "identificationMethod":
+                if let casted=value as? RegistryMetadata.IdentificationMethod{
+                    self.identificationMethod=casted
+                }
+            case "identificationValue":
+                if let casted=value as? String{
+                    self.identificationValue=casted
+                }
+            case "rootObjectUID":
+                if let casted=value as? String{
+                    self.rootObjectUID=casted
+                }
+            case "collaborationServerURL":
+                if let casted=value as? URL{
+                    self.collaborationServerURL=casted
+                }
+            case "collectionsMetadata":
+                if let casted=value as? [CollectionMetadatum]{
+                    self.collectionsMetadata=casted
+                }
+            case "stateDictionary":
+                if let casted=value as? [String:Any]{
+                    self.stateDictionary=casted
+                }
+            case "URLBookmarkData":
+                if let casted=value as? [String:Any]{
+                    self.URLBookmarkData=casted
+                }
+            case "preferredFileName":
+                if let casted=value as? String{
+                    self.preferredFileName=casted
+                }
+            case "triggersIndexesDebugHistory":
+                if let casted=value as? [Int]{
+                    self.triggersIndexesDebugHistory=casted
+                }
+            case "triggersIndexes":
+                if let casted=value as? [Int]{
+                    self.triggersIndexes=casted
+                }
+            case "ownedTriggersIndexes":
+                if let casted=value as? [Int]{
+                    self.ownedTriggersIndexes=casted
+                }
+            case "lastIntegratedTriggerIndex":
+                if let casted=value as? Int{
+                    self.lastIntegratedTriggerIndex=casted
+                }
+            case "receivedTriggers":
+                if let casted=value as? [Trigger]{
+                    self.receivedTriggers=casted
+                }
+            case "operationsQuarantine":
+                if let casted=value as? [PushOperation]{
+                    self.operationsQuarantine=casted
+                }
+            case "bunchInProgress":
+                if let casted=value as? Bool{
+                    self.bunchInProgress=casted
+                }
+            case "totalNumberOfOperations":
+                if let casted=value as? Int{
+                    self.totalNumberOfOperations=casted
+                }
+            case "pendingOperationsProgressionState":
+                if let casted=value as? Progression{
+                    self.pendingOperationsProgressionState=casted
+                }
+            case "online":
+                if let casted=value as? Bool{
+                    self.online=casted
+                }
+            case "pushOnChanges":
+                if let casted=value as? Bool{
+                    self.pushOnChanges=casted
+                }
+            case "saveThePassword":
+                if let casted=value as? Bool{
+                    self.saveThePassword=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "spaceUID":
+               return self.spaceUID
+            case "currentUser":
+               return self.currentUser
+            case "identificationMethod":
+               return self.identificationMethod
+            case "identificationValue":
+               return self.identificationValue
+            case "rootObjectUID":
+               return self.rootObjectUID
+            case "collaborationServerURL":
+               return self.collaborationServerURL
+            case "collectionsMetadata":
+               return self.collectionsMetadata
+            case "stateDictionary":
+               return self.stateDictionary
+            case "URLBookmarkData":
+               return self.URLBookmarkData
+            case "preferredFileName":
+               return self.preferredFileName
+            case "triggersIndexesDebugHistory":
+               return self.triggersIndexesDebugHistory
+            case "triggersIndexes":
+               return self.triggersIndexes
+            case "ownedTriggersIndexes":
+               return self.ownedTriggersIndexes
+            case "lastIntegratedTriggerIndex":
+               return self.lastIntegratedTriggerIndex
+            case "receivedTriggers":
+               return self.receivedTriggers
+            case "operationsQuarantine":
+               return self.operationsQuarantine
+            case "bunchInProgress":
+               return self.bunchInProgress
+            case "totalNumberOfOperations":
+               return self.totalNumberOfOperations
+            case "pendingOperationsProgressionState":
+               return self.pendingOperationsProgressionState
+            case "online":
+               return self.online
+            case "pushOnChanges":
+               return self.pushOnChanges
+            case "saveThePassword":
+               return self.saveThePassword            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -145,7 +314,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

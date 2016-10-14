@@ -68,7 +68,80 @@ import ObjectMapper
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["success","statusCode","message","data","category","externalIdentifier"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "success":
+                if let casted=value as? Bool{
+                    self.success=casted
+                }
+            case "statusCode":
+                if let casted=value as? Int{
+                    self.statusCode=casted
+                }
+            case "message":
+                if let casted=value as? String{
+                    self.message=casted
+                }
+            case "data":
+                if let casted=value as? Data{
+                    self.data=casted
+                }
+            case "category":
+                if let casted=value as? String{
+                    self.category=casted
+                }
+            case "externalIdentifier":
+                if let casted=value as? String{
+                    self.externalIdentifier=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "success":
+               return self.success
+            case "statusCode":
+               return self.statusCode
+            case "message":
+               return self.message
+            case "data":
+               return self.data
+            case "category":
+               return self.category
+            case "externalIdentifier":
+               return self.externalIdentifier            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -87,7 +160,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

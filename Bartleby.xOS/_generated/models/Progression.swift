@@ -91,7 +91,98 @@ import ObjectMapper
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["startTime","currentTaskIndex","totalTaskCount","currentPercentProgress","message","informations","data","category","externalIdentifier"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "startTime":
+                if let casted=value as? Double{
+                    self.startTime=casted
+                }
+            case "currentTaskIndex":
+                if let casted=value as? Int{
+                    self.currentTaskIndex=casted
+                }
+            case "totalTaskCount":
+                if let casted=value as? Int{
+                    self.totalTaskCount=casted
+                }
+            case "currentPercentProgress":
+                if let casted=value as? Double{
+                    self.currentPercentProgress=casted
+                }
+            case "message":
+                if let casted=value as? String{
+                    self.message=casted
+                }
+            case "informations":
+                if let casted=value as? String{
+                    self.informations=casted
+                }
+            case "data":
+                if let casted=value as? Data{
+                    self.data=casted
+                }
+            case "category":
+                if let casted=value as? String{
+                    self.category=casted
+                }
+            case "externalIdentifier":
+                if let casted=value as? String{
+                    self.externalIdentifier=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "startTime":
+               return self.startTime
+            case "currentTaskIndex":
+               return self.currentTaskIndex
+            case "totalTaskCount":
+               return self.totalTaskCount
+            case "currentPercentProgress":
+               return self.currentPercentProgress
+            case "message":
+               return self.message
+            case "informations":
+               return self.informations
+            case "data":
+               return self.data
+            case "category":
+               return self.category
+            case "externalIdentifier":
+               return self.externalIdentifier            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -113,7 +204,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

@@ -153,7 +153,122 @@ import ObjectMapper
 	//set to true on the first successfull login in the session (this property is not serialized)
 	dynamic open var loginHasSucceed:Bool = false
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["externalID","spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","tags","notes","loginHasSucceed"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "externalID":
+                if let casted=value as? String{
+                    self.externalID=casted
+                }
+            case "spaceUID":
+                if let casted=value as? String{
+                    self.spaceUID=casted
+                }
+            case "verificationMethod":
+                if let casted=value as? User.VerificationMethod{
+                    self.verificationMethod=casted
+                }
+            case "firstname":
+                if let casted=value as? String{
+                    self.firstname=casted
+                }
+            case "lastname":
+                if let casted=value as? String{
+                    self.lastname=casted
+                }
+            case "email":
+                if let casted=value as? String{
+                    self.email=casted
+                }
+            case "phoneNumber":
+                if let casted=value as? String{
+                    self.phoneNumber=casted
+                }
+            case "password":
+                if let casted=value as? String{
+                    self.password=casted
+                }
+            case "activationCode":
+                if let casted=value as? String{
+                    self.activationCode=casted
+                }
+            case "status":
+                if let casted=value as? User.Status{
+                    self.status=casted
+                }
+            case "tags":
+                if let casted=value as? [ExternalReference]{
+                    self.tags=casted
+                }
+            case "notes":
+                if let casted=value as? String{
+                    self.notes=casted
+                }
+            case "loginHasSucceed":
+                if let casted=value as? Bool{
+                    self.loginHasSucceed=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "externalID":
+               return self.externalID
+            case "spaceUID":
+               return self.spaceUID
+            case "verificationMethod":
+               return self.verificationMethod
+            case "firstname":
+               return self.firstname
+            case "lastname":
+               return self.lastname
+            case "email":
+               return self.email
+            case "phoneNumber":
+               return self.phoneNumber
+            case "password":
+               return self.password
+            case "activationCode":
+               return self.activationCode
+            case "status":
+               return self.status
+            case "tags":
+               return self.tags
+            case "notes":
+               return self.notes
+            case "loginHasSucceed":
+               return self.loginHasSucceed            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -178,7 +293,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)

@@ -53,7 +53,92 @@ import ObjectMapper
 	//The last invocation date
 	dynamic open var lastInvocationDate:Date?
 
-    // MARK: Mappable
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["commandUID","toDictionary","responseDictionary","completionState","status","counter","creationDate","lastInvocationDate"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+
+            case "commandUID":
+                if let casted=value as? String{
+                    self.commandUID=casted
+                }
+            case "toDictionary":
+                if let casted=value as? [String:Any]{
+                    self.toDictionary=casted
+                }
+            case "responseDictionary":
+                if let casted=value as? [String:Any]{
+                    self.responseDictionary=casted
+                }
+            case "completionState":
+                if let casted=value as? Completion{
+                    self.completionState=casted
+                }
+            case "status":
+                if let casted=value as? PushOperation.Status{
+                    self.status=casted
+                }
+            case "counter":
+                if let casted=value as? Int{
+                    self.counter=casted
+                }
+            case "creationDate":
+                if let casted=value as? Date{
+                    self.creationDate=casted
+                }
+            case "lastInvocationDate":
+                if let casted=value as? Date{
+                    self.lastInvocationDate=casted
+                }            default:
+                try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws JObjectExpositionError when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+
+            case "commandUID":
+               return self.commandUID
+            case "toDictionary":
+               return self.toDictionary
+            case "responseDictionary":
+               return self.responseDictionary
+            case "completionState":
+               return self.completionState
+            case "status":
+               return self.status
+            case "counter":
+               return self.counter
+            case "creationDate":
+               return self.creationDate
+            case "lastInvocationDate":
+               return self.lastInvocationDate            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Mappable
 
     required public init?(map: Map) {
         super.init(map:map)
@@ -74,7 +159,7 @@ import ObjectMapper
     }
 
 
-    // MARK: NSSecureCoding
+    // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
