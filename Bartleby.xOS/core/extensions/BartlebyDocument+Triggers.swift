@@ -465,8 +465,10 @@ extension BartlebyDocument {
                                 let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,
                                 let collectionName=JSONDictionary["c"] as? String,
-                                let uids=JSONDictionary["u"] as? String,
-                                let payloads=JSONDictionary["p"] as? [[String:Any]]{
+                                let uids=JSONDictionary["u"] as? String{
+
+                                // Note that Payloads are void on Deletion.
+                                let payloads=JSONDictionary["p"] as? [[String:Any]]
 
                                 let trigger=Trigger()
                                 trigger.spaceUID=self.spaceUID
