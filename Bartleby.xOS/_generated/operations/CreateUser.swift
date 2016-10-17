@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-@objc(CreateUser) public class CreateUser : JObject,JHTTPCommand{
+@objc(CreateUser) public class CreateUser : BartlebyObject,JHTTPCommand{
 
     // Universal type support
     override open class func typeName() -> String {
@@ -46,7 +46,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -59,7 +59,7 @@ import ObjectMapper
                     self._registryUID=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -68,7 +68,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -99,16 +99,14 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self._user=decoder.decodeObject(of:User.self, forKey: "_user")! 
 			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self._user,forKey:"_user")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }

@@ -15,7 +15,7 @@ import ObjectMapper
 
 
 
-@objc(ReadUserById) open class ReadUserById : JObject{
+@objc(ReadUserById) open class ReadUserById : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {

@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Data Primitive Wrapper.
-@objc(JData) open class JData : JObject{
+@objc(JData) open class JData : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "JData"
     }
-
 
 	//the data
 	dynamic open var data:Data? {	 
@@ -47,7 +46,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -56,7 +55,7 @@ import ObjectMapper
                     self.data=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -65,7 +64,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -93,15 +92,13 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		if let data = self.data {
 			coder.encode(data,forKey:"data")
 		}
@@ -112,7 +109,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -126,6 +123,4 @@ import ObjectMapper
         return JData.collectionName
     }
 
-
 }
-

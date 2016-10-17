@@ -39,7 +39,6 @@ extension BartlebyDocument {
         let indexes=triggers.map {$0.index}
         self.acknowledgeTriggerIndexes(indexes)
 
-
         // Proceed to loading or direct insertion of triggers.
         for trigger in triggers{
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
@@ -68,18 +67,33 @@ extension BartlebyDocument {
      - parameter index: the trigger index.
      */
     public func acknowledgeOwnedTriggerIndex(_ index:Int){
+
+
+        // TO BE QUALIFIED IS index < self.registryMetadata.lastIntegratedTriggerIndex relevant?
+
+        if(index < self.registryMetadata.lastIntegratedTriggerIndex){
+            // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
+            TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:index-1, sucessHandler: { (triggers) in
+                bprint("Trying to resolve Divergences from index \(index-1)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
+                // What to do on failure ?
+                bprint("Failure on Divergences resolution Attempt",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+            }
+        }
+
+
+        // Normal case.
         if self.registryMetadata.triggersIndexes.contains(index) {
             bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
         }else{
-            // We want ownedTriggersIndexes to be sorted
-            self.registryMetadata.ownedTriggersIndexes.sort { (lIdx, rIdx) -> Bool in
-                return lIdx<rIdx
-            }
             self.registryMetadata.ownedTriggersIndexes.append(index)
             let indexes=[index]
             self.acknowledgeTriggerIndexes(indexes)
         }
+
         self._integrateContiguousData()
+
     }
 
 
@@ -117,9 +131,6 @@ extension BartlebyDocument {
 
      */
     fileprivate func _integrateContiguousData(){
-
-        // We proceed on the main queue
-        //GlobalQueue.main.get().async {
 
         // #1 Integrate contigous data
 
@@ -434,7 +445,6 @@ extension BartlebyDocument {
             bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
 
             self._sse!.addEventListener("relay") { (id, event, data) in
-                bprint("\(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
 
                 // Parse the Data
 
@@ -460,7 +470,6 @@ extension BartlebyDocument {
                 do {
                     if let dataFromString=data?.data(using: String.Encoding.utf8){
                         if let JSONDictionary = try JSONSerialization.jsonObject(with: dataFromString, options:.allowFragments) as? [String:Any] {
-                            bprint("\(JSONDictionary)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
                             if  let index:Int=JSONDictionary["i"] as? Int,
                                 let observationUID:String=JSONDictionary["o"] as? String,
                                 let action:String=JSONDictionary["a"] as? String,

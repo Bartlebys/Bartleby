@@ -46,12 +46,12 @@ import Cocoa
             registry.registryMetadata.changedKeys.removeAll()
             registry.registryMetadata.currentUser?.changedKeys.removeAll()
             registry.iterateOnCollections({ (collection) in
-                if let o = collection as? JObject{
+                if let o = collection as? BartlebyObject{
                     o.changedKeys.removeAll()
                 }
             })
             registry.superIterate({ (element) in
-                if let o = element as? JObject{
+                if let o = element as? BartlebyObject{
                     o.changedKeys.removeAll()
                 }
             })
@@ -174,7 +174,7 @@ import Cocoa
         if selected==nil {
             print("NIL")
         }
-        if let object=selected as? JObject{
+        if let object=selected as? BartlebyObject{
             // Did the type of represented object changed.
             if object.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
 
@@ -260,7 +260,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return self._collections.count + 1
         }
 
-        if let object=item as? JObject{
+        if let object=item as? BartlebyObject{
             if let collection  = object as?  BartlebyCollection {
                 return collection.count
             }
@@ -281,7 +281,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }
         }
 
-        if let object=item as? JObject{
+        if let object=item as? BartlebyObject{
             if let collection  = object as? BartlebyCollection {
                 if let element=collection.item(at: index){
                     return element
@@ -294,7 +294,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        if let object=item as? JObject{
+        if let object=item as? BartlebyObject{
             return object is BartlebyCollection
         }
         return false
@@ -328,7 +328,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     //MARK: - NSOutlineViewDelegate
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        if let object = item as? JObject{
+        if let object = item as? BartlebyObject{
             if let casted=object as? BartlebyCollection {
                 let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
@@ -401,10 +401,10 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        if let object=item as? JObject {
+        if let object=item as? BartlebyObject {
             if object is BartlebyCollection { return 20 }
             if object is RegistryMetadata { return 20 }
-            return 20 // Any JObject
+            return 20 // Any BartlebyObject
         }
         if item is String{ return 20 }
         return 30 // This is not normal.
@@ -420,7 +420,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineViewSelectionDidChange(_ notification: Notification) {
         GlobalQueue.main.get().async {
             let selected=self._outlineView.selectedRow
-            if let item=self._outlineView.item(atRow: selected) as? JObject {
+            if let item=self._outlineView.item(atRow: selected) as? BartlebyObject {
                 self._selectionHandler(item)
             }
         }

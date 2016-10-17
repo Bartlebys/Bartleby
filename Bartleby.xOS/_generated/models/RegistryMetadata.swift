@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in JRegistryMetadata. All its properties are not supervisable.
-@objc(RegistryMetadata) open class RegistryMetadata : JObject{
+@objc(RegistryMetadata) open class RegistryMetadata : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "RegistryMetadata"
     }
-
 
 	//The data space UID can be shared between multiple registries.
 	dynamic open var spaceUID:String = "\(Default.NO_UID)"
@@ -128,7 +127,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -221,7 +220,7 @@ import ObjectMapper
                     self.saveThePassword=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -230,7 +229,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -318,8 +317,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
@@ -343,8 +341,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		if let currentUser = self.currentUser {
 			coder.encode(currentUser,forKey:"currentUser")
@@ -379,7 +376,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -393,6 +390,4 @@ import ObjectMapper
         return RegistryMetadata.collectionName
     }
 
-
 }
-

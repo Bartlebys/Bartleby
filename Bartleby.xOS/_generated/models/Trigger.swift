@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
-@objc(Trigger) open class Trigger : JObject{
+@objc(Trigger) open class Trigger : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "Trigger"
     }
-
 
 	//The index is injected server side (each dataspace-registry) has it own counter)
 	dynamic open var index:Int = -1
@@ -70,7 +69,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -119,7 +118,7 @@ import ObjectMapper
                     self.payloads=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -128,7 +127,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -186,8 +185,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.index=decoder.decodeInteger(forKey:"index") 
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
@@ -203,8 +201,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.index,forKey:"index")
 		if let spaceUID = self.spaceUID {
 			coder.encode(spaceUID,forKey:"spaceUID")
@@ -237,7 +234,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -251,6 +248,4 @@ import ObjectMapper
         return Trigger.collectionName
     }
 
-
 }
-

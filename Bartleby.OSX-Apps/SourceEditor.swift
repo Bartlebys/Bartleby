@@ -10,7 +10,7 @@ import Cocoa
 
 class SourceEditor: NSViewController,Editor {
 
-    typealias EditorOf=JObject
+    typealias EditorOf=BartlebyObject
 
     var UID:String=Bartleby.createUID()
 

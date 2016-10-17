@@ -47,7 +47,7 @@ public protocol Exposed{
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     func setExposedValue(_ value:Any?, forKey key: String) throws
 
 
@@ -55,7 +55,7 @@ public protocol Exposed{
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     func getExposedValueForKey(_ key:String) throws -> Any?

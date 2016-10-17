@@ -185,7 +185,7 @@ public protocol RegistryDependent {
      ## Let's take an advanced example:
 
      ```
-     public class Alias<T:Collectible>:JObject {
+     public class Alias<T:Collectible>:BartlebyObject {
 
      override public class func typeName() -> String {
      return "Alias<\(T.typeName())>"

@@ -15,13 +15,12 @@ import BartlebyKit
 #endif
 
 // MARK: Swift Adapter to Objective C Hash Map
-@objc(BsyncHashMap) open class BsyncHashMap : JObject{
+@objc(BsyncHashMap) open class BsyncHashMap : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "BsyncHashMap"
     }
-
 
 	dynamic open var pathToHash:[String:Any] = [String:Any]()
 
@@ -40,7 +39,7 @@ import BartlebyKit
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -49,7 +48,7 @@ import BartlebyKit
                     self.pathToHash=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -58,7 +57,7 @@ import BartlebyKit
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -86,15 +85,13 @@ import BartlebyKit
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.pathToHash=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "pathToHash")as! [String:Any]
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.pathToHash,forKey:"pathToHash")
     }
 
@@ -103,7 +100,7 @@ import BartlebyKit
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -117,6 +114,4 @@ import BartlebyKit
         return BsyncHashMap.collectionName
     }
 
-
 }
-

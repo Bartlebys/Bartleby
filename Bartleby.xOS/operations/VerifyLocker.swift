@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 
-open class VerifyLocker: JObject {
+open class VerifyLocker: BartlebyObject {
 
     // Universal type support
     override open class func typeName() -> String {

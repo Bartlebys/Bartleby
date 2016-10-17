@@ -10,7 +10,7 @@ import Cocoa
 
 @objc class ChangesViewController: NSViewController,Editor,Identifiable{
 
-    typealias EditorOf=JObject
+    typealias EditorOf=BartlebyObject
 
     var UID:String=Bartleby.createUID()
 

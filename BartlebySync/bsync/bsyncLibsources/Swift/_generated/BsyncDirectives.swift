@@ -22,7 +22,6 @@ import BartlebyKit
         return "BsyncDirectives"
     }
 
-
 	//The possible distants schemes
 	static open let distantSchemes:[String] = ["http", "https", "ftp", "ftps"]
 
@@ -59,7 +58,7 @@ import BartlebyKit
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -84,7 +83,7 @@ import BartlebyKit
                     self.automaticTreeCreation=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -93,7 +92,7 @@ import BartlebyKit
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -133,8 +132,7 @@ import BartlebyKit
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.sourceURL=decoder.decodeObject(of: NSURL.self, forKey:"sourceURL") as URL?
 			self.destinationURL=decoder.decodeObject(of: NSURL.self, forKey:"destinationURL") as URL?
@@ -144,8 +142,7 @@ import BartlebyKit
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		if let sourceURL = self.sourceURL {
 			coder.encode(sourceURL,forKey:"sourceURL")
 		}
@@ -164,7 +161,7 @@ import BartlebyKit
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -178,6 +175,4 @@ import BartlebyKit
         return BsyncDirectives.collectionName
     }
 
-
 }
-

@@ -12,7 +12,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 #endif
-@objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : JObject {
+@objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : BartlebyObject {
 	
 	// Universal type support
 	override open class func typeName() -> String {
@@ -44,7 +44,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -61,7 +61,7 @@ import ObjectMapper
                     self.sort=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -70,7 +70,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -104,8 +104,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.ids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ids") as? [String]
 			self.result_fields=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "result_fields") as? [String]
@@ -113,8 +112,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		if let ids = self.ids {
 			coder.encode(ids,forKey:"ids")
 		}
@@ -134,7 +132,7 @@ import ObjectMapper
 
 
 
-@objc(ReadLockersByIds) open class ReadLockersByIds : JObject{
+@objc(ReadLockersByIds) open class ReadLockersByIds : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {

@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Commons: A progression state
-@objc(Progression) open class Progression : JObject{
+@objc(Progression) open class Progression : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "Progression"
     }
-
 
 	//The start time of the progression state
 	open var startTime:Double?
@@ -106,7 +105,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -147,7 +146,7 @@ import ObjectMapper
                     self.externalIdentifier=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -156,7 +155,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -208,8 +207,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.startTime=decoder.decodeDouble(forKey:"startTime") 
 			self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
@@ -223,8 +221,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		if let startTime = self.startTime {
 			coder.encode(startTime,forKey:"startTime")
 		}
@@ -245,7 +242,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -259,6 +256,4 @@ import ObjectMapper
         return Progression.collectionName
     }
 
-
 }
-

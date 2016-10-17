@@ -20,7 +20,7 @@ import ObjectMapper
 
 // This controller implements data automation features.
 
-@objc(PushOperationsCollectionController) open class PushOperationsCollectionController : JObject,IterableCollectibleCollection{
+@objc(PushOperationsCollectionController) open class PushOperationsCollectionController : BartlebyObject,IterableCollectibleCollection{
 
     // Universal type support
     override open class func typeName() -> String {
@@ -205,7 +205,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -214,7 +214,7 @@ import ObjectMapper
                     self.items=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -223,7 +223,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -245,9 +245,9 @@ import ObjectMapper
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self.items <- ( map["items"] )
-			
-          if map.mappingType == .fromJSON {
-                forEach { $0.collection=self }
+
+            if map.mappingType == .fromJSON {
+               forEach { $0.collection=self }
             }
         }
     }
@@ -255,16 +255,13 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "items")! as! [PushOperation]
-			
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.items,forKey:"items")
     }
 

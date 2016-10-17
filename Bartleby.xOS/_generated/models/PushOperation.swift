@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not supervisable
-@objc(PushOperation) open class PushOperation : JObject{
+@objc(PushOperation) open class PushOperation : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "PushOperation"
     }
-
 
 	//The unique identifier of the related Command
 	dynamic open var commandUID:String?
@@ -68,7 +67,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -105,7 +104,7 @@ import ObjectMapper
                     self.lastInvocationDate=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -114,7 +113,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -163,8 +162,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
 			self.toDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "toDictionary")as? [String:Any]
@@ -177,8 +175,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		if let commandUID = self.commandUID {
 			coder.encode(commandUID,forKey:"commandUID")
 		}
@@ -206,7 +203,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -220,6 +217,4 @@ import ObjectMapper
         return PushOperation.collectionName
     }
 
-
 }
-

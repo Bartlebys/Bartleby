@@ -4,7 +4,7 @@
 
 # Up and Down Streams
 
-1. *UpStream* data Synchronization is performed by calling A Restful API (the collaboration server) 
+1. *UpStream* data Synchronization is performed by calling A Restful API (on the collaboration server) 
 2. *DownStream* data Synchronization is mediated by 'Server Sent Event' triggers that Transmit the operations **payloads** to the concerned members. 
 
 *UpStream changes* are operated by the Client Supervision Loop `BartlebyDocument+Operations.swift` generally at 1Hz (total duration = 1 second + data upload + trigger index consignation. Operations are grouped by bunch in a FIFO sequential stack)
@@ -92,8 +92,10 @@ If a user stays offline its data is not synchronized. **Q.E.D.**
 ## How to detect and correct Divergences?
 
 Each trigger has a unique primary trigger index per observationUID.
-1. "Deletions divergences" **resolution**:when receiving an owned delete trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
-2. "Concurrent updates" case **resolution**: when receiving an owned update trigger index if it is inferior to last received Read trigger Index for this entity, we must be READ again the entity state on the server.
+
+### Resolution of divergences
+
+When receiving an owned delete trigger index if it is inferior to last integrated trigger Index, we should be READ again the entities state on the server from the owned index to the last available. This solution applies to "Deletions divergences" &"Concurrent updates".
 
 
 ## Faults related to ACL 
@@ -177,4 +179,4 @@ Faults related to ACL may produce local deletions.
 
 # Off line policies
 
-You are free to enforce the ACL by a client side policy that reduce off-line impact.
+You are free to enforce the ACL by a client side policy that reduce off-line impact.&&&&&&&&&&&&&&&&&&&&&&&&&&&aaaaa	a@&		a@&	aaa		@	

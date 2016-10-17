@@ -6,17 +6,13 @@
 //
 //
 
-
-//class TriggersForIndexes: JObject
-
-
 import Foundation
 #if !USE_EMBEDDED_MODULES
     import Alamofire
     import ObjectMapper
 #endif
 
-@objc(TriggersForIndexes) open class TriggersForIndexes: JObject {
+@objc(TriggersForIndexes) open class TriggersForIndexes: BartlebyObject {
 
     // Universal type support
     override open class func typeName() -> String {

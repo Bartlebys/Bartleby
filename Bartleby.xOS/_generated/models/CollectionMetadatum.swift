@@ -14,13 +14,12 @@ import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) open class CollectionMetadatum : JObject{
+@objc(CollectionMetadatum) open class CollectionMetadatum : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "CollectionMetadatum"
     }
-
 
 	//the used file storage
 	public enum Storage:String{
@@ -32,7 +31,7 @@ import ObjectMapper
 	dynamic open var collectionName:String = "\(Default.NO_NAME)"
 
 	//The proxy object (not serializable, not supervisable)
-	dynamic open var proxy:JObject?
+	dynamic open var proxy:BartlebyObject?
 
 	//Allow distant persistency?
 	dynamic open var persistsDistantly:Bool = true
@@ -55,7 +54,7 @@ import ObjectMapper
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -68,7 +67,7 @@ import ObjectMapper
                     self.collectionName=casted
                 }
             case "proxy":
-                if let casted=value as? JObject{
+                if let casted=value as? BartlebyObject{
                     self.proxy=casted
                 }
             case "persistsDistantly":
@@ -80,7 +79,7 @@ import ObjectMapper
                     self.inMemory=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -89,7 +88,7 @@ import ObjectMapper
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -128,8 +127,7 @@ import ObjectMapper
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
 			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
@@ -138,8 +136,7 @@ import ObjectMapper
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.storage.rawValue ,forKey:"storage")
 		coder.encode(self.collectionName,forKey:"collectionName")
 		coder.encode(self.persistsDistantly,forKey:"persistsDistantly")
@@ -151,7 +148,7 @@ import ObjectMapper
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -165,6 +162,4 @@ import ObjectMapper
         return CollectionMetadatum.collectionName
     }
 
-
 }
-

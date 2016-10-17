@@ -15,13 +15,12 @@ import BartlebyKit
 #endif
 
 // MARK: A DMG card enable store the data required to unlock the DMG.
-@objc(BsyncDMGCard) open class BsyncDMGCard : JObject{
+@objc(BsyncDMGCard) open class BsyncDMGCard : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
         return "BsyncDMGCard"
     }
-
 
 	static open let NO_PATH:String = "none"
 
@@ -104,7 +103,7 @@ import BartlebyKit
     /// - parameter value: the value
     /// - parameter key:   the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
 
@@ -133,7 +132,7 @@ import BartlebyKit
                     self.size=casted
                 }
             default:
-                try super.setExposedValue(value, forKey: key)
+                throw ObjectExpositionError.UnknownKey(key: key)
         }
     }
 
@@ -142,7 +141,7 @@ import BartlebyKit
     ///
     /// - parameter key: the key
     ///
-    /// - throws: throws JObjectExpositionError when the key is not exposed
+    /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
@@ -185,8 +184,7 @@ import BartlebyKit
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
 			self.contextUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "contextUID")! as NSString)
@@ -197,8 +195,7 @@ import BartlebyKit
         }
     }
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.userUID,forKey:"userUID")
 		coder.encode(self.contextUID,forKey:"contextUID")
 		coder.encode(self.imagePath,forKey:"imagePath")
@@ -212,7 +209,7 @@ import BartlebyKit
     }
 
 
-    required public init() {
+     required public init() {
         super.init()
     }
 
@@ -226,6 +223,4 @@ import BartlebyKit
         return BsyncDMGCard.collectionName
     }
 
-
 }
-

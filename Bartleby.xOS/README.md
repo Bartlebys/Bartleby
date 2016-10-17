@@ -65,7 +65,7 @@ var distributed:Bool=false
 Let's imagine a Project model
 
 ```swift
-class Project : JObject{
+class Project : BartlebyObject{
     ...
     var score:Float=0
 }

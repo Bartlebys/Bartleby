@@ -11,7 +11,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc(JHTTPResponse) open class JHTTPResponse: JObject, HTTPResponse {
+@objc(JHTTPResponse) open class JHTTPResponse: BartlebyObject, HTTPResponse {
 
 
     // Universal type support

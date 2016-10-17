@@ -1,5 +1,5 @@
 //
-//  CryptedJObjectTransform.swift
+//  CryptedSerializableTransform.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 21/04/2016.
