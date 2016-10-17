@@ -209,10 +209,10 @@ open class  Bartleby: Consignee {
     fileprivate static var _printBPrintEntries: Bool=false
 
     open static let startTime=CFAbsoluteTimeGetCurrent()
-    open static  var bprintCollection=BprintCollection()
+    open static  var bprintCollection=PrintEntries()
 
 
-    open static var bPrintObservers=[BprintObserver]()
+    open static var bPrintObservers=[PrintEntriesObserver]()
 
     /**
      Print indirection with contextual informations.
@@ -227,7 +227,7 @@ open class  Bartleby: Consignee {
     open static func bprint(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
         if(self._enableBPrint) {
             let elapsed=Bartleby.elapsedTime
-            let entry=BprintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
+            let entry=PrintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
             Bartleby.bprintCollection.entries.insert(entry, at: 0)
             for observers in bPrintObservers{
                 observers.acknowledge(entry)
@@ -247,7 +247,7 @@ open class  Bartleby: Consignee {
 
      - returns: a dump of the entries
      */
-    open static func getBprintEntries(_ matching:@escaping (_ entry: BprintEntry) -> Bool )->String{
+    open static func getBprintEntries(_ matching:@escaping (_ entry: PrintEntry) -> Bool )->String{
         let entries=Bartleby.bprintCollection.entries.filter { (entry) -> Bool in
             return matching(entry)
         }
@@ -303,7 +303,7 @@ open class  Bartleby: Consignee {
 
      - parameter matching: the filter closure
      */
-    open static func dumpBprintEntries(_ matching:@escaping (_ entry: BprintEntry) -> Bool,fileName:String?){
+    open static func dumpBprintEntries(_ matching:@escaping (_ entry: PrintEntry) -> Bool,fileName:String?){
 
         let log=Bartleby.getBprintEntries(matching)
         let date=Date()
@@ -419,113 +419,8 @@ open class  Bartleby: Consignee {
 
 }
 
-public protocol BprintObserver{
-
-    func acknowledge(_ entry:BprintEntry);
-}
-
-// MARK: - BprintEntry
-
-
-@objc(BprintCollection) open class BprintCollection:NSObject,Mappable{
-
-    open dynamic var entries=[BprintEntry]()
-
-    override public init(){
-    }
-
-    // MARK: - Mappable
-
-    public required init?(map: Map) {
-    }
-
-    open func mapping(map: Map) {
-        self.entries <- map["entries"]
-    }
-
-}
 
 
 
-/**
- *  A struct to insure temporary persistency of a BprintEntry
- */
-@objc(BprintEntry) open class BprintEntry:NSObject,Mappable{
 
-    open var counter: Int=0
-    open var message: String=""
-    open var file: String=""
-    open var function: String=""
-    open var line: Int=0
-    open var category: String=""
-    open var elapsed:CFAbsoluteTime=0
-    open var decorative:Bool=false
-    fileprivate var _runUID:String=Bartleby.runUID
-
-    override public init(){
-    }
-
-    public init(counter:Int,message: String, file: String, function: String, line: Int, category: String,elapsed:CFAbsoluteTime,decorative:Bool=false){
-        self.counter=counter
-        self.message=message
-        self.file=BprintEntry.extractFileName(file)
-        self.function=function
-        self.line=line
-        self.category=category
-        self.elapsed=elapsed
-        self.decorative=decorative
-    }
-
-    func padded<T>(_ number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
-        var s="\(number)"
-        while s.characters.count < numberOfDigit {
-            if left {
-                s=char+s
-            } else {
-                s=s+char
-            }
-        }
-        return s
-    }
-
-    static func extractFileName(_ s: String) -> String {
-        let components=s.components(separatedBy: "/")
-        if components.count>0 {
-            return components.last!
-        }
-        return ""
-    }
-
-    override open var description: String {
-        if decorative {
-            return "\(message)"
-        }
-        let s="\(self.padded(counter, 6)) \( category) | \(self.padded( elapsed, 3, "0", false)) \(file)/\(function)#\(line) : \(message)"
-        return  s
-    }
-
-    // MARK: - Mappable
-
-    public required init?(map: Map) {
-    }
-
-
-    open func mapping(map: Map) {
-        self.counter <- map["counter"]
-        self.message <- map["message"]
-        self.file <- map["file"]
-        self.function <- map["function"]
-        self.line <- map["line"]
-        self.category <- map["line"]
-        self.elapsed <- map["elapsed"]
-        self.decorative <- map["decorative"]
-        self._runUID <- map["runUID"]
-    }
-    
-}
-
-public extension NSObject{
-    // A short cut to Bartleby's Shared instance
-    public var b:Bartleby { return Bartleby.sharedInstance }
-}
 

@@ -95,7 +95,7 @@ Each trigger has a unique primary trigger index per observationUID.
 
 ### Resolution of divergences
 
-When receiving an owned delete trigger index if it is inferior to last integrated trigger Index, we should be READ again the entities state on the server from the owned index to the last available. This solution applies to "Deletions divergences" &"Concurrent updates".
+When receiving an owned delete trigger index if the version of current object is >= equal to the triggered version, we should be READ again the entities state on the server from the owned index to the last available. This solution applies to "Deletions divergences" &"Concurrent updates".
 
 
 ## Faults related to ACL 
@@ -179,4 +179,4 @@ Faults related to ACL may produce local deletions.
 
 # Off line policies
 
-You are free to enforce the ACL by a client side policy that reduce off-line impact.&&&&&&&&&&&&&&&&&&&&&&&&&&&aaaaa	a@&		a@&	aaa		@	
+You are free to enforce the ACL by a client side policy that reduce off-line impact.

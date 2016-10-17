@@ -13,10 +13,6 @@ import Foundation
 #endif
 
 
-extension Completion:ForwardableState {
-
-}
-
 extension Completion:Descriptible {
 
     public func toString() -> String {

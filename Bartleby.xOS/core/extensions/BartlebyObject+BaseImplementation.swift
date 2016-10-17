@@ -224,7 +224,10 @@ extension BartlebyObject{
     /// - parameter key:     the key
     /// - parameter changes: the description of the changes
     private func _appendChanges(key:String,changes:String){
-        self.changedKeys.append(KeyedChanges(key:key,changes:changes))
+        let kChanges=KeyedChanges()
+        kChanges.key=key
+        kChanges.changes=changes
+        self.changedKeys.append(kChanges)
     }
 
     /**

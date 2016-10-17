@@ -69,8 +69,6 @@ extension BartlebyDocument {
     public func acknowledgeOwnedTriggerIndex(_ index:Int){
 
 
-        // TO BE QUALIFIED IS index < self.registryMetadata.lastIntegratedTriggerIndex relevant?
-
         if(index < self.registryMetadata.lastIntegratedTriggerIndex){
             // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
             TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:index-1, sucessHandler: { (triggers) in

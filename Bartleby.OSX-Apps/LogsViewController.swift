@@ -23,7 +23,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var arrayController: NSArrayController!
 
-    dynamic var entries=[BprintEntry]()
+    dynamic var entries=[PrintEntry]()
 
     fileprivate var _lockFilterUpdate=false
 
@@ -79,7 +79,7 @@ class LogsViewController: NSViewController,RegistryDependent{
     fileprivate func _updateFilter() -> () {
         if !self._lockFilterUpdate{
             let predicate=NSPredicate { (object, _) -> Bool in
-                if let entry = object as? BprintEntry{
+                if let entry = object as? PrintEntry{
                     let searched=PString.ltrim(self.searchField.stringValue)
                     if searched != ""{
                         return entry.message.contains(searched)
@@ -105,37 +105,19 @@ class LogsViewController: NSViewController,RegistryDependent{
     }
 }
 
-extension LogsViewController:BprintObserver{
+extension LogsViewController:PrintEntriesObserver{
 
-    func acknowledge(_ entry:BprintEntry){
+    func acknowledge(_ entry:PrintEntry){
         GlobalQueue.main.get().async { 
             self.entries.insert(entry, at: 0)
         }
     }
 }
-/*
-
-extension LogsViewController:NSTableViewDataSource{
-
-    // MARK: NSTableViewDataSource
-
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int{
-        return self.arrayController.arrangedObjects.count ?? 0
-    }
-
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject?{
-        let item = self.arrayController.arrangedObjects.objectAtIndex(row)
-        return item
-    }
-
-
-}
-*/
 
 extension LogsViewController:NSTableViewDelegate{
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item = (self.arrayController.arrangedObjects as? NSArray)?.object(at:row) as? BprintEntry else {
+        guard let item = (self.arrayController.arrangedObjects as? NSArray)?.object(at:row) as? PrintEntry else {
             return 20
         }
         let width=self.messageColumn.width-80;

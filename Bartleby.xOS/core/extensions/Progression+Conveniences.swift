@@ -13,11 +13,6 @@ import Foundation
 
 // MARK: - Progression
 
-extension Progression:ForwardableState {
-
-}
-
-
 extension Progression:Descriptible {
 
     public func toString() -> String {
@@ -25,7 +20,6 @@ extension Progression:Descriptible {
     }
 
 }
-
 
 
 public extension Progression {
