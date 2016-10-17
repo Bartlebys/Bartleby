@@ -767,6 +767,7 @@
 				E50F3D891D40D50400532B09 /* Identifiable.swift */,
 				E50F3D8A1D40D50400532B09 /* Initializable.swift */,
 				E50F3D8C1D40D50400532B09 /* JSONString.swift */,
+				E5C3367E1DB53E6800B2F127 /* PrintEntriesObserver.swift */,
 				E5C3366A1DB5343000B2F127 /* Referenced.swift */,
 				E50F3D8D1D40D50400532B09 /* RegistryMetadataProtocol.swift */,
 				E50F3D8E1D40D50400532B09 /* Serializable.swift */,
@@ -775,7 +776,6 @@
 				E50F3D911D40D50400532B09 /* Supervisable.swift */,
 				E50F3D921D40D50400532B09 /* UniversalType.swift */,
 				E50F3D931D40D50400532B09 /* UserProtocol.swift */,
-				E5C3367E1DB53E6800B2F127 /* PrintEntriesObserver.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";

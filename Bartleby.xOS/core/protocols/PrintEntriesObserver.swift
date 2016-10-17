@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol PrintEntriesObserver{
-    func acknowledge(_ entry:PrintEntry);
+    func receive(_ entry:PrintEntry);
 }

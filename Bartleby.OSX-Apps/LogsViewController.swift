@@ -107,7 +107,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
 extension LogsViewController:PrintEntriesObserver{
 
-    func acknowledge(_ entry:PrintEntry){
+    func receive(_ entry:PrintEntry){
         GlobalQueue.main.get().async { 
             self.entries.insert(entry, at: 0)
         }

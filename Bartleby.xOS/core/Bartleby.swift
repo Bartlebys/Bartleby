@@ -230,7 +230,7 @@ open class  Bartleby: Consignee {
             let entry=PrintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
             Bartleby.bprintCollection.entries.insert(entry, at: 0)
             for observers in bPrintObservers{
-                observers.acknowledge(entry)
+                observers.receive(entry)
             }
             if (self._printBPrintEntries){
                 print(entry)
