@@ -13,7 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: The base object of any generated Object. Parts of the Collectible implementation is located the BaseObject class
+// MARK: Bartleby's Core: The base object of any other generated Object
 @objc(BartlebyObject) open class BartlebyObject : NSObject, Collectible, Mappable, NSSecureCoding{
 
     // Universal type support
