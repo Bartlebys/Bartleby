@@ -115,7 +115,7 @@ import Foundation
     /**
     This is the designated constructor.
 
-    - parameter user: the user concerned the operation
+    - parameter user: the User concerned the operation
     - parameter registryUID the registry or document UID
 
     */
@@ -176,6 +176,7 @@ import Foundation
                     self.creatorUID=currentUser.UID
                 }
 				self._user.committed=true
+
                 operation.toDictionary=self.dictionaryRepresentation()
                 operation.enableSupervision()
                 ic.add(operation, commit:false)
@@ -209,8 +210,8 @@ import Foundation
             operation.status=PushOperation.Status.inProgress
             UpdateUser.execute(self._user,
                 inRegistryWithUID:self._registryUID,
-                sucessHandler: { (context: JHTTPResponse) -> () in
-                    self._user.distributed=true
+                sucessHandler: { (context: JHTTPResponse) -> () in 
+					self._user.distributed=true
                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)

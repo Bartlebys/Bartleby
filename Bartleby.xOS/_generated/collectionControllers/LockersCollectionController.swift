@@ -412,7 +412,7 @@ import ObjectMapper
 
     
         if commit==true{
-            DeleteLocker.commit(item.UID,fromRegistryWithUID:self.registryUID) 
+            DeleteLocker.commit(item,fromRegistryWithUID:self.registryUID) 
         }
     }
 

@@ -115,7 +115,7 @@ import Foundation
     /**
     This is the designated constructor.
 
-    - parameter locker: the locker concerned the operation
+    - parameter locker: the Locker concerned the operation
     - parameter registryUID the registry or document UID
 
     */
@@ -176,6 +176,7 @@ import Foundation
                     self.creatorUID=currentUser.UID
                 }
 				self._locker.committed=true
+
                 operation.toDictionary=self.dictionaryRepresentation()
                 operation.enableSupervision()
                 ic.add(operation, commit:false)
@@ -209,8 +210,8 @@ import Foundation
             operation.status=PushOperation.Status.inProgress
             CreateLocker.execute(self._locker,
                 inRegistryWithUID:self._registryUID,
-                sucessHandler: { (context: JHTTPResponse) -> () in
-                    self._locker.distributed=true
+                sucessHandler: { (context: JHTTPResponse) -> () in 
+					self._locker.distributed=true
                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)

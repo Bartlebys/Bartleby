@@ -20,12 +20,12 @@ import Foundation
         return "DeleteUsers"
     }
 
-    fileprivate var _ids:[String] = [String]()
+    fileprivate var _users:[User] = [User]()
 
     fileprivate var _registryUID:String=Default.NO_UID
 
     required public convenience init(){
-        self.init([String](), fromRegistryWithUID:Default.NO_UID)
+        self.init([User](), fromRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -34,7 +34,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_ids","_registryUID"])
+        exposed.append(contentsOf:["_users","_registryUID"])
         return exposed
     }
 
@@ -47,9 +47,9 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "_ids":
-                if let casted=value as? [String]{
-                    self._ids=casted
+            case "_users":
+                if let casted=value as? [User]{
+                    self._users=casted
                 }
             case "_registryUID":
                 if let casted=value as? String{
@@ -70,8 +70,8 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "_ids":
-               return self._ids
+            case "_users":
+               return self._users
             case "_registryUID":
                return self._registryUID
             default:
@@ -87,7 +87,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self._ids <- ( map["_ids"] )
+			self._users <- ( map["_users"] )
 			self._registryUID <- ( map["_registryUID"] )
         }
     }
@@ -97,13 +97,13 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._ids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_ids")! as! [String]
+			self._users=decoder.decodeObject(of: [NSArray.classForCoder(),User.classForCoder()], forKey: "_users")! as! [User]
 			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {super.encode(with:coder)
-		coder.encode(self._ids,forKey:"_ids")
+		coder.encode(self._users,forKey:"_users")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }
 
@@ -115,12 +115,12 @@ import Foundation
     /**
     This is the designated constructor.
 
-    - parameter ids: the ids concerned the operation
+    - parameter users: the [User] concerned the operation
     - parameter registryUID the registry or document UID
 
     */
-    init (_ ids:[String]=[String](), fromRegistryWithUID registryUID:String) {
-        self._ids=ids
+    init (_ users:[User]=[User](), fromRegistryWithUID registryUID:String) {
+        self._users=users
         self._registryUID=registryUID
         super.init()
     }
@@ -151,11 +151,11 @@ import Foundation
     /**
     Creates the operation and proceeds to commit
 
-    - parameter ids: the instance
+    - parameter users: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(_ ids:[String], fromRegistryWithUID registryUID:String){
-        let operationInstance=DeleteUsers(ids,fromRegistryWithUID:registryUID)
+    static func commit(_ users:[User], fromRegistryWithUID registryUID:String){
+        let operationInstance=DeleteUsers(users,fromRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -170,7 +170,7 @@ import Foundation
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
-				let stringIDS=PString.ltrim(self._ids.reduce("", { $0+","+$1 }),characters:",")
+				let stringIDS=PString.ltrim(self._users.reduce("", { $0+","+$1.UID }),characters:",")
 				operation.summary="DeleteUsers(\(stringIDS))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
@@ -207,10 +207,9 @@ import Foundation
         if  operation.canBePushed(){
             // We try to execute
             operation.status=PushOperation.Status.inProgress
-            DeleteUsers.execute(self._ids,
+            DeleteUsers.execute(self._users,
                 fromRegistryWithUID:self._registryUID,
-                sucessHandler: { (context: JHTTPResponse) -> () in
-                    operation.counter=operation.counter+1
+                sucessHandler: { (context: JHTTPResponse) -> () in                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
@@ -241,14 +240,14 @@ import Foundation
         }
     }
 
-    static open func execute(_ ids:[String],
+    static open func execute(_ users:[User],
             fromRegistryWithUID registryUID:String,
             sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
             failureHandler failure: @escaping(_ context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.appendingPathComponent("users")
                 var parameters=Dictionary<String, Any>()
-                parameters["ids"]=ids
+                parameters["ids"]=users.map{$0.UID}
                 let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteUsers" ,forMethod:"DELETE", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
@@ -291,8 +290,8 @@ import Foundation
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
 										acknowledgment.triggerIndex=index.intValue
-										acknowledgment.uids=ids
-										acknowledgment.versions=[Int]()// Deletions
+										acknowledgment.uids=users.map({$0.UID})
+										acknowledgment.versions=users.map({$0.version})
 										document.record(acknowledgment)
                                     }
                                 }

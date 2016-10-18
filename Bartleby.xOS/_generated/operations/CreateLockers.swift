@@ -115,7 +115,7 @@ import Foundation
     /**
     This is the designated constructor.
 
-    - parameter lockers: the lockers concerned the operation
+    - parameter lockers: the [Locker] concerned the operation
     - parameter registryUID the registry or document UID
 
     */
@@ -179,6 +179,7 @@ import Foundation
 				for item in self._lockers{
 					item.committed=true
 				}
+
                 operation.toDictionary=self.dictionaryRepresentation()
                 operation.enableSupervision()
                 ic.add(operation, commit:false)
@@ -212,10 +213,10 @@ import Foundation
             operation.status=PushOperation.Status.inProgress
             CreateLockers.execute(self._lockers,
                 inRegistryWithUID:self._registryUID,
-                sucessHandler: { (context: JHTTPResponse) -> () in
-                    for item in self._lockers{
-                        item.distributed=true
-                    }
+                sucessHandler: { (context: JHTTPResponse) -> () in 
+					for item in self._lockers{
+						item.distributed=true
+					}
                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
@@ -255,7 +256,6 @@ import Foundation
                 let pathURL = document.baseURL.appendingPathComponent("lockers")
                 var parameters=Dictionary<String, Any>()
                 var collection=[Dictionary<String, Any>]()
-
                 for locker in lockers{
                     let serializedInstance=Mapper<Locker>().toJSON(locker)
                     collection.append(serializedInstance)

@@ -20,12 +20,12 @@ import Foundation
         return "DeleteUser"
     }
 
-    fileprivate var _userId:String = String()
+    fileprivate var _user:User = User()
 
     fileprivate var _registryUID:String=Default.NO_UID
 
     required public convenience init(){
-        self.init(String(), fromRegistryWithUID:Default.NO_UID)
+        self.init(User(), fromRegistryWithUID:Default.NO_UID)
     }
 
 
@@ -34,7 +34,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_userId","_registryUID"])
+        exposed.append(contentsOf:["_user","_registryUID"])
         return exposed
     }
 
@@ -47,9 +47,9 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "_userId":
-                if let casted=value as? String{
-                    self._userId=casted
+            case "_user":
+                if let casted=value as? User{
+                    self._user=casted
                 }
             case "_registryUID":
                 if let casted=value as? String{
@@ -70,8 +70,8 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "_userId":
-               return self._userId
+            case "_user":
+               return self._user
             case "_registryUID":
                return self._registryUID
             default:
@@ -87,7 +87,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self._userId <- ( map["_userId"] )
+			self._user <- ( map["_user"] )
 			self._registryUID <- ( map["_registryUID"] )
         }
     }
@@ -97,13 +97,13 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._userId=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_userId")! as NSString)
+			self._user=decoder.decodeObject(of:User.self, forKey: "_user")! 
 			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {super.encode(with:coder)
-		coder.encode(self._userId,forKey:"_userId")
+		coder.encode(self._user,forKey:"_user")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }
 
@@ -115,12 +115,12 @@ import Foundation
     /**
     This is the designated constructor.
 
-    - parameter userId: the userId concerned the operation
+    - parameter user: the User concerned the operation
     - parameter registryUID the registry or document UID
 
     */
-    init (_ userId:String=String(), fromRegistryWithUID registryUID:String) {
-        self._userId=userId
+    init (_ user:User=User(), fromRegistryWithUID registryUID:String) {
+        self._user=user
         self._registryUID=registryUID
         super.init()
     }
@@ -151,11 +151,11 @@ import Foundation
     /**
     Creates the operation and proceeds to commit
 
-    - parameter userId: the instance
+    - parameter user: the instance
     - parameter registryUID:     the registry or document UID
     */
-    static func commit(_ userId:String, fromRegistryWithUID registryUID:String){
-        let operationInstance=DeleteUser(userId,fromRegistryWithUID:registryUID)
+    static func commit(_ user:User, fromRegistryWithUID registryUID:String){
+        let operationInstance=DeleteUser(user,fromRegistryWithUID:registryUID)
         operationInstance.commit()
     }
 
@@ -170,7 +170,7 @@ import Foundation
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
-				operation.summary="DeleteUser(\(self._userId))"
+				operation.summary="DeleteUser(\(self._user.UID))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -206,10 +206,9 @@ import Foundation
         if  operation.canBePushed(){
             // We try to execute
             operation.status=PushOperation.Status.inProgress
-            DeleteUser.execute(self._userId,
+            DeleteUser.execute(self._user,
                 fromRegistryWithUID:self._registryUID,
-                sucessHandler: { (context: JHTTPResponse) -> () in
-                    operation.counter=operation.counter+1
+                sucessHandler: { (context: JHTTPResponse) -> () in                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
                     operation.lastInvocationDate=Date()
@@ -240,14 +239,14 @@ import Foundation
         }
     }
 
-    static open func execute(_ userId:String,
+    static open func execute(_ user:User,
             fromRegistryWithUID registryUID:String,
             sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
             failureHandler failure: @escaping(_ context:JHTTPResponse)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
                 let pathURL = document.baseURL.appendingPathComponent("user")
                 var parameters=Dictionary<String, Any>()
-                parameters["userId"]=userId
+                parameters["userId"]=user.UID
                 let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteUser" ,forMethod:"DELETE", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
@@ -271,8 +270,8 @@ import Foundation
                     reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
 
                     if result.isFailure {
-                        let m = NSLocalizedString("deleteById  of user",
-                            comment: "deleteById of user failure description")
+                        let m = NSLocalizedString("deleteByIds  of user",
+                            comment: "deleteByIds of user failure description")
                         let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
@@ -290,8 +289,8 @@ import Foundation
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
 										acknowledgment.triggerIndex=index.intValue
-										acknowledgment.uids=[userId]
-										acknowledgment.versions=[Int]()// Deletion
+										acknowledgment.uids=[user.UID]
+										acknowledgment.versions=[user.version]
 										document.record(acknowledgment)
                                     }
                                 }
@@ -301,8 +300,8 @@ import Foundation
                                 // and treats any status code >= 300 the same way
                                 // because we consider that failures differentiations could be done by the caller.
 
-                                let m=NSLocalizedString("deleteById of user",
-                                        comment: "deleteById of user failure description")
+                                let m=NSLocalizedString("deleteByIds of user",
+                                        comment: "deleteByIds of user failure description")
                                 let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",

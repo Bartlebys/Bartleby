@@ -412,7 +412,7 @@ import ObjectMapper
 
     
         if commit==true{
-            DeleteUser.commit(item.UID,fromRegistryWithUID:self.registryUID) 
+            DeleteUser.commit(item,fromRegistryWithUID:self.registryUID) 
         }
     }
 
