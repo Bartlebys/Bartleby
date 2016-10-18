@@ -20,6 +20,7 @@ class BasicApiTests: TestCase {
     fileprivate static var _userID: String="UNDEFINED"
     fileprivate static var _createdUser: User?
 
+
      override class func setUp() {
         super.setUp()
     }
@@ -295,7 +296,7 @@ class BasicApiTests: TestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(BasicApiTests._userID,
+        DeleteUser.execute(BasicApiTests._createdUser!,
                            fromRegistryWithUID:TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()

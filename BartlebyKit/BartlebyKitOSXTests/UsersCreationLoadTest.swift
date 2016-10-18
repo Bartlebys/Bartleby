@@ -99,7 +99,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         func __delete(_ user:User){
-            DeleteUser.execute(user.UID, fromRegistryWithUID: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user, fromRegistryWithUID: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __isItTheEnd()
                 //__logout(user)
             }) { (context) in

@@ -222,7 +222,7 @@ class UserStatusTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(UserStatusTests._suspendedUserID,
+        DeleteUser.execute(UserStatusTests._suspendedUser!,
                            fromRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
@@ -238,7 +238,7 @@ class UserStatusTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(UserStatusTests._creatorUserID,
+        DeleteUser.execute(UserStatusTests._creatorUser!,
                            fromRegistryWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()

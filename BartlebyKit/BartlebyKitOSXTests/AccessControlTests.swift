@@ -165,7 +165,7 @@ class AccessControlTests: TestCase {
         
         let expectation = self.expectation(description: "DeleteUser should respond")
         
-        DeleteUser.execute("unexisting id",
+        DeleteUser.execute(User(),
                            fromRegistryWithUID:  TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
@@ -241,7 +241,7 @@ class AccessControlTests: TestCase {
     func test203_DeleteUser_Creator_byOtherUser_ShouldFail() {
         let expectation = self.expectation(description: "DeleteUser should respond")
         
-        DeleteUser.execute(AccessControlTests._creatorUserID,
+        DeleteUser.execute(AccessControlTests._creatorUser!,
                            fromRegistryWithUID: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
@@ -257,7 +257,7 @@ class AccessControlTests: TestCase {
     func test204_DeleteUser_ThirdUser_byOtherUser_ShouldFail() {
         let expectation = self.expectation(description: "DeleteUser should respond")
         
-        DeleteUser.execute(AccessControlTests._thirdUserID,
+        DeleteUser.execute(AccessControlTests._thirdUser!,
                            fromRegistryWithUID: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()

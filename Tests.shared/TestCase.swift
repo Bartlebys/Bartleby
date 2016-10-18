@@ -243,7 +243,7 @@ class TestCase: XCTestCase {
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
-            DeleteUser.execute(user.UID, fromRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user, fromRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in

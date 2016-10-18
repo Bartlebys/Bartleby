@@ -127,7 +127,7 @@ class AuthCookiesTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(AuthCookiesTests._userID,
+        DeleteUser.execute(AuthCookiesTests._createdUser!,
                            fromRegistryWithUID: AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()

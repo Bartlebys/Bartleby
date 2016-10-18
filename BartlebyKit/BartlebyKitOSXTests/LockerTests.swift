@@ -318,7 +318,7 @@ class LockerTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteLocker should respond")
 
-        DeleteLocker.execute(LockerTests._lockerID, fromRegistryWithUID: LockerTests._document.UID, sucessHandler: { (context) in
+        DeleteLocker.execute(LockerTests._locker!, fromRegistryWithUID: LockerTests._document.UID, sucessHandler: { (context) in
             expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
@@ -332,7 +332,7 @@ class LockerTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(LockerTests._consumerUserID,
+        DeleteUser.execute(LockerTests._consumerUser!,
                            fromRegistryWithUID:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
@@ -348,7 +348,7 @@ class LockerTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteUser should respond")
 
-        DeleteUser.execute(LockerTests._creatorUserID,
+        DeleteUser.execute(LockerTests._creatorUser!,
                            fromRegistryWithUID:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
