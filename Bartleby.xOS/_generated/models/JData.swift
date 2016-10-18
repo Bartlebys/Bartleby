@@ -22,14 +22,14 @@ import ObjectMapper
     }
 
 	//the data
-	dynamic open var data:Data? {	 
+	dynamic open var data:Data? {
+	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -49,7 +49,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "data":
                 if let casted=value as? Data{
                     self.data=casted
@@ -69,7 +68,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "data":
                return self.data
             default:

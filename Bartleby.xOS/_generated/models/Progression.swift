@@ -25,7 +25,8 @@ import ObjectMapper
 	open var startTime:Double?
 
 	//Index of the task
-	dynamic open var currentTaskIndex:Int = 0  {	 
+	dynamic open var currentTaskIndex:Int = 0  {
+	 
 	    didSet { 
 	       if currentTaskIndex != oldValue {
 	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
@@ -33,9 +34,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//Total number of tasks
-	dynamic open var totalTaskCount:Int = 0  {	 
+	dynamic open var totalTaskCount:Int = 0  {
+	 
 	    didSet { 
 	       if totalTaskCount != oldValue {
 	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
@@ -43,9 +44,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//0 to 100
-	dynamic open var currentPercentProgress:Double = 0  {	 
+	dynamic open var currentPercentProgress:Double = 0  {
+	 
 	    didSet { 
 	       if currentPercentProgress != oldValue {
 	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue,newValue: currentPercentProgress)  
@@ -53,9 +54,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The Message
-	dynamic open var message:String = ""{	 
+	dynamic open var message:String = ""{
+	 
 	    didSet { 
 	       if message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
@@ -63,9 +64,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The consolidated information (may include the message)
-	dynamic open var informations:String = ""{	 
+	dynamic open var informations:String = ""{
+	 
 	    didSet { 
 	       if informations != oldValue {
 	            self.provisionChanges(forKey: "informations",oldValue: oldValue,newValue: informations) 
@@ -73,16 +74,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The associated data
-	dynamic open var data:Data? {	 
+	dynamic open var data:Data? {
+	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}
-
 
 	//A category to discriminate bunch of progression states
 	dynamic open var category:String = ""
@@ -108,7 +108,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "startTime":
                 if let casted=value as? Double{
                     self.startTime=casted
@@ -160,7 +159,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "startTime":
                return self.startTime
             case "currentTaskIndex":

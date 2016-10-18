@@ -49,7 +49,6 @@ import BartlebyKit
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "user":
                 if let casted=value as? User{
                     self.user=casted
@@ -77,7 +76,6 @@ import BartlebyKit
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "user":
                return self.user
             case "password":

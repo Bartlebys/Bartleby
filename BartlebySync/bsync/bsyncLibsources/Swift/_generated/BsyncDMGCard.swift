@@ -29,7 +29,8 @@ import BartlebyKit
 	static open let DMG_EXTENSION:String = "sparseimage"
 
 	//The user Unique Identifier
-	dynamic open var userUID:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	dynamic open var userUID:String = "\(BsyncDMGCard.NOT_SET)"{
+	 
 	    didSet { 
 	       if userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -37,9 +38,9 @@ import BartlebyKit
 	    }
 	}
 
-
 	//Associated to a context (e.g. project UID)
-	dynamic open var contextUID:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	dynamic open var contextUID:String = "\(BsyncDMGCard.NOT_SET)"{
+	 
 	    didSet { 
 	       if contextUID != oldValue {
 	            self.provisionChanges(forKey: "contextUID",oldValue: oldValue,newValue: contextUID) 
@@ -47,9 +48,9 @@ import BartlebyKit
 	    }
 	}
 
-
 	//The last kwnow path (if not correct the client should ask for a path  The full path including the ".sparseimage" extension.
-	dynamic open var imagePath:String = "\(BsyncDMGCard.NO_PATH)"{	 
+	dynamic open var imagePath:String = "\(BsyncDMGCard.NO_PATH)"{
+	 
 	    didSet { 
 	       if imagePath != oldValue {
 	            self.provisionChanges(forKey: "imagePath",oldValue: oldValue,newValue: imagePath) 
@@ -57,9 +58,9 @@ import BartlebyKit
 	    }
 	}
 
-
 	//The associated volumeName
-	dynamic open var volumeName:String = "\(BsyncDMGCard.NOT_SET)"{	 
+	dynamic open var volumeName:String = "\(BsyncDMGCard.NOT_SET)"{
+	 
 	    didSet { 
 	       if volumeName != oldValue {
 	            self.provisionChanges(forKey: "volumeName",oldValue: oldValue,newValue: volumeName) 
@@ -67,9 +68,9 @@ import BartlebyKit
 	    }
 	}
 
-
 	// You can provide an optionnal sync directive path
-	dynamic open var directivesRelativePath:String = "\(BsyncDMGCard.NO_PATH)"{	 
+	dynamic open var directivesRelativePath:String = "\(BsyncDMGCard.NO_PATH)"{
+	 
 	    didSet { 
 	       if directivesRelativePath != oldValue {
 	            self.provisionChanges(forKey: "directivesRelativePath",oldValue: oldValue,newValue: directivesRelativePath) 
@@ -77,16 +78,15 @@ import BartlebyKit
 	    }
 	}
 
-
 	//The size of the disk image : "1g" == 1 GB 
-	dynamic open var size:String = "10g"{	 
+	dynamic open var size:String = "10g"{
+	 
 	    didSet { 
 	       if size != oldValue {
 	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -106,7 +106,6 @@ import BartlebyKit
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "userUID":
                 if let casted=value as? String{
                     self.userUID=casted
@@ -146,7 +145,6 @@ import BartlebyKit
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "userUID":
                return self.userUID
             case "contextUID":

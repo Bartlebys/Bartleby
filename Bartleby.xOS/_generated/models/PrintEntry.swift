@@ -66,7 +66,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "counter":
                 if let casted=value as? Int{
                     self.counter=casted
@@ -114,7 +113,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "counter":
                return self.counter
             case "line":

@@ -22,7 +22,8 @@ import ObjectMapper
     }
 
 	//Success if set to true
-	dynamic open var success:Bool = true  {	 
+	dynamic open var success:Bool = true  {
+	 
 	    didSet { 
 	       if success != oldValue {
 	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
@@ -30,9 +31,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The status
-	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {	 
+	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {
+	 
 	    didSet { 
 	       if statusCode != oldValue {
 	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
@@ -40,9 +41,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The Message
-	dynamic open var message:String = ""{	 
+	dynamic open var message:String = ""{
+	 
 	    didSet { 
 	       if message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
@@ -50,16 +51,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//completion data
-	dynamic open var data:Data? {	 
+	dynamic open var data:Data? {
+	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
 	}
-
 
 	//A category to discriminate bunch of completion states
 	dynamic open var category:String = ""
@@ -85,7 +85,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "success":
                 if let casted=value as? Bool{
                     self.success=casted
@@ -125,7 +124,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "success":
                return self.success
             case "statusCode":

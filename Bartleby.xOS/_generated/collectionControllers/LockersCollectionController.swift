@@ -216,7 +216,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "items":
                 if let casted=value as? [Locker]{
                     self.items=casted
@@ -236,7 +235,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "items":
                return self.items
             default:

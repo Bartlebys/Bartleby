@@ -95,6 +95,12 @@ extension BartlebyDocument {
     }
 
 
+    public func record(_ ack:Acknowledgment){
+
+    }
+
+
+
     /**
      Acknowledges the triggers indexes
 

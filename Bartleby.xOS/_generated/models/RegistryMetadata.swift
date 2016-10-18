@@ -83,7 +83,8 @@ import ObjectMapper
 	dynamic open var pendingOperationsProgressionState:Progression?
 
 	//is the user performing Online
-	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
+	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
+	 
 	    didSet { 
 	       if online != oldValue {
 	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
@@ -91,9 +92,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//If set to true any object creation, update, or deletion will be pushed as soon as possible.
-	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {	 
+	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
+	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
@@ -101,16 +102,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//Save the password or not?
-	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {	 
+	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {
+	 
 	    didSet { 
 	       if saveThePassword != oldValue {
 	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -130,7 +130,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "spaceUID":
                 if let casted=value as? String{
                     self.spaceUID=casted
@@ -234,7 +233,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "spaceUID":
                return self.spaceUID
             case "currentUser":

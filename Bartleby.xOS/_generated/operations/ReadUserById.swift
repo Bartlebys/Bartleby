@@ -28,7 +28,6 @@ import ObjectMapper
 						sucessHandler success:@escaping(_ user:User)->(),
 						failureHandler failure:@escaping(_ context:JHTTPResponse)->()){
 	
-
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("user/\(userId)")
             let dictionary:Dictionary<String, Any>=Dictionary<String, Any>()

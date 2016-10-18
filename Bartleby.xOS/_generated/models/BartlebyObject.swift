@@ -34,7 +34,8 @@ import ObjectMapper
 	dynamic open var collectedIndex:Int = -1
 
 	//Collectible protocol: The Creator UID
-	dynamic open var creatorUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var creatorUID:String = "\(Default.NO_UID)"{
+	 
 	    didSet { 
 	       if creatorUID != oldValue {
 	            self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID) 
@@ -42,9 +43,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The object summary can be used for example by externalReferences to describe the JObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
-	dynamic open var summary:String? {	 
+	dynamic open var summary:String? {
+	 
 	    didSet { 
 	       if summary != oldValue {
 	            self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary) 
@@ -52,9 +53,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.This flag allows for example to remove entities that have been for example created by unit-tests.
-	dynamic open var ephemeral:Bool = false  {	 
+	dynamic open var ephemeral:Bool = false  {
+	 
 	    didSet { 
 	       if ephemeral != oldValue {
 	            self.provisionChanges(forKey: "ephemeral",oldValue: oldValue,newValue: ephemeral)  
@@ -62,16 +63,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//Collectible protocol: distributed
-	dynamic open var distributed:Bool = false  {	 
+	dynamic open var distributed:Bool = false  {
+	 
 	    didSet { 
 	       if distributed != oldValue {
 	            self.provisionChanges(forKey: "distributed",oldValue: oldValue,newValue: distributed)  
 	       } 
 	    }
 	}
-
 
 	//The version is incremented on each change (used to detect distributed divergences)
 	dynamic open var version:Int = 0
@@ -174,7 +174,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
      open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "collectedIndex":
                 if let casted=value as? Int{
                     self.collectedIndex=casted
@@ -218,7 +217,6 @@ import ObjectMapper
     /// - returns: returns the value
      open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "collectedIndex":
                return self.collectedIndex
             case "creatorUID":

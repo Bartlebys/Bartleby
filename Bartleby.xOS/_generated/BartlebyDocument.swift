@@ -71,20 +71,17 @@ import ObjectMapper
 			lockers.document=self
 		}
 	}
-	
-	open dynamic var pushOperations=PushOperationsCollectionController(){
+		open dynamic var pushOperations=PushOperationsCollectionController(){
 		willSet{
 			pushOperations.document=self
 		}
 	}
-	
-	open dynamic var users=UsersCollectionController(){
+		open dynamic var users=UsersCollectionController(){
 		willSet{
 			users.document=self
 		}
 	}
 	
-
     // MARK: - Array Controllers and automation (OSX)
  #if os(OSX) && !USE_EMBEDDED_MODULES
 
@@ -112,7 +109,6 @@ import ObjectMapper
         }
     }
         
-
     open var pushOperationsArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
@@ -131,7 +127,6 @@ import ObjectMapper
         }
     }
         
-
     open var usersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
@@ -150,7 +145,6 @@ import ObjectMapper
         }
     }
         
-
 
 
 #endif
@@ -174,7 +168,6 @@ import ObjectMapper
     var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
         
         
-
     
     static open let kSelectedPushOperationsIndexesKey="selectedPushOperationsIndexesKey"
     static open let PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION="PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
@@ -192,7 +185,6 @@ import ObjectMapper
     var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
         
         
-
     
     static open let kSelectedUsersIndexesKey="selectedUsersIndexesKey"
     static open let USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
@@ -210,7 +202,6 @@ import ObjectMapper
     var firstSelectedUser:User? { return self.selectedUsers?.first }
         
         
-
 
 
 
@@ -237,7 +228,6 @@ import ObjectMapper
         lockerDefinition.persistsDistantly = true
         lockerDefinition.inMemory = false
         
-
         let pushOperationDefinition = CollectionMetadatum()
         pushOperationDefinition.proxy = self.pushOperations
         // By default we group the observation via the rootObjectUID
@@ -246,7 +236,6 @@ import ObjectMapper
         pushOperationDefinition.persistsDistantly = false
         pushOperationDefinition.inMemory = false
         
-
         let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
         // By default we group the observation via the rootObjectUID
@@ -255,7 +244,6 @@ import ObjectMapper
         userDefinition.persistsDistantly = true
         userDefinition.inMemory = false
         
-
 
         // Proceed to configuration
         do{
@@ -307,7 +295,6 @@ import ObjectMapper
                 return
             }
             
-
             
             if keyPath=="selectionIndexes" && self.pushOperationsArrayController == object as? NSArrayController {
                 if let pushOperations = self.pushOperationsArrayController?.selectedObjects as? [PushOperation] {
@@ -321,7 +308,6 @@ import ObjectMapper
                 return
             }
             
-
             
             if keyPath=="selectionIndexes" && self.usersArrayController == object as? NSArrayController {
                 if let users = self.usersArrayController?.selectedObjects as? [User] {
@@ -335,14 +321,12 @@ import ObjectMapper
                 return
             }
             
-
         }
 
     }
 
     // MARK:  Delete currently selected items
-    
-    open func deleteSelectedLockers() {
+        open func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLockers{
             for item in selected{
@@ -351,7 +335,6 @@ import ObjectMapper
         }
     }
         
-
     open func deleteSelectedPushOperations() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedPushOperations{
@@ -361,7 +344,6 @@ import ObjectMapper
         }
     }
         
-
     open func deleteSelectedUsers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedUsers{
@@ -371,7 +353,6 @@ import ObjectMapper
         }
     }
         
-
 
     #else
 

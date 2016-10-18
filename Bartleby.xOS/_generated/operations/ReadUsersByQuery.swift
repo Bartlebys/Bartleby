@@ -13,8 +13,7 @@ import Alamofire
 import ObjectMapper
 #endif
 @objc(ReadUsersByQueryParameters) public class ReadUsersByQueryParameters : BartlebyObject {
-	
-	// Universal type support
+		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadUsersByQueryParameters"
 	}
@@ -47,7 +46,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "result_fields":
                 if let casted=value as? [String]{
                     self.result_fields=casted
@@ -75,7 +73,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "result_fields":
                return self.result_fields
             case "sort":
@@ -145,7 +142,6 @@ import ObjectMapper
 						sucessHandler success:@escaping(_ users:[User])->(),
 						failureHandler failure:@escaping(_ context:JHTTPResponse)->()){
 	
-
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("usersByQuery")
             let dictionary:Dictionary<String, Any>?=Mapper().toJSON(parameters)

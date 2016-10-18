@@ -22,7 +22,8 @@ import ObjectMapper
     }
 
 	//The associated registry UID.
-	dynamic open var registryUID:String? {	 
+	dynamic open var registryUID:String? {
+	 
 	    didSet { 
 	       if registryUID != oldValue {
 	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
@@ -30,9 +31,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The subject UID you want to lock
-	dynamic open var subjectUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var subjectUID:String = "\(Default.NO_UID)"{
+	 
 	    didSet { 
 	       if subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -40,9 +41,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The userUID that can unlock the locker
-	dynamic open var userUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var userUID:String = "\(Default.NO_UID)"{
+	 
 	    didSet { 
 	       if userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -50,13 +51,13 @@ import ObjectMapper
 	    }
 	}
 
-
 	//the locker mode
 	public enum Mode:String{
 		case autoDestructive = "autoDestructive"
 		case persistent = "persistent"
 	}
-	open var mode:Mode = .autoDestructive  {	 
+	open var mode:Mode = .autoDestructive  {
+	 
 	    didSet { 
 	       if mode != oldValue {
 	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
@@ -64,13 +65,13 @@ import ObjectMapper
 	    }
 	}
 
-
 	//the locker mode
 	public enum VerificationMethod:String{
 		case online = "online"
 		case offline = "offline"
 	}
-	open var verificationMethod:VerificationMethod = .online  {	 
+	open var verificationMethod:VerificationMethod = .online  {
+	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -78,9 +79,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//This code should be crypted / decrypted
-	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{	 
+	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
+	 
 	    didSet { 
 	       if code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -88,9 +89,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The number of attempts
-	dynamic open var numberOfAttempt:Int = 3  {	 
+	dynamic open var numberOfAttempt:Int = 3  {
+	 
 	    didSet { 
 	       if numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
@@ -98,8 +99,8 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var startDate:Date = Date.distantPast  {	 
+	dynamic open var startDate:Date = Date.distantPast  {
+	 
 	    didSet { 
 	       if startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -107,8 +108,8 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var endDate:Date = Date.distantFuture  {	 
+	dynamic open var endDate:Date = Date.distantFuture  {
+	 
 	    didSet { 
 	       if endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
@@ -116,16 +117,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//Thoses data gems will be return on success
-	dynamic open var gems:String = "\(Default.NO_GEM)"{	 
+	dynamic open var gems:String = "\(Default.NO_GEM)"{
+	 
 	    didSet { 
 	       if gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -145,7 +145,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "registryUID":
                 if let casted=value as? String{
                     self.registryUID=casted
@@ -201,7 +200,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "registryUID":
                return self.registryUID
             case "subjectUID":

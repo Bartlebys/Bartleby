@@ -22,14 +22,14 @@ import ObjectMapper
     }
 
 	//The subjects versions (used to analyze possible divergences)
-	dynamic open var entries:[PrintEntry] = [PrintEntry]()  {	 
+	dynamic open var entries:[PrintEntry] = [PrintEntry]()  {
+	 
 	    didSet { 
 	       if entries != oldValue {
 	            self.provisionChanges(forKey: "entries",oldValue: oldValue,newValue: entries)  
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -49,7 +49,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "entries":
                 if let casted=value as? [PrintEntry]{
                     self.entries=casted
@@ -69,7 +68,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "entries":
                return self.entries
             default:

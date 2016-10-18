@@ -22,7 +22,8 @@ import ObjectMapper
     }
 
 	//The UID of the referred instance
-	dynamic open var iUID:String = "\(Default.NO_UID)"{	 
+	dynamic open var iUID:String = "\(Default.NO_UID)"{
+	 
 	    didSet { 
 	       if iUID != oldValue {
 	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
@@ -30,16 +31,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The typeName of the referred instance
-	dynamic open var iTypeName:String = "\(Default.NO_UID)"{	 
+	dynamic open var iTypeName:String = "\(Default.NO_UID)"{
+	 
 	    didSet { 
 	       if iTypeName != oldValue {
 	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -59,7 +59,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "iUID":
                 if let casted=value as? String{
                     self.iUID=casted
@@ -83,7 +82,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "iUID":
                return self.iUID
             case "iTypeName":

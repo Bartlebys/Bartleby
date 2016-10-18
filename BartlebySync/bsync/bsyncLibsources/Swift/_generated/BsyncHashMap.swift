@@ -42,7 +42,6 @@ import BartlebyKit
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "pathToHash":
                 if let casted=value as? [String:Any]{
                     self.pathToHash=casted
@@ -62,7 +61,6 @@ import BartlebyKit
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "pathToHash":
                return self.pathToHash
             default:

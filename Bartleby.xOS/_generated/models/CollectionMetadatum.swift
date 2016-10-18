@@ -57,7 +57,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "storage":
                 if let casted=value as? CollectionMetadatum.Storage{
                     self.storage=casted
@@ -93,7 +92,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "storage":
                return self.storage
             case "collectionName":

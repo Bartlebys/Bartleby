@@ -22,14 +22,14 @@ import ObjectMapper
     }
 
 	//the embedded String
-	dynamic open var string:String? {	 
+	dynamic open var string:String? {
+	 
 	    didSet { 
 	       if string != oldValue {
 	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -49,7 +49,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "string":
                 if let casted=value as? String{
                     self.string=casted
@@ -69,7 +68,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "string":
                return self.string
             default:

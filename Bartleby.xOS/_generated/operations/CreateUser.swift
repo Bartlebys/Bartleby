@@ -49,7 +49,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "_user":
                 if let casted=value as? User{
                     self._user=casted
@@ -73,7 +72,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "_user":
                return self._user
             case "_registryUID":
@@ -114,7 +112,6 @@ import ObjectMapper
     override open class var supportsSecureCoding:Bool{
         return true
     }
-
 
 
     /**
@@ -295,7 +292,11 @@ import ObjectMapper
                                 // Acknowledge the trigger if there is one
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
-                                        document.acknowledgeOwnedTriggerIndex(index.intValue)
+										let acknowledgment=Acknowledgment()
+										acknowledgment.triggerIndex=index.intValue
+										acknowledgment.uids=[user.UID]
+										acknowledgment.versions=[user.version]
+										document.record(acknowledgment)
                                     }
                                 }
                                 success(context)

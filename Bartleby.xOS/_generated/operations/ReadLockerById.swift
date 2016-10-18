@@ -28,7 +28,6 @@ import ObjectMapper
 						sucessHandler success:@escaping(_ locker:Locker)->(),
 						failureHandler failure:@escaping(_ context:JHTTPResponse)->()){
 	
-
         if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
             let pathURL=document.baseURL.appendingPathComponent("locker/\(lockerId)")
             let dictionary:Dictionary<String, Any>=Dictionary<String, Any>()

@@ -21,7 +21,8 @@ import ObjectMapper
         return "Tag"
     }
 
-	dynamic open var creationDate:Date? {	 
+	dynamic open var creationDate:Date? {
+	 
 	    didSet { 
 	       if creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
@@ -29,8 +30,8 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var color:String? {	 
+	dynamic open var color:String? {
+	 
 	    didSet { 
 	       if color != oldValue {
 	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
@@ -38,15 +39,14 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var icon:String? {	 
+	dynamic open var icon:String? {
+	 
 	    didSet { 
 	       if icon != oldValue {
 	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
 	       } 
 	    }
 	}
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -66,7 +66,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "creationDate":
                 if let casted=value as? Date{
                     self.creationDate=casted
@@ -94,7 +93,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "creationDate":
                return self.creationDate
             case "color":

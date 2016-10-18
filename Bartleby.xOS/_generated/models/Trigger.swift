@@ -72,7 +72,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "index":
                 if let casted=value as? Int{
                     self.index=casted
@@ -132,7 +131,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "index":
                return self.index
             case "spaceUID":

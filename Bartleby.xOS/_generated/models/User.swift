@@ -22,7 +22,8 @@ import ObjectMapper
     }
 
 	//An external unique identifier
-	dynamic open var externalID:String? {	 
+	dynamic open var externalID:String? {
+	 
 	    didSet { 
 	       if externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -30,9 +31,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{	 
+	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
+	 
 	    didSet { 
 	       if spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -40,14 +41,14 @@ import ObjectMapper
 	    }
 	}
 
-
 	//the verification method
 	public enum VerificationMethod:String{
 		case none = "none"
 		case byPhoneNumber = "byPhoneNumber"
 		case byEmail = "byEmail"
 	}
-	open var verificationMethod:VerificationMethod = .byPhoneNumber  {	 
+	open var verificationMethod:VerificationMethod = .byPhoneNumber  {
+	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -55,8 +56,8 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
+	 
 	    didSet { 
 	       if firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -64,8 +65,8 @@ import ObjectMapper
 	    }
 	}
 
-
-	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{	 
+	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
+	 
 	    didSet { 
 	       if lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -73,9 +74,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The user's email. Can be the secondary Identification source 
-	dynamic open var email:String? {	 
+	dynamic open var email:String? {
+	 
 	    didSet { 
 	       if email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -83,9 +84,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The user's phone number. Can be the secondary Identification source 
-	dynamic open var phoneNumber:String? {	 
+	dynamic open var phoneNumber:String? {
+	 
 	    didSet { 
 	       if phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -93,9 +94,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The hashed version of the user password
-	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
+	 
 	    didSet { 
 	       if password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -103,9 +104,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//An activation code
-	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{	 
+	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
+	 
 	    didSet { 
 	       if activationCode != oldValue {
 	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
@@ -113,14 +114,14 @@ import ObjectMapper
 	    }
 	}
 
-
 	//User Status
 	public enum Status:String{
 		case new = "new"
 		case actived = "actived"
 		case suspended = "suspended"
 	}
-	open var status:Status = .new  {	 
+	open var status:Status = .new  {
+	 
 	    didSet { 
 	       if status != oldValue {
 	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
@@ -128,9 +129,9 @@ import ObjectMapper
 	    }
 	}
 
-
 	//The user Tags. External reference to Tags instances
-	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {	 
+	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {
+	 
 	    didSet { 
 	       if tags != oldValue {
 	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
@@ -138,16 +139,15 @@ import ObjectMapper
 	    }
 	}
 
-
 	//Notes
-	dynamic open var notes:String? {	 
+	dynamic open var notes:String? {
+	 
 	    didSet { 
 	       if notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
 	       } 
 	    }
 	}
-
 
 	//set to true on the first successfull login in the session (this property is not serialized)
 	dynamic open var loginHasSucceed:Bool = false
@@ -170,7 +170,6 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-
             case "externalID":
                 if let casted=value as? String{
                     self.externalID=casted
@@ -238,7 +237,6 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-
             case "externalID":
                return self.externalID
             case "spaceUID":
