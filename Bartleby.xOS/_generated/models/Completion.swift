@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Commons: A completion state
@@ -187,7 +187,6 @@ import ObjectMapper
         return true
     }
 
-
      required public init() {
         super.init()
     }
@@ -201,5 +200,4 @@ import ObjectMapper
     override open var d_collectionName:String{
         return Completion.collectionName
     }
-
 }

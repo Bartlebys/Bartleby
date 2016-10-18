@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 @objc(DeleteLockers) public class DeleteLockers : BartlebyObject,JHTTPCommand{
@@ -27,8 +27,6 @@ import ObjectMapper
     required public convenience init(){
         self.init([String](), fromRegistryWithUID:Default.NO_UID)
     }
-
-
 
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
@@ -172,8 +170,8 @@ import ObjectMapper
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
-                let stringIDS=PString.ltrim(self._ids.reduce("", { $0+","+$1 }),characters:",")
-                operation.summary="DeleteLockers(\(stringIDS))"
+				let stringIDS=PString.ltrim(self._ids.reduce("", { $0+","+$1 }),characters:",")
+				operation.summary="DeleteLockers(\(stringIDS))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID

@@ -9,9 +9,9 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
-import BartlebyKit
+	import Alamofire
+	import ObjectMapper
+	import BartlebyKit
 #endif
 
 // MARK: A DMG card enable store the data required to unlock the DMG.
@@ -206,7 +206,6 @@ import BartlebyKit
         return true
     }
 
-
      required public init() {
         super.init()
     }
@@ -220,5 +219,4 @@ import BartlebyKit
     override open var d_collectionName:String{
         return BsyncDMGCard.collectionName
     }
-
 }

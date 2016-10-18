@@ -56,47 +56,53 @@ extension BartlebyDocument {
 
     }
 
-    // MARK: - Triggers Indexes Acknowledgment
+    // MARK: - Triggers  Acknowledgment
 
 
-    /**
-     Called by the generative Operation layer
-     it permitts to discriminate owned triggers from external triggers.
-     Owned triggers should not be loaded!
-
-     - parameter index: the trigger index.
-     */
-    public func acknowledgeOwnedTriggerIndex(_ index:Int){
-
-
-        if(index < self.registryMetadata.lastIntegratedTriggerIndex){
-            // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
-            TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:index-1, sucessHandler: { (triggers) in
-                bprint("Trying to resolve Divergences from index \(index-1)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
-                self._triggersHasBeenReceived(triggers)
-            }) { (context) in
-                // What to do on failure ?
-                bprint("Failure on Divergences resolution Attempt",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+    /// Called by the generative Operation layer on Owned Triggers
+    /// It allows to detect potential divergences.
+    /// - parameter ack: the Acknowledgement object
+    public func record(_ ack:Acknowledgment){
+        if ack.versions.count==0{
+            // It is a deletion.
+        }else{
+            var divergencesDetected=false
+            var counter=0
+            for uid in ack.uids{
+                if let o:BartlebyObject = try? Registry.registredObjectByUID(uid){
+                    let localVersion=o.version
+                    let distantVersion=ack.versions[counter]
+                    if localVersion>=distantVersion{
+                        divergencesDetected=true
+                    }
+                }
+                counter += 1
             }
-        }
 
+            /*
+            if divergencesDetected{
+                // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
+                TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in
+                    bprint("Trying to resolve Divergences from index \(ack.triggerIndex)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+                    self._triggersHasBeenReceived(triggers)
+                }) { (context) in
+                    // What to do on failure ?
+                    bprint("Failure on Divergences resolution Attempt",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+                }
+            }
+*/
+
+        }
 
         // Normal case.
-        if self.registryMetadata.triggersIndexes.contains(index) {
+        if self.registryMetadata.triggersIndexes.contains(ack.triggerIndex) {
             bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
         }else{
-            self.registryMetadata.ownedTriggersIndexes.append(index)
-            let indexes=[index]
+            self.registryMetadata.ownedTriggersIndexes.append(ack.triggerIndex)
+            let indexes=[ack.triggerIndex]
             self.acknowledgeTriggerIndexes(indexes)
         }
-
         self._integrateContiguousData()
-
-    }
-
-
-    public func record(_ ack:Acknowledgment){
-
     }
 
 

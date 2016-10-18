@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 @objc(UpdateLockers) public class UpdateLockers : BartlebyObject,JHTTPCommand{
@@ -27,8 +27,6 @@ import ObjectMapper
     required public convenience init(){
         self.init([Locker](), inRegistryWithUID:Default.NO_UID)
     }
-
-
 
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
@@ -172,15 +170,15 @@ import ObjectMapper
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
-                let stringIDS=PString.ltrim(self._lockers.reduce("", { $0+","+$1.UID }),characters:",")
-                operation.summary="UpdateLockers(\(stringIDS))"
+				let stringIDS=PString.ltrim(self._lockers.reduce("", { $0+","+$1.UID }),characters:",")
+				operation.summary="UpdateLockers(\(stringIDS))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
-                for item in self._lockers{
-                    item.committed=true
-                }
+				for item in self._lockers{
+					item.committed=true
+				}
                 operation.toDictionary=self.dictionaryRepresentation()
                 operation.enableSupervision()
                 ic.add(operation, commit:false)

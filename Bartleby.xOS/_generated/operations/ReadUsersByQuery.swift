@@ -1,3 +1,4 @@
+
 //
 //  ReadUsersByQuery.swift
 //  Bartleby
@@ -9,8 +10,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 @objc(ReadUsersByQueryParameters) public class ReadUsersByQueryParameters : BartlebyObject {
 		// Universal type support
@@ -126,8 +127,6 @@ import ObjectMapper
     }
 
 }
-
-
 
 @objc(ReadUsersByQuery) open class ReadUsersByQuery : BartlebyObject{
 

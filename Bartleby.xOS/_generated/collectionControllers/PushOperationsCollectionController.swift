@@ -401,5 +401,4 @@ import ObjectMapper
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
-
 }

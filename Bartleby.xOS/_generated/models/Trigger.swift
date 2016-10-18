@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
@@ -231,7 +231,6 @@ import ObjectMapper
         return true
     }
 
-
      required public init() {
         super.init()
     }
@@ -245,5 +244,4 @@ import ObjectMapper
     override open var d_collectionName:String{
         return Trigger.collectionName
     }
-
 }

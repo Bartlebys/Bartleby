@@ -1,3 +1,4 @@
+
 //
 //  ReadLockerById.swift
 //  Bartleby
@@ -9,11 +10,9 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
-
-
 
 @objc(ReadLockerById) open class ReadLockerById : BartlebyObject{
 

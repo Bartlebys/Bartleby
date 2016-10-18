@@ -1,3 +1,4 @@
+
 //
 //  ReadLockersByQuery.swift
 //  Bartleby
@@ -9,8 +10,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 @objc(ReadLockersByQueryParameters) public class ReadLockersByQueryParameters : BartlebyObject {
 		// Universal type support
@@ -126,8 +127,6 @@ import ObjectMapper
     }
 
 }
-
-
 
 @objc(ReadLockersByQuery) open class ReadLockersByQuery : BartlebyObject{
 

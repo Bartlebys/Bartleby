@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 @objc(DeleteUser) public class DeleteUser : BartlebyObject,JHTTPCommand{
@@ -27,8 +27,6 @@ import ObjectMapper
     required public convenience init(){
         self.init(String(), fromRegistryWithUID:Default.NO_UID)
     }
-
-
 
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
@@ -172,7 +170,7 @@ import ObjectMapper
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
-                operation.summary="DeleteUser(\(self._userId))"
+				operation.summary="DeleteUser(\(self._userId))"
                 if let currentUser=document.registryMetadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID

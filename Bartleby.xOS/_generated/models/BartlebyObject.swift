@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: The base object of any other generated Object
@@ -294,7 +294,6 @@ import ObjectMapper
         return true
     }
 
-
     override required public init() {
         super.init()
     }
@@ -308,5 +307,4 @@ import ObjectMapper
      open var d_collectionName:String{
         return BartlebyObject.collectionName
     }
-
 }

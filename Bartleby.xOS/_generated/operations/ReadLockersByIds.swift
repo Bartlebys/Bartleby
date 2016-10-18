@@ -1,3 +1,4 @@
+
 //
 //  ReadLockersByIds.swift
 //  Bartleby
@@ -9,8 +10,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 @objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : BartlebyObject {
 		// Universal type support
@@ -126,8 +127,6 @@ import ObjectMapper
     }
 
 }
-
-
 
 @objc(ReadLockersByIds) open class ReadLockersByIds : BartlebyObject{
 

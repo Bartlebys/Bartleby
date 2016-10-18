@@ -9,8 +9,8 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
@@ -25,10 +25,10 @@ import ObjectMapper
 	dynamic open var triggerIndex:Int = -1
 
 	//The subjects UIDS
-	dynamic open var uids:[String]?
+	dynamic open var uids:[String] = [String]()
 
 	//The subjects versions (used to analyze possible divergences)
-	dynamic open var versions:[Int]?
+	dynamic open var versions:[Int] = [Int]()
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -106,25 +106,20 @@ import ObjectMapper
     required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.triggerIndex=decoder.decodeInteger(forKey:"triggerIndex") 
-			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids") as? [String]
-			self.versions=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "versions") as? [Int]
+			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids")! as! [String]
+			self.versions=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "versions")! as! [Int]
         }
     }
 
     override open func encode(with coder: NSCoder) {super.encode(with:coder)
 		coder.encode(self.triggerIndex,forKey:"triggerIndex")
-		if let uids = self.uids {
-			coder.encode(uids,forKey:"uids")
-		}
-		if let versions = self.versions {
-			coder.encode(versions,forKey:"versions")
-		}
+		coder.encode(self.uids,forKey:"uids")
+		coder.encode(self.versions,forKey:"versions")
     }
 
     override open class var supportsSecureCoding:Bool{
         return true
     }
-
 
      required public init() {
         super.init()
@@ -139,5 +134,4 @@ import ObjectMapper
     override open var d_collectionName:String{
         return Acknowledgment.collectionName
     }
-
 }
