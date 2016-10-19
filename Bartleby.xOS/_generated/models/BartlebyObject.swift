@@ -73,7 +73,7 @@ import Foundation
 	    }
 	}
 
-	//The version is incremented on each change (used to detect distributed divergences)
+	//The version is incremented on each change
 	dynamic open var version:Int = 0
 
 	//MARK: - ChangesInspectable Protocol
@@ -203,7 +203,7 @@ import Foundation
                     self.changedKeys=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
         }
     }
 
@@ -232,7 +232,7 @@ import Foundation
             case "changedKeys":
                return self.changedKeys
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
         }
     }
     // MARK: - Mappable

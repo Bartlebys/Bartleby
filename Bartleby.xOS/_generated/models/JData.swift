@@ -54,7 +54,7 @@ import Foundation
                     self.data=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: JData.typeName())
         }
     }
 

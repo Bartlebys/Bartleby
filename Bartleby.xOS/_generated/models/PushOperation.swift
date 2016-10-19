@@ -103,7 +103,7 @@ import Foundation
                     self.lastInvocationDate=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: PushOperation.typeName())
         }
     }
 

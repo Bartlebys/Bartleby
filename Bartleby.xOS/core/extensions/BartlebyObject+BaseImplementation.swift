@@ -39,7 +39,7 @@ public func ==(lhs: BartlebyObject, rhs: BartlebyObject) -> Bool {
 
 
 public enum ObjectExpositionError:Error {
-    case UnknownKey(key:String)
+    case UnknownKey(key:String,forTypeName:String)
 }
 
 
@@ -148,15 +148,15 @@ extension BartlebyObject{
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
+        // Update the version on any provisionned change.
+        self.version += 1
+
         if self._autoCommitIsEnabled == true {
-            // Set up the commit flagw
+            // Set up the commit flag
             self._shouldBeCommitted=true
         }
 
         if self._supervisionIsEnabled{
-
-            // Update the version.
-            self.version += 1
 
             if key=="*" && !(self is BartlebyCollection){
                 if Bartleby.changesAreInspectables{
@@ -307,6 +307,8 @@ extension BartlebyObject{
             if self.exposedKeys.contains(key){
                 let value = try instance.getExposedValueForKey(key)
                 try self.setExposedValue(value, forKey: key)
+            }else{
+                bprint("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: bprintCategoryFor(self), decorative: false)
             }
         }
     }

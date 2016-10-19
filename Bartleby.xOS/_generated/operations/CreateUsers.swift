@@ -56,7 +56,7 @@ import Foundation
                     self._registryUID=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: User.typeName())
         }
     }
 

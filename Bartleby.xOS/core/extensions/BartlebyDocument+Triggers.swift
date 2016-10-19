@@ -66,21 +66,11 @@ extension BartlebyDocument {
         if ack.versions.count==0{
             // It is a deletion.
         }else{
-            var divergencesDetected=false
-            var counter=0
-            for uid in ack.uids{
-                if let o:BartlebyObject = try? Registry.registredObjectByUID(uid){
-                    let localVersion=o.version
-                    let distantVersion=ack.versions[counter]
-                    if localVersion>=distantVersion{
-                        divergencesDetected=true
-                    }
-                }
-                counter += 1
+            var possibleDivergence=false
+            if ack.triggerIndex<self.registryMetadata.highestReceivedTriggerIndex{
+                possibleDivergence=true
             }
-
-            /*
-            if divergencesDetected{
+            if possibleDivergence{
                 // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
                 TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in
                     bprint("Trying to resolve Divergences from index \(ack.triggerIndex)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
@@ -90,7 +80,6 @@ extension BartlebyDocument {
                     bprint("Failure on Divergences resolution Attempt",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
                 }
             }
-*/
 
         }
 
@@ -114,6 +103,10 @@ extension BartlebyDocument {
      */
     public func acknowledgeTriggerIndexes(_ indexes:[Int]) {
         for index in indexes{
+            if index > self.registryMetadata.highestReceivedTriggerIndex{
+                self.registryMetadata.highestReceivedTriggerIndex=index
+            }
+
             if (self.registryMetadata.debugTriggersHistory) {
                 registryMetadata.triggersIndexesDebugHistory.append(index)
             }
@@ -177,7 +170,6 @@ extension BartlebyDocument {
 
         // If necessary we grab the missing indexes
         self.grabMissingTriggerIndexes()
-        // }
 
     }
 
@@ -506,7 +498,6 @@ extension BartlebyDocument {
                                 trigger.runUID=JSONDictionary["r"] as? String
                                 trigger.senderUID=JSONDictionary["s"] as? String
                                 trigger.origin=JSONDictionary["n"] as? String
-
 
                                 var triggers=[Trigger]()
                                 triggers.append(trigger)

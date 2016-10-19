@@ -95,7 +95,7 @@ Each trigger has a unique primary trigger index per observationUID.
 
 ### Resolution of divergences
 
-When receiving an owned delete trigger index if the version of current object is >= equal to the triggered version, we should be READ again the entities state on the server from the owned index to the last available. This solution applies to "Deletions divergences" &"Concurrent updates".
+When receiving an owned trigger, if its index is >= to the highest trigger received, we should be "replay" the triggers from this index. This solution applies to all divergences (on deletion or concurrent update)
 
 
 ## Faults related to ACL 
@@ -125,9 +125,9 @@ The user must arbitrate or defer the Arbitration
 
 # Trigger Continuity issues.
 
-Trigger continuity issues are not real faults, but should remain rare. If this mecanism is used at high frequency it means there is a systemic problem that needs to be analyzed. 
+Trigger continuity issues are not real faults, but should remain rare. If this mechanism is used at high frequency it means there is a systemic problem that needs to be analysed. 
 
-We integrating a trigger if there is a *trigger index hole* bartleby tries to fill the gap. 
+We integrating a trigger if there is a *trigger index hole* Bartleby tries to fill the gap. 
 E.g : `BartlebyDocument+Triggers.swift grabMissingTriggerIndexes()` Continuity issues are logged via `bprint` under `TriggerContinuity` category.
 
 

@@ -82,7 +82,7 @@ import Foundation
                     self.automaticTreeCreation=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BsyncDirectives.typeName())
         }
     }
 

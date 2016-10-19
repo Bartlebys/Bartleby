@@ -34,4 +34,4 @@ try? benoit.mergeWith(melanie)
 benoit.firstname
 benoit.lastname
 
-//: [Next](@ne
+//: [Next](@next)

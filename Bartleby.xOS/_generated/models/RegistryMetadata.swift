@@ -64,6 +64,9 @@ import Foundation
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
 	dynamic open var ownedTriggersIndexes:[Int] = [Int]()
 
+	//The index of the highest trigger that has been received (used to detect potential divergences)
+	open var highestReceivedTriggerIndex:Int = -1
+
 	//The index of the last trigger that has been integrated
 	open var lastIntegratedTriggerIndex:Int = -1
 
@@ -117,7 +120,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","triggersIndexes","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","triggersIndexes","ownedTriggersIndexes","highestReceivedTriggerIndex","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
         return exposed
     }
 
@@ -182,6 +185,10 @@ import Foundation
                 if let casted=value as? [Int]{
                     self.ownedTriggersIndexes=casted
                 }
+            case "highestReceivedTriggerIndex":
+                if let casted=value as? Int{
+                    self.highestReceivedTriggerIndex=casted
+                }
             case "lastIntegratedTriggerIndex":
                 if let casted=value as? Int{
                     self.lastIntegratedTriggerIndex=casted
@@ -219,7 +226,7 @@ import Foundation
                     self.saveThePassword=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key)
+                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: RegistryMetadata.typeName())
         }
     }
 
@@ -259,6 +266,8 @@ import Foundation
                return self.triggersIndexes
             case "ownedTriggersIndexes":
                return self.ownedTriggersIndexes
+            case "highestReceivedTriggerIndex":
+               return self.highestReceivedTriggerIndex
             case "lastIntegratedTriggerIndex":
                return self.lastIntegratedTriggerIndex
             case "receivedTriggers":
@@ -303,6 +312,7 @@ import Foundation
 			self.triggersIndexesDebugHistory <- ( map["triggersIndexesDebugHistory"] )
 			self.triggersIndexes <- ( map["triggersIndexes"] )
 			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
+			self.highestReceivedTriggerIndex <- ( map["highestReceivedTriggerIndex"] )
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 			self.receivedTriggers <- ( map["receivedTriggers"] )
 			self.operationsQuarantine <- ( map["operationsQuarantine"] )
@@ -330,6 +340,7 @@ import Foundation
 			self.triggersIndexesDebugHistory=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "triggersIndexesDebugHistory")! as! [Int]
 			self.triggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "triggersIndexes")! as! [Int]
 			self.ownedTriggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]
+			self.highestReceivedTriggerIndex=decoder.decodeInteger(forKey:"highestReceivedTriggerIndex") 
 			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
 			self.receivedTriggers=decoder.decodeObject(of: [NSArray.classForCoder(),Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
 			self.operationsQuarantine=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "operationsQuarantine")! as! [PushOperation]
@@ -361,6 +372,7 @@ import Foundation
 		coder.encode(self.triggersIndexesDebugHistory,forKey:"triggersIndexesDebugHistory")
 		coder.encode(self.triggersIndexes,forKey:"triggersIndexes")
 		coder.encode(self.ownedTriggersIndexes,forKey:"ownedTriggersIndexes")
+		coder.encode(self.highestReceivedTriggerIndex,forKey:"highestReceivedTriggerIndex")
 		coder.encode(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encode(self.receivedTriggers,forKey:"receivedTriggers")
 		coder.encode(self.operationsQuarantine,forKey:"operationsQuarantine")
