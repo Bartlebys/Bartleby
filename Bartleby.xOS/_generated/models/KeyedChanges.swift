@@ -61,7 +61,7 @@ import Foundation
                     self.changes=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: KeyedChanges.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

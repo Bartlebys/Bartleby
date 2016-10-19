@@ -79,7 +79,7 @@ import Foundation
                     self.icon=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: Tag.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

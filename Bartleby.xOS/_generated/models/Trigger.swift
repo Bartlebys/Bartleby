@@ -117,7 +117,7 @@ import Foundation
                     self.payloads=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: Trigger.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

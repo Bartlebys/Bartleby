@@ -110,7 +110,7 @@ import Foundation
                     self.externalIdentifier=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: Completion.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

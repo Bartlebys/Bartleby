@@ -221,7 +221,7 @@ import ObjectMapper
                     self.items=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: LockersCollectionController.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

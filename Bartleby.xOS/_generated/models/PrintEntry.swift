@@ -99,7 +99,7 @@ import Foundation
                     self.decorative=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: PrintEntry.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

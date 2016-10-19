@@ -54,7 +54,7 @@ import Foundation
                     self.string=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: JString.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

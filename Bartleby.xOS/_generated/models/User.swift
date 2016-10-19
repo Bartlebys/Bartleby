@@ -223,7 +223,7 @@ import Foundation
                     self.loginHasSucceed=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: User.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

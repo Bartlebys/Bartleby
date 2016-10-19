@@ -62,7 +62,7 @@ import Foundation
                     self.salt=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BsyncCredentials.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

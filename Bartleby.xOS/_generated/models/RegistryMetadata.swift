@@ -226,7 +226,7 @@ import Foundation
                     self.saveThePassword=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: RegistryMetadata.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

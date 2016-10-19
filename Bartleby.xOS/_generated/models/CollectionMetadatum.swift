@@ -78,7 +78,7 @@ import Foundation
                     self.inMemory=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: CollectionMetadatum.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

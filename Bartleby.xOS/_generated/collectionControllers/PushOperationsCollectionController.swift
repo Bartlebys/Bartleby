@@ -213,7 +213,7 @@ import ObjectMapper
                     self.items=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: PushOperationsCollectionController.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

@@ -60,7 +60,7 @@ import Foundation
                     self.query=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: Locker.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

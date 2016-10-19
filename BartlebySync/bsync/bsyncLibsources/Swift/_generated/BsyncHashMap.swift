@@ -47,7 +47,7 @@ import Foundation
                     self.pathToHash=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BsyncHashMap.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 

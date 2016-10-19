@@ -131,7 +131,7 @@ import Foundation
                     self.size=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BsyncDMGCard.typeName())
+                return try super.setExposedValue(value, forKey: key)
         }
     }
 
