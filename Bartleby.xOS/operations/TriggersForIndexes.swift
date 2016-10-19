@@ -28,7 +28,7 @@ import Foundation
         if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
             let pathURL=document.baseURL.appendingPathComponent("triggers")
             let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject]
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"ReadTriggersByIds", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"TriggersForIndexes", forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
                 request(r).validate().responseString(completionHandler: { (response) in
@@ -49,7 +49,7 @@ import Foundation
                         let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body:NSLocalizedString("Explicit Failure in ",comment: "Explicit Failure in ") + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                             transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
@@ -65,7 +65,7 @@ import Foundation
                                             context: context,
                                             title: NSLocalizedString("Deserialization issue",
                                                                      comment: "Deserialization issue"),
-                                            body:"(result.value)",
+                                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                                             transmit:{ (selectedIndex) -> () in
                                         })
                                         reactions.append(failureReaction)
@@ -76,7 +76,7 @@ import Foundation
                                         context: context,
                                         title: NSLocalizedString("No String Deserialization issue",
                                                                  comment: "No String Deserialization issue"),
-                                        body:"(result.value)",
+                                        body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                                         transmit: { (selectedIndex) -> () in
                                     })
                                     reactions.append(failureReaction)
@@ -89,7 +89,7 @@ import Foundation
                                 let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                                    body:NSLocalizedString("Implicit Failure", comment: "Implicit Failure") + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+                                    body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
