@@ -89,13 +89,15 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let data = self.data {
 			coder.encode(data,forKey:"data")
 		}

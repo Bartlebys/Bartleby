@@ -118,7 +118,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
@@ -126,7 +127,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let creationDate = self.creationDate {
 			coder.encode(creationDate,forKey:"creationDate")
 		}

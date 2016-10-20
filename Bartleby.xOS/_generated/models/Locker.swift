@@ -239,7 +239,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"registryUID") as NSString?)
 			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
@@ -254,7 +255,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let registryUID = self.registryUID {
 			coder.encode(registryUID,forKey:"registryUID")
 		}

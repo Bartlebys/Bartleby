@@ -4,7 +4,7 @@
 //  The is the central piece of the Document oriented architecture.
 //  We provide a universal implementation with conditionnal compilation
 //
-//  The document stores references to Bartleby's style CollectionControllers.
+//  The document stores references to Bartleby's style ManagedCollections.
 //  This allow to use intensively bindings and distributed data automation.
 //  With the mediation of standard Bindings approach with NSArrayControler
 //
@@ -66,17 +66,17 @@ import ObjectMapper
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var lockers=LockersCollectionController(){
+	open dynamic var lockers=LockersManagedCollection(){
 		willSet{
 			lockers.document=self
 		}
 	}
-		open dynamic var pushOperations=PushOperationsCollectionController(){
+		open dynamic var pushOperations=PushOperationsManagedCollection(){
 		willSet{
 			pushOperations.document=self
 		}
 	}
-		open dynamic var users=UsersCollectionController(){
+		open dynamic var users=UsersManagedCollection(){
 		willSet{
 			users.document=self
 		}
@@ -97,7 +97,7 @@ import ObjectMapper
             lockersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            // Setup the Array Controller in the CollectionController
+            // Setup the Array Controller in the ManagedCollection
             self.lockers.arrayController=lockersArrayController
             // Add observer
             lockersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
@@ -115,7 +115,7 @@ import ObjectMapper
             pushOperationsArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            // Setup the Array Controller in the CollectionController
+            // Setup the Array Controller in the ManagedCollection
             self.pushOperations.arrayController=pushOperationsArrayController
             // Add observer
             pushOperationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
@@ -133,7 +133,7 @@ import ObjectMapper
             usersArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            // Setup the Array Controller in the CollectionController
+            // Setup the Array Controller in the ManagedCollection
             self.users.arrayController=usersArrayController
             // Add observer
             usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)

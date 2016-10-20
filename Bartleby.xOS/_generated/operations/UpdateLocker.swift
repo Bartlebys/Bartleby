@@ -95,14 +95,16 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self._locker=decoder.decodeObject(of:Locker.self, forKey: "_locker")! 
 			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self._locker,forKey:"_locker")
 		coder.encode(self._registryUID,forKey:"_registryUID")
     }
@@ -132,7 +134,7 @@ import Foundation
      */
     fileprivate func _getOperation()->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
-            if let ic:PushOperationsCollectionController = try? document.getCollection(){
+            if let ic:PushOperationsManagedCollection = try? document.getCollection(){
                 let operations=ic.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
                 })
@@ -165,7 +167,7 @@ import Foundation
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
             // Provision the operation.
             do{
-                let ic:PushOperationsCollectionController = try document.getCollection()
+                let ic:PushOperationsManagedCollection = try document.getCollection()
                 let operation=self._getOperation()
                 operation.counter += 1
                 operation.status=PushOperation.Status.pending

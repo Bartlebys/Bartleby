@@ -125,7 +125,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
 			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
@@ -134,7 +135,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.storage.rawValue ,forKey:"storage")
 		coder.encode(self.collectionName,forKey:"collectionName")
 		coder.encode(self.persistsDistantly,forKey:"persistsDistantly")

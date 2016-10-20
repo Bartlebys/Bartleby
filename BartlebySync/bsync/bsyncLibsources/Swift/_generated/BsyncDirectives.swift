@@ -130,7 +130,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.sourceURL=decoder.decodeObject(of: NSURL.self, forKey:"sourceURL") as URL?
 			self.destinationURL=decoder.decodeObject(of: NSURL.self, forKey:"destinationURL") as URL?
@@ -140,7 +141,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let sourceURL = self.sourceURL {
 			coder.encode(sourceURL,forKey:"sourceURL")
 		}

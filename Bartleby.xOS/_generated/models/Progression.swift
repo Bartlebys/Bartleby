@@ -199,7 +199,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.startTime=decoder.decodeDouble(forKey:"startTime") 
 			self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
@@ -213,7 +214,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let startTime = self.startTime {
 			coder.encode(startTime,forKey:"startTime")
 		}

@@ -258,7 +258,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init()
+    required public init?(coder decoder: NSCoder) {
+        super.init()
         self.silentGroupedChanges {
 			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
@@ -272,6 +273,7 @@ import Foundation
     }
 
      open func encode(with coder: NSCoder) {
+        
 		coder.encode(self.collectedIndex,forKey:"collectedIndex")
 		coder.encode(self.creatorUID,forKey:"creatorUID")
 		if let summary = self.summary {

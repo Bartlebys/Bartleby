@@ -157,7 +157,8 @@ import Foundation
 
     // MARK: - NSSecureCoding
 
-    required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
+    required public init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.counter=decoder.decodeInteger(forKey:"counter") 
 			self.line=decoder.decodeInteger(forKey:"line") 
@@ -171,7 +172,8 @@ import Foundation
         }
     }
 
-    override open func encode(with coder: NSCoder) {super.encode(with:coder)
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.counter,forKey:"counter")
 		coder.encode(self.line,forKey:"line")
 		coder.encode(self.elapsed,forKey:"elapsed")

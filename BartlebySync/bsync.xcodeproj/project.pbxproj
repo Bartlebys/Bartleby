@@ -35,6 +35,18 @@
 		E50987741DAFBE280049A2DA /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50987641DAFBE280049A2DA /* BsyncHashMap.swift */; };
 		E510E9A51D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
 		E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E51DCB301DB9070500D934DC /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */; };
+		E51DCB311DB9070500D934DC /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */; };
+		E51DCB321DB9070500D934DC /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */; };
+		E51DCB331DB9070500D934DC /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */; };
+		E51DCB341DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */; };
+		E51DCB351DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */; };
+		E51DCB361DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */; };
+		E51DCB371DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */; };
+		E51DCB381DB9070500D934DC /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */; };
+		E51DCB391DB9070500D934DC /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */; };
+		E51DCB3A1DB9070500D934DC /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */; };
+		E51DCB3B1DB9070500D934DC /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */; };
 		E53E28D41CA572D80079ED23 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
 		E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
 		E53E28D61CA572D80079ED23 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
@@ -150,18 +162,6 @@
 		E5C3370A1DB53F3C00B2F127 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336841DB53F3C00B2F127 /* BartlebyDocument.swift */; };
 		E5C3370B1DB53F3C00B2F127 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336841DB53F3C00B2F127 /* BartlebyDocument.swift */; };
 		E5C3370C1DB53F3C00B2F127 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336841DB53F3C00B2F127 /* BartlebyDocument.swift */; };
-		E5C3370D1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */; };
-		E5C3370E1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */; };
-		E5C3370F1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */; };
-		E5C337101DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */; };
-		E5C337111DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */; };
-		E5C337121DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */; };
-		E5C337131DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */; };
-		E5C337141DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */; };
-		E5C337151DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */; };
-		E5C337161DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */; };
-		E5C337171DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */; };
-		E5C337181DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */; };
 		E5C337191DB53F3C00B2F127 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C3368A1DB53F3C00B2F127 /* Acknowledgment.swift */; };
 		E5C3371A1DB53F3C00B2F127 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C3368A1DB53F3C00B2F127 /* Acknowledgment.swift */; };
 		E5C3371B1DB53F3C00B2F127 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C3368A1DB53F3C00B2F127 /* Acknowledgment.swift */; };
@@ -835,6 +835,9 @@
 		E50987631DAFBE280049A2DA /* BsyncDMGCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncDMGCard.swift; sourceTree = "<group>"; };
 		E50987641DAFBE280049A2DA /* BsyncHashMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BsyncHashMap.swift; sourceTree = "<group>"; };
 		E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BsyncHashMap+Filter.swift"; sourceTree = "<group>"; };
+		E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersManagedCollection.swift; sourceTree = "<group>"; };
+		E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationsManagedCollection.swift; sourceTree = "<group>"; };
+		E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersManagedCollection.swift; sourceTree = "<group>"; };
 		E52F948D1D01C25E005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard+Evaluation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BsyncDMGCard+Evaluation.swift"; sourceTree = "<group>"; };
@@ -889,9 +892,6 @@
 		E5C0CF181C36CD6E00F3B7B8 /* UpDownDirectivesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpDownDirectivesTests.swift; sourceTree = "<group>"; };
 		E5C0CF191C36CD6E00F3B7B8 /* bsyncMiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = bsyncMiscTests.swift; sourceTree = "<group>"; };
 		E5C336841DB53F3C00B2F127 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
-		E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersCollectionController.swift; sourceTree = "<group>"; };
-		E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationsCollectionController.swift; sourceTree = "<group>"; };
-		E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCollectionController.swift; sourceTree = "<group>"; };
 		E5C3368A1DB53F3C00B2F127 /* Acknowledgment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Acknowledgment.swift; sourceTree = "<group>"; };
 		E5C3368B1DB53F3C00B2F127 /* BartlebyObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObject.swift; sourceTree = "<group>"; };
 		E5C3368C1DB53F3C00B2F127 /* CollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMetadatum.swift; sourceTree = "<group>"; };
@@ -1112,6 +1112,16 @@
 			name = "Embedded-Modules";
 			sourceTree = "<group>";
 		};
+		E51DCB2C1DB9070500D934DC /* managedCollections */ = {
+			isa = PBXGroup;
+			children = (
+				E51DCB2D1DB9070500D934DC /* LockersManagedCollection.swift */,
+				E51DCB2E1DB9070500D934DC /* PushOperationsManagedCollection.swift */,
+				E51DCB2F1DB9070500D934DC /* UsersManagedCollection.swift */,
+			);
+			path = managedCollections;
+			sourceTree = "<group>";
+		};
 		E52F948C1D01C25E005BDA2D /* Tests.shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -1298,21 +1308,11 @@
 			isa = PBXGroup;
 			children = (
 				E5C336841DB53F3C00B2F127 /* BartlebyDocument.swift */,
-				E5C336851DB53F3C00B2F127 /* collectionControllers */,
+				E51DCB2C1DB9070500D934DC /* managedCollections */,
 				E5C336891DB53F3C00B2F127 /* models */,
 				E5C3369B1DB53F3C00B2F127 /* operations */,
 			);
 			path = _generated;
-			sourceTree = "<group>";
-		};
-		E5C336851DB53F3C00B2F127 /* collectionControllers */ = {
-			isa = PBXGroup;
-			children = (
-				E5C336861DB53F3C00B2F127 /* LockersCollectionController.swift */,
-				E5C336871DB53F3C00B2F127 /* PushOperationsCollectionController.swift */,
-				E5C336881DB53F3C00B2F127 /* UsersCollectionController.swift */,
-			);
-			path = collectionControllers;
 			sourceTree = "<group>";
 		};
 		E5C336891DB53F3C00B2F127 /* models */ = {
@@ -1887,7 +1887,6 @@
 				E5C337D01DB53F3D00B2F127 /* BartlebyDocument+Operations.swift in Sources */,
 				E5C337AC1DB53F3D00B2F127 /* NoCrypto.swift in Sources */,
 				E5CC26551D84698500F7C783 /* ResponseSerialization.swift in Sources */,
-				E5C337101DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */,
 				E5C337741DB53F3D00B2F127 /* DeleteLockers.swift in Sources */,
 				E54B7FDF1D2B8A8D001F7AB3 /* DeltaPathMap.m in Sources */,
 				E5C338701DB53F3D00B2F127 /* IterableCollectibleCollection.swift in Sources */,
@@ -1896,6 +1895,7 @@
 				E5CC277B1D84698500F7C783 /* ToJSON.swift in Sources */,
 				E5C337481DB53F3D00B2F127 /* Progression.swift in Sources */,
 				E5C338041DB53F3D00B2F127 /* PushOperation+Conveniences.swift in Sources */,
+				E51DCB371DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */,
 				E54B7FF31D2B8AA1001F7AB3 /* BsyncDMGCard+Evaluation.swift in Sources */,
 				E5C3381C1DB53F3D00B2F127 /* JHTTPCommand.swift in Sources */,
 				E54B7FE21D2B8A8D001F7AB3 /* PdSFileManager.m in Sources */,
@@ -1915,6 +1915,7 @@
 				E588093D1D51E08200FEA71F /* CryptedDataTransform.swift in Sources */,
 				E54B7FE01D2B8A8D001F7AB3 /* HashMap.m in Sources */,
 				E5C337EC1DB53F3D00B2F127 /* Completion+Result.swift in Sources */,
+				E51DCB331DB9070500D934DC /* LockersManagedCollection.swift in Sources */,
 				E5CC262F1D84698500F7C783 /* Alamofire.swift in Sources */,
 				E5C337701DB53F3D00B2F127 /* DeleteLocker.swift in Sources */,
 				E5C338781DB53F3D00B2F127 /* Monitoring.swift in Sources */,
@@ -1976,6 +1977,7 @@
 				E5CC273C1D84698500F7C783 /* Option.swift in Sources */,
 				E5CC26651D84698500F7C783 /* SessionManager.swift in Sources */,
 				E5B129151D1C33DD00D61261 /* BsyncXPCTests.swift in Sources */,
+				E51DCB3B1DB9070500D934DC /* UsersManagedCollection.swift in Sources */,
 				E588093E1D51E08200FEA71F /* CryptedKeyValueStorage.swift in Sources */,
 				E5C3386C1DB53F3D00B2F127 /* Initializable.swift in Sources */,
 				E5C338341DB53F3D00B2F127 /* BartlebyFileIO.swift in Sources */,
@@ -1994,7 +1996,6 @@
 				E58809421D51E08200FEA71F /* CryptoHelper.swift in Sources */,
 				E5C338081DB53F3D00B2F127 /* RegistryMetadata+Facilities.swift in Sources */,
 				E5C337E41DB53F3D00B2F127 /* CollectionMetadatum+Proxy.swift in Sources */,
-				E5C337141DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */,
 				E5CC27351D84698500F7C783 /* CommandLine.swift in Sources */,
 				E54B7FE11D2B8A8D001F7AB3 /* NSData+CRC.m in Sources */,
 				E5CC266D1D84698500F7C783 /* Timeline.swift in Sources */,
@@ -2002,7 +2003,6 @@
 				E5C337FC1DB53F3D00B2F127 /* PrintEntry+Conveniences.swift in Sources */,
 				E54B7FF61D2B8AA1001F7AB3 /* BsyncImageDiskManager.swift in Sources */,
 				E5C337641DB53F3D00B2F127 /* CreateLockers.swift in Sources */,
-				E5C337181DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */,
 				E5CC265D1D84698500F7C783 /* ServerTrustPolicy.swift in Sources */,
 				E5C337A81DB53F3D00B2F127 /* UIX.swift in Sources */,
 				E5C338401DB53F3D00B2F127 /* CollectibleCollection.swift in Sources */,
@@ -2063,6 +2063,7 @@
 				E5C337D11DB53F3D00B2F127 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5C338A11DB53F3D00B2F127 /* StatusOfCompletion.swift in Sources */,
 				E5C338191DB53F3D00B2F127 /* JHTTPCommand.swift in Sources */,
+				E51DCB341DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */,
 				E53E28E01CA572E20079ED23 /* BsyncDirectives+Validation.swift in Sources */,
 				E5C3371D1DB53F3C00B2F127 /* BartlebyObject.swift in Sources */,
 				E5CC265A1D84698500F7C783 /* ServerTrustPolicy.swift in Sources */,
@@ -2092,6 +2093,7 @@
 				E53E28DB1CA572D80079ED23 /* PdSSyncContext.m in Sources */,
 				E5C337C11DB53F3D00B2F127 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E5C337C51DB53F3D00B2F127 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
+				E51DCB301DB9070500D934DC /* LockersManagedCollection.swift in Sources */,
 				E5D9B7BE1D788C8900BB8900 /* ResizeDmgCommand.swift in Sources */,
 				E5C338C11DB53F3D00B2F127 /* TriggersForIndexes.swift in Sources */,
 				E5CC27A31D84698500F7C783 /* TransformType.swift in Sources */,
@@ -2111,6 +2113,7 @@
 				E5C337F11DB53F3D00B2F127 /* NSNotification+Completion.swift in Sources */,
 				E5C337091DB53F3C00B2F127 /* BartlebyDocument.swift in Sources */,
 				5BB9F8501CB555B900B83252 /* CreateUserCommand.swift in Sources */,
+				E51DCB381DB9070500D934DC /* UsersManagedCollection.swift in Sources */,
 				E5C338651DB53F3D00B2F127 /* Identifiable.swift in Sources */,
 				E5C337891DB53F3D00B2F127 /* ReadUserById.swift in Sources */,
 				E53E28F01CA572E80079ED23 /* LoginCommand.swift in Sources */,
@@ -2135,7 +2138,6 @@
 				E5C337ED1DB53F3D00B2F127 /* ExternalReference+Resolution.swift in Sources */,
 				E50987651DAFBE280049A2DA /* BsyncCredentials.swift in Sources */,
 				E5C338551DB53F3D00B2F127 /* Distribuable.swift in Sources */,
-				E5C337151DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */,
 				E5CC27971D84698500F7C783 /* ISO8601DateTransform.swift in Sources */,
 				E5C337491DB53F3D00B2F127 /* PushOperation.swift in Sources */,
 				E5CC27A71D84698500F7C783 /* URLTransform.swift in Sources */,
@@ -2232,8 +2234,6 @@
 				E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */,
 				E5C3389D1DB53F3D00B2F127 /* Registry.swift in Sources */,
 				E5C337C91DB53F3D00B2F127 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
-				E5C3370D1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */,
-				E5C337111DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */,
 				E53E28EA1CA572E80079ED23 /* RunDirectivesCommand.swift in Sources */,
 				E5C3375D1DB53F3D00B2F127 /* CreateLocker.swift in Sources */,
 				E5CC27741D84698500F7C783 /* Operators.swift in Sources */,
@@ -2274,6 +2274,7 @@
 				E591ACED1D42632800748FF4 /* UpDownDirectivesTests.swift in Sources */,
 				E5C338621DB53F3D00B2F127 /* HTTPResponse.swift in Sources */,
 				E5C3382E1DB53F3D00B2F127 /* BartlebyCollection.swift in Sources */,
+				E51DCB311DB9070500D934DC /* LockersManagedCollection.swift in Sources */,
 				E5CC26531D84698500F7C783 /* ResponseSerialization.swift in Sources */,
 				E5CC273E1D84698500F7C783 /* StringExtensions.swift in Sources */,
 				E5CC26431D84698500F7C783 /* Notifications.swift in Sources */,
@@ -2283,9 +2284,11 @@
 				E5C3378A1DB53F3D00B2F127 /* ReadUserById.swift in Sources */,
 				E5CC264F1D84698500F7C783 /* Response.swift in Sources */,
 				E5C3376E1DB53F3D00B2F127 /* DeleteLocker.swift in Sources */,
+				E51DCB391DB9070500D934DC /* UsersManagedCollection.swift in Sources */,
 				E5C338721DB53F3D00B2F127 /* JSONString.swift in Sources */,
 				E5C3373A1DB53F3D00B2F127 /* Locker.swift in Sources */,
 				E591AD001D42643B00748FF4 /* BsyncImageDiskManager.swift in Sources */,
+				E51DCB351DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */,
 				E5C3382A1DB53F3D00B2F127 /* ImageTransform.swift in Sources */,
 				E5CC27711D84698500F7C783 /* Mapper.swift in Sources */,
 				E5C338761DB53F3D00B2F127 /* Monitoring.swift in Sources */,
@@ -2350,11 +2353,9 @@
 				E509876A1DAFBE280049A2DA /* BsyncDirectives.swift in Sources */,
 				E58809371D51E08100FEA71F /* CryptedDataTransform.swift in Sources */,
 				E591ACFC1D42643B00748FF4 /* BsyncDirectives+Validation.swift in Sources */,
-				E5C337121DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */,
 				E5C338161DB53F3D00B2F127 /* JData+Conveniences.swift in Sources */,
 				E5C337761DB53F3D00B2F127 /* DeleteUser.swift in Sources */,
 				E5CC279C1D84698500F7C783 /* NSDecimalNumberTransform.swift in Sources */,
-				E5C337161DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */,
 				E5C3371A1DB53F3C00B2F127 /* Acknowledgment.swift in Sources */,
 				E591ACF41D42643B00748FF4 /* HashMap.m in Sources */,
 				E591ACE51D42632100748FF4 /* TestCase.swift in Sources */,
@@ -2382,7 +2383,6 @@
 				E591AD021D42643B00748FF4 /* BsyncLocalAnalyzer.swift in Sources */,
 				E591ACFD1D42643B00748FF4 /* BsyncDMGCard+Evaluation.swift in Sources */,
 				E5C338561DB53F3D00B2F127 /* Distribuable.swift in Sources */,
-				E5C3370E1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */,
 				E5C337FE1DB53F3D00B2F127 /* Progression+Conveniences.swift in Sources */,
 				E5C337221DB53F3C00B2F127 /* CollectionMetadatum.swift in Sources */,
 				E5C338421DB53F3D00B2F127 /* CollectionMetadatumProtocol.swift in Sources */,
@@ -2487,6 +2487,7 @@
 				E5C338CF1DB53F3D00B2F127 /* BFileManager.swift in Sources */,
 				E5CC26581D84698500F7C783 /* Result.swift in Sources */,
 				E5CC278D1D84698500F7C783 /* DateTransform.swift in Sources */,
+				E51DCB361DB9070500D934DC /* PushOperationsManagedCollection.swift in Sources */,
 				E5C3378F1DB53F3D00B2F127 /* ReadUsersByIds.swift in Sources */,
 				E5C337271DB53F3C00B2F127 /* Completion.swift in Sources */,
 				E5C3379F1DB53F3D00B2F127 /* UpdateUser.swift in Sources */,
@@ -2571,7 +2572,6 @@
 				E5CC273B1D84698500F7C783 /* Option.swift in Sources */,
 				E5C338A71DB53F3D00B2F127 /* NSObject+Bartleby.swift in Sources */,
 				E58FED1D1D410A7800BBB25A /* IdentifableCardContext.swift in Sources */,
-				E5C3370F1DB53F3C00B2F127 /* LockersCollectionController.swift in Sources */,
 				E5C338671DB53F3D00B2F127 /* Identifiable.swift in Sources */,
 				E55C927F1CBF8998008163F6 /* BsyncDirectives+Validation.swift in Sources */,
 				E5CC27851D84698500F7C783 /* DataTransform.swift in Sources */,
@@ -2625,11 +2625,10 @@
 				E5CC262A1D84698500F7C783 /* AFError.swift in Sources */,
 				E5C3382F1DB53F3D00B2F127 /* BartlebyCollection.swift in Sources */,
 				E5C3381B1DB53F3D00B2F127 /* JHTTPCommand.swift in Sources */,
-				E5C337131DB53F3C00B2F127 /* PushOperationsCollectionController.swift in Sources */,
 				E5C3378B1DB53F3D00B2F127 /* ReadUserById.swift in Sources */,
 				E5C338771DB53F3D00B2F127 /* Monitoring.swift in Sources */,
 				E5CC27661D84698500F7C783 /* FromJSON.swift in Sources */,
-				E5C337171DB53F3C00B2F127 /* UsersCollectionController.swift in Sources */,
+				E51DCB3A1DB9070500D934DC /* UsersManagedCollection.swift in Sources */,
 				E5CC279D1D84698500F7C783 /* NSDecimalNumberTransform.swift in Sources */,
 				E5C337CB1DB53F3D00B2F127 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E5C338171DB53F3D00B2F127 /* JData+Conveniences.swift in Sources */,
@@ -2642,6 +2641,7 @@
 				E5C337BB1DB53F3D00B2F127 /* Consignee.swift in Sources */,
 				E5C338331DB53F3D00B2F127 /* BartlebyFileIO.swift in Sources */,
 				E5C3377B1DB53F3D00B2F127 /* DeleteUsers.swift in Sources */,
+				E51DCB321DB9070500D934DC /* LockersManagedCollection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

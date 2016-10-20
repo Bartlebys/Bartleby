@@ -33,7 +33,7 @@ private class SwiftUndoPerformer: NSObject {
 
 public extension UndoManager {
 
-    // With the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersCollectionController fails
+    // With the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersManagedCollection fails
     // That's why we have added an registerUndo extension on NSUndoManager
 
     public func registerUndo(_ closure: @escaping (Void) -> Void) {
