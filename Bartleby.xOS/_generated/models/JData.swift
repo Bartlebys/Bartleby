@@ -23,7 +23,6 @@ import Foundation
 
 	//the data
 	dynamic open var data:Data? {
-	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 

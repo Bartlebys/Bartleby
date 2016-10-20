@@ -22,7 +22,6 @@ import Foundation
     }
 
 	dynamic open var creationDate:Date? {
-	 
 	    didSet { 
 	       if creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
@@ -31,7 +30,6 @@ import Foundation
 	}
 
 	dynamic open var color:String? {
-	 
 	    didSet { 
 	       if color != oldValue {
 	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
@@ -40,7 +38,6 @@ import Foundation
 	}
 
 	dynamic open var icon:String? {
-	 
 	    didSet { 
 	       if icon != oldValue {
 	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 

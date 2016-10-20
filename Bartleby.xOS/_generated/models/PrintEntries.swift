@@ -23,7 +23,6 @@ import Foundation
 
 	//The subjects versions (used to analyze possible divergences)
 	dynamic open var entries:[PrintEntry] = [PrintEntry]()  {
-	 
 	    didSet { 
 	       if entries != oldValue {
 	            self.provisionChanges(forKey: "entries",oldValue: oldValue,newValue: entries)  

@@ -23,7 +23,6 @@ import Foundation
 
 	//The associated registry UID.
 	dynamic open var registryUID:String? {
-	 
 	    didSet { 
 	       if registryUID != oldValue {
 	            self.provisionChanges(forKey: "registryUID",oldValue: oldValue,newValue: registryUID) 
@@ -33,7 +32,6 @@ import Foundation
 
 	//The subject UID you want to lock
 	dynamic open var subjectUID:String = "\(Default.NO_UID)"{
-	 
 	    didSet { 
 	       if subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -43,7 +41,6 @@ import Foundation
 
 	//The userUID that can unlock the locker
 	dynamic open var userUID:String = "\(Default.NO_UID)"{
-	 
 	    didSet { 
 	       if userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -57,7 +54,6 @@ import Foundation
 		case persistent = "persistent"
 	}
 	open var mode:Mode = .autoDestructive  {
-	 
 	    didSet { 
 	       if mode != oldValue {
 	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
@@ -71,7 +67,6 @@ import Foundation
 		case offline = "offline"
 	}
 	open var verificationMethod:VerificationMethod = .online  {
-	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -81,7 +76,6 @@ import Foundation
 
 	//This code should be crypted / decrypted
 	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
-	 
 	    didSet { 
 	       if code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -91,7 +85,6 @@ import Foundation
 
 	//The number of attempts
 	dynamic open var numberOfAttempt:Int = 3  {
-	 
 	    didSet { 
 	       if numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
@@ -100,7 +93,6 @@ import Foundation
 	}
 
 	dynamic open var startDate:Date = Date.distantPast  {
-	 
 	    didSet { 
 	       if startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -109,7 +101,6 @@ import Foundation
 	}
 
 	dynamic open var endDate:Date = Date.distantFuture  {
-	 
 	    didSet { 
 	       if endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
@@ -119,7 +110,6 @@ import Foundation
 
 	//Thoses data gems will be return on success
 	dynamic open var gems:String = "\(Default.NO_GEM)"{
-	 
 	    didSet { 
 	       if gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 

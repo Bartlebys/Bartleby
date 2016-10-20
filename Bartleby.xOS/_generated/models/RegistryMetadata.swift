@@ -87,7 +87,6 @@ import Foundation
 
 	//is the user performing Online
 	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
-	 
 	    didSet { 
 	       if online != oldValue {
 	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
@@ -97,7 +96,6 @@ import Foundation
 
 	//If set to true any object creation, update, or deletion will be pushed as soon as possible.
 	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
-	 
 	    didSet { 
 	       if pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
@@ -107,7 +105,6 @@ import Foundation
 
 	//Save the password or not?
 	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {
-	 
 	    didSet { 
 	       if saveThePassword != oldValue {
 	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  

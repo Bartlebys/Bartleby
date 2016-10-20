@@ -23,7 +23,6 @@ import Foundation
 
 	//The UID of the referred instance
 	dynamic open var iUID:String = "\(Default.NO_UID)"{
-	 
 	    didSet { 
 	       if iUID != oldValue {
 	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
@@ -33,7 +32,6 @@ import Foundation
 
 	//The typeName of the referred instance
 	dynamic open var iTypeName:String = "\(Default.NO_UID)"{
-	 
 	    didSet { 
 	       if iTypeName != oldValue {
 	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 

@@ -23,7 +23,6 @@ import Foundation
 
 	//Success if set to true
 	dynamic open var success:Bool = true  {
-	 
 	    didSet { 
 	       if success != oldValue {
 	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
@@ -33,7 +32,6 @@ import Foundation
 
 	//The status
 	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {
-	 
 	    didSet { 
 	       if statusCode != oldValue {
 	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
@@ -43,7 +41,6 @@ import Foundation
 
 	//The Message
 	dynamic open var message:String = ""{
-	 
 	    didSet { 
 	       if message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
@@ -53,7 +50,6 @@ import Foundation
 
 	//completion data
 	dynamic open var data:Data? {
-	 
 	    didSet { 
 	       if data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 

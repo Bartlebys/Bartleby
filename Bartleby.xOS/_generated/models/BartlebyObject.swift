@@ -35,7 +35,6 @@ import Foundation
 
 	//Collectible protocol: The Creator UID
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"{
-	 
 	    didSet { 
 	       if creatorUID != oldValue {
 	            self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID) 
@@ -45,7 +44,6 @@ import Foundation
 
 	//The object summary can be used for example by externalReferences to describe the JObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
 	dynamic open var summary:String? {
-	 
 	    didSet { 
 	       if summary != oldValue {
 	            self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary) 
@@ -55,7 +53,6 @@ import Foundation
 
 	//An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.This flag allows for example to remove entities that have been for example created by unit-tests.
 	dynamic open var ephemeral:Bool = false  {
-	 
 	    didSet { 
 	       if ephemeral != oldValue {
 	            self.provisionChanges(forKey: "ephemeral",oldValue: oldValue,newValue: ephemeral)  
@@ -65,7 +62,6 @@ import Foundation
 
 	//Collectible protocol: distributed
 	dynamic open var distributed:Bool = false  {
-	 
 	    didSet { 
 	       if distributed != oldValue {
 	            self.provisionChanges(forKey: "distributed",oldValue: oldValue,newValue: distributed)  

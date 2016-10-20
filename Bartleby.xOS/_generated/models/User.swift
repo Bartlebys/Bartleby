@@ -23,7 +23,6 @@ import Foundation
 
 	//An external unique identifier
 	dynamic open var externalID:String? {
-	 
 	    didSet { 
 	       if externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -33,7 +32,6 @@ import Foundation
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
-	 
 	    didSet { 
 	       if spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -48,7 +46,6 @@ import Foundation
 		case byEmail = "byEmail"
 	}
 	open var verificationMethod:VerificationMethod = .byPhoneNumber  {
-	 
 	    didSet { 
 	       if verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
@@ -57,7 +54,6 @@ import Foundation
 	}
 
 	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
-	 
 	    didSet { 
 	       if firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -66,7 +62,6 @@ import Foundation
 	}
 
 	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
-	 
 	    didSet { 
 	       if lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -76,7 +71,6 @@ import Foundation
 
 	//The user's email. Can be the secondary Identification source 
 	dynamic open var email:String? {
-	 
 	    didSet { 
 	       if email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -86,7 +80,6 @@ import Foundation
 
 	//The user's phone number. Can be the secondary Identification source 
 	dynamic open var phoneNumber:String? {
-	 
 	    didSet { 
 	       if phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -96,7 +89,6 @@ import Foundation
 
 	//The hashed version of the user password
 	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
-	 
 	    didSet { 
 	       if password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -106,7 +98,6 @@ import Foundation
 
 	//An activation code
 	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
-	 
 	    didSet { 
 	       if activationCode != oldValue {
 	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
@@ -121,7 +112,6 @@ import Foundation
 		case suspended = "suspended"
 	}
 	open var status:Status = .new  {
-	 
 	    didSet { 
 	       if status != oldValue {
 	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
@@ -131,7 +121,6 @@ import Foundation
 
 	//The user Tags. External reference to Tags instances
 	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {
-	 
 	    didSet { 
 	       if tags != oldValue {
 	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
@@ -141,7 +130,6 @@ import Foundation
 
 	//Notes
 	dynamic open var notes:String? {
-	 
 	    didSet { 
 	       if notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 

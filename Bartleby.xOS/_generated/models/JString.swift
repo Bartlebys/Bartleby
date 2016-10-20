@@ -23,7 +23,6 @@ import Foundation
 
 	//the embedded String
 	dynamic open var string:String? {
-	 
 	    didSet { 
 	       if string != oldValue {
 	            self.provisionChanges(forKey: "string",oldValue: oldValue,newValue: string) 
