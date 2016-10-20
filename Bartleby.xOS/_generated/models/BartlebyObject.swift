@@ -99,6 +99,7 @@ import Foundation
         }
     }
 
+    // Returns the UID
     final public var UID: String {
         get {
             self.defineUID()
@@ -109,15 +110,18 @@ import Foundation
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()
 
+    // We want to remove all the superviser on removal.
     deinit{
         self._supervisers.removeAll()
     }
-    // An optionnal Quick reference to the document
+
+    // A reference to the document
     open var document:BartlebyDocument?
 
-    // On object insertion or Registry deserialization
-    // We setup this collection reference
-    // On newUser we setup directly user.document.
+    // We setup this collection reference on:
+    // - object insertion
+    // - registry deserialization
+    // It connects the instance to its document and collection.
     open var collection:CollectibleCollection?{
         didSet{
             if let registry=collection?.document{
@@ -126,7 +130,7 @@ import Foundation
         }
     }
 
-
+    // Called when the object has been commited
     open var committed: Bool = false {
         willSet {
             if newValue==true{
@@ -141,6 +145,7 @@ import Foundation
     // Used to store the type name on serialization
     fileprivate lazy var _typeName: String = type(of: self).typeName()
 
+    // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
 
     // The runTypeName is used when deserializing the instance.
@@ -152,6 +157,11 @@ import Foundation
         return self._runTimeTypeName!
     }
 
+    // You can in specific situation mark that an instance should be committed by calling this method.
+    // For example after a bunch of un supervised changes.
+    open func commitRequired(){
+        self._shouldBeCommitted=true
+    }
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).

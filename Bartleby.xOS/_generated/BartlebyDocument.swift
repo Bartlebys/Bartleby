@@ -353,25 +353,18 @@ import ObjectMapper
         }
     }
         
+#else
 
-    #else
 
-
-    #endif
+#endif
 
     
-   
-    // MARK : new User facility 
-    
+    // MARK : new User facility (?)
+
     /**
     * Creates a new user
-    * 
+    *
     * you should override this method to customize default (name, email, ...)
-    * and call before returning :
-    *   if(user.creatorUID != user.UID){
-    *       // We don't want to add the current user to user list
-    *       self.users.add(user, commit:true)
-    *   }
     */
     open func newUser() -> User {
         let user=User()
@@ -383,11 +376,21 @@ import ObjectMapper
                 user.creatorUID = user.UID
             }
             user.spaceUID = self.registryMetadata.spaceUID
-            user.document = self // Very important for the  document registry metadata current User
+            if(user.creatorUID != user.UID){
+                // We don't want to add the current user to user list
+                user.collection=self.users
+                self.users.add(user, commit:false)
+            }else{
+                // We don't want to add the current user to user list
+                // Very important for the  document registry metadata current User
+                // Wa add directly the document
+                user.document = self
+            }
         }
+        user.commitRequired()// We defer the commit to allow to take account of overriden possible changes.
         return user
     }
-     
+
     // MARK: - Synchronization
 
     // SSE server sent event source
@@ -395,14 +398,14 @@ import ObjectMapper
 
     // The EventSource URL for Server Sent Events
     open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
-    
+
     open var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
 
     internal var _timer:Timer?
 
     // MARK: - Local Persistency
 
-    #if os(OSX)
+#if os(OSX)
 
 
     // MARK:  NSDocument
@@ -546,19 +549,19 @@ import ObjectMapper
             } catch {
                 bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
-           
+
             DispatchQueue.main.async(execute: {
                 self.registryDidLoad()
             })
         }
     }
-    
-    #else
-    
+
+#else
+
     // MARK: iOS UIDocument serialization / deserialization
-    
+
     // TODO: @bpds(#IOS) UIDocument support
-    
+
     // SAVE content
     override open func contents(forType typeName: String) throws -> Any {
         return ""
@@ -568,7 +571,23 @@ import ObjectMapper
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
 
     }
-    
-    #endif  
- 
+
+#endif
+    /**
+     * Creates a new Locker
+     * you can override this method to customize the properties
+     */
+    open func newLocker() -> Locker {
+        let locker=Locker()
+        locker.silentGroupedChanges {
+            if let creator=self.registryMetadata.currentUser {
+                locker.creatorUID = creator.UID
+            }
+            locker.collection=self.lockers// Become managed
+            self.lockers.add(locker, commit:false)
+        }
+        locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        return  locker
+    }
+
 }
