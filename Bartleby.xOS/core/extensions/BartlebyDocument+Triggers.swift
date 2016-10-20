@@ -66,7 +66,7 @@ extension BartlebyDocument {
         if ack.versions.count==0{
             // It is a deletion.
         }else{
-            var possibleDivergence = (ack.triggerIndex < self.registryMetadata.highestReceivedTriggerIndex)
+            let possibleDivergence = (ack.triggerIndex < self.registryMetadata.highestReceivedTriggerIndex)
             if possibleDivergence{
                 // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
                 TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in

@@ -8,6 +8,7 @@ var document=BartlebyDocument()
 var userA=document.newUser()
 var spy=document.newUser()
 
+
 userA.addChangesSuperviser(spy) { (key, oldValue, newValue) in
     if let nonNilvalue=newValue{
         print("\(key) of \(userA.UID) has been set to \(nonNilvalue)")

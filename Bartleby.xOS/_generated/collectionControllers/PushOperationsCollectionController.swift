@@ -46,7 +46,7 @@ import ObjectMapper
     /// - returns: the instance
     required public init(items:[PushOperation]) {
         super.init()
-        self.items=items
+        self._items=items
     }
 
     required public init() {
@@ -63,7 +63,7 @@ import ObjectMapper
             self.document?.setValue(self, forKey: "pushOperations")
             arrayController?.objectClass=PushOperation.self
             arrayController?.entityName=PushOperation.className()
-            arrayController?.bind("content", to: self, withKeyPath: "items", options: nil)
+            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
         }
     }
 
@@ -71,30 +71,30 @@ import ObjectMapper
 
     weak open var tableView: BXTableView?
 
-    // The underling items storage
-    fileprivate dynamic var items:[PushOperation]=[PushOperation](){
+    // The underling _items storage
+    fileprivate dynamic var _items:[PushOperation]=[PushOperation](){
         didSet {
-            if items != oldValue {
-                self.provisionChanges(forKey: "items",oldValue: oldValue,newValue: items)
+            if _items != oldValue {
+                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
         }
     }
 
     open func generate() -> AnyIterator<PushOperation> {
         var nextIndex = -1
-        let limit=self.items.count-1
+        let limit=self._items.count-1
         return AnyIterator {
             nextIndex += 1
             if (nextIndex > limit) {
                 return nil
             }
-            return self.items[nextIndex]
+            return self._items[nextIndex]
         }
     }
 
 
     open subscript(index: Int) -> PushOperation {
-        return self.items[index]
+        return self._items[index]
     }
 
     open var startIndex:Int {
@@ -102,7 +102,7 @@ import ObjectMapper
     }
 
     open var endIndex:Int {
-        return self.items.count
+        return self._items.count
     }
 
     /// Returns the position immediately after the given index.
@@ -116,7 +116,7 @@ import ObjectMapper
 
 
     open var count:Int {
-        return self.items.count
+        return self._items.count
     }
 
     open func indexOf(element:@escaping(PushOperation) throws -> Bool) rethrows -> Int?{
@@ -132,7 +132,7 @@ import ObjectMapper
         if item.collectedIndex >= 0 {
             return item.collectedIndex
         }else{
-            if let idx=items.index(where:{return $0.UID == item.UID}){
+            if let idx=_items.index(where:{return $0.UID == item.UID}){
                 self[idx].collectedIndex=idx
                 return idx
             }
@@ -141,7 +141,7 @@ import ObjectMapper
     }
 
     fileprivate func _incrementIndexes(greaterThan lowerIndex:Int){
-        let count=items.count
+        let count=_items.count
         if count > lowerIndex{
             for i in lowerIndex...count-1{
                 self[i].collectedIndex += 1
@@ -150,7 +150,7 @@ import ObjectMapper
     }
 
     fileprivate func _decrementIndexes(greaterThan lowerIndex:Int){
-        let count=items.count
+        let count=_items.count
         if count > lowerIndex{
             for i in lowerIndex...count-1{
                 self[i].collectedIndex -= 1
@@ -163,7 +163,7 @@ import ObjectMapper
     - parameter on: the closure
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
-        for item in self.items {
+        for item in self._items {
             on(item)
         }
     }
@@ -195,7 +195,7 @@ import ObjectMapper
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["items"])
+        exposed.append(contentsOf:["_items"])
         return exposed
     }
 
@@ -208,9 +208,9 @@ import ObjectMapper
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "items":
+            case "_items":
                 if let casted=value as? [PushOperation]{
-                    self.items=casted
+                    self._items=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -227,8 +227,8 @@ import ObjectMapper
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "items":
-               return self.items
+            case "_items":
+               return self._items
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -242,7 +242,7 @@ import ObjectMapper
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self.items <- ( map["items"] )
+			self._items <- ( map["_items"] )
 
             if map.mappingType == .fromJSON {
                forEach { $0.collection=self }
@@ -255,12 +255,12 @@ import ObjectMapper
 
     required public init?(coder decoder: NSCoder) {super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "items")! as! [PushOperation]
+			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "_items")! as! [PushOperation]
         }
     }
 
     override open func encode(with coder: NSCoder) {super.encode(with:coder)
-		coder.encode(self.items,forKey:"items")
+		coder.encode(self._items,forKey:"_items")
     }
 
     override open class var supportsSecureCoding:Bool{
@@ -272,10 +272,10 @@ import ObjectMapper
 
 
     open func upsert(_ item: Collectible, commit:Bool){
-        if let idx=items.index(where:{return $0.UID == item.UID}){
+        if let idx=_items.index(where:{return $0.UID == item.UID}){
             // it is an update
             // we must patch it
-            let currentInstance=items[idx]
+            let currentInstance=_items[idx]
             if commit==false{
                 // When upserting from a trigger
                 // We do not want to produce Larsen effect on data.
@@ -297,7 +297,7 @@ import ObjectMapper
 
 
     open func add(_ item:Collectible, commit:Bool){
-        self.insertObject(item, inItemsAtIndex: items.count, commit:commit)
+        self.insertObject(item, inItemsAtIndex: _items.count, commit:commit)
     }
 
     // MARK: Insert
@@ -317,7 +317,7 @@ import ObjectMapper
             self._incrementIndexes(greaterThan:index)
 
             // Insert the item
-            self.items.insert(item, at: index)
+            self._items.insert(item, at: index)
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
@@ -368,7 +368,7 @@ import ObjectMapper
         item.committed=false
 
         // Remove the item from the collection
-        self.items.remove(at:index)
+        self._items.remove(at:index)
 
     
         // Commit is ignored because
@@ -376,8 +376,8 @@ import ObjectMapper
             }
 
 
-    open func removeObjects(_ items: [Collectible],commit:Bool){
-        for item in self.items{
+    open func removeObjects(_ _items: [Collectible],commit:Bool){
+        for item in self._items{
             self.removeObject(item,commit:commit)
         }
     }

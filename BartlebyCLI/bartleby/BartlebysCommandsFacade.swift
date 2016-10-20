@@ -10,7 +10,6 @@ import Foundation
 
 struct BartlebysCommandFacade {
 
-
     static let args = Swift.CommandLine.arguments
 
     let executableName = NSString(string: args.first!).pathComponents.last!
@@ -68,10 +67,9 @@ struct BartlebysCommandFacade {
 
         let invokeBundlerUnPack="$bundler=new Bundler(); $bundler->unPack('\(packagePath)','\(expandPath)');"
         phpTask.arguments=["-r", bundlerPHP+invokeBundlerUnPack]
-
-
         phpTask.launch()
         phpTask.waitUntilExit()
+
     }
 
 
