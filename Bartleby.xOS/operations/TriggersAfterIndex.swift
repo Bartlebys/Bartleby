@@ -47,13 +47,7 @@ import Foundation
                     var reactions = Array<Bartleby.Reaction> ()
                     reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
                     if result.isFailure {
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                            context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                            transmit: { (selectedIndex) -> () in
-                        })
-                        reactions.append(failureReaction)
+                        // No automated reaction it may be normal.
                         failure(context)
                     } else {
                         if let statusCode=response?.statusCode {
