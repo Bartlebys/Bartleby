@@ -74,7 +74,7 @@ extension BartlebyDocument {
                     self._triggersHasBeenReceived(triggers)
                 }) { (context) in
                     // What to do on failure ?
-                    bprint("Failure on Divergences resolution Attempt",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
+                    bprint("Failure on Divergences resolution Attempt \(context)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
                 }
             }
 
