@@ -25,11 +25,11 @@ import AppKit
 import UIKit
 #endif
 
+import Foundation
 #if !USE_EMBEDDED_MODULES
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
-
-
 
 @objc(BartlebyDocument) open class BartlebyDocument : Registry {
 
@@ -359,7 +359,7 @@ import ObjectMapper
 #endif
 
     
-    // MARK : new User facility (?)
+    // MARK : new User facility
 
     /**
     * Creates a new user

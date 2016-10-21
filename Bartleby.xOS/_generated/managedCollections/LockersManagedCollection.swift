@@ -12,8 +12,8 @@ import Foundation
 import AppKit
 #endif
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: A  collection controller of "lockers"
@@ -175,15 +175,22 @@ import ObjectMapper
     */
     open func commitChanges() -> [String] {
         var UIDS=[String]()
-        if self.toBeCommitted{ // When one member has to be committed its collection _shouldBeCommited flag is turned to true
+        if self.toBeCommitted{
             let changedItems=self._items.filter { $0.toBeCommitted == true }
-            bprint("\(changedItems.count) \( changedItems.count>1 ? "lockers" : "locker" )  has changed in LockersManagedCollection",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
-            if  changedItems.count > 0 {
-                UIDS=changedItems.map({$0.UID})
-               UpdateLockers.commit(changedItems,inRegistryWithUID:self.registryUID)
+            for changed in changedItems{
+                UIDS.append(changed.UID)
+				let tobeUpdated = changedItems.filter { $0.distributed == true }
+				let toBeCreated = changedItems.filter { $0.distributed == false }
+				if toBeCreated.count > 0 {
+				    CreateLockers.commit(toBeCreated, inRegistryWithUID:self.registryUID)
+				}
+				if tobeUpdated.count > 0 {
+				    UpdateLockers.commit(tobeUpdated, inRegistryWithUID:self.registryUID)
+				}
+
             }
             self.committed=true
-         }
+        }
         return UIDS
     }
 

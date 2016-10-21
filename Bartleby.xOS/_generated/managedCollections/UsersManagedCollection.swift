@@ -12,8 +12,8 @@ import Foundation
 import AppKit
 #endif
 #if !USE_EMBEDDED_MODULES
-import Alamofire
-import ObjectMapper
+	import Alamofire
+	import ObjectMapper
 #endif
 
 // MARK: A  collection controller of "users"
@@ -175,12 +175,16 @@ import ObjectMapper
     */
     open func commitChanges() -> [String] {
         var UIDS=[String]()
-        if self.toBeCommitted{ // When one member has to be committed its collection _shouldBeCommited flag is turned to true
+        if self.toBeCommitted{
             let changedItems=self._items.filter { $0.toBeCommitted == true }
-            bprint("\(changedItems.count) \( changedItems.count>1 ? "users" : "user" )  has changed in UsersManagedCollection",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
             for changed in changedItems{
                 UIDS.append(changed.UID)
-                UpdateUser.commit(changed, inRegistryWithUID:self.registryUID)
+				if changed.distributed{
+				    UpdateUser.commit(changed, inRegistryWithUID:self.registryUID)
+				}else{
+				    CreateUser.commit(changed, inRegistryWithUID:self.registryUID)
+				}
+
             }
             self.committed=true
         }
