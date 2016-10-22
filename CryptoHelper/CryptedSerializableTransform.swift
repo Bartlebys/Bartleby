@@ -40,7 +40,7 @@ open class CryptedSerializableTransform<T: Serializable>: TransformType {
                     }
                 }
             } catch {
-                bprint("\(error)", file: #file, function: #function, line: #line)
+                glog("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil
@@ -55,7 +55,7 @@ open class CryptedSerializableTransform<T: Serializable>: TransformType {
                 let JSONSTRING="{\"\(self._CRYPTED_OBJECT_KEY)\":\"\(base64EncodedString)\"}"
                 return JSONSTRING
             } catch {
-                bprint("\(error)", file: #file, function: #function, line: #line)
+                glog("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil

@@ -135,7 +135,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 public struct Default {
 
     // B
-    static public let BPRINT_CATEGORY=""
+    static public let LOG_CATEGORY="default"
 
     //MARK: UserDefault key/values
     static public let SERVER_KEY="user_default_server"

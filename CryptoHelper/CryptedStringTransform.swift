@@ -26,7 +26,7 @@ open class CryptedStringTransform: TransformType {
             do {
                 return try Bartleby.cryptoDelegate.decryptString(s)
             } catch {
-                bprint("\(error)", file: #file, function: #function, line: #line)
+                glog("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil
@@ -37,7 +37,7 @@ open class CryptedStringTransform: TransformType {
             do {
                 return try Bartleby.cryptoDelegate.encryptString(s)
             } catch {
-                bprint("\(error)", file: #file, function: #function, line: #line)
+                glog("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil

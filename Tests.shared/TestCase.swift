@@ -88,15 +88,15 @@ class TestCase: XCTestCase {
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
-        bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
-        bprint("    \(testName)",file:#file,function:#function,line:#line,category:testName,decorative:true)
-        bprint("    on \(TestsConfiguration.API_BASE_URL)",file:#file,function:#function,line:#line,category:testName,decorative:true)
-        bprint("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("    \(testName)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("    on \(TestsConfiguration.API_BASE_URL)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
 
 
         //        assetPath = NSTemporaryDirectory() + testName + "/"
         assetPath = Bartleby.getSearchPath(.desktopDirectory)! + testName + "/"
-        bprint("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
+        glog("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
 
         // Remove asset folder if it exists
         do {
@@ -142,7 +142,7 @@ class TestCase: XCTestCase {
                     do {
                         try fm.removeItem(atPath: self.assetPath)
                     } catch {
-                        bprint("Error: \(error)", file: #file, function: #function, line: #line)
+                       TestCase._document?.log("Error: \(error)", file: #file, function: #function, line: #line)
                     }
                 }
             }
@@ -152,12 +152,11 @@ class TestCase: XCTestCase {
         // Clean stored users
         _creator = nil
         _createdUsers.removeAll()
-
-        Bartleby.dumpBprintEntries({ (entry) -> Bool in
+        TestCase._document?.dumpLogsEntries({ (entry) -> Bool in
             return true
             }, fileName: NSStringFromClass(self))
 
-        Bartleby.cleanUpBprintEntries()
+         TestCase._document?.cleanUpLogs()
 
     }
 
@@ -208,14 +207,14 @@ class TestCase: XCTestCase {
                     handlers.on(Completion.successState())
 
                     }, failureHandler: { (context) in
-                        bprint("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+                        glog("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
                         handlers.on(Completion.failureStateFromJHTTPResponse(context))
                 })
             } else {
                 handlers.on(Completion.successState())
             }
         }) { (context) in
-            bprint("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.BPRINT_CATEGORY)
+            glog("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
             handlers.on(Completion.failureStateFromJHTTPResponse(context))
         }
 

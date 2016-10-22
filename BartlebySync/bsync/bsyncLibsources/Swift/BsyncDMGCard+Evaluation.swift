@@ -72,7 +72,7 @@ extension BsyncDMGCard {
         do {
             return try CryptoHelper.hash(Bartleby.cryptoDelegate.encryptString(contextUID+userUID+Bartleby.configuration.SHARED_SALT))
         } catch {
-            bprint("\(error)", file: #file, function: #function, line: #line)
+            glog("\(error)", file: #file, function: #function, line: #line)
             return "default-password-on-crypto-failure"
         }
     }

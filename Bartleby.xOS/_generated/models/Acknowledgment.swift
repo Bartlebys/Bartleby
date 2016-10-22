@@ -27,15 +27,12 @@ import Foundation
 	//The subjects UIDS
 	dynamic open var uids:[String] = [String]()
 
-	//The subjects versions (used to analyze possible divergences)
-	dynamic open var versions:[Int] = [Int]()
-
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["triggerIndex","uids","versions"])
+        exposed.append(contentsOf:["triggerIndex","uids"])
         return exposed
     }
 
@@ -56,10 +53,6 @@ import Foundation
                 if let casted=value as? [String]{
                     self.uids=casted
                 }
-            case "versions":
-                if let casted=value as? [Int]{
-                    self.versions=casted
-                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -79,8 +72,6 @@ import Foundation
                return self.triggerIndex
             case "uids":
                return self.uids
-            case "versions":
-               return self.versions
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -96,7 +87,6 @@ import Foundation
         self.silentGroupedChanges {
 			self.triggerIndex <- ( map["triggerIndex"] )
 			self.uids <- ( map["uids"] )
-			self.versions <- ( map["versions"] )
         }
     }
 
@@ -108,7 +98,6 @@ import Foundation
         self.silentGroupedChanges {
 			self.triggerIndex=decoder.decodeInteger(forKey:"triggerIndex") 
 			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids")! as! [String]
-			self.versions=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "versions")! as! [Int]
         }
     }
 
@@ -116,7 +105,6 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.triggerIndex,forKey:"triggerIndex")
 		coder.encode(self.uids,forKey:"uids")
-		coder.encode(self.versions,forKey:"versions")
     }
 
     override open class var supportsSecureCoding:Bool{

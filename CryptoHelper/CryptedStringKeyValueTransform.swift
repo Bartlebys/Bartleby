@@ -32,7 +32,7 @@ open class CryptedStringKeyValueTransform: TransformType {
                         return dictionary
                     }
                 } catch {
-                    bprint("\(error)", file: #file, function: #function, line: #line)
+                    glog("\(error)", file: #file, function: #function, line: #line)
                 }
 
             }
@@ -50,7 +50,7 @@ open class CryptedStringKeyValueTransform: TransformType {
                 let jsonData = try JSONSerialization.data(withJSONObject: cryptedDictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
                 return String(data: jsonData, encoding: Default.STRING_ENCODING)
             } catch {
-                bprint("\(error)", file: #file, function: #function, line: #line)
+                glog("\(error)", file: #file, function: #function, line: #line)
             }
         }
         return nil

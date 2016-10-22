@@ -15,7 +15,7 @@ class LogsViewController: NSViewController,RegistryDependent{
     @IBOutlet weak var messageColumn: NSTableColumn!
     var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize())
 
-    fileprivate var _registry:BartlebyDocument?
+    fileprivate var _document:BartlebyDocument?
     
     @IBOutlet weak var tableView: BXTableView!
 
@@ -23,7 +23,7 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     @IBOutlet var arrayController: NSArrayController!
 
-    dynamic var entries=[PrintEntry]()
+    dynamic var entries=[LogEntry]()
 
     fileprivate var _lockFilterUpdate=false
 
@@ -33,16 +33,15 @@ class LogsViewController: NSViewController,RegistryDependent{
     internal var registryDelegate: RegistryDelegate?{
         didSet{
             if let registry=self.registryDelegate?.getRegistry(){
-                self._registry=registry
-                self.entries=Bartleby.bprintCollection.entries
+                self._document=registry
+                self._document?.logsObservers.append(self)
+                self.entries=self._document!.logs
             }
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        Bartleby.bPrintObservers.append(self)
-        //self.tableView.setDataSource(self)
         self.tableView.delegate = self
     }
 
@@ -57,14 +56,14 @@ class LogsViewController: NSViewController,RegistryDependent{
     }
 
     deinit{
-        if let idx=Bartleby.bPrintObservers.index(where: { (observer) -> Bool in
+        if let idx=self._document?.logsObservers.index(where: { (observer) -> Bool in
             if let observer=observer as? LogsViewController{
                 return observer == self
             }else{
                 return false
             }
         }){
-            Bartleby.bPrintObservers.remove(at: idx)
+            self._document?.logsObservers.remove(at: idx)
         }
     }
 
@@ -79,7 +78,7 @@ class LogsViewController: NSViewController,RegistryDependent{
     fileprivate func _updateFilter() -> () {
         if !self._lockFilterUpdate{
             let predicate=NSPredicate { (object, _) -> Bool in
-                if let entry = object as? PrintEntry{
+                if let entry = object as? LogEntry{
                     let searched=PString.ltrim(self.searchField.stringValue)
                     if searched != ""{
                         return entry.message.contains(searched)
@@ -98,16 +97,18 @@ class LogsViewController: NSViewController,RegistryDependent{
 
 
     @IBAction func reload(_ sender: AnyObject) {
-        self.entries=Bartleby.bprintCollection.entries
+        if let logs=self._document?.logs{
+            self.entries=logs
+        }
     }
 
     @IBAction func sendAReport(_ sender: AnyObject) {
     }
 }
 
-extension LogsViewController:PrintEntriesObserver{
+extension LogsViewController:LogEntriesObserver{
 
-    func receive(_ entry:PrintEntry){
+    func receive(_ entry:LogEntry){
         GlobalQueue.main.get().async { 
             self.entries.insert(entry, at: 0)
         }
@@ -117,7 +118,7 @@ extension LogsViewController:PrintEntriesObserver{
 extension LogsViewController:NSTableViewDelegate{
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item = (self.arrayController.arrangedObjects as? NSArray)?.object(at:row) as? PrintEntry else {
+        guard let item = (self.arrayController.arrangedObjects as? NSArray)?.object(at:row) as? LogEntry else {
             return 20
         }
         let width=self.messageColumn.width-80;

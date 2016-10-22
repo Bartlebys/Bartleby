@@ -42,7 +42,7 @@ open class  BsyncLocalAnalyzer {
                 self._localAnalyzer.recomputeHash=self.recomputeHash
                 self._localAnalyzer.saveHashInAFile=self.saveHashInAFile
                 self._localAnalyzer.createHashMap(fromLocalFolder: folderPath, dataBlock: nil, progressBlock: { (hash: String, path: String, index: UInt) in
-                    bprint("\(path): \(hash)", file: #file, function: #function, line: #line)
+                    glog("\(path): \(hash)", file: #file, function: #function, line: #line)
                     handlers.notify(Progression(currentTaskIndex: Int(index), message: "\(path): \(hash)"))
                     }, andCompletionBlock: { (hashmap: HashMap) in
                         let completionState = Completion.successState()

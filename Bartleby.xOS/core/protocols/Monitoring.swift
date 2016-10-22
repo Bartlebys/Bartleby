@@ -62,7 +62,7 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  // The XPC instance
  var ydXPC:YouDubXPCProtocol?{
  let remoteObjectProxy=ydXPCConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
- bprint(NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)", file:#file, function:#function, line:#line)
+ self.log(NSLocalizedString("XPC connection error ", comment:"XPC connection error ")+"\(error.localizedDescription)", file:#file, function:#function, line:#line)
  }
  if let xpc: YouDubXPCProtocol = remoteObjectProxy as? YouDubXPCProtocol {
  return xpc
@@ -74,11 +74,11 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  // MARK: Monitoring
 
  public func receiveProgression(progression:Progression){
- bprint("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+ self.log("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
  }
 
  public func receiveCompletion(completion:Completion){
- bprint("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+ self.log("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
  }
 
  ```

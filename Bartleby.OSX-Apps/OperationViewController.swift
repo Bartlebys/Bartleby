@@ -41,10 +41,10 @@ class OperationViewController: NSViewController,Editor{
             var ops=[PushOperation]()
             ops.append(operation)
             let handlers=Handlers(completionHandler: { (completion) in
-                bprint("\(completion)", file:#file, function:#function, line:#line)
+                glog("\(completion)", file:#file, function:#function, line:#line)
             })
             handlers.appendProgressHandler({ (progression) in
-                bprint("\(progression)", file:#file, function:#function, line:#line)
+                glog("\(progression)", file:#file, function:#function, line:#line)
             })
             if let document=self.selectedItem?.document{
                 document.pushSortedOperations(ops, handlers: handlers)

@@ -13,32 +13,117 @@ import Foundation
 // MARK: - bartleby Print
 
 
-public var DEFAULT_BPRINT_CATEGORY: String="Default"
+public protocol LogCategorizable {
+    static var logCategory: String { get }
+}
 
-public protocol BprintCategorizable {
-    static var BPRINT_CATEGORY: String { get }
+
+public protocol Logger:Identifiable{
+
+    /**
+     Logs contextual informations.
+
+     - parameter message: the message
+     - parameter file:  the file
+     - parameter line:  the line
+     - parameter function : the function name
+     - parameter category: a categorizer string
+     - parameter decorative: if set to true only the message will be displayed.
+     */
+    func log(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool)
+    
+
+    /**
+     Returns a printable string for the Log entries matching a specific criteria
+
+     - parameter matching: the filter closure
+
+     - returns: a dump of the entries
+     */
+    func getLogs(_ matching:@escaping (_ entry: LogEntry) -> Bool )->String
+
+
+    /**
+     Dumps the logs entries to a file.
+
+     Samples
+     ```
+     // Writes logs in ~/Library/Application\ Support/Bartleby/logs
+     Bartleby.dumpLogsEntries ({ (entry) -> Bool in
+     return true // all the Entries
+     }, fileName: "All")
+
+     Bartleby.dumpLogsEntries ({ (entry) -> Bool in
+     return entry.file=="TransformTests.swift"
+     },fileName:"TransformTests.swift")
+
+
+
+     Bartleby.dumpLogsEntries({ (entry) -> Bool in
+     return true // all the Entries
+     }, fileName: "Tests_zorro")
+
+
+
+     Bartleby.dumpLogsEntries ({ (entry) -> Bool in
+     // Entries matching default category
+     return entry.category==Default.LOG_CATEGORY
+     },fileName:"Default")
+
+
+     // Clean up the entries
+     Bartleby.cleanUpLogs()
+     ```
+
+
+     - parameter matching: the filter closure
+     */
+    func dumpLogsEntries(_ matching:@escaping (_ entry: LogEntry) -> Bool,fileName:String?)
+
+
+    /**
+     Cleans up all the entries
+     */
+    func cleanUpLogs()
+    
 }
 
 
 
 /**
- Returns a category for bprint
+ Returns a category for glog
 
  - parameter subject: the subject to classify
 
  - returns: a string representing the category
  */
-public func bprintCategoryFor(_ subject: Any) -> String {
+public func logsCategoryFor(_ subject: Any) -> String {
     if let s = subject as? Collectible {
         return s.d_collectionName
     }
-    return DEFAULT_BPRINT_CATEGORY
+    return Default.LOG_CATEGORY
 }
 
 
+/// Global logs Observers
+
+internal var glogObservers=[Logger]()
+
+public func addGlobalLogsObserver(_ logger:Logger){
+    glogObservers.append(logger)
+}
+
+public func removeGlobalLogsObserver(_ logger:Logger){
+    if let idx=glogObservers.index(where: { $0.UID == logger.UID }){
+        glogObservers.remove(at: idx)
+    }
+}
+
+
+
 /**
-Print indirection with guided contextual info
-Usage : bprint("<Message>",file:#file,function:#function,line:#line")
+Global log  indirection with guided contextual info is relayed to any openned document log
+Usage : glog("<Message>",file:#file,function:#function,line:#line")
 You can create code snippet
 
 - parameter items: the items to print
@@ -47,13 +132,11 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func bprint(_ message: Any, file: String, function: String, line: Int, category: String=DEFAULT_BPRINT_CATEGORY,decorative:Bool=false) {
-    Bartleby.bprint(message, file: file, function: function, line: line, category:category,decorative: decorative)
+public func glog(_ message: Any, file: String, function: String, line: Int, category: String=Default.LOG_CATEGORY,decorative:Bool=false) {
+    for observer in glogObservers{
+        observer.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
+    }
 }
-
-
-
-
 
 
 // MARK: - ExternalReferences facilities

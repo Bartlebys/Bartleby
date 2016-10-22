@@ -106,7 +106,7 @@ class AccessControlTests: TestCase {
         
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+                self.logMessage("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -156,7 +156,7 @@ class AccessControlTests: TestCase {
         
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                bprint("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+                self.logMessage("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }

@@ -106,7 +106,7 @@ extension BartlebyDocument {
             if self.pushOperations.count > 0 {
                 let nextBunchOfOperations=self._getNextBunchOfPendingOperations()
                 if nextBunchOfOperations.count>0{
-                    bprint("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:DEFAULT_BPRINT_CATEGORY,decorative:false)
+                    self.log("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
                     let bunchHandlers=Handlers(completionHandler: { (completionState) in
                         self._pushNextBunch()
                         }, progressionHandler: { (progressionState) in
@@ -207,17 +207,17 @@ extension BartlebyDocument {
                             })
                         } else {
                             let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.expectation_Failed)
-                            bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                            self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                             handlers?.on(completion)
                         }
                     } else {
                         let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.expectation_Failed)
-                        bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                        self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                         handlers?.on(completion)
                     }
                 } else {
                     let completion=Completion.failureState(NSLocalizedString( "Error when converting the operation to dictionnary", tableName:"operations", comment: "Error when converting the operation to dictionnary"), statusCode: StatusOfCompletion.precondition_Failed)
-                    bprint(completion, file: #file, function: #function, line: #line, category: "Operations")
+                    self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                     handlers?.on(completion)
                } 
             }
@@ -283,7 +283,7 @@ extension BartlebyDocument {
             progressionState.message=self._messageForOperation(completedOperation)
             return progressionState
         }else{
-            bprint("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
+            self.log("Internal inconsistency unable to find identified operation bunch", file: #file, function: #function, line: #line, category: "Operations")
             return nil
         }
 

@@ -319,7 +319,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 let o = try JSerializer.deserialize(deserializable)
                 return o
             } catch {
-                bprint("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
+                glog("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
             }
         }
         return nil

@@ -56,8 +56,8 @@
  *  @param category   the category
  *  @param decorative is the message decorative e.g : separators ************
  */
-+ (void)bprint:(id _Nonnull)message file:(NSString * _Nonnull)file function:(NSString * _Nonnull)function line:(NSInteger)line category:(NSString * _Nonnull)category decorative:(BOOL)decorative{
-    [Bartleby bprint:message file:file function:function line:line category:@"PdsSync" decorative: decorative];
++ (void)glog:(id _Nonnull)message file:(NSString * _Nonnull)file function:(NSString * _Nonnull)function line:(NSInteger)line category:(NSString * _Nonnull)category decorative:(BOOL)decorative{
+    [Bartleby glog:message file:file function:function line:line category:@"PdsSync" decorative: decorative];
 
 }
 
@@ -103,13 +103,13 @@
     if(self.syncContext.autoCreateTrees){
         [self touchTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
             if(success){
-                bprint(@"Tree exists!");
+                glog(@"Tree exists!");
                 [self _synchronizeWithprogressBlock:progressBlock
                                  andCompletionBlock:completionBlock];
 
             }else{
                 if (statusCode==404){
-                    bprint(@"Auto creation of tree");
+                    glog(@"Auto creation of tree");
                     [self createTreesWithCompletionBlock:^(BOOL success, NSString*_Nonnull message, NSInteger statusCode) {
                         if(success){
                             // Recursive call
@@ -302,11 +302,11 @@
                                                                               withActionName:@"BartlebySyncCreateTree"
                                                                                    forMethod:@"POST"
                                                                                          and:baseUrl];
-        bprint(@"BartlebySyncCreateTree: %@", baseUrl);
+        glog(@"BartlebySyncCreateTree: %@", baseUrl);
 
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if(!error && response){
-                bprint(@"=> %@", response);
+                glog(@"=> %@", response);
                 NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                 if (HTTPStatusCode>=200 && HTTPStatusCode<=300){
                     block(YES, @"", HTTPStatusCode);
@@ -406,14 +406,14 @@
                                                                                    forMethod:@"POST"
                                                                                          and:baseUrl];
 
-        bprint(@"BartlebySyncTouchTree: %@", baseUrl);
+        glog(@"BartlebySyncTouchTree: %@", baseUrl);
 
 
         // TASK
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                          completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                                              if(!error && response){
-                                                                 bprint(@"=> %@", response);
+                                                                 glog(@"=> %@", response);
                                                                  NSInteger HTTPStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                                  if (HTTPStatusCode>=200 && HTTPStatusCode<300){
                                                                      block(YES, @"", HTTPStatusCode);
@@ -522,17 +522,17 @@
                                                             encoding:NSUTF8StringEncoding
                                                                error:&stringLoadingError];
 
-    bprint(@"crypted hashmap: %@", hashMapCryptedString);
+    glog(@"crypted hashmap: %@", hashMapCryptedString);
 
     if(!stringLoadingError){
         NSError*cryptoError=nil;
 
         NSString *hashMapJsonString = [[Bartleby cryptoDelegate] decryptString:hashMapCryptedString error:&cryptoError];
         if (cryptoError){
-            bprint(@"Get local hash map crypto error %@", cryptoError);
+            glog(@"Get local hash map crypto error %@", cryptoError);
             return nil;
         } else {
-            bprint(@"hashmap:\n%@", hashMapJsonString);
+            glog(@"hashmap:\n%@", hashMapJsonString);
             NSData *data = [hashMapJsonString dataUsingEncoding:NSUTF8StringEncoding];
             NSError*__block errorJson=nil;
             @try {
@@ -546,11 +546,11 @@
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
-                    bprint(@"Get local hash map type missmatch on deserialization %@",hashMapUrl);
+                    glog(@"Get local hash map type missmatch on deserialization %@",hashMapUrl);
                 }
             }
             @catch (NSException *exception) {
-                bprint(@"Exception on get local hash map :%@", exception);
+                glog(@"Exception on get local hash map :%@", exception);
             }
         }
     }
@@ -565,7 +565,7 @@
          withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
 
     if( ! _syncContext.credentials.user ){
-        bprint(@"Invalid context credentials.user ");
+        glog(@"Invalid context credentials.user ");
         block(NO,0);
     }else{
         // URL
@@ -576,19 +576,19 @@
                                                                               withActionName:@"BartlebySyncGetHashMap"
                                                                                    forMethod:@"GET"
                                                                                          and:url];
-        bprint(@"BartlebySyncGetHashMap: %@", url);
+        glog(@"BartlebySyncGetHashMap: %@", url);
 
         // TASK
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request
                                                          completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                                             bprint(@"=> %@", response);
+                                                             glog(@"=> %@", response);
                                                              if(!error && response){
                                                                  double httpStatusCode=((NSHTTPURLResponse*)response).statusCode;
                                                                  if (httpStatusCode==200) {
                                                                      NSError *cryptoError = nil;
                                                                      NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                      if(cryptoError){
-                                                                         bprint(@"Post decrypt String decryption error");
+                                                                         glog(@"Post decrypt String decryption error");
                                                                          block(nil,PdSStatusErrorHashMapDecryptFailure);
                                                                      } else {
                                                                          @try {
@@ -597,22 +597,22 @@
                                                                                                                                                 options:0
                                                                                                                                                   error:&parseError];
                                                                              if(parseError){
-                                                                                 bprint(@"Hash map JSON deserialization error");
+                                                                                 glog(@"Hash map JSON deserialization error");
                                                                                  block(nil,PdSStatusErrorHashMapDeserialization);
                                                                              } else if ( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                                  HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
-                                                                                 bprint(@"Distant hashmap:");
+                                                                                 glog(@"Distant hashmap:");
                                                                                  for (id key in responseDictionary) {
-                                                                                     bprint(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
+                                                                                     glog(@"key: %@, value: %@ \n", key, [responseDictionary objectForKey:key]);
                                                                                  }
                                                                                  block(hashMap,((NSHTTPURLResponse*)response).statusCode);
                                                                              } else {
-                                                                                 bprint(@"Hash map deserialization type miss match");
+                                                                                 glog(@"Hash map deserialization type miss match");
                                                                                  block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
                                                                              }
                                                                          }
                                                                          @catch (NSException *exception) {
-                                                                             bprint(@"Exception on get distant hash map %@", exception);
+                                                                             glog(@"Exception on get distant hash map %@", exception);
                                                                              block(nil,PdSStatusErrorHashMapFailure);
                                                                          }
                                                                      }
@@ -621,13 +621,13 @@
                                                                  }else{
                                                                      if (data!=nil) {
                                                                          NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                         bprint(@"Fault on get distant hash map: %@", message);
+                                                                         glog(@"Fault on get distant hash map: %@", message);
                                                                      }
                                                                      block(nil,httpStatusCode);
                                                                  }
 
                                                              }else{
-                                                                 bprint(@"Error on get distant hash map :%@",error);
+                                                                 glog(@"Error on get distant hash map :%@",error);
                                                                  block(nil,0);
                                                              }
                                                          }]];
@@ -715,7 +715,7 @@
         NSError*cryptoError=nil;
         string = [[Bartleby cryptoDelegate] decryptString:string error:&cryptoError];
         if (cryptoError){
-            bprint(@"Get local hash map view crypto error %@", cryptoError);
+            glog(@"Get local hash map view crypto error %@", cryptoError);
             return nil;
         }else{
             NSData *data=[string dataUsingEncoding:NSUTF8StringEncoding];
@@ -731,11 +731,11 @@
                 if([result isKindOfClass:[NSDictionary class]]){
                     return [HashMap fromDictionary:result];
                 }else{
-                    bprint(@"Get local hash map view type missmatch on deserialization %@", hashMapUrl);
+                    glog(@"Get local hash map view type missmatch on deserialization %@", hashMapUrl);
                 }
             }
             @catch (NSException *exception) {
-                bprint(@"Exception on get local hash map view:%@", exception);
+                glog(@"Exception on get local hash map view:%@", exception);
             }
         }
     }
@@ -750,7 +750,7 @@
              withCompletionBlock:(void (^)(HashMap*hashMap,NSInteger statusCode))block{
 
     if( !_syncContext.hashMapViewName || !_syncContext.sourceTreeId || ! _syncContext.credentials.user  ){
-        bprint(@"Invalid context hashMapViewName, sourceTreeId and credentials.user must be set");
+        glog(@"Invalid context hashMapViewName, sourceTreeId and credentials.user must be set");
         block(NO,0);
     } else {
 
@@ -779,7 +779,7 @@
                                                                      NSError *cryptoError = nil;
                                                                      NSData *decryptedData=[[Bartleby cryptoDelegate] decryptData:data error:&cryptoError];
                                                                      if(cryptoError){
-                                                                         bprint(@"Post decrypt String decryption error");
+                                                                         glog(@"Post decrypt String decryption error");
                                                                          block(nil,PdSStatusErrorHashMapDecryptFailure);
                                                                      } else {
                                                                          @try {
@@ -788,18 +788,18 @@
                                                                                                                                                 options:0
                                                                                                                                                   error:&parseError];
                                                                              if(parseError){
-                                                                                 bprint(@"Hash map JSON deserialization error");
+                                                                                 glog(@"Hash map JSON deserialization error");
                                                                                  block(nil,PdSStatusErrorHashMapDeserialization);
                                                                              }else if( [responseDictionary isKindOfClass:[NSDictionary class]]){
                                                                                  HashMap*hashMap=[HashMap fromDictionary:responseDictionary];
                                                                                  block(hashMap,((NSHTTPURLResponse*)response).statusCode);
                                                                              }else{
-                                                                                 bprint(@"Hash map deserialization type miss match");
+                                                                                 glog(@"Hash map deserialization type miss match");
                                                                                  block(nil,PdSStatusErrorHashMapDeserializationTypeMissMatch);
                                                                              }
                                                                          }
                                                                          @catch (NSException *exception) {
-                                                                             bprint(@"Exception on get distant hash map %@", exception);
+                                                                             glog(@"Exception on get distant hash map %@", exception);
                                                                              block(nil,PdSStatusErrorHashMapFailure);
                                                                          }
                                                                      }
@@ -808,13 +808,13 @@
                                                                  }else{
                                                                      if (data!=nil) {
                                                                          NSString*message=[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                                                                         bprint(@"Fault on get distant hash map: %@", message);
+                                                                         glog(@"Fault on get distant hash map: %@", message);
                                                                      }
                                                                      block(nil,httpStatusCode);
                                                                  }
 
                                                              }else{
-                                                                 bprint(@"Error on get distant hash map :%@",error);
+                                                                 glog(@"Error on get distant hash map :%@",error);
                                                                  block(nil,0);
                                                              }
                                                          }]];

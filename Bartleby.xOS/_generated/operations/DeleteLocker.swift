@@ -292,7 +292,6 @@ import Foundation
 										let acknowledgment=Acknowledgment()
 										acknowledgment.triggerIndex=index.intValue
 										acknowledgment.uids=[locker.UID]
-										acknowledgment.versions=[locker.version]
 										document.record(acknowledgment)
                                     }
                                 }

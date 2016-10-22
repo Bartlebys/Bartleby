@@ -83,7 +83,7 @@ class bsyncMiscTests: TestCase {
                          XCTFail("Filtered BsyncHashmap is inconsistent")
                     }
 
-                    bprint("BsyncHashMap found \(hashMap)", file: #file, function: #function, line: #line, category: DEFAULT_BPRINT_CATEGORY, decorative: false)
+                    self.logMessage("BsyncHashMap found \(hashMap)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                 }else{
                     XCTFail("BsyncHashMap expected")
                 }

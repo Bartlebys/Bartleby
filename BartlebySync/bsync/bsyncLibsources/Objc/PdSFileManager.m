@@ -7,6 +7,7 @@
 //
 
 #import "PdSFileManager.h"
+#import "PdSSync.h"
 
 @implementation PdSFileManager
 
@@ -107,7 +108,7 @@
  *  @return the result
  */
 - (BOOL)copyItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
-    bprint(@"Copy:\n\t- Src:%@\n\t- Dst:%@", srcPath, dstPath);
+    glog(@"Copy:\n\t- Src:%@\n\t- Dst:%@", srcPath, dstPath);
     if([self fileExistsAtPath:dstPath]){
         if(![self removeItemAtPath:dstPath
                              error:error]){
@@ -129,7 +130,7 @@
  *  @return the result
  */
 - (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError **)error{
-    bprint(@"Move:\n\t- Src:%@\n\t- Dst:%@", srcPath, dstPath);
+    glog(@"Move:\n\t- Src:%@\n\t- Dst:%@", srcPath, dstPath);
     if([self fileExistsAtPath:dstPath]){
         if(![self removeItemAtPath:dstPath
                              error:error]){

@@ -50,7 +50,7 @@
  *  @param category   the category
  *  @param decorative is the message decorative e.g : separators ************
  */
-+ (void)bprint:(id _Nonnull)message file:(NSString * _Nonnull)file function:(NSString * _Nonnull)function line:(NSInteger)line category:(NSString * _Nonnull)category decorative:(BOOL)decorative;
++ (void)glog:(id _Nonnull)message file:(NSString * _Nonnull)file function:(NSString * _Nonnull)function line:(NSInteger)line category:(NSString * _Nonnull)category decorative:(BOOL)decorative;
 
 
 /**

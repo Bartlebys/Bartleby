@@ -36,8 +36,8 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
                 self.presentInteractiveMessage(title, body: body, onSelectedIndex:trigger)
             case let .presentVolatileMessage(title, body):
                 self.presentVolatileMessage(title, body: body)
-            case let .logMessage(title, body):
-                self.logMessage(title, body: body)
+            case let .putMessageInLogs(title, body):
+                self.putMessageInLogs(title, body: body)
         }
     }
 
@@ -58,7 +58,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
         if trackingIsEnabled == true {
             trackingStack.append((result:result, context:context))
         }
-        if bprintTrackedEntries == true {
+        if glogTrackedEntries == true {
             var resultString=""
             if result != nil{
                 resultString="\(result!)"
@@ -66,7 +66,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
                 resultString=resultString.replacingOccurrences(of: "\n", with:"")
             }
             let contextString="\(context)"
-            bprint("Context:\(contextString)", file:#file, function:#function, line:#line)
+            glog("Context:\(contextString)", file:#file, function:#function, line:#line)
         }
     }
 
@@ -75,7 +75,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
 
     open var trackingIsEnabled: Bool=false
 
-    open var bprintTrackedEntries: Bool=false
+    open var glogTrackedEntries: Bool=false
 
     open var trackingStack=[(result:Any?, context:Consignable)]()
 
@@ -90,7 +90,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
     open func dispatchAdaptiveMessage(_ context: Consignable, title: String, body: String, onSelectedIndex:@escaping (_ selectedIndex: UInt)->())->() {
         // You can override t Consignee and implement your own adaptive mapping
         self.presentInteractiveMessage(title, body: body, onSelectedIndex: onSelectedIndex)
-        bprint("presentInteractiveMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
+        glog("presentInteractiveMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
     }
 
 
@@ -214,7 +214,7 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
                     sheet.close()
                 }
             }
-            bprint("presentVolatileMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
+            glog("presentVolatileMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
         }
 
     }
@@ -222,8 +222,8 @@ open class Consignee: AbstractConsignee, ConcreteConsignee, ConcreteTracker, Con
     #endif
 
 
-    open func logMessage(_ title: String, body: String)->() {
-        bprint("\(title):\n\(body)", file:#file, function:#function, line: #line)
+    open func putMessageInLogs(_ title: String, body: String)->() {
+        glog("\(title):\n\(body)", file:#file, function:#function, line: #line,category:Default.LOG_CATEGORY)
     }
 
     // MARK: - IOS only

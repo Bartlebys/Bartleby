@@ -126,7 +126,7 @@ protocol Consignation {
 
     - returns: nil
     */
-    func logMessage(_ title: String, body: String)->()
+    func putMessageInLogs(_ title: String, body: String)->()
 
 }
 
@@ -206,7 +206,7 @@ open class AbstractConsignee: NSObject {
         case presentVolatileMessage(title:String, body:String)
 
         // Explicit message logging
-        case logMessage(title:String, body:String)
+        case putMessageInLogs(title:String, body:String)
 
         // TRACKING
 

@@ -185,7 +185,7 @@ open class HTTPManager: NSObject {
                 body: NSLocalizedString("Please Check your connection or your configuration!",
                                         comment: "Please Check your connection or your configuration!"),
                 transmit: { (selectedIndex) -> () in
-                    bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
+                    glog("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
             if result.isFailure {
@@ -198,7 +198,7 @@ open class HTTPManager: NSObject {
                     } else {
                         reactions.append(failureReaction)
                         if let value=result.value {
-                            bprint(value, file: #file, function: #function, line: #line)
+                            glog(value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context)
                     }
@@ -246,7 +246,7 @@ open class HTTPManager: NSObject {
                 body: NSLocalizedString("Credentials are not valid",
                     comment: "Credentials are not valid"),
                 transmit: { (selectedIndex) -> () in
-                    bprint("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
+                    glog("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
 
             if result.isFailure {
@@ -259,7 +259,7 @@ open class HTTPManager: NSObject {
                     } else {
                         reactions.append(failureReaction)
                         if let value=result.value {
-                            bprint(value, file: #file, function: #function, line: #line)
+                            glog(value, file: #file, function: #function, line: #line)
                         }
                         failureHandler(context)
                     }

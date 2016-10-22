@@ -73,7 +73,7 @@ extension BartlebyObject : NSCopying{
         if let copied = try? JSerializer.deserialize(data) {
             return copied as AnyObject
         }
-        bprint("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line)
+        self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_CATEGORY)
         return self as AnyObject
     }
 
@@ -147,9 +147,6 @@ extension BartlebyObject{
      - parameter newValue: the newValue
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
-
-        // Update the version on any provisionned change.
-        self.version += 1
 
         if self._autoCommitIsEnabled == true {
             // Set up the commit flag
@@ -308,7 +305,7 @@ extension BartlebyObject{
                 let value = try instance.getExposedValueForKey(key)
                 try self.setExposedValue(value, forKey: key)
             }else{
-                bprint("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: bprintCategoryFor(self), decorative: false)
+                self.log("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: logsCategoryFor(self), decorative: false)
             }
         }
     }
@@ -392,3 +389,24 @@ extension BartlebyObject{
     }
 
 }
+
+
+
+
+extension BartlebyObject{
+
+    /**
+     Print indirection with contextual informations.
+
+     - parameter message: the message
+     - parameter file:  the file
+     - parameter line:  the line
+     - parameter function : the function name
+     - parameter category: a categorizer string
+     - parameter decorative: if set to true only the message will be displayed.
+     */
+    open func log(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
+        self.document?.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
+    }
+}
+

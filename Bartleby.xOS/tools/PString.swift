@@ -170,7 +170,7 @@ public struct PString {
             let regex = try NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
             return regex.stringByReplacingMatches(in: subject, options: [], range: NSMakeRange(0, strlen(subject)), withTemplate:replacement)
         } catch {
-            bprint("\(error)", file:#file, function:#function, line: #line)
+            glog("\(error)", file:#file, function:#function, line: #line)
         }
         return subject
     }
@@ -205,7 +205,7 @@ extension String {
             let matchCount = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
             return matchCount > 0
         } catch {
-            bprint("\(error)", file:#file, function:#function, line: #line)
+            glog("\(error)", file:#file, function:#function, line: #line)
         }
         return false
     }
@@ -216,7 +216,7 @@ extension String {
             let matches = regex.matches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
             return matches
         } catch {
-            bprint("\(error)", file:#file, function:#function, line: #line)
+            glog("\(error)", file:#file, function:#function, line: #line)
         }
         return nil
     }

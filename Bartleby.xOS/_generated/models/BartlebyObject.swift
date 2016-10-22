@@ -69,9 +69,6 @@ import Foundation
 	    }
 	}
 
-	//The version is incremented on each change
-	dynamic open var version:Int = 0
-
 	//MARK: - ChangesInspectable Protocol
 	dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
 
@@ -167,7 +164,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","distributed","version","changedKeys"])
+        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","distributed","changedKeys"])
         return exposed
     }
 
@@ -200,10 +197,6 @@ import Foundation
                 if let casted=value as? Bool{
                     self.distributed=casted
                 }
-            case "version":
-                if let casted=value as? Int{
-                    self.version=casted
-                }
             case "changedKeys":
                 if let casted=value as? [KeyedChanges]{
                     self.changedKeys=casted
@@ -233,8 +226,6 @@ import Foundation
                return self.ephemeral
             case "distributed":
                return self.distributed
-            case "version":
-               return self.version
             case "changedKeys":
                return self.changedKeys
             default:
@@ -255,7 +246,6 @@ import Foundation
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
 			self.distributed <- ( map["distributed"] )
-			self.version <- ( map["version"] )
             if map.mappingType == .toJSON {
                 // Define if necessary the UID
                 self.defineUID()
@@ -276,7 +266,6 @@ import Foundation
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
 			self.distributed=decoder.decodeBool(forKey:"distributed") 
-			self.version=decoder.decodeInteger(forKey:"version") 
             self._typeName=type(of: self).typeName()
             self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
         }
@@ -291,7 +280,6 @@ import Foundation
 		}
 		coder.encode(self.ephemeral,forKey:"ephemeral")
 		coder.encode(self.distributed,forKey:"distributed")
-		coder.encode(self.version,forKey:"version")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)

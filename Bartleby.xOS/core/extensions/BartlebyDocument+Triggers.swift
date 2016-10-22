@@ -44,7 +44,7 @@ extension BartlebyDocument {
             if !self.registryMetadata.ownedTriggersIndexes.contains(trigger.index){
                 self.registryMetadata.receivedTriggers.append(trigger)
             }else{
-                bprint("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
+                self.log("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
             }
         }
 
@@ -63,26 +63,24 @@ extension BartlebyDocument {
     /// It allows to detect potential divergences.
     /// - parameter ack: the Acknowledgement object
     public func record(_ ack:Acknowledgment){
-        if ack.versions.count==0{
-            // It is a deletion.
-        }else{
-            let possibleDivergence = (ack.triggerIndex < self.registryMetadata.highestReceivedTriggerIndex)
-            if possibleDivergence{
-                // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
-                TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in
-                    bprint("Trying to resolve Divergences from index \(ack.triggerIndex)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
-                    self._triggersHasBeenReceived(triggers)
-                }) { (context) in
-                    // What to do on failure ?
-                    bprint("Failure on Divergences resolution Attempt \(context)",file:#file,function:#function,line:#line,category:bprintCategoryFor(Trigger.self),decorative:false)
-                }
-            }
 
+        let possibleDivergence = (ack.triggerIndex < self.registryMetadata.highestReceivedTriggerIndex)
+        if possibleDivergence{
+            // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
+            TriggersAfterIndex.execute(fromRegistryWithUID:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in
+                self.log("Trying to resolve Divergences from index \(ack.triggerIndex)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
+                // What to do on failure ?
+                self.log("Failure on Divergences resolution Attempt \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+            }
         }
+
+
 
         // Normal case.
         if self.registryMetadata.triggersIndexes.contains(ack.triggerIndex) {
-            bprint("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
+            self.log("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
         }else{
             self.registryMetadata.ownedTriggersIndexes.append(ack.triggerIndex)
             let indexes=[ack.triggerIndex]
@@ -109,13 +107,13 @@ extension BartlebyDocument {
             }
             if index>=0{
                 if registryMetadata.triggersIndexes.contains(index) {
-                    bprint("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
+                    self.log("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
                 }else{
-                    bprint("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
+                    self.log("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
                     self.registryMetadata.triggersIndexes.append(index)
                 }
             }else{
-                bprint("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:bprintCategoryFor(Trigger.self))
+                self.log("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
             }
         }
     }
@@ -199,7 +197,7 @@ extension BartlebyDocument {
                         self.upsert(collectibleItems)
                     }
                 }catch{
-                    bprint("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: bprintCategoryFor(Trigger.self), decorative: false)
+                    self.log("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: logsCategoryFor(Trigger.self), decorative: false)
                 }
             }
         }
@@ -254,15 +252,15 @@ extension BartlebyDocument {
             let s=missingTriggersIndexes.reduce("", { (string, index) -> String in
                 return string + ",\(index) "
             })
-            bprint("Grabbing missing trigger index \(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
+            self.log("Grabbing missing trigger index \(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
             TriggersForIndexes.execute(fromRegistryWithUID:self.UID, indexes:missingTriggersIndexes, sucessHandler: { (triggers) in
                 let s=missingTriggersIndexes.reduce("", { (r,index) -> String in
                     return "\(r) \(index) "
                 })
-                bprint("Fault correction on reintegration of\(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
+                self.log("Fault correction on reintegration of\(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
-                bprint("Failure \(context)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
+                self.log("Failure \(context)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
             }
         }
     }
@@ -415,11 +413,11 @@ extension BartlebyDocument {
             }
             // Transition off line
             if newValue==false && online==true{
-                bprint("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
+                self.log("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
                 self._closeSSE()
             }
             if newValue==online{
-                bprint("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
+                self.log("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
             }
         }
         didSet{
@@ -433,7 +431,7 @@ extension BartlebyDocument {
      Connect to SSE
      */
     internal func _connectToSSE() {
-        bprint("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
+        self.log("SSE is transitioning online",file:#file,function:#function,line:#line,category: "SSE")
         // The connection is restricted to identified users
         // `PERMISSION_BY_IDENTIFICATION` the current user must be in the dataspace.
         self.currentUser.login(sucessHandler: {
@@ -441,7 +439,7 @@ extension BartlebyDocument {
             let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID: self.UID, withActionName: "SSETriggers")
             self._sse=EventSource(url:self.sseURL.absoluteString,headers:headers)
 
-            bprint("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
+            self.log("Creating the event source instance: \(self.sseURL)",file:#file,function:#function,line:#line,category: "SSE")
 
             self._sse!.addEventListener("relay") { (id, event, data) in
 
@@ -505,12 +503,12 @@ extension BartlebyDocument {
                     }
                     
                 }catch{
-                    bprint("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+                    self.log("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
                 }
             }
             
         }) { (context) in
-            bprint("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
+            self.log("Login failed \(context)",file:#file,function:#function,line:#line,category: "SSE")
             self.registryMetadata.online=false
         }
         

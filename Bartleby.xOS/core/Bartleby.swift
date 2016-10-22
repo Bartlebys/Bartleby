@@ -90,12 +90,10 @@ open class  Bartleby: Consignee {
         // Ephemeral mode.
         Bartleby.ephemeral=configuration.EPHEMERAL_MODE
 
-        // Enable Bprint?
-        Bartleby._enableBPrint=configuration.ENABLE_BPRINT
         self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
-        self.bprintTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
+        self.glogTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
 
-        bprint("Bartleby Start time : \(Bartleby.startTime)", file:#file, function:#function, line:#line)
+        glog("Bartleby Start time : \(Bartleby.startTime)", file:#file, function:#function, line:#line)
 
         // Configure the HTTP Manager
         HTTPManager.configure()
@@ -199,136 +197,16 @@ open class  Bartleby: Consignee {
         return utf8str!.base64EncodedString(options: Data.Base64EncodingOptions(rawValue:0))
     }
 
+    open static let startTime=CFAbsoluteTimeGetCurrent()
+
     open static var elapsedTime:Double {
         return CFAbsoluteTimeGetCurrent()-Bartleby.startTime
     }
 
-    // MARK: - bprint
-
-    fileprivate static var _enableBPrint: Bool=false
-    fileprivate static var _printBPrintEntries: Bool=false
-
-    open static let startTime=CFAbsoluteTimeGetCurrent()
-    open static  var bprintCollection=PrintEntries()
-
-
-    open static var bPrintObservers=[PrintEntriesObserver]()
-
-    /**
-     Print indirection with contextual informations.
-
-     - parameter message: the message
-     - parameter file:  the file
-     - parameter line:  the line
-     - parameter function : the function name
-     - parameter category: a categorizer string
-     - parameter decorative: if set to true only the message will be displayed.
-     */
-    open static func bprint(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
-        if(self._enableBPrint) {
-            let elapsed=Bartleby.elapsedTime
-            let entry=PrintEntry(counter: Bartleby.bprintCollection.entries.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
-            Bartleby.bprintCollection.entries.insert(entry, at: 0)
-            for observers in bPrintObservers{
-                observers.receive(entry)
-            }
-            if (self._printBPrintEntries){
-                print(entry)
-            }
-
-        }
+    // OBJC relay (for Bsync to be deprecdated)
+    open static func glog(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool){
+        glog(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }
-
-
-    /**
-     Returns a printable string for the bprint entries matching a specific criteria
-
-     - parameter matching: the filter closure
-
-     - returns: a dump of the entries
-     */
-    open static func getBprintEntries(_ matching:@escaping (_ entry: PrintEntry) -> Bool )->String{
-        let entries=Bartleby.bprintCollection.entries.filter { (entry) -> Bool in
-            return matching(entry)
-        }
-        var infos=""
-        var counter = 1
-        for entry in entries{
-            infos += "\(counter)# \(entry)\n"
-            counter += 1
-        }
-        return infos
-    }
-
-
-    /**
-     Cleans up all the entries
-     */
-    open static func cleanUpBprintEntries(){
-        Bartleby.bprintCollection.entries.removeAll()
-    }
-
-    /**
-     Dumps the bprint entries to a file.
-     
-     Samples
-     ```
-     // Writes logs in ~/Library/Application\ Support/Bartleby/logs
-     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
-     return true // all the Entries
-     }, fileName: "All")
-
-     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
-     return entry.file=="TransformTests.swift"
-     },fileName:"TransformTests.swift")
-
-
-
-     Bartleby.dumpBprintEntries({ (entry) -> Bool in
-     return true // all the Entries
-     }, fileName: "Tests_zorro")
-
-
-
-     Bartleby.dumpBprintEntries ({ (entry) -> Bool in
-     // Entries matching default category
-     return entry.category==Default.BPRINT_CATEGORY
-     },fileName:"Default")
-
-
-     // Clean up the entries
-     Bartleby.cleanUpBprintEntries()
-     ```
-
-
-     - parameter matching: the filter closure
-     */
-    open static func dumpBprintEntries(_ matching:@escaping (_ entry: PrintEntry) -> Bool,fileName:String?){
-
-        let log=Bartleby.getBprintEntries(matching)
-        let date=Date()
-        let df=DateFormatter()
-        df.dateFormat = "yyyy-MM-dd-HH-mm"
-        let dateFolder = df.string(from: date)
-        var id = Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier")
-        if id == nil{
-            id=Bundle.main.executableURL?.lastPathComponent
-        }
-        let groupFolder = (id ?? "Shared")!
-
-        let folderPath=Bartleby.getSearchPath(FileManager.SearchPathDirectory.applicationSupportDirectory)! + "Bartlebys/logs/\(groupFolder)/\(dateFolder)/"
-        let filePath=folderPath+"\(fileName ?? "" ).txt"
-
-        GlobalQueue.background.get().async {
-            let fileCreationHandler=Handlers { (folderCreation) in
-                if folderCreation.success {
-                    Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())
-                }
-            }
-            Bartleby.fileManager.createDirectoryAtPath(folderPath, handlers:fileCreationHandler)
-        }
-    }
-
 
 
     /**
@@ -406,7 +284,7 @@ open class  Bartleby: Consignee {
     open func destroyLocalEphemeralInstances() {
         for (dataSpaceUID, registry) in _registries {
             if  let document = registry as? BartlebyDocument{
-                bprint("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.BPRINT_CATEGORY)
+                document.log("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.LOG_CATEGORY)
                 document.superIterate({ (element) in
                     if element.ephemeral {
                         document.delete(element)
@@ -416,11 +294,4 @@ open class  Bartleby: Consignee {
         }
     }
 
-
 }
-
-
-
-
-
-

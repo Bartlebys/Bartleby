@@ -1,5 +1,5 @@
 //
-//  PrintEntry+Conveniences.swift
+//  LogEntry+Conveniences.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 17/10/2016.
@@ -10,15 +10,15 @@ import Foundation
 
 
 /**
- *  A struct to insure temporary persistency of a BprintEntry
+ *  A struct to insure temporary persistency of a BLogEntry
  */
-extension PrintEntry{
+extension LogEntry{
 
     public convenience init(counter:Int,message: String, file: String, function: String, line: Int, category: String,elapsed:CFAbsoluteTime,decorative:Bool=false){
         self.init()
         self.counter=counter
         self.message=message
-        self.file=PrintEntry.extractFileName(file)
+        self.file=LogEntry.extractFileName(file)
         self.function=function
         self.line=line
         self.category=category

@@ -73,7 +73,7 @@ class SyncTestCase : TestCase {
                         } else {
                             let completion=Completion.failureState("Different hashmap:\(diagnostic)", statusCode: .undefined)
                             handlers.on(completion)
-                            bprint(completion, file: #file, function: #function, line: #line, category: bprintCategoryFor(self))                        }
+                            self.logMessage(completion, file: #file, function: #function, line: #line, category: logsCategoryFor(self))                        }
                     } else {
                         handlers.on(computeDst)
                     }

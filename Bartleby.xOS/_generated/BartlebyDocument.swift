@@ -37,6 +37,7 @@ import Foundation
 
     required public init() {
         super.init()
+        addGlobalLogsObserver(self) // Add the document to globals logs observer
         BartlebyDocument.declareTypes()
     }
 
@@ -47,6 +48,7 @@ import Foundation
     override public init(fileURL url: URL) {
         self._fileURL = url
         super.init(fileURL: url)
+        addGlobalLogsObserver(self) // Add the document to globals logs observer
         BartlebyDocument.declareTypes()
     }
     #endif
@@ -58,6 +60,12 @@ import Foundation
         super.declareTypes()
     }
 
+
+	// MARK: Logs
+	open var enableLog: Bool=true
+	open var printLogsToTheConsole: Bool=false
+	open var logs=[LogEntry]()
+	open var logsObservers=[LogEntriesObserver]()
 
     // MARK: - Collection Controllers
 
@@ -253,9 +261,9 @@ import Foundation
 			try self.registryMetadata.configureSchema(userDefinition)
 
         }catch RegistryError.duplicatedCollectionName(let collectionName){
-            bprint("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
+            self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
         }catch {
-            bprint("\(error)",file:#file,function:#function,line:#line)
+            self.log("\(error)",file:#file,function:#function,line:#line)
         }
 
         // #2 Registers the collections
@@ -500,7 +508,7 @@ import Foundation
                         self.registryMetadata=registryMetadata
                     } else {
                         // There is an error
-                        bprint("ERROR \(r)", file: #file, function: #function, line: #line)
+                        self.log("ERROR \(r)", file: #file, function: #function, line: #line)
                         return
                     }
                     let registryUID=self.registryMetadata.rootObjectUID
@@ -547,7 +555,7 @@ import Foundation
             do {
                 try self._refreshProxies()
             } catch {
-                bprint("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
+                self.log("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
 
             DispatchQueue.main.async(execute: {

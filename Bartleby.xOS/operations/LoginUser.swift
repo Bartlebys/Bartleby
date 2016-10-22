@@ -77,7 +77,7 @@ open class LoginUser: BartlebyObject {
                                     if let kvids = result.value as? [String]{
                                         if kvids.count>=2{
                                             registry.registryMetadata.identificationValue=kvids[1]
-                                            bprint("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                                            glog("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
                                         }
                                     }
                                 }
