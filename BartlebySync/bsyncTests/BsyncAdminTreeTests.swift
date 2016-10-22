@@ -43,7 +43,7 @@ class BsyncAdminTreeTests: TestCase {
     
     func test100_createUser() {
         let expectation = self.expectation(description: "Create user")
-        CreateUser.execute(BsyncAdminTreeTests._user, inRegistryWithUID: TestCase.document.UID, sucessHandler: { (context) in
+        CreateUser.execute(BsyncAdminTreeTests._user, inDocumentWithUID: TestCase.document.UID, sucessHandler: { (context) in
             expectation.fulfill()
             }) { (context) in
                 expectation.fulfill()

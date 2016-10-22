@@ -1,5 +1,5 @@
 //
-//  RegistryMetadata+Facilities.swift
+//  DocumentMetadata+Facilities.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 22/09/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension RegistryMetadata{
+extension DocumentMetadata{
 
     var debugTriggersHistory:Bool{ return true } // Should be set to False
 

@@ -33,7 +33,7 @@ import AppKit
         }
     }
 
-    open var registryUID:String{
+    open var documentUID:String{
         get{
             return self.document?.UID ?? Default.NO_UID
         }
@@ -159,7 +159,6 @@ import AppKit
     }
     /**
     An iterator that permit dynamic approaches.
-    The Registry ignores the real types.
     - parameter on: the closure
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
@@ -365,7 +364,7 @@ import AppKit
         self._decrementIndexes(greaterThan:index)
 
         // Unregister the item
-        Registry.unRegister(item)
+        Bartleby.unRegister(item)
 
         //Update the commit flag
         item.committed=false

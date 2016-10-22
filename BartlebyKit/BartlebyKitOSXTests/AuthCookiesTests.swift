@@ -25,7 +25,7 @@ class AuthCookiesTests: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         AuthCookiesTests.document.configureSchema()
         Bartleby.sharedInstance.declare(AuthCookiesTests.document)
-        AuthCookiesTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.cookie
+        AuthCookiesTests.document.metadata.identificationMethod=DocumentMetadata.IdentificationMethod.cookie
 
         // Purge cookie for the domain
         if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
@@ -50,7 +50,7 @@ class AuthCookiesTests: XCTestCase {
         // Store the current user
         AuthCookiesTests._createdUser=user
         CreateUser.execute(user,
-                           inRegistryWithUID:AuthCookiesTests.document.UID,
+                           inDocumentWithUID:AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -128,7 +128,7 @@ class AuthCookiesTests: XCTestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(AuthCookiesTests._createdUser!,
-                           fromRegistryWithUID: AuthCookiesTests.document.UID,
+                           from: AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

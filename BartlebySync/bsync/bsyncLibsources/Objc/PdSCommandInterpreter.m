@@ -396,7 +396,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
 
         NSURL*url=[NSURL URLWithString:URLString];
         // REQUEST
-        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInDocumentWithUID:_context.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncUploadFileTo"
                                                                                    forMethod:@"POST"
                                                                                          and:url];
@@ -513,7 +513,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
             NSURL *url = [NSURL URLWithString:urlString];
 
             // REQUEST
-            NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+            NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_context.credentials.user.documentUID
                                                                                   withActionName:@"BartlebySyncGetFile"
                                                                                        forMethod:@"GET"
                                                                                              and:url];
@@ -647,7 +647,7 @@ typedef void(^CompletionBlock_type)(BOOL success, NSInteger statusCode, NSString
         NSURL*url = [NSURL URLWithString:URLString];
 
         // REQUEST
-        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInRegistryWithUID:_context.credentials.user.registryUID
+        NSURLRequest *immutableRequest = [HTTPManager requestWithTokenInDocumentWithUID:_context.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncFinalizeTransactionIn"
                                                                                    forMethod:@"POST"
                                                                                          and:url];

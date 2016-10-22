@@ -33,7 +33,7 @@ import AppKit
         }
     }
 
-    open var registryUID:String{
+    open var documentUID:String{
         get{
             return self.document?.UID ?? Default.NO_UID
         }
@@ -159,7 +159,6 @@ import AppKit
     }
     /**
     An iterator that permit dynamic approaches.
-    The Registry ignores the real types.
     - parameter on: the closure
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
@@ -182,10 +181,10 @@ import AppKit
 				let tobeUpdated = changedItems.filter { $0.distributed == true }
 				let toBeCreated = changedItems.filter { $0.distributed == false }
 				if toBeCreated.count > 0 {
-				    CreateLockers.commit(toBeCreated, inRegistryWithUID:self.registryUID)
+				    CreateLockers.commit(toBeCreated, inDocumentWithUID:self.documentUID)
 				}
 				if tobeUpdated.count > 0 {
-				    UpdateLockers.commit(tobeUpdated, inRegistryWithUID:self.registryUID)
+				    UpdateLockers.commit(tobeUpdated, inDocumentWithUID:self.documentUID)
 				}
 
             }
@@ -373,8 +372,8 @@ import AppKit
             #endif
 
 
-            if item.committed==false && commit==true{
-               CreateLocker.commit(item, inRegistryWithUID:self.registryUID)
+            if item.committed==false && commit==true && item.autoCommitIsEnabled(){
+               CreateLocker.commit(item, inDocumentWithUID:self.documentUID)
             }
 
         }else{
@@ -411,7 +410,7 @@ import AppKit
         }
         
         // Unregister the item
-        Registry.unRegister(item)
+        Bartleby.unRegister(item)
 
         //Update the commit flag
         item.committed=false
@@ -421,7 +420,7 @@ import AppKit
 
     
         if commit==true{
-            DeleteLocker.commit(item,fromRegistryWithUID:self.registryUID) 
+            DeleteLocker.commit(item,from:self.documentUID) 
         }
     }
 

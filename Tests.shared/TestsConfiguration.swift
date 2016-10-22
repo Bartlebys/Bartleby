@@ -27,10 +27,10 @@ open class TestsConfiguration: BartlebyConfiguration {
     open static var API_BASE_URL=__BASE_URL
 
     // Bartleby Bprint
-    open static var ENABLE_BPRINT: Bool=true
+    open static var ENABLE_GLOG: Bool=true
 
     // Should Bprint entries be printed
-    public static var PRINT_BPRINT_ENTRIES: Bool=true
+    public static var PRINT_GLOG_ENTRIES: Bool=true
 
     // Use NoCrypto as CryptoDelegate (should be false)
     open static var DISABLE_DATA_CRYPTO: Bool=false

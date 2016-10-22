@@ -33,7 +33,7 @@ extension BartlebyDocument {
     }
 
     public func shouldBePushed()->Bool{
-        return self.registryMetadata.pushOnChanges
+        return self.metadata.pushOnChanges
     }
 
 
@@ -61,7 +61,7 @@ extension BartlebyDocument {
      - parameter handlers: the handlers to monitor the progress and completion
      */
     public func synchronizePendingOperations() {
-        if let currentUser=self.registryMetadata.currentUser {
+        if let currentUser=self.metadata.currentUser {
             if currentUser.loginHasSucceed{
                 do {
                     try self._commitAndPushPendingOperations()
@@ -101,7 +101,7 @@ extension BartlebyDocument {
 
     fileprivate func _pushNextBunch(){
         // Push next bunch if there is no bunch in progress
-        if !self.registryMetadata.bunchInProgress {
+        if !self.metadata.bunchInProgress {
             // We donnot want to schedule anything if there is nothing to do.
             if self.pushOperations.count > 0 {
                 let nextBunchOfOperations=self._getNextBunchOfPendingOperations()
@@ -150,17 +150,17 @@ extension BartlebyDocument {
 
         let totalNumberOfOperations=self.pushOperations.count
 
-        if self.registryMetadata.pendingOperationsProgressionState==nil{
+        if self.metadata.pendingOperationsProgressionState==nil{
             // It is the first Bunch
-            self.registryMetadata.totalNumberOfOperations=self.pushOperations.count
-            self.registryMetadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
+            self.metadata.totalNumberOfOperations=self.pushOperations.count
+            self.metadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
         }
 
         let nbOfOperationsInCurrentBunch=bunchOfOperations.count
         if  nbOfOperationsInCurrentBunch>0 {
 
             // Flag there is an active Bunch of Operations in Progress
-            self.registryMetadata.bunchInProgress=true
+            self.metadata.bunchInProgress=true
 
             for operation in bunchOfOperations{
                 if let serialized=operation.toDictionary {
@@ -174,7 +174,7 @@ extension BartlebyDocument {
                                     //////////////////////////////////////////////////
                                     self.delete(operation)
                                     // Update the completion / Progression
-                                    self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
+                                    self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
                                     }, failureHandler: { (context) in
 
                                         if let statusCode=context.httpStatusCode{
@@ -185,7 +185,7 @@ extension BartlebyDocument {
                                                 // Put the operation in Quarantine
                                                 // Delete the operation from self.pushOperations
                                                 //////////////////////////////////////////////////
-                                                self.registryMetadata.operationsQuarantine.append(operation)
+                                                self.metadata.operationsQuarantine.append(operation)
                                                 self.delete(operation)
                                             }else if statusCode == 404 {
                                                 //////////////////////////////////////////////////
@@ -201,7 +201,7 @@ extension BartlebyDocument {
                                             }
                                         }
                                         // Update the completion / Progression
-                                        self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.registryMetadata.pendingOperationsProgressionState!.externalIdentifier)
+                                        self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
 
                                 })
                             })
@@ -255,13 +255,13 @@ extension BartlebyDocument {
             }else{
                 bunchCompletionState.statusCode = StatusOfCompletion.expectation_Failed.rawValue
             }
-            self.registryMetadata.bunchInProgress=false
+            self.metadata.bunchInProgress=false
             handlers?.on(bunchCompletionState)
 
             // Let's remove the progression state if there is no more operations
             if currentOperationsCounter==0 {
-                self.registryMetadata.pendingOperationsProgressionState=nil
-                self.registryMetadata.totalNumberOfOperations=0//Reset the number of operation
+                self.metadata.pendingOperationsProgressionState=nil
+                self.metadata.totalNumberOfOperations=0//Reset the number of operation
                 let finalCompletionState=Completion.successState().identifiedBy("Operations", identity:identity)
                 self.synchronizationHandlers.on(finalCompletionState)
             }
@@ -273,9 +273,9 @@ extension BartlebyDocument {
     }
 
     fileprivate func _updateProgressionState(_ completedOperation:PushOperation,_ currentOperationsCounter:Int)->Progression?{
-        if let progressionState=self.registryMetadata.pendingOperationsProgressionState{
-            let total=Double(self.registryMetadata.totalNumberOfOperations)
-            let completed=Double(self.registryMetadata.totalNumberOfOperations-currentOperationsCounter)
+        if let progressionState=self.metadata.pendingOperationsProgressionState{
+            let total=Double(self.metadata.totalNumberOfOperations)
+            let completed=Double(self.metadata.totalNumberOfOperations-currentOperationsCounter)
             let currentPercentProgress=completed*Double(100)/total
             progressionState.currentTaskIndex=Int(completed)
             progressionState.totalTaskCount=Int(total)

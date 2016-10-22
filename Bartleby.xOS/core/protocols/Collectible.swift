@@ -30,7 +30,7 @@ public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRe
     var ephemeral: Bool { get set }
 
     // The name of its holding collection e.g: projects for the class Project
-    // This name will be used to identify the collection in the Registry
+    // This name will be used to identify the collection in the Document
     static var collectionName: String { get }
 
     // An accessor to the static collectionName

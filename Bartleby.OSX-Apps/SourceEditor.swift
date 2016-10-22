@@ -22,7 +22,7 @@ class SourceEditor: NSViewController,Editor {
             if let collection = self._selectedItem as? CollectibleCollection{
                 self.enableEdition=false
                 self.textView.string="{\"numberOfItems\":\(collection.count)}"
-            }else if self._selectedItem is RegistryMetadata{
+            }else if self._selectedItem is DocumentMetadata{
                 let selectedJSON=self._selectedItem!.toJSONString(true)
                 self.textView.string=selectedJSON
                 self.enableEdition=false

@@ -9,7 +9,7 @@
 import Cocoa
 import WebKit
 
-class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
+class WebStack: NSViewController,DocumentDependent,WebFrameLoadDelegate {
 
     override var nibName : String { return "WebStack" }
 
@@ -23,10 +23,10 @@ class WebStack: NSViewController,RegistryDependent,WebFrameLoadDelegate {
 
     fileprivate var _loadingAttempted:Bool=false
 
-    var registryDelegate: RegistryDelegate?{
+    var documentProvider: DocumentProvider?{
         didSet{
-            if let document=self.registryDelegate?.getRegistry(){
-                if let currentUser=document.registryMetadata.currentUser{
+            if let document=self.documentProvider?.getDocument(){
+                if let currentUser=document.metadata.currentUser{
                     self.URL=currentUser.signInURL(for:document)
                 }
             }

@@ -21,13 +21,13 @@ import Foundation
         return "Trigger"
     }
 
-	//The index is injected server side (each dataspace-registry) has it own counter)
+	//The index is injected server side (each observationUID) has it own counter)
 	dynamic open var index:Int = -1
 
 	//The dataSpace UID
 	dynamic open var spaceUID:String?
 
-	//The observation UID for a given document correspond  to the Registry.rootObjectUID
+	//The observation UID for a given document correspond  to the RegistryOfCollections.rootObjectUID
 	dynamic open var observationUID:String?
 
 	//The user.UID of the sender

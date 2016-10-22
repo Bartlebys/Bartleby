@@ -23,8 +23,8 @@ public protocol CollectibleCollection: Collectible {
     // The dataspace UID
     var spaceUID: String { get }
 
-    // The registry UID
-    var registryUID:String { get }
+    // The document UID
+    var documentUID:String { get }
 
     #if os(OSX) && !USE_EMBEDDED_MODULES
     // When using cocoa bindings with an array controller

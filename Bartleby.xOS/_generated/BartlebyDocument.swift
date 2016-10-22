@@ -31,12 +31,13 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(BartlebyDocument) open class BartlebyDocument : Registry {
+@objc(BartlebyDocument) open class BartlebyDocument : RegistryOfCollections {
 
     #if os(OSX)
 
     required public init() {
         super.init()
+        Bartleby.sharedInstance.declare(self)
         addGlobalLogsObserver(self) // Add the document to globals logs observer
         BartlebyDocument.declareTypes()
     }
@@ -79,12 +80,14 @@ import Foundation
 			lockers.document=self
 		}
 	}
-		open dynamic var pushOperations=PushOperationsManagedCollection(){
+	
+	open dynamic var pushOperations=PushOperationsManagedCollection(){
 		willSet{
 			pushOperations.document=self
 		}
 	}
-		open dynamic var users=UsersManagedCollection(){
+	
+	open dynamic var users=UsersManagedCollection(){
 		willSet{
 			users.document=self
 		}
@@ -109,7 +112,7 @@ import Foundation
             self.lockers.arrayController=lockersArrayController
             // Add observer
             lockersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey] as? [Int]{
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 self.lockersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -127,7 +130,7 @@ import Foundation
             self.pushOperations.arrayController=pushOperationsArrayController
             // Add observer
             pushOperationsArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey] as? [Int]{
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 self.pushOperationsArrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -145,7 +148,7 @@ import Foundation
             self.users.arrayController=usersArrayController
             // Add observer
             usersArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 self.usersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -168,7 +171,7 @@ import Foundation
                  let indexes:[Int]=lockers.map({ (locker) -> Int in
                     return self.lockers.index(where:{ return $0.UID == locker.UID })!
                 })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedLockersIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
             }
         }
@@ -185,7 +188,7 @@ import Foundation
                  let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
                     return self.pushOperations.index(where:{ return $0.UID == pushOperation.UID })!
                 })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey]=indexes
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedPushOperationsIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.PUSHOPERATIONS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
             }
         }
@@ -202,7 +205,7 @@ import Foundation
                  let indexes:[Int]=users.map({ (user) -> Int in
                     return self.users.index(where:{ return $0.UID == user.UID })!
                 })
-                self.registryMetadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedUsersIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.USERS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
             }
         }
@@ -256,11 +259,11 @@ import Foundation
         // Proceed to configuration
         do{
 
-			try self.registryMetadata.configureSchema(lockerDefinition)
-			try self.registryMetadata.configureSchema(pushOperationDefinition)
-			try self.registryMetadata.configureSchema(userDefinition)
+			try self.metadata.configureSchema(lockerDefinition)
+			try self.metadata.configureSchema(pushOperationDefinition)
+			try self.metadata.configureSchema(userDefinition)
 
-        }catch RegistryError.duplicatedCollectionName(let collectionName){
+        }catch RegistryOfCollectionsError.duplicatedCollectionName(let collectionName){
             self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
         }catch {
             self.log("\(error)",file:#file,function:#function,line:#line)
@@ -377,21 +380,17 @@ import Foundation
     open func newUser() -> User {
         let user=User()
         user.silentGroupedChanges {
-            if let creator=self.registryMetadata.currentUser {
+            if let creator=self.metadata.currentUser {
                 user.creatorUID = creator.UID
             }else{
                 // Autopoiesis.
                 user.creatorUID = user.UID
             }
-            user.spaceUID = self.registryMetadata.spaceUID
+            user.spaceUID = self.metadata.spaceUID
             if(user.creatorUID != user.UID){
-                // We don't want to add the current user to user list
-                user.collection=self.users
+                // We don't want to add the Document's current user
                 self.users.add(user, commit:false)
             }else{
-                // We don't want to add the current user to user list
-                // Very important for the  document registry metadata current User
-                // Wa add directly the document
                 user.document = self
             }
         }
@@ -405,7 +404,7 @@ import Foundation
     internal var _sse:EventSource?
 
     // The EventSource URL for Server Sent Events
-    open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.registryMetadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
+    open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.metadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
     open var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
 
@@ -421,7 +420,7 @@ import Foundation
     // MARK: Serialization
      override open func fileWrapper(ofType typeName: String) throws -> FileWrapper {
 
-        self.registryWillSave()
+        self.documentWillSave()
         let fileWrapper=FileWrapper(directoryWithFileWrappers:[:])
         if var fileWrappers=fileWrapper.fileWrappers {
 
@@ -430,8 +429,8 @@ import Foundation
             // ##############
 
             // Try to store a preferred filename
-            self.registryMetadata.preferredFileName=self.fileURL?.lastPathComponent
-            var metadataData=self.registryMetadata.serialize()
+            self.metadata.preferredFileName=self.fileURL?.lastPathComponent
+            var metadataData=self.metadata.serialize()
 
             metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
 
@@ -447,7 +446,7 @@ import Foundation
             // #2 Collections
             // ##############
 
-            for metadatum: CollectionMetadatum in self.registryMetadata.collectionsMetadata {
+            for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
 
                 if !metadatum.inMemory {
                     let collectionfileName=self._collectionFileNames(metadatum).crypted
@@ -504,16 +503,16 @@ import Foundation
                 if var metadataData=wrapper.regularFileContents {
                     metadataData = try Bartleby.cryptoDelegate.decryptData(metadataData)
                     let r = try Bartleby.defaultSerializer.deserialize(metadataData)
-                    if let registryMetadata=r as? RegistryMetadata {
-                        self.registryMetadata=registryMetadata
+                    if let metadata=r as? DocumentMetadata {
+                        self.metadata=metadata
                     } else {
                         // There is an error
                         self.log("ERROR \(r)", file: #file, function: #function, line: #line)
                         return
                     }
-                    let registryUID=self.registryMetadata.rootObjectUID
-                    Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: registryUID)
-                    self.registryMetadata.currentUser?.document=self
+                    let documentUID=self.metadata.rootObjectUID
+                    Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: documentUID)
+                    self.metadata.currentUser?.document=self
                 }
             } else {
                 // ERROR
@@ -524,7 +523,7 @@ import Foundation
             // #2 Collections
             // ##############
 
-            for metadatum in self.registryMetadata.collectionsMetadata {
+            for metadatum in self.metadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
                 if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
                     let names=self._collectionFileNames(metadatum)
@@ -535,14 +534,14 @@ import Foundation
                                 if let path=filename {
                                     if let ext=path.components(separatedBy: ".").last {
                                         let pathExtension="."+ext
-                                        if  pathExtension == Registry.DATA_EXTENSION {
+                                        if  pathExtension == RegistryOfCollections.DATA_EXTENSION {
                                             collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
                                         }
                                     }
                                   let _ = try proxy.updateData(collectionData,provisionChanges: false)
                                 }
                             } else {
-                                throw RegistryError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
+                                throw RegistryOfCollectionsError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
                             }
                         }
                     } else {
@@ -559,7 +558,7 @@ import Foundation
             }
 
             DispatchQueue.main.async(execute: {
-                self.registryDidLoad()
+                self.documentDidLoad()
             })
         }
     }
@@ -581,20 +580,34 @@ import Foundation
     }
 
 #endif
+
+    // MARK: - Consignation
+
+    /// The display duration of volatile messages
+    static open let VOLATILE_DISPLAY_DURATION: Double=3
+
+    // MARK:  Simple stack management
+
+    open var trackingIsEnabled: Bool=false
+
+    open var glogTrackedEntries: Bool=false
+
+    open var trackingStack=[(result:Any?, context:Consignable)]()
+
     /**
      * Creates a new Locker
      * you can override this method to customize the properties
      */
     open func newLocker() -> Locker {
         let locker=Locker()
-        locker.silentGroupedChanges {
-            if let creator=self.registryMetadata.currentUser {
+        //locker.silentGroupedChanges {
+            if let creator=self.metadata.currentUser {
                 locker.creatorUID = creator.UID
             }
-            locker.collection=self.lockers// Become managed
+            // Become managed
             self.lockers.add(locker, commit:false)
-        }
-        locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        //}
+        //locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
         return  locker
     }
 

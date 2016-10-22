@@ -8,7 +8,7 @@
 
 import Cocoa
 
-@objc class InspectorViewController: NSViewController,RegistryDependent,NSWindowDelegate{
+@objc class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate{
 
     override var nibName : String { return "InspectorViewController" }
 
@@ -42,59 +42,59 @@ import Cocoa
     //MARK:- Menu Actions
 
     @IBAction func resetAllSupervisionCounter(_ sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            registry.registryMetadata.changedKeys.removeAll()
-            registry.registryMetadata.currentUser?.changedKeys.removeAll()
-            registry.iterateOnCollections({ (collection) in
+        if let documentReference=self.documentProvider?.getDocument(){
+            documentReference.metadata.changedKeys.removeAll()
+            documentReference.metadata.currentUser?.changedKeys.removeAll()
+            documentReference.iterateOnCollections({ (collection) in
                 if let o = collection as? BartlebyObject{
                     o.changedKeys.removeAll()
                 }
             })
-            registry.superIterate({ (element) in
+            documentReference.superIterate({ (element) in
                 if let o = element as? BartlebyObject{
                     o.changedKeys.removeAll()
                 }
             })
         }
-        NotificationCenter.default.post(name: Notification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil)
 
     }
 
     @IBAction func commitChanges(_ sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
+        if let documentReference=self.documentProvider?.getDocument(){
             do {
-                try registry.commitPendingChanges()
+                try documentReference.commitPendingChanges()
             } catch {
             }
         }
     }
 
     @IBAction func openWebStack(_ sender: AnyObject) {
-        if let document=self.registryDelegate?.getRegistry() {
-            if let url=document.registryMetadata.currentUser?.signInURL(for:document){
+        if let document=self.documentProvider?.getDocument() {
+            if let url=document.metadata.currentUser?.signInURL(for:document){
                 NSWorkspace.shared().open(url)
             }
         }
     }
 
-    @IBAction func saveRegistry(_ sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            registry.save(sender)
+    @IBAction func saveDocument(_ sender: AnyObject) {
+        if let documentReference=self.documentProvider?.getDocument(){
+            documentReference.save(sender)
         }
     }
 
     @IBAction func deleteOperations(_ sender: AnyObject) {
-        if let registry=self.registryDelegate?.getRegistry(){
-            for operation in registry.pushOperations.reversed(){
-                registry.pushOperations.removeObject(operation, commit: false)
+        if let documentReference=self.documentProvider?.getDocument(){
+            for operation in documentReference.pushOperations.reversed(){
+                documentReference.pushOperations.removeObject(operation, commit: false)
             }
             NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
     @IBAction func cleanupOperationQuarantine(_ sender: AnyObject) {
-        if let document=self.registryDelegate?.getRegistry() {
-            document.registryMetadata.operationsQuarantine.removeAll()
+        if let document=self.documentProvider?.getDocument() {
+            document.metadata.operationsQuarantine.removeAll()
             NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
@@ -103,14 +103,14 @@ import Cocoa
 
 
     @IBAction func cleanupOutDatedTriggerData(_ sender: AnyObject) {
-        if let document=self.registryDelegate?.getRegistry(){
+        if let document=self.documentProvider?.getDocument(){
             document.cleanUpOutDatedDataTriggers()
             NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
     }
 
     @IBAction func forceDataIntegration(_ sender: AnyObject) {
-        if let document=self.registryDelegate?.getRegistry(){
+        if let document=self.documentProvider?.getDocument(){
             document.forceDataIntegration()
             NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
         }
@@ -124,10 +124,10 @@ import Cocoa
 
     fileprivate var _collectionListDelegate:CollectionListDelegate?
 
-    internal var registryDelegate: RegistryDelegate?{
+    internal var documentProvider: DocumentProvider?{
         didSet{
-            if let registry=self.registryDelegate?.getRegistry(){
-                self._collectionListDelegate=CollectionListDelegate(registry:registry,outlineView:self.listOutlineView,onSelection: {(selected) in
+            if let documentReference=self.documentProvider?.getDocument(){
+                self._collectionListDelegate=CollectionListDelegate(documentReference:documentReference,outlineView:self.listOutlineView,onSelection: {(selected) in
                     self.updateRepresentedObject(selected)
                 })
 
@@ -154,7 +154,7 @@ import Cocoa
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: RegistryInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) {(notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) {(notification) in
             self._collectionListDelegate?.reloadData()
         }
     }
@@ -183,7 +183,7 @@ import Cocoa
                     self._topViewController=self.sourceEditor
                     self._bottomViewController=self.operationViewController
                     break
-                case _  where object is RegistryMetadata :
+                case _  where object is DocumentMetadata :
                     self._topViewController=self.sourceEditor
                     self._bottomViewController=self.metadataViewController
                     break
@@ -213,7 +213,7 @@ import Cocoa
 
 class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource,Identifiable{
 
-    fileprivate var _registry:BartlebyDocument
+    fileprivate var _documentReference:BartlebyDocument
 
     fileprivate var _outlineView:NSOutlineView!
 
@@ -225,15 +225,15 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     var UID: String = Bartleby.createUID()
 
-    required init(registry:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Collectible)->())) {
-        self._registry=registry
+    required init(documentReference:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Collectible)->())) {
+        self._documentReference=documentReference
         self._outlineView=outlineView
         self._selectionHandler=onSelection
         super.init()
-        self._registry.registryMetadata.addChangesSuperviser(self, closure: {(key, oldValue, newValue) in
+        self._documentReference.metadata.addChangesSuperviser(self, closure: {(key, oldValue, newValue) in
             self.reloadData()
         })
-        self._registry.iterateOnCollections { (collection) in
+        self._documentReference.iterateOnCollections { (collection) in
             self._collections.append(collection)
             collection.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                 self.reloadData()
@@ -274,7 +274,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             // Root of the tree
             // Return the Metadata
             if index==0{
-                return self._registry.registryMetadata
+                return self._documentReference.metadata
             }else{
                 // Return the collections with a shifted index
                 return self._collections[index-1]
@@ -336,10 +336,10 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 }
                 self.configureInlineButton(view, object: casted)
                 return view
-            }else if object is RegistryMetadata {
+            }else if object is DocumentMetadata {
                 let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
-                    textField.stringValue = "Registry Metadata"
+                    textField.stringValue = "Document Metadata"
                 }
                 self.configureInlineButton(view, object: object)
                 return view
@@ -384,7 +384,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                     inlineButton.isHidden=false
                     inlineButton.title="\(casted.count) | \(casted.changedKeys.count)"
                     return
-                }else if object is RegistryMetadata{
+                }else if object is DocumentMetadata{
                     inlineButton.isHidden=true
                     inlineButton.title=""
                 }else{
@@ -403,7 +403,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let object=item as? BartlebyObject {
             if object is BartlebyCollection { return 20 }
-            if object is RegistryMetadata { return 20 }
+            if object is DocumentMetadata { return 20 }
             return 20 // Any BartlebyObject
         }
         if item is String{ return 20 }

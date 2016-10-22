@@ -62,7 +62,7 @@ public class CommandBase: Handlers {
      */
     func virtualDocumentFor(spaceUID:String,rootObjectUID:String?)->BartlebyDocument{
         let document=BartlebyDocument()
-        document.registryMetadata.spaceUID=spaceUID
+        document.metadata.spaceUID=spaceUID
         do{
             if let rootObjectUID=rootObjectUID{
                 try document.setRootObjectUID(rootObjectUID)

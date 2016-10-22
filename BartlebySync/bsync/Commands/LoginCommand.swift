@@ -48,9 +48,9 @@ class LoginCommand: CommandBase {
                     do {
                         try kvs.open()
                         if let user = kvs[userUID] as? User {
-                            let document=self.virtualDocumentFor(spaceUID: user.spaceUID,rootObjectUID:user.registryUID)
+                            let document=self.virtualDocumentFor(spaceUID: user.spaceUID,rootObjectUID:user.documentUID)
                             user.login(sucessHandler: {
-                                kvs.setStringValue(document.registryMetadata.identificationValue, forKey: "kvid.\(user.UID)")
+                                kvs.setStringValue(document.metadata.identificationValue, forKey: "kvid.\(user.UID)")
                                 print ("Successful login")
                                 exit(EX_OK)
                                 }, failureHandler: { (context) in

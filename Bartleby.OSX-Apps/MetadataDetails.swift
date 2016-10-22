@@ -13,7 +13,7 @@ public let REFRESH_METADATA_INFOS_NOTIFICATION_NAME="REFRESH_METADATA_INFOS_NOTI
 
 class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate{
 
-    typealias EditorOf=RegistryMetadata
+    typealias EditorOf=DocumentMetadata
 
     var UID:String=Bartleby.createUID()
 
@@ -58,7 +58,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
     }
 
 
-    fileprivate dynamic var _metadata:RegistryMetadata?
+    fileprivate dynamic var _metadata:DocumentMetadata?
 
     override var representedObject: Any?{
         willSet{
@@ -76,13 +76,13 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     public func tabView(_ tabView: NSTabView, willSelect tabViewItem: NSTabViewItem?){
         if let tabViewItem = tabViewItem{
-            if let registry=self._metadata?.document{
+            if let documentReference=self._metadata?.document{
                 if let identifier=tabViewItem.identifier as? String{
                     if identifier == "TriggersAnalysis"  {
-                        self.triggersDiagnosticTextView.string=registry.getTriggerBufferInformations()
+                        self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
                     }
                     if identifier == "OperationsQuarantine" {
-                        self.operationsQuarantineTextView.string=registry.registryMetadata.jsonOperationsQuarantine
+                        self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine
                     }
                 }
             }
@@ -91,9 +91,9 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
 
     public func refreshMetadata(notification:Notification){
-        if let registry=self._metadata?.document{
-            self.triggersDiagnosticTextView.string=registry.getTriggerBufferInformations()
-            self.operationsQuarantineTextView.string=registry.registryMetadata.jsonOperationsQuarantine
+        if let documentReference=self._metadata?.document{
+            self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
+            self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine
         }
     }
     

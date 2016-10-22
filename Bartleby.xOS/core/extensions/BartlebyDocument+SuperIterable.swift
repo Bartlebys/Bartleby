@@ -1,5 +1,5 @@
 //
-//  Registry+SuperIterable.swift
+//  BartlebyDocument+SuperIterable.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 23/06/2016.
@@ -15,9 +15,6 @@ extension BartlebyDocument:SuperIterable{
 
     /**
      An iterator that permit dynamic approaches.
-     The Registry ignore the real types.
-     Currently we do not use SequenceType, Subscript, ...
-
      - parameter on: the closure
      */
     public func superIterate(_ on:@escaping (_ element: Collectible)->()) {

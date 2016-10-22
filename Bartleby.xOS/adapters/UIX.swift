@@ -25,7 +25,7 @@
         open let UID=Bartleby.createUID()
     }
 
-    // BXDocument is the base type of Registry
+    // BXDocument is the base type for Documents.
     // Registry implements Identifiable
     open class BXDocument:NSDocument{
     }
@@ -47,7 +47,7 @@
         public let UID=Bartleby.createUID()
     }
 
-    // BXDocument is the base type of Registry
+    // BXDocument is the base type of Documents
     // Registry implements Identifiable
     open class BXDocument:UIDocument{
     }

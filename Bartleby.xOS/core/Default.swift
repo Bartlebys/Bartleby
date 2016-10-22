@@ -24,10 +24,10 @@ public protocol BartlebyConfiguration {
     static var API_BASE_URL: URL { get set }
 
     // Bartleby Bprint
-    static var ENABLE_BPRINT: Bool { get set }
+    static var ENABLE_GLOG: Bool { get set }
 
     // Should Bprint entries be printed
-    static var PRINT_BPRINT_ENTRIES: Bool { get set }
+    static var PRINT_GLOG_ENTRIES: Bool { get set }
 
     // Use NoCrypto as CryptoDelegate
     static var DISABLE_DATA_CRYPTO: Bool { get }
@@ -85,10 +85,10 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var API_BASE_URL: URL = URL(string: "https://demo.bartlebys.org/www/api/v1")!
 
     // Bartleby Bprint
-    public static var ENABLE_BPRINT: Bool=true
+    public static var ENABLE_GLOG: Bool=true
 
     // Should Bprint entries be printed
-    public static var PRINT_BPRINT_ENTRIES: Bool=true
+    public static var PRINT_GLOG_ENTRIES: Bool=true
 
     // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool { return false }

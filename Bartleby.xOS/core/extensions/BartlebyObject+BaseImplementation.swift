@@ -368,6 +368,18 @@ extension BartlebyObject{
         self._supervisionIsEnabled = supervisionIsEnabled
     }
 
+
+    /// Returns if the auto commit is enabled
+    open func autoCommitIsEnabled()->Bool{
+        return self._autoCommitIsEnabled
+    }
+
+
+    /// Returns if the supervision is enabled
+    open func supervisionIsEnabled()->Bool{
+        return self._supervisionIsEnabled
+    }
+
 }
 
 

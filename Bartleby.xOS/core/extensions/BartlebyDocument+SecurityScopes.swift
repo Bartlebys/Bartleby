@@ -1,5 +1,5 @@
 //
-//  Registry+SecurityScopes.swift
+//  BartlebyDocument+SecurityScopes.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 05/05/2016.
@@ -72,7 +72,7 @@ extension BartlebyDocument {
      */
     public func deleteSecurityScopedBookmark(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) {
         let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-        self.registryMetadata.URLBookmarkData.removeValue(forKey: key)
+        self.metadata.URLBookmarkData.removeValue(forKey: key)
 
     }
 
@@ -131,7 +131,7 @@ extension BartlebyDocument {
         shareData=shareData.base64EncodedData(options: .endLineWithCarriageReturn)
         let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
         let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-        self.registryMetadata.URLBookmarkData[key]=stringifyedData as AnyObject?
+        self.metadata.URLBookmarkData[key]=stringifyedData as AnyObject?
         self.hasChanged()
         return try getSecurityScopedURLFrom(url)
 
@@ -155,7 +155,7 @@ extension BartlebyDocument {
      */
     public func getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil)throws -> URL {
         let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-        if let stringifyedData=self.registryMetadata.URLBookmarkData[key] as? String {
+        if let stringifyedData=self.metadata.URLBookmarkData[key] as? String {
             if let base64EncodedData=stringifyedData.data(using: Default.STRING_ENCODING) {
                 if let data=Data(base64Encoded: base64EncodedData, options: [.ignoreUnknownCharacters]) {
                     var bookmarkIsStale: Bool = false
@@ -193,7 +193,7 @@ extension BartlebyDocument {
 
     public func securityScopedBookmarkExits(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> Bool {
         let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-        let result=self.registryMetadata.URLBookmarkData.keys.contains(key)
+        let result=self.metadata.URLBookmarkData.keys.contains(key)
         return result
 
     }

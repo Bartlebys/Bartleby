@@ -34,8 +34,7 @@ extension BartlebyDocument:Logger{
         }
     }
 
-
-
+ 
     /**
      Returns a printable string for the Log entries matching a specific criteria
 

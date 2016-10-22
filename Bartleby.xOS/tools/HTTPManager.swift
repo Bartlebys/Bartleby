@@ -26,8 +26,6 @@ open class HTTPManager: NSObject {
         }
     }
 
-
-
     fileprivate static var _hasBeenConfigured=false
 
     /**
@@ -65,17 +63,17 @@ open class HTTPManager: NSObject {
     /**
      This method returns a mutable request with a salted token.
 
-     - parameter registryUID:   the registry UID
+     - parameter documentUID:   the Document UID
      - parameter actionName: the action name e.g : CreateUser
      - parameter method:     the HTTP method
      - parameter url:        the url.
 
      - returns: the mutable
      */
-    static open func requestWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
+    static open func requestWithToken(inDocumentWithUID documentUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
         var request=URLRequest(url: url)
         request.httpMethod=method
-        let headers=HTTPManager.httpHeadersWithToken(inRegistryWithUID:registryUID, withActionName: actionName)
+        let headers=HTTPManager.httpHeadersWithToken(inDocumentWithUID:documentUID, withActionName: actionName)
         for (k,v) in headers{
             request.addValue(v, forHTTPHeaderField: k)
         }
@@ -88,17 +86,17 @@ open class HTTPManager: NSObject {
     /**
      Returns the Http Headers
 
-     - parameter registryUID:   the registry UID
+     - parameter documentUID:   the Document UID
      - parameter actionName: the actionName
      - parameter method:     the HTTP method (POST,GET, PATCH, DELETE, PUT)
      - parameter url:        the url.
 
      - returns: the http Headers
      */
-    static open func httpHeadersWithToken(inRegistryWithUID registryUID: String, withActionName actionName: String)->[String:String]{
+    static open func httpHeadersWithToken(inDocumentWithUID documentUID: String, withActionName actionName: String)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
-        if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
+        if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
 
             // We prefer to Inject the token and spaceUID within the HTTP headers.
             // Note It is also possible to pass them as query strings.
@@ -109,8 +107,8 @@ open class HTTPManager: NSObject {
             // SpaceUID
             headers[HTTPManager.SPACE_UID_KEY]=document.spaceUID
 
-            if document.registryMetadata.identificationMethod == .key{
-                if  let idv=document.registryMetadata.identificationValue {
+            if document.metadata.identificationMethod == .key{
+                if  let idv=document.metadata.identificationValue {
                     headers["kvid"]=idv
                 }else{
                     headers["kvid"]=Default.VOID_STRING
@@ -159,7 +157,7 @@ open class HTTPManager: NSObject {
      */
     static open func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/Reachable")
-        let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
@@ -174,29 +172,16 @@ open class HTTPManager: NSObject {
                                          response: response ,
                                          result:result)
 
-            // React according to the situation
-            var reactions = Array<Bartleby.Reaction> ()
-            reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+            glog( NSLocalizedString("Server is not reachable",comment: "Server is not reachable")+NSLocalizedString("Please Check your connection or your configuration!",comment: "Please Check your connection or your configuration!"), file: #file, function: #function, line: #line)
 
-            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
-                context: context,
-                title: NSLocalizedString("Server is not reachable",
-                                         comment: "Server is not reachable"),
-                body: NSLocalizedString("Please Check your connection or your configuration!",
-                                        comment: "Please Check your connection or your configuration!"),
-                transmit: { (selectedIndex) -> () in
-                    glog("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
-            })
 
             if result.isFailure {
-                reactions.append(failureReaction)
                 failureHandler(context)
             } else {
                 if let statusCode=response?.statusCode {
                     if 200...299 ~= statusCode {
                         successHandler()
                     } else {
-                        reactions.append(failureReaction)
                         if let value=result.value {
                             glog(value, file: #file, function: #function, line: #line)
                         }
@@ -204,8 +189,6 @@ open class HTTPManager: NSObject {
                     }
                 }
             }
-            //Let's react according to the context.
-            Bartleby.sharedInstance.perform(reactions, forContext: context)
         }
     }
 
@@ -213,13 +196,13 @@ open class HTTPManager: NSObject {
      Use this method to test if the current user is authorized
 
      - parameter baseURL:        the base URL
-     - parameter registryUID:     the cibled registry UID
+     - parameter documentUID:     the cibled Document UID
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static open func verifyCredentials(_ registryUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
+    static open func verifyCredentials(_ documentUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/verify/credentials")
-        let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registryUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
@@ -236,10 +219,10 @@ open class HTTPManager: NSObject {
                 result:result)
 
             // React according to the situation
-            var reactions = Array<Bartleby.Reaction> ()
-            reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+            var reactions = Array<Reaction> ()
+            reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
-            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                 context: context,
                 title: NSLocalizedString("Forbidden",
                     comment: "Forbidden"),
@@ -265,8 +248,6 @@ open class HTTPManager: NSObject {
                     }
                 }
             }
-            //Let's react according to the context.
-            Bartleby.sharedInstance.perform(reactions, forContext: context)
         }
     }
 

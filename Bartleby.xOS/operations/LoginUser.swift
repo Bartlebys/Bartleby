@@ -21,15 +21,15 @@ open class LoginUser: BartlebyObject {
                                sucessHandler success:@escaping ()->(),
                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
-        if let registry=user.document{
+        if let document=user.document{
 
-            let baseURL=Bartleby.sharedInstance.getCollaborationURL(registry.UID)
+            let baseURL=Bartleby.sharedInstance.getCollaborationURL(document.UID)
             let pathURL=baseURL.appendingPathComponent("user/login")
 
-            // A valid registry is required for any authentication.
+            // A valid document is required for any authentication.
             // So you must create a Document and use its spaceUID before to login.
-            let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":user.cryptoPassword as AnyObject, "identification":registry.registryMetadata.identificationMethod.rawValue as AnyObject]
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registry.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
+            let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":user.cryptoPassword as AnyObject, "identification":document.metadata.identificationMethod.rawValue as AnyObject]
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary) 
                 request(r).validate().responseJSON(completionHandler: { (response) in
@@ -49,16 +49,16 @@ open class LoginUser: BartlebyObject {
                                                  result:result.value)
 
                     // React according to the situation
-                    var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+                    var reactions = Array<Reaction> ()
+                    reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
                     if result.isFailure {
-                        if user.UID == registry.currentUser.UID{
-                            registry.currentUser.loginHasSucceed=false
+                        if user.UID == document.currentUser.UID{
+                            document.currentUser.loginHasSucceed=false
                         }
                         let m = NSLocalizedString("authentication login",
                                                   comment: "authentication login failure description")
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
@@ -70,14 +70,14 @@ open class LoginUser: BartlebyObject {
                     } else {
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
-                                if user.UID == registry.currentUser.UID{
-                                    registry.currentUser.loginHasSucceed=true
+                                if user.UID == document.currentUser.UID{
+                                    document.currentUser.loginHasSucceed=true
                                 }
-                                if registry.registryMetadata.identificationMethod == .key{
+                                if document.metadata.identificationMethod == .key{
                                     if let kvids = result.value as? [String]{
                                         if kvids.count>=2{
-                                            registry.registryMetadata.identificationValue=kvids[1]
-                                            glog("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                                            document.metadata.identificationValue=kvids[1]
+                                            document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
                                         }
                                     }
                                 }
@@ -88,7 +88,7 @@ open class LoginUser: BartlebyObject {
                                 // because we consider that failures differentiations could be done by the caller.
                                 let m = NSLocalizedString("authentication login",
                                                           comment: "authentication login failure description")
-                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                                              comment: "Unsuccessfull attempt"),
@@ -101,7 +101,7 @@ open class LoginUser: BartlebyObject {
                         }
                     }
                     //Let's react according to the context.
-                    Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    document.perform(reactions, forContext: context)
                 })
             }catch{
                 let context = JHTTPResponse( code:2 ,

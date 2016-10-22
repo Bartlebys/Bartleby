@@ -1,5 +1,5 @@
 //
-//  Registry.swift
+//  RegistryOfCollections.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 16/09/2015.
@@ -20,7 +20,7 @@ import Foundation
 #endif
 
 
-public enum RegistryError: Error {
+public enum RegistryOfCollectionsError: Error {
     case duplicatedCollectionName(collectionName:String)
     case attemptToLoadAnNonSupportedCollection(collectionName:String)
     case unExistingCollection(collectionName:String)
@@ -37,18 +37,17 @@ public enum RegistryError: Error {
 
 // MARK: - Equatable
 
-func ==(lhs: Registry, rhs: Registry) -> Bool {
+func ==(lhs: RegistryOfCollections, rhs: RegistryOfCollections) -> Bool {
     return lhs.spaceUID==rhs.spaceUID
 }
 
 
-
-public protocol RegistryDelegate {
-    func getRegistry() -> BartlebyDocument?
+public protocol DocumentProvider {
+    func getDocument() -> BartlebyDocument?
 }
 
-public protocol RegistryDependent {
-    var registryDelegate:RegistryDelegate? { get set }
+public protocol DocumentDependent {
+    var documentProvider:DocumentProvider? { get set }
 }
 
 
@@ -57,41 +56,36 @@ public protocol RegistryDependent {
 
 /*
 
- A Registry stores collections of Objects in memory for high performance read and write access
+ A RegistryOfCollections stores collections of Objects in memory for high performance read and write access
  (future versions may implement incremental storage, a modified collection is actually globally serialized)
- The registry can be used to developp apps that performs on and off line.
- In a Document based app Each document have its own Registry.
  Documents can be shared between iOS, tvOS and OSX.
 
  */
-@objc(Registry) open class Registry: BXDocument {
+@objc(RegistryOfCollections) open class RegistryOfCollections: BXDocument {
 
     // The file extension for crypted data
     open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
 
     // The metadata file name
-    internal var _metadataFileName: String { return "metadata" + Registry.DATA_EXTENSION }
+    internal var _metadataFileName: String { return "metadata" + RegistryOfCollections.DATA_EXTENSION }
 
-    // By default the registry uses Json based implementations
-    // JRegistryMetadata and JSerializer
-
-    // We use a  RegistryMetadata
-    dynamic open var registryMetadata=RegistryMetadata(){
+    // The Document Metadata
+    dynamic open var metadata=DocumentMetadata(){
         didSet{
-            registryMetadata.document=self as? BartlebyDocument
+            metadata.document=self as? BartlebyDocument
         }
     }
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
 
 
-    // This is the Registry UID
+    // This is the RegistryOfCollections UID
     // We use the root object UID as observationUID
     // You should have set up the rootObjectUID before any trigger emitted.
     // The triggers are observable via this UID
     open var UID:String{
         get{
-            return self.registryMetadata.rootObjectUID
+            return self.metadata.rootObjectUID
         }
     }
 
@@ -100,7 +94,7 @@ public protocol RegistryDependent {
     // A user can `live` in one data space only.
     open var spaceUID: String {
         get {
-            return self.registryMetadata.spaceUID
+            return self.metadata.spaceUID
         }
     }
 
@@ -108,7 +102,7 @@ public protocol RegistryDependent {
     /// The current document user
     open var currentUser: User {
         get {
-            if let currentUser=self.registryMetadata.currentUser {
+            if let currentUser=self.metadata.currentUser {
                 return currentUser
             } else {
                 return User()
@@ -153,11 +147,11 @@ public protocol RegistryDependent {
      - throws: throws value description
      */
     open func setRootObjectUID(_ UID:String) throws {
-        if (self.registryMetadata.rootObjectUID==Default.NO_UID){
-            self.registryMetadata.rootObjectUID=UID
-            Bartleby.sharedInstance.replaceRegistryUID(Default.NO_UID, by: UID)
+        if (self.metadata.rootObjectUID==Default.NO_UID){
+            self.metadata.rootObjectUID=UID
+            Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: UID)
         }else{
-            throw RegistryError.attemptToSetUpRootObjectUIDMoreThanOnce
+            throw RegistryOfCollectionsError.attemptToSetUpRootObjectUIDMoreThanOnce
         }
     }
 
@@ -165,8 +159,8 @@ public protocol RegistryDependent {
 
     open class func declareTypes() {
         /*
-         Registry.declareCollectibleType(Object)
-         Registry.declareCollectibleType(Alias<Object>)
+         RegistryOfCollections.declareCollectibleType(Object)
+         RegistryOfCollections.declareCollectibleType(Alias<Object>)
          */
     }
 
@@ -202,8 +196,8 @@ public protocol RegistryDependent {
 
      ```
      public class func declareTypes() {
-     Registry.declareCollectibleType(Object)
-     Registry.declareCollectibleType(Alias<Object>)
+     RegistryOfCollections.declareCollectibleType(Object)
+     RegistryOfCollections.declareCollectibleType(Alias<Object>)
      
      ```
      - parameter type: a Collectible type
@@ -211,7 +205,7 @@ public protocol RegistryDependent {
     open static func declareCollectibleType(_ type: Collectible.Type) {
         let prototype=type.init()
         let name = prototype.runTimeTypeName()
-        Registry._associatedTypesMap[type(of: prototype).typeName()]=name
+        RegistryOfCollections._associatedTypesMap[type(of: prototype).typeName()]=name
     }
 
 
@@ -223,74 +217,11 @@ public protocol RegistryDependent {
      - returns: the resolved type name
      */
     open static func resolveTypeName(from universalTypeName: String) -> String {
-        if let name = Registry._associatedTypesMap[universalTypeName] {
+        if let name = RegistryOfCollections._associatedTypesMap[universalTypeName] {
             return name
         } else {
             return universalTypeName
         }
-    }
-
-
-    //MARK: - Centralized ObjectList By UID
-
-    // this centralized dictionary allows to access to any referenced object by its UID
-    // to resolve externalReferences, cross reference, it simplify instance mobility from a registry to another, etc..
-    // future implementation may include extension for lazy Storage
-
-    fileprivate static var _instancesByUID=Dictionary<String, Collectible>()
-
-
-    // The number of registred object
-    open static var numberOfRegistredObject: Int {
-        get {
-            return _instancesByUID.count
-        }
-    }
-
-    /**
-     Registers an instance
-
-     - parameter instance: the Identifiable instance
-     */
-    open static func register<T: Collectible>(_ instance: T) {
-        self._instancesByUID[instance.UID]=instance
-    }
-
-    /**
-     UnRegisters an instance
-
-     - parameter instance: the collectible instance
-     */
-    open static func unRegister<T: Collectible>(_ instance: T) {
-        self._instancesByUID.removeValue(forKey: instance.UID)
-    }
-
-    /**
-     Returns the registred instance of by its UID
-
-     - parameter UID:
-
-     - returns: the instance
-     */
-    open static func registredObjectByUID<T: Collectible>(_ UID: String) throws-> T {
-        if let instance=self._instancesByUID[UID] as? T {
-            return instance
-        }
-        throw RegistryError.instanceNotFound
-
-    }
-
-
-
-    /**
-     Returns the instance by its UID
-
-     - parameter UID: needle
-     î
-     - returns: the instance
-     */
-    static open func collectibleInstanceByUID(_ UID: String) -> Collectible? {
-        return self._instancesByUID[UID]
     }
 
 
@@ -303,17 +234,15 @@ public protocol RegistryDependent {
         super.init()
 
         // Setup the spaceUID if necessary
-        if (self.registryMetadata.spaceUID==Default.NO_UID) {
-            self.registryMetadata.spaceUID=self.registryMetadata.UID
+        if (self.metadata.spaceUID==Default.NO_UID) {
+            self.metadata.spaceUID=self.metadata.UID
         }
         // Setup the default collaboration server
-        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
+        self.metadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
 
         // Configure the schemas
         self.configureSchema()
 
-        //Declare the registry
-        Bartleby.sharedInstance.declare(self)
     }
     #else
 
@@ -322,18 +251,15 @@ public protocol RegistryDependent {
         super.init(fileURL: url as URL)
 
         // Setup the spaceUID if necessary
-        if (self.registryMetadata.spaceUID==Default.NO_UID) {
-            self.registryMetadata.spaceUID=self.registryMetadata.UID
+        if (self.metadata.spaceUID==Default.NO_UID) {
+            self.metadata.spaceUID=self.metadata.UID
         }
 
         // Setup the default collaboration server
-        self.registryMetadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
+        self.metadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
 
         // Configure the schemas
         self.configureSchema()
-
-        //Declare the registry
-        Bartleby.sharedInstance.declare(self)
     }
 
     #endif
@@ -355,26 +281,26 @@ public protocol RegistryDependent {
     }
 
     open func registerCollections() throws {
-        for metadatum in self.registryMetadata.collectionsMetadata {
+        for metadatum in self.metadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
                 if var proxy = proxy as? BartlebyCollection {
                     self._addCollection(proxy)
                     self._refreshIdentifier(&proxy)
                 } else {
-                    throw RegistryError.collectionProxyTypeError
+                    throw RegistryOfCollectionsError.collectionProxyTypeError
                 }
             } else {
-                throw RegistryError.missingCollectionProxy(collectionName: metadatum.collectionName)
+                throw RegistryOfCollectionsError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
 
     internal func _refreshProxies()throws {
-        for metadatum in self.registryMetadata.collectionsMetadata {
+        for metadatum in self.metadata.collectionsMetadata {
             if var proxy=self.collectionByName(metadatum.collectionName) {
                 self._refreshIdentifier(&proxy)
             } else {
-                throw RegistryError.missingCollectionProxy(collectionName: metadatum.collectionName)
+                throw RegistryOfCollectionsError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
@@ -389,7 +315,7 @@ public protocol RegistryDependent {
 
     open func getCollection<T: CollectibleCollection>  () throws -> T {
         guard var collection=self.collectionByName(T.collectionName) as? T else {
-            throw RegistryError.unExistingCollection(collectionName: T.collectionName)
+            throw RegistryOfCollectionsError.unExistingCollection(collectionName: T.collectionName)
         }
         collection.undoManager=self.undoManager
         return collection
@@ -446,7 +372,7 @@ public protocol RegistryDependent {
      - returns: the crypted and the non crypted file name in a tupple.
      */
     internal func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
-        let cryptedExtension=Registry.DATA_EXTENSION
+        let cryptedExtension=RegistryOfCollections.DATA_EXTENSION
         let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName + cryptedExtension
         let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
@@ -454,16 +380,16 @@ public protocol RegistryDependent {
     }
 
     /**
-     Registry did load
+     RegistryOfCollections did load
      */
-    open func registryDidLoad() {
+    open func documentDidLoad() {
         self.hasBeenLoaded=true
     }
 
     /**
-     Registry will save
+     RegistryOfCollections will save
      */
-    open func registryWillSave() {
+    open func documentWillSave() {
 
     }
 

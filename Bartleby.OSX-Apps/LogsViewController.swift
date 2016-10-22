@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class LogsViewController: NSViewController,RegistryDependent{
+class LogsViewController: NSViewController,DocumentDependent{
 
     override var nibName : String { return "LogsViewController" }
 
@@ -30,10 +30,10 @@ class LogsViewController: NSViewController,RegistryDependent{
 
     // MARK: life Cycle
 
-    internal var registryDelegate: RegistryDelegate?{
+    internal var documentProvider: DocumentProvider?{
         didSet{
-            if let registry=self.registryDelegate?.getRegistry(){
-                self._document=registry
+            if let documentReference=self.documentProvider?.getDocument(){
+                self._document=documentReference
                 self._document?.logsObservers.append(self)
                 self.entries=self._document!.logs
             }

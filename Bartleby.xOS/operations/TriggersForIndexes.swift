@@ -20,15 +20,15 @@ import Foundation
     }
 
 
-    open static func execute(  fromRegistryWithUID registryUID: String,
+    open static func execute(  from documentUID: String,
                                indexes: [Int],
                                sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                                failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
-        if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
+        if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
             let pathURL=document.baseURL.appendingPathComponent("triggers")
             let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject]
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"TriggersForIndexes", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"TriggersForIndexes", forMethod:"GET", and: pathURL)
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary) 
                 request(r).validate().responseString(completionHandler: { (response) in
@@ -43,10 +43,10 @@ import Foundation
                                                  response: response,
                                                  result:result.value)
                     // React according to the situation
-                    var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
+                    var reactions = Array<Reaction> ()
+                    reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
                     if result.isFailure {
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                             body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
@@ -61,7 +61,7 @@ import Foundation
                                     if let instance = Mapper <Trigger>().mapArray(JSONString:string){
                                         success(instance)
                                     }else{
-                                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                             context: context,
                                             title: NSLocalizedString("Deserialization issue",
                                                                      comment: "Deserialization issue"),
@@ -72,7 +72,7 @@ import Foundation
                                         failure(context)
                                     }
                                 }else{
-                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                         context: context,
                                         title: NSLocalizedString("No String Deserialization issue",
                                                                  comment: "No String Deserialization issue"),
@@ -86,7 +86,7 @@ import Foundation
                                 // Bartlby does not currenlty discriminate status codes 100 & 101
                                 // and treats any status code >= 300 the same way
                                 // because we consider that failures differentiations could be done by the caller.
-                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
                                     body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
@@ -98,7 +98,7 @@ import Foundation
                         }
                     }
                     //Let s react according to the context.
-                    Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    document.perform(reactions, forContext: context)
                 })
             }catch{
                 let context = JHTTPResponse( code:2 ,
@@ -116,7 +116,7 @@ import Foundation
                                          relatedURL:nil,
                                          httpStatusCode: 417,
                                          response: nil,
-                                         result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
+                                         result:"{\"message\":\"Unexisting document with documentUID \(documentUID)\"}")
             failure(context)
         }
     }

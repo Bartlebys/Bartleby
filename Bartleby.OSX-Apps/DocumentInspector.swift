@@ -1,5 +1,5 @@
 //
-//  RegistryInspector.swift
+//  DocumentInspector.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 14/07/2016.
@@ -14,9 +14,9 @@ public protocol Editor:Identifiable{
 }
 
 
-open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDependent {
+open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDependent {
 
-    override open var windowNibName: String?{ return "RegistryInspector" }
+    override open var windowNibName: String?{ return "DocumentInspector" }
 
     static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
 
@@ -44,12 +44,12 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
         }
     }
 
-    // The selected Registry
-    dynamic weak var registry:BartlebyDocument?
+    // The selected document
+    dynamic weak var castedDocument:BartlebyDocument?
 
 
-    open func getRegistry() -> BartlebyDocument?{
-        return self.registry
+    open func getDocument() -> BartlebyDocument?{
+        return self.castedDocument
     }
 
 
@@ -61,25 +61,25 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
         Bartleby.changesAreInspectables=true
     }
 
-    // MARK: RegistryDependent
+    // MARK: DocumentProvider
 
-    open var registryDelegate: RegistryDelegate?{
+    open var documentProvider: DocumentProvider?{
         didSet{
-            if let registry=self.registryDelegate?.getRegistry(){
-                self.registry=registry
-                self.window?.title=NSLocalizedString("Inspector", tableName:"bartlebys.OSX-Apps", comment: "Inspector window title") + " (" + ( registry.fileURL?.lastPathComponent ?? "" ) + ")"
+            if let documentReference=self.documentProvider?.getDocument(){
+                self.castedDocument=documentReference
+                self.window?.title=NSLocalizedString("Inspector", tableName:"bartlebys.OSX-Apps", comment: "Inspector window title") + " (" + ( documentReference.fileURL?.lastPathComponent ?? "" ) + ")"
 
                 let inspectorTabViewItem=NSTabViewItem(viewController:self.inspectorViewController)
                 self.globalTabView.addTabViewItem(inspectorTabViewItem)
-                self.inspectorViewController.registryDelegate=self
+                self.inspectorViewController.documentProvider=self
 
                 let logsTabViewItem=NSTabViewItem(viewController:self.logsViewController)
                 self.globalTabView.addTabViewItem(logsTabViewItem)
-                self.logsViewController.registryDelegate=self
+                self.logsViewController.documentProvider=self
 
                 let webTabViewItem=NSTabViewItem(viewController:self.webStackViewController)
                 self.globalTabView.addTabViewItem(webTabViewItem)
-                self.webStackViewController.registryDelegate=self
+                self.webStackViewController.documentProvider=self
 
             }
         }
@@ -88,8 +88,8 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
 
 
     @IBAction func openWebStack(_ sender:AnyObject)  {
-        if let document=self.registry {
-            if let url=document.registryMetadata.currentUser?.signInURL(for:document){
+        if let document=self.castedDocument {
+            if let url=document.metadata.currentUser?.signInURL(for:document){
                 NSWorkspace.shared().open(url)
             }
         }
@@ -98,7 +98,7 @@ open class RegistryInspector: NSWindowController,RegistryDelegate,RegistryDepend
 
 
     @IBAction func pushOperations(_ sender: AnyObject) {
-        if let document=self.registry {
+        if let document=self.castedDocument {
             document.synchronizePendingOperations()
         }
     }

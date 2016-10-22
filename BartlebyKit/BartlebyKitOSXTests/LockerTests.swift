@@ -48,8 +48,8 @@ class LockerTests: XCTestCase {
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = document.newUser()
         if let user =  LockerTests._creatorUser {
-            document.registryMetadata.currentUser = user
-            document.registryMetadata.creatorUID = user.UID
+            document.metadata.currentUser = user
+            document.metadata.creatorUID = user.UID
         }
 
     }
@@ -64,7 +64,7 @@ class LockerTests: XCTestCase {
             LockerTests._creatorUserID = creator.UID
             LockerTests._creatorUserPassword = creator.password
 
-            CreateUser.execute(creator, inRegistryWithUID: LockerTests._document.UID,
+            CreateUser.execute(creator, inDocumentWithUID: LockerTests._document.UID,
                                sucessHandler: { (context) in
                                 expectation.fulfill()
             }) { (context) in
@@ -89,7 +89,7 @@ class LockerTests: XCTestCase {
         LockerTests._consumerUserID = consumer.UID
         LockerTests._consumerUserPassword = consumer.password
 
-        CreateUser.execute(consumer, inRegistryWithUID: LockerTests._document.UID,
+        CreateUser.execute(consumer, inDocumentWithUID: LockerTests._document.UID,
                            sucessHandler: { (context) in
                             expectation.fulfill()
         }) { (context) in
@@ -119,7 +119,7 @@ class LockerTests: XCTestCase {
     func test104_CreateLocker() {
         let expectation = self.expectation(description: "CreateLocker should respond")
         let locker = Locker()
-        locker.registryUID = LockerTests._document.UID
+        locker.documentUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID
         locker.verificationMethod = .online
@@ -128,7 +128,7 @@ class LockerTests: XCTestCase {
         LockerTests._lockerID = locker.UID
 
         CreateLocker.execute(locker,
-                             inRegistryWithUID: LockerTests._document.UID,
+                             inDocumentWithUID: LockerTests._document.UID,
                              sucessHandler: { (context) in
                                 expectation.fulfill()
         }) { (context) in
@@ -142,7 +142,7 @@ class LockerTests: XCTestCase {
     func test105_ReadLockerById_ShouldFail_fromCreator() {
         let expectation = self.expectation(description: "ReadLockerById should respond")
 
-        ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
+        ReadLockerById.execute(from: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -162,7 +162,7 @@ class LockerTests: XCTestCase {
         let p = ReadLockersByIdsParameters()
         p.ids = [LockerTests._lockerID]
 
-        ReadLockersByIds.execute(fromRegistryWithUID: LockerTests._document.UID,
+        ReadLockersByIds.execute(from: LockerTests._document.UID,
                                  parameters: p,
                                  sucessHandler: { (lockers) in
                                     expectation.fulfill()
@@ -196,7 +196,7 @@ class LockerTests: XCTestCase {
         if let consumerUser = LockerTests._consumerUser {
 
             // (!) TO BECOME THE MAIN USER
-            LockerTests._document.registryMetadata.currentUser=consumerUser
+            LockerTests._document.metadata.currentUser=consumerUser
 
             consumerUser.login(sucessHandler: { () -> () in
                         expectation.fulfill()
@@ -214,7 +214,7 @@ class LockerTests: XCTestCase {
     func test202_ReadLockerById() {
         let expectation = self.expectation(description: "ReadLockerById should always fail")
 
-        ReadLockerById.execute(fromRegistryWithUID: LockerTests._document.UID,
+        ReadLockerById.execute(from: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
                                sucessHandler: { (locker) in
                                 expectation.fulfill()
@@ -233,7 +233,7 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                             inRegistryWithUID: LockerTests._document.UID,
+                             inDocumentWithUID: LockerTests._document.UID,
                              code: LockerTests._lockerCode,
                              accessGranted: { (locker) in
                                 expectation.fulfill()
@@ -267,7 +267,7 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                                                inRegistryWithUID: LockerTests._document.UID,
+                                                inDocumentWithUID: LockerTests._document.UID,
                                                 code: "BADCOD",
                                                 accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -284,7 +284,7 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute( "BADID",
-                                                 inRegistryWithUID: LockerTests._document.UID,
+                                                 inDocumentWithUID: LockerTests._document.UID,
                                                  code: LockerTests._lockerCode,
                                                  accessGranted: { (locker) in
                                                     expectation.fulfill()
@@ -318,7 +318,7 @@ class LockerTests: XCTestCase {
 
         let expectation = self.expectation(description: "DeleteLocker should respond")
 
-        DeleteLocker.execute(LockerTests._locker!, fromRegistryWithUID: LockerTests._document.UID, sucessHandler: { (context) in
+        DeleteLocker.execute(LockerTests._locker!, from: LockerTests._document.UID, sucessHandler: { (context) in
             expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
@@ -333,7 +333,7 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._consumerUser!,
-                           fromRegistryWithUID:LockerTests._document.UID,
+                           from:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -349,7 +349,7 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._creatorUser!,
-                           fromRegistryWithUID:LockerTests._document.UID,
+                           from:LockerTests._document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

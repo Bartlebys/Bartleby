@@ -60,7 +60,7 @@ extension ExternalReference {
      - parameter instanceCallBack: the closure that returns the instance.
      */
     public func fetchInstance<T: Collectible>(_ of: T.Type, instanceCallBack:((_ instance: T?)->())) {
-        if let fetched = try? Registry.registredObjectByUID(self.iUID) as T {
+        if let fetched = try? Bartleby.registredObjectByUID(self.iUID) as T {
             // Return the fetched instance.
             instanceCallBack(fetched)
         } else {
@@ -79,7 +79,7 @@ extension ExternalReference {
      - returns: the local instance
      */
     public func toLocalInstance<T: Collectible>() -> T? {
-        return try? Registry.registredObjectByUID(self.iUID) as T
+        return try? Bartleby.registredObjectByUID(self.iUID) as T
     }
 
 

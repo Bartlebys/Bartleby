@@ -1,5 +1,5 @@
 //
-//  JRegistryMetadata.swift
+//  JDocumentMetadata.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 12/10/2015.
@@ -13,14 +13,14 @@ import Foundation
 #endif
 
 
-// The standard RegistryMetadata implementation
-// The underlining model has been implemented by flexions in BaseRegistryMetadata
-extension RegistryMetadata:RegistryMetadataProtocol {
+// The standard DocumentMetadata implementation
+// The underlining model has been implemented by flexions in BaseDocumentMetadata
+extension DocumentMetadata:DocumentMetadataProtocol {
 
     public func configureSchema(_ metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {
             if m.collectionName == metadatum.collectionName {
-                throw RegistryMetadataError.duplicatedCollectionName(name:m.collectionName)
+                throw DocumentMetadataError.duplicatedCollectionName(name:m.collectionName)
             }
         }
         self.collectionsMetadata.append(metadatum)

@@ -51,8 +51,8 @@ class CreateUserCommand: CommandBase {
                     Bartleby.configuration.KEY=key
                     Bartleby.configuration.SHARED_SALT=salt
                     Bartleby.configuration.API_CALL_TRACKING_IS_ENABLED=false
-                    Bartleby.configuration.ENABLE_BPRINT=verbosity.value
-                    Bartleby.configuration.PRINT_BPRINT_ENTRIES=true
+                    Bartleby.configuration.ENABLE_GLOG=verbosity.value
+                    Bartleby.configuration.PRINT_GLOG_ENTRIES=true
                     Bartleby.sharedInstance.configureWith(Bartleby.configuration)
 
                     let document=self.virtualDocumentFor(spaceUID: spaceUID.value!,rootObjectUID: nil)
@@ -71,7 +71,7 @@ class CreateUserCommand: CommandBase {
                         user.verificationMethod = .byPhoneNumber
                     }
                     
-                    CreateUser.execute(user, inRegistryWithUID: document.UID,
+                    CreateUser.execute(user, inDocumentWithUID: document.UID,
                                        sucessHandler: { (context) in
                                         print (user.UID)
                                         

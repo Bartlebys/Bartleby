@@ -93,7 +93,7 @@ class AccessControlTests: TestCase {
         
         let expectation = self.expectation(description: "ReadUserById replay")
         
-        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
+        ReadUserById.execute(from:TestCase.document.UID,
                              userId:AccessControlTests._otherUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -106,7 +106,7 @@ class AccessControlTests: TestCase {
         
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                self.logMessage("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+                glog("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -121,7 +121,7 @@ class AccessControlTests: TestCase {
             user.email=AccessControlTests._thirdUserNewEmail
             
             UpdateUser.execute(user,
-                               inRegistryWithUID:TestCase.document.UID,
+                               inDocumentWithUID:TestCase.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -138,7 +138,7 @@ class AccessControlTests: TestCase {
     func test107_Check_ThirdUserEmail_HasBeenUpdated() {
         let expectation = self.expectation(description: "ReadUserById should respond")
         
-        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
+        ReadUserById.execute(from:TestCase.document.UID,
                              userId: AccessControlTests._thirdUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -156,7 +156,7 @@ class AccessControlTests: TestCase {
         
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION) { error -> Void in
             if let error = error {
-                self.logMessage("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
+                glog("Error: \(error.localizedDescription)", file: #file, function: #function, line: #line)
             }
         }
     }
@@ -166,7 +166,7 @@ class AccessControlTests: TestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute(User(),
-                           fromRegistryWithUID:  TestCase.document.UID,
+                           from:  TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("The user does not not exists its deletion should fail")
@@ -200,7 +200,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._otherUser {
             user.login(sucessHandler: { () -> () in
                         expectation.fulfill()
-                        if TestCase.document.registryMetadata.identificationMethod == .cookie{
+                        if TestCase.document.metadata.identificationMethod == .cookie{
                             if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
                                 XCTAssertTrue((cookies.count>0), "We should  have one cookie  #\(cookies.count)")
                             } else {
@@ -223,7 +223,7 @@ class AccessControlTests: TestCase {
     func test202_ReadUserByID_Creator_byOtherUser_ShouldNotRetrievePassword() {
         let expectation = self.expectation(description: "ReadUserById should respond")
         
-        ReadUserById.execute(fromRegistryWithUID:TestCase.document.UID,
+        ReadUserById.execute(from:TestCase.document.UID,
                              userId:AccessControlTests._creatorUserID,
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
@@ -242,7 +242,7 @@ class AccessControlTests: TestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._creatorUser!,
-                           fromRegistryWithUID: AccessControlTests.document.UID,
+                           from: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete its creator")
@@ -258,7 +258,7 @@ class AccessControlTests: TestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
         
         DeleteUser.execute(AccessControlTests._thirdUser!,
-                           fromRegistryWithUID: AccessControlTests.document.UID,
+                           from: AccessControlTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
                             XCTFail("Other user cannot delete third user")
@@ -276,7 +276,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._creatorUser {
             user.email = "badmail@lylo.tv"
             
-            UpdateUser.execute(user, inRegistryWithUID: AccessControlTests.document.UID,
+            UpdateUser.execute(user, inDocumentWithUID: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update the document owner")
@@ -299,7 +299,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._thirdUser {
             user.email = "otherbadmail@lylo.tv"
             
-            UpdateUser.execute(user, inRegistryWithUID: AccessControlTests.document.UID,
+            UpdateUser.execute(user, inDocumentWithUID: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update third user")

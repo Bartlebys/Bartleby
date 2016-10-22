@@ -15,11 +15,11 @@ class VerifyCredentialsCommand: CommandBase {
         
         let sourceURLString = StringOption(shortFlag: "u", longFlag: "url", required: true,
                                            helpMessage: "BartlebySync base url e.g http://localhost/api/v1/BartlebySync")
-        let registryUID = StringOption(shortFlag: "r", longFlag: "registryUID", required: true,
-                                    helpMessage: "A registryUID is required authentication")
+        let documentUID = StringOption(shortFlag: "r", longFlag: "documentUID", required: true,
+                                    helpMessage: "A documentUID is required authentication")
         let sharedSalt = StringOption(shortFlag: "t", longFlag: "salt", required: true,
                                       helpMessage: "The salt used for authentication.\n\t If salt is set; email, password and spaceUID, must be set too!\n\n")
-        addOptions(options: sourceURLString, registryUID, sharedSalt)
+        addOptions(options: sourceURLString, documentUID, sharedSalt)
         
         if parse() {
             var baseApiURL: URL?=nil
@@ -47,8 +47,8 @@ class VerifyCredentialsCommand: CommandBase {
             
             if baseApiURL != nil {
                 
-                HTTPManager.verifyCredentials(registryUID.value!, baseURL:baseApiURL!, successHandler: { () -> () in
-                    print ("Your credentials are valid for spaceUID \"\(registryUID.value!)\" @\(baseApiURL!.absoluteString)")
+                HTTPManager.verifyCredentials(documentUID.value!, baseURL:baseApiURL!, successHandler: { () -> () in
+                    print ("Your credentials are valid for spaceUID \"\(documentUID.value!)\" @\(baseApiURL!.absoluteString)")
                     exit(EX_OK)
                     
                     }, failureHandler: { (context) -> () in

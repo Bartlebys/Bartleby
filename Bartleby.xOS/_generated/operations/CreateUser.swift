@@ -22,10 +22,10 @@ import Foundation
 
     fileprivate var _user:User = User()
 
-    fileprivate var _registryUID:String=Default.NO_UID
+    fileprivate var _documentUID:String=Default.NO_UID
 
     required public convenience init(){
-        self.init(User(), inRegistryWithUID:Default.NO_UID)
+        self.init(User(), inDocumentWithUID:Default.NO_UID)
     }
 
 
@@ -34,7 +34,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_user","_registryUID"])
+        exposed.append(contentsOf:["_user","_documentUID"])
         return exposed
     }
 
@@ -51,9 +51,9 @@ import Foundation
                 if let casted=value as? User{
                     self._user=casted
                 }
-            case "_registryUID":
+            case "_documentUID":
                 if let casted=value as? String{
-                    self._registryUID=casted
+                    self._documentUID=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -72,8 +72,8 @@ import Foundation
         switch key {
             case "_user":
                return self._user
-            case "_registryUID":
-               return self._registryUID
+            case "_documentUID":
+               return self._documentUID
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -88,7 +88,7 @@ import Foundation
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self._user <- ( map["_user"] )
-			self._registryUID <- ( map["_registryUID"] )
+			self._documentUID <- ( map["_documentUID"] )
         }
     }
 
@@ -99,14 +99,14 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self._user=decoder.decodeObject(of:User.self, forKey: "_user")! 
-			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
+			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._user,forKey:"_user")
-		coder.encode(self._registryUID,forKey:"_registryUID")
+		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
     override open class var supportsSecureCoding:Bool{
@@ -118,12 +118,12 @@ import Foundation
     This is the designated constructor.
 
     - parameter user: the User concerned the operation
-    - parameter registryUID the registry or document UID
+    - parameter documentUID the document UID
 
     */
-    init (_ user:User=User(), inRegistryWithUID registryUID:String) {
+    init (_ user:User=User(), inDocumentWithUID documentUID:String) {
         self._user=user
-        self._registryUID=registryUID
+        self._documentUID=documentUID
         super.init()
     }
 
@@ -133,7 +133,7 @@ import Foundation
      - returns: return the operation
      */
     fileprivate func _getOperation()->PushOperation{
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             if let ic:PushOperationsManagedCollection = try? document.getCollection(){
                 let operations=ic.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
@@ -154,17 +154,17 @@ import Foundation
     Creates the operation and proceeds to commit
 
     - parameter user: the instance
-    - parameter registryUID:     the registry or document UID
+    - parameter documentUID:     the document UID
     */
-    static func commit(_ user:User, inRegistryWithUID registryUID:String){
-        let operationInstance=CreateUser(user,inRegistryWithUID:registryUID)
+    static func commit(_ user:User, inDocumentWithUID documentUID:String){
+        let operationInstance=CreateUser(user,inDocumentWithUID:documentUID)
         operationInstance.commit()
     }
 
 
     func commit(){
         let context=Context(code:3114275262, caller: "CreateUser.commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the operation.
             do{
                 let ic:PushOperationsManagedCollection = try document.getCollection()
@@ -173,7 +173,7 @@ import Foundation
                 operation.status=PushOperation.Status.pending
                 operation.creationDate=Date()
 				operation.summary="CreateUser(\(self._user.UID))"
-                if let currentUser=document.registryMetadata.currentUser{
+                if let currentUser=document.metadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
@@ -183,21 +183,14 @@ import Foundation
                 operation.enableSupervision()
                 ic.add(operation, commit:false)
             }catch{
-                Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
+               document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
                     body: "Operation collection is missing in  CreateUser",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
         }else{
-            // This document is not available there is nothing to do.
-            let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
-            Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
-                    title: NSLocalizedString("Structural error", comment: "Structural error"),
-                    body: "\(m) registryUID =\(self._registryUID) in CreateUser",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                    }
-            )
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
@@ -211,7 +204,7 @@ import Foundation
             // We try to execute
             operation.status=PushOperation.Status.inProgress
             CreateUser.execute(self._user,
-                inRegistryWithUID:self._registryUID,
+                inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: JHTTPResponse) -> () in 
 					self._user.distributed=true
                     operation.counter=operation.counter+1
@@ -236,24 +229,19 @@ import Foundation
             )
         }else{
             // This document is not available there is nothing to do.
-            let context=Context(code:1539033019, caller: "CreateUser.push")
-            Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
-                title: NSLocalizedString("Push error", comment: "Push error"),
-                body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"" + "\n\(#file)\n\(#function)",
-                onSelectedIndex: { (selectedIndex) -> () in
-            })
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     static open func execute(_ user:User,
-            inRegistryWithUID registryUID:String,
+            inDocumentWithUID documentUID:String,
             sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
             failureHandler failure: @escaping(_ context:JHTTPResponse)->()){
-            if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
+            if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
                 let pathURL = document.baseURL.appendingPathComponent("user")
                 var parameters=Dictionary<String, Any>()
                 parameters["user"]=Mapper<User>().toJSON(user)
-                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"CreateUser" ,forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"CreateUser" ,forMethod:"POST", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(r).validate().responseJSON(completionHandler: { (response) in
@@ -272,13 +260,13 @@ import Foundation
                         result:result.value)
 
                     // React according to the situation
-                    var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
+                    var reactions = Array<Reaction> ()
+                    reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
 
                     if result.isFailure {
                         let m = NSLocalizedString("creation  of user",
                             comment: "creation of user failure description")
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
@@ -307,7 +295,7 @@ import Foundation
 
                                 let m=NSLocalizedString("creation of user",
                                         comment: "creation of user failure description")
-                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
@@ -320,7 +308,7 @@ import Foundation
                         }
                      }
                     //Let's react according to the context.
-                    Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    document.perform(reactions, forContext: context)
                 })
                 }catch{
                     let context = JHTTPResponse( code:2 ,
@@ -333,13 +321,7 @@ import Foundation
                 }
 
             }else{
-                let context = JHTTPResponse( code:1 ,
-                    caller: "CreateUser.execute",
-                    relatedURL:nil,
-                    httpStatusCode:417,
-                    response:nil,
-                    result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
-                    failure(context)
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }
 }

@@ -1,5 +1,5 @@
 //
-//  Registry+MetadataExport.swift
+//  BartlebyDocument+MetaDataImportExport.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 08/07/2016.
@@ -51,8 +51,8 @@ public extension BartlebyDocument{
                     if crypted{
                         data = try Bartleby.cryptoDelegate.decryptData(data)
                     }
-                    if let newRegistryMetadata=try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
-                        newRegistryMetadata.saveThePassword=false // Do not allow password bypassing on .bart import
+                    if let newDocumentMetadata=try Bartleby.defaultSerializer.deserialize(data) as? DocumentMetadata{
+                        newDocumentMetadata.saveThePassword=false // Do not allow password bypassing on .bart import
                         self.dotBart=true// turn on the flag (the UI should ask for the password)
                         let previousUID=self.UID
                         Bartleby.sharedInstance.forget(previousUID)
@@ -60,17 +60,17 @@ public extension BartlebyDocument{
                         // Disconnect from SSE
                         self._closeSSE()
 
-                        // Reallocate the new registry Metadata
-                        self.registryMetadata=newRegistryMetadata
+                        // Reallocate the new  Metadata
+                        self.metadata=newDocumentMetadata
                         Bartleby.sharedInstance.declare(self)
-                        self.registryMetadata.currentUser?.document=self
+                        self.metadata.currentUser?.document=self
 
                         // Reconnect to SSE
                         self._connectToSSE()
 
                         handlers.on(Completion.successState())
                     }else{
-                        handlers.on(Completion.failureState("Deserialization of registry has failed", statusCode: StatusOfCompletion.expectation_Failed))
+                        handlers.on(Completion.failureState("Deserialization of document has failed", statusCode: StatusOfCompletion.expectation_Failed))
                     }
                 }catch{
                         handlers.on(Completion.failureStateFromError(error))
@@ -93,7 +93,7 @@ public extension BartlebyDocument{
      - returns: the NSData
      */
     fileprivate func _getSerializedMetadata(_ crypted:Bool=true) throws -> Data{
-        let serializedMetadata=self.registryMetadata.serialize()
+        let serializedMetadata=self.metadata.serialize()
         if crypted{
             return try Bartleby.cryptoDelegate.encryptData(serializedMetadata)
         }else{
@@ -108,8 +108,8 @@ public extension BartlebyDocument{
      - throws: deserialization exceptions
      */
     fileprivate func _useSerializedMetadata(_ data:Data) throws {
-        if let metadata = try Bartleby.defaultSerializer.deserialize(data) as? RegistryMetadata{
-            self.registryMetadata=metadata
+        if let metadata = try Bartleby.defaultSerializer.deserialize(data) as? DocumentMetadata{
+            self.metadata=metadata
         }
     }
 

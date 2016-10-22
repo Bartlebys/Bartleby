@@ -84,7 +84,7 @@ class TestCase: XCTestCase {
         let _ = try? TestCase.document.setRootObjectUID(TestCase.rootObjectUID)
         Bartleby.sharedInstance.declare(TestCase.document)
         // By default we use kvid auth.
-        TestCase.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.key
+        TestCase.document.metadata.identificationMethod=DocumentMetadata.IdentificationMethod.key
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
@@ -199,7 +199,7 @@ class TestCase: XCTestCase {
         TestCase._createdUsers.append(user)
 
         // Create user on the server
-        CreateUser.execute(user, inRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
+        CreateUser.execute(user, inDocumentWithUID:TestCase.document.UID, sucessHandler: { (context) in
 
             if autologin {
                 // Login if needed
@@ -242,7 +242,7 @@ class TestCase: XCTestCase {
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
-            DeleteUser.execute(user, fromRegistryWithUID:TestCase.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user, from:TestCase.document.UID, sucessHandler: { (context) in
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in

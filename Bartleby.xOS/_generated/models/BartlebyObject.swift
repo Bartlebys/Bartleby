@@ -82,7 +82,7 @@ import Foundation
                 self.ephemeral=true
             }
             // And register.
-            Registry.register(self)
+            Bartleby.register(self)
         }
     }
 
@@ -113,16 +113,16 @@ import Foundation
     }
 
     // A reference to the document
-    open var document:BartlebyDocument?
+    open weak var document:BartlebyDocument?
 
     // We setup this collection reference on:
     // - object insertion
-    // - registry deserialization
+    // - document deserialization
     // It connects the instance to its document and collection.
     open var collection:CollectibleCollection?{
         didSet{
-            if let registry=collection?.document{
-                self.document=registry
+            if let document=collection?.document{
+                self.document=document
             }
         }
     }

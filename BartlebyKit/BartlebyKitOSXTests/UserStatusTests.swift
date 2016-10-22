@@ -32,7 +32,7 @@ class UserStatusTests: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         UserStatusTests.document.configureSchema()
         Bartleby.sharedInstance.declare(UserStatusTests.document)
-        UserStatusTests.document.registryMetadata.identificationMethod=RegistryMetadata.IdentificationMethod.cookie
+        UserStatusTests.document.metadata.identificationMethod=DocumentMetadata.IdentificationMethod.cookie
 
         // Purge cookie for the domain
         if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL) {
@@ -60,7 +60,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
 
         CreateUser.execute(user,
-                           inRegistryWithUID:UserStatusTests.document.UID,
+                           inDocumentWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -84,7 +84,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._suspendedUserID = user.UID
 
         CreateUser.execute(user,
-                           inRegistryWithUID:UserStatusTests.document.UID,
+                           inDocumentWithUID:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -156,7 +156,7 @@ class UserStatusTests: XCTestCase {
             user.status = .suspended
 
             UpdateUser.execute(user,
-                               inRegistryWithUID: UserStatusTests.document.UID,
+                               inDocumentWithUID: UserStatusTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -223,7 +223,7 @@ class UserStatusTests: XCTestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._suspendedUser!,
-                           fromRegistryWithUID:UserStatusTests.document.UID,
+                           from:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -239,7 +239,7 @@ class UserStatusTests: XCTestCase {
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(UserStatusTests._creatorUser!,
-                           fromRegistryWithUID:UserStatusTests.document.UID,
+                           from:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

@@ -72,7 +72,7 @@ class LogoutCommand: CommandBase {
                 do {
                     try kvs.open()
                     if let user = kvs[userUID] as? User {
-                        document.registryMetadata.currentUser=user
+                        document.metadata.currentUser=user
                         LogoutUser.execute(user, sucessHandler: { () -> () in
                             kvs.delete("kvid.\(user.UID)")
                             print ("Successful logout")

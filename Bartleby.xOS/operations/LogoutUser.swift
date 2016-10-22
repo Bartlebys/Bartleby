@@ -19,18 +19,18 @@ open class LogoutUser: BartlebyObject {
                               sucessHandler success:@escaping ()->(),
                               failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
-        if let registry=user.document{
-            let baseURL=Bartleby.sharedInstance.getCollaborationURL(registry.UID)
+        if let  document=user.document{
+            let baseURL=Bartleby.sharedInstance.getCollaborationURL( document.UID)
             let pathURL=baseURL.appendingPathComponent("user/logout")
 
-            if registry.registryMetadata.identificationMethod == .key{
+            if  document.metadata.identificationMethod == .key{
                 // Delete the key
-                registry.registryMetadata.identificationValue=nil
-                registry.hasChanged()
+                 document.metadata.identificationValue=nil
+                 document.hasChanged()
                 success()
             }else{
                 let dictionary: Dictionary<String, Any>=[:]
-                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:registry.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName:"LogoutUser", forMethod:"POST", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                     request(r).validate().responseJSON(completionHandler: { (response) in
@@ -49,11 +49,11 @@ open class LogoutUser: BartlebyObject {
                                                      result:result.value)
 
                         // React according to the situation
-                        var reactions = Array<Bartleby.Reaction> ()
-                        reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+                        var reactions = Array<Reaction> ()
+                        reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
                         if result.isFailure {
-                            let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                          comment: "Unsuccessfull attempt"),
@@ -67,15 +67,15 @@ open class LogoutUser: BartlebyObject {
 
                             if let statusCode=response?.statusCode {
                                 if 200...299 ~= statusCode {
-                                    if user.UID == registry.currentUser.UID{
-                                        registry.currentUser.loginHasSucceed=false
+                                    if user.UID ==  document.currentUser.UID{
+                                         document.currentUser.loginHasSucceed=false
                                     }
                                     success()
                                 } else {
                                     // Bartlby does not currenlty discriminate status codes 100 & 101
                                     // and treats any status code >= 300 the same way
                                     // because we consider that failures differentiations could be done by the caller.
-                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                         context: context,
                                         title: NSLocalizedString("Unsuccessfull attempt",
                                                                  comment: "Unsuccessfull attempt"),
@@ -89,7 +89,7 @@ open class LogoutUser: BartlebyObject {
                             }
                         }
                         //Let's react according to the context.
-                        Bartleby.sharedInstance.perform(reactions, forContext: context)
+                        document.perform(reactions, forContext: context)
                     })
 
                 }catch{

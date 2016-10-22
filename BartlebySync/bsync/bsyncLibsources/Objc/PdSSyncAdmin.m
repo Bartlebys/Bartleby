@@ -298,7 +298,7 @@
 
 
         // REQUEST
-        NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
+        NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncCreateTree"
                                                                                    forMethod:@"POST"
                                                                                          and:baseUrl];
@@ -401,7 +401,7 @@
         baseUrl = [baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/touch/tree/%@",identifier]];
 
         // REQUEST
-        NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
+        NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncTouchTree"
                                                                                    forMethod:@"POST"
                                                                                          and:baseUrl];
@@ -572,7 +572,7 @@
         url=[url URLByAppendingPathComponent:[NSString stringWithFormat:@"/hashMap/tree/%@", identifier]];
 
         // REQUEST
-        NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
+        NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncGetHashMap"
                                                                                    forMethod:@"GET"
                                                                                          and:url];
@@ -764,7 +764,7 @@
                                                         ]];
 
         // REQUEST
-        NSURLRequest *request = [HTTPManager requestWithTokenInRegistryWithUID:_syncContext.credentials.user.registryUID
+        NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
                                                                               withActionName:@"BartlebySyncGetFile"
                                                                                    forMethod:@"GET"
                                                                                          and:url];

@@ -33,7 +33,7 @@ import AppKit
         }
     }
 
-    open var registryUID:String{
+    open var documentUID:String{
         get{
             return self.document?.UID ?? Default.NO_UID
         }
@@ -159,7 +159,6 @@ import AppKit
     }
     /**
     An iterator that permit dynamic approaches.
-    The Registry ignores the real types.
     - parameter on: the closure
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
@@ -180,9 +179,9 @@ import AppKit
             for changed in changedItems{
                 UIDS.append(changed.UID)
 				if changed.distributed{
-				    UpdateUser.commit(changed, inRegistryWithUID:self.registryUID)
+				    UpdateUser.commit(changed, inDocumentWithUID:self.documentUID)
 				}else{
-				    CreateUser.commit(changed, inRegistryWithUID:self.registryUID)
+				    CreateUser.commit(changed, inDocumentWithUID:self.documentUID)
 				}
 
             }
@@ -370,8 +369,8 @@ import AppKit
             #endif
 
 
-            if item.committed==false && commit==true{
-               CreateUser.commit(item, inRegistryWithUID:self.registryUID)
+            if item.committed==false && commit==true && item.autoCommitIsEnabled(){
+               CreateUser.commit(item, inDocumentWithUID:self.documentUID)
             }
 
         }else{
@@ -408,7 +407,7 @@ import AppKit
         }
         
         // Unregister the item
-        Registry.unRegister(item)
+        Bartleby.unRegister(item)
 
         //Update the commit flag
         item.committed=false
@@ -418,7 +417,7 @@ import AppKit
 
     
         if commit==true{
-            DeleteUser.commit(item,fromRegistryWithUID:self.registryUID) 
+            DeleteUser.commit(item,from:self.documentUID) 
         }
     }
 

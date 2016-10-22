@@ -1,5 +1,5 @@
 //
-//  RegistryMetadata.swift
+//  DocumentMetadataProtocol.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 12/10/2015.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-public enum RegistryMetadataError: Error {
+public enum DocumentMetadataError: Error {
     case duplicatedCollectionName(name:String)
     case errorOfCasting
 }
@@ -17,7 +17,7 @@ public enum RegistryMetadataError: Error {
 // A model that encapsulates the descriptions-CollectionMetadatum of its persitent collections
 // and stores the collaborative session data
 
-public protocol RegistryMetadataProtocol: Identifiable, Serializable {
+public protocol DocumentMetadataProtocol: Identifiable, Serializable {
 
     associatedtype CollectionMetadatumType
     associatedtype User
@@ -25,7 +25,7 @@ public protocol RegistryMetadataProtocol: Identifiable, Serializable {
     //The data space UID can be shared between multiple registries.
     var spaceUID: String { get set }
 
-    //The root user of the registry is the user currently associated to the local instance of the registry
+    //The root user of the Document is the user currently associated to the local instance of the Document
     // The full user instance.
     // We donnot want to store this user in the user collection ( to prevent its deletion and to mark its singularity)
     var currentUser: User? { get set }

@@ -29,26 +29,26 @@ open class VerifyLocker: BartlebyObject {
      (!) A Local locker must be added to the local locker collection before to be verifyed.
 
      - parameter lockerUID: the locker UID
-     - parameter registryUID:  the registryUID
+     - parameter documentUID:  the documentUID
      - parameter code:      the code
      - parameter success:   the sucess closure
      - parameter failure:   the failure closure
      */
     open static  func execute( _ lockerUID: String,
-                               inRegistryWithUID registryUID: String,
+                               inDocumentWithUID documentUID: String,
                                code: String,
                                accessGranted success:@escaping (_ locker: Locker)->(),
                                accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
-        if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
+        if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
             // Let's determine if we should verify locally or not.
             let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
             let verifyer=VerifyLocker()
             lockerRef.fetchInstance(Locker.self) { (instance) in
                 if let _=instance {
-                    verifyer._proceedToLocalVerification(lockerUID, inRegistryWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
+                    verifyer._proceedToLocalVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
                 } else {
-                    verifyer._proceedToDistantVerification(lockerUID, inRegistryWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
+                    verifyer._proceedToDistantVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
                 }
             }
         }else{
@@ -68,13 +68,13 @@ open class VerifyLocker: BartlebyObject {
      Local verification
 
      - parameter lockerUID: lockerUID
-     - parameter registryUID:  the UID of the space
+     - parameter documentUID:  the UID of the space
      - parameter code:      code
      - parameter success:   success
      - parameter failure:   failure
      */
     fileprivate  func _proceedToLocalVerification(  _ lockerUID: String,
-                                                    inRegistryWithUID registryUID: String,
+                                                    inDocumentWithUID documentUID: String,
                                                     code: String,
                                                     accessGranted success:@escaping (_ locker: Locker)->(),
                                                     accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
@@ -119,15 +119,15 @@ open class VerifyLocker: BartlebyObject {
      - parameter failure:   failure
      */
     fileprivate  func _proceedToDistantVerification( _ lockerUID: String,
-                                                     inRegistryWithUID registryUID: String,
+                                                     inDocumentWithUID documentUID: String,
                                                      code: String,
                                                      accessGranted success:@escaping (_ locker: Locker)->(),
                                                      accessRefused failure:@escaping (_ context: JHTTPResponse)->()) {
 
-        if let document=Bartleby.sharedInstance.getDocumentByUID(registryUID){
+        if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
             let pathURL=document.baseURL.appendingPathComponent("locker/verify")
             let dictionary: Dictionary<String, AnyObject>?=["lockerUID":lockerUID as AnyObject, "code":code as AnyObject]
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"VerifyLocker", forMethod:"POST", and: pathURL)
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                 request(r).validate().responseString(completionHandler: { (response) in
@@ -147,13 +147,13 @@ open class VerifyLocker: BartlebyObject {
                                                  result:result.value)
 
                     // React according to the situation
-                    var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.track(result: nil, context: context)) // Tracking
+                    var reactions = Array<Reaction> ()
+                    reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
                     if result.isFailure {
                         let m = NSLocalizedString("locker verification",
                                                   comment: "locker verification failure description")
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
@@ -169,7 +169,7 @@ open class VerifyLocker: BartlebyObject {
                                     if let instance = Mapper <Locker>().map(JSONString:string){
                                         success(instance)
                                     }else{
-                                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                             context: context,
                                             title: NSLocalizedString("Deserialization issue",
                                                                      comment: "Deserialization issue"),
@@ -180,7 +180,7 @@ open class VerifyLocker: BartlebyObject {
                                         failure(context)
                                     }
                                 }else{
-                                    let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                         context: context,
                                         title: NSLocalizedString("No String Deserialization issue",
                                                                  comment: "No String Deserialization issue"),
@@ -196,7 +196,7 @@ open class VerifyLocker: BartlebyObject {
                                 // because we consider that failures differentiations could be done by the caller.
                                 let m = NSLocalizedString("locker verification",
                                                           comment: "locker verification failure description")
-                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                                              comment: "Unsuccessfull attempt"),
@@ -209,7 +209,7 @@ open class VerifyLocker: BartlebyObject {
                         }
                     }
                     //Let's react according to the context.
-                    Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    document.perform(reactions, forContext: context)
 
                 })
             }catch{
@@ -251,11 +251,11 @@ open class VerifyLocker: BartlebyObject {
 
         if locker.verificationMethod==Locker.VerificationMethod.offline {
             // Let find the current user
-            if let registryUID=locker.registryUID {
+            if let documentUID=locker.documentUID {
                 // 1. Verify the data space consistency
-                if let registry=Bartleby.sharedInstance.getDocumentByUID(registryUID) {
+                if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID) {
                     // 2. Verify the current user iUD
-                    if let user=registry.registryMetadata.currentUser {
+                    if let user=document.metadata.currentUser {
                         if user.UID == locker.userUID {
                             // 3. Verify the date
                             let referenceDate=Date()
@@ -275,17 +275,17 @@ open class VerifyLocker: BartlebyObject {
                             return
                         }
                     } else {
-                        context.result="There is no root user in the registry" as AnyObject?
+                        context.result="There is no root user in the document" as AnyObject?
                         failure(context)
                         return
                     }
                 } else {
-                    context.result="registryUID is not valid" as AnyObject?
+                    context.result="documentUID is not valid" as AnyObject?
                     failure(context)
                     return
                 }
             } else {
-                context.result="registryUID is not valid" as AnyObject?
+                context.result="documentUID is not valid" as AnyObject?
                 failure(context)
                 return
             }

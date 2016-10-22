@@ -22,8 +22,8 @@ class RevealHashMapCommand: CryptedCommand {
             // Configure Bartleby without a specific URL
             Bartleby.configuration.KEY = secretKey
             Bartleby.configuration.SHARED_SALT = sharedSalt
-            Bartleby.configuration.ENABLE_BPRINT = false
-            Bartleby.configuration.PRINT_BPRINT_ENTRIES = true
+            Bartleby.configuration.ENABLE_GLOG = false
+            Bartleby.configuration.PRINT_GLOG_ENTRIES = true
             Bartleby.sharedInstance.configureWith(Bartleby.configuration)
             
             func printHashMap(cryptedHashMap: String) {

@@ -33,14 +33,14 @@ class UsersCreationLoadTest: TestCase {
     }
 
 
-    fileprivate func _create_a_user(_ completionHandler:@escaping (_ createdUser:User,_ completionState:Completion)->(),idMethod:RegistryMetadata.IdentificationMethod){
+    fileprivate func _create_a_user(_ completionHandler:@escaping (_ createdUser:User,_ completionState:Completion)->(),idMethod:DocumentMetadata.IdentificationMethod){
 
         // We create one document per User (to permit to variate the identification method without side effect)
         // You can for sure use one document for all the users 
         let document=UsersCreationLoadTest.document
         document.configureSchema()
         Bartleby.sharedInstance.declare(document)
-        document.registryMetadata.identificationMethod=idMethod
+        document.metadata.identificationMethod=idMethod
 
         let user=document.newUser()
         user.email=Bartleby.randomStringWithLength(6)+"@bartlebys.org"
@@ -50,7 +50,7 @@ class UsersCreationLoadTest: TestCase {
         user.spaceUID=document.spaceUID
 
         CreateUser.execute(user,
-                           inRegistryWithUID:document.UID,
+                           inDocumentWithUID:document.UID,
                            sucessHandler: { (context) -> () in
                             completionHandler(user,Completion.successStateFromJHTTPResponse(context))
         }) { (context) -> () in
@@ -60,13 +60,13 @@ class UsersCreationLoadTest: TestCase {
     }
 
 
-    fileprivate func _run_test_routine_implementation(_ expectation:XCTestExpectation,idMethod:RegistryMetadata.IdentificationMethod){
+    fileprivate func _run_test_routine_implementation(_ expectation:XCTestExpectation,idMethod:DocumentMetadata.IdentificationMethod){
 
         UsersCreationLoadTest.expecationHasBeenFullFilled=false
         UsersCreationLoadTest.userCounter=0
 
 
-        func __create(_ idMethod:RegistryMetadata.IdentificationMethod){
+        func __create(_ idMethod:DocumentMetadata.IdentificationMethod){
                 self._create_a_user ({ (user, completionState) in
                     if completionState.success{
                         __login(user)
@@ -89,7 +89,7 @@ class UsersCreationLoadTest: TestCase {
 
         func __update(_ user:User){
             user.notes=Bartleby.randomStringWithLength(40)
-            UpdateUser.execute(user, inRegistryWithUID:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            UpdateUser.execute(user, inDocumentWithUID:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __delete(user)
             }) { (context) in
                 __fullFill()
@@ -99,7 +99,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         func __delete(_ user:User){
-            DeleteUser.execute(user, fromRegistryWithUID: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            DeleteUser.execute(user, from: UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __isItTheEnd()
                 //__logout(user)
             }) { (context) in
@@ -149,7 +149,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -162,7 +162,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.cookie)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.cookie)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -175,7 +175,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*5
         let expectation = self.expectation(description: "Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.cookie)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.cookie)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -185,7 +185,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=2
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -194,7 +194,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=10
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*10
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -202,7 +202,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=100
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -210,7 +210,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*100
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
@@ -219,7 +219,7 @@ class UsersCreationLoadTest: TestCase {
         UsersCreationLoadTest.simultaneousCreations=1
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "test_004_1X1Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
-        self._run_test_routine_implementation(expectation,idMethod: RegistryMetadata.IdentificationMethod.key)
+        self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 

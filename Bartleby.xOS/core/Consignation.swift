@@ -11,49 +11,8 @@ import Foundation
 
 // MARK: -
 
-/// A Base class for consignable contexts
-public protocol Consignable {
 
-    // A developer set code to provide filtering
-    var code: UInt { get set }
 
-    // A descriptive string for developper to identify the calling context
-    var caller: String { get  set }
-
-}
-
-public struct Context: Consignable {
-
-    // A developer set code to provide filtering
-    public var code: UInt=UInt.max
-
-    // A descriptive string for developper to identify the calling context
-    public var caller: String=Default.NO_NAME
-
-    public var message: String=Default.NO_MESSAGE
-
-    public init(code: UInt!, caller: String!) {
-        self.code=code
-        self.caller=caller
-    }
-
-    public init(context: String!) {
-        self.caller=context
-    }
-}
-
-public protocol ConsignableHTTPContext: Consignable {
-
-    // The related url
-    var relatedURL: URL? { get set }
-
-    // The http status code
-    var httpStatusCode: Int? { get set }
-
-    // The response
-    var response: Any? { get set }
-
-}
 
 
 /// A context that describes an HTTP call
@@ -93,9 +52,37 @@ public struct HTTPContext: ConsignableHTTPContext {
 
 
 
+/// A Base class for consignable contexts
+public protocol Consignable {
+
+    // A developer set code to provide filtering
+    var code: UInt { get set }
+
+    // A descriptive string for developper to identify the calling context
+    var caller: String { get  set }
+    
+}
+
+public protocol ConsignableHTTPContext: Consignable {
+
+    // The related url
+    var relatedURL: URL? { get set }
+
+    // The http status code
+    var httpStatusCode: Int? { get set }
+
+    // The response
+    var response: Any? { get set }
+
+}
+
+
+
+
+
 // MARK: - Consignation Protocol
 
-protocol Consignation {
+public protocol Consignation {
 
     /**
     Present an interactive message.
@@ -133,7 +120,7 @@ protocol Consignation {
 // MARK: - AdaptiveConsignation Protocol
 
 
-protocol AdaptiveConsignation {
+public protocol AdaptiveConsignation {
     /**
     Handle an adaptive message call that can variate according to the context
 
@@ -150,23 +137,23 @@ protocol AdaptiveConsignation {
 
 // MARK: - ConcreteConsignee Protocol
 
-protocol ConcreteConsignee {
+public protocol ConcreteConsignee {
+
+    // You can perform multiple reaction
+    // var reactions = Array<Reaction> ()
+    func perform(_ reaction: Reaction, forContext: Consignable)
 
     // You can perform multiple reaction
     // var reactions = Array<Consignee.Reaction> ()
-    func perform(_ reaction: Consignee.Reaction, forContext: Consignable)
 
-    // You can perform multiple reaction
-    // var reactions = Array<Consignee.Reaction> ()
-
-    func perform(_ reactions: [Consignee.Reaction], forContext: Consignable)
+    func perform(_ reactions: [Reaction], forContext: Consignable)
 
 }
 
 
 // MARK: - ConcreteTracker Protocol
 
-protocol ConcreteTracker {
+public protocol ConcreteTracker {
 
     // Tracks and possibibly records the results with title and body annotations
     func track(_ result: Any?, context: Consignable)
@@ -174,45 +161,5 @@ protocol ConcreteTracker {
 }
 
 
-// MARK: - Consignee base class
 
-// to be extende by
-// conforming to protocols
-// - ConcreteConsignee
-// - ConcreteTracker
-// - Consignation
-// - AdaptiveConsignation (should be ovveriden per app)
-open class AbstractConsignee: NSObject {
 
-    /// The display duration of volatile messages
-    static open let VOLATILE_DISPLAY_DURATION: Double=3
-
-    public enum Reaction {
-
-        // No reaction
-        case nothing
-
-        // Adaptive Message
-        // The final behaviour is determined by the Consignee but
-        // When the reaction will be completed the transmit will be called 
-        case dispatchAdaptiveMessage(context:Consignable, title:String, body:String, transmit:(_ selectedIndex:UInt)->())
-
-        //Explicit calls
-
-        // Explicit interactive message
-        case presentInteractiveMessage(title:String, body:String, transmit:(_ selectedIndex:UInt)->())
-
-        // Explicit volatile message
-        case presentVolatileMessage(title:String, body:String)
-
-        // Explicit message logging
-        case putMessageInLogs(title:String, body:String)
-
-        // TRACKING
-
-        // Tracks and possibly records the result for future inspection
-        case track(result:Any?, context:Consignable)
-
-    }
-
-}

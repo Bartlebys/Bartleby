@@ -22,10 +22,10 @@ import Foundation
 
     fileprivate var _lockers:[Locker] = [Locker]()
 
-    fileprivate var _registryUID:String=Default.NO_UID
+    fileprivate var _documentUID:String=Default.NO_UID
 
     required public convenience init(){
-        self.init([Locker](), fromRegistryWithUID:Default.NO_UID)
+        self.init([Locker](), from:Default.NO_UID)
     }
 
 
@@ -34,7 +34,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_lockers","_registryUID"])
+        exposed.append(contentsOf:["_lockers","_documentUID"])
         return exposed
     }
 
@@ -51,9 +51,9 @@ import Foundation
                 if let casted=value as? [Locker]{
                     self._lockers=casted
                 }
-            case "_registryUID":
+            case "_documentUID":
                 if let casted=value as? String{
-                    self._registryUID=casted
+                    self._documentUID=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -72,8 +72,8 @@ import Foundation
         switch key {
             case "_lockers":
                return self._lockers
-            case "_registryUID":
-               return self._registryUID
+            case "_documentUID":
+               return self._documentUID
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -88,7 +88,7 @@ import Foundation
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self._lockers <- ( map["_lockers"] )
-			self._registryUID <- ( map["_registryUID"] )
+			self._documentUID <- ( map["_documentUID"] )
         }
     }
 
@@ -99,14 +99,14 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self._lockers=decoder.decodeObject(of: [NSArray.classForCoder(),Locker.classForCoder()], forKey: "_lockers")! as! [Locker]
-			self._registryUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_registryUID")! as NSString)
+			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._lockers,forKey:"_lockers")
-		coder.encode(self._registryUID,forKey:"_registryUID")
+		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
     override open class var supportsSecureCoding:Bool{
@@ -118,12 +118,12 @@ import Foundation
     This is the designated constructor.
 
     - parameter lockers: the [Locker] concerned the operation
-    - parameter registryUID the registry or document UID
+    - parameter documentUID the document UID
 
     */
-    init (_ lockers:[Locker]=[Locker](), fromRegistryWithUID registryUID:String) {
+    init (_ lockers:[Locker]=[Locker](), from documentUID:String) {
         self._lockers=lockers
-        self._registryUID=registryUID
+        self._documentUID=documentUID
         super.init()
     }
 
@@ -133,7 +133,7 @@ import Foundation
      - returns: return the operation
      */
     fileprivate func _getOperation()->PushOperation{
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             if let ic:PushOperationsManagedCollection = try? document.getCollection(){
                 let operations=ic.filter({ (operation) -> Bool in
                     return operation.commandUID==self.UID
@@ -154,17 +154,17 @@ import Foundation
     Creates the operation and proceeds to commit
 
     - parameter lockers: the instance
-    - parameter registryUID:     the registry or document UID
+    - parameter documentUID:     the document UID
     */
-    static func commit(_ lockers:[Locker], fromRegistryWithUID registryUID:String){
-        let operationInstance=DeleteLockers(lockers,fromRegistryWithUID:registryUID)
+    static func commit(_ lockers:[Locker], from documentUID:String){
+        let operationInstance=DeleteLockers(lockers,from:documentUID)
         operationInstance.commit()
     }
 
 
     func commit(){
         let context=Context(code:3799478402, caller: "DeleteLockers.commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._registryUID) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the operation.
             do{
                 let ic:PushOperationsManagedCollection = try document.getCollection()
@@ -174,7 +174,7 @@ import Foundation
                 operation.creationDate=Date()
 				let stringIDS=PString.ltrim(self._lockers.reduce("", { $0+","+$1.UID }),characters:",")
 				operation.summary="DeleteLockers(\(stringIDS))"
-                if let currentUser=document.registryMetadata.currentUser{
+                if let currentUser=document.metadata.currentUser{
                     operation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
                 }
@@ -182,21 +182,14 @@ import Foundation
                 operation.enableSupervision()
                 ic.add(operation, commit:false)
             }catch{
-                Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
+               document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
                     body: "Operation collection is missing in  DeleteLockers",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
         }else{
-            // This document is not available there is nothing to do.
-            let m=NSLocalizedString("Registry is missing", comment: "Registry is missing")
-            Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
-                    title: NSLocalizedString("Structural error", comment: "Structural error"),
-                    body: "\(m) registryUID =\(self._registryUID) in DeleteLockers",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                    }
-            )
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
@@ -210,7 +203,7 @@ import Foundation
             // We try to execute
             operation.status=PushOperation.Status.inProgress
             DeleteLockers.execute(self._lockers,
-                fromRegistryWithUID:self._registryUID,
+                from:self._documentUID,
                 sucessHandler: { (context: JHTTPResponse) -> () in                     operation.counter=operation.counter+1
                     operation.status=PushOperation.Status.completed
                     operation.responseDictionary=Mapper<JHTTPResponse>().toJSON(context)
@@ -233,24 +226,19 @@ import Foundation
             )
         }else{
             // This document is not available there is nothing to do.
-            let context=Context(code:584471479, caller: "DeleteLockers.push")
-            Bartleby.sharedInstance.dispatchAdaptiveMessage(context,
-                title: NSLocalizedString("Push error", comment: "Push error"),
-                body: "\(NSLocalizedString("Attempt to push an operation with status \"",comment:"Attempt to push an operation with status =="))\(operation.status)\"" + "\n\(#file)\n\(#function)",
-                onSelectedIndex: { (selectedIndex) -> () in
-            })
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     static open func execute(_ lockers:[Locker],
-            fromRegistryWithUID registryUID:String,
+            from documentUID:String,
             sucessHandler success: @escaping(_ context:JHTTPResponse)->(),
             failureHandler failure: @escaping(_ context:JHTTPResponse)->()){
-            if let document = Bartleby.sharedInstance.getDocumentByUID(registryUID) {
+            if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
                 let pathURL = document.baseURL.appendingPathComponent("lockers")
                 var parameters=Dictionary<String, Any>()
                 parameters["ids"]=lockers.map{$0.UID}
-                let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:document.UID,withActionName:"DeleteLockers" ,forMethod:"DELETE", and: pathURL)
+                let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DeleteLockers" ,forMethod:"DELETE", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
                     request(r).validate().responseJSON(completionHandler: { (response) in
@@ -269,13 +257,13 @@ import Foundation
                         result:result.value)
 
                     // React according to the situation
-                    var reactions = Array<Bartleby.Reaction> ()
-                    reactions.append(Bartleby.Reaction.track(result: result.value, context: context)) // Tracking
+                    var reactions = Array<Reaction> ()
+                    reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
 
                     if result.isFailure {
                         let m = NSLocalizedString("deleteByIds  of lockers",
                             comment: "deleteByIds of lockers failure description")
-                        let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
@@ -304,7 +292,7 @@ import Foundation
 
                                 let m=NSLocalizedString("deleteByIds of lockers",
                                         comment: "deleteByIds of lockers failure description")
-                                let failureReaction =  Bartleby.Reaction.dispatchAdaptiveMessage(
+                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                     comment: "Unsuccessfull attempt"),
@@ -317,7 +305,7 @@ import Foundation
                         }
                      }
                     //Let's react according to the context.
-                    Bartleby.sharedInstance.perform(reactions, forContext: context)
+                    document.perform(reactions, forContext: context)
                 })
                 }catch{
                     let context = JHTTPResponse( code:2 ,
@@ -330,13 +318,7 @@ import Foundation
                 }
 
             }else{
-                let context = JHTTPResponse( code:1 ,
-                    caller: "DeleteLockers.execute",
-                    relatedURL:nil,
-                    httpStatusCode:417,
-                    response:nil,
-                    result:"{\"message\":\"Unexisting document with registryUID \(registryUID)\"}")
-                    failure(context)
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }
 }

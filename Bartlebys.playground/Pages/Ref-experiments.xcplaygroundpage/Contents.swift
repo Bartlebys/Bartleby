@@ -10,7 +10,7 @@ Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
 let document=BartlebyDocument()
 
 
-let metadata=RegistryMetadata()
+let metadata=DocumentMetadata()
 let metadataExternalReference=ExternalReference(from:metadata)
 
 metadata.serialize()

@@ -1,5 +1,5 @@
 //
-//  Registry+URD.swift
+//  BartlebyDocument+LocalUpsertAndDelete.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 05/05/2016.

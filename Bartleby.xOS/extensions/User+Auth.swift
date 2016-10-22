@@ -11,7 +11,7 @@ import Foundation
 extension User {
 
     /// Returns the document UID
-    open var registryUID:String{
+    open var documentUID:String{
         get{
             return self.document?.UID ?? "User_Extension_NO_UID_defined"
         }

@@ -22,7 +22,7 @@ import Foundation
 //MARK: - Bartleby
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
-open class  Bartleby: Consignee {
+@objc(Bartleby) open class Bartleby:NSObject {
 
     /// The standard singleton shared instance
     open static let sharedInstance: Bartleby = {
@@ -61,7 +61,7 @@ open class  Bartleby: Consignee {
      This method should be only used to cleanup in core unit test
      */
     open func hardCoreCleanupForUnitTests() {
-        self._registries=[String:Registry]()
+        self._documents=[String:BartlebyDocument]()
     }
 
     /**
@@ -90,9 +90,6 @@ open class  Bartleby: Consignee {
         // Ephemeral mode.
         Bartleby.ephemeral=configuration.EPHEMERAL_MODE
 
-        self.trackingIsEnabled=configuration.API_CALL_TRACKING_IS_ENABLED
-        self.glogTrackedEntries=configuration.BPRINT_API_TRACKED_CALLS
-
         glog("Bartleby Start time : \(Bartleby.startTime)", file:#file, function:#function, line:#line)
 
         // Configure the HTTP Manager
@@ -116,18 +113,17 @@ open class  Bartleby: Consignee {
 
     // MARK: - Registries
 
-    // Each document is a stored in it own registry
+    // Each document is a stored separately
     // Multiple documents can be openned at the same time
     // and synchronized to different Servers.
     // Bartleby supports multi-authentication and multi documents
 
-
     /// Memory storage
-    fileprivate var _registries: [String:Registry] = [String:Registry]()
+    fileprivate var _documents: [String:BartlebyDocument] = [String:BartlebyDocument]()
 
 
     /**
-     Returns a document by its UID ( == document.registryMetadata.rootObjectUID)
+     Returns a document by its UID ( == document.metadata.rootObjectUID)
      The SpaceUID is shared between multiple document.
 
      - parameter UID: the uid of the document
@@ -135,37 +131,37 @@ open class  Bartleby: Consignee {
      - returns: the document
      */
     open func getDocumentByUID(_ UID:String) -> BartlebyDocument?{
-        return self._registries[UID] as? BartlebyDocument
+        return self._documents[UID]
     }
     /**
-     Register a registry (each document has its own registry)
+     Registers a document
 
-     - parameter registry: the registry
+     - parameter document: the document
      */
-    open func declare(_ registry: Registry) {
-        self._registries[registry.UID]=registry
-    }
-
-    /**
-     Unload the collections
-
-     - parameter registryUID: the target registry UID
-     */
-    open func forget(_ registryUID: String) {
-        _registries.removeValue(forKey: registryUID)
+    open func declare(_ document: BartlebyDocument) {
+        self._documents[document.UID]=document
     }
 
     /**
-     Replace the UID of a proxy Registry
+     Unloads the collections
 
-     - parameter registryProxyUID: the proxy UID
-     - parameter registryUID:      the final UID
+     - parameter documentUID: the target document UID
      */
-    open func replaceRegistryUID(_ registryProxyUID: String, by registryUID: String) {
-        if( registryProxyUID != registryUID) {
-            if let registry=self._registries[registryProxyUID] {
-                self._registries[registryUID]=registry
-                _registries.removeValue(forKey: registryProxyUID)
+    open func forget(_ documentUID: String) {
+        _documents.removeValue(forKey: documentUID)
+    }
+
+    /**
+     Replaces the UID of a proxy Document
+
+     - parameter documentProxyUID: the proxy UID
+     - parameter documentUID:      the final UID
+     */
+    open func replaceDocumentUID(_ documentProxyUID: String, by documentUID: String) {
+        if( documentProxyUID != documentUID) {
+            if let document=self._documents[documentProxyUID] {
+                self._documents[documentUID]=document
+                self._documents.removeValue(forKey: documentProxyUID)
             }
         }
     }
@@ -210,18 +206,6 @@ open class  Bartleby: Consignee {
 
 
     /**
-     Reacts to a todo
-
-     - parameter title:   the title of the todo
-     - parameter message: its message
-     */
-    open static func todo(_ title: String, message: String) {
-        Bartleby.sharedInstance.presentVolatileMessage(title, body:message)
-    }
-
-
-
-    /**
      Returns a random string of a given size.
 
      - parameter len: the length
@@ -246,15 +230,15 @@ open class  Bartleby: Consignee {
     // MARK: - Paths & URL
 
     /**
-     Returns the url by the Registry UID
+     Returns the url by the document collaborative server URL
 
-     - parameter registryUID: the registryUID
+     - parameter documentUID: the documentUID
 
      - returns: the
      */
-    open func getCollaborationURL(_ registryUID: String) -> URL {
-        if let registry=self.getDocumentByUID(registryUID) {
-            if let collaborationServerURL=registry.registryMetadata.collaborationServerURL {
+    open func getCollaborationURL(_ documentUID: String) -> URL {
+        if let document=self.getDocumentByUID(documentUID) {
+            if let collaborationServerURL=document.metadata.collaborationServerURL {
                 return collaborationServerURL as URL
             }
         }
@@ -282,16 +266,78 @@ open class  Bartleby: Consignee {
     // MARK: - Maintenance
 
     open func destroyLocalEphemeralInstances() {
-        for (dataSpaceUID, registry) in _registries {
-            if  let document = registry as? BartlebyDocument{
-                document.log("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.LOG_CATEGORY)
-                document.superIterate({ (element) in
-                    if element.ephemeral {
-                        document.delete(element)
-                    }
-                })
-            }
+        for (dataSpaceUID, document) in self._documents {
+            document.log("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.LOG_CATEGORY)
+            document.superIterate({ (element) in
+                if element.ephemeral {
+                    document.delete(element)
+                }
+            })
         }
     }
+
+
+    //MARK: - Centralized ObjectList By UID
+
+    // this centralized dictionary allows to access to any referenced object by its UID
+    // to resolve externalReferences, cross reference, it simplify instance mobility from a Document to another, etc..
+    // future implementation may include extension for lazy Storage
+
+    fileprivate static var _instancesByUID=Dictionary<String, Collectible>()
+
+
+    // The number of registred object
+    open static var numberOfRegistredObject: Int {
+        get {
+            return _instancesByUID.count
+        }
+    }
+
+    /**
+     Registers an instance
+
+     - parameter instance: the Identifiable instance
+     */
+    open static func register<T: Collectible>(_ instance: T) {
+        self._instancesByUID[instance.UID]=instance
+    }
+
+    /**
+     UnRegisters an instance
+
+     - parameter instance: the collectible instance
+     */
+    open static func unRegister<T: Collectible>(_ instance: T) {
+        self._instancesByUID.removeValue(forKey: instance.UID)
+    }
+
+    /**
+     Returns the registred instance of by its UID
+
+     - parameter UID:
+
+     - returns: the instance
+     */
+    open static func registredObjectByUID<T: Collectible>(_ UID: String) throws-> T {
+        if let instance=self._instancesByUID[UID] as? T {
+            return instance
+        }
+        throw RegistryOfCollectionsError.instanceNotFound
+
+    }
+
+
+
+    /**
+     Returns the instance by its UID
+
+     - parameter UID: needle
+     î
+     - returns: the instance
+     */
+    static open func collectibleInstanceByUID(_ UID: String) -> Collectible? {
+        return self._instancesByUID[UID]
+    }
+
 
 }

@@ -26,7 +26,7 @@ extension BartlebyDocument {
     //MARK: - APP KIT FACILITIES
 
     /**
-     Saves the registry Metadata to a file
+     Saves the Metadata to a file
 
      - parameter crypted: should the data be crypted?
      */
@@ -52,7 +52,7 @@ extension BartlebyDocument {
     }
 
     /**
-     Loads the registry Metadata from a file and apply it to a BartlebyDocument
+     Loads the  Metadata from a file and apply it to a BartlebyDocument
 
      - parameter crypted: should the data be decrypted?
      */
@@ -89,9 +89,9 @@ extension BartlebyDocument {
         self.currentUser.login( sucessHandler: {
 
             let pathURL=self.baseURL.appendingPathComponent("/Export")
-            let dictionary=["excludeTriggers":"true","observationUID":self.registryMetadata.rootObjectUID];
+            let dictionary=["excludeTriggers":"true","observationUID":self.metadata.rootObjectUID];
 
-            let urlRequest=HTTPManager.requestWithToken(inRegistryWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
 
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary)
