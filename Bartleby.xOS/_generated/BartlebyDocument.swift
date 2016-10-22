@@ -600,14 +600,14 @@ import Foundation
      */
     open func newLocker() -> Locker {
         let locker=Locker()
-        //locker.silentGroupedChanges {
+        locker.silentGroupedChanges {
             if let creator=self.metadata.currentUser {
                 locker.creatorUID = creator.UID
             }
             // Become managed
             self.lockers.add(locker, commit:false)
-        //}
-        //locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        }
+        locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
         return  locker
     }
 
