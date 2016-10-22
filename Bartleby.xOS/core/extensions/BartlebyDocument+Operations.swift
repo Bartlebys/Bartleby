@@ -15,18 +15,18 @@ extension BartlebyDocument {
 
     // MARK: - Supervised Automatic Push
 
-    func startSupervisionLoopIfNecessary() {
+    func startPushLoopIfNecessary() {
         if self._timer==nil{
             self._timer=Timer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS,
                               target: self,
-                              selector: #selector(BartlebyDocument.superVisionLoop),
+                              selector: #selector(BartlebyDocument.pushLoop),
                               userInfo: nil,
                               repeats: true)
             RunLoop.current.add(self._timer!, forMode: RunLoopMode.commonModes)
         }
     }
 
-    func superVisionLoop () -> () {
+    func pushLoop () -> () {
         if self.shouldBePushed(){
             self.synchronizePendingOperations()
         }

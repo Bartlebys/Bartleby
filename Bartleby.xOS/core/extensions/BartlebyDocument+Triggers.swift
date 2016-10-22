@@ -402,7 +402,7 @@ extension BartlebyDocument {
     // MARK: - SSE
 
     // The online flag is driving the "connection" process
-    // It connects to the SSE and starts the supervisionLoop
+    // It connects to the SSE and starts the pushLoop
     override open var online:Bool{
         willSet{
             // Transition on line
@@ -420,7 +420,7 @@ extension BartlebyDocument {
         }
         didSet{
             self.metadata.online=online
-            self.startSupervisionLoopIfNecessary()
+            self.startPushLoopIfNecessary()
         }
     }
 
