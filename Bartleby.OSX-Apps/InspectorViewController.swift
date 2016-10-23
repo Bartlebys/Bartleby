@@ -101,14 +101,6 @@ import Cocoa
 
 
 
-
-    @IBAction func cleanupOutDatedTriggerData(_ sender: AnyObject) {
-        if let document=self.documentProvider?.getDocument(){
-            document.cleanUpOutDatedDataTriggers()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
-        }
-    }
-
     @IBAction func forceDataIntegration(_ sender: AnyObject) {
         if let document=self.documentProvider?.getDocument(){
             document.forceDataIntegration()

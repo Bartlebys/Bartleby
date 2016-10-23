@@ -25,144 +25,91 @@ extension BartlebyDocument {
     // MARK: - Triggers Receipts
 
     /**
-     This is first step of the trigger life cycle.
-
-     The Server Sent Event is decoded by the Document
-     or the Triggers are received via an EndPoint.
-
-     Then this method is called.
+     The trigger has been sent by a  Server Sent Event or received by an EndPoint.
 
      - parameter triggers: the collection of Trigger
      */
     internal func _triggersHasBeenReceived(_ triggers:[Trigger]) {
-
-        let indexes=triggers.map {$0.index}
-        self.acknowledgeTriggerIndexes(indexes)
-
-        // Proceed to loading or direct insertion of triggers.
+        let nb=self.metadata.receivedTriggers.count
         for trigger in triggers{
-            if !self.metadata.ownedTriggersIndexes.contains(trigger.index){
+            // We store the triggers index for debug history
+            self.metadata.triggersIndexesDebugHistory.append(trigger.index)
+            // We don't want to keep useless triggers that could be received during a divergence resolution.
+            if trigger.index > self.metadata.lastIntegratedTriggerIndex &&
+                !(self.metadata.receivedTriggers.contains(where: { trigger.index == $0.index})){
                 self.metadata.receivedTriggers.append(trigger)
-            }else{
-                self.log("Data larsen on \(trigger)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
             }
         }
 
-        self.metadata.receivedTriggers.sort { (lTrigger, rTrigger) -> Bool in
-            return lTrigger.index<rTrigger.index
+        if self.metadata.receivedTriggers.count > nb{
+            // If some new trigger have been received, we sorte the receivedTrigger list
+            self.metadata.receivedTriggers=self.metadata.receivedTriggers.sorted { (lTrigger, rTrigger) -> Bool in
+                return lTrigger.index<rTrigger.index
+            }
         }
 
         self._integrateContiguousData()
-
     }
 
-    // MARK: - Triggers  Acknowledgment
 
-    /// Called by the generative Operation layer on Owned Triggers
-    /// It allows to detect potential divergences.
+    // MARK: - Owned Operation Acknowledgment
+
+    /// Called by the generative Operation layer on Owned Operations
     /// - parameter ack: the Acknowledgement object
     public func record(_ ack:Acknowledgment){
 
-        let possibleDivergence = (ack.triggerIndex != self.metadata.highestReceivedTriggerIndex)
-        if possibleDivergence{
-            // Resolve divergences  https://github.com/Bartlebys/Bartleby/issues/27
-            TriggersAfterIndex.execute(from:self.UID, index:ack.triggerIndex, sucessHandler: { (triggers) in
-                self.log("Trying to resolve Divergences from index \(ack.triggerIndex)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+        self.metadata.triggersIndexesDebugHistory.append(ack.triggerIndex)
+        self.metadata.ownedTriggersIndexes.append(ack.triggerIndex)
+
+        if ack.triggerIndex == self.metadata.lastIntegratedTriggerIndex+1 {
+            // This index is contigous.
+            self.metadata.lastIntegratedTriggerIndex=ack.triggerIndex
+            self._integrateContiguousData()
+        }else{
+            // There is possibly a divergence https://github.com/Bartlebys/Bartleby/issues/27
+            // So we will load the triggers from the lastIntegratedTriggerIndex + 1
+            let fromIndex=self.metadata.lastIntegratedTriggerIndex+1
+            self.log("Trying to resolve possible divergences from index \(fromIndex)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+            TriggersAfterIndex.execute(from:self.UID, index:fromIndex, sucessHandler: { (triggers) in
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
-                // What to do on failure ?
-                self.log("Failure on Divergences resolution Attempt \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
-            }
-        }
-
-        // Normal case.
-        if self.metadata.triggersIndexes.contains(ack.triggerIndex) {
-            self.log("Attempt to acknowledgeOwnedTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
-        }else{
-            self.metadata.ownedTriggersIndexes.append(ack.triggerIndex)
-            let indexes=[ack.triggerIndex]
-            self.acknowledgeTriggerIndexes(indexes)
-        }
-        self._integrateContiguousData()
-    }
-
-
-
-    /**
-     Acknowledges the triggers indexes
-
-     - parameter indexes: the triggers indexes
-     */
-    public func acknowledgeTriggerIndexes(_ indexes:[Int]) {
-        for index in indexes{
-            if index > self.metadata.highestReceivedTriggerIndex{
-                self.metadata.highestReceivedTriggerIndex=index
-            }
-
-            if (self.metadata.debugTriggersHistory) {
-                metadata.triggersIndexesDebugHistory.append(index)
-            }
-            if index>=0{
-                if metadata.triggersIndexes.contains(index) {
-                    self.log("Attempt to acknowledgeTriggerIndex more than once trigger with index: \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
-                }else{
-                    self.log("Acknowledgement of trigger \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
-                    self.metadata.triggersIndexes.append(index)
+                if context.httpStatusCode != 404{
+                    // What to do on failure ?
+                    self.log("Failure on Divergences resolution Attempt from index: \(fromIndex) \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
                 }
-            }else{
-                self.log("Trigger index is <0 \(index)", file: #file, function: #function, line: #line, category:logsCategoryFor(Trigger.self))
             }
         }
     }
 
 
 
-    // MARK: - Local Data Integration
-
-    /**
-
-     Integrates the data and re-computes: lastIntegratedTriggerIndex, triggersIndexes
-     Continuity of triggers indexes is required to insure data consistency.
-
-     */
+    /// Integrates contigous data
     fileprivate func _integrateContiguousData(){
+        var toBeRemovedIndexes=[Int]()
+        var idx=0
 
-        // #1 Integrate contigous data
+        for trigger in self.metadata.receivedTriggers{
 
-        var lastIntegratedTriggerIndex=self.metadata.lastIntegratedTriggerIndex
-        for trigger  in self.metadata.receivedTriggers{
+            // Purge the out dated triggers
+            if trigger.index < self.metadata.lastIntegratedTriggerIndex{
+                toBeRemovedIndexes.append(idx)
+                continue
+            }
 
-            // Integrate continuous data
-            if trigger.index == (lastIntegratedTriggerIndex+1)  || self.metadata.ownedTriggersIndexes.contains(lastIntegratedTriggerIndex + 1){
+            // Integrate contigous triggers
+            if trigger.index == (self.metadata.lastIntegratedTriggerIndex+1){
                 self._integrate(trigger)
-                lastIntegratedTriggerIndex = trigger.index
+                toBeRemovedIndexes.append(idx)
+            }else{
+                break
             }
+            idx += 1
         }
 
-        // #2 Verify the continuity with the currently ownedTriggersIndexes
-        // ownedTriggersIndexes is sorted
-
-        if  let maxOwnedTriggerIndex=self.metadata.ownedTriggersIndexes.max(),
-            let minOwnedTriggerIndex=self.metadata.ownedTriggersIndexes.min(){
-            if lastIntegratedTriggerIndex <= maxOwnedTriggerIndex{
-                for index in minOwnedTriggerIndex...maxOwnedTriggerIndex{
-                    if index == (lastIntegratedTriggerIndex+1) {
-                        lastIntegratedTriggerIndex = index
-                    }
-                }
-            }
+        // Remove the processed triggers.
+        for idx in toBeRemovedIndexes.reversed(){
+            self.metadata.receivedTriggers.remove(at: idx)
         }
-
-        // #3 setup the lastIntegratedTriggerIndex
-        self.metadata.lastIntegratedTriggerIndex=lastIntegratedTriggerIndex
-
-        // #4 keep only the index > lastIntegratedTriggerIndex in triggersIndexes
-        let filteredIndexes=self.metadata.triggersIndexes.filter { $0>lastIntegratedTriggerIndex }
-        self.metadata.triggersIndexes=filteredIndexes
-
-        // If necessary we grab the missing indexes
-        self.grabMissingTriggerIndexes()
-
     }
 
 
@@ -198,69 +145,12 @@ extension BartlebyDocument {
                 }
             }
         }
-        // Remove the trigger from the collection.
-        if let idx=self.metadata.receivedTriggers.index(of: trigger){
-            self.metadata.receivedTriggers.remove(at: idx)
-        }
-    }
-
-
-    // MARK: -
-
-    /**
-     Did we integrate all the pending data ?
-     - returns: Return true if all the triggers have been integrated
-     */
-    public func isDataUpToDate()->Bool{
-        return (self.metadata.receivedTriggers.count == 0 && self.missingContiguousTriggersIndexes().count==0)
-    }
-
-
-    /**
-     Returns missing contiguous indexes
-
-     - returns:
-     */
-    public func missingContiguousTriggersIndexes()->[Int]{
-        var missingIndexes=[Int]()
-        let triggersIndexes=self.metadata.triggersIndexes
-        let nextIndexToBeIntegrated=self.metadata.lastIntegratedTriggerIndex+1
-        if let maxIndex=triggersIndexes.max(){
-            for index in  nextIndexToBeIntegrated ... maxIndex{
-                if !triggersIndexes.contains(index){
-                    missingIndexes.append(index)
-                }
-            }
-        }
-        return missingIndexes
+        self.metadata.lastIntegratedTriggerIndex=trigger.index
     }
 
 
 
     // MARK: - Recovery methods
-
-    /**
-     This method tries to fill the gap
-     */
-    public func grabMissingTriggerIndexes(){
-        let missingTriggersIndexes=self.missingContiguousTriggersIndexes()
-        // Todo compute missingTriggersIndexes
-        if missingTriggersIndexes.count>0{
-            let s=missingTriggersIndexes.reduce("", { (string, index) -> String in
-                return string + ",\(index) "
-            })
-            self.log("Grabbing missing trigger index \(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
-            TriggersForIndexes.execute(from:self.UID, indexes:missingTriggersIndexes, sucessHandler: { (triggers) in
-                let s=missingTriggersIndexes.reduce("", { (r,index) -> String in
-                    return "\(r) \(index) "
-                })
-                self.log("Fault correction on reintegration of\(s)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
-                self._triggersHasBeenReceived(triggers)
-            }) { (context) in
-                self.log("Failure \(context)",file:#file,function:#function,line:#line,category:"TriggerContinuity",decorative:false)
-            }
-        }
-    }
 
     /**
 
@@ -271,16 +161,25 @@ extension BartlebyDocument {
      And integrates all the triggered data
      */
     public func forceDataIntegration(){
+
+        // If some new trigger have been received, we sorte the receivedTrigger list
+        self.metadata.receivedTriggers=self.metadata.receivedTriggers.sorted { (lTrigger, rTrigger) -> Bool in
+            return lTrigger.index<rTrigger.index
+        }
+
         for trigger  in self.metadata.receivedTriggers{
             self._integrate(trigger)
         }
+
         // Reinitialize
-        self.metadata.triggersIndexes=[Int]()
         // Set the lastIntegratedTriggerIndex to the highest possible value
+        self.metadata.lastIntegratedTriggerIndex = self._maxTriggerIndex()
+    }
+
+    fileprivate func _maxTriggerIndex()->Int{
         let highestTriggerIndex:Int=self.metadata.receivedTriggers.last?.index ?? 0
         let higestOwned:Int=self.metadata.ownedTriggersIndexes.max() ?? 0
-        self.metadata.lastIntegratedTriggerIndex = max(highestTriggerIndex,higestOwned)
-
+        return  max(highestTriggerIndex,higestOwned)
     }
 
 
@@ -304,17 +203,24 @@ extension BartlebyDocument {
     }
 
 
-    // MARK: - Tools (Called from inspector Menu)
+    /**
+     Returns missing contiguous indexes
 
-    public func cleanUpOutDatedDataTriggers(){
-        for t in  self.metadata.receivedTriggers.reversed(){
-            if t.index<=self.metadata.lastIntegratedTriggerIndex{
-                if let idx=self.metadata.receivedTriggers.index(of: t){
-                    self.metadata.receivedTriggers.remove(at:idx)
-                }
+     - returns:
+     */
+    fileprivate func _missingContiguousTriggersIndexes()->[Int]{
+        var missingIndexes=[Int]()
+        let nextIndexToBeIntegrated=self.metadata.lastIntegratedTriggerIndex+1
+        let maxIndex=self._maxTriggerIndex()
+        for index in  nextIndexToBeIntegrated ... maxIndex{
+            if (!self.metadata.receivedTriggers.contains(where:{$0.index==index})) &&
+                !self.metadata.ownedTriggersIndexes.contains(index){
+                missingIndexes.append(index)
             }
         }
+        return missingIndexes
     }
+
 
 
     // MARK: - Informations
@@ -327,7 +233,7 @@ extension BartlebyDocument {
 
         var informations = "\nLast integrated trigger Index: \(self.metadata.lastIntegratedTriggerIndex)\n"
         // Missing
-        let missing=self.missingContiguousTriggersIndexes()
+        let missing=self._missingContiguousTriggersIndexes()
         informations += missing.reduce("Missing indexes to insure continuity (\(missing.count)): ", { (string, index) -> String in
             return "\(string) \(index)"
         })
