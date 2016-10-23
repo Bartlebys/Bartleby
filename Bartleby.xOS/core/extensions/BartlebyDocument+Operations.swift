@@ -19,14 +19,15 @@ extension BartlebyDocument {
         if self._timer==nil{
             self._timer=Timer(timeInterval: Bartleby.configuration.SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS,
                               target: self,
-                              selector: #selector(BartlebyDocument.pushLoop),
+                              selector: #selector(BartlebyDocument._pushLoop),
                               userInfo: nil,
                               repeats: true)
             RunLoop.current.add(self._timer!, forMode: RunLoopMode.commonModes)
         }
     }
 
-    func pushLoop () -> () {
+
+    internal func _pushLoop () -> () {
         if self.shouldBePushed(){
             self.synchronizePendingOperations()
         }
