@@ -47,6 +47,8 @@ import Foundation
         addGlobalLogsObserver(self) // Add the document to globals logs observer
         BartlebyDocument.declareTypes()
 
+        self.metadata.document=self
+
         // Setup the spaceUID if necessary
         if (self.metadata.spaceUID==Default.NO_UID) {
             self.metadata.spaceUID=self.metadata.UID
@@ -66,7 +68,9 @@ import Foundation
 
         Bartleby.sharedInstance.declare(self)
         addGlobalLogsObserver(self) // Add the document to globals logs observer
-         BartlebyDocument.declareTypes()
+        BartlebyDocument.declareTypes()
+
+        self.metadata.document=self
 
         // Setup the spaceUID if necessary
         if (self.metadata.spaceUID==Default.NO_UID) {
@@ -90,11 +94,8 @@ import Foundation
     internal var _metadataFileName: String { return "metadata" + BartlebyDocument.DATA_EXTENSION }
 
     // The Document Metadata
-    dynamic open var metadata=DocumentMetadata(){
-        didSet{
-            metadata.document=self
-        }
-    }
+    dynamic open var metadata=DocumentMetadata()
+
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
 
