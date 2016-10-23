@@ -75,7 +75,7 @@ open class JSerializer: Serializer {
      */
     static open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
-            typeName = RegistryOfCollections.resolveTypeName(from: typeName)
+            typeName = BartlebyDocument.resolveTypeName(from: typeName)
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
                     let map=Map(mappingType: .fromJSON, JSON : dictionary)

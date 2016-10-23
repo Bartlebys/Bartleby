@@ -309,30 +309,6 @@ extension BartlebyDocument {
 
     // MARK: - SSE
 
-    // The online flag is driving the "connection" process
-    // It connects to the SSE and starts the pushLoop
-    override open var online:Bool{
-        willSet{
-            // Transition on line
-            if newValue==true && online==false{
-                self._connectToSSE()
-            }
-            // Transition off line
-            if newValue==false && online==true{
-                self.log("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
-                self._closeSSE()
-            }
-            if newValue==online{
-                self.log("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
-            }
-        }
-        didSet{
-            self.metadata.online=online
-            self.startPushLoopIfNecessary()
-        }
-    }
-
-
     /**
      Connect to SSE
      */

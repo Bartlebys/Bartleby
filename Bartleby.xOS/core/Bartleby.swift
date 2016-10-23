@@ -322,7 +322,7 @@ import Foundation
         if let instance=self._instancesByUID[UID] as? T {
             return instance
         }
-        throw RegistryOfCollectionsError.instanceNotFound
+        throw BartlebyDocumentError.instanceNotFound
 
     }
 

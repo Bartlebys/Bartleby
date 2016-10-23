@@ -115,7 +115,7 @@
 		E5737AAF1DBB963700E2B849 /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A341DBB963700E2B849 /* UniversalType.swift */; };
 		E5737AB01DBB963700E2B849 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A351DBB963700E2B849 /* UserProtocol.swift */; };
 		E5737AB11DBB963700E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A361DBB963700E2B849 /* Reaction.swift */; };
-		E5737AB21DBB963700E2B849 /* RegistryOfCollections.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A371DBB963700E2B849 /* RegistryOfCollections.swift */; };
+		E5737AB21DBB963700E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A371DBB963700E2B849 /* BartlebyDocumentError.swift */; };
 		E5737AB31DBB963700E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A381DBB963700E2B849 /* StatusOfCompletion.swift */; };
 		E5737AB41DBB963700E2B849 /* NSObject+Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A3A1DBB963700E2B849 /* NSObject+Bartleby.swift */; };
 		E5737AB51DBB963700E2B849 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5737A3B1DBB963700E2B849 /* NSUndomanager+RegisterUndo.swift */; };
@@ -300,7 +300,7 @@
 		E5737A341DBB963700E2B849 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E5737A351DBB963700E2B849 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5737A361DBB963700E2B849 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
-		E5737A371DBB963700E2B849 /* RegistryOfCollections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistryOfCollections.swift; sourceTree = "<group>"; };
+		E5737A371DBB963700E2B849 /* BartlebyDocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocumentError.swift; sourceTree = "<group>"; };
 		E5737A381DBB963700E2B849 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E5737A3A1DBB963700E2B849 /* NSObject+Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bartleby.swift"; sourceTree = "<group>"; };
 		E5737A3B1DBB963700E2B849 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
@@ -567,7 +567,7 @@
 				E5737A0F1DBB963700E2B849 /* json */,
 				E5737A171DBB963700E2B849 /* protocols */,
 				E5737A361DBB963700E2B849 /* Reaction.swift */,
-				E5737A371DBB963700E2B849 /* RegistryOfCollections.swift */,
+				E5737A371DBB963700E2B849 /* BartlebyDocumentError.swift */,
 				E5737A381DBB963700E2B849 /* StatusOfCompletion.swift */,
 			);
 			path = core;
@@ -962,7 +962,7 @@
 				E5737A9F1DBB963700E2B849 /* HTTPCommand.swift in Sources */,
 				E5737A9E1DBB963700E2B849 /* Exposed.swift in Sources */,
 				E5CC28FB1D846CB300F7C783 /* DispatchQueue+Alamofire.swift in Sources */,
-				E5737AB21DBB963700E2B849 /* RegistryOfCollections.swift in Sources */,
+				E5737AB21DBB963700E2B849 /* BartlebyDocumentError.swift in Sources */,
 				E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */,
 				E5737AB31DBB963700E2B849 /* StatusOfCompletion.swift in Sources */,
 				E5737AB91DBB963700E2B849 /* TriggersAfterIndex.swift in Sources */,
