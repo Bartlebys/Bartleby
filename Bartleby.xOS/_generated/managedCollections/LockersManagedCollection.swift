@@ -174,8 +174,8 @@ import AppKit
     */
     open func commitChanges() -> [String] {
         var UIDS=[String]()
-        if self.toBeCommitted{
-            let changedItems=self._items.filter { $0.toBeCommitted == true }
+        if self.shouldBeCommitted{
+            let changedItems=self._items.filter { $0.shouldBeCommitted == true }
             for changed in changedItems{
                 UIDS.append(changed.UID)
 				let tobeUpdated = changedItems.filter { $0.distributed == true }
@@ -372,7 +372,7 @@ import AppKit
             #endif
 
 
-            if item.committed==false && commit==true && item.autoCommitIsEnabled(){
+            if item.committed==false && commit==true {
                CreateLocker.commit(item, inDocumentWithUID:self.documentUID)
             }
 

@@ -174,8 +174,8 @@ import AppKit
     */
     open func commitChanges() -> [String] {
         var UIDS=[String]()
-        if self.toBeCommitted{
-            let changedItems=self._items.filter { $0.toBeCommitted == true }
+        if self.shouldBeCommitted{
+            let changedItems=self._items.filter { $0.shouldBeCommitted == true }
             for changed in changedItems{
                 UIDS.append(changed.UID)
 				if changed.distributed{
@@ -369,7 +369,7 @@ import AppKit
             #endif
 
 
-            if item.committed==false && commit==true && item.autoCommitIsEnabled(){
+            if item.committed==false && commit==true {
                CreateUser.commit(item, inDocumentWithUID:self.documentUID)
             }
 

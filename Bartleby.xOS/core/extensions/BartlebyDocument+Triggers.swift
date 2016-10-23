@@ -58,7 +58,6 @@ extension BartlebyDocument {
 
     // MARK: - Triggers  Acknowledgment
 
-
     /// Called by the generative Operation layer on Owned Triggers
     /// It allows to detect potential divergences.
     /// - parameter ack: the Acknowledgement object

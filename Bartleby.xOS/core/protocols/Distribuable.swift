@@ -12,17 +12,7 @@ import Foundation
 public protocol Distribuable {
 
     /// Shall we commit that instance during next autocommit?
-    var toBeCommitted: Bool { get }
-
-    /**
-     Locks the auto commit observer
-     */
-    func disableAutoCommit()
-
-    /**
-     Unlock the auto commit observer
-     */
-    func enableAutoCommit()
+    var shouldBeCommitted: Bool { get }
 
     // This flag is set to true on first commit.
     var committed: Bool { get set }
@@ -30,5 +20,9 @@ public protocol Distribuable {
     // This flag should be set to true
     // When the collaborative server has acknowledged the object creation
     var distributed: Bool { get set }
-    
+
+    /// Perform changes without commit
+    ///
+    /// - parameter changes: the changes
+    func doNotCommit(_ changes:()->())
 }

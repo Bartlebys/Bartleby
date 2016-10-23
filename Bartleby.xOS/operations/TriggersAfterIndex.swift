@@ -35,6 +35,10 @@ import Foundation
                 let request=response.request
                 let result=response.result
                 let response=response.response
+
+                print("Response \(response)")
+                print("Value \(result.value)")
+
                 // Bartleby consignation
                 let context = JHTTPResponse( code: 3054667497,
                                              caller: "TriggersAfterIndex.execute",

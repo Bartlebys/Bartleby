@@ -17,8 +17,8 @@ import Foundation
 
  IMPORTANT NOTE
 
- - you should always update the properties of a BartlebyObject on the main thread.
- - you should always manipulate registries  on the main thread
+ - you should always manipulate collections data  on the main thread
+ - including any BartlebyObject Property.
 
  BartlebyObject is primary object of any Bartleby model.
  BartlebyObjects are polyglot They can be serialized in multiple dialects ... (Mappable, NSecureCoding, ...)
@@ -43,83 +43,8 @@ public enum ObjectExpositionError:Error {
 }
 
 
-// MARK: - NSCopying
 
-
-extension BartlebyObject{
-
-
-    /**
-     Locks the auto commit observer
-     */
-    open func disableAutoCommit(){
-        // Lock the auto commit observer
-        self._autoCommitIsEnabled=false
-    }
-
-    /**
-     Unlock the auto commit observer
-     */
-    open func enableAutoCommit(){
-        self._autoCommitIsEnabled=true
-    }
-
-}
-
-extension BartlebyObject : NSCopying{
-
-    open func copy(with zone: NSZone?) -> Any {
-        let data: Data=JSerializer.serialize(self)
-        if let copied = try? JSerializer.deserialize(data) {
-            return copied as AnyObject
-        }
-        self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_CATEGORY)
-        return self as AnyObject
-    }
-
-}
-
-
-extension BartlebyObject{
-
-    open var toBeCommitted: Bool {
-        return self._shouldBeCommitted
-    }
-
-
-    /**
-     Locks the supervision mecanism
-     Supervision mecanism == tracks the changed keys and relay to the holding collection
-     The supervision works even on Triggered Upsert
-     */
-    open func disableSupervision() {
-        self._supervisionIsEnabled=false
-    }
-
-    /**
-     UnLocks the supervision mecanism
-     */
-    open func enableSupervision() {
-        self._supervisionIsEnabled=true
-    }
-
-
-
-    open func disableSupervisionAndCommit(){
-        self.disableSupervision()
-        self.disableAutoCommit()
-    }
-
-    open func enableSuperVisionAndCommit(){
-        self.enableSupervision()
-        self.enableAutoCommit()
-    }
-    
-
-
-
-}
-
+// MARK: - Supervisable
 
 extension BartlebyObject{
 
@@ -251,8 +176,53 @@ extension BartlebyObject{
     }
 
 
+
+    /// Performs some changes silently
+    /// Supervision and auto commit are disabled.
+    /// Then supervision and auto commit availability is restored
+    ///
+    /// - parameter changes: the changes closure
+    open func silentGroupedChanges(_ changes:()->()){
+        let autoCommitIsEnabled = self._autoCommitIsEnabled
+        let supervisionIsEnabled = self._supervisionIsEnabled
+        self._supervisionIsEnabled=false
+        self._autoCommitIsEnabled=false
+        changes()
+        self._autoCommitIsEnabled = autoCommitIsEnabled
+        self._supervisionIsEnabled = supervisionIsEnabled
+    }
+
+
+
+
+
 }
 
+
+// MARK: - Distribuable
+
+extension BartlebyObject{
+
+    /// Perform changes without commit
+    ///
+    /// - parameter changes: the changes
+    open func doNotCommit(_ changes:()->()){
+        let autoCommitIsEnabled = self._autoCommitIsEnabled
+        self._autoCommitIsEnabled=false
+        changes()
+        self._autoCommitIsEnabled = autoCommitIsEnabled
+    }
+
+
+    /// Returns if the Object should be committed
+    open var shouldBeCommitted: Bool {
+        return self._shouldBeCommitted
+    }
+
+}
+
+
+// MARK: - Serializable
 
 extension BartlebyObject{
 
@@ -282,7 +252,7 @@ extension BartlebyObject{
         return self
     }
 
-    // MARK: DictionaryRepresentation
+    // MARK: -
 
     open func dictionaryRepresentation()->[String:Any] {
         self.defineUID()
@@ -345,64 +315,6 @@ extension BartlebyObject{
 }
 
 
-extension BartlebyObject{
-
-
-    /// Perform changes without commit
-    ///
-    /// - parameter changes: the changes
-    open func doNotCommit(_ changes:()->()){
-        let autoCommitIsEnabled = self._autoCommitIsEnabled
-        self.disableAutoCommit()
-        changes()
-        self._autoCommitIsEnabled = autoCommitIsEnabled
-    }
-
-    /// Perform changes without supervision
-    ///
-    /// - parameter changes: the changes
-    open func doNotSupervise(_ changes:()->()){
-        let supervisionIsEnabled = self._supervisionIsEnabled
-        self.disableSupervision()
-        changes()
-        self._supervisionIsEnabled = supervisionIsEnabled
-    }
-
-
-    /// Returns if the auto commit is enabled
-    open func autoCommitIsEnabled()->Bool{
-        return self._autoCommitIsEnabled
-    }
-
-
-    /// Returns if the supervision is enabled
-    open func supervisionIsEnabled()->Bool{
-        return self._supervisionIsEnabled
-    }
-
-}
-
-
-
-extension BartlebyObject{
-
-    /// Performs some changes silently
-    /// Supervision and auto commit are disabled.
-    /// Then supervision and auto commit availability is restored
-    ///
-    /// - parameter changes: the changes closure
-    open func silentGroupedChanges(_ changes:()->()){
-        let autoCommitIsEnabled = self._autoCommitIsEnabled
-        let supervisionIsEnabled = self._supervisionIsEnabled
-        self.disableSupervisionAndCommit()
-        changes()
-        self._autoCommitIsEnabled = autoCommitIsEnabled
-        self._supervisionIsEnabled = supervisionIsEnabled
-    }
-
-}
-
-
 
 
 extension BartlebyObject{
@@ -421,4 +333,22 @@ extension BartlebyObject{
         self.document?.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }
 }
+
+
+
+// MARK: - NSCopying
+
+extension BartlebyObject : NSCopying{
+
+    open func copy(with zone: NSZone?) -> Any {
+        let data: Data=JSerializer.serialize(self)
+        if let copied = try? JSerializer.deserialize(data) {
+            return copied as AnyObject
+        }
+        self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_CATEGORY)
+        return self as AnyObject
+    }
+    
+}
+
 

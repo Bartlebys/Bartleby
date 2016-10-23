@@ -24,11 +24,11 @@ import Foundation
 	//Auto commit availability
 	dynamic internal var _autoCommitIsEnabled:Bool = true
 
+	//Is supervision enabled?
+	dynamic internal var _supervisionIsEnabled:Bool = true
+
 	//The internal flag for auto commit
 	dynamic internal var _shouldBeCommitted:Bool = false
-
-	//Supervision availability
-	dynamic internal var _supervisionIsEnabled:Bool = true
 
 	//Reflects the index of of the item in the collection initial value is -1. During it life cycle the collection updates if necessary its real value. ‡It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
 	dynamic open var collectedIndex:Int = -1

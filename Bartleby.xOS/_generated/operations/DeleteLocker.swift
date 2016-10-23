@@ -143,9 +143,10 @@ import Foundation
                 }}
         }
         let operation=PushOperation()
-        operation.disableSupervision()
-        operation.commandUID=self.UID
-        operation.defineUID()
+        operation.silentGroupedChanges {
+            operation.commandUID=self.UID
+            operation.defineUID()
+        }
         return operation
     }
 
@@ -178,7 +179,6 @@ import Foundation
                     self.creatorUID=currentUser.UID
                 }
                 operation.toDictionary=self.dictionaryRepresentation()
-                operation.enableSupervision()
                 ic.add(operation, commit:false)
             }catch{
                document.dispatchAdaptiveMessage(context,

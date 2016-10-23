@@ -43,18 +43,6 @@ public protocol Supervisable {
     func removeChangesSuperviser(_ superviser:Identifiable)
 
 
-    /**
-     Locks the supervision mecanism
-     Supervision mecanism == tracks the changed keys and relay to the holding collection
-     The supervision works even on Triggered Upsert
-     */
-    func disableSupervision()
-
-    /**
-     Unlock the auto commit observer
-     */
-    func enableSupervision()
-
     /// Performs some changes silently
     /// Supervision and autocommit (if implementing Distribuable) should be disabled during changes invocation
     ///
