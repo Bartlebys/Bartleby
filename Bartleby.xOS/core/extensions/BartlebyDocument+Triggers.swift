@@ -212,12 +212,15 @@ extension BartlebyDocument {
         var missingIndexes=[Int]()
         let nextIndexToBeIntegrated=self.metadata.lastIntegratedTriggerIndex+1
         let maxIndex=self._maxTriggerIndex()
-        for index in  nextIndexToBeIntegrated ... maxIndex{
-            if (!self.metadata.receivedTriggers.contains(where:{$0.index==index})) &&
-                !self.metadata.ownedTriggersIndexes.contains(index){
-                missingIndexes.append(index)
+        if nextIndexToBeIntegrated <= maxIndex{
+            for index in  nextIndexToBeIntegrated ... maxIndex{
+                if (!self.metadata.receivedTriggers.contains(where:{$0.index==index})) &&
+                    !self.metadata.ownedTriggersIndexes.contains(index){
+                    missingIndexes.append(index)
+                }
             }
         }
+
         return missingIndexes
     }
 
