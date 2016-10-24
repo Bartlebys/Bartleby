@@ -506,7 +506,8 @@ import Foundation
                     metadataData = try Bartleby.cryptoDelegate.decryptData(metadataData)
                     let r = try Bartleby.defaultSerializer.deserialize(metadataData)
                     if let metadata=r as? DocumentMetadata {
-                        self.metadata=metadata
+                        self.metadata = metadata
+                        self.metadata.document = self
                     } else {
                         // There is an error
                         self.log("ERROR \(r)", file: #file, function: #function, line: #line)
