@@ -48,6 +48,7 @@ public enum ObjectExpositionError:Error {
 
 extension BartlebyObject{
 
+
     /**
      The change provisionning is related to multiple essential notions.
 
@@ -62,7 +63,7 @@ extension BartlebyObject{
      On supervised change the closure of the supervisers will be invoked.
 
      ## **Inspection** During debbuging or when  Bartleby's inspector is opened we record and analyse the changes
-     If Bartleby.changesAreInspectables we store in memory the changes changed Keys to allow Bartleby's runtime inspections
+     If Bartleby.inspectable we store in memory the changes changed Keys to allow Bartleby's runtime inspections
      (we use  `KeyedChanges` objects)
 
      `provisionChanges` is the entry point of those mecanisms.
@@ -81,14 +82,14 @@ extension BartlebyObject{
         if self._supervisionIsEnabled{
 
             if key=="*" && !(self is BartlebyCollection){
-                if Bartleby.changesAreInspectables{
+                if self.isInspectable {
                     // Dictionnary or NSData Patch
                     self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
                 }
                 self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }else{
                 if let collection = self as? BartlebyCollection {
-                    if Bartleby.changesAreInspectables{
+                    if self.isInspectable {
                         let entityName=Pluralization.singularize(collection.d_collectionName)
                         if key=="items"{
                             if let oldArray=oldValue as? [BartlebyObject], let newArray=newValue as? [BartlebyObject]{
@@ -112,7 +113,7 @@ extension BartlebyObject{
                         }
                     }
                 }else if let collectibleNewValue = newValue as? Collectible{
-                    if Bartleby.changesAreInspectables{
+                    if self.isInspectable {
                         // Collectible objects
                         self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
                     }
@@ -122,7 +123,7 @@ extension BartlebyObject{
                     // Natives types
                     let o = oldValue ?? "void"
                     let n = newValue ?? "void"
-                    if Bartleby.changesAreInspectables{
+                    if self.isInspectable {
                         self._appendChanges(key:key,changes:"\(o) ->\(n)")
                     }
                     // Relay the as a global change to the collection
@@ -138,6 +139,20 @@ extension BartlebyObject{
 
         }
     }
+
+
+    /// Return true if the inspector has been openned.
+    open var isInspectable:Bool{
+        get{
+            var inspectable=false
+            if let m=self.document?.metadata{
+                inspectable=m.changesAreInspectables
+            }
+            return inspectable
+        }
+    }
+
+
 
 
     /// **Inspection**
@@ -244,7 +259,7 @@ extension BartlebyObject{
         if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
             let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
             self.mapping(map: map)
-            if provisionChanges && Bartleby.changesAreInspectables {
+            if provisionChanges && self.isInspectable {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }
 

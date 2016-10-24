@@ -43,6 +43,9 @@ import Foundation
 	//The url of the collaboration server
 	dynamic open var collaborationServerURL:URL?
 
+	//If the changes are inspectable all the changes are stored in KeyChanges objects
+	dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
+
 	//A collection of CollectionMetadatum
 	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
@@ -111,7 +114,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
         return exposed
     }
 
@@ -147,6 +150,10 @@ import Foundation
             case "collaborationServerURL":
                 if let casted=value as? URL{
                     self.collaborationServerURL=casted
+                }
+            case "changesAreInspectables":
+                if let casted=value as? Bool{
+                    self.changesAreInspectables=casted
                 }
             case "collectionsMetadata":
                 if let casted=value as? [CollectionMetadatum]{
@@ -235,6 +242,8 @@ import Foundation
                return self.rootObjectUID
             case "collaborationServerURL":
                return self.collaborationServerURL
+            case "changesAreInspectables":
+               return self.changesAreInspectables
             case "collectionsMetadata":
                return self.collectionsMetadata
             case "stateDictionary":

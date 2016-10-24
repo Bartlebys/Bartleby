@@ -45,7 +45,11 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     }
 
     // The selected document
-    dynamic weak var castedDocument:BartlebyDocument?
+    dynamic weak var castedDocument:BartlebyDocument?{
+        didSet{
+            self.castedDocument?.metadata.changesAreInspectables = true
+        }
+    }
 
 
     open func getDocument() -> BartlebyDocument?{
@@ -58,7 +62,6 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
 
     override open func windowDidLoad() {
         super.windowDidLoad()
-        Bartleby.changesAreInspectables=true
     }
 
     // MARK: DocumentProvider

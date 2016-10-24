@@ -52,8 +52,6 @@ import Foundation
     // The File manager
     static open var fileManager: BartlebyFileIO=BFileManager()
 
-    static open var changesAreInspectables:Bool=configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
-
     //The default serializer
     static open var defaultSerializer: Serializer.Type=JSerializer.self
 
