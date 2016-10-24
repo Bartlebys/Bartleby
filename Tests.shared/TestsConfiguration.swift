@@ -84,7 +84,8 @@ open class TestsConfiguration: BartlebyConfiguration {
         get {
             switch currentEnvironment {
             case .local:
-                return URL(string:"http://localhost/api/v1")!
+                // On macOS you should point "yd.local" to your IP by editing /etc/host
+                return URL(string:"http://yd.local:8001/api/v1")!
             case .development:
                 return URL(string:"https://dev.api.lylo.tv/api/v1")!
             case .alternative:
