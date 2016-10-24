@@ -516,10 +516,10 @@
 		E57379801DBB962400E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CC1DBB962400E2B849 /* Reaction.swift */; };
 		E57379811DBB962400E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CC1DBB962400E2B849 /* Reaction.swift */; };
 		E57379821DBB962400E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CC1DBB962400E2B849 /* Reaction.swift */; };
-		E57379831DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */; };
-		E57379841DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */; };
-		E57379851DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */; };
-		E57379861DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */; };
+		E57379831DBB962400E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* DocumentError.swift */; };
+		E57379841DBB962400E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* DocumentError.swift */; };
+		E57379851DBB962400E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* DocumentError.swift */; };
+		E57379861DBB962400E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CD1DBB962400E2B849 /* DocumentError.swift */; };
 		E57379871DBB962400E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CE1DBB962400E2B849 /* StatusOfCompletion.swift */; };
 		E57379881DBB962400E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CE1DBB962400E2B849 /* StatusOfCompletion.swift */; };
 		E57379891DBB962400E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57377CE1DBB962400E2B849 /* StatusOfCompletion.swift */; };
@@ -991,7 +991,7 @@
 		E57377CA1DBB962400E2B849 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E57377CB1DBB962400E2B849 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E57377CC1DBB962400E2B849 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
-		E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocumentError.swift; sourceTree = "<group>"; };
+		E57377CD1DBB962400E2B849 /* DocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentError.swift; sourceTree = "<group>"; };
 		E57377CE1DBB962400E2B849 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E57377D01DBB962400E2B849 /* NSObject+Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bartleby.swift"; sourceTree = "<group>"; };
 		E57377D11DBB962400E2B849 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
@@ -1352,7 +1352,7 @@
 				E57377A51DBB962400E2B849 /* json */,
 				E57377AD1DBB962400E2B849 /* protocols */,
 				E57377CC1DBB962400E2B849 /* Reaction.swift */,
-				E57377CD1DBB962400E2B849 /* BartlebyDocumentError.swift */,
+				E57377CD1DBB962400E2B849 /* DocumentError.swift */,
 				E57377CE1DBB962400E2B849 /* StatusOfCompletion.swift */,
 			);
 			path = core;
@@ -1882,7 +1882,7 @@
 				E5CC27731D84698500F7C783 /* Mapper.swift in Sources */,
 				E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */,
 				E57377EE1DBB962400E2B849 /* UsersManagedCollection.swift in Sources */,
-				E57379861DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57379861DBB962400E2B849 /* DocumentError.swift in Sources */,
 				E573791E1DBB962400E2B849 /* CollectionMetadatumProtocol.swift in Sources */,
 				E57379661DBB962400E2B849 /* DocumentMetadataProtocol.swift in Sources */,
 				E57379561DBB962400E2B849 /* LogEntriesObserver.swift in Sources */,
@@ -2080,7 +2080,7 @@
 				E573780F1DBB962400E2B849 /* KeyedChanges.swift in Sources */,
 				E5F6546D1D42749100A40A9B /* CryptedStringKeyValueTransform.swift in Sources */,
 				E57378DB1DBB962400E2B849 /* PushOperation+Conveniences.swift in Sources */,
-				E57379831DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57379831DBB962400E2B849 /* DocumentError.swift in Sources */,
 				E5CC27681D84698500F7C783 /* Map.swift in Sources */,
 				E53E28D41CA572D80079ED23 /* PdSSyncAdmin.m in Sources */,
 				E57379871DBB962400E2B849 /* StatusOfCompletion.swift in Sources */,
@@ -2321,7 +2321,7 @@
 				E57378541DBB962400E2B849 /* ReadLockersByIds.swift in Sources */,
 				E57378741DBB962400E2B849 /* UpdateUsers.swift in Sources */,
 				E5CC264F1D84698500F7C783 /* Response.swift in Sources */,
-				E57379841DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57379841DBB962400E2B849 /* DocumentError.swift in Sources */,
 				E57378F81DBB962400E2B849 /* JHTTPResponse.swift in Sources */,
 				E591AD001D42643B00748FF4 /* BsyncImageDiskManager.swift in Sources */,
 				E57377E81DBB962400E2B849 /* PushOperationsManagedCollection.swift in Sources */,
@@ -2590,7 +2590,7 @@
 				E57378151DBB962400E2B849 /* Locker.swift in Sources */,
 				E57378251DBB962400E2B849 /* Tag.swift in Sources */,
 				E57378B91DBB962400E2B849 /* BartlebyObject+BaseImplementation.swift in Sources */,
-				E57379851DBB962400E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57379851DBB962400E2B849 /* DocumentError.swift in Sources */,
 				E57379451DBB962400E2B849 /* Initializable.swift in Sources */,
 				E57378591DBB962400E2B849 /* ReadLockersByQuery.swift in Sources */,
 				E5F654761D42749100A40A9B /* CryptoHelper.swift in Sources */,

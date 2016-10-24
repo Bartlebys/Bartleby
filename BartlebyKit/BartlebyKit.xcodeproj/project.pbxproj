@@ -251,8 +251,8 @@
 		E57377341DBB960500E2B849 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376511DBB960500E2B849 /* UserProtocol.swift */; };
 		E57377351DBB960500E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376521DBB960500E2B849 /* Reaction.swift */; };
 		E57377361DBB960500E2B849 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376521DBB960500E2B849 /* Reaction.swift */; };
-		E57377371DBB960500E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376531DBB960500E2B849 /* BartlebyDocumentError.swift */; };
-		E57377381DBB960500E2B849 /* BartlebyDocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376531DBB960500E2B849 /* BartlebyDocumentError.swift */; };
+		E57377371DBB960500E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376531DBB960500E2B849 /* DocumentError.swift */; };
+		E57377381DBB960500E2B849 /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376531DBB960500E2B849 /* DocumentError.swift */; };
 		E57377391DBB960500E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376541DBB960500E2B849 /* StatusOfCompletion.swift */; };
 		E573773A1DBB960500E2B849 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376541DBB960500E2B849 /* StatusOfCompletion.swift */; };
 		E573773B1DBB960500E2B849 /* NSObject+Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376561DBB960500E2B849 /* NSObject+Bartleby.swift */; };
@@ -482,7 +482,7 @@
 		E57376501DBB960500E2B849 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E57376511DBB960500E2B849 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E57376521DBB960500E2B849 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
-		E57376531DBB960500E2B849 /* BartlebyDocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocumentError.swift; sourceTree = "<group>"; };
+		E57376531DBB960500E2B849 /* DocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentError.swift; sourceTree = "<group>"; };
 		E57376541DBB960500E2B849 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E57376561DBB960500E2B849 /* NSObject+Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bartleby.swift"; sourceTree = "<group>"; };
 		E57376571DBB960500E2B849 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
@@ -800,7 +800,7 @@
 				E57376291DBB960500E2B849 /* Global.swift */,
 				E573762A1DBB960500E2B849 /* Handlers.swift */,
 				E57376521DBB960500E2B849 /* Reaction.swift */,
-				E57376531DBB960500E2B849 /* BartlebyDocumentError.swift */,
+				E57376531DBB960500E2B849 /* DocumentError.swift */,
 				E57376541DBB960500E2B849 /* StatusOfCompletion.swift */,
 				E57376131DBB960500E2B849 /* extensions */,
 				E573762B1DBB960500E2B849 /* json */,
@@ -1211,7 +1211,7 @@
 				E51834C91CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E57376F11DBB960500E2B849 /* JHTTPResponse.swift in Sources */,
 				E57377391DBB960500E2B849 /* StatusOfCompletion.swift in Sources */,
-				E57377371DBB960500E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57377371DBB960500E2B849 /* DocumentError.swift in Sources */,
 				E57376831DBB960500E2B849 /* Progression.swift in Sources */,
 				E57377411DBB960500E2B849 /* LoginUser.swift in Sources */,
 				E573771B1DBB960500E2B849 /* JSONString.swift in Sources */,
@@ -1375,7 +1375,7 @@
 				E57377361DBB960500E2B849 /* Reaction.swift in Sources */,
 				E57376C01DBB960500E2B849 /* BarltlebyDocument+Consignee.swift in Sources */,
 				E57377401DBB960500E2B849 /* User+Auth.swift in Sources */,
-				E57377381DBB960500E2B849 /* BartlebyDocumentError.swift in Sources */,
+				E57377381DBB960500E2B849 /* DocumentError.swift in Sources */,
 				E57376AA1DBB960500E2B849 /* UpdateLocker.swift in Sources */,
 				E57377001DBB960500E2B849 /* Collectible.swift in Sources */,
 				E57377541DBB960500E2B849 /* PString.swift in Sources */,

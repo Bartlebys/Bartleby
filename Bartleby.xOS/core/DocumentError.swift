@@ -1,5 +1,5 @@
 //
-//  BartlebyDocumentError.swift
+//  DocumentError.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 16/09/2015.
@@ -20,7 +20,7 @@ import Foundation
 #endif
 
 
-public enum BartlebyDocumentError: Error {
+public enum DocumentError: Error {
     case duplicatedCollectionName(collectionName:String)
     case attemptToLoadAnNonSupportedCollection(collectionName:String)
     case unExistingCollection(collectionName:String)

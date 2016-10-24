@@ -191,7 +191,7 @@ import Foundation
             self.metadata.rootObjectUID=UID
             Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: UID)
         }else{
-            throw BartlebyDocumentError.attemptToSetUpRootObjectUIDMoreThanOnce
+            throw DocumentError.attemptToSetUpRootObjectUIDMoreThanOnce
         }
     }
 
@@ -265,10 +265,10 @@ import Foundation
                     self._addCollection(proxy)
                     self._refreshIdentifier(&proxy)
                 } else {
-                    throw BartlebyDocumentError.collectionProxyTypeError
+                    throw DocumentError.collectionProxyTypeError
                 }
             } else {
-                throw BartlebyDocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
+                throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
@@ -278,7 +278,7 @@ import Foundation
             if var proxy=self.collectionByName(metadatum.collectionName) {
                 self._refreshIdentifier(&proxy)
             } else {
-                throw BartlebyDocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
+                throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
         }
     }
@@ -293,7 +293,7 @@ import Foundation
 
     open func getCollection<T: CollectibleCollection>  () throws -> T {
         guard var collection=self.collectionByName(T.collectionName) as? T else {
-            throw BartlebyDocumentError.unExistingCollection(collectionName: T.collectionName)
+            throw DocumentError.unExistingCollection(collectionName: T.collectionName)
         }
         collection.undoManager=self.undoManager
         return collection
@@ -543,7 +543,7 @@ import Foundation
                                   let _ = try proxy.updateData(collectionData,provisionChanges: false)
                                 }
                             } else {
-                                throw BartlebyDocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
+                                throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
                             }
                         }
                     } else {
@@ -797,7 +797,7 @@ import Foundation
 			try self.metadata.configureSchema(pushOperationDefinition)
 			try self.metadata.configureSchema(userDefinition)
 
-        }catch BartlebyDocumentError.duplicatedCollectionName(let collectionName){
+        }catch DocumentError.duplicatedCollectionName(let collectionName){
             self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
         }catch {
             self.log("\(error)",file:#file,function:#function,line:#line)
