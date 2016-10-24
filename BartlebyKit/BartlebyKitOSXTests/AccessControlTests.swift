@@ -98,7 +98,7 @@ class AccessControlTests: TestCase {
                              sucessHandler: { (user: User) -> () in
                                 expectation.fulfill()
                                 XCTAssertEqual(user.email, AccessControlTests._otherUserEmail, "Creator can retrieve a user email")
-                                XCTAssertEqual(user.password, "", "Creator cannot retrieve a user password")
+                                XCTAssertNil(user.password, "Creator cannot retrieve a user password")
         }) { (context) -> () in
             expectation.fulfill()
             XCTFail("\(context)")
@@ -229,7 +229,7 @@ class AccessControlTests: TestCase {
                                 expectation.fulfill()
                                 
                                 XCTAssertEqual(user.email, AccessControlTests._creatorEmail, "Other user can retrieve its creator email")
-                                XCTAssertEqual(user.password, "", "Other user cannot retrieve its creator password")
+                                XCTAssertNil(user.password, "Other user cannot retrieve its creator password")
         }) { (context) -> () in
             expectation.fulfill()
             XCTFail("\(context)")

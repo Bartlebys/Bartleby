@@ -43,7 +43,7 @@ public protocol DocumentMetadataProtocol: Identifiable, Serializable {
     func configureSchema(_ metadatum: CollectionMetadatumType) throws ->()
 
     // Should return the password if saveThePassword==true else a void string ""
-    var storedPassword: String { get }
+    var storedPassword: String? { get }
 
     // Should we save the password
     var saveThePassword: Bool { get set }

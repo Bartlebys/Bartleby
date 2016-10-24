@@ -88,7 +88,7 @@ import Foundation
 	}
 
 	//The hashed version of the user password
-	dynamic open var password:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
+	dynamic open var password:String? {
 	    didSet { 
 	       if password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -292,7 +292,7 @@ import Foundation
 			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
 			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
 			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
-			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
+			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
 			self.tags=decoder.decodeObject(of: [NSArray.classForCoder(),ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
@@ -315,7 +315,9 @@ import Foundation
 		if let phoneNumber = self.phoneNumber {
 			coder.encode(phoneNumber,forKey:"phoneNumber")
 		}
-		coder.encode(self.password,forKey:"password")
+		if let password = self.password {
+			coder.encode(password,forKey:"password")
+		}
 		coder.encode(self.activationCode,forKey:"activationCode")
 		coder.encode(self.status.rawValue ,forKey:"status")
 		coder.encode(self.tags,forKey:"tags")

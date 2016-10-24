@@ -382,6 +382,7 @@ import Foundation
     open func newUser() -> User {
         let user=User()
         user.silentGroupedChanges {
+            user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
             if let creator=self.metadata.currentUser {
                 user.creatorUID = creator.UID
             }else{

@@ -62,7 +62,7 @@ class LockerTests: XCTestCase {
         if let creator=LockerTests._creatorUser {
             LockerTests._creatorUser = creator
             LockerTests._creatorUserID = creator.UID
-            LockerTests._creatorUserPassword = creator.password
+            LockerTests._creatorUserPassword = creator.password ?? ""
 
             CreateUser.execute(creator, inDocumentWithUID: LockerTests._document.UID,
                                sucessHandler: { (context) in
@@ -87,7 +87,7 @@ class LockerTests: XCTestCase {
 
         LockerTests._consumerUser = consumer
         LockerTests._consumerUserID = consumer.UID
-        LockerTests._consumerUserPassword = consumer.password
+        LockerTests._consumerUserPassword = consumer.password ?? ""
 
         CreateUser.execute(consumer, inDocumentWithUID: LockerTests._document.UID,
                            sucessHandler: { (context) in

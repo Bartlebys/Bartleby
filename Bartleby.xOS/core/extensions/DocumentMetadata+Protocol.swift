@@ -26,7 +26,7 @@ extension DocumentMetadata:DocumentMetadataProtocol {
         self.collectionsMetadata.append(metadatum)
     }
 
-    dynamic public var storedPassword: String {
+    dynamic public var storedPassword: String?{
         get {
             if (self.saveThePassword) {
                 if let currentUser=currentUser {

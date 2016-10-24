@@ -148,7 +148,7 @@ public struct Default {
     static public let TYPE_NAME_KEY = "typeName"
 
     static public let VOID_STRING=""
-
+    static public let NO_STRING_ERROR: String="NO_STRING_ERROR"
     static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
     static public let NO_UID: String="NO_UID"
     static public let NO_NAME: String="NO_NAME"

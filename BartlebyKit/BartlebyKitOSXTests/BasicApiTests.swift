@@ -137,10 +137,8 @@ class BasicApiTests: TestCase {
 
                                 let uidMatchs=(user.UID==BasicApiTests._createdUser!.UID)
                                 XCTAssertTrue(uidMatchs, "UID should match")
-
-                                let password=user.password
-                                let passwordIsMasked=(password.lengthOfBytes(using: Default.STRING_ENCODING)==0)
-                                XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
+                                
+                                XCTAssertNil(user.password, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
         }) { (context) -> () in
             expectation.fulfill()
@@ -164,8 +162,7 @@ class BasicApiTests: TestCase {
                                     let uidMatchs=(user.UID==BasicApiTests._createdUser!.UID)
                                     XCTAssertTrue(uidMatchs, "UID  should match")
 
-                                    let passwordIsMasked=(user.password.lengthOfBytes(using: Default.STRING_ENCODING)==0)
-                                    XCTAssertTrue(passwordIsMasked, "Password is masqued by filter so we should return a Random pass not a Salted one")
+                                    XCTAssertNil(user.password, "Password is masqued by filter so we should return a Random pass not a Salted one")
 
                                 } else {
                                     XCTFail("No user found")

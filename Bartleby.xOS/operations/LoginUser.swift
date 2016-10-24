@@ -31,78 +31,79 @@ open class LoginUser: BartlebyObject {
             let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":user.cryptoPassword as AnyObject, "identification":document.metadata.identificationMethod.rawValue as AnyObject]
             let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             do {
-                let r=try JSONEncoding().encode(urlRequest,with:dictionary) 
-                request(r).validate().responseJSON(completionHandler: { (response) in
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
 
-                    let request=response.request
-                    let result=response.result
-                    let response=response.response
+                    request(r).validate().responseJSON(completionHandler: { (response) in
 
-                    // Bartleby consignation
+                        let request=response.request
+                        let result=response.result
+                        let response=response.response
+
+                        // Bartleby consignation
 
 
-                    let context = JHTTPResponse( code: 100,
-                                                 caller: "LoginUser.execute",
-                                                 relatedURL:request?.url,
-                                                 httpStatusCode:response?.statusCode ?? 0,
-                                                 response:response,
-                                                 result:result.value)
+                        let context = JHTTPResponse( code: 100,
+                                                     caller: "LoginUser.execute",
+                                                     relatedURL:request?.url,
+                                                     httpStatusCode:response?.statusCode ?? 0,
+                                                     response:response,
+                                                     result:result.value)
 
-                    // React according to the situation
-                    var reactions = Array<Reaction> ()
-                    reactions.append(Reaction.track(result: nil, context: context)) // Tracking
+                        // React according to the situation
+                        var reactions = Array<Reaction> ()
+                        reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
-                    if result.isFailure {
-                        if user.UID == document.currentUser.UID{
-                            document.currentUser.loginHasSucceed=false
-                        }
-                        let m = NSLocalizedString("authentication login",
-                                                  comment: "authentication login failure description")
-                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                            context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
-                                                     comment: "Unsuccessfull attempt"),
-                            body:"\(m) httpStatus code = \(response?.statusCode ?? 0 )" ,
-                            transmit: { (selectedIndex) -> () in
-                        })
-                        reactions.append(failureReaction)
-                        failure(context)
-                    } else {
-                        if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-                                if user.UID == document.currentUser.UID{
-                                    document.currentUser.loginHasSucceed=true
-                                }
-                                if document.metadata.identificationMethod == .key{
-                                    if let kvids = result.value as? [String]{
-                                        if kvids.count>=2{
-                                            document.metadata.identificationValue=kvids[1]
-                                            document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                        if result.isFailure {
+                            if user.UID == document.currentUser.UID{
+                                document.currentUser.loginHasSucceed=false
+                            }
+                            let m = NSLocalizedString("authentication login",
+                                                      comment: "authentication login failure description")
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
+                                                         comment: "Unsuccessfull attempt"),
+                                body:"\(m) httpStatus code = \(response?.statusCode ?? 0 )" ,
+                                transmit: { (selectedIndex) -> () in
+                            })
+                            reactions.append(failureReaction)
+                            failure(context)
+                        } else {
+                            if let statusCode=response?.statusCode {
+                                if 200...299 ~= statusCode {
+                                    if user.UID == document.currentUser.UID{
+                                        document.currentUser.loginHasSucceed=true
+                                    }
+                                    if document.metadata.identificationMethod == .key{
+                                        if let kvids = result.value as? [String]{
+                                            if kvids.count>=2{
+                                                document.metadata.identificationValue=kvids[1]
+                                                document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                                            }
                                         }
                                     }
+                                    success()
+                                } else {
+                                    // Bartlby does not currenlty discriminate status codes 100 & 101
+                                    // and treats any status code >= 300 the same way
+                                    // because we consider that failures differentiations could be done by the caller.
+                                    let m = NSLocalizedString("authentication login",
+                                                              comment: "authentication login failure description")
+                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                        context: context,
+                                        title: NSLocalizedString("Unsuccessfull attempt",
+                                                                 comment: "Unsuccessfull attempt"),
+                                        body:"\(m) httpStatus code = \(statusCode)" ,
+                                        transmit: { (selectedIndex) -> () in
+                                    })
+                                    reactions.append(failureReaction)
+                                    failure(context)
                                 }
-                                success()
-                            } else {
-                                // Bartlby does not currenlty discriminate status codes 100 & 101
-                                // and treats any status code >= 300 the same way
-                                // because we consider that failures differentiations could be done by the caller.
-                                let m = NSLocalizedString("authentication login",
-                                                          comment: "authentication login failure description")
-                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                                    context: context,
-                                    title: NSLocalizedString("Unsuccessfull attempt",
-                                                             comment: "Unsuccessfull attempt"),
-                                    body:"\(m) httpStatus code = \(statusCode)" ,
-                                    transmit: { (selectedIndex) -> () in
-                                })
-                                reactions.append(failureReaction)
-                                failure(context)
                             }
                         }
-                    }
-                    //Let's react according to the context.
-                    document.perform(reactions, forContext: context)
-                })
+                        //Let's react according to the context.
+                        document.perform(reactions, forContext: context)
+                    })
             }catch{
                 let context = JHTTPResponse( code:2 ,
                                              caller: "LoginUser.execute",
@@ -115,7 +116,7 @@ open class LoginUser: BartlebyObject {
         }else{
             // We don't want anymore detached logins.
             // A valid local document is required to proceed to login.
-
+            
             let context = JHTTPResponse( code: 1,
                                          caller: "LoginUser.execute",
                                          relatedURL:nil,
@@ -126,5 +127,5 @@ open class LoginUser: BartlebyObject {
         }
         
     }
-
+    
 }

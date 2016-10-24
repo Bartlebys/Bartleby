@@ -24,25 +24,33 @@ extension User {
             let signin=document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(self.UID)&password=\(encoded)"
             return URL(string: signin)
         }
+
         return nil
     }
-    
+
 
     /// Returns an encrypted hashed version of the password
     open var cryptoPassword:String{
-        let encrypted:String = (try? Bartleby.cryptoDelegate.encryptString(self.password)) ?? self.password
-        return encrypted
+        if let p=self.password{
+            do{
+                let encrypted=try Bartleby.cryptoDelegate.encryptString(p)
+                return encrypted
+            }catch{
+                return  "CRYPTO_ERROR"
+            }
+        }
+        return Default.NO_STRING_ERROR
     }
 
 
     open func login(sucessHandler success:@escaping()->(),
-        failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
+                    failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
         LoginUser.execute(self, sucessHandler:success, failureHandler:failure)
     }
 
     open func logout(sucessHandler success:@escaping()->(),
-            failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
+                     failureHandler failure:@escaping(_ context: JHTTPResponse)->()) {
         LogoutUser.execute(self, sucessHandler: success, failureHandler: failure)
     }
-
+    
 }
