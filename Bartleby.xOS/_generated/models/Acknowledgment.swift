@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
-@objc(Acknowledgment) open class Acknowledgment : BartlebyObject{
+@objc(Acknowledgment) open class Acknowledgment : Metrics{
 
     // Universal type support
     override open class func typeName() -> String {

@@ -297,6 +297,10 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */; };
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
+		E5E6DE471DBE32670036594C /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE461DBE32670036594C /* Metrics.swift */; };
+		E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */; };
+		E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */; };
+		E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -502,6 +506,10 @@
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetails.swift; sourceTree = "<group>"; };
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
+		E5E6DE461DBE32670036594C /* Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
+		E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Metrics.swift"; sourceTree = "<group>"; };
+		E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QosViewController.swift; sourceTree = "<group>"; };
+		E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QosViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -573,20 +581,22 @@
 				E50F3AE61D40D27F00532B09 /* Media.xcassets */,
 				E50F3AE91D40D27F00532B09 /* DocumentInspector.swift */,
 				E50F3AEA1D40D27F00532B09 /* DocumentInspector.xib */,
+				E50F3AE41D40D27F00532B09 /* LogsViewController.swift */,
+				E50F3AE51D40D27F00532B09 /* LogsViewController.xib */,
+				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
+				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
+				E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */,
+				E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */,
 				E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */,
 				E50F3AE31D40D27F00532B09 /* InspectorViewController.xib */,
 				E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */,
 				E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */,
 				E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */,
 				E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */,
-				E50F3AE41D40D27F00532B09 /* LogsViewController.swift */,
-				E50F3AE51D40D27F00532B09 /* LogsViewController.xib */,
 				E50F3AE71D40D27F00532B09 /* OperationViewController.swift */,
 				E50F3AE81D40D27F00532B09 /* OperationViewController.xib */,
 				E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */,
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
-				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
-				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
 				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
 			);
 			name = "Bartleby.OSX-Apps";
@@ -715,6 +725,7 @@
 				E57375EB1DBB960500E2B849 /* KeyedChanges.swift */,
 				E57375EC1DBB960500E2B849 /* Locker.swift */,
 				E57375ED1DBB960500E2B849 /* LogEntry.swift */,
+				E5E6DE461DBE32670036594C /* Metrics.swift */,
 				E57375EE1DBB960500E2B849 /* Progression.swift */,
 				E57375EF1DBB960500E2B849 /* PushOperation.swift */,
 				E57375F01DBB960500E2B849 /* Tag.swift */,
@@ -817,6 +828,7 @@
 				E57376161DBB960500E2B849 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E57376171DBB960500E2B849 /* BartlebyDocument+Logs.swift */,
 				E57376181DBB960500E2B849 /* BartlebyDocument+MetaDataImportExport.swift */,
+				E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */,
 				E57376191DBB960500E2B849 /* BartlebyDocument+Operations.swift */,
 				E573761A1DBB960500E2B849 /* BartlebyDocument+SecurityScopes.swift */,
 				E573761B1DBB960500E2B849 /* BartlebyDocument+SuperIterable.swift */,
@@ -1108,6 +1120,7 @@
 				E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */,
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
+				E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */,
 				E50F3AF91D40D27F00532B09 /* DocumentInspector.xib in Resources */,
 				E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */,
 				E50F3AF41D40D27F00532B09 /* LogsViewController.xib in Resources */,
@@ -1168,6 +1181,7 @@
 				E57376991DBB960500E2B849 /* DeleteUser.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
 				E57377291DBB960500E2B849 /* Serializable.swift in Sources */,
+				E5E6DE471DBE32670036594C /* Metrics.swift in Sources */,
 				E57376771DBB960500E2B849 /* ExternalReference.swift in Sources */,
 				E57376911DBB960500E2B849 /* CreateUser.swift in Sources */,
 				E57377311DBB960500E2B849 /* UniversalType.swift in Sources */,
@@ -1244,6 +1258,7 @@
 				E57376C71DBB960500E2B849 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E57377191DBB960500E2B849 /* IterableCollectibleCollection.swift in Sources */,
 				E57376A31DBB960500E2B849 /* ReadUserById.swift in Sources */,
+				E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */,
 				E57376EB1DBB960500E2B849 /* Handlers.swift in Sources */,
 				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376FD1DBB960500E2B849 /* ChangesInspectable.swift in Sources */,
@@ -1253,6 +1268,7 @@
 				E57376CD1DBB960500E2B849 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E57376F31DBB960500E2B849 /* JSerializer.swift in Sources */,
 				E57376F71DBB960500E2B849 /* ImageTransform.swift in Sources */,
+				E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */,
 				E57376691DBB960500E2B849 /* PushOperationsManagedCollection.swift in Sources */,
 				E57376D91DBB960500E2B849 /* ExternalReference+Resolution.swift in Sources */,
 				E57376851DBB960500E2B849 /* PushOperation.swift in Sources */,
@@ -1482,7 +1498,7 @@
 				PRODUCT_NAME = BartlebyKit;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1604,7 +1620,7 @@
 				PRODUCT_NAME = BartlebyKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1783,7 +1799,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Support-Files/BartlebyKit-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};

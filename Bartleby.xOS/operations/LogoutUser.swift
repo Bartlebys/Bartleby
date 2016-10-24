@@ -37,7 +37,16 @@ open class LogoutUser: BartlebyObject {
 
                         let request=response.request
                         let result=response.result
+                        let timeline=response.timeline
                         let response=response.response
+
+                        let metrics=Metrics()
+                        metrics.operationName="LogoutUser"
+                        metrics.latency=timeline.latency
+                        metrics.requestDuration=timeline.requestDuration
+                        metrics.serializationDuration=timeline.serializationDuration
+                        metrics.totalDuration=timeline.totalDuration
+                        document.report(metrics)
 
                         // Bartleby consignation
 

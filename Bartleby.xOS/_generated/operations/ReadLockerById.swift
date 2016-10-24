@@ -38,8 +38,17 @@ import Foundation
                   
                     let request=response.request
                     let result=response.result
+                    let timeline=response.timeline
                     let response=response.response
-            
+
+					let metrics=Metrics()
+					metrics.operationName="ReadLockerById"
+					metrics.latency=timeline.latency
+					metrics.requestDuration=timeline.requestDuration
+					metrics.serializationDuration=timeline.serializationDuration
+					metrics.totalDuration=timeline.totalDuration
+					document.report(metrics)
+
                     // Bartleby consignation
             
                     let context = JHTTPResponse( code: 1560507225,
@@ -111,7 +120,7 @@ import Foundation
             })
         }catch{
                 let context = JHTTPResponse( code:2 ,
-                caller: "<?php echo$baseClassName ?>.execute",
+                caller: "ReadLockerById.execute",
                 relatedURL:nil,
                 httpStatusCode:500,
                 response:nil,

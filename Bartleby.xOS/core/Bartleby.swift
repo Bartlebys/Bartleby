@@ -321,7 +321,6 @@ import Foundation
             return instance
         }
         throw DocumentError.instanceNotFound
-
     }
 
 
@@ -335,6 +334,21 @@ import Foundation
      */
     static open func collectibleInstanceByUID(_ UID: String) -> Collectible? {
         return self._instancesByUID[UID]
+    }
+
+
+    /// Report the metrics to general endpoint calls (not clearly attached to a specific document)
+    ///
+    /// - parameter metrics: the metrics
+    /// - parameter forURL:  the concerned URL
+    open func report(_ metrics:Metrics,forURL:URL){
+        for( _ , document) in self._documents{
+            let s=document.baseURL.absoluteString
+            let us=forURL.absoluteString
+            if us.contains(s){
+                document.report(metrics)
+            }
+        }
     }
 
 

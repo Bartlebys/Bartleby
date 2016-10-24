@@ -154,8 +154,17 @@ import Foundation
                   
                     let request=response.request
                     let result=response.result
+                    let timeline=response.timeline
                     let response=response.response
-            
+
+					let metrics=Metrics()
+					metrics.operationName="ReadUsersByIds"
+					metrics.latency=timeline.latency
+					metrics.requestDuration=timeline.requestDuration
+					metrics.serializationDuration=timeline.serializationDuration
+					metrics.totalDuration=timeline.totalDuration
+					document.report(metrics)
+
                     // Bartleby consignation
             
                     let context = JHTTPResponse( code: 745776284,
@@ -227,7 +236,7 @@ import Foundation
             })
         }catch{
                 let context = JHTTPResponse( code:2 ,
-                caller: "<?php echo$baseClassName ?>.execute",
+                caller: "ReadUsersByIds.execute",
                 relatedURL:nil,
                 httpStatusCode:500,
                 response:nil,

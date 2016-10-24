@@ -34,7 +34,17 @@ import Foundation
                 request(r).validate().responseString(completionHandler: { (response) in
                     let request=response.request
                     let result=response.result
+                    let timeline=response.timeline
                     let response=response.response
+
+                    let metrics=Metrics()
+                    metrics.operationName="TriggersForIndexes"
+                    metrics.latency=timeline.latency
+                    metrics.requestDuration=timeline.requestDuration
+                    metrics.serializationDuration=timeline.serializationDuration
+                    metrics.totalDuration=timeline.totalDuration
+                    document.report(metrics)
+
                     // Bartleby consignation
                     let context = JHTTPResponse( code: 3054667497,
                                                  caller: "TriggersForIndexes.execute",

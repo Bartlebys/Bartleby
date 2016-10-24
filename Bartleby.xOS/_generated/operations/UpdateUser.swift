@@ -249,6 +249,7 @@ import Foundation
                     // Store the response
                     let request=response.request
                     let result=response.result
+                    let timeline=response.timeline
                     let response=response.response
 
                     // Bartleby consignation
@@ -282,9 +283,15 @@ import Foundation
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
+										acknowledgment.operationName="UpdateUser"
 										acknowledgment.triggerIndex=index.intValue
+										acknowledgment.latency=timeline.latency
+										acknowledgment.requestDuration=timeline.requestDuration
+										acknowledgment.serializationDuration=timeline.serializationDuration
+										acknowledgment.totalDuration=timeline.totalDuration
 										acknowledgment.uids=[user.UID]
 										document.record(acknowledgment)
+										document.report(acknowledgment) // Acknowlegments are also metrics
                                     }
                                 }
                                 success(context)

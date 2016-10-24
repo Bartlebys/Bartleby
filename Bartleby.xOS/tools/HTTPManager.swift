@@ -162,7 +162,17 @@ open class HTTPManager: NSObject {
 
             let request=response.request
             let result=response.result
+            let timeline=response.timeline
             let response=response.response
+
+            let metrics=Metrics()
+            metrics.operationName="Reachable"
+            metrics.latency=timeline.latency
+            metrics.requestDuration=timeline.requestDuration
+            metrics.serializationDuration=timeline.serializationDuration
+            metrics.totalDuration=timeline.totalDuration
+            // We use Bartleby's report handler (because the document is not always defined when calling this endPoint)
+            Bartleby.sharedInstance.report(metrics,forURL:pathURL)
 
             // Bartleby consignation
             let context = JHTTPResponse( code: 1,
@@ -202,12 +212,22 @@ open class HTTPManager: NSObject {
      */
     static open func verifyCredentials(_ documentUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: JHTTPResponse)->()) {
         let pathURL=baseURL.appendingPathComponent("/verify/credentials")
-        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"Reachable", forMethod:"GET", and: pathURL)
+        let document=Bartleby.sharedInstance.getDocumentByUID(documentUID)
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"VerifyCredentials", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
 
             let request=response.request
             let result=response.result
+            let timeline=response.timeline
             let response=response.response
+
+            let metrics=Metrics()
+            metrics.operationName="VerifyCredentials"
+            metrics.latency=timeline.latency
+            metrics.requestDuration=timeline.requestDuration
+            metrics.serializationDuration=timeline.serializationDuration
+            metrics.totalDuration=timeline.totalDuration
+            document?.report(metrics)
 
             // Bartleby consignation
 

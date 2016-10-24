@@ -10,6 +10,7 @@
                 <outlet property="globalTabView" destination="2rc-pm-P9A" id="nWj-YL-uLb"/>
                 <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
                 <outlet property="logsViewController" destination="nOf-ae-T3T" id="D3V-HH-DOd"/>
+                <outlet property="qosViewController" destination="EcV-gs-G5P" id="3j6-dq-84b"/>
                 <outlet property="scopeSegmentedControl" destination="blX-Ao-gTK" id="TdQ-Td-b6W"/>
                 <outlet property="webStackViewController" destination="BrD-bp-d8H" id="rpZ-VQ-0BG"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="207-PX-GlZ"/>
@@ -21,7 +22,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="1024" height="768"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1178"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -49,7 +50,7 @@
                         <size key="minSize" width="200" height="24"/>
                         <size key="maxSize" width="300" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="blX-Ao-gTK">
-                            <rect key="frame" x="0.0" y="14" width="226" height="28"/>
+                            <rect key="frame" x="0.0" y="14" width="272" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="j6S-ES-j9y">
                                 <font key="font" metaFont="system"/>
@@ -57,6 +58,7 @@
                                     <segment label="Document" selected="YES"/>
                                     <segment label="Logs" tag="1"/>
                                     <segment label=" Web Stack"/>
+                                    <segment label="Qos"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
@@ -89,14 +91,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="15D21C1F-97EA-4816-804D-C4EE1A17BE43" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="BB85B31A-7771-45B3-98AA-B427DFF44231" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
                             <rect key="frame" x="15" y="14" width="120" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="15D21C1F-97EA-4816-804D-C4EE1A17BE43" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="BB85B31A-7771-45B3-98AA-B427DFF44231" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -121,9 +123,11 @@
         <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
         <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="EcV-gs-G5P" customClass="QosViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="15D21C1F-97EA-4816-804D-C4EE1A17BE43" width="18" height="18">
+        <image name="760-refresh-3-toolbar" width="22" height="22"/>
+        <image name="BB85B31A-7771-45B3-98AA-B427DFF44231" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGZWZYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QGQcI
 ERYbHCo3ODk6Ozw9PkVGR0tPVFdaX2JVJG51bGzUCQoLDA0ODxBWJGNsYXNzXE5TSW1hZ2VGbGFnc1ZO
@@ -144,7 +148,6 @@ AfYCEgIXAhwCHgIgAiUCMgI1AkICRwJaAl4CcQJ8AoECiQKMApECoAKkAqsCswK4AroCvALBAskCzALR
 AtkC3ALuAvEC9gAAAAAAAAIBAAAAAAAAAGkAAAAAAAAAAAAAAAAAAAL4A
 </mutableData>
         </image>
-        <image name="760-refresh-3-toolbar" width="22" height="22"/>
         <sound name="Bottle"/>
     </resources>
 </document>
