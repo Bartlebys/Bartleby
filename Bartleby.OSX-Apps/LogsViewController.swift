@@ -81,7 +81,7 @@ class LogsViewController: NSViewController,DocumentDependent{
                 if let entry = object as? LogEntry{
                     let searched=PString.ltrim(self.searchField.stringValue)
                     if searched != ""{
-                        return entry.message.contains(searched)
+                        return entry.message.contains(searched, compareOptions: [NSString.CompareOptions.caseInsensitive,NSString.CompareOptions.diacriticInsensitive])
                     }
                 }
                 return true

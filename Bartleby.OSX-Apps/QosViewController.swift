@@ -56,7 +56,7 @@ class QosViewController: NSViewController ,DocumentDependent{
                 if let entry = object as? Metrics{
                     let searched=PString.ltrim(self.searchField.stringValue)
                     if searched != ""{
-                        return entry.operationName.contains(searched)
+                        return entry.operationName.contains(searched, compareOptions: [NSString.CompareOptions.caseInsensitive,NSString.CompareOptions.diacriticInsensitive])
                     }
                 }
                 return true
