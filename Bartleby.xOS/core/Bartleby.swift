@@ -240,6 +240,7 @@ import Foundation
                 return collaborationServerURL as URL
             }
         }
+        glog("Returning default collaboration server URL", file: #file, function: #function, line: #line)
         return Bartleby.configuration.API_BASE_URL as URL
     }
 

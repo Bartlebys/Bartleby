@@ -32,6 +32,7 @@ public enum DocumentError: Error {
     case instanceTypeMissMatch
     case attemptToSetUpRootObjectUIDMoreThanOnce
     case unSupportedFileType(typeName:String)
+    case undefined
 }
 
 // Todo split into files 

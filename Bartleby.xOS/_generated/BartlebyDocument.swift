@@ -151,7 +151,9 @@ import Foundation
     // MARK: URI
 
     // The collection server base URL
-    open dynamic lazy var baseURL:URL=Bartleby.sharedInstance.getCollaborationURL(self.UID)
+    open dynamic var baseURL:URL{
+        return Bartleby.sharedInstance.getCollaborationURL(self.UID)
+    }
 
     // The online flag is driving the "connection" process
     // It connects to the SSE and starts the pushLoop
