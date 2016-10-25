@@ -20,7 +20,7 @@ import Foundation
     }
 
 
-    open static func execute( fromRegisty documentUID: String,
+    open static func execute( from documentUID: String,
                               ids: [String],
                               sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                               failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {

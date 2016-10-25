@@ -110,6 +110,22 @@ extension BartlebyDocument {
         for idx in toBeRemovedIndexes.reversed(){
             self.metadata.receivedTriggers.remove(at: idx)
         }
+
+        // QA check if we encounter data Holes.
+        // If a trigger is missing try to fill the hole
+        let missing=self._missingContiguousTriggersIndexes()
+        if missing.count>0{
+            let s=missing.map({"\($0)"})
+            self.log("Trying to fill a data hole for index(es): \(s)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+            TriggersForIndexes.execute(from: self.UID, indexes: missing, sucessHandler: { (triggers) in
+                self._triggersHasBeenReceived(triggers)
+            }) { (context) in
+                // What to do on failure ?
+                self.log("Failure on data all filling for index(es): \(s) \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+            }
+        }
+
+
     }
 
 
