@@ -109,12 +109,21 @@ import Foundation
 	    }
 	}
 
+	//The sum of all the metrics
+	dynamic open var cumulatedMetricsDuration:Double = 0
+
+	//Total number of metrics since the document creation
+	dynamic open var totalNumberOfMetrics:Int = 0
+
+	//The qos Indice
+	dynamic open var qosIndice:Double = 0
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword","cumulatedMetricsDuration","totalNumberOfMetrics","qosIndice"])
         return exposed
     }
 
@@ -215,6 +224,18 @@ import Foundation
                 if let casted=value as? Bool{
                     self.saveThePassword=casted
                 }
+            case "cumulatedMetricsDuration":
+                if let casted=value as? Double{
+                    self.cumulatedMetricsDuration=casted
+                }
+            case "totalNumberOfMetrics":
+                if let casted=value as? Int{
+                    self.totalNumberOfMetrics=casted
+                }
+            case "qosIndice":
+                if let casted=value as? Double{
+                    self.qosIndice=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -274,6 +295,12 @@ import Foundation
                return self.pushOnChanges
             case "saveThePassword":
                return self.saveThePassword
+            case "cumulatedMetricsDuration":
+               return self.cumulatedMetricsDuration
+            case "totalNumberOfMetrics":
+               return self.totalNumberOfMetrics
+            case "qosIndice":
+               return self.qosIndice
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -305,6 +332,9 @@ import Foundation
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )
 			self.saveThePassword <- ( map["saveThePassword"] )
+			self.cumulatedMetricsDuration <- ( map["cumulatedMetricsDuration"] )
+			self.totalNumberOfMetrics <- ( map["totalNumberOfMetrics"] )
+			self.qosIndice <- ( map["qosIndice"] )
         }
     }
 
@@ -332,6 +362,9 @@ import Foundation
 			self.online=decoder.decodeBool(forKey:"online") 
 			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
 			self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
+			self.cumulatedMetricsDuration=decoder.decodeDouble(forKey:"cumulatedMetricsDuration") 
+			self.totalNumberOfMetrics=decoder.decodeInteger(forKey:"totalNumberOfMetrics") 
+			self.qosIndice=decoder.decodeDouble(forKey:"qosIndice") 
         }
     }
 
@@ -363,6 +396,9 @@ import Foundation
 		coder.encode(self.online,forKey:"online")
 		coder.encode(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")
+		coder.encode(self.cumulatedMetricsDuration,forKey:"cumulatedMetricsDuration")
+		coder.encode(self.totalNumberOfMetrics,forKey:"totalNumberOfMetrics")
+		coder.encode(self.qosIndice,forKey:"qosIndice")
     }
 
     override open class var supportsSecureCoding:Bool{

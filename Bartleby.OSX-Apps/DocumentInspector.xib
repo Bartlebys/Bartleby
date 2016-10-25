@@ -45,6 +45,24 @@
             </view>
             <toolbar key="toolbar" implicitIdentifier="C6E86470-B4C8-40A2-BEAC-DA620E331578" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="V1X-Ll-rfj">
                 <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="EBB45B55-420F-4F27-9766-6B299F62BC84" label="Qos Indice" paletteLabel="Qos Indice" id="50u-CL-plJ">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="38" height="17"/>
+                        <size key="maxSize" width="84" height="17"/>
+                        <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="hHj-Vg-sce">
+                            <rect key="frame" x="0.0" y="14" width="84" height="17"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="0" id="SnQ-DR-gCW">
+                                <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="eKb-qS-deB"/>
+                                <font key="font" size="17" name="Arial-BoldMT"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                            <connections>
+                                <binding destination="-2" name="value" keyPath="self.castedDocument.metadata.qosIndice" id="Juf-wm-Osg"/>
+                            </connections>
+                        </textField>
+                    </toolbarItem>
                     <toolbarItem implicitItemIdentifier="ED72EB41-7D0A-4E56-91F3-A8709651442E" label="" paletteLabel="" id="Nl4-0i-Klz">
                         <nil key="toolTip"/>
                         <size key="minSize" width="200" height="24"/>
@@ -67,12 +85,12 @@
                         </segmentedControl>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Di3-Zl-25a"/>
-                    <toolbarItem implicitItemIdentifier="C11FED55-15AD-4C16-8F66-871FD3EB18F9" label="Push Manually" paletteLabel="Push Manually" image="760-refresh-3-toolbar" id="KYu-3p-WrD">
+                    <toolbarItem implicitItemIdentifier="C11FED55-15AD-4C16-8F66-871FD3EB18F9" label="Push" paletteLabel="Push" image="760-refresh-3-toolbar" id="KYu-3p-WrD">
                         <nil key="toolTip"/>
                         <size key="minSize" width="51" height="25"/>
                         <size key="maxSize" width="127" height="25"/>
                         <button key="view" verticalHuggingPriority="750" id="F3q-en-sDF">
-                            <rect key="frame" x="16" y="14" width="51" height="25"/>
+                            <rect key="frame" x="0.0" y="14" width="51" height="25"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="760-refresh-3-toolbar" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" sound="Bottle" inset="2" id="dCd-zE-M5Y">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -91,14 +109,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Push Changes Immediately" paletteLabel="Push Changes Immediately" image="BB85B31A-7771-45B3-98AA-B427DFF44231" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Pushes Changes Immediately" paletteLabel="Pushes Changes Immediately" image="11079F39-AFF5-4FB5-94FF-4B2445FD8CB0" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
-                            <rect key="frame" x="15" y="14" width="120" height="18"/>
+                            <rect key="frame" x="33" y="14" width="96" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="BB85B31A-7771-45B3-98AA-B427DFF44231" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="11079F39-AFF5-4FB5-94FF-4B2445FD8CB0" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -109,13 +127,12 @@
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
-                    <toolbarItem reference="RBs-x9-De4"/>
-                    <toolbarItem reference="RBs-x9-De4"/>
                     <toolbarItem reference="Di3-Zl-25a"/>
                     <toolbarItem reference="Nl4-0i-Klz"/>
                     <toolbarItem reference="Di3-Zl-25a"/>
                     <toolbarItem reference="EoO-Ox-zgh"/>
                     <toolbarItem reference="KYu-3p-WrD"/>
+                    <toolbarItem reference="50u-CL-plJ"/>
                 </defaultToolbarItems>
             </toolbar>
             <point key="canvasLocation" x="421" y="238"/>
@@ -126,8 +143,7 @@
         <viewController id="EcV-gs-G5P" customClass="QosViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
     <resources>
-        <image name="760-refresh-3-toolbar" width="22" height="22"/>
-        <image name="BB85B31A-7771-45B3-98AA-B427DFF44231" width="18" height="18">
+        <image name="11079F39-AFF5-4FB5-94FF-4B2445FD8CB0" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGZWZYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QGQcI
 ERYbHCo3ODk6Ozw9PkVGR0tPVFdaX2JVJG51bGzUCQoLDA0ODxBWJGNsYXNzXE5TSW1hZ2VGbGFnc1ZO
@@ -148,6 +164,7 @@ AfYCEgIXAhwCHgIgAiUCMgI1AkICRwJaAl4CcQJ8AoECiQKMApECoAKkAqsCswK4AroCvALBAskCzALR
 AtkC3ALuAvEC9gAAAAAAAAIBAAAAAAAAAGkAAAAAAAAAAAAAAAAAAAL4A
 </mutableData>
         </image>
+        <image name="760-refresh-3-toolbar" width="22" height="22"/>
         <sound name="Bottle"/>
     </resources>
 </document>
