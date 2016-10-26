@@ -82,6 +82,15 @@ import Foundation
 	//The consolidated progression state of all pending operations
 	dynamic open var pendingOperationsProgressionState:Progression?
 
+	//When monitoring reachability we need to know if we should be connected to Collaborative server
+	dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
+	    didSet { 
+	       if shouldBeOnline != oldValue {
+	            self.provisionChanges(forKey: "shouldBeOnline",oldValue: oldValue,newValue: shouldBeOnline)  
+	       } 
+	    }
+	}
+
 	//is the user performing Online
 	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
 	    didSet { 
@@ -91,7 +100,21 @@ import Foundation
 	    }
 	}
 
-	//If set to true any object creation, update, or deletion will be pushed as soon as possible.
+	//Is the document transitionning offToOn: offline > online, onToOff: online > offine
+	public enum Transition:String{
+		case none = "none"
+		case offToOn = "offToOn"
+		case onToOff = "onToOff"
+	}
+	open var transition:Transition = .none  {
+	    didSet { 
+	       if transition != oldValue {
+	            self.provisionChanges(forKey: "transition",oldValue: oldValue.rawValue,newValue: transition.rawValue)  
+	       } 
+	    }
+	}
+
+	//If set to true committed object will be pushed as soon as possible.
 	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
 	    didSet { 
 	       if pushOnChanges != oldValue {
@@ -123,7 +146,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","online","pushOnChanges","saveThePassword","cumulatedMetricsDuration","totalNumberOfMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedMetricsDuration","totalNumberOfMetrics","qosIndice"])
         return exposed
     }
 
@@ -212,9 +235,17 @@ import Foundation
                 if let casted=value as? Progression{
                     self.pendingOperationsProgressionState=casted
                 }
+            case "shouldBeOnline":
+                if let casted=value as? Bool{
+                    self.shouldBeOnline=casted
+                }
             case "online":
                 if let casted=value as? Bool{
                     self.online=casted
+                }
+            case "transition":
+                if let casted=value as? DocumentMetadata.Transition{
+                    self.transition=casted
                 }
             case "pushOnChanges":
                 if let casted=value as? Bool{
@@ -289,8 +320,12 @@ import Foundation
                return self.totalNumberOfOperations
             case "pendingOperationsProgressionState":
                return self.pendingOperationsProgressionState
+            case "shouldBeOnline":
+               return self.shouldBeOnline
             case "online":
                return self.online
+            case "transition":
+               return self.transition
             case "pushOnChanges":
                return self.pushOnChanges
             case "saveThePassword":
@@ -329,6 +364,7 @@ import Foundation
 			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
 			self.receivedTriggers <- ( map["receivedTriggers"] )
 			self.operationsQuarantine <- ( map["operationsQuarantine"] )
+			self.shouldBeOnline <- ( map["shouldBeOnline"] )
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )
 			self.saveThePassword <- ( map["saveThePassword"] )
@@ -359,6 +395,7 @@ import Foundation
 			self.lastIntegratedTriggerIndex=decoder.decodeInteger(forKey:"lastIntegratedTriggerIndex") 
 			self.receivedTriggers=decoder.decodeObject(of: [NSArray.classForCoder(),Trigger.classForCoder()], forKey: "receivedTriggers")! as! [Trigger]
 			self.operationsQuarantine=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "operationsQuarantine")! as! [PushOperation]
+			self.shouldBeOnline=decoder.decodeBool(forKey:"shouldBeOnline") 
 			self.online=decoder.decodeBool(forKey:"online") 
 			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
 			self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
@@ -393,6 +430,7 @@ import Foundation
 		coder.encode(self.lastIntegratedTriggerIndex,forKey:"lastIntegratedTriggerIndex")
 		coder.encode(self.receivedTriggers,forKey:"receivedTriggers")
 		coder.encode(self.operationsQuarantine,forKey:"operationsQuarantine")
+		coder.encode(self.shouldBeOnline,forKey:"shouldBeOnline")
 		coder.encode(self.online,forKey:"online")
 		coder.encode(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")

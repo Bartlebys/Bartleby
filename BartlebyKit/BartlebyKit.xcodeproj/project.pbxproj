@@ -301,6 +301,7 @@
 		E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */; };
 		E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */; };
 		E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */; };
+		E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -510,6 +511,7 @@
 		E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Metrics.swift"; sourceTree = "<group>"; };
 		E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QosViewController.swift; sourceTree = "<group>"; };
 		E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QosViewController.xib; sourceTree = "<group>"; };
+		E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Reachability.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -833,6 +835,7 @@
 				E573761A1DBB960500E2B849 /* BartlebyDocument+SecurityScopes.swift */,
 				E573761B1DBB960500E2B849 /* BartlebyDocument+SuperIterable.swift */,
 				E573761C1DBB960500E2B849 /* BartlebyDocument+Triggers.swift */,
+				E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */,
 				E573761D1DBB960500E2B849 /* BartlebyObject+BaseImplementation.swift */,
 				E573761E1DBB960500E2B849 /* CollectionMetadatum+Proxy.swift */,
 				E573761F1DBB960500E2B849 /* Completion+Conveniences.swift */,
@@ -1136,6 +1139,7 @@
 			files = (
 				E57376E71DBB960500E2B849 /* DocumentMetadata+Protocol.swift in Sources */,
 				E573767D1DBB960500E2B849 /* KeyedChanges.swift in Sources */,
+				E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */,
 				E573768D1DBB960500E2B849 /* CreateLocker.swift in Sources */,
 				E573769F1DBB960500E2B849 /* ReadLockersByIds.swift in Sources */,
 				E57377011DBB960500E2B849 /* CollectibleCollection.swift in Sources */,

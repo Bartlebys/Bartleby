@@ -23,7 +23,6 @@ userA.firstname="Jimmy"
 userA.removeChangesSuperviser(spy)
 userA.firstname="Zorro"
 
-
 // Merge sample
 var benoit=User()
 benoit.firstname="Benoit"

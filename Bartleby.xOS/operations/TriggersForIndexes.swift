@@ -56,6 +56,7 @@ import Foundation
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
                     if result.isFailure {
+                        /*
                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
@@ -63,7 +64,8 @@ import Foundation
                             transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
-                        failure(context)
+                         */
+                       failure(context)
                     } else {
                         if let statusCode=response?.statusCode {
                             if 200...299 ~= statusCode {
