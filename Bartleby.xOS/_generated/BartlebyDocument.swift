@@ -152,7 +152,7 @@ import Foundation
 
     // The collection server base URL
     open dynamic var baseURL:URL{
-        return Bartleby.sharedInstance.getCollaborationURL(self.UID)
+        return self.metadata.collaborationServerURL ?? Bartleby.configuration.API_BASE_URL
     }
 
     // The online flag is driving the "connection" process

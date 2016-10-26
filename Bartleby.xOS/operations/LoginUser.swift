@@ -23,7 +23,7 @@ open class LoginUser: BartlebyObject {
 
         if let document=user.document{
 
-            let baseURL=Bartleby.sharedInstance.getCollaborationURL(document.UID)
+            let baseURL=document.baseURL
             let pathURL=baseURL.appendingPathComponent("user/login")
 
             // A valid document is required for any authentication.

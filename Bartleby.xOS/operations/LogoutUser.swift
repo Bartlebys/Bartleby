@@ -20,7 +20,7 @@ open class LogoutUser: BartlebyObject {
                               failureHandler failure:@escaping (_ context: JHTTPResponse)->()) {
 
         if let  document=user.document{
-            let baseURL=Bartleby.sharedInstance.getCollaborationURL( document.UID)
+            let baseURL=document.baseURL
             let pathURL=baseURL.appendingPathComponent("user/logout")
 
             if  document.metadata.identificationMethod == .key{

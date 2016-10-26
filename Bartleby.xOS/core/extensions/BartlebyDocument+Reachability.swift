@@ -28,4 +28,10 @@ extension BartlebyDocument{
 
 */
 
+    var reachabilityURL:URL{
+        get{
+            return self.baseURL.appendingPathComponent("/Reachable")
+        }
+    }
+
 }

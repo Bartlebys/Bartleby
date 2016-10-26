@@ -228,25 +228,6 @@ import Foundation
     // MARK: - Paths & URL
 
     /**
-     Returns the url by the document collaborative server URL
-
-     - parameter documentUID: the documentUID
-
-     - returns: the
-     */
-    open func getCollaborationURL(_ documentUID: String) -> URL {
-        if let document=self.getDocumentByUID(documentUID) {
-            if let collaborationServerURL=document.metadata.collaborationServerURL {
-                return collaborationServerURL as URL
-            }
-        }
-        glog("Returning default collaboration server URL", file: #file, function: #function, line: #line)
-        return Bartleby.configuration.API_BASE_URL as URL
-    }
-
-
-
-    /**
      Returns the search path directory
 
      - parameter searchPath: the search Path
