@@ -52,9 +52,9 @@ class UsersCreationLoadTest: TestCase {
         CreateUser.execute(user,
                            inDocumentWithUID:document.UID,
                            sucessHandler: { (context) -> () in
-                            completionHandler(user,Completion.successStateFromJHTTPResponse(context))
+                            completionHandler(user,Completion.successStateFromHTTPContext(context))
         }) { (context) -> () in
-            completionHandler(user,Completion.failureStateFromJHTTPResponse(context))
+            completionHandler(user,Completion.failureStateFromHTTPContext(context))
         }
 
     }

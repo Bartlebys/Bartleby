@@ -208,14 +208,14 @@ class TestCase: XCTestCase {
 
                     }, failureHandler: { (context) in
                         glog("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
-                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                        handlers.on(Completion.failureStateFromHTTPContext(context))
                 })
             } else {
                 handlers.on(Completion.successState())
             }
         }) { (context) in
             glog("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
-            handlers.on(Completion.failureStateFromJHTTPResponse(context))
+            handlers.on(Completion.failureStateFromHTTPContext(context))
         }
 
         // The user is returned
@@ -235,7 +235,7 @@ class TestCase: XCTestCase {
                 creator.logout(sucessHandler: {
                     handlers.on(Completion.successState())
                     }, failureHandler: { (context) in
-                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                        handlers.on(Completion.failureStateFromHTTPContext(context))
                 })
             } else {
                 handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))
@@ -246,7 +246,7 @@ class TestCase: XCTestCase {
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in
-                    handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                    handlers.on(Completion.failureStateFromHTTPContext(context))
             })
         }
     }
@@ -263,7 +263,7 @@ class TestCase: XCTestCase {
                 // Delete each user with a recursive method
                 self._deleteNextUser(handlers)
                 }, failureHandler: { (context) in
-                    handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                    handlers.on(Completion.failureStateFromHTTPContext(context))
             })
         } else {
             handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))

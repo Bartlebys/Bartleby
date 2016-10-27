@@ -327,7 +327,7 @@ public enum BsyncAdminError: Error {
                     self.synchronizeWithprogressBlock(context, handlers: handlers)
                     }, failureHandler: { (context) in
                         // Print a JSON failure description
-                        handlers.on(Completion.failureStateFromJHTTPResponse(context))
+                        handlers.on(Completion.failureStateFromHTTPContext(context))
                         return
                 })
             }
