@@ -270,6 +270,10 @@ import Foundation
                         response: response,
                         result:result.value)
 
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
+                    }
+
                     // React according to the situation
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: result.value, context: context)) // Tracking

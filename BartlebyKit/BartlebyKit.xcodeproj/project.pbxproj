@@ -24,6 +24,10 @@
 		E50A0CEA1DC21EC000869BFB /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5187F181DC11FC80071A23C /* ServerErrorCodes.swift */; };
 		E50A0CEB1DC21EC700869BFB /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */; };
 		E50A0CEC1DC21EC700869BFB /* BartlebyDocument+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */; };
+		E50A10691DC2261D00869BFB /* MetricsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */; };
+		E50A106A1DC2261D00869BFB /* MetricsDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */; };
+		E50A106C1DC2301100869BFB /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106B1DC2301100869BFB /* HTTPRequest.swift */; };
+		E50A106E1DC2311800869BFB /* HTTPRequest+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */; };
 		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */; };
@@ -54,7 +58,6 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
-		E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF9521D4A642100EE1945 /* ColoredView.swift */; };
 		E57376651DBB960500E2B849 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57375DD1DBB960500E2B849 /* BartlebyDocument.swift */; };
 		E57376661DBB960500E2B849 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57375DD1DBB960500E2B849 /* BartlebyDocument.swift */; };
 		E57376671DBB960500E2B849 /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57375DF1DBB960500E2B849 /* LockersManagedCollection.swift */; };
@@ -349,6 +352,10 @@
 		E50A0CDC1DC1FB1700869BFB /* BartlebyOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyOperation.swift; sourceTree = "<group>"; };
 		E50A0CE11DC21A3A00869BFB /* HTTPContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPContext.swift; sourceTree = "<group>"; };
 		E50A0CE41DC21B3F00869BFB /* HTTPContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPContext+Conveniences.swift"; sourceTree = "<group>"; };
+		E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetricsDetailsViewController.swift; sourceTree = "<group>"; };
+		E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetricsDetailsViewController.xib; sourceTree = "<group>"; };
+		E50A106B1DC2301100869BFB /* HTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
+		E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPRequest+URLRequest.swift"; sourceTree = "<group>"; };
 		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
 		E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
@@ -379,7 +386,6 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
-		E54AF9521D4A642100EE1945 /* ColoredView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColoredView.swift; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
@@ -596,7 +602,8 @@
 				E50F3AE81D40D27F00532B09 /* OperationViewController.xib */,
 				E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */,
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
-				E54AF9521D4A642100EE1945 /* ColoredView.swift */,
+				E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */,
+				E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";
@@ -720,6 +727,7 @@
 				E57375E71DBB960500E2B849 /* DocumentMetadata.swift */,
 				E57375E81DBB960500E2B849 /* ExternalReference.swift */,
 				E50A0CE11DC21A3A00869BFB /* HTTPContext.swift */,
+				E50A106B1DC2301100869BFB /* HTTPRequest.swift */,
 				E57375EB1DBB960500E2B849 /* KeyedChanges.swift */,
 				E57375EC1DBB960500E2B849 /* Locker.swift */,
 				E57375ED1DBB960500E2B849 /* LogEntry.swift */,
@@ -841,6 +849,7 @@
 				E57376281DBB960500E2B849 /* DocumentMetadata+Protocol.swift */,
 				E57376211DBB960500E2B849 /* ExternalReference+Resolution.swift */,
 				E50A0CE41DC21B3F00869BFB /* HTTPContext+Conveniences.swift */,
+				E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */,
 				E57376221DBB960500E2B849 /* LogEntry+Conveniences.swift */,
 				E57376231DBB960500E2B849 /* NSNotification+Completion.swift */,
 				E57376241DBB960500E2B849 /* NSNotification+Progression.swift */,
@@ -1117,6 +1126,7 @@
 				E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */,
 				E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */,
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
+				E50A106A1DC2261D00869BFB /* MetricsDetailsViewController.xib in Resources */,
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
 				E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */,
 				E50F3AF91D40D27F00532B09 /* DocumentInspector.xib in Resources */,
@@ -1139,6 +1149,7 @@
 				E573769F1DBB960500E2B849 /* ReadLockersByIds.swift in Sources */,
 				E57377011DBB960500E2B849 /* CollectibleCollection.swift in Sources */,
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
+				E50A10691DC2261D00869BFB /* MetricsDetailsViewController.swift in Sources */,
 				E57376C31DBB960500E2B849 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E57376F91DBB960500E2B849 /* BartlebyCollection.swift in Sources */,
 				E57377051DBB960500E2B849 /* Commitable.swift in Sources */,
@@ -1206,6 +1217,7 @@
 				E57376AF1DBB960500E2B849 /* UpdateUsers.swift in Sources */,
 				E573768F1DBB960500E2B849 /* CreateLockers.swift in Sources */,
 				E573768B1DBB960500E2B849 /* User.swift in Sources */,
+				E50A106C1DC2301100869BFB /* HTTPRequest.swift in Sources */,
 				E57376931DBB960500E2B849 /* CreateUsers.swift in Sources */,
 				E57376A11DBB960500E2B849 /* ReadLockersByQuery.swift in Sources */,
 				E57376A51DBB960500E2B849 /* ReadUsersByIds.swift in Sources */,
@@ -1228,10 +1240,10 @@
 				E57377411DBB960500E2B849 /* LoginUser.swift in Sources */,
 				E573771B1DBB960500E2B849 /* JSONString.swift in Sources */,
 				E57376C51DBB960500E2B849 /* BartlebyDocument+Logs.swift in Sources */,
-				E54AF9531D4A642100EE1945 /* ColoredView.swift in Sources */,
 				E57376971DBB960500E2B849 /* DeleteLockers.swift in Sources */,
 				E57376DB1DBB960500E2B849 /* LogEntry+Conveniences.swift in Sources */,
 				E57376811DBB960500E2B849 /* LogEntry.swift in Sources */,
+				E50A106E1DC2311800869BFB /* HTTPRequest+URLRequest.swift in Sources */,
 				E57376B11DBB960500E2B849 /* UIX.swift in Sources */,
 				E57376731DBB960500E2B849 /* Completion.swift in Sources */,
 				E57377171DBB960500E2B849 /* Initializable.swift in Sources */,

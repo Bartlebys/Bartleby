@@ -164,6 +164,10 @@ import Foundation
                         httpStatusCode: response?.statusCode ?? 0,
                         response: response,
                         result:result.value)
+                        
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
+                    }
 
 					let metrics=Metrics()
 					metrics.httpContext=context
