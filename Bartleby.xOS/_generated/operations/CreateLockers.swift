@@ -260,23 +260,23 @@ import Foundation
                     let request=response.request
                     let result=response.result
                     let timeline=response.timeline
-                    let response=response.response
+                    let statusCode=response.response?.statusCode ?? 0
 
                     // Bartleby consignation
                     let context = HTTPContext( code: 3918548972,
                         caller: "CreateLockers.execute",
                         relatedURL:request?.url,
-                        httpStatusCode: response?.statusCode ?? 0,
-                        response: response,
-                        result:result.value)
+                        httpStatusCode: statusCode)
 
                     if let request=request{
                         context.request=HTTPRequest(urlRequest: request)
                     }
 
+                    if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                        context.responseString=utf8Text
+                    }
                     // React according to the situation
                     var reactions = Array<Reaction> ()
-                    reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
 
                     if result.isFailure {
                         let m = NSLocalizedString("creation  of lockers",
@@ -285,17 +285,16 @@ import Foundation
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                             comment: "Unsuccessfull attempt"),
-                            body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+                            body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
                     }else{
-                        if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-                                // Acknowledge the trigger if there is one
-                                if let dictionary = result.value as? Dictionary< String,AnyObject > {
-                                    if let index=dictionary["triggerIndex"] as? NSNumber{
+                        if 200...299 ~= statusCode {
+                            // Acknowledge the trigger if there is one
+                            if let dictionary = result.value as? Dictionary< String,AnyObject > {
+                                if let index=dictionary["triggerIndex"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
 										acknowledgment.httpContext=context
 										acknowledgment.operationName="CreateLockers"
@@ -307,26 +306,25 @@ import Foundation
 										acknowledgment.uids=lockers.map({$0.UID})
 										document.record(acknowledgment)
 										document.report(acknowledgment) // Acknowlegments are also metrics
-                                    }
                                 }
-                                success(context)
-                            }else{
-                                // Bartlby does not currenlty discriminate status codes 100 & 101
-                                // and treats any status code >= 300 the same way
-                                // because we consider that failures differentiations could be done by the caller.
-
-                                let m=NSLocalizedString("creation of lockers",
-                                        comment: "creation of lockers failure description")
-                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                                    context: context,
-                                    title: NSLocalizedString("Unsuccessfull attempt",
-                                    comment: "Unsuccessfull attempt"),
-                                    body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                                    transmit:{ (selectedIndex) -> () in
-                                    })
-                                reactions.append(failureReaction)
-                                failure(context)
                             }
+                            success(context)
+                        }else{
+                            // Bartlby does not currenlty discriminate status codes 100 & 101
+                            // and treats any status code >= 300 the same way
+                            // because we consider that failures differentiations could be done by the caller.
+
+                            let m=NSLocalizedString("creation of lockers",
+                                    comment: "creation of lockers failure description")
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt",
+                                comment: "Unsuccessfull attempt"),
+                                body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit:{ (selectedIndex) -> () in
+                                })
+                            reactions.append(failureReaction)
+                            failure(context)
                         }
                      }
                     //Let's react according to the context.
@@ -336,9 +334,7 @@ import Foundation
                     let context = HTTPContext( code:2 ,
                     caller: "CreateLockers.execute",
                     relatedURL:nil,
-                    httpStatusCode:500,
-                    response:nil,
-                    result:"{\"message\":\"\(error)}")
+                    httpStatusCode:500)
                     failure(context)
                 }
 

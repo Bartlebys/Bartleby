@@ -139,7 +139,7 @@ open class HTTPManager: NSObject {
         headers["runUID"]=Bartleby.runUID
         headers["requestCounter"]="\(Bartleby.requestCounter)" // Used for e.g to in Trigger UID = runUID.requestCounter
         if Bartleby.ephemeral {
-             headers["ephemeral"]="true"
+            headers["ephemeral"]="true"
         }
         return headers
     }
@@ -163,7 +163,7 @@ open class HTTPManager: NSObject {
             let request=response.request
             let result=response.result
             let timeline=response.timeline
-            let response=response.response
+            let statusCode=response.response?.statusCode ?? 0
 
             let metrics=Metrics()
             metrics.operationName="Reachable"
@@ -177,11 +177,17 @@ open class HTTPManager: NSObject {
 
             // Bartleby consignation
             let context = HTTPContext( code: 1,
-                                         caller: "Reachable",
-                                         relatedURL:request?.url,
-                                         httpStatusCode: response?.statusCode ?? 0,
-                                         response: response ,
-                                         result:result)
+                                       caller: "Reachable",
+                                       relatedURL:request?.url,
+                                       httpStatusCode: statusCode)
+
+            if let request=request{
+                context.request=HTTPRequest(urlRequest: request)
+            }
+
+            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                context.responseString=utf8Text
+            }
 
             glog( NSLocalizedString("Server is not reachable",comment: "Server is not reachable")+NSLocalizedString("Please Check your connection or your configuration!",comment: "Please Check your connection or your configuration!"), file: #file, function: #function, line: #line)
 
@@ -189,16 +195,15 @@ open class HTTPManager: NSObject {
             if result.isFailure {
                 failureHandler(context)
             } else {
-                if let statusCode=response?.statusCode {
-                    if 200...299 ~= statusCode {
-                        successHandler()
-                    } else {
-                        if let value=result.value {
-                            glog(value, file: #file, function: #function, line: #line)
-                        }
-                        failureHandler(context)
+                if 200...299 ~= statusCode {
+                    successHandler()
+                } else {
+                    if let value=result.value {
+                        glog(value, file: #file, function: #function, line: #line)
                     }
+                    failureHandler(context)
                 }
+
             }
         }
     }
@@ -223,7 +228,7 @@ open class HTTPManager: NSObject {
             let request=response.request
             let result=response.result
             let timeline=response.timeline
-            let response=response.response
+            let statusCode=response.response?.statusCode ?? 0
 
             let metrics=Metrics()
             metrics.operationName="VerifyCredentials"
@@ -236,11 +241,17 @@ open class HTTPManager: NSObject {
             // Bartleby consignation
 
             let context = HTTPContext( code: 1,
-                caller: "verifyCredentials",
-                relatedURL:request?.url,
-                httpStatusCode: response?.statusCode ?? 0,
-                response: response,
-                result:result)
+                                       caller: "verifyCredentials",
+                                       relatedURL:request?.url,
+                                       httpStatusCode: statusCode)
+
+            if let request=request{
+                context.request=HTTPRequest(urlRequest: request)
+            }
+
+            if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                context.responseString=utf8Text
+            }
 
             // React according to the situation
             var reactions = Array<Reaction> ()
@@ -249,9 +260,9 @@ open class HTTPManager: NSObject {
             let failureReaction =  Reaction.dispatchAdaptiveMessage(
                 context: context,
                 title: NSLocalizedString("Forbidden",
-                    comment: "Forbidden"),
+                                         comment: "Forbidden"),
                 body: NSLocalizedString("Credentials are not valid",
-                    comment: "Credentials are not valid"),
+                                        comment: "Credentials are not valid"),
                 transmit: { (selectedIndex) -> () in
                     glog("Post presentation message selectedIndex:\(selectedIndex)", file: #file, function: #function, line: #line)
             })
@@ -260,17 +271,16 @@ open class HTTPManager: NSObject {
                 reactions.append(failureReaction)
                 failureHandler(context)
             } else {
-                if let statusCode=response?.statusCode {
-                    if 200...299 ~= statusCode {
-                        successHandler()
-                    } else {
-                        reactions.append(failureReaction)
-                        if let value=result.value {
-                            glog(value, file: #file, function: #function, line: #line)
-                        }
-                        failureHandler(context)
+                if 200...299 ~= statusCode {
+                    successHandler()
+                } else {
+                    reactions.append(failureReaction)
+                    if let value=result.value {
+                        glog(value, file: #file, function: #function, line: #line)
                     }
+                    failureHandler(context)
                 }
+
             }
         }
     }
@@ -288,17 +298,17 @@ open class HTTPManager: NSObject {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
-
-
+    
+    
     /**
-    Salts a string to guarante that the app "knows" the shared salt
-
+     Salts a string to guarante that the app "knows" the shared salt
+     
      - parameter string: the string
-
+     
      - returns: the salted value
      */
     static open func salt(_ string: String) -> String {
         return CryptoHelper.hash(string + Bartleby.configuration.SHARED_SALT)
     }
-
+    
 }

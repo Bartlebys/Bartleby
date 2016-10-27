@@ -155,18 +155,19 @@ import Foundation
                     let request=response.request
                     let result=response.result
                     let timeline=response.timeline
-                    let data=response.data
-                    let response=response.response
+                    let statusCode=response.response?.statusCode ?? 0
                     
                     let context = HTTPContext( code: 4065884111,
                         caller: "ReadLockersByIds.execute",
                         relatedURL:request?.url,
-                        httpStatusCode: response?.statusCode ?? 0,
-                        response: response,
-                        result:result.value)
+                        httpStatusCode: statusCode)
                         
                     if let request=request{
                         context.request=HTTPRequest(urlRequest: request)
+                    }
+
+                    if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                        context.responseString=utf8Text
                     }
 
 					let metrics=Metrics()
@@ -180,21 +181,19 @@ import Foundation
 
                     // React according to the situation
                     var reactions = Array<Reaction> ()
-                    reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
             
                     if result.isFailure {
                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
             
                     }else{
-                        if let statusCode=response?.statusCode {
-                              if 200...299 ~= statusCode {
+                          if 200...299 ~= statusCode {
 	                            if let string=result.value{
 	                                if let instance = Mapper <Locker>().mapArray(JSONString:string){
 	                                    success(instance)
@@ -203,7 +202,7 @@ import Foundation
 	                                        context: context,
 	                                        title: NSLocalizedString("Deserialization issue",
 	                                        comment: "Deserialization issue"),
-	                                        body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+	                                        body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
 	                                        transmit:{ (selectedIndex) -> () in
 	                                    })
 	                                    reactions.append(failureReaction)
@@ -214,26 +213,26 @@ import Foundation
 	                                    context: context,
 	                                    title: NSLocalizedString("No String Deserialization issue",
 	                                                             comment: "No String Deserialization issue"),
-	                                    body: "\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+	                                    body: "\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
 	                                    transmit: { (selectedIndex) -> () in
 	                                })
 	                                reactions.append(failureReaction)
 	                                failure(context)
 	                            }
                          }else{
-                                // Bartlby does not currenlty discriminate status codes 100 & 101
-                                // and treats any status code >= 300 the same way
-                                // because we consider that failures differentiations could be done by the caller.
-                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                                    context: context,
-                                    title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                                    body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                                    transmit:{ (selectedIndex) -> () in
-                                })
-                               reactions.append(failureReaction)
-                               failure(context)
-                            }
+                            // Bartlby does not currenlty discriminate status codes 100 & 101
+                            // and treats any status code >= 300 the same way
+                            // because we consider that failures differentiations could be done by the caller.
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                                body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit:{ (selectedIndex) -> () in
+                            })
+                           reactions.append(failureReaction)
+                           failure(context)
                         }
+                        
                  }
                  //Let s react according to the context.
                  document.perform(reactions, forContext: context)
@@ -242,18 +241,14 @@ import Foundation
                 let context = HTTPContext( code:2 ,
                 caller: "ReadLockersByIds.execute",
                 relatedURL:nil,
-                httpStatusCode:500,
-                response:nil,
-                result:"{\"message\":\"\(error)}")
+                httpStatusCode:500)
                 failure(context)
         }
       }else{
          let context = HTTPContext( code: 1,
                 caller: "ReadLockersByIds.execute",
                 relatedURL:nil,
-                httpStatusCode: 417,
-                response: nil,
-                result:"{\"message\":\"Unexisting document with documentUID \(documentUID)\"}")
+                httpStatusCode: 417)
          failure(context)
        }
     }

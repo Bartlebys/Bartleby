@@ -38,7 +38,7 @@ extension BartlebyDocument{
         self._reachabilityManager?.listener = { status in
 
             Swift.print("Network Status Changed: \(status)")
-            let reachable=self._reachabilityManager!.isReachable
+            //let reachable=self._reachabilityManager!.isReachable
 
             if self.online{
                 // What is the current transition state?

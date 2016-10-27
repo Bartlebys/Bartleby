@@ -75,7 +75,7 @@ public extension Completion {
 
 
     public static func successStateFromHTTPContext(_ context: HTTPContext) -> Completion {
-        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode ?? 0), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode ?? 0 ) ?? .undefined)
+        return Completion(success: true, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode ), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
     }
 
 
@@ -97,7 +97,7 @@ public extension Completion {
     }
 
     public static func failureStateFromHTTPContext(_ context: HTTPContext) -> Completion {
-        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode ?? 0), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode ?? 0 ) ?? .undefined)
+        return Completion(success: false, message: StatusOfCompletion.messageFromStatus(context.httpStatusCode), statusCode: StatusOfCompletion (rawValue: context.httpStatusCode) ?? .undefined)
     }
 
 

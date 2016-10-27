@@ -10,22 +10,14 @@ import Foundation
 
 extension HTTPContext{
 
-    public convenience init(code: Int!, caller: String!, relatedURL: URL?, httpStatusCode: Int, response: Any?, result: Any?) {
+    public convenience init(code: Int!, caller: String!, relatedURL: URL?, httpStatusCode: Int, responseString:String="") {
         self.init()
         self.code=code
         self.caller=caller
         self.relatedURL=relatedURL
         self.httpStatusCode=httpStatusCode
-        self.response=response
-        self.result=result
-
+        self.responseString=responseString
     }
-
-    /*
-    required public convenience  init() {
-        self.init(code: 0, caller: "", relatedURL: nil, httpStatusCode: Int.max, response: nil, result:"")
-    }
- */
 
 
 }

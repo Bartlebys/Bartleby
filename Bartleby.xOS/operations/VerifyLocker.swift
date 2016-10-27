@@ -53,11 +53,10 @@ open class VerifyLocker: BartlebyObject {
             }
         }else{
             let context = HTTPContext( code: 1,
-                                         caller: "VerifyLocker.execute",
-                                         relatedURL:nil,
-                                         httpStatusCode:417,
-                                         response:nil,
-                                         result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
+                                       caller: "VerifyLocker.execute",
+                                       relatedURL:nil,
+                                       httpStatusCode:417)
+            context.responseString = "{\"message\":\"Attempt to verify a locker out of a document\"}"
             failure(context)
 
         }
@@ -80,11 +79,9 @@ open class VerifyLocker: BartlebyObject {
                                                     accessRefused failure:@escaping (_ context: HTTPContext)->()) {
 
         let context = HTTPContext( code: 900,
-                                     caller: "VerifyLocker.proceedToLocalVerification",
-                                     relatedURL:nil,
-                                     httpStatusCode: 0,
-                                     response: nil,
-                                     result:nil)
+                                   caller: "VerifyLocker.proceedToLocalVerification",
+                                   relatedURL:nil,
+                                   httpStatusCode: 0)
 
         let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
 
@@ -95,13 +92,13 @@ open class VerifyLocker: BartlebyObject {
                     self._verifyLockerBusinessLogic(locker, accessGranted: success, accessRefused: failure)
                 } else {
                     context.code = 1
-                    context.result="bad code"
+                    context.responseString = "bad code"
                     failure(context)
                 }
 
             } else {
                 context.code = 2
-                context.result="The locker do not exists locally"
+                context.responseString = "The locker do not exists locally"
                 failure(context)
             }
         }
@@ -132,11 +129,10 @@ open class VerifyLocker: BartlebyObject {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)
                 request(r).validate().responseString(completionHandler: { (response) in
 
-
                     let request=response.request
                     let result=response.result
                     let timeline=response.timeline
-                    let response=response.response
+                    let statusCode=response.response?.statusCode ?? 0
 
                     let metrics=Metrics()
                     metrics.operationName="VerifyLocker"
@@ -146,16 +142,18 @@ open class VerifyLocker: BartlebyObject {
                     metrics.totalDuration=timeline.totalDuration
                     document.report(metrics)
 
-                    // Bartleby consignation
-
                     let context = HTTPContext( code: 901,
-                                                 caller: "VerifyLocker.execute",
-                                                 relatedURL:request?.url,
-                                                 httpStatusCode: response?.statusCode ?? 0,
-                                                 response: response,
-                                                 result:result.value)
+                                               caller: "VerifyLocker.execute",
+                                               relatedURL:request?.url,
+                                               httpStatusCode: statusCode)
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
+                    }
 
-                    // React according to the situation
+                    if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                        context.responseString=utf8Text
+                    }
+
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
@@ -166,79 +164,76 @@ open class VerifyLocker: BartlebyObject {
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
-                            body:"\(m) httpStatus code = \(response?.statusCode ?? 0 ) | \(result.value)" ,
+                            body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
                             transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
                     } else {
-                        if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-                                if let string=result.value{
-                                    if let instance = Mapper <Locker>().map(JSONString:string){
-                                        success(instance)
-                                    }else{
-                                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                                            context: context,
-                                            title: NSLocalizedString("Deserialization issue",
-                                                                     comment: "Deserialization issue"),
-                                            body:"(result.value)",
-                                            transmit:{ (selectedIndex) -> () in
-                                        })
-                                        reactions.append(failureReaction)
-                                        failure(context)
-                                    }
+                        if 200...299 ~= statusCode {
+                            if let string=result.value{
+                                if let instance = Mapper <Locker>().map(JSONString:string){
+                                    success(instance)
                                 }else{
                                     let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                         context: context,
-                                        title: NSLocalizedString("No String Deserialization issue",
-                                                                 comment: "No String Deserialization issue"),
+                                        title: NSLocalizedString("Deserialization issue",
+                                                                 comment: "Deserialization issue"),
                                         body:"(result.value)",
-                                        transmit: { (selectedIndex) -> () in
+                                        transmit:{ (selectedIndex) -> () in
                                     })
                                     reactions.append(failureReaction)
                                     failure(context)
                                 }
-                            } else {
-                                // Bartlby does not currenlty discriminate status codes 100 & 101
-                                // and treats any status code >= 300 the same way
-                                // because we consider that failures differentiations could be done by the caller.
-                                let m = NSLocalizedString("locker verification",
-                                                          comment: "locker verification failure description")
+                            }else{
                                 let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
-                                    title: NSLocalizedString("Unsuccessfull attempt",
-                                                             comment: "Unsuccessfull attempt"),
-                                    body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
+                                    title: NSLocalizedString("No String Deserialization issue",
+                                                             comment: "No String Deserialization issue"),
+                                    body:"(result.value)",
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
                                 failure(context)
                             }
+                        } else {
+                            // Bartlby does not currenlty discriminate status codes 100 & 101
+                            // and treats any status code >= 300 the same way
+                            // because we consider that failures differentiations could be done by the caller.
+                            let m = NSLocalizedString("locker verification",
+                                                      comment: "locker verification failure description")
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt",
+                                                         comment: "Unsuccessfull attempt"),
+                                body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
+                                transmit: { (selectedIndex) -> () in
+                            })
+                            reactions.append(failureReaction)
+                            failure(context)
                         }
                     }
+
                     //Let's react according to the context.
                     document.perform(reactions, forContext: context)
 
                 })
             }catch{
                 let context = HTTPContext( code:2 ,
-                                             caller: "VerifyLocker._proceedToDistantVerification",
-                                             relatedURL:nil,
-                                             httpStatusCode:500,
-                                             response:nil,
-                                             result:"{\"message\":\"\(error)}")
+                                           caller: "VerifyLocker._proceedToDistantVerification",
+                                           relatedURL:nil,
+                                           httpStatusCode:500)
+                context.responseString="{\"message\":\"\(error)}"
                 failure(context)
             }
 
         }else{
 
             let context = HTTPContext( code: 1,
-                                         caller: "VerifyLocker._proceedToDistantVerification",
-                                         relatedURL:nil,
-                                         httpStatusCode:417,
-                                         response:nil,
-                                         result:"{\"message\":\"Attempt to verify a locker out of a document\"}")
+                                       caller: "VerifyLocker._proceedToDistantVerification",
+                                       relatedURL:nil,
+                                       httpStatusCode:417)
+            context.responseString = "{\"message\":\"Attempt to verify a locker out of a document\"}"
             failure(context)
         }
     }
@@ -250,11 +245,10 @@ open class VerifyLocker: BartlebyObject {
 
 
         let context = HTTPContext( code: 902,
-                                     caller: "VerifyLocker._verifyLockerBusinessLogic",
-                                     relatedURL:nil,
-                                     httpStatusCode: 0,
-                                     response: nil,
-                                     result:nil)
+                                   caller: "VerifyLocker._verifyLockerBusinessLogic",
+                                   relatedURL:nil,
+                                   httpStatusCode: 0)
+        context.responseString = ""
 
 
 
@@ -273,39 +267,37 @@ open class VerifyLocker: BartlebyObject {
                                 success(locker)
                                 return
                             } else {
-                                context.result="The Date is not valid" as AnyObject?
+                                context.responseString="The Date is not valid"
                                 failure(context)
                                 return
                             }
 
                         } else {
-                            context.result="The current user is the natural recipient of locker" as AnyObject?
+                            context.responseString="The current user is the natural recipient of locker"
                             failure(context)
                             return
                         }
                     } else {
-                        context.result="There is no root user in the document" as AnyObject?
+                        context.responseString="There is no root user in the document"
                         failure(context)
                         return
                     }
                 } else {
-                    context.result="documentUID is not valid" as AnyObject?
+                    context.responseString="documentUID is not valid"
                     failure(context)
                     return
                 }
             } else {
-                context.result="documentUID is not valid" as AnyObject?
+                context.responseString="documentUID is not valid"
                 failure(context)
                 return
             }
         } else {
             //
         }
-        context.result="Undefined failure" as AnyObject?
+        context.responseString="Undefined failure"
         failure(context)
         return
-        
-        
         
     }
     

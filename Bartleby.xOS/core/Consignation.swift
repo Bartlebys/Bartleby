@@ -34,9 +34,6 @@ public protocol ConsignableHTTPContext: Consignable {
     // The http status code
     var httpStatusCode: Int { get set }
 
-    // The response
-    var response: Any? { get set }
-
 }
 
 

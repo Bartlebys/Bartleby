@@ -21,36 +21,27 @@ import Foundation
         return "HTTPRequest"
     }
 
-	//A descriptive string for developer to identify the calling context
-	dynamic open var caller:String = "\(Default.NO_NAME)"
+	//The url
+	dynamic open var url:URL?
 
-	//A developer set code to provide filtering
-	dynamic open var code:Int = Int.max
+	//The HTTP method
+	dynamic open var httpMethod:String = "GET"
 
-	//The responded HTTP status code
-	dynamic open var httpStatusCode:Int = Int.max
+	//The Headers
+	dynamic open var headers:[String:Any]?
 
-	//The related url
-	dynamic open var relatedURL:URL?
+	//This data is sent as the message body of the request
+	dynamic open var httpBody:Data?
 
-	//A descriptive string for the URLRequest
-	dynamic open var requestDescription:String = "\(Default.VOID_STRING)"
-
-	//The response (not serialized)
-	dynamic open var response:Any?
-
-	//The result (not serialized)
-	dynamic open var result:Any?
-
-	//The responded data stringifyed
-	dynamic open var responseString:String?
+	//The timeout
+	dynamic open var timeout:Double = 10
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","requestDescription","response","result","responseString"])
+        exposed.append(contentsOf:["url","httpMethod","headers","httpBody","timeout"])
         return exposed
     }
 
@@ -63,37 +54,25 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "caller":
-                if let casted=value as? String{
-                    self.caller=casted
-                }
-            case "code":
-                if let casted=value as? Int{
-                    self.code=casted
-                }
-            case "httpStatusCode":
-                if let casted=value as? Int{
-                    self.httpStatusCode=casted
-                }
-            case "relatedURL":
+            case "url":
                 if let casted=value as? URL{
-                    self.relatedURL=casted
+                    self.url=casted
                 }
-            case "requestDescription":
+            case "httpMethod":
                 if let casted=value as? String{
-                    self.requestDescription=casted
+                    self.httpMethod=casted
                 }
-            case "response":
-                if let casted=value as? Any{
-                    self.response=casted
+            case "headers":
+                if let casted=value as? [String:Any]{
+                    self.headers=casted
                 }
-            case "result":
-                if let casted=value as? Any{
-                    self.result=casted
+            case "httpBody":
+                if let casted=value as? Data{
+                    self.httpBody=casted
                 }
-            case "responseString":
-                if let casted=value as? String{
-                    self.responseString=casted
+            case "timeout":
+                if let casted=value as? Double{
+                    self.timeout=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -110,22 +89,16 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "caller":
-               return self.caller
-            case "code":
-               return self.code
-            case "httpStatusCode":
-               return self.httpStatusCode
-            case "relatedURL":
-               return self.relatedURL
-            case "requestDescription":
-               return self.requestDescription
-            case "response":
-               return self.response
-            case "result":
-               return self.result
-            case "responseString":
-               return self.responseString
+            case "url":
+               return self.url
+            case "httpMethod":
+               return self.httpMethod
+            case "headers":
+               return self.headers
+            case "httpBody":
+               return self.httpBody
+            case "timeout":
+               return self.timeout
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -139,12 +112,11 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self.caller <- ( map["caller"] )
-			self.code <- ( map["code"] )
-			self.httpStatusCode <- ( map["httpStatusCode"] )
-			self.relatedURL <- ( map["relatedURL"], URLTransform() )
-			self.requestDescription <- ( map["requestDescription"] )
-			self.responseString <- ( map["responseString"] )
+			self.url <- ( map["url"], URLTransform() )
+			self.httpMethod <- ( map["httpMethod"] )
+			self.headers <- ( map["headers"] )
+			self.httpBody <- ( map["httpBody"], DataTransform() )
+			self.timeout <- ( map["timeout"] )
         }
     }
 
@@ -154,27 +126,27 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.caller=String(describing: decoder.decodeObject(of: NSString.self, forKey: "caller")! as NSString)
-			self.code=decoder.decodeInteger(forKey:"code") 
-			self.httpStatusCode=decoder.decodeInteger(forKey:"httpStatusCode") 
-			self.relatedURL=decoder.decodeObject(of: NSURL.self, forKey:"relatedURL") as URL?
-			self.requestDescription=String(describing: decoder.decodeObject(of: NSString.self, forKey: "requestDescription")! as NSString)
-			self.responseString=String(describing: decoder.decodeObject(of: NSString.self, forKey:"responseString") as NSString?)
+			self.url=decoder.decodeObject(of: NSURL.self, forKey:"url") as URL?
+			self.httpMethod=String(describing: decoder.decodeObject(of: NSString.self, forKey: "httpMethod")! as NSString)
+			self.headers=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "headers")as? [String:Any]
+			self.httpBody=decoder.decodeObject(of: NSData.self, forKey:"httpBody") as Data?
+			self.timeout=decoder.decodeDouble(forKey:"timeout") 
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self.caller,forKey:"caller")
-		coder.encode(self.code,forKey:"code")
-		coder.encode(self.httpStatusCode,forKey:"httpStatusCode")
-		if let relatedURL = self.relatedURL {
-			coder.encode(relatedURL,forKey:"relatedURL")
+		if let url = self.url {
+			coder.encode(url,forKey:"url")
 		}
-		coder.encode(self.requestDescription,forKey:"requestDescription")
-		if let responseString = self.responseString {
-			coder.encode(responseString,forKey:"responseString")
+		coder.encode(self.httpMethod,forKey:"httpMethod")
+		if let headers = self.headers {
+			coder.encode(headers,forKey:"headers")
 		}
+		if let httpBody = self.httpBody {
+			coder.encode(httpBody,forKey:"httpBody")
+		}
+		coder.encode(self.timeout,forKey:"timeout")
     }
 
     override open class var supportsSecureCoding:Bool{

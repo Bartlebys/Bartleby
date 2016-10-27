@@ -30,12 +30,12 @@ import Foundation
             let dictionary:[String:AnyObject]=["indexes":indexes as AnyObject]
             let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"TriggersForIndexes", forMethod:"GET", and: pathURL)
             do {
-                let r=try URLEncoding().encode(urlRequest,with:dictionary) 
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
                 request(r).validate().responseString(completionHandler: { (response) in
                     let request=response.request
                     let result=response.result
                     let timeline=response.timeline
-                    let response=response.response
+                    let statusCode=response.response?.statusCode ?? 0
 
                     let metrics=Metrics()
                     metrics.operationName="TriggersForIndexes"
@@ -44,93 +44,92 @@ import Foundation
                     metrics.serializationDuration=timeline.serializationDuration
                     metrics.totalDuration=timeline.totalDuration
                     document.report(metrics)
-
-                    // Bartleby consignation
                     let context = HTTPContext( code: 3054667497,
-                                                 caller: "TriggersForIndexes.execute",
-                                                 relatedURL:request?.url,
-                                                 httpStatusCode: response?.statusCode ?? 0,
-                                                 response: response,
-                                                 result:result.value)
-                    // React according to the situation
+                                               caller: "TriggersForIndexes.execute",
+                                               relatedURL:request?.url,
+                                               httpStatusCode: statusCode)
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
+                    }
+                    if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
+                        context.responseString=utf8Text
+                    }
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
                     if result.isFailure {
                         /*
-                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                            context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                            transmit: { (selectedIndex) -> () in
-                        })
-                        reactions.append(failureReaction)
+                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                         context: context,
+                         title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
+                         body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode)",
+                         transmit: { (selectedIndex) -> () in
+                         })
+                         reactions.append(failureReaction)
                          */
-                       failure(context)
+                        failure(context)
                     } else {
-                        if let statusCode=response?.statusCode {
-                            if 200...299 ~= statusCode {
-                                if let string=result.value{
-                                    if let instance = Mapper <Trigger>().mapArray(JSONString:string){
-                                        success(instance)
-                                    }else{
-                                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
-                                            context: context,
-                                            title: NSLocalizedString("Deserialization issue",
-                                                                     comment: "Deserialization issue"),
-                                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                                            transmit:{ (selectedIndex) -> () in
-                                        })
-                                        reactions.append(failureReaction)
-                                        failure(context)
-                                    }
+                        if 200...299 ~= statusCode {
+                            if let string=result.value{
+                                if let instance = Mapper <Trigger>().mapArray(JSONString:string){
+                                    success(instance)
                                 }else{
                                     let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                         context: context,
-                                        title: NSLocalizedString("No String Deserialization issue",
-                                                                 comment: "No String Deserialization issue"),
-                                        body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
-                                        transmit: { (selectedIndex) -> () in
+                                        title: NSLocalizedString("Deserialization issue",
+                                                                 comment: "Deserialization issue"),
+                                        body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                        transmit:{ (selectedIndex) -> () in
                                     })
                                     reactions.append(failureReaction)
                                     failure(context)
                                 }
-                            } else {
-                                // Bartlby does not currenlty discriminate status codes 100 & 101
-                                // and treats any status code >= 300 the same way
-                                // because we consider that failures differentiations could be done by the caller.
+                            }else{
                                 let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                     context: context,
-                                    title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                                    body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(response?.statusCode ?? 0))",
+                                    title: NSLocalizedString("No String Deserialization issue",
+                                                             comment: "No String Deserialization issue"),
+                                    body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
                                 failure(context)
                             }
+                        } else {
+                            // Bartlby does not currenlty discriminate status codes 100 & 101
+                            // and treats any status code >= 300 the same way
+                            // because we consider that failures differentiations could be done by the caller.
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                context: context,
+                                title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
+                                body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit: { (selectedIndex) -> () in
+                            })
+                            reactions.append(failureReaction)
+                            failure(context)
                         }
                     }
+
                     //Let s react according to the context.
                     document.perform(reactions, forContext: context)
                 })
             }catch{
                 let context = HTTPContext( code:2 ,
-                                             caller: "TriggersForIndexes.execute",
-                                             relatedURL:nil,
-                                             httpStatusCode:500,
-                                             response:nil,
-                                             result:"{\"message\":\"\(error)}")
+                                           caller: "TriggersForIndexes.execute",
+                                           relatedURL:nil,
+                                           httpStatusCode:500)
+                context.responseString = "{\"message\":\"\(error)}"
                 failure(context)
             }
         }else{
 
             let context = HTTPContext( code: 1,
-                                         caller: "TriggersForIndexes.execute",
-                                         relatedURL:nil,
-                                         httpStatusCode: 417,
-                                         response: nil,
-                                         result:"{\"message\":\"Unexisting document with documentUID \(documentUID)\"}")
+                                       caller: "TriggersForIndexes.execute",
+                                       relatedURL:nil,
+                                       httpStatusCode: 417)
+
+            context.responseString = "{\"message\":\"Unexisting document with documentUID \(documentUID)\"}"
             failure(context)
         }
     }
-    
+
 }

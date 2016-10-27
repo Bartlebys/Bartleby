@@ -24,7 +24,7 @@ import Foundation
 	//A descriptive string for developer to identify the calling context
 	dynamic open var caller:String = "\(Default.NO_NAME)"
 
-	//A developer set code to provide filtering
+	// A developer set code to provide filtering
 	dynamic open var code:Int = Int.max
 
 	//The responded HTTP status code
@@ -36,12 +36,6 @@ import Foundation
 	//The full http request
 	dynamic open var request:HTTPRequest?
 
-	//The response (not serialized)
-	dynamic open var response:Any?
-
-	//The result (not serialized)
-	dynamic open var result:Any?
-
 	//The responded data stringifyed
 	dynamic open var responseString:String?
 
@@ -50,7 +44,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","request","response","result","responseString"])
+        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","request","responseString"])
         return exposed
     }
 
@@ -83,14 +77,6 @@ import Foundation
                 if let casted=value as? HTTPRequest{
                     self.request=casted
                 }
-            case "response":
-                if let casted=value as? Any{
-                    self.response=casted
-                }
-            case "result":
-                if let casted=value as? Any{
-                    self.result=casted
-                }
             case "responseString":
                 if let casted=value as? String{
                     self.responseString=casted
@@ -120,10 +106,6 @@ import Foundation
                return self.relatedURL
             case "request":
                return self.request
-            case "response":
-               return self.response
-            case "result":
-               return self.result
             case "responseString":
                return self.responseString
             default:
