@@ -39,9 +39,18 @@ import Foundation
                     let request=response.request
                     let result=response.result
                     let timeline=response.timeline
+                    let data=response.data
                     let response=response.response
+                    
+                    let context = HTTPContext( code: 2944929622,
+                        caller: "ReadUserById.execute",
+                        relatedURL:request?.url,
+                        httpStatusCode: response?.statusCode ?? 0,
+                        response: response,
+                        result:result.value)
 
 					let metrics=Metrics()
+					metrics.httpContext=context
 					metrics.operationName="ReadUserById"
 					metrics.latency=timeline.latency
 					metrics.requestDuration=timeline.requestDuration
@@ -49,15 +58,6 @@ import Foundation
 					metrics.totalDuration=timeline.totalDuration
 					document.report(metrics)
 
-                    // Bartleby consignation
-            
-                    let context = HTTPContext( code: 2944929622,
-                        caller: "ReadUserById.execute",
-                        relatedURL:request?.url,
-                        httpStatusCode: response?.statusCode ?? 0,
-                        response: response,
-                        result:result.value)
-            
                     // React according to the situation
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: result.value, context: context)) // Tracking

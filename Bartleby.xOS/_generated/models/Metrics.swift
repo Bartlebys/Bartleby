@@ -42,12 +42,15 @@ import Foundation
 	//The time interval in seconds from the time the request started to the time response serialization completed.
 	dynamic open var totalDuration:Double = 0
 
+	//The full http context
+	dynamic open var httpContext:HTTPContext?
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration"])
+        exposed.append(contentsOf:["operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration","httpContext"])
         return exposed
     }
 
@@ -88,6 +91,10 @@ import Foundation
                 if let casted=value as? Double{
                     self.totalDuration=casted
                 }
+            case "httpContext":
+                if let casted=value as? HTTPContext{
+                    self.httpContext=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -117,6 +124,8 @@ import Foundation
                return self.serializationDuration
             case "totalDuration":
                return self.totalDuration
+            case "httpContext":
+               return self.httpContext
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -137,6 +146,7 @@ import Foundation
 			self.requestDuration <- ( map["requestDuration"] )
 			self.serializationDuration <- ( map["serializationDuration"] )
 			self.totalDuration <- ( map["totalDuration"] )
+			self.httpContext <- ( map["httpContext"] )
         }
     }
 
@@ -153,6 +163,7 @@ import Foundation
 			self.requestDuration=decoder.decodeDouble(forKey:"requestDuration") 
 			self.serializationDuration=decoder.decodeDouble(forKey:"serializationDuration") 
 			self.totalDuration=decoder.decodeDouble(forKey:"totalDuration") 
+			self.httpContext=decoder.decodeObject(of:HTTPContext.self, forKey: "httpContext") 
         }
     }
 
@@ -165,6 +176,9 @@ import Foundation
 		coder.encode(self.requestDuration,forKey:"requestDuration")
 		coder.encode(self.serializationDuration,forKey:"serializationDuration")
 		coder.encode(self.totalDuration,forKey:"totalDuration")
+		if let httpContext = self.httpContext {
+			coder.encode(httpContext,forKey:"httpContext")
+		}
     }
 
     override open class var supportsSecureCoding:Bool{

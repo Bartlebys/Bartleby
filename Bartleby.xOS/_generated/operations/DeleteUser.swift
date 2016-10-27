@@ -279,6 +279,7 @@ import Foundation
                                 if let dictionary = result.value as? Dictionary< String,AnyObject > {
                                     if let index=dictionary["triggerIndex"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
+										acknowledgment.httpContext=context
 										acknowledgment.operationName="DeleteUser"
 										acknowledgment.triggerIndex=index.intValue
 										acknowledgment.latency=timeline.latency
