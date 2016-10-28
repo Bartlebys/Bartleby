@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
-        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target">
@@ -79,7 +78,7 @@
                                     </tableColumn>
                                     <tableColumn width="50" minWidth="30" maxWidth="200" id="8aC-5g-Qda">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Time Stamp">
-                                            <font key="font" metaFont="systemMedium" size="11"/>
+                                            <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -162,6 +161,48 @@
                                             </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
+                                    <tableColumn editable="NO" width="529" minWidth="500" maxWidth="3000" id="Mmw-vz-6VB" userLabel="Message">
+                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Message">
+                                            <font key="font" metaFont="smallSystem"/>
+                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                        </tableHeaderCell>
+                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="zgW-Qs-6lQ">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <prototypeCellViews>
+                                            <tableCellView id="dtc-9T-33x">
+                                                <rect key="frame" x="210" y="1" width="529" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="9D2-NK-j9W">
+                                                        <rect key="frame" x="0.0" y="0.0" width="529" height="17"/>
+                                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="ynI-wv-3a9">
+                                                            <font key="font" metaFont="system"/>
+                                                            <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </textFieldCell>
+                                                        <connections>
+                                                            <binding destination="dtc-9T-33x" name="value" keyPath="objectValue.message" id="QEh-xl-enT"/>
+                                                            <binding destination="-2" name="font" keyPath="self.font" id="8dG-bP-Jke"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="9D2-NK-j9W" firstAttribute="leading" secondItem="dtc-9T-33x" secondAttribute="leading" constant="2" id="FoN-vU-4EV"/>
+                                                    <constraint firstAttribute="bottom" secondItem="9D2-NK-j9W" secondAttribute="bottom" id="a0Y-6G-zcR"/>
+                                                    <constraint firstAttribute="trailing" secondItem="9D2-NK-j9W" secondAttribute="trailing" constant="2" id="pph-b8-atw"/>
+                                                    <constraint firstItem="9D2-NK-j9W" firstAttribute="top" secondItem="dtc-9T-33x" secondAttribute="top" id="wtV-on-B5S"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="textField" destination="9D2-NK-j9W" id="cPx-4f-yLs"/>
+                                                </connections>
+                                            </tableCellView>
+                                        </prototypeCellViews>
+                                    </tableColumn>
                                     <tableColumn width="150" minWidth="100" maxWidth="400" id="gtj-mF-tze">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="File">
                                             <font key="font" metaFont="smallSystem"/>
@@ -177,7 +218,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="jyA-2i-mG0">
-                                                <rect key="frame" x="210" y="1" width="150" height="17"/>
+                                                <rect key="frame" x="742" y="1" width="150" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="QC9-Ff-FXq">
@@ -219,7 +260,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="8bw-33-JLQ">
-                                                <rect key="frame" x="363" y="1" width="100" height="17"/>
+                                                <rect key="frame" x="895" y="1" width="100" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="mcW-FP-0Ay">
@@ -261,7 +302,7 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="Yir-tK-CWe">
-                                                <rect key="frame" x="466" y="1" width="50" height="17"/>
+                                                <rect key="frame" x="998" y="1" width="50" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="5Yk-g1-vbb">
@@ -284,48 +325,6 @@
                                                 </constraints>
                                                 <connections>
                                                     <outlet property="textField" destination="5Yk-g1-vbb" id="1SE-gd-aMG"/>
-                                                </connections>
-                                            </tableCellView>
-                                        </prototypeCellViews>
-                                    </tableColumn>
-                                    <tableColumn editable="NO" width="529" minWidth="500" maxWidth="3000" id="Mmw-vz-6VB" userLabel="Message">
-                                        <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Message">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                        </tableHeaderCell>
-                                        <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="zgW-Qs-6lQ">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                        <prototypeCellViews>
-                                            <tableCellView id="dtc-9T-33x">
-                                                <rect key="frame" x="519" y="1" width="529" height="17"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                <subviews>
-                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="9D2-NK-j9W">
-                                                        <rect key="frame" x="0.0" y="0.0" width="529" height="17"/>
-                                                        <textFieldCell key="cell" selectable="YES" sendsActionOnEndEditing="YES" title="Table View Cell" id="ynI-wv-3a9">
-                                                            <font key="font" metaFont="system"/>
-                                                            <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                        </textFieldCell>
-                                                        <connections>
-                                                            <binding destination="dtc-9T-33x" name="value" keyPath="objectValue.message" id="QEh-xl-enT"/>
-                                                            <binding destination="-2" name="font" keyPath="self.font" id="8dG-bP-Jke"/>
-                                                        </connections>
-                                                    </textField>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="9D2-NK-j9W" firstAttribute="leading" secondItem="dtc-9T-33x" secondAttribute="leading" constant="2" id="FoN-vU-4EV"/>
-                                                    <constraint firstAttribute="bottom" secondItem="9D2-NK-j9W" secondAttribute="bottom" id="a0Y-6G-zcR"/>
-                                                    <constraint firstAttribute="trailing" secondItem="9D2-NK-j9W" secondAttribute="trailing" constant="2" id="pph-b8-atw"/>
-                                                    <constraint firstItem="9D2-NK-j9W" firstAttribute="top" secondItem="dtc-9T-33x" secondAttribute="top" id="wtV-on-B5S"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="textField" destination="9D2-NK-j9W" id="cPx-4f-yLs"/>
                                                 </connections>
                                             </tableCellView>
                                         </prototypeCellViews>

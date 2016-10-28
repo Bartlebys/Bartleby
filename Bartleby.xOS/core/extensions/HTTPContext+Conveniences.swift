@@ -19,5 +19,4 @@ extension HTTPContext{
         self.responseString=responseString
     }
 
-
 }

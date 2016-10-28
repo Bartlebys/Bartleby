@@ -304,6 +304,7 @@
 		E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */; };
 		E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */; };
 		E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */; };
+		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,6 +516,7 @@
 		E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QosViewController.swift; sourceTree = "<group>"; };
 		E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QosViewController.xib; sourceTree = "<group>"; };
 		E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Reachability.swift"; sourceTree = "<group>"; };
+		E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,6 +606,7 @@
 				E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */,
 				E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */,
 				E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */,
+				E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */,
 			);
 			name = "Bartleby.OSX-Apps";
 			path = "../Bartleby.OSX-Apps";
@@ -1269,6 +1272,7 @@
 				E57377191DBB960500E2B849 /* IterableCollectibleCollection.swift in Sources */,
 				E57376A31DBB960500E2B849 /* ReadUserById.swift in Sources */,
 				E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */,
+				E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */,
 				E57376EB1DBB960500E2B849 /* Handlers.swift in Sources */,
 				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376FD1DBB960500E2B849 /* ChangesInspectable.swift in Sources */,

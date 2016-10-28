@@ -233,6 +233,25 @@ extension String {
         return Range(uncheckedBounds: (lower: self.endIndex, upper: self.endIndex))
     }
 
+
+
+
+    func jsonPrettify()->String{
+        do {
+            if let d=self.data(using:.utf8){
+                let jsonObject = try JSONSerialization.jsonObject(with: d, options:[])
+                let jsonObjectData = try JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted)
+                if let prettyString = String(data: jsonObjectData, encoding: .utf8){
+                    return prettyString
+                }
+            }
+        } catch {
+            return self
+        }
+        return self
+    }
+
+
 }
 
 

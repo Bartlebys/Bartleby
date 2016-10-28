@@ -43,7 +43,6 @@ import Foundation
                     metrics.requestDuration=timeline.requestDuration
                     metrics.serializationDuration=timeline.serializationDuration
                     metrics.totalDuration=timeline.totalDuration
-                    document.report(metrics)
                     let context = HTTPContext( code: 3054667497,
                                                caller: "TriggersForIndexes.execute",
                                                relatedURL:request?.url,
@@ -54,6 +53,9 @@ import Foundation
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                         context.responseString=utf8Text
                     }
+                    metrics.httpContext=context
+                    document.report(metrics)
+
                     var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: result.value, context: context)) // Tracking
                     if result.isFailure {

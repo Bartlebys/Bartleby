@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class QosViewController: NSViewController ,DocumentDependent{
+class QosViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
 
     override var nibName : String { return "QosViewController" }
 
@@ -21,6 +21,8 @@ class QosViewController: NSViewController ,DocumentDependent{
     @IBOutlet var arrayController: NSArrayController!
 
     fileprivate var _lockFilterUpdate=false
+
+    @IBOutlet var metricsViewController: MetricsDetailsViewController!
 
     // MARK: life Cycle
 
@@ -43,12 +45,31 @@ class QosViewController: NSViewController ,DocumentDependent{
     }
 
 
+    // Present the metricsViewController
+    @IBAction func doubleClick(_ sender: BXTableView) {
+        if self.metricsViewController.presenting == nil{
+            if let metrics=arrayController.arrangedObjects as? [Metrics]{
+                let row=sender.selectedRow
+                if metrics.count > row &&  row >= 0 {
+                    let frame = tableView.frameOfCell(atColumn: sender.clickedColumn, row: sender.clickedRow)
+                    self.metricsViewController.metrics=metrics[row]
+                    self.presentViewController(self.metricsViewController,
+                                               asPopoverRelativeTo: frame,
+                                               of: tableView,
+                                               preferredEdge:NSRectEdge(rawValue: 2)!,
+                                               behavior: NSPopoverBehavior.transient)
+                }
+            }
+        }
+    }
+
+
+    // MARK: Filtering
+
 
     @IBAction func didChange(_ sender: AnyObject) {
         self._updateFilter()
     }
-
-    // MARK: Filtering
 
     fileprivate func _updateFilter() -> () {
         if !self._lockFilterUpdate{
@@ -64,8 +85,6 @@ class QosViewController: NSViewController ,DocumentDependent{
             self.arrayController.filterPredicate=predicate
         }
     }
+    
+
 }
-
-
-
-

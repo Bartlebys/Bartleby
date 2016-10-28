@@ -172,8 +172,6 @@ open class HTTPManager: NSObject {
             metrics.serializationDuration=timeline.serializationDuration
             metrics.totalDuration=timeline.totalDuration
 
-            // We use Bartleby's report handler (because the document is not always defined when calling this endPoint)
-            Bartleby.sharedInstance.report(metrics,forURL:pathURL)
 
             // Bartleby consignation
             let context = HTTPContext( code: 1,
@@ -187,6 +185,13 @@ open class HTTPManager: NSObject {
 
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                 context.responseString=utf8Text
+            }
+
+            metrics.httpContext=context
+
+            if let url=request?.url{
+                // We use Bartleby's report handler (because the document is not always defined when calling this endPoint)
+                Bartleby.sharedInstance.report(metrics,forURL:url)
             }
 
             glog( NSLocalizedString("Server is not reachable",comment: "Server is not reachable")+NSLocalizedString("Please Check your connection or your configuration!",comment: "Please Check your connection or your configuration!"), file: #file, function: #function, line: #line)
@@ -236,7 +241,7 @@ open class HTTPManager: NSObject {
             metrics.requestDuration=timeline.requestDuration
             metrics.serializationDuration=timeline.serializationDuration
             metrics.totalDuration=timeline.totalDuration
-            document?.report(metrics)
+
 
             // Bartleby consignation
 
@@ -252,6 +257,9 @@ open class HTTPManager: NSObject {
             if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                 context.responseString=utf8Text
             }
+
+            metrics.httpContext=context
+            document?.report(metrics)
 
             // React according to the situation
             var reactions = Array<Reaction> ()

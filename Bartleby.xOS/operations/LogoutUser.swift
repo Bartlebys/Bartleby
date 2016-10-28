@@ -46,8 +46,6 @@ open class LogoutUser: BartlebyObject {
                         metrics.requestDuration=timeline.requestDuration
                         metrics.serializationDuration=timeline.serializationDuration
                         metrics.totalDuration=timeline.totalDuration
-                        document.report(metrics)
-
                         let context = HTTPContext( code: 100,
                                                    caller: "LogoutUser.execute",
                                                    relatedURL:request?.url,
@@ -60,7 +58,8 @@ open class LogoutUser: BartlebyObject {
                         if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                             context.responseString=utf8Text
                         }
-
+                        metrics.httpContext=context
+                        document.report(metrics)
                         // React according to the situation
                         var reactions = Array<Reaction> ()
                         reactions.append(Reaction.track(result: nil, context: context)) // Tracking

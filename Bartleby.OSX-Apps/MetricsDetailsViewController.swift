@@ -8,15 +8,38 @@
 
 import Cocoa
 
-class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
+open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
 
-    typealias EditorOf=Metrics
 
-    var UID:String=Bartleby.createUID()
+    public typealias EditorOf=Metrics
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
+    public var UID:String=Bartleby.createUID()
+
+    override open var nibName : String { return "MetricsDetailsViewController" }
+
+    dynamic var responseString:String?
+
+    dynamic var requestString:String?
+
+    // Metrics are using Bindings
+    dynamic open var metrics:Metrics?{
+        didSet{
+            if let r=metrics?.httpContext?.responseString{
+                self.responseString=r.jsonPrettify()
+            }else{
+                self.responseString="no response"
+            }
+            if let request=metrics?.httpContext?.request{
+                let formattedString=request.toJSONString(true)
+                self.requestString=formattedString
+            }else{
+                self.requestString="no request"
+            }
+            let s=metrics?.toJSONString(true)
+            Swift.print("\(s)")
+        }
     }
-    
+
+    @IBOutlet var objectController: NSObjectController!
+
 }
