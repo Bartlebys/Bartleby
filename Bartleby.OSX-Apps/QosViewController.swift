@@ -49,10 +49,17 @@ class QosViewController: NSViewController ,DocumentDependent,NSTableViewDelegate
     @IBAction func doubleClick(_ sender: BXTableView) {
         if self.metricsViewController.presenting == nil{
             if let metrics=arrayController.arrangedObjects as? [Metrics]{
-                let row=sender.selectedRow
-                if metrics.count > row &&  row >= 0 {
+                let rows=sender.selectedRowIndexes
+                if rows.count>0 {
                     let frame = tableView.frameOfCell(atColumn: sender.clickedColumn, row: sender.clickedRow)
-                    self.metricsViewController.metrics=metrics[row]
+                    var selectedMetrics:[Metrics]=[Metrics]()
+                    for idx in rows{
+                        selectedMetrics.append(metrics[idx])
+                    }
+                    selectedMetrics=selectedMetrics.sorted(by: { (rMetrics, lMetrics) -> Bool in
+                        return rMetrics.counter > lMetrics.counter
+                    })
+                    self.metricsViewController.arrayOfmetrics=selectedMetrics
                     self.presentViewController(self.metricsViewController,
                                                asPopoverRelativeTo: frame,
                                                of: tableView,

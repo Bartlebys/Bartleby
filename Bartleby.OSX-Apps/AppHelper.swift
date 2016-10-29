@@ -15,12 +15,12 @@ public struct AppHelper {
 
     /// Returns a configured MetricsDetailsViewController
     ///
-    /// - parameter metrics: the metrics to use.
+    /// - parameter metrics: the array of metrics to use (we take the last one first)
     ///
     /// - returns: the MetricsDetailsViewController
-    public static func getMetricsDetailsViewController(for metrics:Metrics)->MetricsDetailsViewController{
+    public static func getMetricsDetailsViewController(for metrics:[Metrics])->MetricsDetailsViewController{
         let metricsViewController=MetricsDetailsViewController(nibName: "MetricsDetailsViewController", bundle:  Bundle(for: MetricsDetailsViewController.self))!
-        metricsViewController.metrics=metrics
+        metricsViewController.arrayOfmetrics=metrics
         return metricsViewController
     }
 
@@ -32,15 +32,14 @@ public struct AppHelper {
     /// - parameter document:  the document reference.
     public static func displayLastMetrics(presenter:NSViewController,sender:NSView,document:BartlebyDocument){
         let metrics=document.metrics
-            if let lastMetrics=metrics.last{
-                let metricsViewController=AppHelper.getMetricsDetailsViewController(for: lastMetrics)
-                let frame = sender.frame
-                presenter.presentViewController( metricsViewController,
-                                            asPopoverRelativeTo: frame,
-                                            of: presenter.view,
-                                            preferredEdge:NSRectEdge(rawValue: 2)!,
-                                            behavior: NSPopoverBehavior.transient)
-            }
+        let metricsViewController=AppHelper.getMetricsDetailsViewController(for: metrics)
+        let frame = sender.frame
+        presenter.presentViewController( metricsViewController,
+                                         asPopoverRelativeTo: frame,
+                                         of: sender,
+                                         preferredEdge:NSRectEdge(rawValue: 2)!,
+                                         behavior: NSPopoverBehavior.transient)
+
     }
 
 }

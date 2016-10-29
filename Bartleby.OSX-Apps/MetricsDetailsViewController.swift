@@ -21,8 +21,50 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
 
     dynamic var requestString:String?
 
-    // Metrics are using Bindings
-    dynamic open var metrics:Metrics?{
+    open var arrayOfmetrics:[Metrics]=[Metrics](){
+        didSet{
+            if let m=arrayOfmetrics.last{
+                self.metrics=m
+                _metricsIndex=arrayOfmetrics.count-1
+            }
+        }
+    }
+
+    internal func _checkButtonAvailability(){
+        if arrayOfmetrics.count > 0{
+            if _metricsIndex <= 0 {
+                self.previousButton.isEnabled=false
+            }else{
+                self.previousButton.isEnabled=true
+            }
+            if _metricsIndex > arrayOfmetrics.count-1 {
+                self.nextButton.isEnabled=false
+            }else{
+                self.nextButton.isEnabled=true
+            }
+        }else{
+            previousButton.isEnabled=false
+            nextButton.isEnabled=false
+        }
+
+    }
+
+    internal var _metricsIndex:Int = -1{
+        didSet{
+            if _metricsIndex >= 0{
+                self.metrics=self.arrayOfmetrics[_metricsIndex]
+                self.displayedIndex="\(_metricsIndex+1)"
+            }
+        }
+    }
+
+    public dynamic var displayedIndex:String=""
+
+
+
+    // The Selected Metrics
+    // We are using using Bindings
+    dynamic internal var metrics:Metrics?{
         didSet{
             if let r=metrics?.httpContext?.responseString{
                 self.responseString=r.jsonPrettify()
@@ -36,9 +78,36 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
                 self.requestString="no request"
             }
             let s=metrics?.toJSONString(true)
-            Swift.print("\(s)")
         }
     }
+    @IBOutlet weak var previousButton: NSButton!
+
+    @IBOutlet weak var nextButton: NSButton!
+
+
+    open override func  viewDidAppear() {
+        super.viewDidAppear()
+        self._checkButtonAvailability()
+    }
+
+    @IBAction func goPrevious(_ sender: AnyObject) {
+        let nextIndex=_metricsIndex-1
+        if nextIndex >= 0{
+            _metricsIndex=nextIndex
+            self.metrics=self.arrayOfmetrics[nextIndex]
+        }
+        self._checkButtonAvailability()
+    }
+
+    @IBAction func goNext(_ sender: AnyObject) {
+        let nextIndex=_metricsIndex+1
+        if nextIndex <= self.arrayOfmetrics.count-1{
+            self._metricsIndex=nextIndex
+            self.metrics=self.arrayOfmetrics[nextIndex]
+        }
+        self._checkButtonAvailability()
+    }
+
 
     @IBOutlet var objectController: NSObjectController!
 
