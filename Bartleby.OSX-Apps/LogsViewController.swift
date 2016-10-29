@@ -16,7 +16,7 @@ class LogsViewController: NSViewController,DocumentDependent{
     var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize())
 
     fileprivate var _document:BartlebyDocument?
-    
+
     @IBOutlet weak var tableView: BXTableView!
 
     @IBOutlet weak var searchField: NSSearchField!
@@ -71,7 +71,7 @@ class LogsViewController: NSViewController,DocumentDependent{
     @IBAction func didChange(_ sender: AnyObject) {
         self._updateFilter()
     }
-    
+
     // MARK: Filtering
 
 
@@ -104,12 +104,27 @@ class LogsViewController: NSViewController,DocumentDependent{
 
     @IBAction func sendAReport(_ sender: AnyObject) {
     }
+
+    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
+        var stringifyedMetrics=Default.NO_MESSAGE
+        // Take all the Log entries
+        if let m=self.arrayController.arrangedObjects as? [LogEntry]{
+            if let j = m.toJSONString(){
+                stringifyedMetrics=j.jsonPrettify()
+            }
+        }
+        NSPasteboard.general().clearContents()
+        let ns:NSString=stringifyedMetrics as NSString
+        NSPasteboard.general().writeObjects([ns])
+    }
+
+
 }
 
 extension LogsViewController:LogEntriesObserver{
 
     func receive(_ entry:LogEntry){
-        GlobalQueue.main.get().async { 
+        GlobalQueue.main.get().async {
             self.entries.insert(entry, at: 0)
         }
     }

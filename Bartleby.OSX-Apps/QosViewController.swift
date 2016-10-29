@@ -63,6 +63,27 @@ class QosViewController: NSViewController ,DocumentDependent,NSTableViewDelegate
         }
     }
 
+    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
+        var stringifyedMetrics=Default.NO_MESSAGE
+        if self.arrayController.selectedObjects.count>0{
+            // Take the selection
+            if let m=self.arrayController.selectedObjects as? [Metrics]{
+                if let j = m.toJSONString(){
+                    stringifyedMetrics=j.jsonPrettify()
+                }
+            }
+        }else{
+            // Take all the metricss
+            if let m=self.arrayController.arrangedObjects as? [Metrics]{
+                if let j = m.toJSONString(){
+                    stringifyedMetrics=j.jsonPrettify()
+                }
+            }
+        }
+        NSPasteboard.general().clearContents()
+        let ns:NSString=stringifyedMetrics as NSString
+        NSPasteboard.general().writeObjects([ns])
+    }
 
     // MARK: Filtering
 

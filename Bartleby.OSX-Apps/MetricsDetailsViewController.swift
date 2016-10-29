@@ -42,4 +42,11 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
 
     @IBOutlet var objectController: NSObjectController!
 
+    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
+        if let c=metrics?.toJSONString(true){
+            NSPasteboard.general().clearContents()
+            let ns:NSString=c as NSString
+            NSPasteboard.general().writeObjects([ns])
+        }
+    }
 }

@@ -372,10 +372,26 @@
                         <action selector="didChange:" target="-2" id="VHh-lp-bGy"/>
                     </connections>
                 </searchField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gbS-BR-lEe">
+                    <rect key="frame" x="2" y="0.0" width="163" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="151" id="F3P-xQ-CwM"/>
+                        <constraint firstAttribute="height" constant="21" id="fYR-s3-B0Q"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Copy To PasteBoard" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="u3E-Ia-LGT">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="copyToPasteBoard:" target="-2" id="0tx-UG-mIn"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Apf-Fy-UCM" secondAttribute="bottom" constant="6" id="DqB-ws-UpN"/>
+                <constraint firstItem="gbS-BR-lEe" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="8" id="Ogn-X8-AW0"/>
                 <constraint firstItem="9lt-gS-ckt" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="RtM-97-URf"/>
+                <constraint firstAttribute="bottom" secondItem="gbS-BR-lEe" secondAttribute="bottom" constant="7" id="UZp-yD-VaY"/>
                 <constraint firstItem="9lt-gS-ckt" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Vj8-Ya-DQ0"/>
                 <constraint firstAttribute="bottom" secondItem="9lt-gS-ckt" secondAttribute="bottom" constant="34" id="XD5-Dl-ZyE"/>
                 <constraint firstAttribute="trailing" secondItem="Apf-Fy-UCM" secondAttribute="trailing" constant="5" id="aVR-fp-oHN"/>

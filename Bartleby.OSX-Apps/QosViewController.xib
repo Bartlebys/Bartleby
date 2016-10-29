@@ -367,7 +367,7 @@
                                     </tableColumn>
                                 </tableColumns>
                                 <connections>
-                                    <action selector="doubleClick:" target="-2" id="Bh2-i2-8r0"/>
+                                    <action trigger="doubleAction" selector="doubleClick:" target="-2" id="oqZ-jz-MSo"/>
                                     <binding destination="F7b-ba-MMo" name="content" keyPath="arrangedObjects" id="t0g-6K-ACt"/>
                                     <binding destination="F7b-ba-MMo" name="selectionIndexes" keyPath="selectionIndexes" previousBinding="t0g-6K-ACt" id="JSs-xf-yVd"/>
                                     <binding destination="F7b-ba-MMo" name="sortDescriptors" keyPath="sortDescriptors" previousBinding="JSs-xf-yVd" id="i8L-q1-T7o"/>
@@ -427,9 +427,25 @@
                         <binding destination="F7b-ba-MMo" name="value" keyPath="selection.@avg.totalDuration" id="hmQ-0q-Mvl"/>
                     </connections>
                 </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="b5G-zf-9NM">
+                    <rect key="frame" x="328" y="0.0" width="163" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="151" id="UqA-Fl-nxh"/>
+                        <constraint firstAttribute="height" constant="21" id="yiP-Al-dGn"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Copy To PasteBoard" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PF3-mr-oum">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="copyToPasteBoard:" target="-2" id="Ynr-3j-ZVX"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="b5G-zf-9NM" secondAttribute="bottom" constant="7" id="204-Uc-nyD"/>
                 <constraint firstItem="3PW-zr-Rb0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="2My-gI-Pe9"/>
+                <constraint firstItem="yck-62-kkg" firstAttribute="leading" secondItem="b5G-zf-9NM" secondAttribute="trailing" constant="25" id="3Jc-Tc-i19"/>
                 <constraint firstAttribute="bottom" secondItem="yck-62-kkg" secondAttribute="bottom" constant="6" id="9ia-XR-wLa"/>
                 <constraint firstItem="UW0-XF-eE7" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="PCX-aa-d3K"/>
                 <constraint firstItem="UW0-XF-eE7" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="UbJ-V5-xAa"/>
