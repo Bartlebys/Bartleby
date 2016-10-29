@@ -301,8 +301,8 @@
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
 		E5E6DE471DBE32670036594C /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE461DBE32670036594C /* Metrics.swift */; };
 		E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */; };
-		E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */; };
-		E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */; };
+		E5E6E1C61DBE3F9D0036594C /* ChronologyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */; };
+		E5E6E1C71DBE3F9D0036594C /* ChronologyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */; };
 		E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */; };
 		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 /* End PBXBuildFile section */
@@ -513,8 +513,8 @@
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
 		E5E6DE461DBE32670036594C /* Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Metrics.swift"; sourceTree = "<group>"; };
-		E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QosViewController.swift; sourceTree = "<group>"; };
-		E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QosViewController.xib; sourceTree = "<group>"; };
+		E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChronologyViewController.swift; sourceTree = "<group>"; };
+		E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChronologyViewController.xib; sourceTree = "<group>"; };
 		E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Reachability.swift"; sourceTree = "<group>"; };
 		E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -592,8 +592,8 @@
 				E50F3AE51D40D27F00532B09 /* LogsViewController.xib */,
 				E54AF94E1D4A518A00EE1945 /* WebStack.swift */,
 				E54AF94F1D4A518A00EE1945 /* WebStack.xib */,
-				E5E6E1C41DBE3F9D0036594C /* QosViewController.swift */,
-				E5E6E1C51DBE3F9D0036594C /* QosViewController.xib */,
+				E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */,
+				E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */,
 				E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */,
 				E50F3AE31D40D27F00532B09 /* InspectorViewController.xib */,
 				E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */,
@@ -1131,7 +1131,7 @@
 				E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */,
 				E50A106A1DC2261D00869BFB /* MetricsDetailsViewController.xib in Resources */,
 				E50F3AF51D40D27F00532B09 /* Media.xcassets in Resources */,
-				E5E6E1C71DBE3F9D0036594C /* QosViewController.xib in Resources */,
+				E5E6E1C71DBE3F9D0036594C /* ChronologyViewController.xib in Resources */,
 				E50F3AF91D40D27F00532B09 /* DocumentInspector.xib in Resources */,
 				E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */,
 				E50F3AF41D40D27F00532B09 /* LogsViewController.xib in Resources */,
@@ -1281,7 +1281,7 @@
 				E57376CD1DBB960500E2B849 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E57376F31DBB960500E2B849 /* JSerializer.swift in Sources */,
 				E57376F71DBB960500E2B849 /* ImageTransform.swift in Sources */,
-				E5E6E1C61DBE3F9D0036594C /* QosViewController.swift in Sources */,
+				E5E6E1C61DBE3F9D0036594C /* ChronologyViewController.swift in Sources */,
 				E57376691DBB960500E2B849 /* PushOperationsManagedCollection.swift in Sources */,
 				E57376D91DBB960500E2B849 /* ExternalReference+Resolution.swift in Sources */,
 				E57376851DBB960500E2B849 /* PushOperation.swift in Sources */,

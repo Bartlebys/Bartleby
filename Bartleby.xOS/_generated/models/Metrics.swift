@@ -45,12 +45,19 @@ import Foundation
 	//The full http context
 	dynamic open var httpContext:HTTPContext?
 
+	//the verification method
+	public enum StreamOrientation:String{
+		case upStream = "upStream"
+		case downStream = "downStream"
+	}
+	open var streamOrientation:StreamOrientation = .upStream
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration","httpContext"])
+        exposed.append(contentsOf:["operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration","httpContext","streamOrientation"])
         return exposed
     }
 
@@ -95,6 +102,10 @@ import Foundation
                 if let casted=value as? HTTPContext{
                     self.httpContext=casted
                 }
+            case "streamOrientation":
+                if let casted=value as? Metrics.StreamOrientation{
+                    self.streamOrientation=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -126,6 +137,8 @@ import Foundation
                return self.totalDuration
             case "httpContext":
                return self.httpContext
+            case "streamOrientation":
+               return self.streamOrientation
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -147,6 +160,7 @@ import Foundation
 			self.serializationDuration <- ( map["serializationDuration"] )
 			self.totalDuration <- ( map["totalDuration"] )
 			self.httpContext <- ( map["httpContext"] )
+			self.streamOrientation <- ( map["streamOrientation"] )
         }
     }
 
@@ -164,6 +178,7 @@ import Foundation
 			self.serializationDuration=decoder.decodeDouble(forKey:"serializationDuration") 
 			self.totalDuration=decoder.decodeDouble(forKey:"totalDuration") 
 			self.httpContext=decoder.decodeObject(of:HTTPContext.self, forKey: "httpContext") 
+			self.streamOrientation=Metrics.StreamOrientation(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "streamOrientation")! as NSString))! 
         }
     }
 
@@ -179,6 +194,7 @@ import Foundation
 		if let httpContext = self.httpContext {
 			coder.encode(httpContext,forKey:"httpContext")
 		}
+		coder.encode(self.streamOrientation.rawValue ,forKey:"streamOrientation")
     }
 
     override open class var supportsSecureCoding:Bool{

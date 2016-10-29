@@ -8,7 +8,7 @@
 
 import Cocoa
 
-open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
+open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NSSharingServiceDelegate{
 
 
     public typealias EditorOf=Metrics
@@ -111,11 +111,61 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable{
 
     @IBOutlet var objectController: NSObjectController!
 
-    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
+    @IBAction func copyAllToPasteBoard(_ sender: Any) {
         if let c=metrics?.toJSONString(true){
             NSPasteboard.general().clearContents()
             let ns:NSString=c as NSString
             NSPasteboard.general().writeObjects([ns])
         }
     }
+
+
+
+    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
+        if let c=arrayOfmetrics.toJSONString(prettyPrint: true){
+            NSPasteboard.general().clearContents()
+            let ns:NSString=c as NSString
+            NSPasteboard.general().writeObjects([ns])
+        }
+    }
+
+    @IBAction func sendAReportByMail(_ sender: Any) {
+        self._sendReport(crypted: false)
+    }
+
+
+    @IBAction func sendCryptedReportByEmail(_ sender: Any) {
+        self._sendReport(crypted: true)
+    }
+
+
+    func _sendReport(crypted:Bool){
+        if let document=self.metrics?.document{
+            var json = "{\"logs\":\"\(document.logs.toJSONString() ?? "")\",\"metadata\":\"\(document.metadata.toJSONString() ?? "")\",\"metrics\":\"\(document.metrics.toJSONString() ?? "")\"}"
+            if crypted{
+                if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
+                    json=cryptedJson
+                }
+            }
+            json="\n\n---------\n\(json)\n------"
+            if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
+                sharingService.delegate=self
+                sharingService.recipients=["bpds@me.com"]
+                sharingService.perform(withItems: [json])
+            } else {
+                return
+            }
+        }
+    }
+
+
+
+    // MARK: OSX - NSSharingServiceDelegate
+    func sharingService(_ sharingService: NSSharingService, didShareItems items: [AnyObject]) {
+    }
+
+    func sharingService(_ sharingService: NSSharingService, didFailToShareItems items: [AnyObject], error: NSError) {
+    }
+
+
 }

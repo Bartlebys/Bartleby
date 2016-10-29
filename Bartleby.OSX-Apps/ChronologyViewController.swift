@@ -1,5 +1,5 @@
 //
-//  QosViewController.swift
+//  ChronologyViewController.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/10/2016.
@@ -8,9 +8,9 @@
 
 import Cocoa
 
-class QosViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
+class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
 
-    override var nibName : String { return "QosViewController" }
+    override var nibName : String { return "ChronologyViewController" }
 
     internal dynamic var _document:BartlebyDocument?
 

@@ -10,7 +10,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MetricsDetailsViewController" customModule="BartlebyKit" customModuleProvider="target">
             <connections>
-                <outlet property="nextButton" destination="ZG2-dh-NMB" id="iOv-Cj-IvY"/>
+                <outlet property="nextButton" destination="O7r-7X-RDZ" id="uv2-6a-DWa"/>
                 <outlet property="objectController" destination="r2I-km-CB6" id="m5e-vP-937"/>
                 <outlet property="previousButton" destination="fDD-rw-PbW" id="svs-VN-CL8"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -19,11 +19,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="379" height="610"/>
+            <rect key="frame" x="0.0" y="0.0" width="379" height="602"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <tabView translatesAutoresizingMaskIntoConstraints="NO" id="cKs-IV-e3A">
-                    <rect key="frame" x="13" y="43" width="353" height="516"/>
+                    <rect key="frame" x="13" y="35" width="353" height="516"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="500" id="Cno-Vo-1VL"/>
                         <constraint firstItem="han-OM-rim" firstAttribute="top" secondItem="cKs-IV-e3A" secondAttribute="top" constant="30" id="gNg-Qe-ZFS"/>
@@ -48,6 +48,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <binding destination="-2" name="value" keyPath="self.requestString" id="Jun-i0-h2c"/>
+                                            <outlet property="menu" destination="HdG-Ad-eaf" id="Dzh-Zg-mme"/>
                                         </connections>
                                     </textField>
                                 </subviews>
@@ -75,6 +76,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <binding destination="-2" name="value" keyPath="self.responseString" id="nTj-kf-rWc"/>
+                                            <outlet property="menu" destination="HdG-Ad-eaf" id="hcR-cJ-y0H"/>
                                         </connections>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0IE-ar-v6A">
@@ -290,12 +292,18 @@
                                     <constraint firstItem="GHK-WH-HeL" firstAttribute="trailing" secondItem="uHr-NF-0xd" secondAttribute="trailing" id="rKI-gH-2z5"/>
                                     <constraint firstItem="ytG-Lb-4Sk" firstAttribute="leading" secondItem="i36-Zl-fxO" secondAttribute="leading" id="xWf-xs-gH8"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="menu" destination="HdG-Ad-eaf" id="SFc-Bj-abD"/>
+                                </connections>
                             </view>
                         </tabViewItem>
                     </tabViewItems>
+                    <connections>
+                        <outlet property="menu" destination="HdG-Ad-eaf" id="J2H-1N-RdR"/>
+                    </connections>
                 </tabView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F7K-TU-Oxx">
-                    <rect key="frame" x="18" y="573" width="230" height="17"/>
+                    <rect key="frame" x="18" y="565" width="230" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Operation" id="baH-tm-uGW">
                         <font key="font" metaFont="titleBar"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -309,7 +317,7 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bag-Uh-cY1">
-                    <rect key="frame" x="202" y="13" width="163" height="32"/>
+                    <rect key="frame" x="202" y="5" width="163" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="151" id="FYH-55-ygh"/>
                         <constraint firstAttribute="height" constant="21" id="a9l-Dz-cgx"/>
@@ -323,7 +331,7 @@
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZG2-dh-NMB">
-                    <rect key="frame" x="336" y="572" width="23" height="19"/>
+                    <rect key="frame" x="336" y="564" width="23" height="19"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="18" id="E8c-Mi-0Bt"/>
                         <constraint firstAttribute="width" constant="23" id="oEs-g9-xA0"/>
@@ -337,7 +345,7 @@
                     </connections>
                 </button>
                 <textField horizontalHuggingPriority="500" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Zy-yK-Wxj">
-                    <rect key="frame" x="318" y="573" width="13" height="17"/>
+                    <rect key="frame" x="318" y="565" width="13" height="17"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="17" id="Rhz-Qh-lfa"/>
                     </constraints>
@@ -351,7 +359,7 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fDD-rw-PbW">
-                    <rect key="frame" x="290" y="572" width="23" height="19"/>
+                    <rect key="frame" x="290" y="564" width="23" height="19"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="23" id="59l-gI-Gag"/>
                         <constraint firstAttribute="height" constant="18" id="Rq0-5K-ef8"/>
@@ -364,6 +372,20 @@
                         <action selector="goPrevious:" target="-2" id="jtA-2k-v5H"/>
                     </connections>
                 </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O7r-7X-RDZ">
+                    <rect key="frame" x="14" y="5" width="163" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="U4u-m6-iQd"/>
+                        <constraint firstAttribute="width" constant="151" id="rn3-A1-Y7T"/>
+                    </constraints>
+                    <buttonCell key="cell" type="push" title="Send A Report" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Jv-rf-hNK">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="sendCryptedReportByEmail:" target="-1" id="hAv-f7-lMI"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="bag-Uh-cY1" firstAttribute="top" secondItem="cKs-IV-e3A" secondAttribute="bottom" constant="12" id="1hB-jx-SNA"/>
@@ -373,8 +395,10 @@
                 <constraint firstItem="1Zy-yK-Wxj" firstAttribute="centerY" secondItem="ZG2-dh-NMB" secondAttribute="centerY" id="DFg-ap-g1g"/>
                 <constraint firstItem="fDD-rw-PbW" firstAttribute="centerY" secondItem="ZG2-dh-NMB" secondAttribute="centerY" id="E3H-YR-6P5"/>
                 <constraint firstAttribute="trailing" secondItem="cKs-IV-e3A" secondAttribute="trailing" constant="20" id="JlK-mF-Bm3"/>
-                <constraint firstAttribute="bottom" secondItem="bag-Uh-cY1" secondAttribute="bottom" constant="20" id="N0O-Qt-jVd"/>
+                <constraint firstItem="O7r-7X-RDZ" firstAttribute="centerY" secondItem="bag-Uh-cY1" secondAttribute="centerY" id="KkD-jT-wRi"/>
+                <constraint firstAttribute="bottom" secondItem="bag-Uh-cY1" secondAttribute="bottom" constant="12" id="N0O-Qt-jVd"/>
                 <constraint firstItem="F7K-TU-Oxx" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="YUf-uQ-b7P"/>
+                <constraint firstItem="O7r-7X-RDZ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="Z2F-He-e8h"/>
                 <constraint firstAttribute="trailing" secondItem="bag-Uh-cY1" secondAttribute="trailing" constant="20" id="dpq-X6-POU"/>
                 <constraint firstItem="ZG2-dh-NMB" firstAttribute="leading" secondItem="1Zy-yK-Wxj" secondAttribute="trailing" constant="7" id="drQ-4p-I1M"/>
                 <constraint firstAttribute="trailing" secondItem="ZG2-dh-NMB" secondAttribute="trailing" constant="20" id="fOH-Ea-as7"/>
@@ -382,6 +406,9 @@
                 <constraint firstItem="cKs-IV-e3A" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="uK3-U4-2pV"/>
                 <constraint firstItem="1Zy-yK-Wxj" firstAttribute="leading" secondItem="fDD-rw-PbW" secondAttribute="trailing" constant="7" id="wXW-Es-fsi"/>
             </constraints>
+            <connections>
+                <outlet property="menu" destination="HdG-Ad-eaf" id="Eto-Lb-piB"/>
+            </connections>
             <point key="canvasLocation" x="81.5" y="403"/>
         </customView>
         <objectController objectClassName="Metrics" id="r2I-km-CB6">
@@ -389,5 +416,35 @@
                 <binding destination="-2" name="contentObject" keyPath="self.metrics" id="cJc-mK-Y5q"/>
             </connections>
         </objectController>
+        <menu id="HdG-Ad-eaf">
+            <items>
+                <menuItem title="Copy All to  Pasteboard" id="2AJ-iK-4MX">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="copyAllToPasteBoard:" target="-2" id="Gff-Ac-2vD"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Copy Current to Pasteboard" id="qiC-gl-QBh">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="copyToPasteBoard:" target="-2" id="0c4-A4-htc"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="Rcv-tr-eMv"/>
+                <menuItem title="Send a report by Email" id="gLi-8f-8tv">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="sendAReportByMail:" target="-2" id="G6Q-7Q-WZm"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Send a crypted report by Email" id="3HA-XW-NUm">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="sendCryptedReportByEmail:" target="-2" id="i1L-zl-ZDS"/>
+                    </connections>
+                </menuItem>
+            </items>
+            <point key="canvasLocation" x="9" y="-8"/>
+        </menu>
     </objects>
 </document>

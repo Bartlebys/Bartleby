@@ -33,7 +33,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
 
     @IBOutlet weak var webStackViewController: WebStack!
 
-    @IBOutlet weak var qosViewController: QosViewController!
+    @IBOutlet weak var chronologyViewController: ChronologyViewController!
 
     // We bind this index on the scopeSegmentedControl
     open dynamic var selectedIndex:Int = -1{
@@ -84,9 +84,9 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
                 self.globalTabView.addTabViewItem(webTabViewItem)
                 self.webStackViewController.documentProvider=self
 
-                let qosTabViewItem=NSTabViewItem(viewController:self.qosViewController)
-                self.globalTabView.addTabViewItem(qosTabViewItem)
-                self.qosViewController.documentProvider=self
+                let chronologyTabViewItem=NSTabViewItem(viewController:self.chronologyViewController)
+                self.globalTabView.addTabViewItem(chronologyTabViewItem)
+                self.chronologyViewController.documentProvider=self
 
             }
         }

@@ -48,6 +48,20 @@ extension BartlebyDocument {
             }
         }
 
+        for trigger in triggers{
+            let triggerMetrics=Metrics()
+            triggerMetrics.streamOrientation = .downStream
+            triggerMetrics.operationName = trigger.action + "SSE"
+            let s=trigger.toJSONString() ?? ""
+            triggerMetrics.httpContext = HTTPContext(code: 0, caller: "TriggerHasBeenReceived", relatedURL: self.sseURL, httpStatusCode: 0, responseString: s)
+            if let p=trigger.payloads {
+                if let d=try? JSONSerialization.data(withJSONObject: p, options: JSONSerialization.WritingOptions.prettyPrinted){
+                    triggerMetrics.httpContext!.responseString=String(data: d, encoding: .utf8)
+                }
+            }
+            self.report(triggerMetrics)
+        }
+
         self._integrateContiguousData()
     }
 

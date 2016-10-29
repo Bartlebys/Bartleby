@@ -133,10 +133,10 @@ import Foundation
 	}
 
 	//The sum of all the metrics
-	dynamic open var cumulatedMetricsDuration:Double = 0
+	dynamic open var cumulatedUpMetricsDuration:Double = 0
 
 	//Total number of metrics since the document creation
-	dynamic open var totalNumberOfMetrics:Int = 0
+	dynamic open var totalNumberOfUpMetrics:Int = 0
 
 	//The qos Indice
 	dynamic open var qosIndice:Double = 0
@@ -146,7 +146,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedMetricsDuration","totalNumberOfMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -255,13 +255,13 @@ import Foundation
                 if let casted=value as? Bool{
                     self.saveThePassword=casted
                 }
-            case "cumulatedMetricsDuration":
+            case "cumulatedUpMetricsDuration":
                 if let casted=value as? Double{
-                    self.cumulatedMetricsDuration=casted
+                    self.cumulatedUpMetricsDuration=casted
                 }
-            case "totalNumberOfMetrics":
+            case "totalNumberOfUpMetrics":
                 if let casted=value as? Int{
-                    self.totalNumberOfMetrics=casted
+                    self.totalNumberOfUpMetrics=casted
                 }
             case "qosIndice":
                 if let casted=value as? Double{
@@ -330,10 +330,10 @@ import Foundation
                return self.pushOnChanges
             case "saveThePassword":
                return self.saveThePassword
-            case "cumulatedMetricsDuration":
-               return self.cumulatedMetricsDuration
-            case "totalNumberOfMetrics":
-               return self.totalNumberOfMetrics
+            case "cumulatedUpMetricsDuration":
+               return self.cumulatedUpMetricsDuration
+            case "totalNumberOfUpMetrics":
+               return self.totalNumberOfUpMetrics
             case "qosIndice":
                return self.qosIndice
             default:
@@ -368,8 +368,8 @@ import Foundation
 			self.online <- ( map["online"] )
 			self.pushOnChanges <- ( map["pushOnChanges"] )
 			self.saveThePassword <- ( map["saveThePassword"] )
-			self.cumulatedMetricsDuration <- ( map["cumulatedMetricsDuration"] )
-			self.totalNumberOfMetrics <- ( map["totalNumberOfMetrics"] )
+			self.cumulatedUpMetricsDuration <- ( map["cumulatedUpMetricsDuration"] )
+			self.totalNumberOfUpMetrics <- ( map["totalNumberOfUpMetrics"] )
 			self.qosIndice <- ( map["qosIndice"] )
         }
     }
@@ -399,8 +399,8 @@ import Foundation
 			self.online=decoder.decodeBool(forKey:"online") 
 			self.pushOnChanges=decoder.decodeBool(forKey:"pushOnChanges") 
 			self.saveThePassword=decoder.decodeBool(forKey:"saveThePassword") 
-			self.cumulatedMetricsDuration=decoder.decodeDouble(forKey:"cumulatedMetricsDuration") 
-			self.totalNumberOfMetrics=decoder.decodeInteger(forKey:"totalNumberOfMetrics") 
+			self.cumulatedUpMetricsDuration=decoder.decodeDouble(forKey:"cumulatedUpMetricsDuration") 
+			self.totalNumberOfUpMetrics=decoder.decodeInteger(forKey:"totalNumberOfUpMetrics") 
 			self.qosIndice=decoder.decodeDouble(forKey:"qosIndice") 
         }
     }
@@ -434,8 +434,8 @@ import Foundation
 		coder.encode(self.online,forKey:"online")
 		coder.encode(self.pushOnChanges,forKey:"pushOnChanges")
 		coder.encode(self.saveThePassword,forKey:"saveThePassword")
-		coder.encode(self.cumulatedMetricsDuration,forKey:"cumulatedMetricsDuration")
-		coder.encode(self.totalNumberOfMetrics,forKey:"totalNumberOfMetrics")
+		coder.encode(self.cumulatedUpMetricsDuration,forKey:"cumulatedUpMetricsDuration")
+		coder.encode(self.totalNumberOfUpMetrics,forKey:"totalNumberOfUpMetrics")
 		coder.encode(self.qosIndice,forKey:"qosIndice")
     }
 
