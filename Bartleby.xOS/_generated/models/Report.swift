@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Report object that can be used for analytics and support purposes
-@objc(Report) open class Report : Report{
+@objc(Report) open class Report : BartlebyObject{
 
     // Universal type support
     override open class func typeName() -> String {
@@ -28,7 +28,7 @@ import Foundation
 	dynamic open var logs:[LogEntry] = [LogEntry]()
 
 	//A collection metrics
-	dynamic open var metrics:[Metrics] = [LogEntry]()
+	dynamic open var metrics:[Metrics] = [Metrics]()
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 

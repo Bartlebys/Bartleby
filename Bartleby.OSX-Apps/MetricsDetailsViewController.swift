@@ -143,19 +143,21 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
             report.metadata=document.metadata
             report.logs=document.logs
             report.metrics=document.metrics
-            var json = report.toJSONString()
-            if crypted{
-                if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
-                    json=cryptedJson
+            if let  json = report.toJSONString(){
+                if crypted{
+                    if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
+                        let string="\n\n\(AppHelper.copyFlag)\(cryptedJson)\(AppHelper.copyFlag)\n"
+                        if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
+                            sharingService.delegate=self
+                            sharingService.recipients=["bpds@me.com"]
+                            sharingService.perform(withItems: [string])
+                        } else {
+                            return
+                        }
+
+                    }
                 }
-            }
-            json="\n\n\(AppHelper.copyFlag)\(json)\(AppHelper.copyFlag)\n"
-            if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
-                sharingService.delegate=self
-                sharingService.recipients=["bpds@me.com"]
-                sharingService.perform(withItems: [json])
-            } else {
-                return
+
             }
         }
     }

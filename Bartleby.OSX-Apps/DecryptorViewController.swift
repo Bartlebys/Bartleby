@@ -57,10 +57,17 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
                     // Let's decrypt the data
                     self.decryptedString = try? Bartleby.cryptoDelegate.decryptString(crypted)
                     if let d=self.decryptedString?.data(using:.utf8){
-                        if let report:Report=JSerializer.deserialize(d) as? Report{
-                            self._document.metadata=report.metadata
-                            self._document.logs=report.logs
-                            self._document.metrics=report.metrics
+                        if let report = try? JSerializer.deserialize(d) as? Report{
+                            if let metadata=report?.metadata{
+                                self._document.metadata=metadata
+                            }
+                            if let logs=report?.logs{
+                                self._document.logs=logs
+                            }
+                            if let metrics=report?.metrics{
+                                self._document.metrics=metrics
+                            }
+
                             for c in self._consumers{
                                 c.providerHasADocument()
                             }
