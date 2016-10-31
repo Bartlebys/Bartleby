@@ -234,8 +234,6 @@ extension String {
     }
 
 
-
-
     func jsonPrettify()->String{
         do {
             if let d=self.data(using:.utf8){
@@ -250,8 +248,6 @@ extension String {
         }
         return self
     }
-
-
 }
 
 

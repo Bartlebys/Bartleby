@@ -34,13 +34,3 @@ public enum DocumentError: Error {
     case unSupportedFileType(typeName:String)
     case undefined
 }
-
-// Todo split into files 
-
-public protocol DocumentProvider {
-    func getDocument() -> BartlebyDocument?
-}
-
-public protocol DocumentDependent {
-    var documentProvider:DocumentProvider? { get set }
-}

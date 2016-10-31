@@ -10,7 +10,6 @@ import Cocoa
 
 open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NSSharingServiceDelegate{
 
-
     public typealias EditorOf=Metrics
 
     public var UID:String=Bartleby.createUID()
@@ -77,7 +76,6 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
             }else{
                 self.requestString="no request"
             }
-            let s=metrics?.toJSONString(true)
         }
     }
     @IBOutlet weak var previousButton: NSButton!
@@ -141,13 +139,17 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
 
     func _sendReport(crypted:Bool){
         if let document=self.metrics?.document{
-            var json = "{\"logs\":\"\(document.logs.toJSONString() ?? "")\",\"metadata\":\"\(document.metadata.toJSONString() ?? "")\",\"metrics\":\"\(document.metrics.toJSONString() ?? "")\"}"
+            let report=Report()
+            report.metadata=document.metadata
+            report.logs=document.logs
+            report.metrics=document.metrics
+            var json = report.toJSONString()
             if crypted{
                 if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
                     json=cryptedJson
                 }
             }
-            json="\n\n---------\n\(json)\n------"
+            json="\n\n\(AppHelper.copyFlag)\(json)\(AppHelper.copyFlag)\n"
             if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
                 sharingService.delegate=self
                 sharingService.recipients=["bpds@me.com"]
@@ -156,15 +158,6 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
                 return
             }
         }
-    }
-
-
-
-    // MARK: OSX - NSSharingServiceDelegate
-    func sharingService(_ sharingService: NSSharingService, didShareItems items: [AnyObject]) {
-    }
-
-    func sharingService(_ sharingService: NSSharingService, didFailToShareItems items: [AnyObject], error: NSError) {
     }
 
 

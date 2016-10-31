@@ -116,6 +116,10 @@ import Cocoa
 
     fileprivate var _collectionListDelegate:CollectionListDelegate?
 
+
+
+    // MARK - DocumentDependent
+
     internal var documentProvider: DocumentProvider?{
         didSet{
             if let documentReference=self.documentProvider?.getDocument(){
@@ -137,7 +141,9 @@ import Cocoa
         }
     }
 
-    //MARK: initialization
+    func providerHasADocument() {}
+
+    //MARK: - initialization
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)

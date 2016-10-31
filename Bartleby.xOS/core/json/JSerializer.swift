@@ -23,7 +23,6 @@ open class JSerializer: Serializer {
         return instance
     }()
 
-
     public init() {
     }
 

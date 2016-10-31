@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ReportWindowController" customModule="BartlebyKit" customModuleProvider="target">
+            <connections>
+                <outlet property="chronologyController" destination="5w3-7e-5zC" id="7aB-T6-aEw"/>
+                <outlet property="decryptor" destination="uTA-Ht-UD2" id="I6E-e8-PG8"/>
+                <outlet property="logsViewController" destination="ccn-c7-Dql" id="oPq-o6-HQf"/>
+                <outlet property="tabViewController" destination="QPS-tS-Gdh" id="EXE-zb-1bm"/>
+                <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" frameAutosaveName="reportWindow" animationBehavior="default" id="F0z-JX-Cv5">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="956" height="601"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
+            <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
+                <rect key="frame" x="0.0" y="0.0" width="956" height="601"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
+            </connections>
+            <point key="canvasLocation" x="-259" y="164.5"/>
+        </window>
+        <viewController id="QPS-tS-Gdh" customClass="NSTabViewController"/>
+        <viewController id="5w3-7e-5zC" customClass="ChronologyViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="ccn-c7-Dql" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="uTA-Ht-UD2" customClass="DecryptorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+    </objects>
+</document>

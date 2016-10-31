@@ -13,6 +13,9 @@ import Cocoa
 public struct AppHelper {
 
 
+    public static var copyFlag="---------INCLUDE_THIS_LINE--------"
+
+
     /// Returns a configured MetricsDetailsViewController
     ///
     /// - parameter metrics: the array of metrics to use (we take the last one first)

@@ -28,7 +28,7 @@ class LogsViewController: NSViewController,DocumentDependent{
     fileprivate var _lockFilterUpdate=false
 
 
-    // MARK: life Cycle
+    // MARK: - DocumentDependent
 
     internal var documentProvider: DocumentProvider?{
         didSet{
@@ -39,6 +39,10 @@ class LogsViewController: NSViewController,DocumentDependent{
             }
         }
     }
+
+    func providerHasADocument() {}
+
+    // MARK: - life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

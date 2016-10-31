@@ -24,20 +24,22 @@ class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewD
 
     @IBOutlet var metricsViewController: MetricsDetailsViewController!
 
-    // MARK: life Cycle
+
+    // MARK - DocumentDependent
 
     internal var documentProvider: DocumentProvider?{
         didSet{
             if let documentReference=self.documentProvider?.getDocument(){
                 self._document=documentReference
-                if let m=self._document?.metrics{
-                    for metrics in m{
-                        print(metrics)
-                    }
-                }
             }
         }
     }
+
+    public func providerHasADocument(){}
+
+
+
+    // MARK: life Cycle
 
     override func viewDidAppear() {
         super.viewDidAppear()

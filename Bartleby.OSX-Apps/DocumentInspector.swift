@@ -52,23 +52,26 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     }
 
 
-    open func getDocument() -> BartlebyDocument?{
-        return self.castedDocument
-    }
-
-
-
     //MARK : Window
 
     override open func windowDidLoad() {
         super.windowDidLoad()
     }
 
-    // MARK: DocumentProvider
+
+    // MARK: - DocumentProvider
+
+    open func getDocument() -> BartlebyDocument?{
+        return self.castedDocument
+    }
+
+
+    // MARK: - DocumentDependent
 
     open var documentProvider: DocumentProvider?{
         didSet{
             if let documentReference=self.documentProvider?.getDocument(){
+                self.document=documentReference
                 self.castedDocument=documentReference
                 self.window?.title=NSLocalizedString("Inspector", tableName:"bartlebys.OSX-Apps", comment: "Inspector window title") + " (" + ( documentReference.fileURL?.lastPathComponent ?? "" ) + ")"
 
@@ -91,7 +94,6 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
             }
         }
     }
-
 
 
     @IBAction func openWebStack(_ sender:AnyObject)  {
