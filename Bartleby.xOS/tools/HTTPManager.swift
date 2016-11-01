@@ -15,6 +15,8 @@ import Foundation
 open class HTTPManager: NSObject {
 
     static open let SPACE_UID_KEY="spaceUID"
+    static open let OBSERVATION_UID_KEY="observationUID"
+    static open let KVID_KEY="kvid"
 
 
     static var baseURLApi: URL?
@@ -61,16 +63,32 @@ open class HTTPManager: NSObject {
     }
 
     /**
-     This method returns a mutable request with a salted token.
+
 
      - parameter documentUID:   the Document UID
      - parameter actionName: the action name e.g : CreateUser
      - parameter method:     the HTTP method
      - parameter url:        the url.
 
+
      - returns: the mutable
      */
-    static open func requestWithToken(inDocumentWithUID documentUID: String, withActionName actionName: String, forMethod method: String, and url: URL) -> URLRequest {
+
+
+    ///  This method returns a mutable request with a salted token.
+    ///
+    /// - Parameters:
+    ///   - documentUID: the document UID
+    ///   - actionName: the action name
+    ///   - method: the http Method
+    ///   - url: the url
+    ///   - oUID: an optional observationUID if not set we will use the document.UID
+    /// - Returns: return value description
+    static open func requestWithToken(inDocumentWithUID documentUID: String,
+                                      withActionName actionName: String,
+                                      forMethod method: String,
+                                      and url: URL,
+                                      observableBy oUID:String=Default.NO_UID) -> URLRequest {
         var request=URLRequest(url: url)
         request.httpMethod=method
         let headers=HTTPManager.httpHeadersWithToken(inDocumentWithUID:documentUID, withActionName: actionName)
@@ -84,7 +102,7 @@ open class HTTPManager: NSObject {
 
 
     /**
-     Returns the Http Headers
+
 
      - parameter documentUID:   the Document UID
      - parameter actionName: the actionName
@@ -93,7 +111,18 @@ open class HTTPManager: NSObject {
 
      - returns: the http Headers
      */
-    static open func httpHeadersWithToken(inDocumentWithUID documentUID: String, withActionName actionName: String)->[String:String]{
+
+
+    ///  Returns the HTTP headers
+    ///
+    /// - Parameters:
+    ///   - documentUID: the document UID (used to collect the spaceUID, the identification method, ...)
+    ///   - actionName: the action Name (for token Permission level)
+    ///   - oUID: an optional observationUID if not set we will use the document.UID
+    /// - Returns: the HTTP headers
+    static open func httpHeadersWithToken(inDocumentWithUID documentUID: String,
+                                          withActionName actionName: String,
+                                          observableBy oUID:String=Default.NO_UID)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
@@ -109,14 +138,18 @@ open class HTTPManager: NSObject {
 
             if document.metadata.identificationMethod == .key{
                 if  let idv=document.metadata.identificationValue {
-                    headers["kvid"]=idv
+                    headers[HTTPManager.KVID_KEY]=idv
                 }else{
-                    headers["kvid"]=Default.VOID_STRING
+                    headers[HTTPManager.KVID_KEY]=Default.VOID_STRING
                 }
             }
-            // We add the document observationUID
-            headers["observationUID"]=document.UID
-
+            if oUID==Default.NO_UID{
+                // We add the document observationUID
+                headers[HTTPManager.OBSERVATION_UID_KEY]=document.UID
+            }else{
+                // We add the submitted observationUID
+                headers[HTTPManager.OBSERVATION_UID_KEY]=oUID
+            }
         }
 
 
