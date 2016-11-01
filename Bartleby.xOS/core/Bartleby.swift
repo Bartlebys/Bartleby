@@ -299,8 +299,12 @@ import Foundation
      - returns: the instance
      */
     open static func registredObjectByUID<T: Collectible>(_ UID: String) throws-> T {
-        if let instance=self._instancesByUID[UID] as? T {
-            return instance
+        if let instance=self._instancesByUID[UID]{
+            if let casted=instance as? T{
+                return casted
+            }else{
+                throw DocumentError.instanceTypeMissMatch
+            }
         }
         throw DocumentError.instanceNotFound
     }

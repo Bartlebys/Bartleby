@@ -207,10 +207,6 @@ extension BartlebyObject{
         self._supervisionIsEnabled = supervisionIsEnabled
     }
 
-
-
-
-
 }
 
 
@@ -262,7 +258,6 @@ extension BartlebyObject{
             if provisionChanges && self.isInspectable {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }
-
         }
         return self
     }
