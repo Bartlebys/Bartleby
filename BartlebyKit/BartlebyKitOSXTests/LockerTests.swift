@@ -239,7 +239,7 @@ class LockerTests: XCTestCase {
                                 expectation.fulfill()
         }) { (context) in
             expectation.fulfill()
-            XCTFail("\(context.result)")
+            XCTFail("\(context.responseString)")
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
