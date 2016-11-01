@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target">
@@ -34,15 +35,15 @@
                 <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ay2-w9-7vf">
                     <rect key="frame" x="0.0" y="0.0" width="852" height="567"/>
                     <clipView key="contentView" id="RCo-B1-83u">
-                        <rect key="frame" x="1" y="1" width="835" height="565"/>
+                        <rect key="frame" x="1" y="1" width="850" height="565"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" id="wWO-rx-Q4V">
-                                <rect key="frame" x="0.0" y="0.0" width="835" height="565"/>
+                                <rect key="frame" x="0.0" y="0.0" width="850" height="565"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <size key="minSize" width="835" height="565"/>
+                                <size key="minSize" width="850" height="565"/>
                                 <size key="maxSize" width="852" height="10000000"/>
                                 <color key="insertionPointColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                 <allowedInputSourceLocales>
@@ -786,7 +787,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" verticalHuggingPriority="750" horizontal="NO" id="vxg-p0-xAj">
-                        <rect key="frame" x="836" y="1" width="15" height="565"/>
+                        <rect key="frame" x="835" y="1" width="16" height="565"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>

@@ -8,10 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ReportWindowController" customModule="BartlebyKit" customModuleProvider="target">
             <connections>
-                <outlet property="chronologyController" destination="5w3-7e-5zC" id="7aB-T6-aEw"/>
-                <outlet property="decryptor" destination="uTA-Ht-UD2" id="I6E-e8-PG8"/>
-                <outlet property="logsViewController" destination="ccn-c7-Dql" id="oPq-o6-HQf"/>
-                <outlet property="tabViewController" destination="QPS-tS-Gdh" id="EXE-zb-1bm"/>
+                <outlet property="reportTabViewController" destination="f8G-tg-DdS" id="z8E-Hy-M3A"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -21,7 +18,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="956" height="601"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1178"/>
             <view key="contentView" wantsLayer="YES" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="956" height="601"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -31,9 +28,6 @@
             </connections>
             <point key="canvasLocation" x="-259" y="164.5"/>
         </window>
-        <viewController id="QPS-tS-Gdh" customClass="NSTabViewController"/>
-        <viewController id="5w3-7e-5zC" customClass="ChronologyViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="ccn-c7-Dql" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="uTA-Ht-UD2" customClass="DecryptorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="f8G-tg-DdS" customClass="ReportTabViewController" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
 </document>

@@ -60,6 +60,8 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
+		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
+		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E569F34E1DC7C242004D4FB5 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5948A081DC7AD2000053A2D /* Report.swift */; };
 		E569F34F1DC7C247004D4FB5 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106B1DC2301100869BFB /* HTTPRequest.swift */; };
 		E569F3501DC7C259004D4FB5 /* HTTPRequest+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */; };
@@ -404,6 +406,8 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
+		E568A78A1DC8762100BE157D /* ReportTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTabViewController.swift; sourceTree = "<group>"; };
+		E568A78B1DC8762100BE157D /* ReportTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTabViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
@@ -629,6 +633,8 @@
 				E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */,
 				E5238B281DC4FEAC003D343D /* ReportWindowController.swift */,
 				E5238B291DC4FEAC003D343D /* ReportWindowController.xib */,
+				E568A78A1DC8762100BE157D /* ReportTabViewController.swift */,
+				E568A78B1DC8762100BE157D /* ReportTabViewController.xib */,
 				E5238B2C1DC50091003D343D /* DecryptorViewController.swift */,
 				E5238B2D1DC50091003D343D /* DecryptorViewController.xib */,
 				E598906C1DC77F0600F235B5 /* DecryptView.swift */,
@@ -1153,6 +1159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */,
 				E50F3AF71D40D27F00532B09 /* OperationViewController.xib in Resources */,
 				E50F3AF21D40D27F00532B09 /* InspectorViewController.xib in Resources */,
 				E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */,
@@ -1248,6 +1255,7 @@
 				E57376651DBB960500E2B849 /* BartlebyDocument.swift in Sources */,
 				E57377151DBB960500E2B849 /* Identifiable.swift in Sources */,
 				E57376BD1DBB960500E2B849 /* Default.swift in Sources */,
+				E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */,
 				E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */,
 				E57376751DBB960500E2B849 /* DocumentMetadata.swift in Sources */,
 				E57376AF1DBB960500E2B849 /* UpdateUsers.swift in Sources */,

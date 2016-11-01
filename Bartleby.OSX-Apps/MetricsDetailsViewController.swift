@@ -127,40 +127,10 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
         }
     }
 
-    @IBAction func sendAReportByMail(_ sender: Any) {
-        self._sendReport(crypted: false)
-    }
+
+  
 
 
-    @IBAction func sendCryptedReportByEmail(_ sender: Any) {
-        self._sendReport(crypted: true)
-    }
-
-
-    func _sendReport(crypted:Bool){
-        if let document=self.metrics?.document{
-            let report=Report()
-            report.metadata=document.metadata
-            report.logs=document.logs
-            report.metrics=document.metrics
-            if let  json = report.toJSONString(){
-                if crypted{
-                    if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
-                        let string="\n\n\(AppHelper.copyFlag)\(cryptedJson)\(AppHelper.copyFlag)\n"
-                        if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
-                            sharingService.delegate=self
-                            sharingService.recipients=["bpds@me.com"]
-                            sharingService.perform(withItems: [string])
-                        } else {
-                            return
-                        }
-
-                    }
-                }
-
-            }
-        }
-    }
 
 
 }

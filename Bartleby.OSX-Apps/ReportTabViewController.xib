@@ -1,19 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ReportTabViewController" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="ReportTabViewController" customModule="BartlebyKit" customModuleProvider="target">
             <connections>
+                <outlet property="chronologyController" destination="QXo-JB-Kqn" id="tbP-lo-e0K"/>
+                <outlet property="decryptor" destination="XFK-1o-l3n" id="XlW-Ga-Z70"/>
+                <outlet property="logsViewController" destination="ABM-j5-YKK" id="p2h-RE-mUW"/>
+                <outlet property="metadataDetailsViewController" destination="1z8-fL-0wj" id="tvr-ga-L37"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="272"/>
+            <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <point key="canvasLocation" x="195" y="227"/>
         </customView>
+        <viewController id="XFK-1o-l3n" customClass="DecryptorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="QXo-JB-Kqn" customClass="ChronologyViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="ABM-j5-YKK" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController title="Metadata" id="1z8-fL-0wj" customClass="MetadataDetails" customModule="BartlebyKit" customModuleProvider="target"/>
     </objects>
 </document>

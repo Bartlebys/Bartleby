@@ -77,7 +77,7 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
                 }
             }
         }
-        NSSound(named:"Basso")?.play()
+        AppHelper.sharedInstance.unAvailableActionFeedBack()
     }
     
     

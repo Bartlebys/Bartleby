@@ -13,6 +13,16 @@ public let REFRESH_METADATA_INFOS_NOTIFICATION_NAME="REFRESH_METADATA_INFOS_NOTI
 
 class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate{
 
+
+    @IBOutlet weak var infosItem: NSTabViewItem!
+    @IBOutlet weak var userItem: NSTabViewItem!
+    @IBOutlet weak var triggerAnalysisItem: NSTabViewItem!
+    @IBOutlet weak var operationQuarantineItem: NSTabViewItem!
+
+
+    var reportMode:Bool=false
+
+
     typealias EditorOf=DocumentMetadata
 
     var UID:String=Bartleby.createUID()
@@ -50,6 +60,10 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
     override func viewDidAppear() {
         super.viewDidAppear()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshMetadata), name: Notification.Name(rawValue: REFRESH_METADATA_INFOS_NOTIFICATION_NAME), object: nil)
+        if reportMode==true, let t=triggerAnalysisItem{
+            self.tabView.removeTabViewItem(t)
+        }
+
     }
 
     override func viewWillDisappear() {

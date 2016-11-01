@@ -10,7 +10,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MetricsDetailsViewController" customModule="BartlebyKit" customModuleProvider="target">
             <connections>
-                <outlet property="nextButton" destination="O7r-7X-RDZ" id="uv2-6a-DWa"/>
+                <outlet property="nextButton" destination="ZG2-dh-NMB" id="pMF-XE-YB7"/>
                 <outlet property="objectController" destination="r2I-km-CB6" id="m5e-vP-937"/>
                 <outlet property="previousButton" destination="fDD-rw-PbW" id="svs-VN-CL8"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -372,20 +372,6 @@
                         <action selector="goPrevious:" target="-2" id="jtA-2k-v5H"/>
                     </connections>
                 </button>
-                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="O7r-7X-RDZ">
-                    <rect key="frame" x="14" y="5" width="163" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="U4u-m6-iQd"/>
-                        <constraint firstAttribute="width" constant="151" id="rn3-A1-Y7T"/>
-                    </constraints>
-                    <buttonCell key="cell" type="push" title="Send A Report" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Jv-rf-hNK">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="sendCryptedReportByEmail:" target="-1" id="hAv-f7-lMI"/>
-                    </connections>
-                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="bag-Uh-cY1" firstAttribute="top" secondItem="cKs-IV-e3A" secondAttribute="bottom" constant="12" id="1hB-jx-SNA"/>
@@ -395,10 +381,8 @@
                 <constraint firstItem="1Zy-yK-Wxj" firstAttribute="centerY" secondItem="ZG2-dh-NMB" secondAttribute="centerY" id="DFg-ap-g1g"/>
                 <constraint firstItem="fDD-rw-PbW" firstAttribute="centerY" secondItem="ZG2-dh-NMB" secondAttribute="centerY" id="E3H-YR-6P5"/>
                 <constraint firstAttribute="trailing" secondItem="cKs-IV-e3A" secondAttribute="trailing" constant="20" id="JlK-mF-Bm3"/>
-                <constraint firstItem="O7r-7X-RDZ" firstAttribute="centerY" secondItem="bag-Uh-cY1" secondAttribute="centerY" id="KkD-jT-wRi"/>
                 <constraint firstAttribute="bottom" secondItem="bag-Uh-cY1" secondAttribute="bottom" constant="12" id="N0O-Qt-jVd"/>
                 <constraint firstItem="F7K-TU-Oxx" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="YUf-uQ-b7P"/>
-                <constraint firstItem="O7r-7X-RDZ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="Z2F-He-e8h"/>
                 <constraint firstAttribute="trailing" secondItem="bag-Uh-cY1" secondAttribute="trailing" constant="20" id="dpq-X6-POU"/>
                 <constraint firstItem="ZG2-dh-NMB" firstAttribute="leading" secondItem="1Zy-yK-Wxj" secondAttribute="trailing" constant="7" id="drQ-4p-I1M"/>
                 <constraint firstAttribute="trailing" secondItem="ZG2-dh-NMB" secondAttribute="trailing" constant="20" id="fOH-Ea-as7"/>
@@ -428,19 +412,6 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="copyToPasteBoard:" target="-2" id="0c4-A4-htc"/>
-                    </connections>
-                </menuItem>
-                <menuItem isSeparatorItem="YES" id="Rcv-tr-eMv"/>
-                <menuItem title="Send a report by Email" id="gLi-8f-8tv">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="sendAReportByMail:" target="-2" id="G6Q-7Q-WZm"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="Send a crypted report by Email" id="3HA-XW-NUm">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="sendCryptedReportByEmail:" target="-2" id="i1L-zl-ZDS"/>
                     </connections>
                 </menuItem>
             </items>
