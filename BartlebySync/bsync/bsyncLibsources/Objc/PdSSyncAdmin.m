@@ -295,13 +295,12 @@
         // URL
         baseUrl=[baseUrl URLByAppendingPathComponent:[NSString stringWithFormat:@"/create/tree/%@",identifier]];
 
-
-
         // REQUEST
         NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
-                                                                              withActionName:@"BartlebySyncCreateTree"
-                                                                                   forMethod:@"POST"
-                                                                                         and:baseUrl];
+                                                                withActionName:@"BartlebySyncCreateTree"
+                                                                     forMethod:@"POST"
+                                                                           and:baseUrl
+                                                                  observableBy:_syncContext.credentials.user.documentUID];
         glog(@"BartlebySyncCreateTree: %@", baseUrl);
 
         [self addCurrentTaskAndResume:[self.urlSession dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -402,9 +401,10 @@
 
         // REQUEST
         NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
-                                                                              withActionName:@"BartlebySyncTouchTree"
-                                                                                   forMethod:@"POST"
-                                                                                         and:baseUrl];
+                                                                withActionName:@"BartlebySyncTouchTree"
+                                                                     forMethod:@"POST"
+                                                                           and:baseUrl
+                                                                  observableBy:_syncContext.credentials.user.documentUID];
 
         glog(@"BartlebySyncTouchTree: %@", baseUrl);
 
@@ -573,9 +573,10 @@
 
         // REQUEST
         NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
-                                                                              withActionName:@"BartlebySyncGetHashMap"
-                                                                                   forMethod:@"GET"
-                                                                                         and:url];
+                                                                withActionName:@"BartlebySyncGetHashMap"
+                                                                     forMethod:@"GET"
+                                                                           and:url
+                                                                  observableBy:_syncContext.credentials.user.documentUID];
         glog(@"BartlebySyncGetHashMap: %@", url);
 
         // TASK
@@ -765,9 +766,10 @@
 
         // REQUEST
         NSURLRequest *request = [HTTPManager requestWithTokenInDocumentWithUID:_syncContext.credentials.user.documentUID
-                                                                              withActionName:@"BartlebySyncGetFile"
-                                                                                   forMethod:@"GET"
-                                                                                         and:url];
+                                                                withActionName:@"BartlebySyncGetFile"
+                                                                     forMethod:@"GET"
+                                                                           and:url
+                                                                  observableBy:_syncContext.credentials.user.documentUID];
 
         // TASK
 
