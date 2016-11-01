@@ -26,7 +26,6 @@
                     <rect key="frame" x="13" y="35" width="353" height="516"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="500" id="Cno-Vo-1VL"/>
-                        <constraint firstItem="han-OM-rim" firstAttribute="top" secondItem="cKs-IV-e3A" secondAttribute="top" constant="30" id="gNg-Qe-ZFS"/>
                         <constraint firstAttribute="width" constant="339" id="qID-0H-GJl"/>
                     </constraints>
                     <font key="font" metaFont="system"/>
@@ -36,29 +35,45 @@
                                 <rect key="frame" x="10" y="33" width="333" height="470"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="han-OM-rim">
-                                        <rect key="frame" x="5" y="8" width="323" height="459"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Request label" id="sCJ-8q-DSS">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            <connections>
-                                                <binding destination="-2" name="value" keyPath="self.requestString" id="igx-Dp-da3"/>
-                                            </connections>
-                                        </textFieldCell>
-                                        <connections>
-                                            <binding destination="-2" name="value" keyPath="self.requestString" id="Jun-i0-h2c"/>
-                                            <outlet property="menu" destination="HdG-Ad-eaf" id="Dzh-Zg-mme"/>
-                                        </connections>
-                                    </textField>
+                                    <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzv-AS-AwW">
+                                        <rect key="frame" x="9" y="8" width="316" height="459"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <clipView key="contentView" ambiguous="YES" copiesOnScroll="NO" id="eLg-bG-pVI">
+                                            <rect key="frame" x="1" y="1" width="299" height="457"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textView ambiguous="YES" editable="NO" importsGraphics="NO" richText="NO" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="u8C-dk-GAq">
+                                                    <rect key="frame" x="0.0" y="0.0" width="299" height="457"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <size key="minSize" width="299" height="457"/>
+                                                    <size key="maxSize" width="463" height="10000000"/>
+                                                    <attributedString key="textStorage">
+                                                        <fragment content="{}">
+                                                            <attributes>
+                                                                <font key="NSFont" metaFont="miniSystem"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
+                                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <connections>
+                                                        <binding destination="-2" name="attributedString" keyPath="self.requestString" id="xQp-mv-krC"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="c8j-aV-boC">
+                                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="MIQ-IX-J7Z">
+                                            <rect key="frame" x="300" y="1" width="15" height="457"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="han-OM-rim" firstAttribute="top" secondItem="ljP-mQ-24e" secondAttribute="top" constant="3" id="Atn-jB-wbg"/>
-                                    <constraint firstItem="han-OM-rim" firstAttribute="leading" secondItem="ljP-mQ-24e" secondAttribute="leading" constant="7" id="NoT-b6-5gl"/>
-                                    <constraint firstItem="han-OM-rim" firstAttribute="top" secondItem="ljP-mQ-24e" secondAttribute="top" constant="3" id="QOc-zU-9di"/>
-                                    <constraint firstAttribute="trailing" secondItem="han-OM-rim" secondAttribute="trailing" constant="7" id="TiL-T6-4hx"/>
-                                    <constraint firstAttribute="bottom" secondItem="han-OM-rim" secondAttribute="bottom" constant="8" id="ckX-Xd-JMI"/>
-                                </constraints>
                             </view>
                         </tabViewItem>
                         <tabViewItem label="Response" identifier="1" id="xmu-yK-qNa">
@@ -66,19 +81,6 @@
                                 <rect key="frame" x="10" y="33" width="333" height="470"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0VT-Ll-M6I">
-                                        <rect key="frame" x="7" y="38" width="318" height="429"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Response label" id="nqb-de-MHp">
-                                            <font key="font" metaFont="smallSystem"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                        <connections>
-                                            <binding destination="-2" name="value" keyPath="self.responseString" id="nTj-kf-rWc"/>
-                                            <outlet property="menu" destination="HdG-Ad-eaf" id="hcR-cJ-y0H"/>
-                                        </connections>
-                                    </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0IE-ar-v6A">
                                         <rect key="frame" x="8" y="4" width="98" height="17"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -126,6 +128,44 @@
                                             <binding destination="r2I-km-CB6" name="value" keyPath="selection.httpContext.code" id="9NX-hd-LMe"/>
                                         </connections>
                                     </textField>
+                                    <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O3p-ji-Fb8">
+                                        <rect key="frame" x="10" y="38" width="315" height="429"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <clipView key="contentView" ambiguous="YES" id="vAB-lI-Ep7">
+                                            <rect key="frame" x="1" y="1" width="298" height="427"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textView ambiguous="YES" editable="NO" importsGraphics="NO" richText="NO" usesFontPanel="YES" findStyle="panel" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" id="yM2-86-ZXM">
+                                                    <rect key="frame" x="0.0" y="0.0" width="298" height="427"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <size key="minSize" width="298" height="427"/>
+                                                    <size key="maxSize" width="463" height="10000000"/>
+                                                    <attributedString key="textStorage">
+                                                        <fragment content="{}">
+                                                            <attributes>
+                                                                <font key="NSFont" metaFont="miniSystem"/>
+                                                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
+                                                    <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <connections>
+                                                        <binding destination="-2" name="attributedString" keyPath="self.responseString" id="itL-cc-5pu"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </clipView>
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="O7R-z0-KEg">
+                                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="jnJ-BK-wzr">
+                                            <rect key="frame" x="299" y="1" width="15" height="427"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </scroller>
+                                    </scrollView>
                                 </subviews>
                             </view>
                         </tabViewItem>
@@ -317,12 +357,12 @@
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bag-Uh-cY1">
-                    <rect key="frame" x="202" y="5" width="163" height="32"/>
+                    <rect key="frame" x="211" y="5" width="154" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="151" id="FYH-55-ygh"/>
+                        <constraint firstAttribute="width" constant="142" id="FYH-55-ygh"/>
                         <constraint firstAttribute="height" constant="21" id="a9l-Dz-cgx"/>
                     </constraints>
-                    <buttonCell key="cell" type="push" title="Copy To Pasteboard" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Jn-ix-cfQ">
+                    <buttonCell key="cell" type="push" title="Copy To Pasteboard" bezelStyle="rounded" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="9Jn-ix-cfQ">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -355,7 +395,16 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="-2" name="value" keyPath="self.displayedIndex" id="cWz-NQ-wcN"/>
+                        <binding destination="-2" name="displayPatternValue1" keyPath="self.displayedIndex" id="vif-T6-l4w">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@ / %{value2}@</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="-2" name="displayPatternValue2" keyPath="self.arrayOfmetrics.@count" previousBinding="vif-T6-l4w" id="2jc-sT-52d">
+                            <dictionary key="options">
+                                <string key="NSDisplayPattern">%{value1}@ / %{value2}@</string>
+                            </dictionary>
+                        </binding>
                     </connections>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fDD-rw-PbW">

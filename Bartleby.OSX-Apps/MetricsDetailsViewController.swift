@@ -20,7 +20,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
 
     dynamic var requestString:String?
 
-    open var arrayOfmetrics:[Metrics]=[Metrics](){
+    open dynamic var arrayOfmetrics:[Metrics]=[Metrics](){
         didSet{
             if let m=arrayOfmetrics.last{
                 self.metrics=m
@@ -57,7 +57,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
         }
     }
 
-    public dynamic var displayedIndex:String=""
+    public dynamic var displayedIndex:String="0"
 
 
 
@@ -116,7 +116,6 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
             NSPasteboard.general().writeObjects([ns])
         }
     }
-
 
 
     @IBAction func copyToPasteBoard(_ sender: AnyObject) {
