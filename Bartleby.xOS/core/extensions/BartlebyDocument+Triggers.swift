@@ -134,8 +134,10 @@ extension BartlebyDocument {
             TriggersForIndexes.execute(from: self.UID, indexes: missing, sucessHandler: { (triggers) in
                 self._triggersHasBeenReceived(triggers)
             }) { (context) in
-                // What to do on failure ?
-                self.log("Failure on data all filling for index(es): \(s) \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+                if context.httpStatusCode != 404{
+                    // What to do on failure ?
+                    self.log("Failure on data all filling for index(es): \(s) \(context)",file:#file,function:#function,line:#line,category:logsCategoryFor(Trigger.self),decorative:false)
+                }
             }
         }
 
