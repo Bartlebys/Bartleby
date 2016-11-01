@@ -170,7 +170,7 @@ open class HTTPManager: NSObject {
         headers["Content-Type"]="application/json"
         headers["bartleby"]=Bartleby.versionString
         headers["runUID"]=Bartleby.runUID
-        headers["requestCounter"]="\(Bartleby.requestCounter)" // Used for e.g to in Trigger UID = runUID.requestCounter
+        headers["requestCounter"]="\(Bartleby.requestCounter)"
         if Bartleby.ephemeral {
             headers["ephemeral"]="true"
         }

@@ -27,12 +27,15 @@ import Foundation
 	//The subjects UIDS
 	dynamic open var uids:[String] = [String]()
 
+	//The triggerRelayDuration is computed server side it integrates the semaphore impact. (it can be used for QOS computation)
+	dynamic open var triggerRelayDuration:Double = 0
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["triggerIndex","uids"])
+        exposed.append(contentsOf:["triggerIndex","uids","triggerRelayDuration"])
         return exposed
     }
 
@@ -53,6 +56,10 @@ import Foundation
                 if let casted=value as? [String]{
                     self.uids=casted
                 }
+            case "triggerRelayDuration":
+                if let casted=value as? Double{
+                    self.triggerRelayDuration=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -72,6 +79,8 @@ import Foundation
                return self.triggerIndex
             case "uids":
                return self.uids
+            case "triggerRelayDuration":
+               return self.triggerRelayDuration
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -87,6 +96,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.triggerIndex <- ( map["triggerIndex"] )
 			self.uids <- ( map["uids"] )
+			self.triggerRelayDuration <- ( map["triggerRelayDuration"] )
         }
     }
 
@@ -98,6 +108,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.triggerIndex=decoder.decodeInteger(forKey:"triggerIndex") 
 			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids")! as! [String]
+			self.triggerRelayDuration=decoder.decodeDouble(forKey:"triggerRelayDuration") 
         }
     }
 
@@ -105,6 +116,7 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.triggerIndex,forKey:"triggerIndex")
 		coder.encode(self.uids,forKey:"uids")
+		coder.encode(self.triggerRelayDuration,forKey:"triggerRelayDuration")
     }
 
     override open class var supportsSecureCoding:Bool{

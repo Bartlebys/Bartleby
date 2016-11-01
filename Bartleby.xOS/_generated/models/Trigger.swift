@@ -51,6 +51,9 @@ import Foundation
 	//A coma separated UIDS list
 	dynamic open var UIDS:String = ""
 
+	//The sseDbProcessingDuration is computed server side in SSE context only not when calling Triggers endpoints (it can be used for QOS computation)
+	dynamic open var sseDbProcessingDuration:Double = -1
+
 	//A collection of JSON payload
 	dynamic open var payloads:[[String:Any]]?
 
@@ -59,7 +62,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["index","spaceUID","observationUID","senderUID","runUID","origin","targetCollectionName","creationDate","action","UIDS","payloads"])
+        exposed.append(contentsOf:["index","spaceUID","observationUID","senderUID","runUID","origin","targetCollectionName","creationDate","action","UIDS","sseDbProcessingDuration","payloads"])
         return exposed
     }
 
@@ -112,6 +115,10 @@ import Foundation
                 if let casted=value as? String{
                     self.UIDS=casted
                 }
+            case "sseDbProcessingDuration":
+                if let casted=value as? Double{
+                    self.sseDbProcessingDuration=casted
+                }
             case "payloads":
                 if let casted=value as? [[String:Any]]{
                     self.payloads=casted
@@ -151,6 +158,8 @@ import Foundation
                return self.action
             case "UIDS":
                return self.UIDS
+            case "sseDbProcessingDuration":
+               return self.sseDbProcessingDuration
             case "payloads":
                return self.payloads
             default:
@@ -176,6 +185,7 @@ import Foundation
 			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 			self.action <- ( map["action"] )
 			self.UIDS <- ( map["UIDS"] )
+			self.sseDbProcessingDuration <- ( map["sseDbProcessingDuration"] )
 			self.payloads <- ( map["payloads"] )
         }
     }
@@ -196,6 +206,7 @@ import Foundation
 			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.action=String(describing: decoder.decodeObject(of: NSString.self, forKey: "action")! as NSString)
 			self.UIDS=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UIDS")! as NSString)
+			self.sseDbProcessingDuration=decoder.decodeDouble(forKey:"sseDbProcessingDuration") 
 			self.payloads=decoder.decodeObject(of: [NSArray.classForCoder(),NSDictionary.classForCoder()], forKey: "payloads") as? [[String:Any]]
         }
     }
@@ -224,6 +235,7 @@ import Foundation
 		}
 		coder.encode(self.action,forKey:"action")
 		coder.encode(self.UIDS,forKey:"UIDS")
+		coder.encode(self.sseDbProcessingDuration,forKey:"sseDbProcessingDuration")
 		if let payloads = self.payloads {
 			coder.encode(payloads,forKey:"payloads")
 		}

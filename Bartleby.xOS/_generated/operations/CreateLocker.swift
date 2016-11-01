@@ -284,7 +284,8 @@ import Foundation
                         if 200...299 ~= statusCode {
                             // Acknowledge the trigger if there is one
                             if let dictionary = result.value as? Dictionary< String,AnyObject > {
-                                if let index=dictionary["triggerIndex"] as? NSNumber{
+                                if let index=dictionary["triggerIndex"] as? NSNumber,
+                                    let triggerRelayDuration=dictionary["triggerRelayDuration"] as? NSNumber{
 										let acknowledgment=Acknowledgment()
 										acknowledgment.httpContext=context
 										acknowledgment.operationName="CreateLocker"
@@ -293,6 +294,7 @@ import Foundation
 										acknowledgment.requestDuration=timeline.requestDuration
 										acknowledgment.serializationDuration=timeline.serializationDuration
 										acknowledgment.totalDuration=timeline.totalDuration
+										acknowledgment.triggerRelayDuration=triggerRelayDuration.doubleValue
 										acknowledgment.uids=[locker.UID]
 										document.record(acknowledgment)
 										document.report(acknowledgment) // Acknowlegments are also metrics

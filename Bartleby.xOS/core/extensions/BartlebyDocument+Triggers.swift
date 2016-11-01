@@ -212,9 +212,6 @@ extension BartlebyDocument {
         return  max(highestTriggerIndex,higestOwned)
     }
 
-
-
-
     // MARK: - API triggers on demand
 
     /**
@@ -367,6 +364,7 @@ extension BartlebyDocument {
                  "i":1,                                                     <- the trigger index
                  "o":"MkY2NzA4MUYtRDFGQi00Qjk0LTgyNzctNDUwQThDRjZGMDU3",    <- The observation UID
                  "r":"MzY5MDA4OTYtMDUxNS00MzdFLTgzOEEtNTQ1QjU4RDc4MEY3",    <- The run UID
+                 "d": 0.0566778                                             <- The sseDbProcessingDuration
                  "s":"RjQ0QjU0NDMtMjE4OC00NEZBLUFFODgtRTA1MzlGN0FFMTVE",    <- The sender UID
                  "c":"users",                                               <- The collection name
                  "n":"CreateUser",                                          <- origin   : The action that have originated the trigger (optionnal)
@@ -402,6 +400,9 @@ extension BartlebyDocument {
                                 // Optional data
                                 // That may be omitted on triggering
 
+                                if let sseDbProcessingDuration=JSONDictionary["d"] as? Double{
+                                    trigger.sseDbProcessingDuration=sseDbProcessingDuration
+                                }
                                 trigger.runUID=JSONDictionary["r"] as? String
                                 trigger.senderUID=JSONDictionary["s"] as? String
                                 trigger.origin=JSONDictionary["n"] as? String
