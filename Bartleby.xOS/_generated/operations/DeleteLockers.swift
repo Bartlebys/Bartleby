@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init([Locker](), from:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter lockers: the [Locker] concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ lockers:[Locker]=[Locker](), from documentUID:String) {
-        self._lockers=lockers
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ lockers:[Locker], from documentUID:String){
-        let operationInstance=DeleteLockers(lockers,from:documentUID)
+        let operationInstance=DeleteLockers()
+        operationInstance._lockers=lockers
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:3799478402, caller: "DeleteLockers.commit")
+        let context=Context(code:3799478402, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -174,7 +163,7 @@ import Foundation
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
 				let stringIDS=PString.ltrim(self._lockers.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="DeleteLockers(\(stringIDS))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -184,7 +173,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  DeleteLockers",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -202,7 +191,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            DeleteLockers.execute(self._lockers,
+            type(of: self).execute(self._lockers,
                 from:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
@@ -230,7 +219,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ lockers:[Locker],
+    open class func execute(_ lockers:[Locker],
             from documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){

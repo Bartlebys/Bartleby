@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init(User(), inDocumentWithUID:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter user: the User concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ user:User=User(), inDocumentWithUID documentUID:String) {
-        self._user=user
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ user:User, inDocumentWithUID documentUID:String){
-        let operationInstance=CreateUser(user,inDocumentWithUID:documentUID)
+        let operationInstance=CreateUser()
+        operationInstance._user=user
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:3114275262, caller: "CreateUser.commit")
+        let context=Context(code:3114275262, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -173,7 +162,7 @@ import Foundation
                 pushOperation.counter += 1
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
-				pushOperation.summary="CreateUser(\(self._user.UID))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(self._user.UID))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -185,7 +174,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  CreateUser",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -203,7 +192,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            CreateUser.execute(self._user,
+            type(of: self).execute(self._user,
                 inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in 
 					self._user.distributed=true
@@ -233,7 +222,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ user:User,
+    open class func execute(_ user:User,
             inDocumentWithUID documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){

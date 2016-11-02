@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init([Node](), inDocumentWithUID:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter nodes: the [Node] concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ nodes:[Node]=[Node](), inDocumentWithUID documentUID:String) {
-        self._nodes=nodes
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ nodes:[Node], inDocumentWithUID documentUID:String){
-        let operationInstance=CreateNodes(nodes,inDocumentWithUID:documentUID)
+        let operationInstance=CreateNodes()
+        operationInstance._nodes=nodes
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:1234672191, caller: "CreateNodes.commit")
+        let context=Context(code:1234672191, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -174,7 +163,7 @@ import Foundation
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
 				let stringIDS=PString.ltrim(self._nodes.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="CreateNodes(\(stringIDS))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -188,7 +177,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  CreateNodes",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -206,7 +195,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            CreateNodes.execute(self._nodes,
+            type(of: self).execute(self._nodes,
                 inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in 
 					for item in self._nodes{
@@ -238,7 +227,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ nodes:[Node],
+    open class func execute(_ nodes:[Node],
             inDocumentWithUID documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){

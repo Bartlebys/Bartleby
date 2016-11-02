@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init(User(), from:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter user: the User concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ user:User=User(), from documentUID:String) {
-        self._user=user
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ user:User, from documentUID:String){
-        let operationInstance=DeleteUser(user,from:documentUID)
+        let operationInstance=DeleteUser()
+        operationInstance._user=user
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:3979490154, caller: "DeleteUser.commit")
+        let context=Context(code:3979490154, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -173,7 +162,7 @@ import Foundation
                 pushOperation.counter += 1
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
-				pushOperation.summary="DeleteUser(\(self._user.UID))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(self._user.UID))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -183,7 +172,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  DeleteUser",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -201,7 +190,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            DeleteUser.execute(self._user,
+            type(of: self).execute(self._user,
                 from:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
@@ -229,7 +218,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ user:User,
+    open class func execute(_ user:User,
             from documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){

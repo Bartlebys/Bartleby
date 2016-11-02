@@ -373,6 +373,10 @@
 		E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906C1DC77F0600F235B5 /* DecryptView.swift */; };
 		E598906F1DC79C0A00F235B5 /* DocumentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906E1DC79C0A00F235B5 /* DocumentProvider.swift */; };
 		E59890711DC79C1800F235B5 /* DocumentDependent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59890701DC79C1800F235B5 /* DocumentDependent.swift */; };
+		E5AF32591DCA31C70073B53E /* UploadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF32581DCA31C70073B53E /* UploadBlock.swift */; };
+		E5AF325B1DCA31D20073B53E /* DownloadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF325A1DCA31D20073B53E /* DownloadBlock.swift */; };
+		E5AF326C1DCA44C40073B53E /* BlockOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF326B1DCA44C40073B53E /* BlockOperationBase.swift */; };
+		E5AF326D1DCA44C40073B53E /* BlockOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF326B1DCA44C40073B53E /* BlockOperationBase.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -646,6 +650,9 @@
 		E598906C1DC77F0600F235B5 /* DecryptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptView.swift; sourceTree = "<group>"; };
 		E598906E1DC79C0A00F235B5 /* DocumentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentProvider.swift; sourceTree = "<group>"; };
 		E59890701DC79C1800F235B5 /* DocumentDependent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentDependent.swift; sourceTree = "<group>"; };
+		E5AF32581DCA31C70073B53E /* UploadBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadBlock.swift; sourceTree = "<group>"; };
+		E5AF325A1DCA31D20073B53E /* DownloadBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadBlock.swift; sourceTree = "<group>"; };
+		E5AF326B1DCA44C40073B53E /* BlockOperationBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperationBase.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetails.swift; sourceTree = "<group>"; };
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
@@ -911,6 +918,7 @@
 		E57375F31DBB960500E2B849 /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				E5AF32641DCA43930073B53E /* bases */,
 				E536C0841DC9FA690053DE31 /* CreateBlock.swift */,
 				E536C0851DC9FA690053DE31 /* CreateBlocks.swift */,
 				E536C0861DC9FA690053DE31 /* CreateBox.swift */,
@@ -1124,11 +1132,13 @@
 		E57376591DBB960500E2B849 /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				E5AF325A1DCA31D20073B53E /* DownloadBlock.swift */,
 				E573765A1DBB960500E2B849 /* LoginUser.swift */,
 				E573765B1DBB960500E2B849 /* LogoutUser.swift */,
 				E573765C1DBB960500E2B849 /* TriggersAfterIndex.swift */,
 				E573765D1DBB960500E2B849 /* TriggersByIds.swift */,
 				E573765E1DBB960500E2B849 /* TriggersForIndexes.swift */,
+				E5AF32581DCA31C70073B53E /* UploadBlock.swift */,
 				E573765F1DBB960500E2B849 /* VerifyLocker.swift */,
 			);
 			path = operations;
@@ -1178,6 +1188,14 @@
 				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
 			);
 			name = "Support-files";
+			sourceTree = "<group>";
+		};
+		E5AF32641DCA43930073B53E /* bases */ = {
+			isa = PBXGroup;
+			children = (
+				E5AF326B1DCA44C40073B53E /* BlockOperationBase.swift */,
+			);
+			path = bases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1384,6 +1402,7 @@
 				E57377491DBB960500E2B849 /* TriggersForIndexes.swift in Sources */,
 				E536C0C31DC9FA690053DE31 /* ReadNodeById.swift in Sources */,
 				E573769B1DBB960500E2B849 /* DeleteUsers.swift in Sources */,
+				E5AF325B1DCA31D20073B53E /* DownloadBlock.swift in Sources */,
 				E536C0471DC9E7710053DE31 /* String+HMAC.swift in Sources */,
 				E573766B1DBB960500E2B849 /* UsersManagedCollection.swift in Sources */,
 				E57376A71DBB960500E2B849 /* ReadUsersByQuery.swift in Sources */,
@@ -1481,6 +1500,7 @@
 				E57377431DBB960500E2B849 /* LogoutUser.swift in Sources */,
 				E573767F1DBB960500E2B849 /* Locker.swift in Sources */,
 				E57376671DBB960500E2B849 /* LockersManagedCollection.swift in Sources */,
+				E5AF326C1DCA44C40073B53E /* BlockOperationBase.swift in Sources */,
 				E57377331DBB960500E2B849 /* UserProtocol.swift in Sources */,
 				E536C0491DC9E7A10053DE31 /* HMAC.swift in Sources */,
 				E536C0C91DC9FA690053DE31 /* UpdateBlock.swift in Sources */,
@@ -1503,6 +1523,7 @@
 				E57377031DBB960500E2B849 /* CollectionMetadatumProtocol.swift in Sources */,
 				E536C04B1DC9E7CA0053DE31 /* HMACAlgorythms.swift in Sources */,
 				E536C0D11DC9FA690053DE31 /* UpdateNode.swift in Sources */,
+				E5AF32591DCA31C70073B53E /* UploadBlock.swift in Sources */,
 				E536C0AD1DC9FA690053DE31 /* DeleteBlocks.swift in Sources */,
 				E57376C71DBB960500E2B849 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E536C0CF1DC9FA690053DE31 /* UpdateBoxes.swift in Sources */,
@@ -1570,6 +1591,7 @@
 				E573774C1DBB960500E2B849 /* VerifyLocker.swift in Sources */,
 				E57376E81DBB960500E2B849 /* DocumentMetadata+Protocol.swift in Sources */,
 				E573774A1DBB960500E2B849 /* TriggersForIndexes.swift in Sources */,
+				E5AF326D1DCA44C40073B53E /* BlockOperationBase.swift in Sources */,
 				E569F3591DC7C264004D4FB5 /* Commitable.swift in Sources */,
 				E57376D41DBB960500E2B849 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E573768A1DBB960500E2B849 /* Trigger.swift in Sources */,

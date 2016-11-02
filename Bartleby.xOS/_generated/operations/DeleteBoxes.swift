@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init([Box](), from:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter boxes: the [Box] concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ boxes:[Box]=[Box](), from documentUID:String) {
-        self._boxes=boxes
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ boxes:[Box], from documentUID:String){
-        let operationInstance=DeleteBoxes(boxes,from:documentUID)
+        let operationInstance=DeleteBoxes()
+        operationInstance._boxes=boxes
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:4041552439, caller: "DeleteBoxes.commit")
+        let context=Context(code:4041552439, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -174,7 +163,7 @@ import Foundation
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
 				let stringIDS=PString.ltrim(self._boxes.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="DeleteBoxes(\(stringIDS))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -184,7 +173,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  DeleteBoxes",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -202,7 +191,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            DeleteBoxes.execute(self._boxes,
+            type(of: self).execute(self._boxes,
                 from:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
@@ -230,7 +219,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ boxes:[Box],
+    open class func execute(_ boxes:[Box],
             from documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){

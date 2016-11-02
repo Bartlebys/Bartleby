@@ -1,13 +1,185 @@
 # BSFS
 
-Bartleby's Synchronized File system (BSFS) is a synchronized file system. It synchronizes boxes of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...)
+Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files in a network of clients.
+
+## KeyPoints:
+
+### BSFS is Fast
+
+- Synchronization is automatic as soon as node is available it synchronization starts
+- When a file upload is in progress clients blocks downloads can start.
+- Copies and Moves are done in real time.
+- Repetitive blocks are reused (if you have multiple file with large shared part, they can share their blocks)
+- Blocks can be zipped if relevant (for exemple JSON file) 
+
+### BSFS is Securized
+
+- BSFS supports Bartleby ACL plus, fine ACL additions (per UserUID
+- "blocks" on the servers are AES128/256 encrypted on the client side 	- Hacked server files are secure
+	- You can opt out 
+
+### BSFS is Versatile
+
+- Blocks sizes can be adapted to context (you can apply different strategies for small pieces to large video files)
+- You can decide when to apply the local change (for example if you are playing a sound file of a synchronized playlist, the playlist file update may occur when you reach the end when the BSFS delegate validate the change)
+
+
 
 # Models 
 
-+ Box
-+ Node
-+ Block
-+ Transaction
++ Box - The root folder node that contains all the nodes
++ Node - A file , a folder or an Alias that refers to its Blocks
++ Block - The model that reference a block file (the raw bytes chunks)
++ Transaction - A serialized BSFS operation with a comment
+
+
+# Block files 
+
++ Raw block files.
++ filename = Block.UID
++ block are stored per folders the Uppercased 2 first components of the UID. (e.G = NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC would be in /N/K/J/) locally in F/.bsfs/blocks/N/K/J
+
+
+# Operation BartlebyOperation
+
+## Generative
+
++ CRUD Box(es)
++ CRUD Node(s)
++ CRUD Block(s)
+
+
+## New Client TPL generative Operation
+
++ UploadBlock Creation and Update -> 
++ DownloadBlock
+
+UploadBlock and Download block should be ideally interruptible [PassThru?](http://php.net/manual/en/function.fpassthru.php)
+
+# BSFS local API
+
+## Mandatory: 
+
++ addFile(originalPath:String, relativePath:String, public:Bool, authorized:[String]?)
+	+ copies the file to the FS 
+	+ generates temp blocks
+		+ upload each block 
+
++ remove(relativePath)
+	+ removes the local node 
+	+ call DeleteFile()
++ createAlias()
++ createFolder()
++ copy(sourceRelativePath:String,destinationRelativePath) copies + send CreateNode (no block need to be created)
++ move(sourceRelativePath:String,destinationRelativePath) moves + send UpdateNode (no block need to be created)
+
+# BSFS delegate
+
+Receives :
+
+- fileShouldChange
+- fileShouldBeDeleted
+
+And respond when appropriate:
+
+- proceed()
+- 
+# Data
+
+## In the document we have Managed Collections that reflect the distant data
+
+- Boxes
+- Nodes
+- Blocks
+
+## in The ".bsfs" folder
+
+
+###1 We have got of Boxes, Nodes, Blocks that reflect the current file system data
+
+```
+	.bsfs/
+			transactions.json
+			nodes.json
+			blocks.json
+			...
+```
+
+- transactions.json contains "[Transaction]"
+- nodes.json contains "[Node]"
+- blocks contains "[Block]"
+
+
+###2 And the configuration 
+  
+```	
+	.bsfs/
+			...
+			configuration.json 
+			...
+```
+
+###3 the block data
+  
+```	
+	.bsfs/
+			...
+			blocks/
+					<block>
+					<block>
+					....
+```
+
+
+## Optional APi
+
+If the files are manipulated out of the app, the local data may become outdated. 
+
++ scanBox(box:Box) 
+	+ refreshes the local Boxes, Nodes, Blocks infos (CPU very intensive) 
+
+
+
+
+----
+
+# BSFS Daemon 
+
+A future OSX Daemon that Converts File system action to Api calls.
+Coupled with a finder extension...
+
+----
+# Details on Models
+
+# Box
+
+The box is the root of a synchronized folder it is a special Node
+
+- You can locate synchronized Box node anywhere. It will create a ".bsfs" folder at its root.
+- Boxes cannot be located in a Box.
+
+```json
+{
+  "name": "Box",
+  "definition": {
+    "explicitType":"Node",
+    "description": "Bartleby's Synchronized File System: the root of a synchronized folder (special Node)",
+    "properties": {
+      "serverURL": {
+        "type": "URL",
+        "description": "The server URL",
+        "supervisable": true
+      }
+    },
+    "metadata": {
+      "urdMode": false,
+      "persistsLocallyOnlyInMemory": false,
+      "persistsDistantly": true,
+      "undoable": false
+    }
+  }
+}
+```
 
 ## Node
 
@@ -183,7 +355,6 @@ Bartleby's Synchronized File system (BSFS) is a synchronized file system. It syn
 
 ## Transaction
 
-
 - Each transaction in the local FS returns a transactionUID.
 - You can cancel any non completed Transactions
 
@@ -232,99 +403,7 @@ Bartleby's Synchronized File system (BSFS) is a synchronized file system. It syn
 }
 ```
 
-# Box
 
-The box is the root of a synchronized folder it is a special Node
-
-- You can locate synchronized Box node anywhere. It will create a ".bsfs" folder at its root.
-- Boxes cannot be located in a Box.
-
-# The ".bsfs" folder
-
-```
-	.bsfs/
-			config.json // The destination info
-			blocks/
-					<block>
-					<block>
-					....
-			transactions.json
-			nodes.json
-			blocks.json
-```		
-
-
-# Block files 
-
-+ Raw block files.
-+ filename = Block.UID
-+ block are stored per folders the Uppercased 2 first components of the UID. (e.G = NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC would be in /N/K/J/) locally in F/.bsfs/blocks/N/K/J
-
-
-# Operation BartlebyOperation
-
-## Generative
-
-+ Node CRUD 
-+ Block CRUD
-
-## New Client TPL generative Operation
-
-+ UploadBlock Creation and Update -> Triggers the BlockDescriptor on completion) 
-+ DownloadBlock
-
-UploadBlock and Download block should be ideally interruptible [PassThru?](http://php.net/manual/en/function.fpassthru.php)
-
-# BSFS local API
-
-+ addFile(originalPath:String, relativePath:String, public:Bool, authorized:[String]?)
-	+ copies the file to the FS 
-	+ generates temp blocks
-		+ upload each block 
-
-+ remove(relativePath)
-	+ removes the local node 
-	+ call DeleteFile()
-+ createAlias()
-+ createFolder()
-+ copy(sourceRelativePath:String,destinationRelativePath) copies + send CreateNode (no block need to be created)
-+ move(sourceRelativePath:String,destinationRelativePath) moves + send UpdateNode (no block need to be created)
-
-## OpMode : 
-
-- preserveBlocks
-- useCache 
-
-
-# FS delegate
-
-Receives :
-
-- fileShouldChange
-- fileShouldBeDeleted
-
-And respond when appropriate:
-
-- proceed()
-
-# Files Data
-
-## In the document we have the Two Managed Collections that reflect the distant node:
-
-- Boxes
-- Nodes
-- Blocks
-
-
-## In Document.metadata we have : 
-- localBoxes:[Boxe]
-- localNodes:[Node]
-- localBlock:[Block]
-
-
-## BSFS Daemon 
-
-Converts File system action to Api calls.
 
 
 

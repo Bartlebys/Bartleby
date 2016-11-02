@@ -24,8 +24,8 @@ import Foundation
 
     fileprivate var _documentUID:String=Default.NO_UID
 
-    required public convenience init(){
-        self.init(Block(), from:Default.NO_UID)
+    required public init() {
+        super.init()
     }
 
 
@@ -115,19 +115,6 @@ import Foundation
 
 
     /**
-    This is the designated constructor.
-
-    - parameter block: the Block concerned the operation
-    - parameter documentUID the document UID
-
-    */
-    init (_ block:Block=Block(), from documentUID:String) {
-        self._block=block
-        self._documentUID=documentUID
-        super.init()
-    }
-
-    /**
      Returns an operation with self.UID as commandUID
 
      - returns: return the operation
@@ -158,13 +145,15 @@ import Foundation
     - parameter documentUID:     the document UID
     */
     static func commit(_ block:Block, from documentUID:String){
-        let operationInstance=DeleteBlock(block,from:documentUID)
+        let operationInstance=DeleteBlock()
+        operationInstance._block=block
+        operationInstance._documentUID=documentUID
         operationInstance.commit()
     }
 
 
     func commit(){
-        let context=Context(code:1882299827, caller: "DeleteBlock.commit")
+        let context=Context(code:1882299827, caller: "\(self.runTimeTypeName()).commit")
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             // Provision the pushOperation.
             do{
@@ -173,7 +162,7 @@ import Foundation
                 pushOperation.counter += 1
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
-				pushOperation.summary="DeleteBlock(\(self._block.UID))"
+				pushOperation.summary="\(self.runTimeTypeName())(\(self._block.UID))"
                 if let currentUser=document.metadata.currentUser{
                     pushOperation.creatorUID=currentUser.UID
                     self.creatorUID=currentUser.UID
@@ -183,7 +172,7 @@ import Foundation
             }catch{
                document.dispatchAdaptiveMessage(context,
                     title: "Structural Error",
-                    body: "Operation collection is missing in  DeleteBlock",
+                    body: "Operation collection is missing in \(self.runTimeTypeName())",
                     onSelectedIndex: { (selectedIndex) -> () in
                 })
             }
@@ -201,7 +190,7 @@ import Foundation
         if  pushOperation.canBePushed(){
             // We try to execute
             pushOperation.status=PushOperation.Status.inProgress
-            DeleteBlock.execute(self._block,
+            type(of: self).execute(self._block,
                 from:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
@@ -229,7 +218,7 @@ import Foundation
         }
     }
 
-    static open func execute(_ block:Block,
+    open class func execute(_ block:Block,
             from documentUID:String,
             sucessHandler success: @escaping(_ context:HTTPContext)->(),
             failureHandler failure: @escaping(_ context:HTTPContext)->()){
