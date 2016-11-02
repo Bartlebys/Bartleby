@@ -33,7 +33,7 @@ open class NoCrypto: NSObject, CryptoDelegate {
         return data
     }
 
-    open static func hash(_ string: String) -> String {
+    open static func hashString(_ string: String) -> String {
         return string
     }
 

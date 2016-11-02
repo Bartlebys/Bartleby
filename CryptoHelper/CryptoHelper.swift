@@ -24,7 +24,7 @@ import Foundation
     }
 
     // We use a hash of the _salt+key as initialization vector
-    lazy var initializationVector: Data?=CryptoHelper.hash(self.salt + self.key).data(using: Default.STRING_ENCODING, allowLossyConversion:false)
+    lazy var initializationVector: Data?=CryptoHelper.hashString(self.salt + self.key).data(using: Default.STRING_ENCODING, allowLossyConversion:false)
 
 
     // MARK: - Cryptography
@@ -38,8 +38,8 @@ import Foundation
 
 
     open func dumpDebug() {
-        print("hash of key is \(CryptoHelper.hash(key))")
-        print("hash of salt is \(CryptoHelper.hash(salt))")
+        print("hash of key is \(CryptoHelper.hashString(key))")
+        print("hash of salt is \(CryptoHelper.hashString(salt))")
     }
 
     /**
@@ -131,7 +131,6 @@ import Foundation
     }
 
     fileprivate func _cryptOperation(_ data: Data, keyData: Data, operation: CCOperation) throws -> Data {
-
         let keyBytes = (keyData as NSData).bytes.bindMemory(to: UInt8.self, capacity: keyData.count)
         let dataLength = Int(data.count)
         let dataBytes  = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
@@ -162,7 +161,7 @@ import Foundation
     }
 
 
-    open static func hash(_ string: String) -> String {
+    open static func hashString(_ string: String) -> String {
         var digest = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
         if let data = string.data(using: Default.STRING_ENCODING) {
             CC_MD5((data as NSData).bytes, CC_LONG(data.count), &digest)
@@ -174,3 +173,4 @@ import Foundation
         return digestHex
     }
 }
+

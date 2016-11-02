@@ -17,6 +17,6 @@ import Foundation
     func encryptData(_ data: Data)throws ->Data
     func decryptData(_ data: Data)throws ->Data
 
-    static func hash(_ string: String) -> String
+    static func hashString(_ string: String) -> String
 
 }
