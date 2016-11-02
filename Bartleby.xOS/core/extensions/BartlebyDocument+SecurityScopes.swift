@@ -139,7 +139,7 @@ extension BartlebyDocument {
 
     fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> String {
         let path=url.path
-        return "\(path)-\((appScoped ? "YES" : "NO" ))-\(documentfileURL?.path ?? Default.NO_PATH ))"
+        return CryptoHelper.hashString("\(path)-\((appScoped ? "YES" : "NO" ))-\(documentfileURL?.path ?? Default.NO_PATH ))")
     }
 
     /**
@@ -161,7 +161,6 @@ extension BartlebyDocument {
                     var bookmarkIsStale: Bool = false
                     do {
                         #if os(OSX)
-
                             let securizedURL = try URL(resolvingBookmarkData: data,
                                                           options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : (documentfileURL ?? self.fileURL),
                                                           bookmarkDataIsStale: &bookmarkIsStale)
