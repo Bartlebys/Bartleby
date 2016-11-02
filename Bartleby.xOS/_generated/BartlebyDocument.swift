@@ -627,9 +627,27 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
+	open dynamic var blocks=BlocksManagedCollection(){
+		willSet{
+			blocks.document=self
+		}
+	}
+	
+	open dynamic var boxes=BoxesManagedCollection(){
+		willSet{
+			boxes.document=self
+		}
+	}
+	
 	open dynamic var lockers=LockersManagedCollection(){
 		willSet{
 			lockers.document=self
+		}
+	}
+	
+	open dynamic var nodes=NodesManagedCollection(){
+		willSet{
+			nodes.document=self
 		}
 	}
 	
@@ -654,6 +672,42 @@ import Foundation
     // Those view Controller are observed here to insure a consistent persitency
 
 
+    open var blocksArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            blocksArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the ManagedCollection
+            self.blocks.arrayController=blocksArrayController
+            // Add observer
+            blocksArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedBlocksIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                self.blocksArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+        
+    open var boxesArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            boxesArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the ManagedCollection
+            self.boxes.arrayController=boxesArrayController
+            // Add observer
+            boxesArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedBoxesIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                self.boxesArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+        
     open var lockersArrayController: NSArrayController?{
         willSet{
             // Remove observer on previous array Controller
@@ -668,6 +722,24 @@ import Foundation
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 self.lockersArrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+        
+    open var nodesArrayController: NSArrayController?{
+        willSet{
+            // Remove observer on previous array Controller
+            nodesArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            // Setup the Array Controller in the ManagedCollection
+            self.nodes.arrayController=nodesArrayController
+            // Add observer
+            nodesArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedNodesIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                self.nodesArrayController?.setSelectionIndexes(indexesSet as IndexSet)
              }
         }
     }
@@ -715,6 +787,40 @@ import Foundation
     // indexes persistency
 
     
+    static open let kSelectedBlocksIndexesKey="selectedBlocksIndexesKey"
+    static open let BLOCKS_SELECTED_INDEXES_CHANGED_NOTIFICATION="BLOCKS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedBlocks:[Block]?{
+        didSet{
+            if let blocks = selectedBlocks {
+                 let indexes:[Int]=blocks.map({ (block) -> Int in
+                    return self.blocks.index(where:{ return $0.UID == block.UID })!
+                })
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedBlocksIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.BLOCKS_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
+            }
+        }
+    }
+    var firstSelectedBlock:Block? { return self.selectedBlocks?.first }
+        
+        
+    
+    static open let kSelectedBoxesIndexesKey="selectedBoxesIndexesKey"
+    static open let BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION="BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedBoxes:[Box]?{
+        didSet{
+            if let boxes = selectedBoxes {
+                 let indexes:[Int]=boxes.map({ (box) -> Int in
+                    return self.boxes.index(where:{ return $0.UID == box.UID })!
+                })
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedBoxesIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
+            }
+        }
+    }
+    var firstSelectedBox:Box? { return self.selectedBoxes?.first }
+        
+        
+    
     static open let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
     static open let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic open var selectedLockers:[Locker]?{
@@ -729,6 +835,23 @@ import Foundation
         }
     }
     var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
+        
+        
+    
+    static open let kSelectedNodesIndexesKey="selectedNodesIndexesKey"
+    static open let NODES_SELECTED_INDEXES_CHANGED_NOTIFICATION="NODES_SELECTED_INDEXES_CHANGED_NOTIFICATION"
+    dynamic open var selectedNodes:[Node]?{
+        didSet{
+            if let nodes = selectedNodes {
+                 let indexes:[Int]=nodes.map({ (node) -> Int in
+                    return self.nodes.index(where:{ return $0.UID == node.UID })!
+                })
+                self.metadata.stateDictionary[BartlebyDocument.kSelectedNodesIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.NODES_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
+            }
+        }
+    }
+    var firstSelectedNode:Node? { return self.selectedNodes?.first }
         
         
     
@@ -778,6 +901,22 @@ import Foundation
 
     */
 	open func configureSchema(){
+        let blockDefinition = CollectionMetadatum()
+        blockDefinition.proxy = self.blocks
+        // By default we group the observation via the rootObjectUID
+        blockDefinition.collectionName = Block.collectionName
+        blockDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        blockDefinition.persistsDistantly = true
+        blockDefinition.inMemory = false
+        
+        let boxDefinition = CollectionMetadatum()
+        boxDefinition.proxy = self.boxes
+        // By default we group the observation via the rootObjectUID
+        boxDefinition.collectionName = Box.collectionName
+        boxDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        boxDefinition.persistsDistantly = true
+        boxDefinition.inMemory = false
+        
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
         // By default we group the observation via the rootObjectUID
@@ -785,6 +924,14 @@ import Foundation
         lockerDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         lockerDefinition.persistsDistantly = true
         lockerDefinition.inMemory = false
+        
+        let nodeDefinition = CollectionMetadatum()
+        nodeDefinition.proxy = self.nodes
+        // By default we group the observation via the rootObjectUID
+        nodeDefinition.collectionName = Node.collectionName
+        nodeDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        nodeDefinition.persistsDistantly = true
+        nodeDefinition.inMemory = false
         
         let pushOperationDefinition = CollectionMetadatum()
         pushOperationDefinition.proxy = self.pushOperations
@@ -806,7 +953,10 @@ import Foundation
         // Proceed to configuration
         do{
 
+			try self.metadata.configureSchema(blockDefinition)
+			try self.metadata.configureSchema(boxDefinition)
 			try self.metadata.configureSchema(lockerDefinition)
+			try self.metadata.configureSchema(nodeDefinition)
 			try self.metadata.configureSchema(pushOperationDefinition)
 			try self.metadata.configureSchema(userDefinition)
 
@@ -841,6 +991,32 @@ import Foundation
         if let keyPath = keyPath, let object = object {
 
                     
+            if keyPath=="selectionIndexes" && self.blocksArrayController == object as? NSArrayController {
+                if let blocks = self.blocksArrayController?.selectedObjects as? [Block] {
+                     if let selectedBlock = self.selectedBlocks{
+                        if selectedBlock == blocks{
+                            return // No changes
+                        }
+                     }
+                    self.selectedBlocks=blocks
+                }
+                return
+            }
+            
+            
+            if keyPath=="selectionIndexes" && self.boxesArrayController == object as? NSArrayController {
+                if let boxes = self.boxesArrayController?.selectedObjects as? [Box] {
+                     if let selectedBox = self.selectedBoxes{
+                        if selectedBox == boxes{
+                            return // No changes
+                        }
+                     }
+                    self.selectedBoxes=boxes
+                }
+                return
+            }
+            
+            
             if keyPath=="selectionIndexes" && self.lockersArrayController == object as? NSArrayController {
                 if let lockers = self.lockersArrayController?.selectedObjects as? [Locker] {
                      if let selectedLocker = self.selectedLockers{
@@ -849,6 +1025,19 @@ import Foundation
                         }
                      }
                     self.selectedLockers=lockers
+                }
+                return
+            }
+            
+            
+            if keyPath=="selectionIndexes" && self.nodesArrayController == object as? NSArrayController {
+                if let nodes = self.nodesArrayController?.selectedObjects as? [Node] {
+                     if let selectedNode = self.selectedNodes{
+                        if selectedNode == nodes{
+                            return // No changes
+                        }
+                     }
+                    self.selectedNodes=nodes
                 }
                 return
             }
@@ -884,11 +1073,38 @@ import Foundation
     }
 
     // MARK:  Delete currently selected items
-        open func deleteSelectedLockers() {
+        open func deleteSelectedBlocks() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedBlocks{
+            for item in selected{
+                 self.blocks.removeObject(item, commit:true)
+            }
+        }
+    }
+        
+    open func deleteSelectedBoxes() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedBoxes{
+            for item in selected{
+                 self.boxes.removeObject(item, commit:true)
+            }
+        }
+    }
+        
+    open func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLockers{
             for item in selected{
                  self.lockers.removeObject(item, commit:true)
+            }
+        }
+    }
+        
+    open func deleteSelectedNodes() {
+        // you should override this method if you want to cascade the deletion(s)
+        if let selected=self.selectedNodes{
+            for item in selected{
+                 self.nodes.removeObject(item, commit:true)
             }
         }
     }
@@ -918,6 +1134,40 @@ import Foundation
 
     
     /**
+     * Creates a new Block
+     * you can override this method to customize the properties
+     */
+    open func newBlock() -> Block {
+        let block=Block()
+        block.silentGroupedChanges {
+            if let creator=self.metadata.currentUser {
+                block.creatorUID = creator.UID
+            }
+            // Become managed
+            self.blocks.add(block, commit:false)
+        }
+        block.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        return  block
+    }
+
+    /**
+     * Creates a new Box
+     * you can override this method to customize the properties
+     */
+    open func newBox() -> Box {
+        let box=Box()
+        box.silentGroupedChanges {
+            if let creator=self.metadata.currentUser {
+                box.creatorUID = creator.UID
+            }
+            // Become managed
+            self.boxes.add(box, commit:false)
+        }
+        box.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        return  box
+    }
+
+    /**
      * Creates a new Locker
      * you can override this method to customize the properties
      */
@@ -932,6 +1182,23 @@ import Foundation
         }
         locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
         return  locker
+    }
+
+    /**
+     * Creates a new Node
+     * you can override this method to customize the properties
+     */
+    open func newNode() -> Node {
+        let node=Node()
+        node.silentGroupedChanges {
+            if let creator=self.metadata.currentUser {
+                node.creatorUID = creator.UID
+            }
+            // Become managed
+            self.nodes.add(node, commit:false)
+        }
+        node.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        return  node
     }
 
 }
