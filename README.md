@@ -11,7 +11,10 @@ Bartleby Is a full stack generative suite to build fault tolerant native distrib
 
 # Resources
 
-- [How data synchronization works?](https://github.com/Bartlebys/Bartleby/blob/master/Documents/DataSynchronization.md)
+- [Overview](Documents/Bartleby.md)
+- [How data synchronization works?](Documents/DataSynchronization.md)
+- [How BSFS works?](Documents/BSFS.md)
+
 
 # Road Map 
 Bartleby Major version should increment each 12 / 24 months.
