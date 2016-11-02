@@ -20,7 +20,7 @@ class Configuration {
 
     static var SALT: String {
         get {
-            return CryptoHelper.hash(Configuration.KEY+"in-the-soup")
+            return CryptoHelper.hashString(Configuration.KEY+"in-the-soup")
         }
     }
 

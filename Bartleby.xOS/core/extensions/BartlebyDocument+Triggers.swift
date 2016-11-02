@@ -17,7 +17,7 @@ import Foundation
  This extension implements the logic that integrate consistently the data.
 
  Check the Data Sync Document for more informations.
- https://github.com/Bartlebys/Bartleby/blob/master/DataSynchronization.md
+ https://github.com/Bartlebys/Bartleby/blob/master/Documents/DataSynchronization.md
 
  */
 extension BartlebyDocument {

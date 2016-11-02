@@ -56,6 +56,10 @@
 		E5238B2B1DC4FEAC003D343D /* ReportWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B291DC4FEAC003D343D /* ReportWindowController.xib */; };
 		E5238B2E1DC50091003D343D /* DecryptorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B2C1DC50091003D343D /* DecryptorViewController.swift */; };
 		E5238B2F1DC50091003D343D /* DecryptorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B2D1DC50091003D343D /* DecryptorViewController.xib */; };
+		E536C0451DC9E7570053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0441DC9E7570053DE31 /* Data+HMAC.swift */; };
+		E536C0471DC9E7710053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0461DC9E7710053DE31 /* String+HMAC.swift */; };
+		E536C0491DC9E7A10053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0481DC9E7A10053DE31 /* HMAC.swift */; };
+		E536C04B1DC9E7CA0053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
@@ -400,6 +404,10 @@
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
+		E536C0441DC9E7570053DE31 /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
+		E536C0461DC9E7710053DE31 /* String+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMAC.swift"; sourceTree = "<group>"; };
+		E536C0481DC9E7A10053DE31 /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorythms.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -661,6 +669,10 @@
 				E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */,
 				E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */,
 				E518343D1CA52F96006ED867 /* CryptoHelper.swift */,
+				E536C0481DC9E7A10053DE31 /* HMAC.swift */,
+				E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */,
+				E536C0441DC9E7570053DE31 /* Data+HMAC.swift */,
+				E536C0461DC9E7710053DE31 /* String+HMAC.swift */,
 			);
 			name = CryptoHelper;
 			path = ../CryptoHelper;
@@ -1207,6 +1219,7 @@
 				E573769D1DBB960500E2B849 /* ReadLockerById.swift in Sources */,
 				E57376BF1DBB960500E2B849 /* BarltlebyDocument+Consignee.swift in Sources */,
 				E57377071DBB960500E2B849 /* CryptoDelegate.swift in Sources */,
+				E536C0451DC9E7570053DE31 /* Data+HMAC.swift in Sources */,
 				E57376E51DBB960500E2B849 /* DocumentMetadata+Facilities.swift in Sources */,
 				E57376E91DBB960500E2B849 /* Global.swift in Sources */,
 				E57376B71DBB960500E2B849 /* Bartleby.swift in Sources */,
@@ -1215,6 +1228,7 @@
 				E50F3AF61D40D27F00532B09 /* OperationViewController.swift in Sources */,
 				E57377491DBB960500E2B849 /* TriggersForIndexes.swift in Sources */,
 				E573769B1DBB960500E2B849 /* DeleteUsers.swift in Sources */,
+				E536C0471DC9E7710053DE31 /* String+HMAC.swift in Sources */,
 				E573766B1DBB960500E2B849 /* UsersManagedCollection.swift in Sources */,
 				E57376A71DBB960500E2B849 /* ReadUsersByQuery.swift in Sources */,
 				E573773D1DBB960500E2B849 /* NSUndomanager+RegisterUndo.swift in Sources */,
@@ -1297,6 +1311,7 @@
 				E573767F1DBB960500E2B849 /* Locker.swift in Sources */,
 				E57376671DBB960500E2B849 /* LockersManagedCollection.swift in Sources */,
 				E57377331DBB960500E2B849 /* UserProtocol.swift in Sources */,
+				E536C0491DC9E7A10053DE31 /* HMAC.swift in Sources */,
 				E50A0CE21DC21A3A00869BFB /* HTTPContext.swift in Sources */,
 				E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
 				E57376891DBB960500E2B849 /* Trigger.swift in Sources */,
@@ -1311,6 +1326,7 @@
 				E57377251DBB960500E2B849 /* Referenced.swift in Sources */,
 				E57376711DBB960500E2B849 /* CollectionMetadatum.swift in Sources */,
 				E57377031DBB960500E2B849 /* CollectionMetadatumProtocol.swift in Sources */,
+				E536C04B1DC9E7CA0053DE31 /* HMACAlgorythms.swift in Sources */,
 				E57376C71DBB960500E2B849 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E5238B2E1DC50091003D343D /* DecryptorViewController.swift in Sources */,
 				E59890711DC79C1800F235B5 /* DocumentDependent.swift in Sources */,

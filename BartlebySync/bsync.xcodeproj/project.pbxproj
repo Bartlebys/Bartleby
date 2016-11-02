@@ -35,6 +35,22 @@
 		E50987741DAFBE280049A2DA /* BsyncHashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50987641DAFBE280049A2DA /* BsyncHashMap.swift */; };
 		E510E9A51D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
 		E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */; };
+		E536C0501DC9EA340053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04C1DC9EA340053DE31 /* String+HMAC.swift */; };
+		E536C0511DC9EA340053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */; };
+		E536C0521DC9EA340053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04E1DC9EA340053DE31 /* HMAC.swift */; };
+		E536C0531DC9EA340053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */; };
+		E536C05C1DC9EA490053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04C1DC9EA340053DE31 /* String+HMAC.swift */; };
+		E536C05D1DC9EA490053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */; };
+		E536C05E1DC9EA490053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04E1DC9EA340053DE31 /* HMAC.swift */; };
+		E536C05F1DC9EA490053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */; };
+		E536C0601DC9EA4B0053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04C1DC9EA340053DE31 /* String+HMAC.swift */; };
+		E536C0611DC9EA4B0053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */; };
+		E536C0621DC9EA4B0053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04E1DC9EA340053DE31 /* HMAC.swift */; };
+		E536C0631DC9EA4B0053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */; };
+		E536C0641DC9EA4B0053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04C1DC9EA340053DE31 /* String+HMAC.swift */; };
+		E536C0651DC9EA4B0053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */; };
+		E536C0661DC9EA4B0053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04E1DC9EA340053DE31 /* HMAC.swift */; };
+		E536C0671DC9EA4B0053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */; };
 		E53E28D41CA572D80079ED23 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
 		E53E28D51CA572D80079ED23 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
 		E53E28D61CA572D80079ED23 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
@@ -893,6 +909,10 @@
 		E510E9A41D0EC40300515179 /* BsyncHashMap+Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BsyncHashMap+Filter.swift"; sourceTree = "<group>"; };
 		E52F948D1D01C25E005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F948E1D01C25E005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
+		E536C04C1DC9EA340053DE31 /* String+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMAC.swift"; sourceTree = "<group>"; };
+		E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorythms.swift; sourceTree = "<group>"; };
+		E536C04E1DC9EA340053DE31 /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
 		E538C6181C5A58CD001CD0E2 /* BsyncDMGCard+Evaluation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BsyncDMGCard+Evaluation.swift"; sourceTree = "<group>"; };
 		E545940C1C3E642C000576AD /* CleanupCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CleanupCommand.swift; sourceTree = "<group>"; };
 		E54594121C3E7DD7000576AD /* CommandBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBase.swift; sourceTree = "<group>"; };
@@ -1736,6 +1756,10 @@
 		E5F652041D42749100A40A9B /* CryptoHelper */ = {
 			isa = PBXGroup;
 			children = (
+				E536C04C1DC9EA340053DE31 /* String+HMAC.swift */,
+				E536C04D1DC9EA340053DE31 /* HMACAlgorythms.swift */,
+				E536C04E1DC9EA340053DE31 /* HMAC.swift */,
+				E536C04F1DC9EA340053DE31 /* Data+HMAC.swift */,
 				E5F652051D42749100A40A9B /* CryptedDataTransform.swift */,
 				E5F652061D42749100A40A9B /* CryptedKeyValueStorage.swift */,
 				E5F652071D42749100A40A9B /* CryptedSerializableTransform.swift */,
@@ -1970,6 +1994,7 @@
 				E594873F1DC7A5EB00053A2D /* Locker.swift in Sources */,
 				E54B7FDF1D2B8A8D001F7AB3 /* DeltaPathMap.m in Sources */,
 				E5CC277B1D84698500F7C783 /* ToJSON.swift in Sources */,
+				E536C0641DC9EA4B0053DE31 /* String+HMAC.swift in Sources */,
 				E594878B1DC7A5EB00053A2D /* ReadUserById.swift in Sources */,
 				E54B7FF31D2B8AA1001F7AB3 /* BsyncDMGCard+Evaluation.swift in Sources */,
 				E54B7FE21D2B8A8D001F7AB3 /* PdSFileManager.m in Sources */,
@@ -2050,6 +2075,7 @@
 				E50987741DAFBE280049A2DA /* BsyncHashMap.swift in Sources */,
 				E59487CF1DC7A5EB00053A2D /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E594875F1DC7A5EB00053A2D /* CreateLocker.swift in Sources */,
+				E536C0671DC9EA4B0053DE31 /* Data+HMAC.swift in Sources */,
 				E59487271DC7A5EB00053A2D /* Completion.swift in Sources */,
 				E594883F1DC7A5EB00053A2D /* BartlebyFileIO.swift in Sources */,
 				E59487DF1DC7A5EB00053A2D /* BartlebyDocument+Operations.swift in Sources */,
@@ -2067,6 +2093,7 @@
 				E59487671DC7A5EB00053A2D /* CreateUser.swift in Sources */,
 				E5CC273C1D84698500F7C783 /* Option.swift in Sources */,
 				E5CC26651D84698500F7C783 /* SessionManager.swift in Sources */,
+				E536C0661DC9EA4B0053DE31 /* HMAC.swift in Sources */,
 				E594872F1DC7A5EB00053A2D /* ExternalReference.swift in Sources */,
 				E5B129151D1C33DD00D61261 /* BsyncXPCTests.swift in Sources */,
 				E588093E1D51E08200FEA71F /* CryptedKeyValueStorage.swift in Sources */,
@@ -2074,6 +2101,7 @@
 				E594886B1DC7A5EB00053A2D /* Distribuable.swift in Sources */,
 				E588093F1D51E08200FEA71F /* CryptedSerializableTransform.swift in Sources */,
 				E59487871DC7A5EB00053A2D /* ReadLockersByQuery.swift in Sources */,
+				E536C0651DC9EA4B0053DE31 /* HMACAlgorythms.swift in Sources */,
 				E59487F31DC7A5EB00053A2D /* BartlebyObject+BaseImplementation.swift in Sources */,
 				E594873B1DC7A5EB00053A2D /* KeyedChanges.swift in Sources */,
 				E5CC26591D84698500F7C783 /* Result.swift in Sources */,
@@ -2196,6 +2224,7 @@
 				E59488B81DC7A5EB00053A2D /* UserProtocol.swift in Sources */,
 				E59487141DC7A5EB00053A2D /* UsersManagedCollection.swift in Sources */,
 				E594877C1DC7A5EB00053A2D /* ReadLockerById.swift in Sources */,
+				E536C0531DC9EA340053DE31 /* Data+HMAC.swift in Sources */,
 				E59487501DC7A5EB00053A2D /* Tag.swift in Sources */,
 				E5948A0B1DC7ADAF00053A2D /* Report.swift in Sources */,
 				E53E28DB1CA572D80079ED23 /* PdSSyncContext.m in Sources */,
@@ -2209,8 +2238,10 @@
 				E5CC263E1D84698500F7C783 /* NetworkReachabilityManager.swift in Sources */,
 				E59488F41DC7A5EB00053A2D /* Pluralization.swift in Sources */,
 				E59487181DC7A5EB00053A2D /* Acknowledgment.swift in Sources */,
+				E536C0501DC9EA340053DE31 /* String+HMAC.swift in Sources */,
 				E59487981DC7A5EB00053A2D /* UpdateLockers.swift in Sources */,
 				E5CC26521D84698500F7C783 /* ResponseSerialization.swift in Sources */,
+				E536C0521DC9EA340053DE31 /* HMAC.swift in Sources */,
 				E59488D41DC7A5EB00053A2D /* LoginUser.swift in Sources */,
 				E5F19AB61DC11BBD00166A57 /* JData+Conveniences.swift in Sources */,
 				E59488401DC7A5EB00053A2D /* BartlebyOperation.swift in Sources */,
@@ -2256,6 +2287,7 @@
 				E59487AC1DC7A5EB00053A2D /* EventSource.swift in Sources */,
 				E5CC26461D84698500F7C783 /* ParameterEncoding.swift in Sources */,
 				E59488DC1DC7A5EB00053A2D /* TriggersAfterIndex.swift in Sources */,
+				E536C0511DC9EA340053DE31 /* HMACAlgorythms.swift in Sources */,
 				E5CC26301D84698500F7C783 /* DispatchQueue+Alamofire.swift in Sources */,
 				E50987651DAFBE280049A2DA /* BsyncCredentials.swift in Sources */,
 				E59488281DC7A5EB00053A2D /* Global.swift in Sources */,
@@ -2391,8 +2423,10 @@
 				E59487651DC7A5EB00053A2D /* CreateUser.swift in Sources */,
 				E59488F51DC7A5EB00053A2D /* Pluralization.swift in Sources */,
 				E594888D1DC7A5EB00053A2D /* LogCategorizable.swift in Sources */,
+				E536C05C1DC9EA490053DE31 /* String+HMAC.swift in Sources */,
 				E5CC26431D84698500F7C783 /* Notifications.swift in Sources */,
 				E594883D1DC7A5EB00053A2D /* BartlebyFileIO.swift in Sources */,
+				E536C05E1DC9EA490053DE31 /* HMAC.swift in Sources */,
 				E59488791DC7A5EB00053A2D /* Exposed.swift in Sources */,
 				E59488051DC7A5EB00053A2D /* DocumentMetadata+Protocol.swift in Sources */,
 				E5CC264F1D84698500F7C783 /* Response.swift in Sources */,
@@ -2457,6 +2491,7 @@
 				E59488211DC7A5EB00053A2D /* Progression+Conveniences.swift in Sources */,
 				E59487251DC7A5EB00053A2D /* Completion.swift in Sources */,
 				E59487CD1DC7A5EB00053A2D /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
+				E536C05F1DC9EA490053DE31 /* Data+HMAC.swift in Sources */,
 				E59487AD1DC7A5EB00053A2D /* EventSource.swift in Sources */,
 				E59488B51DC7A5EB00053A2D /* UniversalType.swift in Sources */,
 				E59487C11DC7A5EB00053A2D /* DocumentError.swift in Sources */,
@@ -2519,6 +2554,7 @@
 				E594879D1DC7A5EB00053A2D /* UpdateUser.swift in Sources */,
 				E591ACFA1D42643B00748FF4 /* BsyncContext.swift in Sources */,
 				E5CC27901D84698500F7C783 /* DictionaryTransform.swift in Sources */,
+				E536C05D1DC9EA490053DE31 /* HMACAlgorythms.swift in Sources */,
 				E5CC266B1D84698500F7C783 /* Timeline.swift in Sources */,
 				E594878D1DC7A5EB00053A2D /* ReadUsersByIds.swift in Sources */,
 				E591ACE71D42632800748FF4 /* SyncTestCase.swift in Sources */,
@@ -2623,6 +2659,7 @@
 				E5CC266C1D84698500F7C783 /* Timeline.swift in Sources */,
 				E5CC26481D84698500F7C783 /* ParameterEncoding.swift in Sources */,
 				E594882E1DC7A5EB00053A2D /* Handlers.swift in Sources */,
+				E536C0621DC9EA4B0053DE31 /* HMAC.swift in Sources */,
 				E59488AE1DC7A5EB00053A2D /* SuperIterable.swift in Sources */,
 				E594881A1DC7A5EB00053A2D /* NSNotification+Completion.swift in Sources */,
 				E55C92771CBF854D008163F6 /* NSData+CRC.m in Sources */,
@@ -2683,6 +2720,7 @@
 				E59487521DC7A5EB00053A2D /* Tag.swift in Sources */,
 				E59488C21DC7A5EB00053A2D /* ServerErrorCodes.swift in Sources */,
 				E59488BE1DC7A5EB00053A2D /* Reaction.swift in Sources */,
+				E536C0601DC9EA4B0053DE31 /* String+HMAC.swift in Sources */,
 				E594878E1DC7A5EB00053A2D /* ReadUsersByIds.swift in Sources */,
 				E594886E1DC7A5EB00053A2D /* DocumentDependent.swift in Sources */,
 				E5CC263C1D84698500F7C783 /* MultipartFormData.swift in Sources */,
@@ -2690,6 +2728,7 @@
 				E594879A1DC7A5EB00053A2D /* UpdateLockers.swift in Sources */,
 				E594889A1DC7A5EB00053A2D /* Monitoring.swift in Sources */,
 				E55C927B1CBF8998008163F6 /* BsyncAdmin.swift in Sources */,
+				E536C0631DC9EA4B0053DE31 /* Data+HMAC.swift in Sources */,
 				E594882A1DC7A5EB00053A2D /* Global.swift in Sources */,
 				E594885A1DC7A5EB00053A2D /* Commitable.swift in Sources */,
 				E59488621DC7A5EB00053A2D /* Descriptible.swift in Sources */,
@@ -2743,6 +2782,7 @@
 				E510E9A71D0EC40300515179 /* BsyncHashMap+Filter.swift in Sources */,
 				E5CC26321D84698500F7C783 /* DispatchQueue+Alamofire.swift in Sources */,
 				E509876B1DAFBE280049A2DA /* BsyncDirectives.swift in Sources */,
+				E536C0611DC9EA4B0053DE31 /* HMACAlgorythms.swift in Sources */,
 				E59487E61DC7A5EB00053A2D /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E59488CE1DC7A5EB00053A2D /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E59487621DC7A5EB00053A2D /* CreateLockers.swift in Sources */,

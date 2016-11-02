@@ -349,7 +349,7 @@ open class HTTPManager: NSObject {
      - returns: the salted value
      */
     static open func salt(_ string: String) -> String {
-        return CryptoHelper.hash(string + Bartleby.configuration.SHARED_SALT)
+        return CryptoHelper.hashString(string + Bartleby.configuration.SHARED_SALT)
     }
     
 }
