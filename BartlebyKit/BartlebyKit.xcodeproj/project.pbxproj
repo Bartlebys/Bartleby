@@ -74,8 +74,6 @@
 		E536C07F1DC9FA290053DE31 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0791DC9FA290053DE31 /* Box.swift */; };
 		E536C0801DC9FA290053DE31 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C07A1DC9FA290053DE31 /* Node.swift */; };
 		E536C0811DC9FA290053DE31 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C07A1DC9FA290053DE31 /* Node.swift */; };
-		E536C0821DC9FA290053DE31 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C07B1DC9FA290053DE31 /* Transaction.swift */; };
-		E536C0831DC9FA290053DE31 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C07B1DC9FA290053DE31 /* Transaction.swift */; };
 		E536C09F1DC9FA690053DE31 /* CreateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0841DC9FA690053DE31 /* CreateBlock.swift */; };
 		E536C0A01DC9FA690053DE31 /* CreateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0841DC9FA690053DE31 /* CreateBlock.swift */; };
 		E536C0A11DC9FA690053DE31 /* CreateBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0851DC9FA690053DE31 /* CreateBlocks.swift */; };
@@ -489,7 +487,6 @@
 		E536C0781DC9FA290053DE31 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		E536C0791DC9FA290053DE31 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E536C07A1DC9FA290053DE31 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
-		E536C07B1DC9FA290053DE31 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E536C0841DC9FA690053DE31 /* CreateBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlock.swift; sourceTree = "<group>"; };
 		E536C0851DC9FA690053DE31 /* CreateBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlocks.swift; sourceTree = "<group>"; };
 		E536C0861DC9FA690053DE31 /* CreateBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBox.swift; sourceTree = "<group>"; };
@@ -908,7 +905,6 @@
 				E57375EF1DBB960500E2B849 /* PushOperation.swift */,
 				E5948A081DC7AD2000053A2D /* Report.swift */,
 				E57375F01DBB960500E2B849 /* Tag.swift */,
-				E536C07B1DC9FA290053DE31 /* Transaction.swift */,
 				E57375F11DBB960500E2B849 /* Trigger.swift */,
 				E57375F21DBB960500E2B849 /* User.swift */,
 			);
@@ -1535,7 +1531,6 @@
 				E57376A31DBB960500E2B849 /* ReadUserById.swift in Sources */,
 				E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */,
 				E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */,
-				E536C0821DC9FA290053DE31 /* Transaction.swift in Sources */,
 				E57376EB1DBB960500E2B849 /* Handlers.swift in Sources */,
 				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376FD1DBB960500E2B849 /* ChangesInspectable.swift in Sources */,
@@ -1571,7 +1566,6 @@
 				E573768E1DBB960500E2B849 /* CreateLocker.swift in Sources */,
 				E536C07D1DC9FA290053DE31 /* Block.swift in Sources */,
 				E57376881DBB960500E2B849 /* Tag.swift in Sources */,
-				E536C0831DC9FA290053DE31 /* Transaction.swift in Sources */,
 				E536C0811DC9FA290053DE31 /* Node.swift in Sources */,
 				E569F3611DC7C264004D4FB5 /* Initializable.swift in Sources */,
 				E573766C1DBB960500E2B849 /* UsersManagedCollection.swift in Sources */,

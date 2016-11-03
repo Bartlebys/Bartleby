@@ -39,7 +39,6 @@
 		E53AB6ED1DCA4E8B005A8DAB /* PushOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63A1DCA4E8B005A8DAB /* PushOperation.swift */; };
 		E53AB6EE1DCA4E8B005A8DAB /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63B1DCA4E8B005A8DAB /* Report.swift */; };
 		E53AB6EF1DCA4E8B005A8DAB /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63C1DCA4E8B005A8DAB /* Tag.swift */; };
-		E53AB6F01DCA4E8B005A8DAB /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63D1DCA4E8B005A8DAB /* Transaction.swift */; };
 		E53AB6F11DCA4E8B005A8DAB /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63E1DCA4E8B005A8DAB /* Trigger.swift */; };
 		E53AB6F21DCA4E8B005A8DAB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB63F1DCA4E8B005A8DAB /* User.swift */; };
 		E53AB6F31DCA4E8B005A8DAB /* BlockOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6421DCA4E8B005A8DAB /* BlockOperationBase.swift */; };
@@ -270,7 +269,6 @@
 		E53AB63A1DCA4E8B005A8DAB /* PushOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperation.swift; sourceTree = "<group>"; };
 		E53AB63B1DCA4E8B005A8DAB /* Report.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E53AB63C1DCA4E8B005A8DAB /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		E53AB63D1DCA4E8B005A8DAB /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E53AB63E1DCA4E8B005A8DAB /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E53AB63F1DCA4E8B005A8DAB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E53AB6421DCA4E8B005A8DAB /* BlockOperationBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperationBase.swift; sourceTree = "<group>"; };
@@ -577,7 +575,6 @@
 				E53AB63A1DCA4E8B005A8DAB /* PushOperation.swift */,
 				E53AB63B1DCA4E8B005A8DAB /* Report.swift */,
 				E53AB63C1DCA4E8B005A8DAB /* Tag.swift */,
-				E53AB63D1DCA4E8B005A8DAB /* Transaction.swift */,
 				E53AB63E1DCA4E8B005A8DAB /* Trigger.swift */,
 				E53AB63F1DCA4E8B005A8DAB /* User.swift */,
 			);
@@ -1162,7 +1159,6 @@
 				E53AB7041DCA4E8B005A8DAB /* DeleteNode.swift in Sources */,
 				E53AB7471DCA4E8B005A8DAB /* BartlebyCollection.swift in Sources */,
 				E5CC29301D846CB300F7C783 /* DateTransform.swift in Sources */,
-				E53AB6F01DCA4E8B005A8DAB /* Transaction.swift in Sources */,
 				E53AB7001DCA4E8B005A8DAB /* DeleteBox.swift in Sources */,
 				E53AB6F91DCA4E8B005A8DAB /* CreateLockers.swift in Sources */,
 				E53AB7521DCA4E8B005A8DAB /* DictionaryRepresentation.swift in Sources */,

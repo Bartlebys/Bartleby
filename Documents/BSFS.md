@@ -1,6 +1,6 @@
 # BSFS
 
-Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files in a network of clients.
+Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app.
 
 ## KeyPoints:
 
@@ -22,6 +22,7 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 - Blocks sizes can be adapted to context (you can apply different strategies for small pieces to large video files)
 - You can decide when to apply the local change (for example if you are playing a sound file of a synchronized playlist, the playlist file update may occur when you reach the end when the BSFS delegate validate the change)
+
 
 
 # BSFS Models 
@@ -59,57 +60,33 @@ UploadBlock and Download block should be ideally interruptible [PassThru?](http:
 
 BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com/Bartlebys/Bartleby/blob/master/Bartleby.xOS/core/BSFS.swift)
 
-# Data
+# SYNC Data
 
-## In the document we have Managed Collections that reflect the distant data
+## Managed Collections reflects the distant state in real time
 
-- Boxes
-- Nodes
-- Blocks
+- document.boxes
+- document.nodes
+- document.blocks
+
+## Metadata contains the local state
+
+ 
+- document.metadata.localBoxes
+- document.metadata.localNodes
+- document.metadata.localBlocks
 
 ## in The ".bsfs" folder
 
 
-###1. We have got data files that reflects the current box data
-
-```
-	.bsfs/
-			transactions.json
-			nodes.json
-			blocks.json
-			...
-```
-
-- transactions.json contains "[Transaction]"
-- nodes.json contains "[Node]"
-- blocks contains "[Block]"
-
-
-###2. the configuration (distant server def,...)
+Contains the block data including local file, and sync in progress blocks.
   
 ```	
 	.bsfs/
-			...
-			configuration.json 
-			...
+		<block>
+		<block>
+		....
 ```
 
-###3 the block data including local file, and sync in progress blocks
-  
-```	
-	.bsfs/
-			...
-			blocks/
-					<block>
-					<block>
-					....
-```
-
-
-# BSFS Daemon - Currently not implemented
-
-A future OSX Daemon that Converts File system action to Api calls.
-Coupled with a finder extension...
 
 ----
 # Details on Models
@@ -372,7 +349,18 @@ The box is the root of a synchronized folder it is a special Node
 }
 ```
 
+----
 
+# To be defined 
+
+- Is it necessary to support cancelable actions? If yes, How to cancel?
+- How to deal with the deletion of .bsfs/ folder?
+
+
+# BSFS Daemon - Currently not implemented
+
+A future OSX Daemon that Converts File system action to Api calls.
+Coupled with a finder extension...
 
 
 

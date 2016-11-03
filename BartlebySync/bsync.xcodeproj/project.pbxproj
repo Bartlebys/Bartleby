@@ -155,10 +155,6 @@
 		E53AB3F41DCA4E74005A8DAB /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F51DCA4E74005A8DAB /* Tag.swift */; };
 		E53AB3F51DCA4E74005A8DAB /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F51DCA4E74005A8DAB /* Tag.swift */; };
 		E53AB3F61DCA4E74005A8DAB /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F51DCA4E74005A8DAB /* Tag.swift */; };
-		E53AB3F71DCA4E74005A8DAB /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F61DCA4E74005A8DAB /* Transaction.swift */; };
-		E53AB3F81DCA4E74005A8DAB /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F61DCA4E74005A8DAB /* Transaction.swift */; };
-		E53AB3F91DCA4E74005A8DAB /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F61DCA4E74005A8DAB /* Transaction.swift */; };
-		E53AB3FA1DCA4E74005A8DAB /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F61DCA4E74005A8DAB /* Transaction.swift */; };
 		E53AB3FB1DCA4E74005A8DAB /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F71DCA4E74005A8DAB /* Trigger.swift */; };
 		E53AB3FC1DCA4E74005A8DAB /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F71DCA4E74005A8DAB /* Trigger.swift */; };
 		E53AB3FD1DCA4E74005A8DAB /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB2F71DCA4E74005A8DAB /* Trigger.swift */; };
@@ -1092,7 +1088,6 @@
 		E53AB2F31DCA4E74005A8DAB /* PushOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperation.swift; sourceTree = "<group>"; };
 		E53AB2F41DCA4E74005A8DAB /* Report.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E53AB2F51DCA4E74005A8DAB /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
-		E53AB2F61DCA4E74005A8DAB /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		E53AB2F71DCA4E74005A8DAB /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E53AB2F81DCA4E74005A8DAB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E53AB2FB1DCA4E74005A8DAB /* BlockOperationBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperationBase.swift; sourceTree = "<group>"; };
@@ -1462,7 +1457,6 @@
 				E53AB2F31DCA4E74005A8DAB /* PushOperation.swift */,
 				E53AB2F41DCA4E74005A8DAB /* Report.swift */,
 				E53AB2F51DCA4E74005A8DAB /* Tag.swift */,
-				E53AB2F61DCA4E74005A8DAB /* Transaction.swift */,
 				E53AB2F71DCA4E74005A8DAB /* Trigger.swift */,
 				E53AB2F81DCA4E74005A8DAB /* User.swift */,
 			);
@@ -2384,7 +2378,6 @@
 				E53AB3FE1DCA4E74005A8DAB /* Trigger.swift in Sources */,
 				E58809411D51E08200FEA71F /* CryptedStringTransform.swift in Sources */,
 				E53AB53A1DCA4E75005A8DAB /* NSNotification+Progression.swift in Sources */,
-				E53AB3FA1DCA4E74005A8DAB /* Transaction.swift in Sources */,
 				E53AB4CA1DCA4E74005A8DAB /* Bartleby.swift in Sources */,
 				E53AB3961DCA4E74005A8DAB /* BlocksManagedCollection.swift in Sources */,
 				E58809421D51E08200FEA71F /* CryptoHelper.swift in Sources */,
@@ -2604,7 +2597,6 @@
 				E53E28E81CA572E80079ED23 /* CreateHashMapCommand.swift in Sources */,
 				E53AB5771DCA4E75005A8DAB /* CryptoDelegate.swift in Sources */,
 				E53AB3CF1DCA4E74005A8DAB /* HTTPRequest.swift in Sources */,
-				E53AB3F71DCA4E74005A8DAB /* Transaction.swift in Sources */,
 				E53AB4471DCA4E74005A8DAB /* DeleteNode.swift in Sources */,
 				E53AB4731DCA4E74005A8DAB /* ReadLockersByIds.swift in Sources */,
 				E53E28DA1CA572D80079ED23 /* PdSLocalAnalyzer.m in Sources */,
@@ -2934,7 +2926,6 @@
 				E53AB42C1DCA4E74005A8DAB /* CreateUsers.swift in Sources */,
 				E53AB4E81DCA4E74005A8DAB /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E5CC27881D84698500F7C783 /* DateFormatterTransform.swift in Sources */,
-				E53AB3F81DCA4E74005A8DAB /* Transaction.swift in Sources */,
 				E591ACF51D42643B00748FF4 /* NSData+CRC.m in Sources */,
 				E53AB5D41DCA4E75005A8DAB /* UserProtocol.swift in Sources */,
 				E5CC27A41D84698500F7C783 /* TransformType.swift in Sources */,
@@ -3181,7 +3172,6 @@
 				E53AB4F11DCA4E74005A8DAB /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E5F19ABC1DC11BBD00166A57 /* JString+Conveniences.swift in Sources */,
 				E53AB5F11DCA4E75005A8DAB /* DownloadBlock.swift in Sources */,
-				E53AB3F91DCA4E74005A8DAB /* Transaction.swift in Sources */,
 				E53AB52D1DCA4E75005A8DAB /* HTTPRequest+URLRequest.swift in Sources */,
 				E53AB5711DCA4E75005A8DAB /* CollectionMetadatumProtocol.swift in Sources */,
 				E5CC262E1D84698500F7C783 /* Alamofire.swift in Sources */,

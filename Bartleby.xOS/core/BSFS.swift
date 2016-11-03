@@ -45,14 +45,13 @@ public protocol BoxDelegate{
 
 }
 
-
 public struct BSFS{
 
     // The File manager
     static public var fileManager: BartlebyFileIO=BFileManager()
 
     // The Boxes Delegate registry.
-    internal var _boxesDelegates=[Box:BoxDelegate]()
+    fileprivate var _boxesDelegates=[String:BoxDelegate]()
 
     /// The standard singleton shared instance
     public static let sharedInstance: BSFS = {
