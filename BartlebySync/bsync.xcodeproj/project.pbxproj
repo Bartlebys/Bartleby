@@ -367,10 +367,10 @@
 		E53AB4C81DCA4E74005A8DAB /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3321DCA4E74005A8DAB /* Bartleby.swift */; };
 		E53AB4C91DCA4E74005A8DAB /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3321DCA4E74005A8DAB /* Bartleby.swift */; };
 		E53AB4CA1DCA4E74005A8DAB /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3321DCA4E74005A8DAB /* Bartleby.swift */; };
-		E53AB4CB1DCA4E74005A8DAB /* Bsfs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* Bsfs.swift */; };
-		E53AB4CC1DCA4E74005A8DAB /* Bsfs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* Bsfs.swift */; };
-		E53AB4CD1DCA4E74005A8DAB /* Bsfs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* Bsfs.swift */; };
-		E53AB4CE1DCA4E74005A8DAB /* Bsfs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* Bsfs.swift */; };
+		E53AB4CB1DCA4E74005A8DAB /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* BSFS.swift */; };
+		E53AB4CC1DCA4E74005A8DAB /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* BSFS.swift */; };
+		E53AB4CD1DCA4E74005A8DAB /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* BSFS.swift */; };
+		E53AB4CE1DCA4E74005A8DAB /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3331DCA4E74005A8DAB /* BSFS.swift */; };
 		E53AB4CF1DCA4E74005A8DAB /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3341DCA4E74005A8DAB /* Consignation.swift */; };
 		E53AB4D01DCA4E74005A8DAB /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3341DCA4E74005A8DAB /* Consignation.swift */; };
 		E53AB4D11DCA4E74005A8DAB /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB3341DCA4E74005A8DAB /* Consignation.swift */; };
@@ -1145,7 +1145,7 @@
 		E53AB32D1DCA4E74005A8DAB /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E53AB3301DCA4E74005A8DAB /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E53AB3321DCA4E74005A8DAB /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E53AB3331DCA4E74005A8DAB /* Bsfs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bsfs.swift; sourceTree = "<group>"; };
+		E53AB3331DCA4E74005A8DAB /* BSFS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFS.swift; sourceTree = "<group>"; };
 		E53AB3341DCA4E74005A8DAB /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E53AB3351DCA4E74005A8DAB /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		E53AB3361DCA4E74005A8DAB /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
@@ -1575,7 +1575,7 @@
 			isa = PBXGroup;
 			children = (
 				E53AB3321DCA4E74005A8DAB /* Bartleby.swift */,
-				E53AB3331DCA4E74005A8DAB /* Bsfs.swift */,
+				E53AB3331DCA4E74005A8DAB /* BSFS.swift */,
 				E53AB3341DCA4E74005A8DAB /* Consignation.swift */,
 				E53AB3351DCA4E74005A8DAB /* Context.swift */,
 				E53AB3361DCA4E74005A8DAB /* Default.swift */,
@@ -2330,7 +2330,7 @@
 				E53AB4361DCA4E74005A8DAB /* DeleteBlocks.swift in Sources */,
 				E5CC26711D84698500F7C783 /* Validation.swift in Sources */,
 				E53AB60E1DCA4E75005A8DAB /* VerifyLocker.swift in Sources */,
-				E53AB4CE1DCA4E74005A8DAB /* Bsfs.swift in Sources */,
+				E53AB4CE1DCA4E74005A8DAB /* BSFS.swift in Sources */,
 				E53AB5721DCA4E75005A8DAB /* CollectionMetadatumProtocol.swift in Sources */,
 				E50987741DAFBE280049A2DA /* BsyncHashMap.swift in Sources */,
 				E53AB5EA1DCA4E75005A8DAB /* NSUndomanager+RegisterUndo.swift in Sources */,
@@ -2648,7 +2648,7 @@
 				E53E28D61CA572D80079ED23 /* DeltaPathMap.m in Sources */,
 				E5F19AAC1DC11BAB00166A57 /* JString.swift in Sources */,
 				E53AB49B1DCA4E74005A8DAB /* UpdateBox.swift in Sources */,
-				E53AB4CB1DCA4E74005A8DAB /* Bsfs.swift in Sources */,
+				E53AB4CB1DCA4E74005A8DAB /* BSFS.swift in Sources */,
 				5B0D4B951D058644009CBD93 /* CryptedCommand.swift in Sources */,
 				E5CC273D1D84698500F7C783 /* StringExtensions.swift in Sources */,
 				E53AB5131DCA4E74005A8DAB /* Completion+Conveniences.swift in Sources */,
@@ -2762,7 +2762,7 @@
 				E53AB5241DCA4E74005A8DAB /* ExternalReference+Resolution.swift in Sources */,
 				E53AB4FC1DCA4E74005A8DAB /* BartlebyDocument+Reachability.swift in Sources */,
 				E591AD001D42643B00748FF4 /* BsyncImageDiskManager.swift in Sources */,
-				E53AB4CC1DCA4E74005A8DAB /* Bsfs.swift in Sources */,
+				E53AB4CC1DCA4E74005A8DAB /* BSFS.swift in Sources */,
 				E5F19AAF1DC11BAF00166A57 /* JData.swift in Sources */,
 				E5CC27711D84698500F7C783 /* Mapper.swift in Sources */,
 				E53AB5901DCA4E75005A8DAB /* DocumentProvider.swift in Sources */,
@@ -3095,7 +3095,7 @@
 				E53AB4BD1DCA4E74005A8DAB /* UIX.swift in Sources */,
 				E5CC27851D84698500F7C783 /* DataTransform.swift in Sources */,
 				E53AB5691DCA4E75005A8DAB /* CollectibleCollection.swift in Sources */,
-				E53AB4CD1DCA4E74005A8DAB /* Bsfs.swift in Sources */,
+				E53AB4CD1DCA4E74005A8DAB /* BSFS.swift in Sources */,
 				E5CC276E1D84698500F7C783 /* Mappable.swift in Sources */,
 				E53AB5591DCA4E75005A8DAB /* BartlebyFileIO.swift in Sources */,
 				E53AB48D1DCA4E74005A8DAB /* ReadUsersByIds.swift in Sources */,

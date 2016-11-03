@@ -18,15 +18,9 @@ class TransformTests: XCTestCase {
 
     func test_CryptedStringTransform() {
         let transform = CryptedStringTransform()
-
         let s1 = "Coucou"
-
         let json = transform.transformToJSON(s1)
-
-        print(json)
-
         let s2 = transform.transformFromJSON(json)
-
         XCTAssertEqual(s1, s2)
     }
 

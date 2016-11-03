@@ -92,7 +92,7 @@
 		E53AB7221DCA4E8B005A8DAB /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6741DCA4E8B005A8DAB /* NoCrypto.swift */; };
 		E53AB7231DCA4E8B005A8DAB /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6771DCA4E8B005A8DAB /* EventSource.swift */; };
 		E53AB7241DCA4E8B005A8DAB /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6791DCA4E8B005A8DAB /* Bartleby.swift */; };
-		E53AB7251DCA4E8B005A8DAB /* Bsfs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB67A1DCA4E8B005A8DAB /* Bsfs.swift */; };
+		E53AB7251DCA4E8B005A8DAB /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB67A1DCA4E8B005A8DAB /* BSFS.swift */; };
 		E53AB7261DCA4E8B005A8DAB /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB67B1DCA4E8B005A8DAB /* Consignation.swift */; };
 		E53AB7271DCA4E8B005A8DAB /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB67C1DCA4E8B005A8DAB /* Context.swift */; };
 		E53AB7281DCA4E8B005A8DAB /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB67D1DCA4E8B005A8DAB /* Default.swift */; };
@@ -323,7 +323,7 @@
 		E53AB6741DCA4E8B005A8DAB /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E53AB6771DCA4E8B005A8DAB /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E53AB6791DCA4E8B005A8DAB /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E53AB67A1DCA4E8B005A8DAB /* Bsfs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bsfs.swift; sourceTree = "<group>"; };
+		E53AB67A1DCA4E8B005A8DAB /* BSFS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFS.swift; sourceTree = "<group>"; };
 		E53AB67B1DCA4E8B005A8DAB /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E53AB67C1DCA4E8B005A8DAB /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		E53AB67D1DCA4E8B005A8DAB /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
@@ -690,7 +690,7 @@
 			isa = PBXGroup;
 			children = (
 				E53AB6791DCA4E8B005A8DAB /* Bartleby.swift */,
-				E53AB67A1DCA4E8B005A8DAB /* Bsfs.swift */,
+				E53AB67A1DCA4E8B005A8DAB /* BSFS.swift */,
 				E53AB67B1DCA4E8B005A8DAB /* Consignation.swift */,
 				E53AB67C1DCA4E8B005A8DAB /* Context.swift */,
 				E53AB67D1DCA4E8B005A8DAB /* Default.swift */,
@@ -1229,7 +1229,7 @@
 				E53AB6E61DCA4E8B005A8DAB /* HTTPRequest.swift in Sources */,
 				E53AB6DD1DCA4E8B005A8DAB /* Acknowledgment.swift in Sources */,
 				E53AB6F51DCA4E8B005A8DAB /* CreateBlocks.swift in Sources */,
-				E53AB7251DCA4E8B005A8DAB /* Bsfs.swift in Sources */,
+				E53AB7251DCA4E8B005A8DAB /* BSFS.swift in Sources */,
 				E5CC29361D846CB300F7C783 /* TransformType.swift in Sources */,
 				E53AB7221DCA4E8B005A8DAB /* NoCrypto.swift in Sources */,
 				E53AB75A1DCA4E8B005A8DAB /* IterableCollectibleCollection.swift in Sources */,
