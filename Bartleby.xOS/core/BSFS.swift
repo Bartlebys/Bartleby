@@ -7,8 +7,9 @@
 //
 import Foundation
 
-enum BSFSError {
+enum BSFSError:Error{
     case BoxIsInBox(existingBox:URL)
+    case BoxDelegateIsNotAvailable(message:String)
 }
 
 
@@ -21,37 +22,52 @@ public extension Node{
 
 public protocol BoxDelegate{
 
-    /// BSFS sends to BoxDelegate
-    ///
-    /// The Box Delegate should respond when appropriate:
-    ///
-    ///     self.applyPendingChanges(applyPendingChanges(on: node, applicant: self, onCompletion: { (succes, mesage) in
-    ///
-    ///     })
-    ///
-    /// - Parameter node: the node that will be Updated
-    func fileUpdateIsReady(node:Node)
 
     /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
-    /// The Box Delegate should respond when appropriate:
+    /// - Parameter node: the node that will be moved or copied
+    func moveIsReady(node:Node,to destinationPath:String,proceed:()->())
+
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
-    ///     self.applyPendingChanges(applyPendingChanges(on: node, applicant: self, onCompletion: { (succes, mesage) in
-    ///
-    ///     })
+    /// - Parameter node: the node that will be moved or copied
+    func copyIsReady(node:Node,to destinationPath:String,proceed:()->())
+
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func fileDeletionIsReady(node:Node)
+    func assemblyIsReady(node:Node,proceed:()->())
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be Updated
+    func deletionIsReady(node:Node,proceed:()->())
 
 }
 
-public struct BSFS{
+public class BSFS{
+
+
+    // Document
+
+    fileprivate unowned var _document:BartlebyDocument
 
     // The File manager
     fileprivate var _fileManager: BartlebyFileIO { return Bartleby.fileManager }
 
     // The Boxes Delegate registry.
-    fileprivate var _boxesDelegates=[String:BoxDelegate]()
+    fileprivate var _boxesDelegates = [String:BoxDelegate]()
+
+
+    required public init(in document:BartlebyDocument){
+        self._document=document
+    }
 
     //MARK:  - Box
 
@@ -79,26 +95,43 @@ public struct BSFS{
     }
 
 
-    /// Applies the pending changes on a node.
-    ///
-    /// - Parameters:
-    ///   - node: the node to be updated or deleted.
-    ///   - applicant: the delegate that
-    ///   - handler: the completion handler
-    public func applyPendingChanges(on node:Node, applicant:BoxDelegate,handler: @escaping CompletionHandler)->(){
-
-    }
-
-    //MARK: - Nodes Actions
-
-
     /// Moves a node to another destination in the box.
+    /// IMPORTANT: this method requires a response from the BoxDelegate
+    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
     ///
     /// - Parameters:
     ///   - node: the node
     ///   - destinationPath: the relative path
     ///   - handler: the completion hanlder
-    public func move(node:Node,to destinationPath:String,handler: @escaping CompletionHandler)->(){
+    public func copy(node:Node,to destinationPath:String)->(){
+        do {
+            let delegate = try self._getBoxDelegateFor(node: node)
+            delegate?.copyIsReady(node: node, to: destinationPath, proceed: {
+                // TODO implement
+            })
+        } catch{
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+        }
+    }
+
+
+    /// Moves a node to another destination in the box.
+    /// IMPORTANT: this method requires a response from the BoxDelegate
+    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - destinationPath: the relative path
+    ///   - handler: the completion hanlder
+    public func move(node:Node,to destinationPath:String)->(){
+        do {
+            let delegate = try self._getBoxDelegateFor(node: node)
+            delegate?.moveIsReady(node: node, to: destinationPath, proceed: {
+                // TODO implement
+            })
+        } catch{
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+        }
 
     }
 
@@ -110,26 +143,30 @@ public struct BSFS{
     /// - Parameters:
     ///   - node: the node
     ///   - handler: the completion Handler
-    public func delete(node:Node,handler: @escaping CompletionHandler)->(){
-
+    public func delete(node:Node)->(){
+        do {
+            let delegate = try self._getBoxDelegateFor(node: node)
+            delegate?.deletionIsReady(node: node, proceed: {
+                /// TODO implement the deletion
+            })
+        } catch{
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+        }
     }
 
     /// Create Folders
-    ///
     /// - Parameters:
     ///   - relativePath: the relative Path
     ///   - handler: the completion Handler
-    public func createFolder(at relativePath:String,handler: @escaping CompletionHandler)->(){
-
+    public func createFolder(at relativePath:String)->(){
     }
 
     /// Creates the Alias
-    ///
     /// - Parameters:
     ///   - node: the node to be aliased
     ///   - destinationPath: the destination path
     ///   - handler: the completion Handler
-    public func createAlias(of node:Node,to destinationPath:String,handler: @escaping CompletionHandler)->(){
+    public func createAlias(of node:Node,to destinationPath:String)->(){
     }
 
 
@@ -137,23 +174,21 @@ public struct BSFS{
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - handler: the completion handler
-    public func create(node:Node,handler: @escaping CompletionHandler)->(){
-
+    public func create(node:Node)->(){
+        self._document.metadata.nodesInProgress.append(node)
+        self._tryToAssembleNodeInProgress()
     }
 
     /// Update the blocks of a node reflecting its current binary data
-    ///
     /// - Parameters:
     ///   - node: the node
-    ///   - handler: the completion handler
-    public func update(node:Node,handler: @escaping CompletionHandler)->(){
-
+    public func update(node:Node)->(){
+        self._document.metadata.nodesInProgress.append(node)
+        self._tryToAssembleNodeInProgress()
     }
 
 
     //MARK: - Block Level Actions
-
 
     /// Creates a file from the node blocks.
     /// IMPORTANT: this method requires a response from the BoxDelegate
@@ -163,95 +198,26 @@ public struct BSFS{
     ///   - node: the node
     ///   - handler: the completion handler
     internal func _assemble(node:Node,handler: @escaping CompletionHandler){
+        do {
+            let delegate = try self._getBoxDelegateFor(node: node)
+            delegate?.assemblyIsReady(node: node, proceed: {
+                /// TODO implement Assembly process
+
+                /// END
+                if let idx=self._document.metadata.nodesInProgress.index(of: node){
+                    self._document.metadata.nodesInProgress.remove(at: idx)
+                }
+                let completion=Completion.successState()
+                completion.externalIdentifier=node.UID
+                handler(completion)
+
+            })
+        } catch{
+            handler(Completion.failureStateFromError(error))
+        }
     }
 
 
-    /// Create blocks from the file.
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - handler: the completion handler
-    internal func _disassemble(node:Node,handler: @escaping CompletionHandler){
-    }
-
-
-    /// Downloads a Block.
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - handler: the completion handler
-    internal func _download(node:Block,handler: @escaping CompletionHandler){
-    }
-
-    /// Uploads a block
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - handler: the completion handler
-    internal func _upload(node:Block,handler: @escaping CompletionHandler){
-    }
-
-
-    //MARK: - Triggered Nodes Level Action
-
-
-    /// Moves a node to another destination in the box.
-    /// IMPORTANT: this method requires a response from the BoxDelegate
-    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - destinationPath: the relative path
-    ///   - handler: the completion hanlder
-    public func triggered_move(node:Node,to destinationPath:String)->(){
-
-    }
-
-
-    /// Deletes a node
-    /// IMPORTANT: this method requires a response from the BoxDelegate
-    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - handler: the completion Handler
-    public func triggered_delete(node:Node)->(){
-
-    }
-
-    /// Create Folders
-    /// - Parameters:
-    ///   - relativePath: the relative Path
-    ///   - handler: the completion Handler
-    public func triggered_createFolder(at relativePath:String)->(){
-
-    }
-
-    /// Creates the Alias
-    /// - Parameters:
-    ///   - node: the node to be aliased
-    ///   - destinationPath: the destination path
-    ///   - handler: the completion Handler
-    public func triggered_createAlias(of node:Node,to destinationPath:String)->(){
-    }
-
-
-    /// Creates the blocks of a node reflecting its current binary data
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    public func triggered_create(node:Node)->(){
-
-    }
-
-    /// Update the blocks of a node reflecting its current binary data
-    /// IMPORTANT: this method requires a response from the BoxDelegate
-    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
-    /// - Parameters:
-    ///   - node: the node
-    public func triggered_update(node:Node)->(){
-        
-    }
 
     //MARK: - Triggered Block Level Action
 
@@ -261,8 +227,46 @@ public struct BSFS{
     /// - Parameters:
     ///   - node: the node
     internal func triggered_download(block:Block){
-        //if block.authorized.contains()
+        if block.authorized.contains(self._document.currentUser.UID) ||
+            block.authorized.contains("*"){
+            // We can download
+            // @TODO
+
+            // On each completion :
+            // Call self._tryToAssembleNodeInProgress()
+
+        }
+    }
+
+    // MARK: - Internal Mechanisms
+
+    public func _tryToAssembleNodeInProgress(){
+        for node in self._document.metadata.nodesInProgress {
+            // Check if we have all the blocks
+            if (self._allBlocksAreAvailableFor(node: node)){
+                self._assemble(node: node, handler: VoidCompletionHandler)
+            }
+        }
+    }
+
+    public func _allBlocksAreAvailableFor(node:Node)->Bool{
+        // @TODO
+        return true
     }
 
 
+    internal func _getBoxDelegateFor(node:Node)throws->BoxDelegate?{
+        if let boxUID=node.boxUID{
+            let _:Box=try Bartleby.registredObjectByUID(boxUID) as Box
+            if let delegate=self._boxesDelegates[boxUID]{
+                return delegate
+            }else{
+                throw BSFSError.BoxDelegateIsNotAvailable(message: "Delegate for box <\(boxUID)> not found")
+            }
+        }else{
+            throw BSFSError.BoxDelegateIsNotAvailable(message: "Box not found for <\(node.UID)>")
+        }
+    }
+    
+    
 }

@@ -97,7 +97,7 @@ import Foundation
     dynamic open var metadata=DocumentMetadata()
 
     // Bartleby's Synchronized File System for this document.
-    open var bsfs:BSFS=BSFS()
+    open lazy var bsfs:BSFS=BSFS(in:self)
 
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
