@@ -48,16 +48,10 @@ public protocol BoxDelegate{
 public struct BSFS{
 
     // The File manager
-    static public var fileManager: BartlebyFileIO=BFileManager()
+    fileprivate var _fileManager: BartlebyFileIO { return Bartleby.fileManager }
 
     // The Boxes Delegate registry.
     fileprivate var _boxesDelegates=[String:BoxDelegate]()
-
-    /// The standard singleton shared instance
-    public static let sharedInstance: BSFS = {
-        let instance = BSFS()
-        return instance
-    }()
 
     //MARK:  - Box
 
@@ -263,12 +257,11 @@ public struct BSFS{
 
     /// Downloads a Block.
     /// This occurs before triggered_create on each successfull upload.
-    /// (!) DEV NOTE Before to start Check if we are concerned
     ///
     /// - Parameters:
     ///   - node: the node
     internal func triggered_download(block:Block){
-
+        //if block.authorized.contains()
     }
 
 
