@@ -8,19 +8,70 @@
 import Foundation
 
 
+/*
+ 
+# Notes on Handlers
+ 
+## We expose 6 Handlers
+
+ - CompletionHandler : a closure with a completion state
+ - ProgressionHandler : a closure with a progression state
+ - Handlers : a class that allows to compose completion an progression Handlers.
+ - ComposedHandler : a composed closure
+ - VoidCompletionHandler : a void handler that can be used as place holder
+ - VoidProgressionHandler : a void handler that can be used as place holder
+
+ ## We should not use ComposedHandler in XPC context (!)
+
+ Only one closure can be called per XPC call.
+ So to monitor progression from an XPC : **we use Bidirectionnal XPC + Monitoring protocol for the progress**
+
+ ## You can create a code Snippets for  :
+ 
+     ```
+         let onCompletion:CompletionHandler = { completion in
+         }
+    ```
+    ```
+        let onProgression:ProgressHandler = { progression in
+        }
+    ```
+ ## Chaining Handlers:
+
+    You can chain an handler but keep in mind it can produce retain cycle
+ ```
+     let onCompletion:CompletionHandler = { completion in
+        previousHandler(completion) //<--- you can chain a previous handler
+     }  
+ ```
+ 
+ ## You can instanciate a ComposedHandler :
+
+     ```
+         let handler: ComposedHandler = {(progressionState, completionState) -> Void in
+            if let progression=progressionState {
+            }
+            if let completion=completionState {
+            }
+         }
+     ```
+*/
+
+
+
 // MARK: -
 
 /*
- ProgressHandler
+ ProgressionHandler
 
 ```
-let onProgression:CompletionHandler = { progression in
+let onProgression:ProgressionHandler = { progression in
     previousHandler(progression)// Invoke
     ...
 }
 ```
 */
-public typealias ProgressHandler = (_: Progression) -> ()
+public typealias ProgressionHandler = (_ progressionState: Progression) -> ()
 
 /*
  CompletionHandler
@@ -33,11 +84,14 @@ public typealias ProgressHandler = (_: Progression) -> ()
  }
  ```
  */
-public typealias CompletionHandler = (_: Completion) -> ()
+public typealias CompletionHandler = (_ conpletionState: Completion) -> ()
 
-// !!! TO DEPRECATED we use Bidirectionnal XPC
+public var VoidCompletionHandler:CompletionHandler = { completion in }
 
-/*
+public var VoidProgressionHandler:ProgressionHandler = { progression in }
+
+
+/**
  A composed Closure with a progress and acompletion section
  Generally Used in XPC facades because we can pass only one handler per XPC call
  To consume and manipulate we generally split the ComposedHandler by calling Handlers.handlersFrom(composed)
@@ -57,12 +111,6 @@ public typealias ComposedHandler = (_ progressionState: Progression?, _ completi
 
 
 
-// Reactive Protocol
-protocol Reactive {
-    var reactiveHandlers: Handlers { get }
-}
-
-
 // MARK: - Handlers
 
 /**
@@ -80,10 +128,10 @@ protocol Reactive {
     }
 
 
-    fileprivate var _progressionHandlers: [ProgressHandler] = []
+    fileprivate var _progressionHandlers: [ProgressionHandler] = []
 
-    open func appendProgressHandler(_ progressHandler: @escaping ProgressHandler) {
-        self._progressionHandlers.append(progressHandler)
+    open func appendProgressHandler(_ ProgressionHandler: @escaping ProgressionHandler) {
+        self._progressionHandlers.append(ProgressionHandler)
     }
 
     // Call all the progression handlers
@@ -163,7 +211,7 @@ protocol Reactive {
 
      - returns: the instance
      */
-    public convenience init(completionHandler: CompletionHandler?, progressionHandler: ProgressHandler?) {
+    public convenience init(completionHandler: CompletionHandler?, progressionHandler: ProgressionHandler?) {
         self.init(completionHandler:completionHandler)
         if let progressionHandler=progressionHandler {
             self._progressionHandlers.append(progressionHandler)
