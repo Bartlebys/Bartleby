@@ -86,13 +86,15 @@ public enum BsyncAdminError: Error {
         let prefix=PdSSyncAdmin.value(forConst: "kBsyncHashmapViewPrefixSignature")
         let hashmapviewPath=treeFolderPath+prefix!+hashMapViewName
         do {
-            let dictionary=hashMap.dictionaryRepresentation()
-            let data=try JSONSerialization.data(withJSONObject: dictionary, options: [])
-            guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING.rawValue) else {
-                throw BsyncAdminError.hashMapViewError(explanations: "Data encoding as failed")
+            if let dictionary=hashMap.dictionaryRepresentation(){
+                let data=try JSONSerialization.data(withJSONObject: dictionary, options: [])
+                guard let string: NSString=NSString.init(data: data, encoding: Default.STRING_ENCODING.rawValue) else {
+                    throw BsyncAdminError.hashMapViewError(explanations: "Data encoding as failed")
+                }
+                let crypted=try Bartleby.cryptoDelegate.encryptString(string as String)
+                try crypted.write(toFile: hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING)
+
             }
-            let crypted=try Bartleby.cryptoDelegate.encryptString(string as String)
-            try crypted.write(toFile: hashmapviewPath, atomically: true, encoding: Default.STRING_ENCODING)
         }
     }
 

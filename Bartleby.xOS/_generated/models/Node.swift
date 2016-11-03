@@ -60,17 +60,8 @@ import Foundation
 	//The ordered list of the Block UIDS
 	dynamic open var blocksUIDS:[String] = [String]()
 
-	//Used for ACL The authorized user UIDS ( can be void if noRestriction is set to true)
+	//The list of the authorized User.UID,(if set to ["*"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload
 	dynamic open var authorized:[String] = [String]()
-
-	//If set to true authorized can be void
-	dynamic open var noRestriction:Bool = true  {
-	    didSet { 
-	       if noRestriction != oldValue {
-	            self.provisionChanges(forKey: "noRestriction",oldValue: oldValue,newValue: noRestriction)  
-	       } 
-	    }
-	}
 
 	//The node nature
 	public enum Nature:String{
@@ -127,7 +118,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","boxUID","relativePath","blocksMaxSize","blocksUIDS","authorized","noRestriction","nature","size","referentNodeUID","zippedBlocks","cryptedBlocks"])
+        exposed.append(contentsOf:["externalID","boxUID","relativePath","blocksMaxSize","blocksUIDS","authorized","nature","size","referentNodeUID","zippedBlocks","cryptedBlocks"])
         return exposed
     }
 
@@ -163,10 +154,6 @@ import Foundation
             case "authorized":
                 if let casted=value as? [String]{
                     self.authorized=casted
-                }
-            case "noRestriction":
-                if let casted=value as? Bool{
-                    self.noRestriction=casted
                 }
             case "nature":
                 if let casted=value as? Node.Nature{
@@ -215,8 +202,6 @@ import Foundation
                return self.blocksUIDS
             case "authorized":
                return self.authorized
-            case "noRestriction":
-               return self.noRestriction
             case "nature":
                return self.nature
             case "size":
@@ -246,7 +231,6 @@ import Foundation
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
 			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
-			self.noRestriction <- ( map["noRestriction"] )
 			self.nature <- ( map["nature"] )
 			self.size <- ( map["size"] )
 			self.referentNodeUID <- ( map["referentNodeUID"] )
@@ -267,7 +251,6 @@ import Foundation
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
 			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
-			self.noRestriction=decoder.decodeBool(forKey:"noRestriction") 
 			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
@@ -290,7 +273,6 @@ import Foundation
 		coder.encode(self.blocksMaxSize,forKey:"blocksMaxSize")
 		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
 		coder.encode(self.authorized,forKey:"authorized")
-		coder.encode(self.noRestriction,forKey:"noRestriction")
 		coder.encode(self.nature.rawValue ,forKey:"nature")
 		coder.encode(self.size,forKey:"size")
 		if let referentNodeUID = self.referentNodeUID {

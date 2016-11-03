@@ -12,9 +12,9 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 - Repetitive blocks are reused (if you have multiple file with large shared part, they can share their blocks)
 - Blocks can be zipped if relevant (for exemple JSON file) 
 
-### BSFS is Securized
+### BSFS is Secured
 
-- BSFS supports Bartleby ACL plus, fine ACL additions (per UserUID
+- BSFS supports Bartleby ACL + fine ACL additions (per UserUID)
 - "blocks" on the servers are AES128/256 encrypted on the client side 	- Hacked server files are secure
 	- You can opt out 
 
@@ -24,11 +24,10 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 - You can decide when to apply the local change (for example if you are playing a sound file of a synchronized playlist, the playlist file update may occur when you reach the end when the BSFS delegate validate the change)
 
 
+# BSFS Models 
 
-# Models 
-
-+ Box - The root folder node that contains all the nodes
-+ Node - A file , a folder or an Alias that refers to its Blocks
++ Box - Refers The root folder node that contains all the nodes
++ Node - Refers to A file , a folder or an Alias, and stores pointers to its Blocks
 + Block - The model that reference a block file (the raw bytes chunks)
 + Transaction - A serialized BSFS operation with a comment
 
@@ -58,32 +57,8 @@ UploadBlock and Download block should be ideally interruptible [PassThru?](http:
 
 # BSFS local API
 
-## Mandatory: 
+BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com/Bartlebys/Bartleby/blob/master/Bartleby.xOS/core/BSFS.swift)
 
-+ addFile(originalPath:String, relativePath:String, public:Bool, authorized:[String]?)
-	+ copies the file to the FS 
-	+ generates temp blocks
-		+ upload each block 
-
-+ remove(relativePath)
-	+ removes the local node 
-	+ call DeleteFile()
-+ createAlias()
-+ createFolder()
-+ copy(sourceRelativePath:String,destinationRelativePath) copies + send CreateNode (no block need to be created)
-+ move(sourceRelativePath:String,destinationRelativePath) moves + send UpdateNode (no block need to be created)
-
-# BSFS delegate
-
-Receives :
-
-- fileShouldChange
-- fileShouldBeDeleted
-
-And respond when appropriate:
-
-- proceed()
-- 
 # Data
 
 ## In the document we have Managed Collections that reflect the distant data
@@ -95,7 +70,7 @@ And respond when appropriate:
 ## in The ".bsfs" folder
 
 
-###1 We have got of Boxes, Nodes, Blocks that reflect the current file system data
+###1. We have got data files that reflects the current box data
 
 ```
 	.bsfs/
@@ -110,7 +85,7 @@ And respond when appropriate:
 - blocks contains "[Block]"
 
 
-###2 And the configuration 
+###2. the configuration (distant server def,...)
   
 ```	
 	.bsfs/
@@ -119,7 +94,7 @@ And respond when appropriate:
 			...
 ```
 
-###3 the block data
+###3 the block data including local file, and sync in progress blocks
   
 ```	
 	.bsfs/
@@ -131,19 +106,7 @@ And respond when appropriate:
 ```
 
 
-## Optional APi
-
-If the files are manipulated out of the app, the local data may become outdated. 
-
-+ scanBox(box:Box) 
-	+ refreshes the local Boxes, Nodes, Blocks infos (CPU very intensive) 
-
-
-
-
-----
-
-# BSFS Daemon 
+# BSFS Daemon - Currently not implemented
 
 A future OSX Daemon that Converts File system action to Api calls.
 Coupled with a finder extension...
@@ -226,7 +189,7 @@ The box is the root of a synchronized folder it is a special Node
         "schema": {
           "type": "array",
           "items": {
-            "description": "Used for ACL The authorized user UIDS ( can be void if noRestriction is set to true)",
+            "description": "The list of the authorized User.UID,(if set to [\"*\"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload",
             "type": "string",
             "default": "[String]()",
             "supervisable": false,
@@ -234,12 +197,6 @@ The box is the root of a synchronized folder it is a special Node
           }
         }
       },
-        "noRestriction": {
-          "type": "boolean",
-          "description": "If set to true authorized can be void",
-          "default": "true",
-          "supervisable": true
-        },
         "nature": {
           "type": "enum",
           "instanceOf": "string",
@@ -300,6 +257,18 @@ The box is the root of a synchronized folder it is a special Node
         "description": "The SHA1 digest of the block",
         "supervisable": true
       },
+      "authorized": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "description": "Extracted from the node - to allow pre-downloading during node upload (if set to [\"*\"] the block is reputed public)",
+            "type": "string",
+            "default": "[String]()",
+            "supervisable": false,
+            "cryptable": true
+          }
+        }
+      },
       "holders": {
         "schema": {
           "type": "array",
@@ -307,7 +276,7 @@ The box is the root of a synchronized folder it is a special Node
             "description": "The Nodes' Holders UIDS",
             "type": "string",
             "default":"[String]()",
-            "supervisable": false,
+            "supervisable": true,
             "cryptable":true
           }
         }
@@ -318,8 +287,8 @@ The box is the root of a synchronized folder it is a special Node
           "items": {
             "description": "The starting address of the block in each Holding Node (== the position of the block in the file)",
             "type": "integer",
-            "default":"[integer]()",
-            "supervisable": false,
+            "default":"[Int]()",
+            "supervisable": true,
             "cryptable":true
           }
         }

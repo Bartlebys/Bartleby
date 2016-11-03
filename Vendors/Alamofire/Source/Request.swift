@@ -75,7 +75,7 @@ open class Request {
     // MARK: Helper Types
 
     /// A closure executed when monitoring upload or download progress of a request.
-    public typealias ProgressHandler = (Progress) -> Void
+    public typealias ProgressionHandler = (Progress) -> Void
 
     enum RequestTask {
         case data(TaskConvertible?, URLSessionTask?)
@@ -389,8 +389,8 @@ open class DataRequest: Request {
     ///
     /// - returns: The request.
     @discardableResult
-    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
-        dataDelegate.progressHandler = (closure, queue)
+    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
+        dataDelegate.ProgressionHandler = (closure, queue)
         return self
     }
 }
@@ -484,8 +484,8 @@ open class DownloadRequest: Request {
     ///
     /// - returns: The request.
     @discardableResult
-    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
-        downloadDelegate.progressHandler = (closure, queue)
+    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
+        downloadDelegate.ProgressionHandler = (closure, queue)
         return self
     }
 
@@ -566,7 +566,7 @@ open class UploadRequest: DataRequest {
     ///
     /// - returns: The request.
     @discardableResult
-    open func uploadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
+    open func uploadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
         uploadDelegate.uploadProgressHandler = (closure, queue)
         return self
     }

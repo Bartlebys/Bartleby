@@ -30,6 +30,9 @@ import Foundation
 	    }
 	}
 
+	//Extracted from the node - to allow pre-downloading during node upload (if set to ["*"] the block is reputed public)
+	dynamic open var authorized:[String] = [String]()
+
 	//The Nodes' Holders UIDS
 	dynamic open var holders:[String] = [String]()  {
 	    didSet { 
@@ -80,7 +83,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","holders","addresses","size","zipped","crypted"])
+        exposed.append(contentsOf:["digest","authorized","holders","addresses","size","zipped","crypted"])
         return exposed
     }
 
@@ -96,6 +99,10 @@ import Foundation
             case "digest":
                 if let casted=value as? String{
                     self.digest=casted
+                }
+            case "authorized":
+                if let casted=value as? [String]{
+                    self.authorized=casted
                 }
             case "holders":
                 if let casted=value as? [String]{
@@ -134,6 +141,8 @@ import Foundation
         switch key {
             case "digest":
                return self.digest
+            case "authorized":
+               return self.authorized
             case "holders":
                return self.holders
             case "addresses":
@@ -158,6 +167,7 @@ import Foundation
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self.digest <- ( map["digest"] )
+			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.holders <- ( map["holders"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.addresses <- ( map["addresses"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
@@ -173,6 +183,7 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey:"digest") as NSString?)
+			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.holders=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "holders")! as! [String]
 			self.addresses=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "addresses")! as! [Int]
 			self.size=decoder.decodeInteger(forKey:"size") 
@@ -186,6 +197,7 @@ import Foundation
 		if let digest = self.digest {
 			coder.encode(digest,forKey:"digest")
 		}
+		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.holders,forKey:"holders")
 		coder.encode(self.addresses,forKey:"addresses")
 		coder.encode(self.size,forKey:"size")

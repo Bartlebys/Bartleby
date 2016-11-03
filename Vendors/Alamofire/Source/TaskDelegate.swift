@@ -183,7 +183,7 @@ class DataTaskDelegate: TaskDelegate, URLSessionDataDelegate {
     }
 
     var progress: Progress
-    var progressHandler: (closure: Request.ProgressHandler, queue: DispatchQueue)?
+    var ProgressionHandler: (closure: Request.ProgressionHandler, queue: DispatchQueue)?
 
     var dataStream: ((_ data: Data) -> Void)?
 
@@ -261,8 +261,8 @@ class DataTaskDelegate: TaskDelegate, URLSessionDataDelegate {
             progress.totalUnitCount = totalBytesExpected
             progress.completedUnitCount = totalBytesReceived
 
-            if let progressHandler = progressHandler {
-                progressHandler.queue.async { progressHandler.closure(self.progress) }
+            if let ProgressionHandler = ProgressionHandler {
+                ProgressionHandler.queue.async { ProgressionHandler.closure(self.progress) }
             }
         }
     }
@@ -292,7 +292,7 @@ class DownloadTaskDelegate: TaskDelegate, URLSessionDownloadDelegate {
     var downloadTask: URLSessionDownloadTask { return task as! URLSessionDownloadTask }
 
     var progress: Progress
-    var progressHandler: (closure: Request.ProgressHandler, queue: DispatchQueue)?
+    var ProgressionHandler: (closure: Request.ProgressionHandler, queue: DispatchQueue)?
 
     var resumeData: Data?
     override var data: Data? { return resumeData }
@@ -378,8 +378,8 @@ class DownloadTaskDelegate: TaskDelegate, URLSessionDownloadDelegate {
             progress.totalUnitCount = totalBytesExpectedToWrite
             progress.completedUnitCount = totalBytesWritten
 
-            if let progressHandler = progressHandler {
-                progressHandler.queue.async { progressHandler.closure(self.progress) }
+            if let ProgressionHandler = ProgressionHandler {
+                ProgressionHandler.queue.async { ProgressionHandler.closure(self.progress) }
             }
         }
     }
@@ -408,7 +408,7 @@ class UploadTaskDelegate: DataTaskDelegate {
     var uploadTask: URLSessionUploadTask { return task as! URLSessionUploadTask }
 
     var uploadProgress: Progress
-    var uploadProgressHandler: (closure: Request.ProgressHandler, queue: DispatchQueue)?
+    var uploadProgressHandler: (closure: Request.ProgressionHandler, queue: DispatchQueue)?
 
     // MARK: Lifecycle
 
