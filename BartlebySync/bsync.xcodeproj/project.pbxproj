@@ -750,6 +750,7 @@
 		E54B7FF61D2B8AA1001F7AB3 /* BsyncImageDiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A61C3D4E49001CD53B /* BsyncImageDiskManager.swift */; };
 		E54B7FF71D2B8AA1001F7AB3 /* BsyncKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B99413D1CC536DD004B5F91 /* BsyncKeyValueStorage.swift */; };
 		E54B7FF81D2B8AA1001F7AB3 /* BsyncLocalAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E552B7A71C3D4E49001CD53B /* BsyncLocalAnalyzer.swift */; };
+		E54EA96C1DCBB72B0034DDC6 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA96B1DCBB72B0034DDC6 /* TriggerHook.swift */; };
 		E55C92731CBF854D008163F6 /* PdSSyncAdmin.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B79F1C3D4E49001CD53B /* PdSSyncAdmin.m */; };
 		E55C92741CBF854D008163F6 /* PdSCommandInterpreter.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7981C3D4E49001CD53B /* PdSCommandInterpreter.m */; };
 		E55C92751CBF854D008163F6 /* DeltaPathMap.m in Sources */ = {isa = PBXBuildFile; fileRef = E552B7901C3D4E49001CD53B /* DeltaPathMap.m */; };
@@ -1228,6 +1229,7 @@
 		E545940C1C3E642C000576AD /* CleanupCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CleanupCommand.swift; sourceTree = "<group>"; };
 		E54594121C3E7DD7000576AD /* CommandBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandBase.swift; sourceTree = "<group>"; };
 		E54957581C43B57700102771 /* CreateDirectiveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDirectiveCommand.swift; sourceTree = "<group>"; };
+		E54EA96B1DCBB72B0034DDC6 /* TriggerHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerHook.swift; sourceTree = "<group>"; };
 		E552B78F1C3D4E49001CD53B /* DeltaPathMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeltaPathMap.h; sourceTree = "<group>"; };
 		E552B7901C3D4E49001CD53B /* DeltaPathMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeltaPathMap.m; sourceTree = "<group>"; };
 		E552B7911C3D4E49001CD53B /* HashMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
@@ -1663,12 +1665,13 @@
 				E53AB36F1DCA4E74005A8DAB /* LogEntriesObserver.swift */,
 				E53AB3701DCA4E74005A8DAB /* Logger.swift */,
 				E53AB3711DCA4E74005A8DAB /* Monitoring.swift */,
-				E53AB3721DCA4E74005A8DAB /* Pusher.swift */,
 				E53AB3731DCA4E74005A8DAB /* Referenced.swift */,
 				E53AB3741DCA4E74005A8DAB /* Serializable.swift */,
 				E53AB3751DCA4E74005A8DAB /* Serializer.swift */,
 				E53AB3761DCA4E74005A8DAB /* SuperIterable.swift */,
 				E53AB3771DCA4E74005A8DAB /* Supervisable.swift */,
+				E53AB3721DCA4E74005A8DAB /* Pusher.swift */,
+				E54EA96B1DCBB72B0034DDC6 /* TriggerHook.swift */,
 				E53AB3781DCA4E74005A8DAB /* UniversalType.swift */,
 				E53AB3791DCA4E74005A8DAB /* UserProtocol.swift */,
 			);
@@ -2653,6 +2656,7 @@
 				E53AB52B1DCA4E75005A8DAB /* HTTPRequest+URLRequest.swift in Sources */,
 				E53AB48F1DCA4E74005A8DAB /* ReadUsersByQuery.swift in Sources */,
 				E5CC26281D84698500F7C783 /* AFError.swift in Sources */,
+				E54EA96C1DCBB72B0034DDC6 /* TriggerHook.swift in Sources */,
 				E53AB4C71DCA4E74005A8DAB /* Bartleby.swift in Sources */,
 				E53AB4B31DCA4E74005A8DAB /* UpdateUser.swift in Sources */,
 				E53E28D81CA572D80079ED23 /* NSData+CRC.m in Sources */,

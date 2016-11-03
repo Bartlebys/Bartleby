@@ -153,6 +153,11 @@ extension BartlebyDocument {
      - parameter triggeredData: the triggered data
      */
     fileprivate func _integrate(_ trigger:Trigger){
+
+        for hook in self.triggerHooks{
+            hook.triggerWillBeIntegrated(trigger: trigger)
+        }
+
         // Integrate
         if trigger.action.contains("Delete") {
             // It is a deletion.
@@ -178,6 +183,11 @@ extension BartlebyDocument {
             }
         }
         self.metadata.lastIntegratedTriggerIndex=trigger.index
+
+        for hook in self.triggerHooks{
+            hook.triggerHasBeenIntegrated(trigger: trigger)
+        }
+
     }
 
 

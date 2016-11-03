@@ -132,6 +132,7 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
+		E54EA96A1DCBB52F0034DDC6 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */; };
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
 		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E569F34E1DC7C242004D4FB5 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5948A081DC7AD2000053A2D /* Report.swift */; };
@@ -520,6 +521,7 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
+		E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerHook.swift; sourceTree = "<group>"; };
 		E568A78A1DC8762100BE157D /* ReportTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTabViewController.swift; sourceTree = "<group>"; };
 		E568A78B1DC8762100BE157D /* ReportTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTabViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1111,6 +1113,7 @@
 				E57376511DBB960500E2B849 /* UserProtocol.swift */,
 				E598906E1DC79C0A00F235B5 /* DocumentProvider.swift */,
 				E59890701DC79C1800F235B5 /* DocumentDependent.swift */,
+				E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -1421,6 +1424,7 @@
 				E57376951DBB960500E2B849 /* DeleteLocker.swift in Sources */,
 				E57376D51DBB960500E2B849 /* Completion+Conveniences.swift in Sources */,
 				E57376991DBB960500E2B849 /* DeleteUser.swift in Sources */,
+				E54EA96A1DCBB52F0034DDC6 /* TriggerHook.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
 				E536C0761DC9FA120053DE31 /* NodesManagedCollection.swift in Sources */,
 				E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */,

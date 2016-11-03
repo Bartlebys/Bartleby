@@ -51,7 +51,7 @@ public protocol BoxDelegate{
 
 }
 
-public class BSFS{
+public class BSFS:TriggerHook{
 
 
     // Document
@@ -188,6 +188,24 @@ public class BSFS{
     }
 
 
+    // MARK: - TriggerHook
+
+
+    /// Called by the Document before trigger integration
+    ///
+    /// - Parameter trigger: the trigger
+    public func triggerWillBeIntegrated(trigger:Trigger){
+
+    }
+
+    /// Called by the Document after trigger integration
+    ///
+    /// - Parameter trigger: the trigger
+    public func triggerHasBeenIntegrated(trigger:Trigger){
+
+    }
+
+
     //MARK: - Block Level Actions
 
     /// Creates a file from the node blocks.
@@ -216,7 +234,6 @@ public class BSFS{
             handler(Completion.failureStateFromError(error))
         }
     }
-
 
 
     //MARK: - Triggered Block Level Action

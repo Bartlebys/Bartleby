@@ -177,6 +177,7 @@
 		E53AB7781DCA4E8B005A8DAB /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6D41DCA4E8B005A8DAB /* Pluralization.swift */; };
 		E53AB7791DCA4E8B005A8DAB /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AB6D51DCA4E8B005A8DAB /* PString.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
+		E54EA96E1DCBB7480034DDC6 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA96D1DCBB7480034DDC6 /* TriggerHook.swift */; };
 		E5CC28F91D846CB300F7C783 /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28521D846CB300F7C783 /* AFError.swift */; };
 		E5CC28FA1D846CB300F7C783 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28541D846CB300F7C783 /* Alamofire.swift */; };
 		E5CC28FB1D846CB300F7C783 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */; };
@@ -409,6 +410,7 @@
 		E548A4821D880577006FF410 /* bartlebyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bartlebyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E548A4841D880577006FF410 /* bartlebyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bartlebyTests.swift; sourceTree = "<group>"; };
 		E548A4861D880577006FF410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E54EA96D1DCBB7480034DDC6 /* TriggerHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerHook.swift; sourceTree = "<group>"; };
 		E5CC28521D846CB300F7C783 /* AFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
 		E5CC28541D846CB300F7C783 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Alamofire.swift"; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 				E53AB6BC1DCA4E8B005A8DAB /* Serializer.swift */,
 				E53AB6BD1DCA4E8B005A8DAB /* SuperIterable.swift */,
 				E53AB6BE1DCA4E8B005A8DAB /* Supervisable.swift */,
+				E54EA96D1DCBB7480034DDC6 /* TriggerHook.swift */,
 				E53AB6BF1DCA4E8B005A8DAB /* UniversalType.swift */,
 				E53AB6C01DCA4E8B005A8DAB /* UserProtocol.swift */,
 			);
@@ -1108,6 +1111,7 @@
 				E5CC29271D846CB300F7C783 /* FromJSON.swift in Sources */,
 				E53AB6F31DCA4E8B005A8DAB /* BlockOperationBase.swift in Sources */,
 				E53AB7441DCA4E8B005A8DAB /* Handlers.swift in Sources */,
+				E54EA96E1DCBB7480034DDC6 /* TriggerHook.swift in Sources */,
 				E53AB76B1DCA4E8B005A8DAB /* NSObject+Bartleby.swift in Sources */,
 				E53AB6DF1DCA4E8B005A8DAB /* Block.swift in Sources */,
 				E53AB6FE1DCA4E8B005A8DAB /* DeleteBlock.swift in Sources */,

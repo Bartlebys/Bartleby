@@ -99,6 +99,10 @@ import Foundation
     // Bartleby's Synchronized File System for this document.
     open lazy var bsfs:BSFS=BSFS(in:self)
 
+    // Hook the triggers
+    public var triggerHooks=[TriggerHook]()
+
+
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
 
