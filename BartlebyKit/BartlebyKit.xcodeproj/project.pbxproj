@@ -395,6 +395,7 @@
 		E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6DE481DBE35670036594C /* BartlebyDocument+Metrics.swift */; };
 		E5E6E1C61DBE3F9D0036594C /* ChronologyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */; };
 		E5E6E1C71DBE3F9D0036594C /* ChronologyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */; };
+		E5EE3F161DCC7992000D70B9 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */; };
 		E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEECF31DBFCD7F00784191 /* BartlebyDocument+Reachability.swift */; };
 		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 /* End PBXBuildFile section */
@@ -1693,6 +1694,7 @@
 				E536C0731DC9FA120053DE31 /* BlocksManagedCollection.swift in Sources */,
 				E536C0CA1DC9FA690053DE31 /* UpdateBlock.swift in Sources */,
 				E569F3681DC7C264004D4FB5 /* Referenced.swift in Sources */,
+				E5EE3F161DCC7992000D70B9 /* TriggerHook.swift in Sources */,
 				E57376901DBB960500E2B849 /* CreateLockers.swift in Sources */,
 				E569F3631DC7C264004D4FB5 /* JSONString.swift in Sources */,
 				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,

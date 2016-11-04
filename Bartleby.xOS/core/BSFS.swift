@@ -8,8 +8,8 @@
 import Foundation
 
 enum BSFSError:Error{
-    case BoxIsInBox(existingBox:URL)
-    case BoxDelegateIsNotAvailable(message:String)
+    case boxIsInBox(existingBox:URL)
+    case boxDelegateIsNotAvailable(message:String)
 }
 
 
@@ -194,14 +194,19 @@ public class BSFS:TriggerHook{
     /// Called by the Document before trigger integration
     ///
     /// - Parameter trigger: the trigger
-    public func triggerWillBeIntegrated(trigger:Trigger){
-
-    }
+    public func triggerWillBeIntegrated(trigger:Trigger){}
 
     /// Called by the Document after trigger integration
     ///
     /// - Parameter trigger: the trigger
     public func triggerHasBeenIntegrated(trigger:Trigger){
+
+        // CHECK if there are Blocks, Node actions.
+
+        // On Nodes or Blocks check if we are concerned / allowed.
+
+        // TODO ANALYZE
+        // HOW TO DETECT MIDDLE CHANGE user is authorized durign Upload == The first block have not been received.
 
     }
 
@@ -278,12 +283,11 @@ public class BSFS:TriggerHook{
             if let delegate=self._boxesDelegates[boxUID]{
                 return delegate
             }else{
-                throw BSFSError.BoxDelegateIsNotAvailable(message: "Delegate for box <\(boxUID)> not found")
+                throw BSFSError.boxDelegateIsNotAvailable(message: "Delegate for box <\(boxUID)> not found")
             }
         }else{
-            throw BSFSError.BoxDelegateIsNotAvailable(message: "Box not found for <\(node.UID)>")
+            throw BSFSError.boxDelegateIsNotAvailable(message: "Box not found for <\(node.UID)>")
         }
     }
-    
-    
+
 }

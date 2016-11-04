@@ -21,6 +21,5 @@ public protocol TriggerHook {
     /// - Parameter trigger: the trigger
     func triggerHasBeenIntegrated(trigger:Trigger)
 
-    
 
 }

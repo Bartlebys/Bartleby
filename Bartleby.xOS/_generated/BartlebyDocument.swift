@@ -31,7 +31,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(BartlebyDocument) open class BartlebyDocument : BXDocument {
+@objc(BartlebyDocument) open class BartlebyDocument : BXDocument,BoxDelegate {
 
 
 
@@ -381,6 +381,47 @@ import Foundation
     open func documentWillSave() {
 
     }
+
+    // MARK: - BSFS: BoxDelegate
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be moved or copied
+    public func moveIsReady(node:Node,to destinationPath:String,proceed:()->()){
+        // If necessary we can wait
+        proceed()
+    }
+
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be moved or copied
+    public func copyIsReady(node:Node,to destinationPath:String,proceed:()->()){
+        // If necessary we can wait
+        proceed()
+    }
+
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be Updated
+    public func assemblyIsReady(node:Node,proceed:()->()){
+        // If necessary we can wait
+        proceed()
+    }
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be Updated
+    public func deletionIsReady(node:Node,proceed:()->()){
+        // If necessary we can wait
+        proceed()
+    }
+
 
     // MARK: - Synchronization
 
