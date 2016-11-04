@@ -33,12 +33,24 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 + Transaction - A serialized BSFS operation with a comment
 
 
-# Block files 
+# Block Raw files 
 
-+ Raw block files.
-+ filename = Block.UID
-+ block are stored per folders the Uppercased 2 first components of the UID. (e.G = NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC would be in /N/K/J/) locally in F/.bsfs/blocks/N/K/J
+The raw blocks (crypted or not) are stored in an App group container directory on the client, and on the server.
 
+## Preservation 
+
+All the raw block data including local file, and sync in progress blocks are preserved.
+It mean you need at least twice the size of the synchronized files.
+On node deletion the Blocks are erased.
+
+## The block are grouped per folders 
+
+We use the Uppercased 3 first components of the UID. 
+
+```
+The block "NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC"
+Would be in <container>/blocks/N/K/J
+```
 
 # Operation BartlebyOperation
 
@@ -74,19 +86,6 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 - document.metadata.localBoxes
 - document.metadata.localNodes
 - document.metadata.localBlocks
-
-## in The ".bsfs" folder
-
-
-Contains the block data including local file, and sync in progress blocks.
-  
-```	
-	.bsfs/
-		<block>
-		<block>
-		....
-```
-
 
 ----
 # Details on Models
@@ -353,9 +352,11 @@ The box is the root of a synchronized folder it is a special Node
 
 # To be defined 
 
-- Is it necessary to support cancelable actions? If yes, How to cancel?
-- How to deal with the deletion of .bsfs/ folder?
+##1. Is it necessary to support cancelable actions? If yes, How to cancel?
 
+##2. How to deal with the deletion of the block folder?
+Initially the block folder was in the synchronized folder (like git) 
+I've decided to use a dedicated folder in the app container to preserve from hazardous deletion. 
 
 # BSFS Daemon - Currently not implemented
 

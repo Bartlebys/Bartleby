@@ -74,7 +74,7 @@ public class BSFS:TriggerHook{
     /// Intitializes a box if possible.
     ///
     /// #1 Check if there is a box in the top of this path
-    /// #2 create the .bsfs folder + content
+    /// #2 create the document block folder + content
     /// #3 deals with the collaborative server (Auth is a prerequisite)
     ///
     /// - Parameter path: path description

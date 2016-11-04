@@ -198,7 +198,6 @@ extension BartlebyDocument {
     }
 
 
-
     fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false, documentfileURL: URL?) throws -> Data {
         do {
             #if os(OSX)
