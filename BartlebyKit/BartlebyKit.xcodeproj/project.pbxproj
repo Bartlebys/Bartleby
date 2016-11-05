@@ -115,6 +115,9 @@
 		E554D8DA1DCE24EB00BD1CF9 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */; };
 		E554D8DB1DCE24EB00BD1CF9 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0441DC9E7570053DE31 /* Data+HMAC.swift */; };
 		E554D8DC1DCE24EB00BD1CF9 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0461DC9E7710053DE31 /* String+HMAC.swift */; };
+		E554D8DE1DCE2C0500BD1CF9 /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DD1DCE2C0500BD1CF9 /* Flocker.swift */; };
+		E554D8E01DCE35E600BD1CF9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DF1DCE35E600BD1CF9 /* Box.swift */; };
+		E554D8E11DCE35E600BD1CF9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DF1DCE35E600BD1CF9 /* Box.swift */; };
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
 		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E569F34E1DC7C242004D4FB5 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5948A081DC7AD2000053A2D /* Report.swift */; };
@@ -494,6 +497,8 @@
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
 		E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerHook.swift; sourceTree = "<group>"; };
+		E554D8DD1DCE2C0500BD1CF9 /* Flocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flocker.swift; sourceTree = "<group>"; };
+		E554D8DF1DCE35E600BD1CF9 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E568A78A1DC8762100BE157D /* ReportTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTabViewController.swift; sourceTree = "<group>"; };
 		E568A78B1DC8762100BE157D /* ReportTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTabViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -681,13 +686,6 @@
 			name = Business;
 			sourceTree = "<group>";
 		};
-		5BC8F1671CB2BB2400B00866 /* InterSpace */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = InterSpace;
-			sourceTree = "<group>";
-		};
 		5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */ = {
 			isa = PBXGroup;
 			children = (
@@ -807,7 +805,6 @@
 				5BBF7D441CC8E4E400F2237B /* TransformTests.swift */,
 				E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */,
 				5BBF7D431CC8E4AF00F2237B /* Crypto */,
-				5BC8F1671CB2BB2400B00866 /* InterSpace */,
 				5BC8F1661CB27B1600B00866 /* Business */,
 				E51029171CB68FC50040FC2C /* BaseObjectTests.swift */,
 				E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */,
@@ -859,6 +856,7 @@
 		E57375E21DBB960500E2B849 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				E554D8DF1DCE35E600BD1CF9 /* Box.swift */,
 				E57375E31DBB960500E2B849 /* Acknowledgment.swift */,
 				E57375E41DBB960500E2B849 /* BartlebyObject.swift */,
 				E536C0781DC9FA290053DE31 /* Block.swift */,
@@ -982,6 +980,7 @@
 				E57376541DBB960500E2B849 /* StatusOfCompletion.swift */,
 				E5187F181DC11FC80071A23C /* ServerErrorCodes.swift */,
 				E536C06A1DC9F27B0053DE31 /* BSFS.swift */,
+				E554D8DD1DCE2C0500BD1CF9 /* Flocker.swift */,
 				E57376131DBB960500E2B849 /* extensions */,
 				E573762B1DBB960500E2B849 /* json */,
 				E57376331DBB960500E2B849 /* protocols */,
@@ -1321,6 +1320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E554D8DE1DCE2C0500BD1CF9 /* Flocker.swift in Sources */,
 				E57376E71DBB960500E2B849 /* DocumentMetadata+Protocol.swift in Sources */,
 				E5948A091DC7AD2000053A2D /* Report.swift in Sources */,
 				E573767D1DBB960500E2B849 /* KeyedChanges.swift in Sources */,
@@ -1329,6 +1329,7 @@
 				E5EEECF41DBFCD7F00784191 /* BartlebyDocument+Reachability.swift in Sources */,
 				E573768D1DBB960500E2B849 /* CreateLocker.swift in Sources */,
 				E573769F1DBB960500E2B849 /* ReadLockersByIds.swift in Sources */,
+				E554D8E01DCE35E600BD1CF9 /* Box.swift in Sources */,
 				E57377011DBB960500E2B849 /* CollectibleCollection.swift in Sources */,
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
 				E536C0C51DC9FA690053DE31 /* ReadNodesByIds.swift in Sources */,
@@ -1587,6 +1588,7 @@
 				E57376801DBB960500E2B849 /* Locker.swift in Sources */,
 				E569F3571DC7C264004D4FB5 /* CollectibleHTTPContext.swift in Sources */,
 				E573773A1DBB960500E2B849 /* StatusOfCompletion.swift in Sources */,
+				E554D8E11DCE35E600BD1CF9 /* Box.swift in Sources */,
 				E57376BE1DBB960500E2B849 /* Default.swift in Sources */,
 				E569F3671DC7C264004D4FB5 /* Monitoring.swift in Sources */,
 				E573774E1DBB960500E2B849 /* BFileManager.swift in Sources */,

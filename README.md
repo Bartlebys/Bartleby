@@ -7,7 +7,6 @@ Bartleby Is a full stack generative suite to build fault tolerant native distrib
 
 + **BartlebyKit**: A Swift 3 client Framework for (OSX, iOS, ... ).
 + **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules (written in Swift 3) 
-+ **BartlebySync**: A file system Delta synchronizer module (Swift 3 and Objc 2.X)
 
 # Resources
 

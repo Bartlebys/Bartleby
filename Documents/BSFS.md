@@ -29,7 +29,7 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 + Node - Refers to A file , a folder or an Alias, and stores startAddress and length of its Blocks
 + Block - The model that reference a block file (the raw bytes chunks)
-
++ Box - A box reference sets of Nodes and Blocks
 
 # Block Raw files 
 
@@ -88,6 +88,7 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 
 ```json
 {
+  {
   "name": "Node",
   "definition": {
     "description": "Bartleby's Synchronized File System: a node references a collection of blocks that compose a files, or an alias or a folder",
@@ -97,15 +98,15 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
         "description": "An external ID",
         "supervisable": true
       },
-      "boxUID": {
-        "type": "string",
-        "description": "The UID of the Box",
-        "supervisable": true
-      },
       "relativePath": {
         "type": "string",
         "description": "The boxed relative path",
         "supervisable": true
+      },
+      "proxyPath": {
+        "type": "string",
+        "description": "A relative path for a proxy file.",
+        "supervisable": false
       },
       "blocksMaxSize": {
         "type": "integer",
@@ -113,11 +114,17 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
         "default":"Int.max",
         "supervisable": true
       },
+      "priority": {
+        "type": "integer",
+        "description": "The priority level of the node (is applicated to its block)",
+        "default":"0",
+        "supervisable": true
+      },
       "blocksUIDS": {
         "schema": {
           "type": "array",
           "items": {
-            "description": "The ordered list of the Block UIDS",
+            "description": "An ordered list of the Block UIDS",
             "type": "string",
             "default": "[String]()",
             "supervisable": false,
@@ -145,7 +152,8 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
           "enum": [
             "file",
             "folder",
-            "alias"
+            "alias",
+            "flock"
           ],
           "default": ".file"
         },
@@ -160,9 +168,9 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
           "description": "If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all",
           "supervisable": true
         },
-        "zippedBlocks": {
+        "compressed": {
           "type": "boolean",
-          "description": "If set to true the blocks will be zipped",
+          "description": "If set to true the blocks should be compressed",
           "default": "true",
           "supervisable": true
         },
@@ -209,29 +217,18 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
           }
         }
       },
-      "holders": {
-        "schema": {
-          "type": "array",
-          "items": {
-            "description": "The Nodes' Holders UIDS",
-            "type": "string",
-            "default":"[String]()",
-            "supervisable": true,
-            "cryptable":true
-          }
-        }
+      "nodeUID": {
+        "type": "string",
+        "description": "The UID of the holding node",
+        "supervisable": true
       },
-      "addresses": {
-        "schema": {
-          "type": "array",
-          "items": {
-            "description": "The starting address of the block in each Holding Node (== the position of the block in the file)",
-            "type": "integer",
-            "default":"[Int]()",
-            "supervisable": true,
-            "cryptable":true
-          }
-        }
+      "address": {
+        "type": "integer",
+        "description": "The starting address of the block in each Holding Node (== the position of the block in the file)",
+        "type": "integer",
+        "default":0,
+        "supervisable": true,
+        "cryptable":true
       },
       "size": {
         "type": "integer",
@@ -239,9 +236,15 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
         "default":"Int.max",
         "supervisable": true
       },
-      "zipped": {
+      "priority": {
+        "type": "integer",
+        "description": "The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)",
+        "default":"0",
+        "supervisable": true
+      },
+      "compressed": {
         "type": "boolean",
-        "description": "If set to true authorized can be void",
+        "description": "should be compressed",
         "default": "true",
         "supervisable": true
       },
@@ -262,44 +265,35 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 }
 ```
 
-## Transaction
-
-- Each transaction in the local FS returns a transactionUID.
-- You can cancel any non completed Transactions
+## Box
 
 ```json
 {
-  "name": "Transaction",
+  "name": "Box",
   "definition": {
-    "description": "Bartleby's Synchronized File System: a transaction is an operation",
+    "description": "Bartleby's Synchronized File System: A box reference sets of Nodes and Blocks",
     "properties": {
-      "comment": {
-        "type": "string",
-        "description": "the comment",
-        "supervisable": true
-      },
-      "operations": {
+      "nodes": {
         "schema": {
           "type": "array",
           "items": {
-            "description": "The serialized operations (without the data)",
-            "type": "string",
-            "default":"[String]()",
-            "supervisable": false,
-            "cryptable":true
+            "description": "BSFS: A collection nodes",
+            "$ref": "#/definitions/Node",
+            "default": "[Node]()",
+            "supervisable": true
           }
         }
       },
-      "status": {
-        "type": "enum",
-        "instanceOf": "string",
-        "emumPreciseType": "Transaction.Status",
-        "description": "Transaction Status",
-        "enum": [
-          "committed",
-          "pushed"
-        ],
-        "default": ".committed"
+      "blocks": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "description": "BSFS: A collection nodes",
+            "$ref": "#/definitions/Block",
+            "default": "[Block]()",
+            "supervisable": true
+          }
+        }
       }
     },
     "metadata": {

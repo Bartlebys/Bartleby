@@ -74,6 +74,9 @@ public protocol BoxDelegate{
 
 }
 
+// COMPRESSION is using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
+// CRYPTO is using CommonCrypto
+
 public class BSFS:TriggerHook{
 
 
@@ -333,7 +336,5 @@ public class BSFS:TriggerHook{
         // @TODO
         return true
     }
-    
-    
-    
+
 }

@@ -98,11 +98,11 @@ import Foundation
 	    }
 	}
 
-	//If set to true the blocks will be zipped
-	dynamic open var zippedBlocks:Bool = true  {
+	//If set to true the blocks should be compressed
+	dynamic open var compressed:Bool = true  {
 	    didSet { 
-	       if zippedBlocks != oldValue {
-	            self.provisionChanges(forKey: "zippedBlocks",oldValue: oldValue,newValue: zippedBlocks)  
+	       if compressed != oldValue {
+	            self.provisionChanges(forKey: "compressed",oldValue: oldValue,newValue: compressed)  
 	       } 
 	    }
 	}
@@ -121,7 +121,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","zippedBlocks","cryptedBlocks"])
+        exposed.append(contentsOf:["externalID","relativePath","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","compressed","cryptedBlocks"])
         return exposed
     }
 
@@ -174,9 +174,9 @@ import Foundation
                 if let casted=value as? String{
                     self.referentNodeUID=casted
                 }
-            case "zippedBlocks":
+            case "compressed":
                 if let casted=value as? Bool{
-                    self.zippedBlocks=casted
+                    self.compressed=casted
                 }
             case "cryptedBlocks":
                 if let casted=value as? Bool{
@@ -217,8 +217,8 @@ import Foundation
                return self.size
             case "referentNodeUID":
                return self.referentNodeUID
-            case "zippedBlocks":
-               return self.zippedBlocks
+            case "compressed":
+               return self.compressed
             case "cryptedBlocks":
                return self.cryptedBlocks
             default:
@@ -244,7 +244,7 @@ import Foundation
 			self.nature <- ( map["nature"] )
 			self.size <- ( map["size"] )
 			self.referentNodeUID <- ( map["referentNodeUID"] )
-			self.zippedBlocks <- ( map["zippedBlocks"] )
+			self.compressed <- ( map["compressed"] )
 			self.cryptedBlocks <- ( map["cryptedBlocks"] )
         }
     }
@@ -265,7 +265,7 @@ import Foundation
 			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
-			self.zippedBlocks=decoder.decodeBool(forKey:"zippedBlocks") 
+			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.cryptedBlocks=decoder.decodeBool(forKey:"cryptedBlocks") 
         }
     }
@@ -290,7 +290,7 @@ import Foundation
 		if let referentNodeUID = self.referentNodeUID {
 			coder.encode(referentNodeUID,forKey:"referentNodeUID")
 		}
-		coder.encode(self.zippedBlocks,forKey:"zippedBlocks")
+		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.cryptedBlocks,forKey:"cryptedBlocks")
     }
 

@@ -69,11 +69,11 @@ import Foundation
 	    }
 	}
 
-	//If set to true authorized can be void
-	dynamic open var zipped:Bool = true  {
+	//should be compressed
+	dynamic open var compressed:Bool = true  {
 	    didSet { 
-	       if zipped != oldValue {
-	            self.provisionChanges(forKey: "zipped",oldValue: oldValue,newValue: zipped)  
+	       if compressed != oldValue {
+	            self.provisionChanges(forKey: "compressed",oldValue: oldValue,newValue: compressed)  
 	       } 
 	    }
 	}
@@ -92,7 +92,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","zipped","crypted"])
+        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted"])
         return exposed
     }
 
@@ -129,9 +129,9 @@ import Foundation
                 if let casted=value as? Int{
                     self.priority=casted
                 }
-            case "zipped":
+            case "compressed":
                 if let casted=value as? Bool{
-                    self.zipped=casted
+                    self.compressed=casted
                 }
             case "crypted":
                 if let casted=value as? Bool{
@@ -164,8 +164,8 @@ import Foundation
                return self.size
             case "priority":
                return self.priority
-            case "zipped":
-               return self.zipped
+            case "compressed":
+               return self.compressed
             case "crypted":
                return self.crypted
             default:
@@ -187,7 +187,7 @@ import Foundation
 			self.address <- ( map["address"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
 			self.priority <- ( map["priority"] )
-			self.zipped <- ( map["zipped"] )
+			self.compressed <- ( map["compressed"] )
 			self.crypted <- ( map["crypted"] )
         }
     }
@@ -204,7 +204,7 @@ import Foundation
 			self.address=decoder.decodeInteger(forKey:"address") 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
-			self.zipped=decoder.decodeBool(forKey:"zipped") 
+			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.crypted=decoder.decodeBool(forKey:"crypted") 
         }
     }
@@ -221,7 +221,7 @@ import Foundation
 		coder.encode(self.address,forKey:"address")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.priority,forKey:"priority")
-		coder.encode(self.zipped,forKey:"zipped")
+		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.crypted,forKey:"crypted")
     }
 
