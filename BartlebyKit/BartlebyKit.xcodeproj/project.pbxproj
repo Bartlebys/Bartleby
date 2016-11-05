@@ -111,6 +111,10 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54EA96A1DCBB52F0034DDC6 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */; };
+		E554D8D91DCE24EB00BD1CF9 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0481DC9E7A10053DE31 /* HMAC.swift */; };
+		E554D8DA1DCE24EB00BD1CF9 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */; };
+		E554D8DB1DCE24EB00BD1CF9 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0441DC9E7570053DE31 /* Data+HMAC.swift */; };
+		E554D8DC1DCE24EB00BD1CF9 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0461DC9E7710053DE31 /* String+HMAC.swift */; };
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
 		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E569F34E1DC7C242004D4FB5 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5948A081DC7AD2000053A2D /* Report.swift */; };
@@ -1571,6 +1575,7 @@
 				E57376AE1DBB960500E2B849 /* UpdateUser.swift in Sources */,
 				E57376921DBB960500E2B849 /* CreateUser.swift in Sources */,
 				E50A0CEC1DC21EC700869BFB /* BartlebyDocument+Reachability.swift in Sources */,
+				E554D8DA1DCE24EB00BD1CF9 /* HMACAlgorythms.swift in Sources */,
 				E57377421DBB960500E2B849 /* LoginUser.swift in Sources */,
 				E569F3651DC7C264004D4FB5 /* LogEntriesObserver.swift in Sources */,
 				E569F35C1DC7C264004D4FB5 /* DictionaryRepresentation.swift in Sources */,
@@ -1618,6 +1623,7 @@
 				E57376AC1DBB960500E2B849 /* UpdateLockers.swift in Sources */,
 				E57377461DBB960500E2B849 /* TriggersAfterIndex.swift in Sources */,
 				E569F3551DC7C264004D4FB5 /* Collectible.swift in Sources */,
+				E554D8DC1DCE24EB00BD1CF9 /* String+HMAC.swift in Sources */,
 				E57376D21DBB960500E2B849 /* BartlebyObject+BaseImplementation.swift in Sources */,
 				E536C0B61DC9FA690053DE31 /* DeleteNodes.swift in Sources */,
 				E569F3511DC7C264004D4FB5 /* BartlebyCollection.swift in Sources */,
@@ -1628,6 +1634,7 @@
 				E536C0AC1DC9FA690053DE31 /* DeleteBlock.swift in Sources */,
 				E569F35D1DC7C264004D4FB5 /* Distribuable.swift in Sources */,
 				E536C0731DC9FA120053DE31 /* BlocksManagedCollection.swift in Sources */,
+				E554D8D91DCE24EB00BD1CF9 /* HMAC.swift in Sources */,
 				E536C0CA1DC9FA690053DE31 /* UpdateBlock.swift in Sources */,
 				E569F3681DC7C264004D4FB5 /* Referenced.swift in Sources */,
 				E5EE3F161DCC7992000D70B9 /* TriggerHook.swift in Sources */,
@@ -1636,6 +1643,7 @@
 				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376D81DBB960500E2B849 /* Completion+Result.swift in Sources */,
 				E57376B41DBB960500E2B849 /* NoCrypto.swift in Sources */,
+				E554D8DB1DCE24EB00BD1CF9 /* Data+HMAC.swift in Sources */,
 				E57376DA1DBB960500E2B849 /* ExternalReference+Resolution.swift in Sources */,
 				E57377501DBB960500E2B849 /* HTTPManager.swift in Sources */,
 				E57376DC1DBB960500E2B849 /* LogEntry+Conveniences.swift in Sources */,

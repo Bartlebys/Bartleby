@@ -17,6 +17,7 @@ public enum SerializableError: Error {
     case typeNameUndefined
     case unknownTypeName(typeName:String)
     case enableToTransformDataToDictionary
+    case invalidUTF8String
 }
 
 
@@ -25,22 +26,25 @@ public enum SerializableError: Error {
  */
 public protocol Serializable:Initializable{
 
-    /**
-     Serialize the current object with its type
-
-     - returns: a NSData
-     */
+    /// Serialize the current object with its type
+    ///
+    /// - Returns: data
     func serialize() -> Data
 
 
-    /**
-     Update an existant instance
-     This approach is used by proxies.
+    /// Serialize the current object to an UTF8 string
+    ///
+    /// - Returns: return an UTF8 string
+    func serializeToUFf8String()->String
 
-     - parameter data: the NSData
 
-     - returns: the patched Object
-     */
+    /// Update an existant instance
+    /// This approach is used by proxies.
+    /// - Parameters:
+    ///   - data: the data
+    ///   - provisionChanges: should we provision the changes?
+    /// - Returns: the Serialiable fully typed instance
+    /// - Throws: ...
     func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable
 
 }

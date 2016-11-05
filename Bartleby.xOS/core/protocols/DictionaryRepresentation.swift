@@ -16,12 +16,4 @@ public protocol DictionaryRepresentation {
      */
     func dictionaryRepresentation()->[String:Any]
 
-
-    /**
-     Applies the values stored in the dictionary representation to self.
-
-     - parameter dictionaryRepresentation: a dictionary
-     */
-    func patchFrom(_ dictionaryRepresentation:[String:Any])
-    
 }

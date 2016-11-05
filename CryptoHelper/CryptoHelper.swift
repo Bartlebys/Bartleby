@@ -8,16 +8,39 @@
 
 import Foundation
 
+/*
+    This is a simple wrapper built on the top of CommonCrypto.
+    You must `#import <CommonCrypto/CommonCrypto.h>` in a Bridging headera to use it.
+
+    Note on Strings: 
+    
+    **IMPORTANT!**
+    Don't use EncryptData, DecryptData on Utf8 strings.
+
+    Always Use symetric calls :
+
+    - 'encryptString' / 'decryptString' if you need for example to copy and paste the sample
+    - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
+
+
+ */
 @objc open class CryptoHelper: NSObject, CryptoDelegate {
 
+    /// The salt is used in conjunction with the key (for initialization vector...)
     let salt: String
 
+    // The key
     let key: String
 
+    // Options
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
 
 
-
+    /// The designated initializer
+    ///
+    /// - Parameters:
+    ///   - key: the key to use
+    ///   - salt: the salf
     public init(key: String, salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz") {
         self.key=key
         self.salt=salt
@@ -27,8 +50,12 @@ import Foundation
     lazy var initializationVector: Data?=CryptoHelper.hashString(self.salt + self.key).data(using: Default.STRING_ENCODING, allowLossyConversion:false)
 
 
-    // MARK: - Cryptography
-
+    /// The CryptoErrors
+    ///
+    /// - keyIsInvalid: the key is invalid
+    /// - errorWithStatusCode: an error relaying CCCryptorStatus error
+    /// - codingError: a  coding error
+    /// - decryptBase64Failure: a base 64 decoding error
     enum CryptoError: Error {
         case keyIsInvalid
         case errorWithStatusCode(cryptStatus:Int)
@@ -37,10 +64,15 @@ import Foundation
     }
 
 
+
+    /// A debug facility
     open func dumpDebug() {
         print("hash of key is \(CryptoHelper.hashString(key))")
         print("hash of salt is \(CryptoHelper.hashString(salt))")
     }
+
+
+    // MARK: - Encryption + Base64 encoding / decoding
 
     /**
      Encrypt a string to a base 64 string containing the corresponding crypted buffer
@@ -49,12 +81,16 @@ import Foundation
 
      - throws: Crypt operation error
 
-     - returns: A base 64 string representing a crypted buffer
+     - returns: A base 64 string representing a crypted buffer (eg. suitable for copy and paste)
      */
     open func encryptString(_ string: String) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
             let crypted=try encryptData(data)
-            if let cryptedString=String(data: crypted, encoding:String.Encoding.utf8) {
+            // (!) IMPORTANT
+            // the crypted data may produces invalid UTF8 data producing nil Strings
+            // We need to base64 encode any NSData.
+            let b64Data=crypted.base64EncodedData(options: .endLineWithCarriageReturn)
+            if let cryptedString=String(data: b64Data, encoding:String.Encoding.utf8) {
                 return cryptedString
             } else {
                 throw CryptoError.codingError(message: "Invalid crypted data (not UTF8)")
@@ -75,14 +111,21 @@ import Foundation
      */
     open func decryptString(_ string: String) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
-            let decrypted=try decryptData(data)
-            if let decryptedString=String(data: decrypted, encoding:String.Encoding.utf8) {
-                return decryptedString
+            if let b64Data=Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
+                let decrypted=try decryptData(b64Data)
+                if let decryptedString=String(data: decrypted, encoding:String.Encoding.utf8) {
+                    return decryptedString
+                }else{
+                     throw CryptoError.codingError(message: "utf8 decoding error (decrypted string)")
+                }
             }
+            throw CryptoError.decryptBase64Failure
         }
-        throw CryptoError.decryptBase64Failure
-
+        throw CryptoError.codingError(message: "utf8 decoding error")
     }
+
+
+    // MARK: - Raw Data encryption
 
     /**
      Encrypt a data buffer
@@ -94,12 +137,7 @@ import Foundation
      - returns: An encrypted buffer
      */
     open func encryptData(_ data: Data) throws ->Data {
-        let crypted=try self._encryptOperation(CCOperation(kCCEncrypt), on: data)
-        // (!) IMPORTANT
-        // the crypted data may produces invalid UTF8 data producing nil Strings
-        // We need to base64 encode any NSData.
-        let b64Data=crypted.base64EncodedData(options: .endLineWithCarriageReturn)
-        return b64Data
+        return try self._proceedTo(CCOperation(kCCEncrypt), on: data)
     }
 
     /**
@@ -112,16 +150,44 @@ import Foundation
      - returns: A decrypted buffer
      */
     open func decryptData(_ data: Data) throws ->Data {
-        if let b64Data=Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
-            return try self._encryptOperation(CCOperation(kCCDecrypt), on:b64Data)
-        }
-        throw CryptoError.decryptBase64Failure
+        return try self._proceedTo(CCOperation(kCCDecrypt), on:data)
     }
 
 
-    // MARK: Crypt operation
+    // MARK: - String encryption without reencoding
 
-    fileprivate func _encryptOperation(_ operation: CCOperation, on data: Data) throws ->Data {
+    // (the crypted data is not a valid String but this approach is faster)
+
+    public func encryptStringToData(_ string:String)throws->Data{
+        if let data=string.data(using: .utf8){
+            return try encryptData(data)
+        }else{
+            throw CryptoError.codingError(message: "UTF8 encoding issue")
+        }
+    }
+
+    
+    public func decryptStringFromData(_ data:Data)throws->String{
+        let decrypted = try decryptData(data)
+        if let string = String(data: decrypted, encoding:.utf8){
+            return string
+        }else{
+            throw CryptoError.codingError(message: "UTF8 decoding issue")
+        }
+    }
+
+    // MARK: - Hash
+
+    open static func hashString(_ string: String) -> String {
+        return string.md5
+    }
+
+
+
+    // MARK: - Crypt operation
+
+
+    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data) throws ->Data {
         if let d=self.key.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
@@ -130,6 +196,14 @@ import Foundation
         }
     }
 
+    /// The implementation of the CRYPTO Op
+    ///
+    /// - Parameters:
+    ///   - data: the data
+    ///   - keyData: the key transformed to Data
+    ///   - operation: the operation
+    /// - Returns: the encrypted or decrypted data.
+    /// - Throws: CryptoError
     fileprivate func _cryptOperation(_ data: Data, keyData: Data, operation: CCOperation) throws -> Data {
         let keyBytes = (keyData as NSData).bytes.bindMemory(to: UInt8.self, capacity: keyData.count)
         let dataLength = Int(data.count)
@@ -161,17 +235,5 @@ import Foundation
     }
 
 
-
-    open static func hashString(_ string: String) -> String {
-        var digest = [UInt8](repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
-        if let data = string.data(using: Default.STRING_ENCODING) {
-            CC_MD5((data as NSData).bytes, CC_LONG(data.count), &digest)
-        }
-        var digestHex = ""
-        for index in 0..<Int(CC_MD5_DIGEST_LENGTH) {
-            digestHex += String(format: "%02x", digest[index])
-        }
-        return digestHex
-    }
 }
 

@@ -480,8 +480,10 @@ import Foundation
 
                             // We use multiple files
 
-                            var collectionData = collection.serialize()
-                            collectionData = try Bartleby.cryptoDelegate.encryptData(collectionData)
+                            // Use the faster possible approach.
+                            // The resulting data is not a valid String check CryptoDelegate for details.
+                            let collectionString = collection.serializeToUFf8String()
+                            let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString)
 
                             // Remove the previous data
                             if let wrapper=fileWrappers[collectionfileName] {
@@ -495,7 +497,7 @@ import Foundation
                             // NO COLLECTION
                         }
                     } else {
-                        // SQLITE
+                        // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                     }
 
                 }
@@ -559,7 +561,10 @@ import Foundation
                                     if let ext=path.components(separatedBy: ".").last {
                                         let pathExtension="."+ext
                                         if  pathExtension == BartlebyDocument.DATA_EXTENSION {
-                                            collectionData = try Bartleby.cryptoDelegate.decryptData(collectionData)
+                                            // Use the faster possible approach.
+                                            // The resulting data is not a valid String check CryptoDelegate for details.
+                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData)
+                                            collectionData = collectionString.data(using:.utf8) ?? Data()
                                         }
                                     }
                                   let _ = try proxy.updateData(collectionData,provisionChanges: false)
@@ -572,7 +577,7 @@ import Foundation
                         // ERROR
                     }
                 } else {
-                    // SQLite
+                    // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                 }
             }
             do {
@@ -588,6 +593,7 @@ import Foundation
     }
 
 #else
+
 
     // MARK: iOS UIDocument serialization / deserialization
 

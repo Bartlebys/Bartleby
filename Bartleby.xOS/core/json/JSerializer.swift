@@ -14,40 +14,35 @@ import Foundation
 
 open class JSerializer: Serializer {
 
-    open static var autoDecrypt=false
-
-
     /// The standard singleton shared instance
     open static let sharedInstance: JSerializer = {
         let instance = JSerializer()
         return instance
     }()
 
-    public init() {
-    }
+    public init() {}
 
-    /**
-     Deserializes from NSData
+    open static var autoDecrypt=false
 
-     - parameter data: the binary data
+    // MARK: - Deserialization
 
-     - returns: the deserialized instance
-     */
+    /// Deserializes a fully typed object
+    ///
+    /// - Parameter data:  data
+    /// - Returns: the serizalizable Object
+    /// - Throws: ...
     static open func deserialize(_ data: Data) throws -> Serializable {
         return try JSerializer._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
     }
 
 
-    /**
-     The concrete deserialization logic with auto decrypt logic.
-
-     - parameter data:        the data
-     - parameter autoDecrypt: should we try to autodecrypt ?
-
-     - throws: SerializableError and CryptoError
-
-     - returns: the serializable instance
-     */
+    ///  The concrete deserialization logic with auto decrypt logic.
+    ///
+    /// - Parameters:
+    ///   - data: the data
+    ///   - autoDecrypt: should we try to autodecrypt ?
+    /// - Returns: the Serializable instance
+    /// - Throws: SerializableError and CryptoError
     static fileprivate func _deserializeFromData(_ data: Data,autoDecrypt:Bool) throws -> Serializable{
         do {
             if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
@@ -64,14 +59,24 @@ open class JSerializer: Serializer {
         }
     }
 
+    /// Deserializes from an UTF8 string
+    ///
+    /// - Parameter dictionary: the dictionary
+    /// - Returns: the serializable instance
+    /// - Throws: SerializableError and CryptoError
+    open static func deserializeFromUTF8String(_ string: String) throws -> Serializable {
+        if let data=string.data(using: .utf8){
+            return try self._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
+        }
+        throw SerializableError.invalidUTF8String
+    }
 
-    /**
-     Deserializes from NSData
 
-     - parameter dictionary: the dictionnary
-
-     - returns: an instance
-     */
+    /// Deserializes from a dictionary
+    ///
+    /// - Parameter dictionary: the dictionary
+    /// - Returns: the serializable instance
+    /// - Throws:  SerializableError and CryptoError JSON errors
     static open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
         if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             typeName = BartlebyDocument.resolveTypeName(from: typeName)
@@ -95,31 +100,27 @@ open class JSerializer: Serializer {
         }
     }
 
+    // MARK: - Serialization
 
-
-    /**
-     Creates a separate instance in memory that is not registred.
-     (!) advanced feature. The copied instance is reputed volatile and will not be managed by Bartleby's registries.
-
-     - parameter instance: the original
-
-     - returns: a volatile deep copy.
-     */
-    static open func volatileDeepCopy<T: Collectible>(_ instance: T) throws -> T? {
-        let data: Data=JSerializer.serialize(instance)
-        return try JSerializer.deserialize(data) as? T
-    }
-
-
+    ///  Serializes an instance
+    ///
+    /// - Parameter instance: the Serializable instance
+    /// - Returns: the data
     static open func serialize(_ instance: Serializable) -> Data {
         return instance.serialize() as Data
     }
 
 
-    open static var fileExtension: String {
-        get {
-            return "json"
-        }
+    /// Serializes the current instance to an UTF8 String
+    ///
+    /// - Parameter instance: the serializable instance
+    /// - Returns: the UTF8 string
+    public static func serializeToUTF8String(_ instance: Serializable) -> String{
+        return instance.serializeToUFf8String()
     }
+
+
+    /// The file extension for file based serializers.
+    open static var fileExtension: String { return "json" }
 
 }

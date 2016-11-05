@@ -25,23 +25,4 @@ class BaseObjectTests: XCTestCase {
         }
     }
 
-    func test_002Cloning_via_jserializer() {
-        let user=User()
-        user.email="bartleby@barltebys.org"
-        user.creatorUID=user.UID
-        user.verificationMethod=User.VerificationMethod.byEmail
-        // Test NSCopying on BaseObject
-        do {
-            if let copiedUser = try JSerializer.volatileDeepCopy(user) {
-                XCTAssert(user.email == copiedUser.email, "users should be equivalent")
-                XCTAssertFalse(user === copiedUser, "users should be distinct instances")
-            } else {
-                XCTFail("Failure on copy")
-            }
-
-        } catch {
-            XCTFail("\(error)")
-        }
-    }
-
 }

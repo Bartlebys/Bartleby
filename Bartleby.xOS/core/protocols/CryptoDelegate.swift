@@ -8,15 +8,38 @@
 
 import Foundation
 
+
+/*
+
+ Note on Strings:
+
+ **IMPORTANT!**
+ Don't use EncryptData, DecryptData on Utf8 strings.
+
+ Always Use symetric calls :
+
+ - 'encryptString' / 'decryptString' if you need for example to copy and paste the sample
+ - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
+
+ */
 @objc public protocol CryptoDelegate {
 
-    // TODO: @md #crypto Remove throw for encryption
+    // Those function are work by pairs.
+    // Do not combinate.
+
+    // MARK: - Encryption + Base64 encoding / decoding
     func encryptString(_ string: String)throws->String
     func decryptString(_ string: String)throws->String
 
+    // MARK: - Raw Data encryption
     func encryptData(_ data: Data)throws ->Data
     func decryptData(_ data: Data)throws ->Data
 
+     // MARK: - String encryption without reencoding (the crypted data is not a valid String but this approach is faster)
+    func encryptStringToData(_ string:String)throws->Data
+    func decryptStringFromData(_ data:Data)throws->String
+
+    // MARK: -
     static func hashString(_ string: String) -> String
 
 }

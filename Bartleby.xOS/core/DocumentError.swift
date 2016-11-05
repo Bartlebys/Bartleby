@@ -33,4 +33,5 @@ public enum DocumentError: Error {
     case attemptToSetUpRootObjectUIDMoreThanOnce
     case unSupportedFileType(typeName:String)
     case undefined
+    case utf8EncodingError
 }

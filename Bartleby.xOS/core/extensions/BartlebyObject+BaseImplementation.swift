@@ -30,7 +30,6 @@ import Foundation
 
 */
 
-
 // MARK: - Equatable
 
 public func ==(lhs: BartlebyObject, rhs: BartlebyObject) -> Bool {
@@ -251,6 +250,13 @@ extension BartlebyObject{
     }
 
 
+    /// Serialize the current object to an UTF8 string
+    ///
+    /// - Returns: return an UTF8 string
+    open func serializeToUFf8String()->String{
+        return self.toJSONString(false)
+    }
+
     open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
         if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
             let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
@@ -260,19 +266,6 @@ extension BartlebyObject{
             }
         }
         return self
-    }
-
-    // MARK: -
-
-    open func dictionaryRepresentation()->[String:Any] {
-        self.defineUID()
-        return Mapper().toJSON(self)
-    }
-
-    open func patchFrom(_ dictionaryRepresentation:[String:Any]){
-        let mapped=Map(mappingType: .fromJSON, JSON: dictionaryRepresentation)
-        self.mapping(map: mapped)
-        self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
     }
 
 
@@ -293,9 +286,21 @@ extension BartlebyObject{
 }
 
 
+// MARK: - DictionaryRepresentation
+
+extension BartlebyObject {
+
+    open func dictionaryRepresentation()->[String:Any] {
+        self.defineUID()
+        return Mapper().toJSON(self)
+    }
+
+
+}
+
 extension BartlebyObject{
 
-    // MARK: JSONString
+    // MARK:-  JSONString
 
     open func toJSONString(_ prettyPrint:Bool)->String{
         if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
@@ -304,7 +309,6 @@ extension BartlebyObject{
             return "{}"
         }
     }
-
 
     // MARK: - CustomStringConvertible
 

@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
 
     var md5: String {
         return HMAC.digestString(self, algo: HMACAlgorythms.MD5)

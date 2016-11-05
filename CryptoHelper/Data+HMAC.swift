@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension Data {
+public extension Data {
 
     var md5: String {
         return HMAC.digestData(self, algo: HMACAlgorythms.MD5)
