@@ -33,20 +33,20 @@ import Foundation
 	//Extracted from the node - to allow pre-downloading during node upload (if set to ["*"] the block is reputed public)
 	dynamic open var authorized:[String] = [String]()
 
-	//The Nodes' Holders UIDS
-	dynamic open var holders:[String] = [String]()  {
+	//The UID of the holding node
+	dynamic open var nodeUID:String? {
 	    didSet { 
-	       if holders != oldValue {
-	            self.provisionChanges(forKey: "holders",oldValue: oldValue,newValue: holders)  
+	       if nodeUID != oldValue {
+	            self.provisionChanges(forKey: "nodeUID",oldValue: oldValue,newValue: nodeUID) 
 	       } 
 	    }
 	}
 
 	//The starting address of the block in each Holding Node (== the position of the block in the file)
-	dynamic open var addresses:[Int] = [Int]()  {
+	dynamic open var address:Int = 0  {
 	    didSet { 
-	       if addresses != oldValue {
-	            self.provisionChanges(forKey: "addresses",oldValue: oldValue,newValue: addresses)  
+	       if address != oldValue {
+	            self.provisionChanges(forKey: "address",oldValue: oldValue,newValue: address)  
 	       } 
 	    }
 	}
@@ -56,6 +56,15 @@ import Foundation
 	    didSet { 
 	       if size != oldValue {
 	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size)  
+	       } 
+	    }
+	}
+
+	//The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
+	dynamic open var priority:Int = 0  {
+	    didSet { 
+	       if priority != oldValue {
+	            self.provisionChanges(forKey: "priority",oldValue: oldValue,newValue: priority)  
 	       } 
 	    }
 	}
@@ -83,7 +92,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","authorized","holders","addresses","size","zipped","crypted"])
+        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","zipped","crypted"])
         return exposed
     }
 
@@ -104,17 +113,21 @@ import Foundation
                 if let casted=value as? [String]{
                     self.authorized=casted
                 }
-            case "holders":
-                if let casted=value as? [String]{
-                    self.holders=casted
+            case "nodeUID":
+                if let casted=value as? String{
+                    self.nodeUID=casted
                 }
-            case "addresses":
-                if let casted=value as? [Int]{
-                    self.addresses=casted
+            case "address":
+                if let casted=value as? Int{
+                    self.address=casted
                 }
             case "size":
                 if let casted=value as? Int{
                     self.size=casted
+                }
+            case "priority":
+                if let casted=value as? Int{
+                    self.priority=casted
                 }
             case "zipped":
                 if let casted=value as? Bool{
@@ -143,12 +156,14 @@ import Foundation
                return self.digest
             case "authorized":
                return self.authorized
-            case "holders":
-               return self.holders
-            case "addresses":
-               return self.addresses
+            case "nodeUID":
+               return self.nodeUID
+            case "address":
+               return self.address
             case "size":
                return self.size
+            case "priority":
+               return self.priority
             case "zipped":
                return self.zipped
             case "crypted":
@@ -168,9 +183,10 @@ import Foundation
         self.silentGroupedChanges {
 			self.digest <- ( map["digest"] )
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
-			self.holders <- ( map["holders"] )// @todo marked generatively as Cryptable Should be crypted!
-			self.addresses <- ( map["addresses"] )// @todo marked generatively as Cryptable Should be crypted!
+			self.nodeUID <- ( map["nodeUID"] )
+			self.address <- ( map["address"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
+			self.priority <- ( map["priority"] )
 			self.zipped <- ( map["zipped"] )
 			self.crypted <- ( map["crypted"] )
         }
@@ -184,9 +200,10 @@ import Foundation
         self.silentGroupedChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey:"digest") as NSString?)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
-			self.holders=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "holders")! as! [String]
-			self.addresses=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "addresses")! as! [Int]
+			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"nodeUID") as NSString?)
+			self.address=decoder.decodeInteger(forKey:"address") 
 			self.size=decoder.decodeInteger(forKey:"size") 
+			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.zipped=decoder.decodeBool(forKey:"zipped") 
 			self.crypted=decoder.decodeBool(forKey:"crypted") 
         }
@@ -198,9 +215,12 @@ import Foundation
 			coder.encode(digest,forKey:"digest")
 		}
 		coder.encode(self.authorized,forKey:"authorized")
-		coder.encode(self.holders,forKey:"holders")
-		coder.encode(self.addresses,forKey:"addresses")
+		if let nodeUID = self.nodeUID {
+			coder.encode(nodeUID,forKey:"nodeUID")
+		}
+		coder.encode(self.address,forKey:"address")
 		coder.encode(self.size,forKey:"size")
+		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.zipped,forKey:"zipped")
 		coder.encode(self.crypted,forKey:"crypted")
     }

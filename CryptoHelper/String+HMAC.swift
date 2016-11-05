@@ -33,4 +33,5 @@ extension String {
     var sha512: String {
         return HMAC.digestString(self, algo: HMACAlgorythms.SHA512)
     }
+
 }

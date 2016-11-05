@@ -27,10 +27,8 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 # BSFS Models 
 
-+ Box - Refers The root folder node that contains all the nodes
-+ Node - Refers to A file , a folder or an Alias, and stores pointers to its Blocks
++ Node - Refers to A file , a folder or an Alias, and stores startAddress and length of its Blocks
 + Block - The model that reference a block file (the raw bytes chunks)
-+ Transaction - A serialized BSFS operation with a comment
 
 
 # Block Raw files 
@@ -56,7 +54,6 @@ Would be in <container>/blocks/N/K/J
 
 ## Generative
 
-+ CRUD Box(es)
 + CRUD Node(s)
 + CRUD Block(s)
 
@@ -76,49 +73,16 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 
 ## Managed Collections reflects the distant state in real time
 
-- document.boxes
 - document.nodes
 - document.blocks
 
 ## Metadata contains the local state
 
- 
-- document.metadata.localBoxes
 - document.metadata.localNodes
 - document.metadata.localBlocks
 
 ----
 # Details on Models
-
-# Box
-
-The box is the root of a synchronized folder it is a special Node
-
-- You can locate synchronized Box node anywhere. It will create a ".bsfs" folder at its root.
-- Boxes cannot be located in a Box.
-
-```json
-{
-  "name": "Box",
-  "definition": {
-    "explicitType":"Node",
-    "description": "Bartleby's Synchronized File System: the root of a synchronized folder (special Node)",
-    "properties": {
-      "serverURL": {
-        "type": "URL",
-        "description": "The server URL",
-        "supervisable": true
-      }
-    },
-    "metadata": {
-      "urdMode": false,
-      "persistsLocallyOnlyInMemory": false,
-      "persistsDistantly": true,
-      "undoable": false
-    }
-  }
-}
-```
 
 ## Node
 

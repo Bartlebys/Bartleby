@@ -137,8 +137,8 @@ import Foundation
         let outData: NSMutableData! = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
         let cryptPointer = UnsafeMutableRawPointer(outData.mutableBytes)
         let cryptLength  = size_t(outData.length)
-        let keyLength              = size_t(kCCKeySizeAES128)
-        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES128)
+        let keyLength              = size_t(kCCKeySizeAES256)
+        let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
         let ivBuffer = (initializationVector! as NSData).bytes.bindMemory(to: Void.self, capacity: initializationVector!.count)
         var numBytesProcessed: size_t = 0
         let cryptStatus = CCCrypt(operation,
@@ -159,6 +159,7 @@ import Foundation
             throw CryptoError.errorWithStatusCode(cryptStatus: Int(cryptStatus))
         }
     }
+
 
 
     open static func hashString(_ string: String) -> String {

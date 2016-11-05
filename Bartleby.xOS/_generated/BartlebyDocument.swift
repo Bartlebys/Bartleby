@@ -402,13 +402,12 @@ import Foundation
         // If necessary we can wait
         proceed()
     }
-
-
+                    
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    public func assemblyIsReady(node:Node,proceed:()->()){
+    public func deletionIsReady(node:Node,proceed:()->()){
         // If necessary we can wait
         proceed()
     }
@@ -417,8 +416,7 @@ import Foundation
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    public func deletionIsReady(node:Node,proceed:()->()){
-        // If necessary we can wait
+    public func blocksAreReady(node: Node, proceed: () -> ()) {
         proceed()
     }
 
@@ -681,12 +679,6 @@ import Foundation
 		}
 	}
 	
-	open dynamic var boxes=BoxesManagedCollection(){
-		willSet{
-			boxes.document=self
-		}
-	}
-	
 	open dynamic var lockers=LockersManagedCollection(){
 		willSet{
 			lockers.document=self
@@ -734,24 +726,6 @@ import Foundation
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 self.blocksArrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
-        }
-    }
-        
-    open var boxesArrayController: NSArrayController?{
-        willSet{
-            // Remove observer on previous array Controller
-            boxesArrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-        }
-        didSet{
-            // Setup the Array Controller in the ManagedCollection
-            self.boxes.arrayController=boxesArrayController
-            // Add observer
-            boxesArrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.metadata.stateDictionary[BartlebyDocument.kSelectedBoxesIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                self.boxesArrayController?.setSelectionIndexes(indexesSet as IndexSet)
              }
         }
     }
@@ -852,23 +826,6 @@ import Foundation
         
         
     
-    static open let kSelectedBoxesIndexesKey="selectedBoxesIndexesKey"
-    static open let BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION="BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION"
-    dynamic open var selectedBoxes:[Box]?{
-        didSet{
-            if let boxes = selectedBoxes {
-                 let indexes:[Int]=boxes.map({ (box) -> Int in
-                    return self.boxes.index(where:{ return $0.UID == box.UID })!
-                })
-                self.metadata.stateDictionary[BartlebyDocument.kSelectedBoxesIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name(rawValue:BartlebyDocument.BOXES_SELECTED_INDEXES_CHANGED_NOTIFICATION), object: nil)
-            }
-        }
-    }
-    var firstSelectedBox:Box? { return self.selectedBoxes?.first }
-        
-        
-    
     static open let kSelectedLockersIndexesKey="selectedLockersIndexesKey"
     static open let LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION="LOCKERS_SELECTED_INDEXES_CHANGED_NOTIFICATION"
     dynamic open var selectedLockers:[Locker]?{
@@ -957,14 +914,6 @@ import Foundation
         blockDefinition.persistsDistantly = true
         blockDefinition.inMemory = false
         
-        let boxDefinition = CollectionMetadatum()
-        boxDefinition.proxy = self.boxes
-        // By default we group the observation via the rootObjectUID
-        boxDefinition.collectionName = Box.collectionName
-        boxDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        boxDefinition.persistsDistantly = true
-        boxDefinition.inMemory = false
-        
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
         // By default we group the observation via the rootObjectUID
@@ -1002,7 +951,6 @@ import Foundation
         do{
 
 			try self.metadata.configureSchema(blockDefinition)
-			try self.metadata.configureSchema(boxDefinition)
 			try self.metadata.configureSchema(lockerDefinition)
 			try self.metadata.configureSchema(nodeDefinition)
 			try self.metadata.configureSchema(pushOperationDefinition)
@@ -1047,19 +995,6 @@ import Foundation
                         }
                      }
                     self.selectedBlocks=blocks
-                }
-                return
-            }
-            
-            
-            if keyPath=="selectionIndexes" && self.boxesArrayController == object as? NSArrayController {
-                if let boxes = self.boxesArrayController?.selectedObjects as? [Box] {
-                     if let selectedBox = self.selectedBoxes{
-                        if selectedBox == boxes{
-                            return // No changes
-                        }
-                     }
-                    self.selectedBoxes=boxes
                 }
                 return
             }
@@ -1130,15 +1065,6 @@ import Foundation
         }
     }
         
-    open func deleteSelectedBoxes() {
-        // you should override this method if you want to cascade the deletion(s)
-        if let selected=self.selectedBoxes{
-            for item in selected{
-                 self.boxes.removeObject(item, commit:true)
-            }
-        }
-    }
-        
     open func deleteSelectedLockers() {
         // you should override this method if you want to cascade the deletion(s)
         if let selected=self.selectedLockers{
@@ -1196,23 +1122,6 @@ import Foundation
         }
         block.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
         return  block
-    }
-
-    /**
-     * Creates a new Box
-     * you can override this method to customize the properties
-     */
-    open func newBox() -> Box {
-        let box=Box()
-        box.silentGroupedChanges {
-            if let creator=self.metadata.currentUser {
-                box.creatorUID = creator.UID
-            }
-            // Become managed
-            self.boxes.add(box, commit:false)
-        }
-        box.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
-        return  box
     }
 
     /**

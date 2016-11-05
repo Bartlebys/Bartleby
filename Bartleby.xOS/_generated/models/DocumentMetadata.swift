@@ -49,9 +49,6 @@ import Foundation
 	//A collection of CollectionMetadatum
 	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
-	//BSFS: A collection of local Boxes (document.boxes reflect the distant state)
-	dynamic open var localBoxes:[Box] = [Box]()
-
 	//BSFS: A collection of local Nodes (document.nodes reflect the distant state)
 	dynamic open var localNodes:[Node] = [Node]()
 
@@ -158,7 +155,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","localBoxes","localNodes","localBlocks","nodesInProgress","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","localNodes","localBlocks","nodesInProgress","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -202,10 +199,6 @@ import Foundation
             case "collectionsMetadata":
                 if let casted=value as? [CollectionMetadatum]{
                     self.collectionsMetadata=casted
-                }
-            case "localBoxes":
-                if let casted=value as? [Box]{
-                    self.localBoxes=casted
                 }
             case "localNodes":
                 if let casted=value as? [Node]{
@@ -326,8 +319,6 @@ import Foundation
                return self.changesAreInspectables
             case "collectionsMetadata":
                return self.collectionsMetadata
-            case "localBoxes":
-               return self.localBoxes
             case "localNodes":
                return self.localNodes
             case "localBlocks":
@@ -392,7 +383,6 @@ import Foundation
 			self.rootObjectUID <- ( map["rootObjectUID"] )
 			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 			self.collectionsMetadata <- ( map["collectionsMetadata"] )
-			self.localBoxes <- ( map["localBoxes"] )
 			self.localNodes <- ( map["localNodes"] )
 			self.localBlocks <- ( map["localBlocks"] )
 			self.nodesInProgress <- ( map["nodesInProgress"] )
@@ -427,7 +417,6 @@ import Foundation
 			self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 			self.collectionsMetadata=decoder.decodeObject(of: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-			self.localBoxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "localBoxes")! as! [Box]
 			self.localNodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "localNodes")! as! [Node]
 			self.localBlocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "localBlocks")! as! [Block]
 			self.nodesInProgress=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "nodesInProgress")! as! [Node]
@@ -464,7 +453,6 @@ import Foundation
 			coder.encode(collaborationServerURL,forKey:"collaborationServerURL")
 		}
 		coder.encode(self.collectionsMetadata,forKey:"collectionsMetadata")
-		coder.encode(self.localBoxes,forKey:"localBoxes")
 		coder.encode(self.localNodes,forKey:"localNodes")
 		coder.encode(self.localBlocks,forKey:"localBlocks")
 		coder.encode(self.nodesInProgress,forKey:"nodesInProgress")

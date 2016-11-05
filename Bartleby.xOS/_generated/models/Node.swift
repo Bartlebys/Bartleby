@@ -30,15 +30,6 @@ import Foundation
 	    }
 	}
 
-	//The UID of the Box
-	dynamic open var boxUID:String? {
-	    didSet { 
-	       if boxUID != oldValue {
-	            self.provisionChanges(forKey: "boxUID",oldValue: oldValue,newValue: boxUID) 
-	       } 
-	    }
-	}
-
 	//The boxed relative path
 	dynamic open var relativePath:String? {
 	    didSet { 
@@ -47,6 +38,9 @@ import Foundation
 	       } 
 	    }
 	}
+
+	//A relative path for a proxy file.
+	dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)
 	dynamic open var blocksMaxSize:Int = Int.max  {
@@ -57,7 +51,16 @@ import Foundation
 	    }
 	}
 
-	//The ordered list of the Block UIDS
+	//The priority level of the node (is applicated to its block)
+	dynamic open var priority:Int = 0  {
+	    didSet { 
+	       if priority != oldValue {
+	            self.provisionChanges(forKey: "priority",oldValue: oldValue,newValue: priority)  
+	       } 
+	    }
+	}
+
+	//An ordered list of the Block UIDS
 	dynamic open var blocksUIDS:[String] = [String]()
 
 	//The list of the authorized User.UID,(if set to ["*"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload
@@ -118,7 +121,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","boxUID","relativePath","blocksMaxSize","blocksUIDS","authorized","nature","size","referentNodeUID","zippedBlocks","cryptedBlocks"])
+        exposed.append(contentsOf:["externalID","relativePath","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","zippedBlocks","cryptedBlocks"])
         return exposed
     }
 
@@ -135,17 +138,21 @@ import Foundation
                 if let casted=value as? String{
                     self.externalID=casted
                 }
-            case "boxUID":
-                if let casted=value as? String{
-                    self.boxUID=casted
-                }
             case "relativePath":
                 if let casted=value as? String{
                     self.relativePath=casted
                 }
+            case "proxyPath":
+                if let casted=value as? String{
+                    self.proxyPath=casted
+                }
             case "blocksMaxSize":
                 if let casted=value as? Int{
                     self.blocksMaxSize=casted
+                }
+            case "priority":
+                if let casted=value as? Int{
+                    self.priority=casted
                 }
             case "blocksUIDS":
                 if let casted=value as? [String]{
@@ -192,12 +199,14 @@ import Foundation
         switch key {
             case "externalID":
                return self.externalID
-            case "boxUID":
-               return self.boxUID
             case "relativePath":
                return self.relativePath
+            case "proxyPath":
+               return self.proxyPath
             case "blocksMaxSize":
                return self.blocksMaxSize
+            case "priority":
+               return self.priority
             case "blocksUIDS":
                return self.blocksUIDS
             case "authorized":
@@ -226,9 +235,10 @@ import Foundation
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self.externalID <- ( map["externalID"] )
-			self.boxUID <- ( map["boxUID"] )
 			self.relativePath <- ( map["relativePath"] )
+			self.proxyPath <- ( map["proxyPath"] )
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
+			self.priority <- ( map["priority"] )
 			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.nature <- ( map["nature"] )
@@ -246,9 +256,10 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
-			self.boxUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"boxUID") as NSString?)
 			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"relativePath") as NSString?)
+			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
+			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
@@ -264,13 +275,14 @@ import Foundation
 		if let externalID = self.externalID {
 			coder.encode(externalID,forKey:"externalID")
 		}
-		if let boxUID = self.boxUID {
-			coder.encode(boxUID,forKey:"boxUID")
-		}
 		if let relativePath = self.relativePath {
 			coder.encode(relativePath,forKey:"relativePath")
 		}
+		if let proxyPath = self.proxyPath {
+			coder.encode(proxyPath,forKey:"proxyPath")
+		}
 		coder.encode(self.blocksMaxSize,forKey:"blocksMaxSize")
+		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
 		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.nature.rawValue ,forKey:"nature")

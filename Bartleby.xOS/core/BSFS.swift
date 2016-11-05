@@ -8,8 +8,7 @@
 import Foundation
 
 enum BSFSError:Error{
-    case boxIsInBox(existingBox:URL)
-    case boxDelegateIsNotAvailable(message:String)
+    case boxDelegateIsNotAvailable
 }
 
 
@@ -20,6 +19,27 @@ public extension Node{
 }
 
 
+// Should be implemented by anything that want to acceed to a node.
+public protocol NodeAccessor{
+
+    /// Called when
+    /// - the current node assembled file will become unusable (for example on external update)
+    /// - the file will be deleted
+    ///
+    /// - Parameter node: the node
+    func willBecomeUnusable(node:Node)
+
+
+    /// Called after an `askForAccess` demand  when
+    /// - the current node rendered file becomes available (all the block are available, and the file has been assembled)
+    ///
+    /// - Parameter node: the node
+    func nodeIsUsable(node:Node)
+
+}
+
+
+// Box Delegation is related to synchronization.
 public protocol BoxDelegate{
 
 
@@ -41,13 +61,16 @@ public protocol BoxDelegate{
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func assemblyIsReady(node:Node,proceed:()->())
+    func deletionIsReady(node:Node,proceed:()->())
+
+
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func deletionIsReady(node:Node,proceed:()->())
+    func blocksAreReady(node:Node,proceed:()->())
+
 
 }
 
@@ -62,26 +85,63 @@ public class BSFS:TriggerHook{
     fileprivate var _fileManager: BartlebyFileIO { return Bartleby.fileManager }
 
     // The Boxes Delegate registry.
-    fileprivate var _boxesDelegates = [String:BoxDelegate]()
+    fileprivate var _boxDelegate:BoxDelegate?
+
+    // The current accessed nodes
+    fileprivate var _accessedNodes:[Node] = [Node]()
+
+    // And their accessors
+    fileprivate var _accessors=[String:[NodeAccessor]]()
 
 
+    /// Each document has it own BSFS
+    ///
+    /// - Parameter document: the document instance
     required public init(in document:BartlebyDocument){
         self._document=document
     }
 
-    //MARK:  - Box
 
-    /// Intitializes a box if possible.
-    ///
-    /// #1 Check if there is a box in the top of this path
-    /// #2 create the document block folder + content
-    /// #3 deals with the collaborative server (Auth is a prerequisite)
-    ///
-    /// - Parameter path: path description
-    /// - Throws: Exception on failures
-    public func initializeBox(box:Box)throws->(){
+    //MARK:  - File API
+
+    public func provisionAccess(to nodes:[Node],onCompletion:@escaping CompletionHandler){
 
     }
+
+    public func askForAccess(to node:Node,by accessor:NodeAccessor){
+        // The nodeIsUsable() will be called when the file will be usable.
+    }
+
+
+
+    public func stopAccessingNode(node:Node,onCompletion:@escaping CompletionHandler){
+        if let idx=self._accessedNodes.index(of: node){
+            self._accessedNodes.remove(at: idx)
+        }
+        // TODO "unmount" node
+    }
+
+
+    public func releaseAccessOnAllNodes()->Bool{
+        // Wait synchronously.
+        for node in self._accessedNodes {
+            self.stopAccessingNode(node: node, onCompletion: VoidCompletionHandler)
+        }
+        return true
+    }
+
+    //MARK:  -
+
+    fileprivate func _startAccessing(to node:Node,mounted:@escaping(String)->()){
+        if !self._accessedNodes.contains(node) {
+            self._accessedNodes.append(node)
+        }
+        // TODO "Mount" node
+    }
+
+
+    //MARK:  - Boxed API
+
 
     /// Adds a file into the box (copies if necessary the file into the box)
     ///
@@ -90,8 +150,12 @@ public class BSFS:TriggerHook{
     ///   - relativePath: the relative Path of the Node
     ///   - authorized: the User UIDS or "*" if public
     ///   - deleteOriginal: should we delete the original?
-    ///   - handler: the completion handler
-    public func add(original absolutePath:String, relativePath:String, authorized:[String]?, deleteOriginal:Bool,handler: @escaping CompletionHandler)->(){
+    ///   - zipped: should we zip the node
+    ///   - crypted: should we encrypt the node
+    ///   - priority: synchronization priority (higher == will be synchronized before the other nodes)
+    /// - Returns: the node
+    public func add(original absolutePath:String, relativePath:String,authorized:[String],deleteOriginal:Bool=false,zipped:Bool=false,crypted:Bool=true,priority:Int=0)throws->Node{
+        return Node()
     }
 
 
@@ -104,14 +168,12 @@ public class BSFS:TriggerHook{
     ///   - destinationPath: the relative path
     ///   - handler: the completion hanlder
     public func copy(node:Node,to destinationPath:String)->(){
-        do {
-            let delegate = try self._getBoxDelegateFor(node: node)
-            delegate?.copyIsReady(node: node, to: destinationPath, proceed: {
-                // TODO implement
-            })
-        } catch{
-            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-        }
+
+
+        _boxDelegate?.copyIsReady(node: node, to: destinationPath, proceed: {
+            // TODO implement
+        })
+
     }
 
 
@@ -124,14 +186,9 @@ public class BSFS:TriggerHook{
     ///   - destinationPath: the relative path
     ///   - handler: the completion hanlder
     public func move(node:Node,to destinationPath:String)->(){
-        do {
-            let delegate = try self._getBoxDelegateFor(node: node)
-            delegate?.moveIsReady(node: node, to: destinationPath, proceed: {
-                // TODO implement
-            })
-        } catch{
-            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-        }
+        _boxDelegate?.moveIsReady(node: node, to: destinationPath, proceed: {
+            // TODO implement
+        })
 
     }
 
@@ -144,14 +201,11 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     ///   - handler: the completion Handler
     public func delete(node:Node)->(){
-        do {
-            let delegate = try self._getBoxDelegateFor(node: node)
-            delegate?.deletionIsReady(node: node, proceed: {
-                /// TODO implement the deletion
-            })
-        } catch{
-            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-        }
+
+        _boxDelegate?.deletionIsReady(node: node, proceed: {
+            /// TODO implement the deletion
+        })
+
     }
 
     /// Create Folders
@@ -222,19 +276,23 @@ public class BSFS:TriggerHook{
     ///   - handler: the completion handler
     internal func _assemble(node:Node,handler: @escaping CompletionHandler){
         do {
-            let delegate = try self._getBoxDelegateFor(node: node)
-            delegate?.assemblyIsReady(node: node, proceed: {
-                /// TODO implement Assembly process
+            if let delegate = _boxDelegate{
+                delegate.blocksAreReady(node: node, proceed: {
+                    /// TODO implement Assembly process
 
-                /// END
-                if let idx=self._document.metadata.nodesInProgress.index(of: node){
-                    self._document.metadata.nodesInProgress.remove(at: idx)
-                }
-                let completion=Completion.successState()
-                completion.externalIdentifier=node.UID
-                handler(completion)
+                    /// END
+                    if let idx=self._document.metadata.nodesInProgress.index(of: node){
+                        self._document.metadata.nodesInProgress.remove(at: idx)
+                    }
+                    let completion=Completion.successState()
+                    completion.externalIdentifier=node.UID
+                    handler(completion)
 
-            })
+                })
+            }else{
+                throw BSFSError.boxDelegateIsNotAvailable
+            }
+
         } catch{
             handler(Completion.failureStateFromError(error))
         }
@@ -270,24 +328,12 @@ public class BSFS:TriggerHook{
             }
         }
     }
-
+    
     public func _allBlocksAreAvailableFor(node:Node)->Bool{
         // @TODO
         return true
     }
-
-
-    internal func _getBoxDelegateFor(node:Node)throws->BoxDelegate?{
-        if let boxUID=node.boxUID{
-            let _:Box=try Bartleby.registredObjectByUID(boxUID) as Box
-            if let delegate=self._boxesDelegates[boxUID]{
-                return delegate
-            }else{
-                throw BSFSError.boxDelegateIsNotAvailable(message: "Delegate for box <\(boxUID)> not found")
-            }
-        }else{
-            throw BSFSError.boxDelegateIsNotAvailable(message: "Box not found for <\(node.UID)>")
-        }
-    }
-
+    
+    
+    
 }
