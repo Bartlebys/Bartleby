@@ -67,7 +67,8 @@ struct Flocker{
     ///
     /// - Parameters:
     ///   - flockedFile: the flock
-    func unFlock(flockedFile:String){
+    ///   - relativePath: the folder path 
+    func unFlock(flockedFile:String,to folderPath:String?){
     }
 
 }

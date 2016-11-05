@@ -21,7 +21,7 @@ import Foundation
         return "Box"
     }
 
-	//The app container relative path
+	//The base path relative path (app container  or declarative)
 	dynamic open var relativePath:String? {
 	    didSet { 
 	       if relativePath != oldValue {
