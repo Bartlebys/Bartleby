@@ -2,30 +2,29 @@
 
 Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app.
 
-## KeyPoints:
+# KeyPoints:
 
-### BSFS is Fast
+## BSFS is Fast
 
 - Synchronization is automatic as soon as node is available it synchronization starts
 - When a file upload is in progress clients blocks downloads can start.
 - Copies and Moves are done in real time.
 - Repetitive blocks are reused (if you have multiple file with large shared part, they can share their blocks)
-- Blocks can be zipped if relevant (for exemple JSON file) 
+- Blocks are compressed using LZ4.
 
-### BSFS is Secured
+## BSFS is Secured
 
+- "blocks" on the servers are AES256 encrypted on the client side 	- Even if your server is Hacked your files are protected
 - BSFS supports Bartleby ACL + fine ACL additions (per UserUID) even when using a `.flk`
-- "blocks" on the servers are AES128/256 encrypted on the client side 	- Hacked server files are secure
-	- You can opt out 
+- Blocks are incorruptibles (consumers always use a read copy and do not write back the data) 
+ 
+## BSFS is Versatile
 
-### BSFS is Versatile
-
-- Blocks sizes can be adapted to context (you can apply different strategies for small pieces to large video files)
 - You can decide when to apply the local change (for example if you are playing a sound file of a synchronized playlist, the playlist file update may occur when you reach the end when the BSFS delegate validate the change)
+- You can synchronize ensemble of files embedding `Flocks`.
+- You can serialize a full Box to a  `.flk` file (equivalent to a DMG)
 
-
-
-# BSFS Models 
+# Models 
 
 + Node - Refers to A file , a folder or an Alias, and stores startAddress and length of its Blocks
 + Block - The model that reference a block file (the raw bytes chunks)
@@ -33,12 +32,12 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 # Block Raw files 
 
-The raw blocks (crypted or not) are stored in an App group container directory on the client, and on the server.
+The raw blocks are stored in an App group container directory on the client, and on the server.
 
 ## Preservation 
 
 All the raw block data including local file, and sync in progress blocks are preserved.
-It mean you need at least twice the size of the synchronized files.
+Files are uncompressed / decrypted on the fly.
 On node deletion the Blocks are erased.
 
 ## The block are grouped per folders 
@@ -47,7 +46,7 @@ We use the Uppercased 3 first components of the UID.
 
 ```
 The block "NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC"
-Would be in <container>/blocks/N/K/J
+is in <container>/blocks/N/K/J
 ```
 
 # Operations
@@ -99,10 +98,34 @@ Before to apply any change in the box BSFS call its `BoxDelegate` that decides w
 
 When we receive a `BlockUpsert` Trigger, a `BlockDelete` trigger, a local Block Deletion, a local Block Upsert **we cancel all the uploads or downloads operations marked with that blockUID**. 
 
+
+# Compression  
+
+## Sample Data:
+
+- mp4: 1,56 Go
+- lzma: 773,7 Mo
+- lzfse: 790,8 Mo
+- lz4: 786,6 Mo
+
+**We use "lz4+AES256+SHA1" by default.**
+
+## Benchmarks on my mac book: 
+
+
++ Without SHA1:
+	+ Encrypt Duration : 5.44316899776459 286.342087052614MB/s
+	+ Decrypt Duration : 3.76625001430511 413.835609712588MB/s
+
++ With SHA1:
+	+ Encrypt Duration : 6.39563596248627 243.698731469716MB/s
+	+ Decrypt Duration : 4.78430503606796 325.775292179313MB/s
+
+Memory footprint : < 50Mb
+
 ----
 # Flocks
 
- 
 - bartleby's boxed archive format
 - extension : .flk
 - You can flock a Box image for a given user, it will extract all the files that user can acceded.
@@ -137,15 +160,6 @@ Such an archive is :
  - Box.nodes
  - Box.blocks
 ```
-
-
-# Compression  
-
-We are using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
-# CryptoGraphy
-
-We are using CommonCrypto
-
 
 ----
 # Details on Models

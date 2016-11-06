@@ -233,7 +233,7 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     public func create(node:Node)->(){
         self._document.metadata.nodesInProgress.append(node)
-        self._tryToAssembleNodeInProgress()
+        self._tryToAssembleNodesInProgress()
     }
 
     /// Update the blocks of a node reflecting its current binary data
@@ -241,7 +241,7 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     public func update(node:Node)->(){
         self._document.metadata.nodesInProgress.append(node)
-        self._tryToAssembleNodeInProgress()
+        self._tryToAssembleNodesInProgress()
     }
 
 

@@ -26,8 +26,6 @@
 		E50A106A1DC2261D00869BFB /* MetricsDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */; };
 		E50A106C1DC2301100869BFB /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106B1DC2301100869BFB /* HTTPRequest.swift */; };
 		E50A106E1DC2311800869BFB /* HTTPRequest+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */; };
-		E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
-		E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */; };
 		E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */; };
 		E50F3AF01D40D27F00532B09 /* ChangesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */; };
 		E50F3AF11D40D27F00532B09 /* InspectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */; };
@@ -41,25 +39,11 @@
 		E50F3AF91D40D27F00532B09 /* DocumentInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEA1D40D27F00532B09 /* DocumentInspector.xib */; };
 		E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */; };
 		E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */; };
-		E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
-		E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51834391CA52F96006ED867 /* CryptedDataTransform.swift */; };
-		E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */; };
-		E51834C71CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */; };
-		E51834C91CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */; };
-		E51834CA1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */; };
-		E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
-		E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */; };
-		E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
-		E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E518343D1CA52F96006ED867 /* CryptoHelper.swift */; };
 		E5187F191DC11FC80071A23C /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5187F181DC11FC80071A23C /* ServerErrorCodes.swift */; };
 		E5238B2A1DC4FEAC003D343D /* ReportWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B281DC4FEAC003D343D /* ReportWindowController.swift */; };
 		E5238B2B1DC4FEAC003D343D /* ReportWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B291DC4FEAC003D343D /* ReportWindowController.xib */; };
 		E5238B2E1DC50091003D343D /* DecryptorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B2C1DC50091003D343D /* DecryptorViewController.swift */; };
 		E5238B2F1DC50091003D343D /* DecryptorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B2D1DC50091003D343D /* DecryptorViewController.xib */; };
-		E536C0451DC9E7570053DE31 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0441DC9E7570053DE31 /* Data+HMAC.swift */; };
-		E536C0471DC9E7710053DE31 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0461DC9E7710053DE31 /* String+HMAC.swift */; };
-		E536C0491DC9E7A10053DE31 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0481DC9E7A10053DE31 /* HMAC.swift */; };
-		E536C04B1DC9E7CA0053DE31 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */; };
 		E536C06B1DC9F27B0053DE31 /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C06A1DC9F27B0053DE31 /* BSFS.swift */; };
 		E536C06C1DC9F27B0053DE31 /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C06A1DC9F27B0053DE31 /* BSFS.swift */; };
 		E536C0721DC9FA120053DE31 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C06F1DC9FA120053DE31 /* BlocksManagedCollection.swift */; };
@@ -111,10 +95,6 @@
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
 		E54EA96A1DCBB52F0034DDC6 /* TriggerHook.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54EA9691DCBB52F0034DDC6 /* TriggerHook.swift */; };
-		E554D8D91DCE24EB00BD1CF9 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0481DC9E7A10053DE31 /* HMAC.swift */; };
-		E554D8DA1DCE24EB00BD1CF9 /* HMACAlgorythms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */; };
-		E554D8DB1DCE24EB00BD1CF9 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0441DC9E7570053DE31 /* Data+HMAC.swift */; };
-		E554D8DC1DCE24EB00BD1CF9 /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E536C0461DC9E7710053DE31 /* String+HMAC.swift */; };
 		E554D8DE1DCE2C0500BD1CF9 /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DD1DCE2C0500BD1CF9 /* Flocker.swift */; };
 		E554D8E01DCE35E600BD1CF9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DF1DCE35E600BD1CF9 /* Box.swift */; };
 		E554D8E11DCE35E600BD1CF9 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554D8DF1DCE35E600BD1CF9 /* Box.swift */; };
@@ -353,6 +333,34 @@
 		E57377531DBB960500E2B849 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376641DBB960500E2B849 /* PString.swift */; };
 		E57377541DBB960500E2B849 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57376641DBB960500E2B849 /* PString.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E591C1201DCF813800C1EE8E /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C11F1DCF813800C1EE8E /* Async.swift */; };
+		E591C1211DCF813800C1EE8E /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C11F1DCF813800C1EE8E /* Async.swift */; };
+		E591C1241DCF81AF00C1EE8E /* Data+Compression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1231DCF81AF00C1EE8E /* Data+Compression.swift */; };
+		E591C1251DCF81AF00C1EE8E /* Data+Compression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1231DCF81AF00C1EE8E /* Data+Compression.swift */; };
+		E591C1271DCF81D500C1EE8E /* CompressionAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1261DCF81D500C1EE8E /* CompressionAlgorithms.swift */; };
+		E591C1281DCF81D500C1EE8E /* CompressionAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1261DCF81D500C1EE8E /* CompressionAlgorithms.swift */; };
+		E591C12A1DCF826E00C1EE8E /* CompressionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1291DCF826E00C1EE8E /* CompressionError.swift */; };
+		E591C12B1DCF826E00C1EE8E /* CompressionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1291DCF826E00C1EE8E /* CompressionError.swift */; };
+		E591C1361DCF83B900C1EE8E /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12C1DCF83B900C1EE8E /* CryptedDataTransform.swift */; };
+		E591C1371DCF83B900C1EE8E /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12C1DCF83B900C1EE8E /* CryptedDataTransform.swift */; };
+		E591C1381DCF83B900C1EE8E /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12D1DCF83B900C1EE8E /* CryptedKeyValueStorage.swift */; };
+		E591C1391DCF83B900C1EE8E /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12D1DCF83B900C1EE8E /* CryptedKeyValueStorage.swift */; };
+		E591C13A1DCF83B900C1EE8E /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12E1DCF83B900C1EE8E /* CryptedSerializableTransform.swift */; };
+		E591C13B1DCF83B900C1EE8E /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12E1DCF83B900C1EE8E /* CryptedSerializableTransform.swift */; };
+		E591C13C1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12F1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift */; };
+		E591C13D1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C12F1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift */; };
+		E591C13E1DCF83B900C1EE8E /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1301DCF83B900C1EE8E /* CryptedStringTransform.swift */; };
+		E591C13F1DCF83B900C1EE8E /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1301DCF83B900C1EE8E /* CryptedStringTransform.swift */; };
+		E591C1401DCF83B900C1EE8E /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1311DCF83B900C1EE8E /* CryptoHelper.swift */; };
+		E591C1411DCF83B900C1EE8E /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1311DCF83B900C1EE8E /* CryptoHelper.swift */; };
+		E591C1421DCF83B900C1EE8E /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1321DCF83B900C1EE8E /* Data+HMAC.swift */; };
+		E591C1431DCF83B900C1EE8E /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1321DCF83B900C1EE8E /* Data+HMAC.swift */; };
+		E591C1441DCF83B900C1EE8E /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1331DCF83B900C1EE8E /* HMAC.swift */; };
+		E591C1451DCF83B900C1EE8E /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1331DCF83B900C1EE8E /* HMAC.swift */; };
+		E591C1461DCF83B900C1EE8E /* HMACAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1341DCF83B900C1EE8E /* HMACAlgorithms.swift */; };
+		E591C1471DCF83B900C1EE8E /* HMACAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1341DCF83B900C1EE8E /* HMACAlgorithms.swift */; };
+		E591C1481DCF83B900C1EE8E /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1351DCF83B900C1EE8E /* String+HMAC.swift */; };
+		E591C1491DCF83B900C1EE8E /* String+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C1351DCF83B900C1EE8E /* String+HMAC.swift */; };
 		E5948A091DC7AD2000053A2D /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5948A081DC7AD2000053A2D /* Report.swift */; };
 		E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906C1DC77F0600F235B5 /* DecryptView.swift */; };
 		E598906F1DC79C0A00F235B5 /* DocumentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906E1DC79C0A00F235B5 /* DocumentProvider.swift */; };
@@ -435,7 +443,6 @@
 		E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetricsDetailsViewController.xib; sourceTree = "<group>"; };
 		E50A106B1DC2301100869BFB /* HTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		E50A106D1DC2311800869BFB /* HTTPRequest+URLRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPRequest+URLRequest.swift"; sourceTree = "<group>"; };
-		E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
 		E50F3AE11D40D27F00532B09 /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
 		E50F3AE21D40D27F00532B09 /* InspectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InspectorViewController.swift; sourceTree = "<group>"; };
@@ -450,11 +457,6 @@
 		E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
 		E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* BaseObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObjectTests.swift; sourceTree = "<group>"; };
-		E51834391CA52F96006ED867 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
-		E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
-		E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
-		E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
-		E518343D1CA52F96006ED867 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		E5187F181DC11FC80071A23C /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E5238B281DC4FEAC003D343D /* ReportWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportWindowController.swift; sourceTree = "<group>"; };
 		E5238B291DC4FEAC003D343D /* ReportWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportWindowController.xib; sourceTree = "<group>"; };
@@ -463,10 +465,6 @@
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
-		E536C0441DC9E7570053DE31 /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
-		E536C0461DC9E7710053DE31 /* String+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMAC.swift"; sourceTree = "<group>"; };
-		E536C0481DC9E7A10053DE31 /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
-		E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorythms.swift; sourceTree = "<group>"; };
 		E536C06A1DC9F27B0053DE31 /* BSFS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFS.swift; sourceTree = "<group>"; };
 		E536C06F1DC9FA120053DE31 /* BlocksManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksManagedCollection.swift; sourceTree = "<group>"; };
 		E536C0711DC9FA120053DE31 /* NodesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodesManagedCollection.swift; sourceTree = "<group>"; };
@@ -622,6 +620,20 @@
 		E57376641DBB960500E2B849 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
+		E591C11F1DCF813800C1EE8E /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
+		E591C1231DCF81AF00C1EE8E /* Data+Compression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Compression.swift"; sourceTree = "<group>"; };
+		E591C1261DCF81D500C1EE8E /* CompressionAlgorithms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionAlgorithms.swift; sourceTree = "<group>"; };
+		E591C1291DCF826E00C1EE8E /* CompressionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionError.swift; sourceTree = "<group>"; };
+		E591C12C1DCF83B900C1EE8E /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
+		E591C12D1DCF83B900C1EE8E /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
+		E591C12E1DCF83B900C1EE8E /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
+		E591C12F1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
+		E591C1301DCF83B900C1EE8E /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
+		E591C1311DCF83B900C1EE8E /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
+		E591C1321DCF83B900C1EE8E /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
+		E591C1331DCF83B900C1EE8E /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		E591C1341DCF83B900C1EE8E /* HMACAlgorithms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorithms.swift; sourceTree = "<group>"; };
+		E591C1351DCF83B900C1EE8E /* String+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMAC.swift"; sourceTree = "<group>"; };
 		E5948A081DC7AD2000053A2D /* Report.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E598906C1DC77F0600F235B5 /* DecryptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptView.swift; sourceTree = "<group>"; };
 		E598906E1DC79C0A00F235B5 /* DocumentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentProvider.swift; sourceTree = "<group>"; };
@@ -739,24 +751,6 @@
 			);
 			name = Bartleby.iOS;
 			path = ../Bartleby.iOS;
-			sourceTree = "<group>";
-		};
-		E51834381CA52F96006ED867 /* CryptoHelper */ = {
-			isa = PBXGroup;
-			children = (
-				E51834391CA52F96006ED867 /* CryptedDataTransform.swift */,
-				E518343A1CA52F96006ED867 /* CryptedKeyValueStorage.swift */,
-				E518343B1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift */,
-				E518343C1CA52F96006ED867 /* CryptedStringTransform.swift */,
-				E50A6EF91CC8D7AE00F89311 /* CryptedSerializableTransform.swift */,
-				E518343D1CA52F96006ED867 /* CryptoHelper.swift */,
-				E536C0481DC9E7A10053DE31 /* HMAC.swift */,
-				E536C04A1DC9E7CA0053DE31 /* HMACAlgorythms.swift */,
-				E536C0441DC9E7570053DE31 /* Data+HMAC.swift */,
-				E536C0461DC9E7710053DE31 /* String+HMAC.swift */,
-			);
-			name = CryptoHelper;
-			path = ../CryptoHelper;
 			sourceTree = "<group>";
 		};
 		E52F94871D01C23A005BDA2D /* Tests.shared */ = {
@@ -936,6 +930,7 @@
 		E57376081DBB960500E2B849 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				E591C1221DCF819800C1EE8E /* compressor */,
 				E57376091DBB960500E2B849 /* crypto */,
 				E573760B1DBB960500E2B849 /* third-party */,
 			);
@@ -945,6 +940,16 @@
 		E57376091DBB960500E2B849 /* crypto */ = {
 			isa = PBXGroup;
 			children = (
+				E591C12C1DCF83B900C1EE8E /* CryptedDataTransform.swift */,
+				E591C12D1DCF83B900C1EE8E /* CryptedKeyValueStorage.swift */,
+				E591C12E1DCF83B900C1EE8E /* CryptedSerializableTransform.swift */,
+				E591C12F1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift */,
+				E591C1301DCF83B900C1EE8E /* CryptedStringTransform.swift */,
+				E591C1311DCF83B900C1EE8E /* CryptoHelper.swift */,
+				E591C1321DCF83B900C1EE8E /* Data+HMAC.swift */,
+				E591C1331DCF83B900C1EE8E /* HMAC.swift */,
+				E591C1341DCF83B900C1EE8E /* HMACAlgorithms.swift */,
+				E591C1351DCF83B900C1EE8E /* String+HMAC.swift */,
 				E573760A1DBB960500E2B849 /* NoCrypto.swift */,
 			);
 			path = crypto;
@@ -953,6 +958,7 @@
 		E573760B1DBB960500E2B849 /* third-party */ = {
 			isa = PBXGroup;
 			children = (
+				E591C11E1DCF813800C1EE8E /* Async */,
 				E573760C1DBB960500E2B849 /* EventSource */,
 			);
 			path = "third-party";
@@ -1120,7 +1126,6 @@
 				E57375DB1DBB960500E2B849 /* Bartleby.xOS */,
 				E50F3ADF1D40D27F00532B09 /* Bartleby.OSX-Apps */,
 				E50F3EC11D40D51E00532B09 /* Bartleby.iOS */,
-				E51834381CA52F96006ED867 /* CryptoHelper */,
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
 				E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
 				E536C06E1DC9F5D00053DE31 /* BSFSOSXTests */,
@@ -1138,6 +1143,24 @@
 				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E591C11E1DCF813800C1EE8E /* Async */ = {
+			isa = PBXGroup;
+			children = (
+				E591C11F1DCF813800C1EE8E /* Async.swift */,
+			);
+			path = Async;
+			sourceTree = "<group>";
+		};
+		E591C1221DCF819800C1EE8E /* compressor */ = {
+			isa = PBXGroup;
+			children = (
+				E591C1231DCF81AF00C1EE8E /* Data+Compression.swift */,
+				E591C1261DCF81D500C1EE8E /* CompressionAlgorithms.swift */,
+				E591C1291DCF826E00C1EE8E /* CompressionError.swift */,
+			);
+			path = compressor;
 			sourceTree = "<group>";
 		};
 		E595A2EB1CE4B34800099EB3 /* Support-files */ = {
@@ -1334,6 +1357,7 @@
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
 				E536C0C51DC9FA690053DE31 /* ReadNodesByIds.swift in Sources */,
 				E50A10691DC2261D00869BFB /* MetricsDetailsViewController.swift in Sources */,
+				E591C1401DCF83B900C1EE8E /* CryptoHelper.swift in Sources */,
 				E57376C31DBB960500E2B849 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E57376F91DBB960500E2B849 /* BartlebyCollection.swift in Sources */,
 				E57377051DBB960500E2B849 /* Commitable.swift in Sources */,
@@ -1341,6 +1365,7 @@
 				E57377511DBB960500E2B849 /* Pluralization.swift in Sources */,
 				E57376A91DBB960500E2B849 /* UpdateLocker.swift in Sources */,
 				E573771D1DBB960500E2B849 /* LogCategorizable.swift in Sources */,
+				E591C1361DCF83B900C1EE8E /* CryptedDataTransform.swift in Sources */,
 				E57376DD1DBB960500E2B849 /* NSNotification+Completion.swift in Sources */,
 				E573772D1DBB960500E2B849 /* SuperIterable.swift in Sources */,
 				E573774F1DBB960500E2B849 /* HTTPManager.swift in Sources */,
@@ -1351,7 +1376,6 @@
 				E536C0B31DC9FA690053DE31 /* DeleteNode.swift in Sources */,
 				E57377071DBB960500E2B849 /* CryptoDelegate.swift in Sources */,
 				E536C06B1DC9F27B0053DE31 /* BSFS.swift in Sources */,
-				E536C0451DC9E7570053DE31 /* Data+HMAC.swift in Sources */,
 				E57376E51DBB960500E2B849 /* DocumentMetadata+Facilities.swift in Sources */,
 				E57376E91DBB960500E2B849 /* Global.swift in Sources */,
 				E57376B71DBB960500E2B849 /* Bartleby.swift in Sources */,
@@ -1362,7 +1386,6 @@
 				E536C0C31DC9FA690053DE31 /* ReadNodeById.swift in Sources */,
 				E573769B1DBB960500E2B849 /* DeleteUsers.swift in Sources */,
 				E5AF325B1DCA31D20073B53E /* DownloadBlock.swift in Sources */,
-				E536C0471DC9E7710053DE31 /* String+HMAC.swift in Sources */,
 				E573766B1DBB960500E2B849 /* UsersManagedCollection.swift in Sources */,
 				E57376A71DBB960500E2B849 /* ReadUsersByQuery.swift in Sources */,
 				E573773D1DBB960500E2B849 /* NSUndomanager+RegisterUndo.swift in Sources */,
@@ -1370,7 +1393,6 @@
 				E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */,
 				E57376B91DBB960500E2B849 /* Consignation.swift in Sources */,
 				E536C0AB1DC9FA690053DE31 /* DeleteBlock.swift in Sources */,
-				E51834C31CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E536C09F1DC9FA690053DE31 /* CreateBlock.swift in Sources */,
 				E57376FF1DBB960500E2B849 /* Collectible.swift in Sources */,
 				E57376AB1DBB960500E2B849 /* UpdateLockers.swift in Sources */,
@@ -1386,11 +1408,13 @@
 				E57376991DBB960500E2B849 /* DeleteUser.swift in Sources */,
 				E54EA96A1DCBB52F0034DDC6 /* TriggerHook.swift in Sources */,
 				E50F3AF31D40D27F00532B09 /* LogsViewController.swift in Sources */,
+				E591C13A1DCF83B900C1EE8E /* CryptedSerializableTransform.swift in Sources */,
 				E536C0761DC9FA120053DE31 /* NodesManagedCollection.swift in Sources */,
 				E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */,
 				E57377291DBB960500E2B849 /* Serializable.swift in Sources */,
 				E5E6DE471DBE32670036594C /* Metrics.swift in Sources */,
 				E57376771DBB960500E2B849 /* ExternalReference.swift in Sources */,
+				E591C1481DCF83B900C1EE8E /* String+HMAC.swift in Sources */,
 				E57376911DBB960500E2B849 /* CreateUser.swift in Sources */,
 				E57377311DBB960500E2B849 /* UniversalType.swift in Sources */,
 				E57376CB1DBB960500E2B849 /* BartlebyDocument+SecurityScopes.swift in Sources */,
@@ -1398,6 +1422,8 @@
 				E57377471DBB960500E2B849 /* TriggersByIds.swift in Sources */,
 				E57377091DBB960500E2B849 /* Descriptible.swift in Sources */,
 				E57377351DBB960500E2B849 /* Reaction.swift in Sources */,
+				E591C1201DCF813800C1EE8E /* Async.swift in Sources */,
+				E591C1381DCF83B900C1EE8E /* CryptedKeyValueStorage.swift in Sources */,
 				E536C0801DC9FA290053DE31 /* Node.swift in Sources */,
 				E573770B1DBB960500E2B849 /* DictionaryRepresentation.swift in Sources */,
 				E57377231DBB960500E2B849 /* Monitoring.swift in Sources */,
@@ -1426,23 +1452,25 @@
 				E573774D1DBB960500E2B849 /* BFileManager.swift in Sources */,
 				E57377131DBB960500E2B849 /* CollectibleHTTPContext.swift in Sources */,
 				E536C07C1DC9FA290053DE31 /* Block.swift in Sources */,
-				E51834CC1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
 				E50F3AF81D40D27F00532B09 /* DocumentInspector.swift in Sources */,
 				E57376C91DBB960500E2B849 /* BartlebyDocument+Operations.swift in Sources */,
+				E591C1441DCF83B900C1EE8E /* HMAC.swift in Sources */,
+				E591C13C1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift in Sources */,
 				E536C0A11DC9FA690053DE31 /* CreateBlocks.swift in Sources */,
 				E57376CF1DBB960500E2B849 /* BartlebyDocument+Triggers.swift in Sources */,
 				E57376D71DBB960500E2B849 /* Completion+Result.swift in Sources */,
 				E573771F1DBB960500E2B849 /* LogEntriesObserver.swift in Sources */,
 				E57377111DBB960500E2B849 /* Pusher.swift in Sources */,
 				E50F3AF11D40D27F00532B09 /* InspectorViewController.swift in Sources */,
-				E51834C91CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E57377391DBB960500E2B849 /* StatusOfCompletion.swift in Sources */,
 				E536C0B51DC9FA690053DE31 /* DeleteNodes.swift in Sources */,
 				E57377371DBB960500E2B849 /* DocumentError.swift in Sources */,
 				E57376831DBB960500E2B849 /* Progression.swift in Sources */,
+				E591C12A1DCF826E00C1EE8E /* CompressionError.swift in Sources */,
 				E57377411DBB960500E2B849 /* LoginUser.swift in Sources */,
 				E536C0C71DC9FA690053DE31 /* ReadNodesByQuery.swift in Sources */,
 				E573771B1DBB960500E2B849 /* JSONString.swift in Sources */,
+				E591C13E1DCF83B900C1EE8E /* CryptedStringTransform.swift in Sources */,
 				E5238B2A1DC4FEAC003D343D /* ReportWindowController.swift in Sources */,
 				E57376C51DBB960500E2B849 /* BartlebyDocument+Logs.swift in Sources */,
 				E57376971DBB960500E2B849 /* DeleteLockers.swift in Sources */,
@@ -1457,13 +1485,12 @@
 				E57376671DBB960500E2B849 /* LockersManagedCollection.swift in Sources */,
 				E5AF326C1DCA44C40073B53E /* BlockOperationBase.swift in Sources */,
 				E57377331DBB960500E2B849 /* UserProtocol.swift in Sources */,
-				E536C0491DC9E7A10053DE31 /* HMAC.swift in Sources */,
 				E536C0C91DC9FA690053DE31 /* UpdateBlock.swift in Sources */,
 				E50A0CE21DC21A3A00869BFB /* HTTPContext.swift in Sources */,
 				E536C0B91DC9FA690053DE31 /* ReadBlocksByIds.swift in Sources */,
-				E51834C61CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
 				E57376891DBB960500E2B849 /* Trigger.swift in Sources */,
 				E50A0CE71DC21DF700869BFB /* Context.swift in Sources */,
+				E591C1271DCF81D500C1EE8E /* CompressionAlgorithms.swift in Sources */,
 				E57376C11DBB960500E2B849 /* BartlebyDocument+AppFacilities.swift in Sources */,
 				E536C0CB1DC9FA690053DE31 /* UpdateBlocks.swift in Sources */,
 				E57376B51DBB960500E2B849 /* EventSource.swift in Sources */,
@@ -1471,12 +1498,12 @@
 				E5187F191DC11FC80071A23C /* ServerErrorCodes.swift in Sources */,
 				E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */,
 				E57376D31DBB960500E2B849 /* CollectionMetadatum+Proxy.swift in Sources */,
-				E51834CF1CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E57377251DBB960500E2B849 /* Referenced.swift in Sources */,
+				E591C1241DCF81AF00C1EE8E /* Data+Compression.swift in Sources */,
 				E57376711DBB960500E2B849 /* CollectionMetadatum.swift in Sources */,
 				E536C0B71DC9FA690053DE31 /* ReadBlockById.swift in Sources */,
 				E57377031DBB960500E2B849 /* CollectionMetadatumProtocol.swift in Sources */,
-				E536C04B1DC9E7CA0053DE31 /* HMACAlgorythms.swift in Sources */,
+				E591C1421DCF83B900C1EE8E /* Data+HMAC.swift in Sources */,
 				E536C0D11DC9FA690053DE31 /* UpdateNode.swift in Sources */,
 				E5AF32591DCA31C70073B53E /* UploadBlock.swift in Sources */,
 				E536C0AD1DC9FA690053DE31 /* DeleteBlocks.swift in Sources */,
@@ -1486,9 +1513,9 @@
 				E57377191DBB960500E2B849 /* IterableCollectibleCollection.swift in Sources */,
 				E57376A31DBB960500E2B849 /* ReadUserById.swift in Sources */,
 				E5E6DE491DBE35670036594C /* BartlebyDocument+Metrics.swift in Sources */,
+				E591C1461DCF83B900C1EE8E /* HMACAlgorithms.swift in Sources */,
 				E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */,
 				E57376EB1DBB960500E2B849 /* Handlers.swift in Sources */,
-				E50A6EFA1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376FD1DBB960500E2B849 /* ChangesInspectable.swift in Sources */,
 				E573766F1DBB960500E2B849 /* BartlebyObject.swift in Sources */,
 				E57376E31DBB960500E2B849 /* PushOperation+Conveniences.swift in Sources */,
@@ -1520,6 +1547,7 @@
 				E573768E1DBB960500E2B849 /* CreateLocker.swift in Sources */,
 				E536C07D1DC9FA290053DE31 /* Block.swift in Sources */,
 				E57376881DBB960500E2B849 /* Tag.swift in Sources */,
+				E591C13B1DCF83B900C1EE8E /* CryptedSerializableTransform.swift in Sources */,
 				E536C0811DC9FA290053DE31 /* Node.swift in Sources */,
 				E569F3611DC7C264004D4FB5 /* Initializable.swift in Sources */,
 				E573766C1DBB960500E2B849 /* UsersManagedCollection.swift in Sources */,
@@ -1542,11 +1570,11 @@
 				E569F3591DC7C264004D4FB5 /* Commitable.swift in Sources */,
 				E57376D41DBB960500E2B849 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E573768A1DBB960500E2B849 /* Trigger.swift in Sources */,
+				E591C13F1DCF83B900C1EE8E /* CryptedStringTransform.swift in Sources */,
 				E57376821DBB960500E2B849 /* LogEntry.swift in Sources */,
 				E569F35F1DC7C264004D4FB5 /* Pusher.swift in Sources */,
 				E57377521DBB960500E2B849 /* Pluralization.swift in Sources */,
 				E57377481DBB960500E2B849 /* TriggersByIds.swift in Sources */,
-				E51834C41CA52F96006ED867 /* CryptedDataTransform.swift in Sources */,
 				E569F35A1DC7C264004D4FB5 /* CryptoDelegate.swift in Sources */,
 				E536C0C41DC9FA690053DE31 /* ReadNodeById.swift in Sources */,
 				E57376BA1DBB960500E2B849 /* Consignation.swift in Sources */,
@@ -1556,7 +1584,8 @@
 				E57376A01DBB960500E2B849 /* ReadLockersByIds.swift in Sources */,
 				E50A0CEA1DC21EC000869BFB /* ServerErrorCodes.swift in Sources */,
 				E57376781DBB960500E2B849 /* ExternalReference.swift in Sources */,
-				E51834CD1CA52F96006ED867 /* CryptedStringTransform.swift in Sources */,
+				E591C1411DCF83B900C1EE8E /* CryptoHelper.swift in Sources */,
+				E591C1371DCF83B900C1EE8E /* CryptedDataTransform.swift in Sources */,
 				E536C0B81DC9FA690053DE31 /* ReadBlockById.swift in Sources */,
 				E57376941DBB960500E2B849 /* CreateUsers.swift in Sources */,
 				E536C06C1DC9F27B0053DE31 /* BSFS.swift in Sources */,
@@ -1570,13 +1599,13 @@
 				E57377441DBB960500E2B849 /* LogoutUser.swift in Sources */,
 				E536C0BA1DC9FA690053DE31 /* ReadBlocksByIds.swift in Sources */,
 				E57376F81DBB960500E2B849 /* ImageTransform.swift in Sources */,
-				E51834CA1CA52F96006ED867 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E57376B21DBB960500E2B849 /* UIX.swift in Sources */,
 				E57376C21DBB960500E2B849 /* BartlebyDocument+AppFacilities.swift in Sources */,
+				E591C1431DCF83B900C1EE8E /* Data+HMAC.swift in Sources */,
 				E57376AE1DBB960500E2B849 /* UpdateUser.swift in Sources */,
 				E57376921DBB960500E2B849 /* CreateUser.swift in Sources */,
 				E50A0CEC1DC21EC700869BFB /* BartlebyDocument+Reachability.swift in Sources */,
-				E554D8DA1DCE24EB00BD1CF9 /* HMACAlgorythms.swift in Sources */,
+				E591C1281DCF81D500C1EE8E /* CompressionAlgorithms.swift in Sources */,
 				E57377421DBB960500E2B849 /* LoginUser.swift in Sources */,
 				E569F3651DC7C264004D4FB5 /* LogEntriesObserver.swift in Sources */,
 				E569F35C1DC7C264004D4FB5 /* DictionaryRepresentation.swift in Sources */,
@@ -1584,9 +1613,10 @@
 				E50A0CE31DC21A3A00869BFB /* HTTPContext.swift in Sources */,
 				E573769A1DBB960500E2B849 /* DeleteUser.swift in Sources */,
 				E536C0CC1DC9FA690053DE31 /* UpdateBlocks.swift in Sources */,
-				E51834C71CA52F96006ED867 /* CryptedKeyValueStorage.swift in Sources */,
+				E591C12B1DCF826E00C1EE8E /* CompressionError.swift in Sources */,
 				E57376801DBB960500E2B849 /* Locker.swift in Sources */,
 				E569F3571DC7C264004D4FB5 /* CollectibleHTTPContext.swift in Sources */,
+				E591C1211DCF813800C1EE8E /* Async.swift in Sources */,
 				E573773A1DBB960500E2B849 /* StatusOfCompletion.swift in Sources */,
 				E554D8E11DCE35E600BD1CF9 /* Box.swift in Sources */,
 				E57376BE1DBB960500E2B849 /* Default.swift in Sources */,
@@ -1594,6 +1624,7 @@
 				E573774E1DBB960500E2B849 /* BFileManager.swift in Sources */,
 				E57376A61DBB960500E2B849 /* ReadUsersByIds.swift in Sources */,
 				E569F36C1DC7C264004D4FB5 /* SuperIterable.swift in Sources */,
+				E591C1451DCF83B900C1EE8E /* HMAC.swift in Sources */,
 				E536C0C81DC9FA690053DE31 /* ReadNodesByQuery.swift in Sources */,
 				E57376D01DBB960500E2B849 /* BartlebyDocument+Triggers.swift in Sources */,
 				E57376C41DBB960500E2B849 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
@@ -1606,6 +1637,7 @@
 				E57376761DBB960500E2B849 /* DocumentMetadata.swift in Sources */,
 				E57376CE1DBB960500E2B849 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E57376CC1DBB960500E2B849 /* BartlebyDocument+SecurityScopes.swift in Sources */,
+				E591C13D1DCF83B900C1EE8E /* CryptedStringKeyValueTransform.swift in Sources */,
 				E57376841DBB960500E2B849 /* Progression.swift in Sources */,
 				E569F3661DC7C264004D4FB5 /* Logger.swift in Sources */,
 				E569F36E1DC7C264004D4FB5 /* UniversalType.swift in Sources */,
@@ -1618,14 +1650,13 @@
 				E536C0A21DC9FA690053DE31 /* CreateBlocks.swift in Sources */,
 				E569F3621DC7C264004D4FB5 /* IterableCollectibleCollection.swift in Sources */,
 				E57376701DBB960500E2B849 /* BartlebyObject.swift in Sources */,
-				E51834D01CA52F96006ED867 /* CryptoHelper.swift in Sources */,
 				E569F3601DC7C264004D4FB5 /* Identifiable.swift in Sources */,
 				E573766E1DBB960500E2B849 /* Acknowledgment.swift in Sources */,
 				E536C0AE1DC9FA690053DE31 /* DeleteBlocks.swift in Sources */,
 				E57376AC1DBB960500E2B849 /* UpdateLockers.swift in Sources */,
 				E57377461DBB960500E2B849 /* TriggersAfterIndex.swift in Sources */,
 				E569F3551DC7C264004D4FB5 /* Collectible.swift in Sources */,
-				E554D8DC1DCE24EB00BD1CF9 /* String+HMAC.swift in Sources */,
+				E591C1251DCF81AF00C1EE8E /* Data+Compression.swift in Sources */,
 				E57376D21DBB960500E2B849 /* BartlebyObject+BaseImplementation.swift in Sources */,
 				E536C0B61DC9FA690053DE31 /* DeleteNodes.swift in Sources */,
 				E569F3511DC7C264004D4FB5 /* BartlebyCollection.swift in Sources */,
@@ -1636,16 +1667,13 @@
 				E536C0AC1DC9FA690053DE31 /* DeleteBlock.swift in Sources */,
 				E569F35D1DC7C264004D4FB5 /* Distribuable.swift in Sources */,
 				E536C0731DC9FA120053DE31 /* BlocksManagedCollection.swift in Sources */,
-				E554D8D91DCE24EB00BD1CF9 /* HMAC.swift in Sources */,
 				E536C0CA1DC9FA690053DE31 /* UpdateBlock.swift in Sources */,
 				E569F3681DC7C264004D4FB5 /* Referenced.swift in Sources */,
 				E5EE3F161DCC7992000D70B9 /* TriggerHook.swift in Sources */,
 				E57376901DBB960500E2B849 /* CreateLockers.swift in Sources */,
 				E569F3631DC7C264004D4FB5 /* JSONString.swift in Sources */,
-				E50A6EFB1CC8D7AE00F89311 /* CryptedSerializableTransform.swift in Sources */,
 				E57376D81DBB960500E2B849 /* Completion+Result.swift in Sources */,
 				E57376B41DBB960500E2B849 /* NoCrypto.swift in Sources */,
-				E554D8DB1DCE24EB00BD1CF9 /* Data+HMAC.swift in Sources */,
 				E57376DA1DBB960500E2B849 /* ExternalReference+Resolution.swift in Sources */,
 				E57377501DBB960500E2B849 /* HTTPManager.swift in Sources */,
 				E57376DC1DBB960500E2B849 /* LogEntry+Conveniences.swift in Sources */,
@@ -1657,14 +1685,17 @@
 				E57377381DBB960500E2B849 /* DocumentError.swift in Sources */,
 				E50A0CE61DC21B3F00869BFB /* HTTPContext+Conveniences.swift in Sources */,
 				E57376AA1DBB960500E2B849 /* UpdateLocker.swift in Sources */,
+				E591C1491DCF83B900C1EE8E /* String+HMAC.swift in Sources */,
 				E57377541DBB960500E2B849 /* PString.swift in Sources */,
 				E57376D61DBB960500E2B849 /* Completion+Conveniences.swift in Sources */,
+				E591C1391DCF83B900C1EE8E /* CryptedKeyValueStorage.swift in Sources */,
 				E57376E21DBB960500E2B849 /* Progression+Conveniences.swift in Sources */,
 				E57376C81DBB960500E2B849 /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
 				E57376B01DBB960500E2B849 /* UpdateUsers.swift in Sources */,
 				E57376A21DBB960500E2B849 /* ReadLockersByQuery.swift in Sources */,
 				E57376B81DBB960500E2B849 /* Bartleby.swift in Sources */,
 				E57376DE1DBB960500E2B849 /* NSNotification+Completion.swift in Sources */,
+				E591C1471DCF83B900C1EE8E /* HMACAlgorithms.swift in Sources */,
 				E573766A1DBB960500E2B849 /* PushOperationsManagedCollection.swift in Sources */,
 				E569F3581DC7C264004D4FB5 /* CollectionMetadatumProtocol.swift in Sources */,
 				E569F34F1DC7C247004D4FB5 /* HTTPRequest.swift in Sources */,

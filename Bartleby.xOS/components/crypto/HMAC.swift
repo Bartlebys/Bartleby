@@ -18,7 +18,7 @@ public struct HMAC {
     ///   - string: the string to digest
     ///   - algo: the algorythm to use
     /// - Returns: the digest string
-    static func digestString(_ string: String, algo: HMACAlgorythms) -> String {
+    static func digestString(_ string: String, algo: HMACAlgorithms) -> String {
         if let stringData = string.data(using: String.Encoding.utf8, allowLossyConversion: false){
             let digest=HMAC._digest(stringData, algo: algo)
             return HMAC._hexStringFromData(digest)
@@ -32,7 +32,7 @@ public struct HMAC {
     ///   - string: the Data to digest
     ///   - algo: the algorythm to use
     /// - Returns: the digest string
-    static func digestData(_ data: Data, algo: HMACAlgorythms) -> String {
+    static func digestData(_ data: Data, algo: HMACAlgorithms) -> String {
         let digest=HMAC._digest(data, algo: algo)
         return HMAC._hexStringFromData(digest)
     }
@@ -44,7 +44,7 @@ public struct HMAC {
     ///   - data: the data to digest
     ///   - algo: the algorythm to use
     /// - Returns: the digest data
-    private static func _digest(_ data : Data, algo: HMACAlgorythms) -> Data {
+    private static func _digest(_ data : Data, algo: HMACAlgorithms) -> Data {
         let digestLength = algo.digestLength()
         var hash = [UInt8](repeating: 0,count: digestLength)
         switch algo {

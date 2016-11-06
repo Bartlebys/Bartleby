@@ -1,5 +1,5 @@
 //
-//  HMACAlgorythms.swift
+//  HMACAlgorithms.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 02/11/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-enum HMACAlgorythms {
+enum HMACAlgorithms {
 
     case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
 
