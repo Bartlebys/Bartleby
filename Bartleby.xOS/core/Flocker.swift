@@ -30,9 +30,7 @@ import Foundation
  */
 
 // COMPRESSION is using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
-// CRYPTO is using CommonCrypto
-
-// NOTE : By default any .flk file is unflocked on reception in a BSFS
+// file:///Users/bpds/Documents/Entrepot/Git/Clients/LyLo.TV/YouDubOSX/Bartleby/Documents/BSFS.md
 
 struct Flocker{
 
@@ -40,23 +38,27 @@ struct Flocker{
 
     // MARK: - Flocking
 
-    /// Flocks the files means you transform a tree of file to a box of Nodes and flock it to
+    /// Flocks the files means you transform all the files to a single file
+    /// By using this method you preserve the ACL
     ///
     /// - Parameters:
-    ///   - path: the path to flock
-    ///   - flockedFilePath: the path
-    func flockFilesFromPath(folderPath:String, destination flockedFilePath:String){
+    ///   - box: the box to be flocked
+    ///   - flockedFilePath: the flock path
+    ///   - holders:  you define the authorized users for each file (by default set to public ["*"])
+    func flockFolder(folderPath:String, destination flockedFilePath:String, authorized holders:[String]=["*"] ){
         // The result is single file containing a box.
         // It allow to group set of files
         // The relative box path will be computed relatively to the app container (if sandboxed)
     }
 
-    /// Flocks the files means you transform a box of Nodes to a single file
+    /// Flocks the box means you transform a box of Nodes to a single file
+    /// By using this method you preserve the ACL
     ///
     /// - Parameters:
-    ///   - path: the path to flock
-    ///   - flockedFilePath: the path
-    func flockTheBox(box:Box, destination flockedFilePath:String){
+    ///   - box: the box to be flocked
+    ///   - flockedFilePath: the flock path
+    ///   - holders: the targeted user UID
+    func flockTheBox(box:Box, destination flockedFilePath:String, authorized holders:[String]=["*"]){
         // The result is single file containing a box.
         // It allow to group set of files
     }

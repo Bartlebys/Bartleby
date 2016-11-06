@@ -14,7 +14,7 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 ### BSFS is Secured
 
-- BSFS supports Bartleby ACL + fine ACL additions (per UserUID)
+- BSFS supports Bartleby ACL + fine ACL additions (per UserUID) even when using a `.flk`
 - "blocks" on the servers are AES128/256 encrypted on the client side 	- Hacked server files are secure
 	- You can opt out 
 
@@ -50,18 +50,12 @@ The block "NkJFMTIyOEQtNTJDOC00MDMyLTkzRTctNDVDRDdCOUM1MkZC"
 Would be in <container>/blocks/N/K/J
 ```
 
-# Operation BartlebyOperation
-
-## Generative
+# Operations
 
 + CRUD Node(s)
 + CRUD Block(s)
-
-
-## New Client TPL generative Operation
-
-+ UploadBlock Creation and Update -> 
-+ DownloadBlock
++ UploadBlock - Creation and Update -
++ DownloadBlock 
 
 UploadBlock and Download block should be ideally interruptible [PassThru?](http://php.net/manual/en/function.fpassthru.php)
 
@@ -69,17 +63,87 @@ UploadBlock and Download block should be ideally interruptible [PassThru?](http:
 
 BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com/Bartlebys/Bartleby/blob/master/Bartleby.xOS/core/BSFS.swift)
 
-# SYNC Data
+# File synchronization mechanisms
 
 ## Managed Collections reflects the distant state in real time
+
+When a node or a block is created, updated or deleted, it is automatically propagated to all the connected clients. The document.nodes & document.blocks reflects the server state in real time.
 
 - document.nodes
 - document.blocks
 
-## Metadata contains the local state
+## Metadata reflects the local state
 
 - document.metadata.localNodes
 - document.metadata.localBlocks
+
+## The BSFS engine 
+
+### Uploads
+
+1. when a node is created or updated it is dissassembled
+2. its blocks (or those that have changed) are uploaded. Upload order depends on blocks priority.  The upload operation *stores the blockUID and the SHA1 digest*.
+3. when a block upload is completed - uploader triggers a `triggered_download` event
+
+
+### Downloads
+
+1. On `triggered_download` event if the block exists in `document.blocks` the client starts to download the block. The download operation is *stores the blockUID and its SHA1 digest*.
+2. At the end of any block download BSFS tries to assemble the node `_tryToAssembleNodesInProgress`
+
+Before to apply any change in the box BSFS call its `BoxDelegate` that decides when to proceed . e.g:`blocksAreReady(node: Node, proceed: () -> ())`
+
+### Interruption of uploads or downloads of expired blocks and nodes
+
+When we receive a BlockUpsert Trigger, a BlockDelete trigger, a local Block Deletion, a local Block Upsert,**we cancel the uploads or downloads operations marked with the blockUID**. 
+
+
+# Flocks
+
+ 
+- bartleby's boxed archive format
+- extension : .flk
+- You can flock a Box image for a given user, it will extract all the files that user can acceded.
+
+## Flocks usages 
+
+### 1. archive a box for offline or separate canal transmission
+
+Such an archive is :
+
+- Integrated temporarily in a Document Wrapper
+- Or transmitted has a separate file.
+
+### 2. a flocked box that contains a grouped set of files. 
+
+- Those `.flk` are include in a box.
+- By default such `.flk` file are *unflocked* each time we access is parent box.
+
+## Flocks Binary Format specs
+ 
+```
+ --------
+ 8Bytes for one Int -> footer size
+ --------
+ data
+ --------
+ footer
+ --------
+
+ The footer contains a Serialized Box
+
+ - Box.nodes
+ - Box.blocks
+```
+
+
+# Compression  
+
+We are using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
+# CryptoGraphy
+
+We are using CommonCrypto
+
 
 ----
 # Details on Models

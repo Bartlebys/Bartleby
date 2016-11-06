@@ -119,7 +119,7 @@ import Foundation
 
      - returns: return the operation
      */
-    fileprivate func _getOperation()->PushOperation{
+    internal func _getOperation()->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             if let ic:PushOperationsManagedCollection = try? document.getCollection(){
                 let pushOperations=ic.filter({ (pushOperation) -> Bool in

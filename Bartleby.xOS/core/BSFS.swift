@@ -316,14 +316,14 @@ public class BSFS:TriggerHook{
             // @TODO
 
             // On each completion :
-            // Call self._tryToAssembleNodeInProgress()
+            // Call self._tryToAssembleNodesInProgress()
 
         }
     }
 
     // MARK: - Internal Mechanisms
 
-    public func _tryToAssembleNodeInProgress(){
+    public func _tryToAssembleNodesInProgress(){
         for node in self._document.metadata.nodesInProgress {
             // Check if we have all the blocks
             if (self._allBlocksAreAvailableFor(node: node)){
