@@ -1,4 +1,4 @@
-# BSFS
+# How Bartleby's Synchronized File system Works?
 
 Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app.
 
@@ -65,39 +65,41 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 
 # File synchronization mechanisms
 
-## Managed Collections reflects the distant state in real time
+## Managed Collections reflects the box state in real time
 
-When a node or a block is created, updated or deleted, it is automatically propagated to all the connected clients. The document.nodes & document.blocks reflects the server state in real time.
+When a node or a block is created, updated or deleted, it is automatically propagated to all the connected clients. The `document.nodes` & `document.blocks` are reflecting the `Box` state in real time.
 
 - document.nodes
 - document.blocks
 
-## Metadata reflects the local state
+## Metadata 
 
-- document.metadata.localNodes
-- document.metadata.localBlocks
+- `document.metadata.localBox` Reflects the local state.
+- `document.metadata.nodesInProgress` A collection nodes with blocks download in progress, or not still assembled (waiting for delegate) ** TO BE VERIFIED ***
 
-## The BSFS engine 
 
-### Uploads
+## Uploads
 
 1. when a node is created or updated it is dissassembled
-2. its blocks (or those that have changed) are uploaded. Upload order depends on blocks priority.  The upload operation *stores the blockUID and the SHA1 digest*.
-3. when a block upload is completed - uploader triggers a `triggered_download` event
+2. Before to upload we Upsert & delete the blocks. The blocks are uploaded. Each upload operation *stores the blockUID and the SHA1 digest*. 
+3. when a block upload is completed - the uploader triggers a `triggered_download` event
 
+Notes: 
+- Upload order depends on blocks priority.
+- Uploads can be parallelized
 
-### Downloads
+## Downloads
 
 1. On `triggered_download` event if the block exists in `document.blocks` the client starts to download the block. The download operation is *stores the blockUID and its SHA1 digest*.
 2. At the end of any block download BSFS tries to assemble the node `_tryToAssembleNodesInProgress`
 
-Before to apply any change in the box BSFS call its `BoxDelegate` that decides when to proceed . e.g:`blocksAreReady(node: Node, proceed: () -> ())`
+Before to apply any change in the box BSFS call its `BoxDelegate` that decides when to proceed. e.g:`blocksAreReady(node: Node, proceed: () -> ())`
 
-### Interruption of uploads or downloads of expired blocks and nodes
+## Interruption of uploads or downloads for expired blocks
 
-When we receive a BlockUpsert Trigger, a BlockDelete trigger, a local Block Deletion, a local Block Upsert,**we cancel the uploads or downloads operations marked with the blockUID**. 
+When we receive a `BlockUpsert` Trigger, a `BlockDelete` trigger, a local Block Deletion, a local Block Upsert **we cancel all the uploads or downloads operations marked with that blockUID**. 
 
-
+----
 # Flocks
 
  
