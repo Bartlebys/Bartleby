@@ -374,14 +374,6 @@ We are using CommonCrypto
 
 ----
 
-# To be defined 
-
-##1. Is it necessary to support cancelable actions? If yes, How to cancel?
-
-##2. How to deal with the deletion of the block folder?
-Initially the block folder was in the synchronized folder (like git) 
-I've decided to use a dedicated folder in the app container to preserve from hazardous deletion. 
-
 # BSFS Daemon - Currently not implemented
 
 A future OSX Daemon that Converts File system action to Api calls.
