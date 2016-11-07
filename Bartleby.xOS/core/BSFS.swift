@@ -47,14 +47,14 @@ public protocol BoxDelegate{
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be moved or copied
-    func moveIsReady(node:Node,to destinationPath:String,proceed:()->())
+    func moveIsReady(node:Node,to relativePath:String,proceed:()->())
 
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be moved or copied
-    func copyIsReady(node:Node,to destinationPath:String,proceed:()->())
+    func copyIsReady(node:Node,to relativePath:String,proceed:()->())
 
 
     /// BSFS sends to BoxDelegate
@@ -73,9 +73,6 @@ public protocol BoxDelegate{
 
 
 }
-
-// COMPRESSION is using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
-// CRYPTO is using CommonCrypto
 
 public class BSFS:TriggerHook{
 
@@ -104,17 +101,66 @@ public class BSFS:TriggerHook{
         self._document=document
     }
 
+    // MARKS: - Paths
+
+    /// Returns the BSFS base folder path
+    /// ---
+    /// baseFolder/
+    ///     - blocks/ all the crypted compressed blocks (classifyed per 3 level of folders)
+    ///     - boxes/<boxUID/ the mounted files
+    ///     - tmp/ downloads in progress
+    ///
+    /// - Returns: the base path
+    public func baseFolderPath()->String{
+        return NSHomeDirectory()+"/.bsfs/\(_document.UID)"
+    }
+
+
+    public func blocksFolderPath()->String{
+        return self.baseFolderPath()+"/blocks"
+    }
+
+
+    public func boxesFolderPath()->String{
+        return self.baseFolderPath()+"/boxes"
+    }
+
+
+
+    //MARK:  - BOX API
+
+    /// Mounts the current local box
+    ///
+    /// - Parameters:
+    ///   - boxUID: the Box UID
+    ///   - progression: progress closure called on each discreet progression.
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    public func mount( boxUID:String,
+                      progression:@escaping((Progression)->()),
+                      success:@escaping ()->(),
+                      failure:@escaping (String)->()){
+
+    }
+
+    /// Un mounts the BOx
+    ///
+    /// - Parameters:
+    ///   - boxUID: the Box UID
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    public func unMount( boxUID:String,
+                        success:@escaping ()->(),
+                        failure:@escaping (String)->()){
+
+    }
 
     //MARK:  - File API
 
-    public func provisionAccess(to nodes:[Node],onCompletion:@escaping CompletionHandler){
-
-    }
 
     public func askForAccess(to node:Node,by accessor:NodeAccessor){
         // The nodeIsUsable() will be called when the file will be usable.
     }
-
 
 
     public func stopAccessingNode(node:Node,onCompletion:@escaping CompletionHandler){
@@ -133,14 +179,15 @@ public class BSFS:TriggerHook{
         return true
     }
 
+
     //MARK:  -
 
     fileprivate func _startAccessing(to node:Node,mounted:@escaping(String)->()){
         if !self._accessedNodes.contains(node) {
             self._accessedNodes.append(node)
         }
-        // TODO "Mount" node
     }
+
 
 
     //MARK:  - Boxed API
@@ -157,7 +204,14 @@ public class BSFS:TriggerHook{
     ///   - crypted: should we encrypt the node
     ///   - priority: synchronization priority (higher == will be synchronized before the other nodes)
     /// - Returns: the node
-    public func add(original absolutePath:String, relativePath:String,authorized:[String],deleteOriginal:Bool=false,compressed:Bool=false,crypted:Bool=true,priority:Int=0)throws->Node{
+    public func add(original absolutePath:String,
+                    relativePath:String,
+                    authorized:[String],
+                    deleteOriginal:Bool=false,
+                    compressed:Bool=false,
+                    crypted:Bool=true,
+                    priority:Int=0)throws->Node{
+
         return Node()
     }
 
@@ -168,7 +222,7 @@ public class BSFS:TriggerHook{
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - destinationPath: the relative path
+    ///   - relativePath: the relative path
     ///   - handler: the completion hanlder
     public func copy(node:Node,to destinationPath:String)->(){
         _boxDelegate?.copyIsReady(node: node, to: destinationPath, proceed: {
@@ -184,10 +238,10 @@ public class BSFS:TriggerHook{
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - destinationPath: the relative path
+    ///   - relativePath: the relative path
     ///   - handler: the completion hanlder
-    public func move(node:Node,to destinationPath:String)->(){
-        _boxDelegate?.moveIsReady(node: node, to: destinationPath, proceed: {
+    public func move(node:Node,to relativePath:String)->(){
+        _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
             // TODO implement
         })
 
@@ -202,7 +256,6 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     ///   - handler: the completion Handler
     public func delete(node:Node)->(){
-
         _boxDelegate?.deletionIsReady(node: node, proceed: {
             /// TODO implement the deletion
         })
@@ -219,9 +272,9 @@ public class BSFS:TriggerHook{
     /// Creates the Alias
     /// - Parameters:
     ///   - node: the node to be aliased
-    ///   - destinationPath: the destination path
+    ///   - relativePath: the destination relativePath
     ///   - handler: the completion Handler
-    public func createAlias(of node:Node,to destinationPath:String)->(){
+    public func createAlias(of node:Node,to relativePath:String)->(){
     }
 
 
@@ -230,7 +283,7 @@ public class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     public func create(node:Node)->(){
-        self._document.metadata.nodesInProgress.append(node)
+        self._document.metadata.inProgressNodesUIDS.append(node.UID)
         self._tryToAssembleNodesInProgress()
     }
 
@@ -238,7 +291,7 @@ public class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     public func update(node:Node)->(){
-        self._document.metadata.nodesInProgress.append(node)
+        self._document.metadata.inProgressNodesUIDS.append(node.UID)
         self._tryToAssembleNodesInProgress()
     }
 
@@ -282,13 +335,12 @@ public class BSFS:TriggerHook{
                     /// TODO implement Assembly process
 
                     /// END
-                    if let idx=self._document.metadata.nodesInProgress.index(of: node){
-                        self._document.metadata.nodesInProgress.remove(at: idx)
+                    if let idx=self._document.metadata.inProgressNodesUIDS.index(of: node.UID){
+                        self._document.metadata.inProgressNodesUIDS.remove(at: idx)
                     }
                     let completion=Completion.successState()
                     completion.externalIdentifier=node.UID
                     handler(completion)
-
                 })
             }else{
                 throw BSFSError.boxDelegateIsNotAvailable
@@ -332,10 +384,12 @@ public class BSFS:TriggerHook{
     // MARK: - Internal Mechanisms
 
     public func _tryToAssembleNodesInProgress(){
-        for node in self._document.metadata.nodesInProgress {
-            // Check if we have all the blocks
-            if (self._allBlocksAreAvailableFor(node: node)){
-                self._assemble(node: node, handler: VoidCompletionHandler)
+        for nodeUID in self._document.metadata.inProgressNodesUIDS {
+            if let node = try? Bartleby.registredObjectByUID(nodeUID) as Node{
+                // Check if we have all the blocks
+                if (self._allBlocksAreAvailableFor(node: node)){
+                    self._assemble(node: node, handler: VoidCompletionHandler)
+                }
             }
         }
     }

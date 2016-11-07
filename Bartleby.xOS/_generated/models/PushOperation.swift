@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: an object used to provision serialized operation. All its properties are not supervisable
+// MARK: Bartleby's Core: an object used to provision serialized operation.
 @objc(PushOperation) open class PushOperation : BartlebyObject{
 
     // Universal type support

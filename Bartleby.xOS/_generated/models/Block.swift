@@ -22,7 +22,7 @@ import Foundation
     }
 
 	//The SHA1 digest of the block
-	dynamic open var digest:String? {
+	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
 	    didSet { 
 	       if digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
@@ -87,12 +87,24 @@ import Foundation
 	    }
 	}
 
+	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
+	dynamic open var uploadProgression:Progression = Progression()
+
+	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+	dynamic open var downloadProgression:Progression = Progression()
+
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var uploadInProgress:Bool = false
+
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var downloadInProgress:Bool = false
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted"])
+        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -137,6 +149,22 @@ import Foundation
                 if let casted=value as? Bool{
                     self.crypted=casted
                 }
+            case "uploadProgression":
+                if let casted=value as? Progression{
+                    self.uploadProgression=casted
+                }
+            case "downloadProgression":
+                if let casted=value as? Progression{
+                    self.downloadProgression=casted
+                }
+            case "uploadInProgress":
+                if let casted=value as? Bool{
+                    self.uploadInProgress=casted
+                }
+            case "downloadInProgress":
+                if let casted=value as? Bool{
+                    self.downloadInProgress=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -168,6 +196,14 @@ import Foundation
                return self.compressed
             case "crypted":
                return self.crypted
+            case "uploadProgression":
+               return self.uploadProgression
+            case "downloadProgression":
+               return self.downloadProgression
+            case "uploadInProgress":
+               return self.uploadInProgress
+            case "downloadInProgress":
+               return self.downloadInProgress
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -198,7 +234,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey:"digest") as NSString?)
+			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"nodeUID") as NSString?)
 			self.address=decoder.decodeInteger(forKey:"address") 
@@ -211,9 +247,7 @@ import Foundation
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		if let digest = self.digest {
-			coder.encode(digest,forKey:"digest")
-		}
+		coder.encode(self.digest,forKey:"digest")
 		coder.encode(self.authorized,forKey:"authorized")
 		if let nodeUID = self.nodeUID {
 			coder.encode(nodeUID,forKey:"nodeUID")

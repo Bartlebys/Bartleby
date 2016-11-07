@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Synchronized File System: A box reference sets of Nodes and Blocks
+// MARK: Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks
 @objc(Box) open class Box : BartlebyObject{
 
     // Universal type support
@@ -21,39 +21,24 @@ import Foundation
         return "Box"
     }
 
-	//The base path relative path (app container  or declarative)
-	dynamic open var relativePath:String? {
-	    didSet { 
-	       if relativePath != oldValue {
-	            self.provisionChanges(forKey: "relativePath",oldValue: oldValue,newValue: relativePath) 
-	       } 
-	    }
-	}
+	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
+	dynamic open var uploadProgression:Progression = Progression()
 
-	//BSFS: A collection nodes
-	dynamic open var nodes:[Node] = [Node]()  {
-	    didSet { 
-	       if nodes != oldValue {
-	            self.provisionChanges(forKey: "nodes",oldValue: oldValue,newValue: nodes)  
-	       } 
-	    }
-	}
+	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+	dynamic open var downloadProgression:Progression = Progression()
 
-	//BSFS: A collection nodes
-	dynamic open var blocks:[Block] = [Block]()  {
-	    didSet { 
-	       if blocks != oldValue {
-	            self.provisionChanges(forKey: "blocks",oldValue: oldValue,newValue: blocks)  
-	       } 
-	    }
-	}
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var uploadInProgress:Bool = false
+
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var downloadInProgress:Bool = false
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["relativePath","nodes","blocks"])
+        exposed.append(contentsOf:["uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -66,17 +51,21 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "relativePath":
-                if let casted=value as? String{
-                    self.relativePath=casted
+            case "uploadProgression":
+                if let casted=value as? Progression{
+                    self.uploadProgression=casted
                 }
-            case "nodes":
-                if let casted=value as? [Node]{
-                    self.nodes=casted
+            case "downloadProgression":
+                if let casted=value as? Progression{
+                    self.downloadProgression=casted
                 }
-            case "blocks":
-                if let casted=value as? [Block]{
-                    self.blocks=casted
+            case "uploadInProgress":
+                if let casted=value as? Bool{
+                    self.uploadInProgress=casted
+                }
+            case "downloadInProgress":
+                if let casted=value as? Bool{
+                    self.downloadInProgress=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -93,12 +82,14 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "relativePath":
-               return self.relativePath
-            case "nodes":
-               return self.nodes
-            case "blocks":
-               return self.blocks
+            case "uploadProgression":
+               return self.uploadProgression
+            case "downloadProgression":
+               return self.downloadProgression
+            case "uploadInProgress":
+               return self.uploadInProgress
+            case "downloadInProgress":
+               return self.downloadInProgress
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -112,9 +103,6 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self.relativePath <- ( map["relativePath"] )
-			self.nodes <- ( map["nodes"] )
-			self.blocks <- ( map["blocks"] )
         }
     }
 
@@ -124,19 +112,11 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"relativePath") as NSString?)
-			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "nodes")! as! [Node]
-			self.blocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "blocks")! as! [Block]
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		if let relativePath = self.relativePath {
-			coder.encode(relativePath,forKey:"relativePath")
-		}
-		coder.encode(self.nodes,forKey:"nodes")
-		coder.encode(self.blocks,forKey:"blocks")
     }
 
     override open class var supportsSecureCoding:Bool{

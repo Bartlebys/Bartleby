@@ -26,9 +26,10 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 # Models 
 
++ Box - A box is a logical unit to group Nodes (and therefore Blocks)
 + Node - Refers to A file , a folder or an Alias, and stores startAddress and length of its Blocks
 + Block - The model that reference a block file (the raw bytes chunks)
-+ Box - A box reference sets of Nodes and Blocks
+
 
 # Block Raw files 
 
@@ -51,6 +52,7 @@ is in <container>/blocks/N/K/J
 
 # Operations
 
++ CRUD Box(es)
 + CRUD Node(s)
 + CRUD Block(s)
 + UploadBlock - Creation and Update -
@@ -70,10 +72,11 @@ When a node or a block is created, updated or deleted, it is automatically propa
 
 - document.nodes
 - document.blocks
+- document.boxes
 
 ## Metadata 
 
-- `document.metadata.localBox` Reflects the local state.
+- `metadata.localBoxes, metadata.localNodes, metadata.localBlocks` reflects the local state.
 - `document.metadata.nodesInProgress` A collection nodes with blocks download in progress, or not still assembled (waiting for delegate) ** TO BE VERIFIED ***
 
 

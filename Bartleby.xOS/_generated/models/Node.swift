@@ -30,11 +30,20 @@ import Foundation
 	    }
 	}
 
-	//The boxed relative path
-	dynamic open var relativePath:String? {
+	//The relative path inside the box
+	dynamic open var relativePath:String = "\(Default.NO_PATH)"{
 	    didSet { 
 	       if relativePath != oldValue {
 	            self.provisionChanges(forKey: "relativePath",oldValue: oldValue,newValue: relativePath) 
+	       } 
+	    }
+	}
+
+	//The Box UID
+	dynamic open var boxUID:String? {
+	    didSet { 
+	       if boxUID != oldValue {
+	            self.provisionChanges(forKey: "boxUID",oldValue: oldValue,newValue: boxUID) 
 	       } 
 	    }
 	}
@@ -116,12 +125,24 @@ import Foundation
 	    }
 	}
 
+	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
+	dynamic open var uploadProgression:Progression = Progression()
+
+	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+	dynamic open var downloadProgression:Progression = Progression()
+
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var uploadInProgress:Bool = false
+
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	dynamic open var downloadInProgress:Bool = false
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","compressed","cryptedBlocks"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -141,6 +162,10 @@ import Foundation
             case "relativePath":
                 if let casted=value as? String{
                     self.relativePath=casted
+                }
+            case "boxUID":
+                if let casted=value as? String{
+                    self.boxUID=casted
                 }
             case "proxyPath":
                 if let casted=value as? String{
@@ -182,6 +207,22 @@ import Foundation
                 if let casted=value as? Bool{
                     self.cryptedBlocks=casted
                 }
+            case "uploadProgression":
+                if let casted=value as? Progression{
+                    self.uploadProgression=casted
+                }
+            case "downloadProgression":
+                if let casted=value as? Progression{
+                    self.downloadProgression=casted
+                }
+            case "uploadInProgress":
+                if let casted=value as? Bool{
+                    self.uploadInProgress=casted
+                }
+            case "downloadInProgress":
+                if let casted=value as? Bool{
+                    self.downloadInProgress=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -201,6 +242,8 @@ import Foundation
                return self.externalID
             case "relativePath":
                return self.relativePath
+            case "boxUID":
+               return self.boxUID
             case "proxyPath":
                return self.proxyPath
             case "blocksMaxSize":
@@ -221,6 +264,14 @@ import Foundation
                return self.compressed
             case "cryptedBlocks":
                return self.cryptedBlocks
+            case "uploadProgression":
+               return self.uploadProgression
+            case "downloadProgression":
+               return self.downloadProgression
+            case "uploadInProgress":
+               return self.uploadInProgress
+            case "downloadInProgress":
+               return self.downloadInProgress
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -236,6 +287,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.externalID <- ( map["externalID"] )
 			self.relativePath <- ( map["relativePath"] )
+			self.boxUID <- ( map["boxUID"] )
 			self.proxyPath <- ( map["proxyPath"] )
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
 			self.priority <- ( map["priority"] )
@@ -256,7 +308,8 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
-			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"relativePath") as NSString?)
+			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relativePath")! as NSString)
+			self.boxUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"boxUID") as NSString?)
 			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
@@ -275,8 +328,9 @@ import Foundation
 		if let externalID = self.externalID {
 			coder.encode(externalID,forKey:"externalID")
 		}
-		if let relativePath = self.relativePath {
-			coder.encode(relativePath,forKey:"relativePath")
+		coder.encode(self.relativePath,forKey:"relativePath")
+		if let boxUID = self.boxUID {
+			coder.encode(boxUID,forKey:"boxUID")
 		}
 		if let proxyPath = self.proxyPath {
 			coder.encode(proxyPath,forKey:"proxyPath")

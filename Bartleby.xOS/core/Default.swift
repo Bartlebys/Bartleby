@@ -159,8 +159,12 @@ public struct Default {
     static public let NO_GEM: String="NO_GEM"
     static public let NO_GROUP: String="NO_GROUP"
     static public let NO_METHOD: String="NO_METHOD"
+    static public let NO_DIGEST: String="NO_DIGEST"
     static public let NO_INT_INDEX=Int.max
     static public let STRING_ENCODING = String.Encoding.utf8
+
+    static public let CATEGORY_DOWNLOADS = "downloads"
+    static public let CATEGORY_UPLOADS = "uploads"
 
 
     // A bunch of char in wich to pick to compose a random password
