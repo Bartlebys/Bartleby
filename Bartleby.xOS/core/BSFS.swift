@@ -301,6 +301,127 @@ public class BSFS:TriggerHook{
         }
     }
 
+    public struct Chunk {
+        var relativePath:String
+        var sha1:String
+        var originalSize:Int
+    }
+
+    //public func autoreleasepool<Result>(invoking body: () throws -> Result) rethrows -> Result
+
+    public func breakIntoChunk(fileAt path:String,destination folderPath:String, chunkMaxSize:Int=10*MB,compress:Bool,encrypt:Bool,success:@escaping ([Chunk])->(), failure:@escaping (String)->()){
+
+        // We want this operation not to be blocking the UI
+        Async.utility {
+
+            // Read each chunk efficiently
+            if let fileHandle=FileHandle(forReadingAtPath:path ){
+
+                let _=fileHandle.seekToEndOfFile()
+                let l=fileHandle.offsetInFile
+                fileHandle.seek(toFileOffset: 0)
+                let maxSize:UInt64 = UInt64(chunkMaxSize)
+                let n:UInt64=l/maxSize
+                let r:UInt64=l % maxSize
+                var nb=n-1
+                if r>0 && l >= maxSize{
+                    nb += 1
+                }
+
+                let _ = try? FileManager.default.removeItem(atPath: folderPath)
+                let _ = try? FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+
+                var offset:UInt64=0
+                var position:UInt64=0
+                var chunks=[Chunk]()
+
+
+                func __writeData(data:Data,to folderPath:String)throws->(){
+                    let sha1=data.sha1
+                    // Generate a Classified Block Tree.
+                    let c1=PString.substr(sha1, 0, 1)
+                    let c2=PString.substr(sha1, 1, 1)
+                    let c3=PString.substr(sha1, 2, 1)
+                    let relativeFolderPath="\(c1)/\(c2)/\(c3)/"
+                    let bFolderPath=folderPath+relativeFolderPath
+                    let _ = try FileManager.default.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
+                    let destination=bFolderPath+"/\(sha1)"
+                    let chunkRelativePath=relativeFolderPath+"\(sha1)"
+                    let chunk=Chunk(relativePath: chunkRelativePath, sha1: sha1,originalSize:Int(offset))
+                    chunks.append(chunk)
+                    let url=URL(fileURLWithPath: destination)
+                    let _ = try data.write(to:url )
+                }
+
+                do {
+                    for i in 0 ... nb{
+                        // We donnot want to reduce the memory usage
+                        // To the footprint of a Chunk +  Derivated Data.
+                        try autoreleasepool(invoking: { () -> Void in
+                            fileHandle.seek(toFileOffset: position)
+                            offset = (i==nb ? r : maxSize)
+                            position += offset
+                             var data=fileHandle.readData(ofLength: Int(offset))
+                                if compress{
+                                    data = try data.compress(algorithm: .lz4)
+                                }
+                                if encrypt {
+                                    data = try Bartleby.cryptoDelegate.encryptData(data)
+                                }
+                                try __writeData(data: data,to:folderPath)
+
+                        })
+                    }
+                    fileHandle.closeFile()
+                    Async.main{
+                        success(chunks)
+                    }
+
+                }catch{
+                    Async.main{
+                        failure("\(error)")
+                    }
+                }
+
+
+
+                /*
+
+
+
+                 FileManager.default.createFile(atPath: folderPath, contents: nil, attributes: nil)
+                 // Assemble
+                 if let writeFileHande=FileHandle(forWritingAtPath:folderPath ){
+                 offset=0
+                 position=0
+                 for i in 0 ... nb{
+                 autoreleasepool(invoking: { () -> Void in
+                 do {
+                 let source=folderPath+"/\(i).data"
+                 let url=URL(fileURLWithPath: source)
+                 let encrypted = try Data(contentsOf:url)
+                 //let sha1=encrypted.sha1
+                 let decrypted = try Bartleby.cryptoDelegate.decryptData(encrypted)
+                 if let decompressed = try decrypted.decompress(algorithm: .lz4){
+                 writeFileHande.write(decompressed)
+                 }
+                 }catch{
+                 print(error)
+                 }
+                 })
+                 }
+                 }
+                 */
+                
+
+        }
+
+        }
+
+    }
+
+
+
 
     //MARK: - Triggered Block Level Action
 
