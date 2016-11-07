@@ -361,6 +361,7 @@ public class BSFS:TriggerHook{
     /// This breaks efficiently a file to chunks.
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
+    /// - closures are called on the Main thread
     ///
     /// - Parameters:
     ///   - path: the file path
@@ -368,14 +369,20 @@ public class BSFS:TriggerHook{
     ///   - chunkMaxSize: the max size for a chunk / future block
     ///   - compress: should we compress (using LZ4)
     ///   - encrypt: should we encrypt (using AES256)
+    ///   - externalId: this identifier allow to map the progression
+    ///   - progression: progress closure called on each discreet progression.
     ///   - success: the success closure returns a Chunk Struct to be used to create/update Block instances
     ///   - failure: the failure closure
     public func breakIntoChunk(  fileAt path:String,
                                  destination folderPath:String,
                                  chunkMaxSize:Int=10*MB,
-                                 compress:Bool,encrypt:Bool,
+                                 compress:Bool,
+                                 encrypt:Bool,
+                                 externalId:String=Default.NO_UID,
+                                 progression:@escaping((Progression)->()),
                                  success:@escaping ([Chunk])->(),
                                  failure:@escaping (String)->()){
+
 
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
@@ -394,6 +401,13 @@ public class BSFS:TriggerHook{
                     nb += 1
                 }
 
+                let progressionState=Progression()
+                progressionState.totalTaskCount=Int(nb)
+                progressionState.currentTaskIndex=0
+                progressionState.externalIdentifier=externalId
+                progressionState.message=""
+
+
                 let _ = try? FileManager.default.removeItem(atPath: folderPath)
                 let _ = try? FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
 
@@ -401,6 +415,7 @@ public class BSFS:TriggerHook{
                 var position:UInt64=0
                 var chunks=[Chunk]()
 
+                var counter=0
 
                 func __writeData(data:Data,to folderPath:String)throws->(){
                     let sha1=data.sha1
@@ -417,6 +432,14 @@ public class BSFS:TriggerHook{
                     chunks.append(chunk)
                     let url=URL(fileURLWithPath: destination)
                     let _ = try data.write(to:url )
+                    Async.main{
+                        counter += 1
+                        progressionState.message=chunkRelativePath
+                        progressionState.currentTaskIndex=counter
+                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        // Relay the progression
+                        progression(progressionState)
+                    }
                 }
 
                 do {
@@ -462,24 +485,28 @@ public class BSFS:TriggerHook{
     /// Joins the chunks to form a file
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
+    /// - closures are called on the Main thread
     ///
     /// - Parameters:
     ///   - paths: the chunks absolute paths
     ///   - destinationFilePath: the joined file destination
     ///   - decompress: should we decompress using LZ4
     ///   - decrypt: should we decrypt usign AES256
+    ///   - externalId: this identifier allow to map the progression
+    ///   - progression: progress closure called on each discreet progression.
     ///   - success: the success closure
     ///   - failure: the failure closure
     public func joinChunks (   from paths:[String],
-                              to destinationFilePath:String,
-                              decompress:Bool,
-                              decrypt:Bool,
-                              success:@escaping ()->(),
-                              failure:@escaping (String)->()){
+                               to destinationFilePath:String,
+                               decompress:Bool,
+                               decrypt:Bool,
+                               externalId:String=Default.NO_UID,
+                               progression:@escaping((Progression)->()),
+                               success:@escaping ()->(),
+                               failure:@escaping (String)->()){
 
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
-
             do{
 
                 let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
@@ -490,6 +517,13 @@ public class BSFS:TriggerHook{
                 if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
                     writeFileHande.seek(toFileOffset: 0)
 
+                    let progressionState=Progression()
+                    progressionState.totalTaskCount=paths.count
+                    progressionState.currentTaskIndex=0
+                    progressionState.message=""
+                    progressionState.externalIdentifier=externalId
+
+                    var counter=0
                     for source in paths{
                         try autoreleasepool(invoking: { () -> Void in
                             let url=URL(fileURLWithPath: source)
@@ -501,6 +535,14 @@ public class BSFS:TriggerHook{
                                 data = try data.decompress(algorithm: .lz4)
                             }
                             writeFileHande.write(data)
+                            Async.main{
+                                counter += 1
+                                progressionState.message=source
+                                progressionState.currentTaskIndex=counter
+                                progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                                // Relay the progression
+                                progression(progressionState)
+                            }
                         })
                     }
                     Async.main{
@@ -519,6 +561,6 @@ public class BSFS:TriggerHook{
             }
         }
     }
-
+    
     
 }
