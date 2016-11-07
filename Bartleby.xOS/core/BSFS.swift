@@ -153,11 +153,11 @@ public class BSFS:TriggerHook{
     ///   - relativePath: the relative Path of the Node
     ///   - authorized: the User UIDS or "*" if public
     ///   - deleteOriginal: should we delete the original?
-    ///   - zipped: should we zip the node
+    ///   - compressed: should we zip the node
     ///   - crypted: should we encrypt the node
     ///   - priority: synchronization priority (higher == will be synchronized before the other nodes)
     /// - Returns: the node
-    public func add(original absolutePath:String, relativePath:String,authorized:[String],deleteOriginal:Bool=false,zipped:Bool=false,crypted:Bool=true,priority:Int=0)throws->Node{
+    public func add(original absolutePath:String, relativePath:String,authorized:[String],deleteOriginal:Bool=false,compressed:Bool=false,crypted:Bool=true,priority:Int=0)throws->Node{
         return Node()
     }
 
@@ -171,8 +171,6 @@ public class BSFS:TriggerHook{
     ///   - destinationPath: the relative path
     ///   - handler: the completion hanlder
     public func copy(node:Node,to destinationPath:String)->(){
-
-
         _boxDelegate?.copyIsReady(node: node, to: destinationPath, proceed: {
             // TODO implement
         })
@@ -301,17 +299,85 @@ public class BSFS:TriggerHook{
         }
     }
 
+
+
+    internal func _disassemble(node:Node,handler: @escaping CompletionHandler){
+        // #1 Break the node into chunk
+        // #2 Compare the block
+        // #3 Update the node instance
+
+    }
+
+
+
+    //MARK: - Triggered Block Level Action
+
+    /// Downloads a Block.
+    /// This occurs before triggered_create on each successfull upload.
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    internal func triggered_download(block:Block){
+        if block.authorized.contains(self._document.currentUser.UID) ||
+            block.authorized.contains("*"){
+            // We can download
+            // @TODO
+
+            // On each completion :
+            // Call self._tryToAssembleNodesInProgress()
+
+        }
+    }
+
+    // MARK: - Internal Mechanisms
+
+    public func _tryToAssembleNodesInProgress(){
+        for node in self._document.metadata.nodesInProgress {
+            // Check if we have all the blocks
+            if (self._allBlocksAreAvailableFor(node: node)){
+                self._assemble(node: node, handler: VoidCompletionHandler)
+            }
+        }
+    }
+
+    public func _allBlocksAreAvailableFor(node:Node)->Bool{
+        // @TODO
+        return true
+    }
+
+
+
+    //MARK: - Chunk API (low level chunk to file and file to chunk)
+
+
     public struct Chunk {
+        var baseDirectory:String
         var relativePath:String
         var sha1:String
         var originalSize:Int
     }
 
-    //public func autoreleasepool<Result>(invoking body: () throws -> Result) rethrows -> Result
 
-    public func breakIntoChunk(fileAt path:String,destination folderPath:String, chunkMaxSize:Int=10*MB,compress:Bool,encrypt:Bool,success:@escaping ([Chunk])->(), failure:@escaping (String)->()){
+    /// This breaks efficiently a file to chunks.
+    /// - The hard stuff is done Asynchronously on a the Utility queue
+    /// - we use an Autorelease pool to lower the memory foot print
+    ///
+    /// - Parameters:
+    ///   - path: the file path
+    ///   - folderPath: the destination folder path
+    ///   - chunkMaxSize: the max size for a chunk / future block
+    ///   - compress: should we compress (using LZ4)
+    ///   - encrypt: should we encrypt (using AES256)
+    ///   - success: the success closure returns a Chunk Struct to be used to create/update Block instances
+    ///   - failure: the failure closure
+    public func breakIntoChunk(  fileAt path:String,
+                                 destination folderPath:String,
+                                 chunkMaxSize:Int=10*MB,
+                                 compress:Bool,encrypt:Bool,
+                                 success:@escaping ([Chunk])->(),
+                                 failure:@escaping (String)->()){
 
-        // We want this operation not to be blocking the UI
+        // Don't block the main thread with those intensive IO  processing
         Async.utility {
 
             // Read each chunk efficiently
@@ -347,7 +413,7 @@ public class BSFS:TriggerHook{
                     let _ = try FileManager.default.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
-                    let chunk=Chunk(relativePath: chunkRelativePath, sha1: sha1,originalSize:Int(offset))
+                    let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,originalSize:Int(offset))
                     chunks.append(chunk)
                     let url=URL(fileURLWithPath: destination)
                     let _ = try data.write(to:url )
@@ -361,14 +427,14 @@ public class BSFS:TriggerHook{
                             fileHandle.seek(toFileOffset: position)
                             offset = (i==nb ? r : maxSize)
                             position += offset
-                             var data=fileHandle.readData(ofLength: Int(offset))
-                                if compress{
-                                    data = try data.compress(algorithm: .lz4)
-                                }
-                                if encrypt {
-                                    data = try Bartleby.cryptoDelegate.encryptData(data)
-                                }
-                                try __writeData(data: data,to:folderPath)
+                            var data=fileHandle.readData(ofLength: Int(offset))
+                            if compress{
+                                data = try data.compress(algorithm: .lz4)
+                            }
+                            if encrypt {
+                                data = try Bartleby.cryptoDelegate.encryptData(data)
+                            }
+                            try __writeData(data: data,to:folderPath)
 
                         })
                     }
@@ -382,80 +448,77 @@ public class BSFS:TriggerHook{
                         failure("\(error)")
                     }
                 }
-
-
-
-                /*
-
-
-
-                 FileManager.default.createFile(atPath: folderPath, contents: nil, attributes: nil)
-                 // Assemble
-                 if let writeFileHande=FileHandle(forWritingAtPath:folderPath ){
-                 offset=0
-                 position=0
-                 for i in 0 ... nb{
-                 autoreleasepool(invoking: { () -> Void in
-                 do {
-                 let source=folderPath+"/\(i).data"
-                 let url=URL(fileURLWithPath: source)
-                 let encrypted = try Data(contentsOf:url)
-                 //let sha1=encrypted.sha1
-                 let decrypted = try Bartleby.cryptoDelegate.decryptData(encrypted)
-                 if let decompressed = try decrypted.decompress(algorithm: .lz4){
-                 writeFileHande.write(decompressed)
-                 }
-                 }catch{
-                 print(error)
-                 }
-                 })
-                 }
-                 }
-                 */
-                
-
-        }
+            }else{
+                Async.main{
+                    failure("Unable to create file Handle at: \(path)")
+                }
+            }
 
         }
 
     }
 
 
-
-
-    //MARK: - Triggered Block Level Action
-
-    /// Downloads a Block.
-    /// This occurs before triggered_create on each successfull upload.
+    /// Joins the chunks to form a file
+    /// - The hard stuff is done Asynchronously on a the Utility queue
+    /// - we use an Autorelease pool to lower the memory foot print
     ///
     /// - Parameters:
-    ///   - node: the node
-    internal func triggered_download(block:Block){
-        if block.authorized.contains(self._document.currentUser.UID) ||
-            block.authorized.contains("*"){
-            // We can download
-            // @TODO
+    ///   - paths: the chunks absolute paths
+    ///   - destinationFilePath: the joined file destination
+    ///   - decompress: should we decompress using LZ4
+    ///   - decrypt: should we decrypt usign AES256
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    public func joinChunks (   from paths:[String],
+                              to destinationFilePath:String,
+                              decompress:Bool,
+                              decrypt:Bool,
+                              success:@escaping ()->(),
+                              failure:@escaping (String)->()){
 
-            // On each completion :
-            // Call self._tryToAssembleNodesInProgress()
+        // Don't block the main thread with those intensive IO  processing
+        Async.utility {
 
-        }
-    }
+            do{
 
-    // MARK: - Internal Mechanisms
+                let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
+                try FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+                FileManager.default.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
 
-    public func _tryToAssembleNodesInProgress(){
-        for node in self._document.metadata.nodesInProgress {
-            // Check if we have all the blocks
-            if (self._allBlocksAreAvailableFor(node: node)){
-                self._assemble(node: node, handler: VoidCompletionHandler)
+                // Assemble
+                if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
+                    writeFileHande.seek(toFileOffset: 0)
+
+                    for source in paths{
+                        try autoreleasepool(invoking: { () -> Void in
+                            let url=URL(fileURLWithPath: source)
+                            var data = try Data(contentsOf:url)
+                            if decrypt{
+                                data = try Bartleby.cryptoDelegate.decryptData(data)
+                            }
+                            if decompress{
+                                data = try data.decompress(algorithm: .lz4)
+                            }
+                            writeFileHande.write(data)
+                        })
+                    }
+                    Async.main{
+                        success()
+                    }
+                    
+                }else{
+                    Async.main{
+                        failure("Unable to create file Handle at: \(destinationFilePath)")
+                    }
+                }
+            }catch{
+                Async.main{
+                    failure("\(error)")
+                }
             }
         }
     }
-    
-    public func _allBlocksAreAvailableFor(node:Node)->Bool{
-        // @TODO
-        return true
-    }
 
+    
 }
