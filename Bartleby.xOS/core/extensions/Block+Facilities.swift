@@ -22,11 +22,6 @@ extension Block{
         }
     }
 
-    /// - Returns: true if the Block can be assembled or is assembled
-    func isAssemblable()->Bool{
-        return FileManager.default.fileExists(atPath: self.absolutePath())
-    }
-
 
     /// Computes the block relative Path
     ///

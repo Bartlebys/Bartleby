@@ -26,18 +26,22 @@ extension Node{
 
 
 
+    ///
+    /// - Returns: true is the node is assembled, the node is assembled when it box is mounted
+    func isAssembled()->Bool{
+        return FileManager.default.fileExists(atPath: self.absolutePath())
+    }
 
     ///
-    /// - Returns: true if the node can be assembled or is assembled
+    /// - Returns: true if the node can be assembled
     func isAssemblable()->Bool{
-        var isAssemblable=true
-        for block in self.localBlocks(){
-            isAssemblable = block.isAssemblable() && isAssemblable
-            if !isAssemblable{
-                break
+        // Do we have all the required blocks?
+        for uid in self.blocksUIDS{
+            guard let _ = self.localBlocks().index(where: { $0.UID==uid }) else{
+                return false
             }
         }
-        return isAssemblable
+        return true
     }
 
 
@@ -74,23 +78,23 @@ extension Node{
     // MARK: ConsolidableProgression
 
 
-
     /// Return it own progression State
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
     override func progressionState(for category:String)->Progression?{
         if category==Default.CATEGORY_DOWNLOADS{
-            if self.downloadInProgress{
+            if downloadInProgress{
                 return self.downloadProgression
             }
-        }else{
-            if self.uploadInProgress{
+        }else if category==Default.CATEGORY_UPLOADS{
+            if uploadInProgress{
                 return self.uploadProgression
             }
         }
         return nil
     }
+
 
 
     /// Return all the children Progression states to be consolidated
@@ -99,14 +103,14 @@ extension Node{
     /// - Returns: the array of Progression states
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
-        if category==Default.CATEGORY_DOWNLOADS{
+        if category==Default.CATEGORY_DOWNLOADS {
             for node in self.distantBlocks(){
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
                 }
             }
-        }else{
+        }else if category==Default.CATEGORY_UPLOADS {
             for node in self.localBlocks(){
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
@@ -120,6 +124,7 @@ extension Node{
             return nil
         }
     }
+
 
     
 }

@@ -21,11 +21,17 @@ import Foundation
         return "Box"
     }
 
+	//Turned to true when the box is mounted (not serializable, not supervisable)
+	dynamic open var isMounted:Bool = false
+
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
 	dynamic open var uploadProgression:Progression = Progression()
 
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
 	dynamic open var downloadProgression:Progression = Progression()
+
+	//The Assembly Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+	dynamic open var assemblyProgression:Progression = Progression()
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
 	dynamic open var uploadInProgress:Bool = false
@@ -33,12 +39,15 @@ import Foundation
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
 	dynamic open var downloadInProgress:Bool = false
 
+	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
+	dynamic open var assemblyInProgress:Bool = false
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["isMounted","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -51,6 +60,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "isMounted":
+                if let casted=value as? Bool{
+                    self.isMounted=casted
+                }
             case "uploadProgression":
                 if let casted=value as? Progression{
                     self.uploadProgression=casted
@@ -59,6 +72,10 @@ import Foundation
                 if let casted=value as? Progression{
                     self.downloadProgression=casted
                 }
+            case "assemblyProgression":
+                if let casted=value as? Progression{
+                    self.assemblyProgression=casted
+                }
             case "uploadInProgress":
                 if let casted=value as? Bool{
                     self.uploadInProgress=casted
@@ -66,6 +83,10 @@ import Foundation
             case "downloadInProgress":
                 if let casted=value as? Bool{
                     self.downloadInProgress=casted
+                }
+            case "assemblyInProgress":
+                if let casted=value as? Bool{
+                    self.assemblyInProgress=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -82,14 +103,20 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "isMounted":
+               return self.isMounted
             case "uploadProgression":
                return self.uploadProgression
             case "downloadProgression":
                return self.downloadProgression
+            case "assemblyProgression":
+               return self.assemblyProgression
             case "uploadInProgress":
                return self.uploadInProgress
             case "downloadInProgress":
                return self.downloadInProgress
+            case "assemblyInProgress":
+               return self.assemblyInProgress
             default:
                 return try super.getExposedValueForKey(key)
         }

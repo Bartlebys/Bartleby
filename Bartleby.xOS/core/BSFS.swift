@@ -9,6 +9,8 @@ import Foundation
 
 enum BSFSError:Error{
     case boxDelegateIsNotAvailable
+    case attemptToMountBoxMultipleTime(boxUID:String)
+    case nodeIsNotAssemblable
 }
 
 
@@ -20,18 +22,22 @@ public extension Node{
 
 
 // Should be implemented by anything that want to acceed to a node.
-public protocol NodeAccessor{
+public protocol NodeAccessor:Identifiable{
 
-    /// Called when
-    /// - the current node assembled file will become unusable (for example on external update)
+    /// Called when:
+    /// - the current node assembled file will become temporaly unusable (for example on external update)
+    /// - the Box has been unmounted
     /// - the file will be deleted
+    //  - or if the access to the file has been blocked (ACL)
+    /// 
+    /// If the node accessor remain active, if the node become usable again it will receive a `nodeIsUsable(node:Node)` call
     ///
     /// - Parameter node: the node
     func willBecomeUnusable(node:Node)
 
 
     /// Called after an `askForAccess` demand  when
-    /// - the current node rendered file becomes available (all the block are available, and the file has been assembled)
+    /// - the current node assembled file becomes available (all the block are available, and the file has been assembled)
     ///
     /// - Parameter node: the node
     func nodeIsUsable(node:Node)
@@ -64,6 +70,8 @@ public protocol BoxDelegate{
     func deletionIsReady(node:Node,proceed:()->())
 
 
+/// ????
+
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
@@ -76,7 +84,6 @@ public protocol BoxDelegate{
 
 public class BSFS:TriggerHook{
 
-
     // Document
 
     fileprivate unowned var _document:BartlebyDocument
@@ -86,9 +93,6 @@ public class BSFS:TriggerHook{
 
     // The Boxes Delegate registry.
     fileprivate var _boxDelegate:BoxDelegate?
-
-    // The current accessed nodes
-    fileprivate var _accessedNodes:[Node] = [Node]()
 
     // And their accessors
     fileprivate var _accessors=[String:[NodeAccessor]]()
@@ -126,65 +130,136 @@ public class BSFS:TriggerHook{
     }
 
 
-
     //MARK:  - BOX API
 
-    /// Mounts the current local box
+    /// Mounts the current local box == Assemble all its assemblable nodes
+    /// There is no guarante that the box is not fully up to date
     ///
     /// - Parameters:
     ///   - boxUID: the Box UID
-    ///   - progression: progress closure called on each discreet progression.
-    ///   - success: the success closure
-    ///   - failure: the failure closure
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State.
     public func mount( boxUID:String,
-                      progression:@escaping((Progression)->()),
-                      success:@escaping ()->(),
-                      failure:@escaping (String)->()){
+                       progressed:@escaping (Progression)->(),
+                       completed:@escaping (Completion)->()){
+        do {
+
+            let box = try Bartleby.registredObjectByUID(boxUID) as Box
+
+            if box.assemblyInProgress || box.isMounted {
+                throw BSFSError.attemptToMountBoxMultipleTime(boxUID: boxUID)
+            }
+
+            var concernedNodes=[Node]()
+
+            // Let's try to assemble as much nodes as we can.
+            for node in box.localNodes(){
+                if node.isAssemblable() && !node.isAssembled() && !node.assemblyInProgress{
+                    concernedNodes.append(node)
+                }
+            }
+
+            box.silentGroupedChanges {
+                box.assemblyProgression.totalTaskCount=concernedNodes.count
+                box.assemblyProgression.currentTaskIndex=0
+                box.assemblyProgression.currentPercentProgress=0
+            }
+
+            // We want to assemble the node sequentially.
+            // So we will use a recursive pop method
+            func __popNode(){
+                if let node=concernedNodes.popLast(){
+                    node.assemblyInProgress=true
+                    self._assemble(node: node, progressed: { (progression) in
+                        // We can add proportional box.assemblyProgression if we want smoother progression
+                    }, completed: { (completion) in
+                        node.assemblyInProgress=false
+                        box.assemblyProgression.currentTaskIndex += 1
+                        box.assemblyProgression.currentPercentProgress=Double(box.assemblyProgression.currentTaskIndex)*Double(100)/Double(box.assemblyProgression.totalTaskCount)
+                        __popNode()
+                    })
+                }else{
+                    box.assemblyInProgress=false
+                    box.isMounted=true
+                    completed(Completion.successState())
+                }
+            }
+
+            // Call the first pop.
+            __popNode()
+
+        } catch {
+            completed(Completion.failureStateFromError(error))
+        }
 
     }
 
-    /// Un mounts the BOx
+
+    /// Un mounts the BOX == deletes all the assembled files
     ///
     /// - Parameters:
     ///   - boxUID: the Box UID
-    ///   - success: the success closure
-    ///   - failure: the failure closure
+    ///   - completed: a closure called on completion with Completion State.
     public func unMount( boxUID:String,
-                        success:@escaping ()->(),
-                        failure:@escaping (String)->()){
-
+                         completed:@escaping (Completion)->()){
+        do {
+            let box = try Bartleby.registredObjectByUID(boxUID) as Box
+            for node in box.localNodes(){
+                if let accessors=self._accessors[node.UID]{
+                    for accessor in accessors{
+                        accessor.willBecomeUnusable(node: node)
+                    }
+                }
+                let assembledPath=node.absolutePath()
+                try FileManager.default.removeItem(atPath: assembledPath)
+            }
+            box.isMounted=false
+            completed(Completion.successState())
+        }catch{
+            completed(Completion.failureStateFromError(error))
+        }
     }
 
     //MARK:  - File API
 
-
-    public func askForAccess(to node:Node,by accessor:NodeAccessor){
+    /// Any accessor to obtain access to the resource (file) of a node need to call this method.
+    /// The nodeIsUsable() will be called when the file will be usable.
+    ///
+    /// WHY?
+    /// Because there is no guarantee that the node is locally available.
+    /// The application may work with a file that is available or another computer, with pending synchro.
+    ///
+    /// By registering as accessor, the caller will be notified as soon as possible.
+    ///
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - accessor: the accessor
+    /// - Returns: false if the current user is not authorized.
+    public func accessorWantsAccess(to node:Node,accessor:NodeAccessor)->Bool{
         // The nodeIsUsable() will be called when the file will be usable.
-    }
-
-
-    public func stopAccessingNode(node:Node,onCompletion:@escaping CompletionHandler){
-        if let idx=self._accessedNodes.index(of: node){
-            self._accessedNodes.remove(at: idx)
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            if self._accessors[node.UID] != nil {
+                self._accessors[node.UID]=[NodeAccessor]()
+            }
+            if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
+                self._accessors[node.UID]!.append(accessor)
+            }
+            return true
+        }else{
+            return false
         }
-        // TODO "unmount" node
     }
 
 
-    public func releaseAccessOnAllNodes()->Bool{
-        // Wait synchronously.
-        for node in self._accessedNodes {
-            self.stopAccessingNode(node: node, onCompletion: VoidCompletionHandler)
-        }
-        return true
-    }
-
-
-    //MARK:  -
-
-    fileprivate func _startAccessing(to node:Node,mounted:@escaping(String)->()){
-        if !self._accessedNodes.contains(node) {
-            self._accessedNodes.append(node)
+    /// Should be called when the accessor does not need any more the node resource.
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - accessor: the accessor
+    public func accessorStopsAccessing(to node:Node,accessor:NodeAccessor){
+        if let idx=self._accessors[node.UID]?.index(where: {$0.UID==accessor.UID}){
+            self._accessors[node.UID]!.remove(at: idx)
         }
     }
 
@@ -283,7 +358,6 @@ public class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     public func create(node:Node)->(){
-        self._document.metadata.inProgressNodesUIDS.append(node.UID)
         self._tryToAssembleNodesInProgress()
     }
 
@@ -291,7 +365,6 @@ public class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     public func update(node:Node)->(){
-        self._document.metadata.inProgressNodesUIDS.append(node.UID)
         self._tryToAssembleNodesInProgress()
     }
 
@@ -321,46 +394,52 @@ public class BSFS:TriggerHook{
 
     //MARK: - Block Level Actions
 
+
     /// Creates a file from the node blocks.
     /// IMPORTANT: this method requires a response from the BoxDelegate
     /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - handler: the completion handler
-    internal func _assemble(node:Node,handler: @escaping CompletionHandler){
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State.
+    internal func _assemble(node:Node,
+                            progressed:@escaping (Progression)->(),
+                            completed:@escaping (Completion)->()){
         do {
-            if let delegate = _boxDelegate{
+            if node.isAssemblable() == false{
+                throw BSFSError.nodeIsNotAssemblable
+            }
+            if let delegate = self._boxDelegate{
                 delegate.blocksAreReady(node: node, proceed: {
-                    /// TODO implement Assembly process
-
-                    /// END
-                    if let idx=self._document.metadata.inProgressNodesUIDS.index(of: node.UID){
-                        self._document.metadata.inProgressNodesUIDS.remove(at: idx)
+                    let filePath=node.absolutePath()
+                    let blocks=node.localBlocks()
+                    var blockPaths=[String]()
+                    for block in blocks{
+                        blockPaths.append(block.absolutePath())
                     }
-                    let completion=Completion.successState()
-                    completion.externalIdentifier=node.UID
-                    handler(completion)
+                    self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                        progressed(progression)
+                    }, success: {
+                        let completionState=Completion.successState()
+                        completionState.externalIdentifier=node.UID
+                        completed(completionState)
+                    }, failure: { (message) in
+                        let completion=Completion()
+                        completion.message=message
+                        completion.success=false
+                        completion.externalIdentifier=node.UID
+                        completed(completion)
+                    })
                 })
             }else{
                 throw BSFSError.boxDelegateIsNotAvailable
             }
 
         } catch{
-            handler(Completion.failureStateFromError(error))
+            completed(Completion.failureStateFromError(error))
         }
     }
-
-
-
-    internal func _disassemble(node:Node,handler: @escaping CompletionHandler){
-        // #1 Break the node into chunk
-        // #2 Compare the block
-        // #3 Update the node instance
-
-    }
-
-
 
     //MARK: - Triggered Block Level Action
 
@@ -384,24 +463,11 @@ public class BSFS:TriggerHook{
     // MARK: - Internal Mechanisms
 
     public func _tryToAssembleNodesInProgress(){
-        for nodeUID in self._document.metadata.inProgressNodesUIDS {
-            if let node = try? Bartleby.registredObjectByUID(nodeUID) as Node{
-                // Check if we have all the blocks
-                if (self._allBlocksAreAvailableFor(node: node)){
-                    self._assemble(node: node, handler: VoidCompletionHandler)
-                }
-            }
-        }
+        //TODO
     }
 
-    public func _allBlocksAreAvailableFor(node:Node)->Bool{
-        // @TODO
-        return true
-    }
-
-
-
-    //MARK: - Chunk API (low level chunk to file and file to chunk)
+    //MARK: - WILL BECOME PRIVATE
+    //MARK: Chunk level (low level chunk to file and file to chunk)
 
 
     public struct Chunk {
@@ -456,10 +522,13 @@ public class BSFS:TriggerHook{
                 }
 
                 let progressionState=Progression()
-                progressionState.totalTaskCount=Int(nb)
-                progressionState.currentTaskIndex=0
-                progressionState.externalIdentifier=externalId
-                progressionState.message=""
+                progressionState.silentGroupedChanges {
+                    progressionState.totalTaskCount=Int(nb)
+                    progressionState.currentTaskIndex=0
+                    progressionState.externalIdentifier=externalId
+                    progressionState.message=""
+                }
+
 
 
                 let _ = try? FileManager.default.removeItem(atPath: folderPath)
@@ -488,8 +557,10 @@ public class BSFS:TriggerHook{
                     let _ = try data.write(to:url )
                     Async.main{
                         counter += 1
-                        progressionState.message=chunkRelativePath
-                        progressionState.currentTaskIndex=counter
+                        progressionState.silentGroupedChanges {
+                            progressionState.message=chunkRelativePath
+                            progressionState.currentTaskIndex=counter
+                        }
                         progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
                         // Relay the progression
                         progression(progressionState)
@@ -562,7 +633,6 @@ public class BSFS:TriggerHook{
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
             do{
-
                 let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
                 try FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
                 FileManager.default.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
@@ -572,10 +642,12 @@ public class BSFS:TriggerHook{
                     writeFileHande.seek(toFileOffset: 0)
 
                     let progressionState=Progression()
-                    progressionState.totalTaskCount=paths.count
-                    progressionState.currentTaskIndex=0
-                    progressionState.message=""
-                    progressionState.externalIdentifier=externalId
+                    progressionState.silentGroupedChanges {
+                        progressionState.totalTaskCount=paths.count
+                        progressionState.currentTaskIndex=0
+                        progressionState.message=""
+                        progressionState.externalIdentifier=externalId
+                    }
 
                     var counter=0
                     for source in paths{
@@ -591,8 +663,10 @@ public class BSFS:TriggerHook{
                             writeFileHande.write(data)
                             Async.main{
                                 counter += 1
-                                progressionState.message=source
-                                progressionState.currentTaskIndex=counter
+                                progressionState.silentGroupedChanges {
+                                    progressionState.message=source
+                                    progressionState.currentTaskIndex=counter
+                                }
                                 progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
                                 // Relay the progression
                                 progression(progressionState)

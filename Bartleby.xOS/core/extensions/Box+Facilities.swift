@@ -63,9 +63,13 @@ extension Box{
             if downloadInProgress{
                 return self.downloadProgression
             }
-        }else{
+        }else if category==Default.CATEGORY_UPLOADS{
             if uploadInProgress{
                 return self.uploadProgression
+            }
+        }else if category==Default.CATEGORY_ASSEMBLIES{
+            if assemblyInProgress{
+                return self.assemblyProgression
             }
         }
         return nil
@@ -85,7 +89,7 @@ extension Box{
                     progressions.append(progression)
                 }
             }
-        }else{
+        }else if category==Default.CATEGORY_UPLOADS || category==Default.CATEGORY_ASSEMBLIES {
             for node in self.localNodes(){
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){

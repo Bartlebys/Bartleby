@@ -163,9 +163,9 @@ public struct Default {
     static public let NO_INT_INDEX=Int.max
     static public let STRING_ENCODING = String.Encoding.utf8
 
-    static public let CATEGORY_DOWNLOADS = "downloads"
-    static public let CATEGORY_UPLOADS = "uploads"
-
+    static public let CATEGORY_DOWNLOADS = "downloads" // Used on Downloads
+    static public let CATEGORY_UPLOADS = "uploads" // Used on Uploads
+    static public let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
 
     // A bunch of char in wich to pick to compose a random password
     static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"

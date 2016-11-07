@@ -58,9 +58,6 @@ import Foundation
 	//BSFS: reflects the local blocks
 	dynamic open var localBlocks:[Block] = [Block]()
 
-	//BSFS: A collection node UID with blocks download in progress, or not still assembled (waiting for delegate)
-	dynamic open var inProgressNodesUIDS:[String] = [String]()
-
 	//The State dictionary to insure document persistency 
 	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
 
@@ -158,7 +155,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","localBoxes","localNodes","localBlocks","inProgressNodesUIDS","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","localBoxes","localNodes","localBlocks","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -214,10 +211,6 @@ import Foundation
             case "localBlocks":
                 if let casted=value as? [Block]{
                     self.localBlocks=casted
-                }
-            case "inProgressNodesUIDS":
-                if let casted=value as? [String]{
-                    self.inProgressNodesUIDS=casted
                 }
             case "stateDictionary":
                 if let casted=value as? [String:Any]{
@@ -332,8 +325,6 @@ import Foundation
                return self.localNodes
             case "localBlocks":
                return self.localBlocks
-            case "inProgressNodesUIDS":
-               return self.inProgressNodesUIDS
             case "stateDictionary":
                return self.stateDictionary
             case "URLBookmarkData":
@@ -395,7 +386,6 @@ import Foundation
 			self.localBoxes <- ( map["localBoxes"] )
 			self.localNodes <- ( map["localNodes"] )
 			self.localBlocks <- ( map["localBlocks"] )
-			self.inProgressNodesUIDS <- ( map["inProgressNodesUIDS"] )
 			self.stateDictionary <- ( map["stateDictionary"] )
 			self.URLBookmarkData <- ( map["URLBookmarkData"] )
 			self.preferredFileName <- ( map["preferredFileName"] )
@@ -430,7 +420,6 @@ import Foundation
 			self.localBoxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "localBoxes")! as! [Box]
 			self.localNodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "localNodes")! as! [Node]
 			self.localBlocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "localBlocks")! as! [Block]
-			self.inProgressNodesUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "inProgressNodesUIDS")! as! [String]
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
 			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
 			self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
@@ -467,7 +456,6 @@ import Foundation
 		coder.encode(self.localBoxes,forKey:"localBoxes")
 		coder.encode(self.localNodes,forKey:"localNodes")
 		coder.encode(self.localBlocks,forKey:"localBlocks")
-		coder.encode(self.inProgressNodesUIDS,forKey:"inProgressNodesUIDS")
 		coder.encode(self.stateDictionary,forKey:"stateDictionary")
 		coder.encode(self.URLBookmarkData,forKey:"URLBookmarkData")
 		if let preferredFileName = self.preferredFileName {
