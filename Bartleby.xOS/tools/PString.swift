@@ -117,7 +117,7 @@ public struct PString {
      - returns: the sub string
      */
     public static func substr(_ string: String, _ start: Int, _ length: Int) -> String {
-        let startIndex: String.Index?
+        var startIndex: String.Index = string.startIndex
         if start<0 {
             let l=strlen(string)
             let from=l-start
@@ -126,13 +126,11 @@ public struct PString {
             } else {
                 startIndex=string.characters.index(string.startIndex, offsetBy: from)
             }
-        } else if start==0 {
-            startIndex=string.startIndex
-        } else {
+        } else if start>0{
             startIndex=string.characters.index(string.startIndex, offsetBy: start)
         }
-        let endIndex = string.characters.index(string.startIndex, offsetBy: length)
-        return string.substring(with: startIndex! ..< endIndex)
+        let endIndex = string.characters.index(startIndex, offsetBy:length)
+        return string.substring(with: startIndex..<endIndex)
     }
 
     public static func strlen(_ string: String) -> Int {
