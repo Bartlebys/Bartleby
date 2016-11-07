@@ -8,7 +8,9 @@
 
 import Foundation
 
-
+let GB=1000000000
+let MB=1000000
+let KB=1000
 
 /**
  Returns a category for glog

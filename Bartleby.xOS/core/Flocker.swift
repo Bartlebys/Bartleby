@@ -34,7 +34,6 @@ import Foundation
 
 struct Flocker{
 
-    static var disabledCompressionExtensions=["zip","data","crypted","png","mov","mp3","mp4","flk"]
 
     // MARK: - Flocking
 

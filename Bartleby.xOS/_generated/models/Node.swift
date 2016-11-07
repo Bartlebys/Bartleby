@@ -98,7 +98,7 @@ import Foundation
 	    }
 	}
 
-	//If set to true the blocks should be compressed
+	//If set to true the blocks should be compressed (using LZ4)
 	dynamic open var compressed:Bool = true  {
 	    didSet { 
 	       if compressed != oldValue {
@@ -107,7 +107,7 @@ import Foundation
 	    }
 	}
 
-	//If set to true the blocks will be crypted
+	//If set to true the blocks will be crypted (using AES256)
 	dynamic open var cryptedBlocks:Bool = true  {
 	    didSet { 
 	       if cryptedBlocks != oldValue {
