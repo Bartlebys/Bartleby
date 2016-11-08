@@ -12,7 +12,7 @@ Bartleby Is a full stack generative suite to build fault tolerant native distrib
 
 # Resources
 
-- [Swift 3.0 stack](Document/Swift.md)
+- [Swift 3.0 stack](Documents/Swift.md)
 - [How Bartleby's data synchronization works?](Documents/DataSynchronization.md)
 - [How Bartleby's Synchronized File system Works?](Documents/BSFS.md)
 
