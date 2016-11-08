@@ -12,43 +12,46 @@ import Foundation
 
 extension Node{
 
-    ///
-    /// baseFolder/boxes/<boxUID>/<relatifvePath>
-    ///
-    /// - Returns: returns the mounted node path
-    func absolutePath()->String{
+
+    /// the mounted node path boxesFolderPath/<boxUID>/<relatifvePath>
+    var absolutePath:String{
         if let bsfs=self.document?.bsfs, let boxUID=self.boxUID{
-            return bsfs.boxesFolderPath()+boxUID+relativePath
+            return bsfs.boxesFolderPath+"/"+boxUID+relativePath
         }else{
             return Default.NO_PATH
         }
     }
 
-
-
-    ///
-    /// - Returns: true is the node is assembled, the node is assembled when it box is mounted
-    func isAssembled()->Bool{
-        return FileManager.default.fileExists(atPath: self.absolutePath())
+    /// true if the node is assembled, the node is assembled when it box is mounted
+    var isAssembled:Bool{
+        return FileManager.default.fileExists(atPath: self.absolutePath)
     }
 
-    ///
-    /// - Returns: true if the node can be assembled
-    func isAssemblable()->Bool{
+
+    /// true if the node can be assembled
+    var isAssemblable:Bool{
         // Do we have all the required blocks?
         for uid in self.blocksUIDS{
-            guard let _ = self.localBlocks().index(where: { $0.UID==uid }) else{
+            guard let _ = self.localBlocks.index(where: { $0.UID==uid }) else{
                 return false
             }
         }
         return true
     }
 
+    /// The parent box
+    var box:Box?{
+        if let boxUID=self.boxUID{
+            if let box = try? Bartleby.registredObjectByUID(boxUID) as Box{
+                return box
+            }
+        }
+        return nil
+    }
 
-    /// Returns the currently referenced local blocks
-    ///
-    /// - Returns: the blocks
-    func localBlocks()->[Block]{
+
+    /// the currently referenced local blocks
+    var localBlocks:[Block]{
         if let d=self.document{
             return d.metadata.localBlocks.filter({ (block) -> Bool in
                 return block.nodeUID==self.UID
@@ -59,11 +62,8 @@ extension Node{
     }
 
 
-
-    /// Returns the currently referenced distant blocks
-    ///
-    /// - Returns: the blocks
-    func distantBlocks()->[Block]{
+    /// the currently referenced distant blocks
+    var distantBlocks:[Block]{
         if let d=self.document{
             return d.blocks.filter({ (block) -> Bool in
                 return block.nodeUID==self.UID
@@ -104,14 +104,14 @@ extension Node{
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         if category==Default.CATEGORY_DOWNLOADS {
-            for node in self.distantBlocks(){
+            for node in self.distantBlocks{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
                 }
             }
         }else if category==Default.CATEGORY_UPLOADS {
-            for node in self.localBlocks(){
+            for node in self.localBlocks{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
@@ -124,7 +124,7 @@ extension Node{
             return nil
         }
     }
-
-
+    
+    
     
 }

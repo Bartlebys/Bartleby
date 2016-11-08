@@ -10,13 +10,11 @@ import Foundation
 
 extension Block{
 
-    ///
-    /// baseFolder/blocks/<relatifvePath>/shA1
-    ///
-    /// - Returns: returns the block path
-    func absolutePath()->String{
+
+    /// the block path baseFolder/blocks/<relatifvePath>/shA1
+    var absolutePath:String{
         if let bsfs=self.document?.bsfs{
-            return bsfs.blocksFolderPath()+"/"+self._blockRelativePath()
+            return bsfs.blocksFolderPath+"/"+self._blockRelativePath()
         }else{
             return Default.NO_PATH
         }

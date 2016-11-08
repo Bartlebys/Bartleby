@@ -11,23 +11,18 @@ import Foundation
 
 extension Box{
 
-    ///
-    /// baseFolder/boxes/<boxUID>
-    ///
-    /// - Returns: the mounted folder path
-    func absoluteFolderPath()->String{
+
+    /// The mounted folder path (we use caches)
+    var absoluteFolderPath:String?{
         if let bsfs=self.document?.bsfs{
-            return bsfs.boxesFolderPath()+self.UID
+            return bsfs.boxesFolderPath+"/"+self.UID
         }else{
             return Default.NO_PATH
         }
     }
 
-
-    /// Returns the currently referenced local nodes
-    ///
-    /// - Returns: the blocks
-    func localNodes()->[Node]{
+    /// The currently referenced local nodes
+    var localNodes:[Node]{
         if let d=self.document{
             return d.metadata.localNodes.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
@@ -37,10 +32,9 @@ extension Box{
         }
     }
 
-    /// Returns the currently referenced distant nodes
-    ///
-    /// - Returns: the blocks
-    func distantNodes()->[Node]{
+
+    /// the currently referenced distant nodes
+    var distantNodes:[Node]{
         if let d=self.document{
             return d.nodes.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
@@ -83,14 +77,14 @@ extension Box{
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         if category==Default.CATEGORY_DOWNLOADS{
-            for node in self.distantNodes(){
+            for node in self.distantNodes{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
                 }
             }
         }else if category==Default.CATEGORY_UPLOADS || category==Default.CATEGORY_ASSEMBLIES {
-            for node in self.localNodes(){
+            for node in self.localNodes{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
@@ -105,5 +99,5 @@ extension Box{
     }
 
 
-    
+
 }
