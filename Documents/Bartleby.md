@@ -1,7 +1,5 @@
 # Bartleby ?
 
-Is a drop-in replacement of the Icloud Document Stack.
-
 Bartleby is a robust framework that enables to build Fault Tolerant Natives Distributed Desktop & Mobile Apps. It provides an integrated full stack  (client & server sides)
 Server are written in PHP and uses MongoDB as document store.
 
