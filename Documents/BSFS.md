@@ -1,12 +1,11 @@
 # How Bartleby's Synchronized File system Works?
 
-Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app.
+Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app. It can replace iCloud File Management.
 
 - BSFS has been designed to work Sandboxed environment, using a highly segmented approach.
 - BSFS is focused on security, simplicity, and disk room foot print reduction.
 - Boxed files are assembled on demand in a cache and destroyed when the box is not mounted.
 - Those design choice have performances when opening a document and mounting a Box.
-
 
 ## BSFS synchronization is Fast
 

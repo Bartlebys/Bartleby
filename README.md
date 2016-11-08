@@ -1,5 +1,7 @@
-
+Bartleby is an attempt to build an open source multi platform replacement of Icloud Document Stack (data + file).
+ 
 Bartleby Is a full stack generative suite to build fault tolerant native distributed applications that can perform "*on*" and "*off line*". Client side components are Written in Swift 3.0, Server side relies on PHP 5.X + MongoDB, Generative tools are written in PHP 5.x and wrapped to a Swift CLI.
+
 
 # Bartleby's - Swift Stack
 
@@ -11,7 +13,7 @@ Bartleby Is a full stack generative suite to build fault tolerant native distrib
 # Resources
 
 - [Overview](Documents/Bartleby.md)
-- [How data synchronization works?](Documents/DataSynchronization.md)
+- [How Bartleby's data synchronization works?](Documents/DataSynchronization.md)
 - [How Bartleby's Synchronized File system Works?](Documents/BSFS.md)
 
 # Road Map 

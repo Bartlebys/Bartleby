@@ -1,6 +1,8 @@
 # Bartleby ?
 
-Bartleby is a robust framework that enables to build Fault Tolerent Natives Distributed Desktop & Mobile Apps. It provides an integrated full stack  (client & server sides)
+Is a drop-in replacement of the Icloud Document Stack.
+
+Bartleby is a robust framework that enables to build Fault Tolerant Natives Distributed Desktop & Mobile Apps. It provides an integrated full stack  (client & server sides)
 Server are written in PHP and uses MongoDB as document store.
 
 It offers a unique distributed execution strategy and a solid permission and security model that enables to build complex collaborative tools efficiently. 
@@ -10,7 +12,6 @@ It has been developed to be used in and is fully integrated with a code generato
 Bartleby 1.0 has been developed by Benoit Pereira da Silva [Benoit Pereira da Silva](https://pereira-da-silva.com) for [Chaosmos SAS](http://chaosmos.fr).
 Bartleby is licensed  
 
-
 # Bartleby's stack
 
 1. BartlebyKit: the core framework for clients.
@@ -18,7 +19,6 @@ Bartleby is licensed
 3. Bartleby Client generated Classes: specific set of generated classes 
 4. Bartleby Server generated Resources
 5. Flexions 3.0 the code generator used to generate the parts.
-6. Bsync a distributed file synchronizer.
 
 # BartlebyKit 
 
