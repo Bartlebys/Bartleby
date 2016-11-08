@@ -24,16 +24,6 @@ class CompletionWithResultTests: TestCase {
     }
 
 
-    func  test102_generic_Result_mapping_explicit_serializer() {
-        let handlers=Handlers(completionHandler: { (completion) in
-            if let user: User = completion.getResultFromSerializer(JSerializer.sharedInstance) {
-                XCTAssertEqual(user.email, "bartleby@barltebys.org")
-            } else {
-                XCTFail(completion.message)
-            }
-        })
-        self.completionWitResult(handlers)
-    }
 
     func completionWitResult(_ handlers: Handlers) {
         let user=User()

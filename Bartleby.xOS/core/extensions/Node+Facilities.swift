@@ -13,21 +13,6 @@ import Foundation
 extension Node{
 
 
-    /// the mounted node path boxesFolderPath/<boxUID>/<relatifvePath>
-    var absolutePath:String{
-        if let bsfs=self.document?.bsfs, let boxUID=self.boxUID{
-            return bsfs.boxesFolderPath+"/"+boxUID+relativePath
-        }else{
-            return Default.NO_PATH
-        }
-    }
-
-    /// true if the node is assembled, the node is assembled when it box is mounted
-    var isAssembled:Bool{
-        return FileManager.default.fileExists(atPath: self.absolutePath)
-    }
-
-
     /// true if the node can be assembled
     var isAssemblable:Bool{
         // Do we have all the required blocks?

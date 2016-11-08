@@ -28,8 +28,18 @@ public protocol NodeAccessor:Identifiable{
     /// Called after an `wantsAccess` demand  when
     /// - the current node assembled file becomes available (all the block are available, and the file has been assembled)
     ///
-    /// - Parameter node: the node
-    func nodeIsUsable(node:Node)
+    /// - Parameters:
+    ///   - node: the node
+    ///   - path: its file path
+    func nodeIsUsable(node:Node, at path:String)
+
+
+    /// Called after an `wantsAccess` demand  when
+    /// When the access to the node is refused.
+    /// - Parameter:
+    ///   - node: the node
+    ///   - explanations: the explanations
+    func accessRefused(to:Node,explanations:String)
     
 }
 

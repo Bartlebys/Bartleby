@@ -8,23 +8,26 @@
 import Foundation
 
 
-
-public class BSFS:TriggerHook{
+/// The BSFS is set per document.
+/// File level operations are done on GCD global utility queue.
+public final class BSFS:TriggerHook{
 
     // Document
 
     fileprivate unowned var _document:BartlebyDocument
 
-    /// The File manager used to perform all the BSFS operation on the utility queue.
+    /// The File manager used to perform all the BSFS operation on GCD global utility queue.
     /// Note that we also use specific FileHandle at chunk level
     fileprivate let _fileManager:FileManager=FileManager()
 
     // The box Delegate
     fileprivate var _boxDelegate:BoxDelegate?
 
-    // The current accessors
+    // The current accessors key:node.UID, value:Array of Accessors
     fileprivate var _accessors=[String:[NodeAccessor]]()
 
+    /// The mounted node paths key:node.UID, value:tempFileName
+    fileprivate var _mountedFileNames=[String:String]()
 
     /// Each document has it own BSFS
     ///
@@ -55,7 +58,7 @@ public class BSFS:TriggerHook{
     }
 
 
-    //MARK:  - BOX API
+    //MARK:  - Box Level
 
     /// Mounts the current local box == Assemble all its assemblable nodes
     /// There is no guarantee that the box is not fully up to date
@@ -79,7 +82,7 @@ public class BSFS:TriggerHook{
 
             // Let's try to assemble as much nodes as we can.
             for node in box.localNodes{
-                if node.isAssemblable && !node.isAssembled && !node.assemblyInProgress{
+                if node.isAssemblable && !self._isAssembled(node) && !node.assemblyInProgress{
                     concernedNodes.append(node)
                 }
             }
@@ -116,11 +119,11 @@ public class BSFS:TriggerHook{
         } catch {
             completed(Completion.failureStateFromError(error))
         }
-
     }
 
 
-    /// Un mounts the BOX == deletes all the assembled files
+
+    /// Un mounts the Box == deletes all the assembled files
     ///
     /// - Parameters:
     ///   - boxUID: the Box UID
@@ -135,7 +138,7 @@ public class BSFS:TriggerHook{
                         accessor.willBecomeUnusable(node: node)
                     }
                 }
-                let assembledPath=node.absolutePath
+                let assembledPath=self._mountedPath(for:node)
                 try self._fileManager.removeItem(atPath: assembledPath)
             }
             box.isMounted=false
@@ -145,53 +148,119 @@ public class BSFS:TriggerHook{
         }
     }
 
-    //MARK:  - File API
 
-
-
-
-    /// Any accessor to obtain access to the resource (file) of a node need to call this method.
-    /// The nodeIsUsable() will be called when the file will be usable.
     ///
-    /// WHY?
-    /// Because there is no guarantee that the node is locally available.
-    /// The application may work with a file that is available or another computer, with pending synchro.
-    ///
-    /// By registering as accessor, the caller will be notified as soon as possible.
-    ///
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - accessor: the accessor
-    /// - Returns: false if the current user is not authorized.
-    public func wantsAccess(to node:Node,accessor:NodeAccessor)->Bool{
-        // The nodeIsUsable() will be called when the file will be usable.
-        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-            if self._accessors[node.UID] != nil {
-                self._accessors[node.UID]=[NodeAccessor]()
+    /// - Parameter node: the node
+    /// - Returns: the assembled path (created if there no
+    fileprivate func _mountedPath(for node:Node)->String{
+        if let fileName=self._mountedFileNames[node.UID]{
+            if let box=node.box{
+                return box.absoluteFolderPath+"\(node.relativePath)\(fileName)"
             }
-            if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
-                self._accessors[node.UID]!.append(accessor)
-            }
-            if node.isAssembled{
-                
-            }
-            return true
-        }else{
-            return false
         }
+        return Default.NO_PATH
     }
 
 
-    /// Should be called when the accessor does not need any more the node resource.
+
+    /// Return is the node file has been assembled
+    ///
+    /// - Parameter node: the node
+    /// - Returns: true if the file is available and the node not marked assemblyInProgress
+    fileprivate func _isAssembled(_ node:Node)->Bool{
+        if node.assemblyInProgress {
+            return false
+        }
+        let group=AsyncGroup()
+        var exists=false
+        group.utility{
+            exists=self._fileManager.fileExists(atPath: self._mountedPath(for: node))
+        }
+        group.wait()
+        return exists
+    }
+
+
+    /// Creates a file from the node blocks.
+    /// IMPORTANT: this method requires a response from the BoxDelegate
+    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - accessor: the accessor
-    public func stopsAccessing(to node:Node,accessor:NodeAccessor){
-        if let idx=self._accessors[node.UID]?.index(where: {$0.UID==accessor.UID}){
-            self._accessors[node.UID]!.remove(at: idx)
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State.
+    internal func _assemble(node:Node,
+                            progressed:@escaping (Progression)->(),
+                            completed:@escaping (Completion)->()){
+        do {
+            if node.isAssemblable == false{
+                throw BSFSError.nodeIsNotAssemblable
+            }
+            if let delegate = self._boxDelegate{
+                delegate.nodeIsReady(node: node, proceed: {
+
+                    // Create a new file
+                    let fileName=Bartleby.createUID().lowercased()
+                    self._mountedFileNames[node.UID]=fileName
+                    let filePath=self._mountedPath(for: node)
+
+                    let blocks=node.localBlocks
+                    var blockPaths=[String]()
+                    for block in blocks{
+                        blockPaths.append(block.absolutePath)
+                    }
+                    self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                        progressed(progression)
+                    }, success: {
+                        let completionState=Completion.successState()
+                        completionState.externalIdentifier=node.UID
+                        completed(completionState)
+                    }, failure: { (message) in
+                        let completion=Completion()
+                        completion.message=message
+                        completion.success=false
+                        completion.externalIdentifier=node.UID
+                        completed(completion)
+                    })
+                })
+            }else{
+                throw BSFSError.boxDelegateIsNotAvailable
+            }
+
+        } catch{
+            completed(Completion.failureStateFromError(error))
         }
+    }
+    
+
+
+    //MARK:  - File Level
+
+
+    /// Adds a file into the box
+    ///
+    ///     + generate the blocks in background.
+    ///     + adds the node
+    ///     + the node  ref is stored in the Completon (use completion.getResultExternalReference())
+    ///
+    /// - Parameters:
+    ///   - fileReference: the file reference
+    ///   - relativePath: the relative Path of the Node
+    ///   - deleteOriginal: should we delete the original?
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State (the node ref is stored in the completion.getResultExternalReference())
+    public func add( fileReference:FileReference,
+                     to relativePath:String,
+                     deleteOriginal:Bool=false,
+                     progressed:@escaping (Progression)->(),
+                     completed:@escaping (Completion)->()){
+
+
+        let node=Node()
+        let finalState=Completion.successState()
+        finalState.setExternalReferenceResult(from:node)
+        
+        
     }
 
 
@@ -213,33 +282,62 @@ public class BSFS:TriggerHook{
                                completed:@escaping (Completion)->()){
 
 
+
+
     }
 
 
-    //MARK:  - Boxed API
+    //MARK: Node access
 
-
-    /// Adds a file into the box 
+    /// Any accessor to obtain access to the resource (file) of a node need to call this method.
+    /// The nodeIsUsable() will be called when the file will be usable.
     ///
-    ///     + copies if necessary the file into the box
-    ///     + generate the blocks in background.
-    ///     + adds the node
-    ///     + the node UID is stored in Completion.externalIdentifier
-    /// 
+    /// WHY?
+    /// Because there is no guarantee that the node is locally available.
+    /// The application may work with a file that is available or another computer, with pending synchro.
+    ///
+    /// By registering as accessor, the caller will be notified as soon as possible.
+    ///
+    ///
     /// - Parameters:
-    ///   - fileReference: the file reference
-    ///   - relativePath: the relative Path of the Node
-    ///   - deleteOriginal: should we delete the original?
-    ///   - progressed: a closure  to relay the Progression State
-    ///   - completed: a closure called on completion with Completion State (the node UID is stored in Completion.externalIdentifier)
-    public func add( fileReference:FileReference,
-                    to relativePath:String,
-                    deleteOriginal:Bool=false,
-                    progressed:@escaping (Progression)->(),
-                    completed:@escaping (Completion)->()){
-
+    ///   - node: the node
+    ///   - accessor: the accessor
+    public func wantsAccess(to node:Node,accessor:NodeAccessor){
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            if self._accessors[node.UID] != nil {
+                self._accessors[node.UID]=[NodeAccessor]()
+            }
+            if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
+                self._accessors[node.UID]!.append(accessor)
+            }
+            if self._isAssembled(node){
+                self._grantAccess(to: node, accessor: accessor)
+            }
+        }else{
+            accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
+        }
     }
 
+
+
+    /// Should be called when the accessor does not need any more the node resource.
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - accessor: the accessor
+    public func stopsAccessing(to node:Node,accessor:NodeAccessor){
+        if let idx=self._accessors[node.UID]?.index(where: {$0.UID==accessor.UID}){
+            self._accessors[node.UID]!.remove(at: idx)
+        }
+    }
+
+    fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
+        accessor.nodeIsUsable(node: node, at: self._mountedPath(for:node))
+    }
+
+
+    //MARK: Logical actions
 
     /// Moves a node to another destination in the box.
     /// IMPORTANT: this method requires a response from the BoxDelegate
@@ -249,8 +347,8 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     ///   - relativePath: the relative path
     ///   - handler: the completion hanlder
-    public func copy(node:Node,to destinationPath:String)->(){
-        _boxDelegate?.copyIsReady(node: node, to: destinationPath, proceed: {
+    public func copy(node:Node,to relativePath:String)->(){
+        _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
             // TODO implement
         })
 
@@ -286,37 +384,6 @@ public class BSFS:TriggerHook{
 
     }
 
-    /// Create Folders
-    /// - Parameters:
-    ///   - relativePath: the relative Path
-    ///   - handler: the completion Handler
-    public func createFolder(at relativePath:String)->(){
-    }
-
-    /// Creates the Alias
-    /// - Parameters:
-    ///   - node: the node to be aliased
-    ///   - relativePath: the destination relativePath
-    ///   - handler: the completion Handler
-    public func createAlias(of node:Node,to relativePath:String)->(){
-    }
-
-
-    /// Creates the blocks of a node reflecting its current binary data
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    public func create(node:Node)->(){
-        self._tryToAssembleNodesInProgress()
-    }
-
-    /// Update the blocks of a node reflecting its current binary data
-    /// - Parameters:
-    ///   - node: the node
-    public func update(node:Node)->(){
-        self._tryToAssembleNodesInProgress()
-    }
-
 
     // MARK: - TriggerHook
 
@@ -341,54 +408,8 @@ public class BSFS:TriggerHook{
     }
 
 
-    //MARK: - Block Level Actions
 
 
-    /// Creates a file from the node blocks.
-    /// IMPORTANT: this method requires a response from the BoxDelegate
-    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - progressed: a closure  to relay the Progression State
-    ///   - completed: a closure called on completion with Completion State.
-    internal func _assemble(node:Node,
-                            progressed:@escaping (Progression)->(),
-                            completed:@escaping (Completion)->()){
-        do {
-            if node.isAssemblable == false{
-                throw BSFSError.nodeIsNotAssemblable
-            }
-            if let delegate = self._boxDelegate{
-                delegate.nodeIsReady(node: node, proceed: {
-                    let filePath=node.absolutePath
-                    let blocks=node.localBlocks
-                    var blockPaths=[String]()
-                    for block in blocks{
-                        blockPaths.append(block.absolutePath)
-                    }
-                    self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
-                        progressed(progression)
-                    }, success: {
-                        let completionState=Completion.successState()
-                        completionState.externalIdentifier=node.UID
-                        completed(completionState)
-                    }, failure: { (message) in
-                        let completion=Completion()
-                        completion.message=message
-                        completion.success=false
-                        completion.externalIdentifier=node.UID
-                        completed(completion)
-                    })
-                })
-            }else{
-                throw BSFSError.boxDelegateIsNotAvailable
-            }
-
-        } catch{
-            completed(Completion.failureStateFromError(error))
-        }
-    }
 
     //MARK: - Triggered Block Level Action
 
@@ -415,8 +436,7 @@ public class BSFS:TriggerHook{
         //TODO
     }
 
-    //MARK: - WILL BECOME PRIVATE
-    //MARK: Chunk level (low level chunk to file and file to chunk)
+    //MARK: - Chunk level: chunk->file and file->chunk
 
 
     public struct Chunk {
@@ -547,7 +567,7 @@ public class BSFS:TriggerHook{
                 }
             }else{
                 Async.main{
-                    failure("Unable to create file Handle at: \(path)")
+                    failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
                 }
             }
 
@@ -628,7 +648,7 @@ public class BSFS:TriggerHook{
                     
                 }else{
                     Async.main{
-                        failure("Unable to create file Handle at: \(destinationFilePath)")
+                        failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
                     }
                 }
             }catch{

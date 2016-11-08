@@ -14,22 +14,22 @@ import Foundation
 // The result is serialized in the opaque NSdata data property.
 public extension Completion {
 
-    // MARK: Generic Serializable result
+    // MARK:-  Generic Serializable result
 
-    /**
-     Stores the serializabale result
 
-     - parameter result: the serializable result
-     */
-    func setResult<T: Serializable>(_ result: T) {
+    ///  Stores the serializabale result
+    ///
+    /// - Parameter result: the serializable result
+    func setResult<T: Collectible>(_ result: T) {
         self.data=result.serialize()
     }
 
-    /**
-     Gets the deserialized result
-     - returns: the deserialized result
-     */
-    func getResult<T: Serializable>() -> T? {
+
+
+    ///  Gets the deserialized result
+    ///  If the result is an external reference the reference is resolved automatically
+    /// - Returns: the deserialized result
+    func getResult<T: Collectible>() -> T? {
         if let data=self.data {
             let s = try? JSerializer.deserialize(data)
             return s as? T
@@ -37,21 +37,28 @@ public extension Completion {
         return nil
     }
 
+    // MARK: - External Reference result
 
-    /**
-     Gets the deserialized result
-
-     - parameter serializer: what serializer should we use?
-
-     - returns: the deserialized result
-     */
-    func getResultFromSerializer<T: Serializable>(_ serializer: Serializer) -> T? {
-        if let data=self.data {
-            let s=try? JSerializer.deserialize(data)
-            return s as? T
-        }
-        return nil
+    /// Store an external reference in the result
+    ///
+    /// - Parameter ref: the reference
+    func setExternalReferenceResult<T: Collectible>(from ref:T) {
+        let externalRef=ExternalReference(from:ref)
+        self.data = externalRef.serialize()
     }
+
+
+    /// Retrieve the stored reference
+    ///
+    /// - Returns: the external reference
+    func getResultExternalReference() ->ExternalReference? {
+        if let ref:ExternalReference=self.getResult(){
+            return ref
+        }else{
+            return nil
+        }
+    }
+
 
     // MARK: - String result
 
@@ -116,26 +123,6 @@ public extension Completion {
     }
 
 
-    // MARK: - External Reference result
-
-    /// Store an external reference in the result
-    ///
-    /// - Parameter ref: the reference
-    func setExternalReferenceResult<T: Collectible>(from ref:T) {
-        let externalRef=ExternalReference(from:ref)
-        self.data = externalRef.serialize()
-    }
 
 
-    /// Retrieve the stored reference
-    ///
-    /// - Returns: the external reference
-    func getExternalReferenceResult() ->ExternalReference? {
-        if let ref:ExternalReference=self.getResult(){
-            return ref
-        }else{
-            return nil
-        }
-
-    }
 }

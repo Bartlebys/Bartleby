@@ -13,7 +13,7 @@ extension Box{
 
 
     /// The mounted folder path (we use caches)
-    var absoluteFolderPath:String?{
+    var absoluteFolderPath:String{
         if let bsfs=self.document?.bsfs{
             return bsfs.boxesFolderPath+"/"+self.UID
         }else{
