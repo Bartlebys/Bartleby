@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Currently used in FSShadowContainer
 open class BoxShadow:Box,Shadow{}
 open class NodeShadow:Node,Shadow{}
 open class BlockShadow:Block,Shadow{}

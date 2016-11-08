@@ -21,19 +21,19 @@ extension Box{
         }
     }
 
-    /// The currently referenced local nodes
-    public var localNodes:[Node]{
+    /// The currently local nodes Shadows
+    public var localNodes:[NodeShadow]{
         if let d=self.document{
             return d.bsfs.localNodesShadows.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
             })
         }else{
-            return [Node]()
+            return [NodeShadow]()
         }
     }
 
 
-    /// the currently referenced distant nodes
+    /// the currently referenced  nodes
     var nodes:[Node]{
         if let d=self.document{
             return d.nodes.filter({ (node) -> Bool in

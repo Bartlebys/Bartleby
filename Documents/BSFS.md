@@ -79,7 +79,8 @@ When a node or a block is created, updated or deleted, it is automatically propa
 
 ## Current Local State
 
-The current Local state Is encapsulated in BSFS._localContainer. (a Container is an array of Box, Nodes & blocks)
+The current Local State Is encapsulated in BSFS' FSShadowContainer. The Shadows are the local projections of a given Entity and are not managed (not synchronized). The collections of `NodeShadow` and `BlockShadow` reflects the local state. **When the local boxes are up to date shadows and managed entities are bijective.**
+
 
 
 ## Uploads
@@ -166,23 +167,24 @@ Such an archive is :
 ----
 # Details on Models
 
-## Container 
+## FSShadowContainer 
 
-A Container groups Boxes,Nodes,Blocks (for serialization purpose)
+A Container groups Shadows of Boxes,Nodes,Blocks (for serialization purpose)
 
 ```json
 {
-  "name": "Container",
+  "name": "FSShadowContainer",
   "definition": {
-    "description": "Bartleby's Synchronized File System: groups Boxes,Nodes,Blocks",
+    "description": "Bartleby's Synchronized File System: A container With shadows of Boxes,Nodes,Blocks",
     "properties": {
       "boxes": {
         "schema": {
           "type": "array",
           "items": {
             "description": "Boxes",
-            "$ref": "#/definitions/Box",
-            "default": "[Box]()",
+            "explicitType":"BoxShadow",
+            "default": "[BoxShadow]()",
+            "scope":"public",
             "supervisable": true,
             "serializable": true
           }
@@ -193,8 +195,9 @@ A Container groups Boxes,Nodes,Blocks (for serialization purpose)
           "type": "array",
           "items": {
             "description": "Nodes",
-            "$ref": "#/definitions/Node",
-            "default": "[Node]()",
+            "explicitType":"NodeShadow",
+            "default": "[NodeShadow]()",
+            "scope":"public",
             "supervisable": true,
             "serializable": true
           }
@@ -205,8 +208,9 @@ A Container groups Boxes,Nodes,Blocks (for serialization purpose)
           "type": "array",
           "items": {
             "description": "Blocks",
-            "$ref": "#/definitions/Block",
-            "default": "[Block]()",
+            "explicitType":"BlockShadow",
+            "default": "[BlockShadow]()",
+            "scope":"public",
             "supervisable": true,
             "serializable": true
           }

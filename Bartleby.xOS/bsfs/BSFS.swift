@@ -28,8 +28,13 @@ public final class BSFS:TriggerHook{
     /// The mounted node paths key:node.UID, value:tempFileName
     fileprivate var _mountedFileNames=[String:String]()
 
-    // The local container (the member are not referenced in the document)
+    /// The shadow container Reflects the local state
+    /// We use the shadows to store the upload, download and assembly state
+    /// And to determine the delta operations.
     fileprivate var _localContainer:FSShadowContainer=FSShadowContainer()
+
+    /// Returns the local nodes shadows
+    var localBoxesShadows:[BoxShadow] { return self._localContainer.boxes }
 
     /// Returns the local nodes shadows
     var localNodesShadows:[NodeShadow] { return self._localContainer.nodes }
@@ -297,6 +302,10 @@ public final class BSFS:TriggerHook{
         if box is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
         }else{
+
+
+            // TODO
+
             let node=Node()
             let finalState=Completion.successState()
             finalState.setExternalReferenceResult(from:node)
@@ -352,19 +361,24 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - accessor: the accessor
     public func wantsAccess(to node:Node,accessor:NodeAccessor){
-        // The nodeIsUsable() will be called when the file will be usable.
-        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-            if self._accessors[node.UID] != nil {
-                self._accessors[node.UID]=[NodeAccessor]()
-            }
-            if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
-                self._accessors[node.UID]!.append(accessor)
-            }
-            if self._isAssembled(node){
-                self._grantAccess(to: node, accessor: accessor)
-            }
+
+        if node is Shadow{
+            accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
         }else{
-            accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
+            // The nodeIsUsable() will be called when the file will be usable.
+            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+                if self._accessors[node.UID] != nil {
+                    self._accessors[node.UID]=[NodeAccessor]()
+                }
+                if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
+                    self._accessors[node.UID]!.append(accessor)
+                }
+                if self._isAssembled(node){
+                    self._grantAccess(to: node, accessor: accessor)
+                }
+            }else{
+                accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
+            }
         }
     }
 
@@ -382,7 +396,12 @@ public final class BSFS:TriggerHook{
     }
 
     fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
-        accessor.fileIsAvailable(for:node, at: self._mountedPath(for:node))
+        if node is Shadow{
+            accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
+        }else{
+            accessor.fileIsAvailable(for:node, at: self._mountedPath(for:node))
+        }
+
     }
 
 
@@ -397,10 +416,11 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the relative path
     ///   - handler: the completion hanlder
     public func copy(node:Node,to relativePath:String)->(){
-        _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
-            // TODO implement
-        })
-
+        if !(node is Shadow){
+            _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
+                node.relativePath=relativePath
+            })
+        }
     }
 
 
@@ -413,9 +433,11 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the relative path
     ///   - handler: the completion hanlder
     public func move(node:Node,to relativePath:String)->(){
-        _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
-            // TODO implement
-        })
+        if !(node is Shadow){
+            _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
+                node.relativePath=relativePath
+            })
+        }
     }
 
 
@@ -427,10 +449,11 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - handler: the completion Handler
     public func delete(node:Node)->(){
-        _boxDelegate?.deletionIsReady(node: node, proceed: {
-            /// TODO implement the deletion
-        })
-
+        if !(node is Shadow){
+            _boxDelegate?.deletionIsReady(node: node, proceed: {
+                /// TODO implement the deletion
+            })
+        }
     }
 
 
@@ -452,15 +475,13 @@ public final class BSFS:TriggerHook{
         // On Nodes or Blocks check if we are concerned / allowed.
 
         // TODO ANALYZE
-        // HOW TO DETECT MIDDLE CHANGE user is authorized durign Upload == The first block have not been received.
+        // HOW TO DETECT MIDDLE CHANGE user is authorized during Upload == The first block have not been received.
 
     }
 
 
-
-
-
     //MARK: - Triggered Block Level Action
+
 
     /// Downloads a Block.
     /// This occurs before triggered_create on each successfull upload.
@@ -470,6 +491,7 @@ public final class BSFS:TriggerHook{
     internal func triggered_download(block:Block){
         if block.authorized.contains(self._document.currentUser.UID) ||
             block.authorized.contains("*"){
+
             // We can download
             // @TODO
 

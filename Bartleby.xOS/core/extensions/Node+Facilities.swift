@@ -33,7 +33,7 @@ extension Node{
     }
 
 
-    /// the currently referenced local blocks
+    /// the currently referenced blocks Shadows
     var localBlocks:[BlockShadow]{
         if let d=self.document{
             return d.bsfs.localBlocksShadows.filter({ (block) -> Bool in
@@ -55,7 +55,6 @@ extension Node{
             return [Block]()
         }
     }
-
 
 
     // MARK: ConsolidableProgression
