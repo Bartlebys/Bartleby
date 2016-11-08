@@ -121,8 +121,9 @@ public extension Completion {
     /// Store an external reference in the result
     ///
     /// - Parameter ref: the reference
-    func setExternalReferenceResult(_ ref:ExternalReference) {
-        self.data = ref.serialize()
+    func setExternalReferenceResult<T: Collectible>(from ref:T) {
+        let externalRef=ExternalReference(from:ref)
+        self.data = externalRef.serialize()
     }
 
 
