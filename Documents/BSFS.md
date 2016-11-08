@@ -2,9 +2,13 @@
 
 Bartleby's Synchronized File system, synchronises automatically "boxed" set of files. It is built on the top of Bartleby core mechanisms (managedCollections, triggers,...) and provides an efficient way to synchronize and distribute files to be consumed by an app.
 
-# KeyPoints:
+- BSFS has been designed to work Sandboxed environment, using a highly segmented approach.
+- BSFS is focused on security, simplicity, and disk room foot print reduction.
+- Boxed files are assembled on demand in a cache and destroyed when the box is not mounted.
+- Those design choice have performances when opening a document and mounting a Box.
 
-## BSFS is Fast
+
+## BSFS synchronization is Fast
 
 - Synchronization is automatic as soon as node is available it synchronization starts
 - When a file upload is in progress clients blocks downloads can start.

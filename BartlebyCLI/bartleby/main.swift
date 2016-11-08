@@ -9,12 +9,12 @@
 import Foundation
 
 //Instanciate the facade
-let facade=BartlebysCommandFacade()
-facade.actOnArguments()
+//let facade=BartlebysCommandFacade()
+//facade.actOnArguments()
 
     // Chunk trials
 
-    /*
+
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
 let d=BartlebyDocument()
@@ -48,7 +48,7 @@ let startTime=CFAbsoluteTimeGetCurrent()
 })
 
 
-*/
+
 
 
 var holdOn=true
