@@ -22,9 +22,9 @@ extension Box{
     }
 
     /// The currently referenced local nodes
-    var localNodes:[Node]{
+    public var localNodes:[Node]{
         if let d=self.document{
-            return d.metadata.localNodes.filter({ (node) -> Bool in
+            return d.bsfs.localNodesShadows.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
             })
         }else{
@@ -34,7 +34,7 @@ extension Box{
 
 
     /// the currently referenced distant nodes
-    var distantNodes:[Node]{
+    var nodes:[Node]{
         if let d=self.document{
             return d.nodes.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
@@ -77,7 +77,7 @@ extension Box{
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         if category==Default.CATEGORY_DOWNLOADS{
-            for node in self.distantNodes{
+            for node in self.nodes{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)

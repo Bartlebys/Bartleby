@@ -36,7 +36,7 @@ Bartleby's Synchronized File system, synchronises automatically "boxed" set of f
 
 # Block Raw files 
 
-The raw blocks are stored in an App group container directory on the client, and on the server.
+The raw blocks are stored on the client, and on the server.
 
 ## Preservation 
 
@@ -69,7 +69,7 @@ BSFS api is fully documented in [BartlebyKit/core/BSFS.swift](https://github.com
 
 # File synchronization mechanisms
 
-## Managed Collections reflects the box state in real time
+## Managed Collections reflects the distributed Box state in real time
 
 When a node or a block is created, updated or deleted, it is automatically propagated to all the connected clients. The `document.nodes` & `document.blocks` are reflecting the `Box` state in real time.
 
@@ -77,10 +77,9 @@ When a node or a block is created, updated or deleted, it is automatically propa
 - document.blocks
 - document.boxes
 
-## Metadata 
+## Current Local State
 
-- `metadata.localBoxes, metadata.localNodes, metadata.localBlocks` reflects the local state.
-- `document.metadata.nodesInProgress` A collection nodes with blocks download in progress, or not still assembled (waiting for delegate) ** TO BE VERIFIED ***
+The current Local state Is encapsulated in BSFS._localContainer. (a Container is an array of Box, Nodes & blocks)
 
 
 ## Uploads
@@ -161,20 +160,74 @@ Such an archive is :
  footer
  --------
 
- The footer contains a Serialized Box
-
- - Box.nodes
- - Box.blocks
+ The footer contains a Serialized Container
 ```
 
 ----
 # Details on Models
 
+## Container 
+
+A Container groups Boxes,Nodes,Blocks (for serialization purpose)
+
+```json
+{
+  "name": "Container",
+  "definition": {
+    "description": "Bartleby's Synchronized File System: groups Boxes,Nodes,Blocks",
+    "properties": {
+      "boxes": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "description": "Boxes",
+            "$ref": "#/definitions/Box",
+            "default": "[Box]()",
+            "supervisable": true,
+            "serializable": true
+          }
+        }
+      },
+      "nodes": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "description": "Nodes",
+            "$ref": "#/definitions/Node",
+            "default": "[Node]()",
+            "supervisable": true,
+            "serializable": true
+          }
+        }
+      },
+      "blocks": {
+        "schema": {
+          "type": "array",
+          "items": {
+            "description": "Blocks",
+            "$ref": "#/definitions/Block",
+            "default": "[Block]()",
+            "supervisable": true,
+            "serializable": true
+          }
+        }
+      }
+    },
+    "metadata": {
+      "urdMode": false,
+      "persistsLocallyOnlyInMemory": false,
+      "persistsDistantly": false,
+      "undoable": false
+    }
+  }
+}
+
+```
+
 ## Node
 
 ```json
 {
-  {
   "name": "Node",
   "definition": {
     "description": "Bartleby's Synchronized File System: a node references a collection of blocks that compose a files, or an alias or a folder",
@@ -186,7 +239,13 @@ Such an archive is :
       },
       "relativePath": {
         "type": "string",
-        "description": "The boxed relative path",
+        "description": "The relative path inside the box",
+        "default": "\\(Default.NO_PATH)",
+        "supervisable": true
+      },
+      "boxUID": {
+        "type": "string",
+        "description": "The Box UID",
         "supervisable": true
       },
       "proxyPath": {
@@ -197,13 +256,13 @@ Such an archive is :
       "blocksMaxSize": {
         "type": "integer",
         "description": "The max size of a block (defines the average size of the block last block excluded)",
-        "default":"Int.max",
+        "default": "Int.max",
         "supervisable": true
       },
       "priority": {
         "type": "integer",
         "description": "The priority level of the node (is applicated to its block)",
-        "default":"0",
+        "default": "0",
         "supervisable": true
       },
       "blocksUIDS": {
@@ -230,43 +289,82 @@ Such an archive is :
           }
         }
       },
-        "nature": {
-          "type": "enum",
-          "instanceOf": "string",
-          "emumPreciseType": "Node.Nature",
-          "description": "The node nature",
-          "enum": [
-            "file",
-            "folder",
-            "alias",
-            "flock"
-          ],
-          "default": ".file"
-        },
-        "size": {
-          "type": "integer",
-          "description": "The size of the file",
-          "default":"Int.max",
-          "supervisable": true
-        },
-        "referentNodeUID": {
-          "type": "string",
-          "description": "If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all",
-          "supervisable": true
-        },
-        "compressed": {
-          "type": "boolean",
-          "description": "If set to true the blocks should be compressed",
-          "default": "true",
-          "supervisable": true
-        },
-        "cryptedBlocks": {
-          "type": "boolean",
-          "description": "If set to true the blocks will be crypted",
-          "default": "true",
-          "supervisable": true
+      "nature": {
+        "type": "enum",
+        "instanceOf": "string",
+        "emumPreciseType": "Node.Nature",
+        "description": "The node nature",
+        "enum": [
+          "file",
+          "folder",
+          "alias"
+        ],
+        "default": ".file"
+      },
+      "size": {
+        "type": "integer",
+        "description": "The size of the file",
+        "default": "Int.max",
+        "supervisable": true
+      },
+      "referentNodeUID": {
+        "type": "string",
+        "description": "If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all",
+        "supervisable": true
+      },
+      "compressed": {
+        "type": "boolean",
+        "description": "If set to true the blocks should be compressed (using LZ4)",
+        "default": "true",
+        "supervisable": true
+      },
+      "cryptedBlocks": {
+        "type": "boolean",
+        "description": "If set to true the blocks will be crypted (using AES256)",
+        "default": "true",
+        "supervisable": true
+      },
+      "uploadProgression": {
+        "schema": {
+          "description": "The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
         }
-
+      },
+      "downloadProgression": {
+        "schema": {
+          "description": "The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
+        }
+      },
+      "uploadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "downloadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "assemblyInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an Assembly in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      }
     },
     "metadata": {
       "urdMode": false,
@@ -289,6 +387,7 @@ Such an archive is :
       "digest": {
         "type": "string",
         "description": "The SHA1 digest of the block",
+        "default": "\\(Default.NO_DIGEST)",
         "supervisable": true
       },
       "authorized": {
@@ -311,34 +410,67 @@ Such an archive is :
       "address": {
         "type": "integer",
         "description": "The starting address of the block in each Holding Node (== the position of the block in the file)",
-        "type": "integer",
-        "default":0,
+        "default": 0,
         "supervisable": true,
-        "cryptable":true
+        "cryptable": true
       },
       "size": {
         "type": "integer",
         "description": "The size of the Block",
-        "default":"Int.max",
+        "default": "Int.max",
         "supervisable": true
       },
       "priority": {
         "type": "integer",
         "description": "The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)",
-        "default":"0",
+        "default": "0",
         "supervisable": true
       },
       "compressed": {
         "type": "boolean",
-        "description": "should be compressed",
+        "description": "If set to true the blocks should be compressed (using LZ4)",
         "default": "true",
         "supervisable": true
       },
       "crypted": {
         "type": "boolean",
-        "description": "If set to true authorized can be void",
+        "description": "If set to true the blocks will be crypted (using AES256)",
         "default": "true",
         "supervisable": true
+      },
+      "uploadProgression": {
+        "schema": {
+          "description": "The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
+        }
+      },
+      "downloadProgression": {
+        "schema": {
+          "description": "The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
+        }
+      },
+      "uploadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "downloadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
       }
     },
     "metadata": {
@@ -357,29 +489,65 @@ Such an archive is :
 {
   "name": "Box",
   "definition": {
-    "description": "Bartleby's Synchronized File System: A box reference sets of Nodes and Blocks",
+    "description": "Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks",
     "properties": {
-      "nodes": {
+      "isMounted": {
+        "type": "boolean",
+        "description": "Turned to true when the box is mounted (not serializable, not supervisable)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "uploadProgression": {
         "schema": {
-          "type": "array",
-          "items": {
-            "description": "BSFS: A collection nodes",
-            "$ref": "#/definitions/Node",
-            "default": "[Node]()",
-            "supervisable": true
-          }
+          "description": "The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
         }
       },
-      "blocks": {
+      "downloadProgression": {
         "schema": {
-          "type": "array",
-          "items": {
-            "description": "BSFS: A collection nodes",
-            "$ref": "#/definitions/Block",
-            "default": "[Block]()",
-            "supervisable": true
-          }
+          "description": "The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
         }
+      },
+      "assemblyProgression": {
+        "schema": {
+          "description": "The Assembly Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)",
+          "$ref": "#/definitions/Progression",
+          "default": "Progression()",
+          "supervisable": false,
+          "cryptable": false,
+          "serializable": false
+        }
+      },
+      "uploadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "downloadInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an upload in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
+      },
+      "assemblyInProgress": {
+        "type": "boolean",
+        "description": "Turned to true if there is an Assembly in progress (used for progress consolidation optimization)",
+        "default": "false",
+        "supervisable": false,
+        "serializable": false
       }
     },
     "metadata": {

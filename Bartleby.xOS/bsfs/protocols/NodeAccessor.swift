@@ -19,7 +19,7 @@ public protocol NodeAccessor:Identifiable{
     /// - the file will be deleted
     //  - or if the access to the file has been blocked (ACL)
     ///
-    /// If the node accessor remain active, if the node become usable again it will receive a `nodeIsUsable(node:Node)` call
+    /// If the node accessor remain active, if the node become usable again it will receive a `fileIsAvailable(for node:Node)` call
     ///
     /// - Parameter node: the node
     func willBecomeUnusable(node:Node)
@@ -30,13 +30,14 @@ public protocol NodeAccessor:Identifiable{
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - path: its file path
-    func nodeIsUsable(node:Node, at path:String)
+    ///   - path: its file path (changes on each assembly)
+    func fileIsAvailable(for node:Node, at path:String)
 
 
     /// Called after an `wantsAccess` demand  when
     /// When the access to the node is refused.
-    /// - Parameter:
+    ///
+    /// - Parameters:
     ///   - node: the node
     ///   - explanations: the explanations
     func accessRefused(to:Node,explanations:String)

@@ -34,7 +34,7 @@ import Foundation
 	dynamic open var authorized:[String] = [String]()
 
 	//The UID of the holding node
-	dynamic open var nodeUID:String? {
+	dynamic open var nodeUID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if nodeUID != oldValue {
 	            self.provisionChanges(forKey: "nodeUID",oldValue: oldValue,newValue: nodeUID) 
@@ -236,7 +236,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
-			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"nodeUID") as NSString?)
+			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "nodeUID")! as NSString)
 			self.address=decoder.decodeInteger(forKey:"address") 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
@@ -249,9 +249,7 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.digest,forKey:"digest")
 		coder.encode(self.authorized,forKey:"authorized")
-		if let nodeUID = self.nodeUID {
-			coder.encode(nodeUID,forKey:"nodeUID")
-		}
+		coder.encode(self.nodeUID,forKey:"nodeUID")
 		coder.encode(self.address,forKey:"address")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.priority,forKey:"priority")

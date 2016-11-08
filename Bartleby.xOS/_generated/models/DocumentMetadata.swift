@@ -49,15 +49,6 @@ import Foundation
 	//A collection of CollectionMetadatum
 	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
-	//BSFS: reflects the local boxes
-	dynamic open var localBoxes:[Box] = [Box]()
-
-	//BSFS: reflects the local nodes
-	dynamic open var localNodes:[Node] = [Node]()
-
-	//BSFS: reflects the local blocks
-	dynamic open var localBlocks:[Block] = [Block]()
-
 	//The State dictionary to insure document persistency 
 	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
 
@@ -155,7 +146,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","localBoxes","localNodes","localBlocks","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -199,18 +190,6 @@ import Foundation
             case "collectionsMetadata":
                 if let casted=value as? [CollectionMetadatum]{
                     self.collectionsMetadata=casted
-                }
-            case "localBoxes":
-                if let casted=value as? [Box]{
-                    self.localBoxes=casted
-                }
-            case "localNodes":
-                if let casted=value as? [Node]{
-                    self.localNodes=casted
-                }
-            case "localBlocks":
-                if let casted=value as? [Block]{
-                    self.localBlocks=casted
                 }
             case "stateDictionary":
                 if let casted=value as? [String:Any]{
@@ -319,12 +298,6 @@ import Foundation
                return self.changesAreInspectables
             case "collectionsMetadata":
                return self.collectionsMetadata
-            case "localBoxes":
-               return self.localBoxes
-            case "localNodes":
-               return self.localNodes
-            case "localBlocks":
-               return self.localBlocks
             case "stateDictionary":
                return self.stateDictionary
             case "URLBookmarkData":
@@ -383,9 +356,6 @@ import Foundation
 			self.rootObjectUID <- ( map["rootObjectUID"] )
 			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 			self.collectionsMetadata <- ( map["collectionsMetadata"] )
-			self.localBoxes <- ( map["localBoxes"] )
-			self.localNodes <- ( map["localNodes"] )
-			self.localBlocks <- ( map["localBlocks"] )
 			self.stateDictionary <- ( map["stateDictionary"] )
 			self.URLBookmarkData <- ( map["URLBookmarkData"] )
 			self.preferredFileName <- ( map["preferredFileName"] )
@@ -417,9 +387,6 @@ import Foundation
 			self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 			self.collectionsMetadata=decoder.decodeObject(of: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
-			self.localBoxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "localBoxes")! as! [Box]
-			self.localNodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "localNodes")! as! [Node]
-			self.localBlocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "localBlocks")! as! [Block]
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
 			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
 			self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
@@ -453,9 +420,6 @@ import Foundation
 			coder.encode(collaborationServerURL,forKey:"collaborationServerURL")
 		}
 		coder.encode(self.collectionsMetadata,forKey:"collectionsMetadata")
-		coder.encode(self.localBoxes,forKey:"localBoxes")
-		coder.encode(self.localNodes,forKey:"localNodes")
-		coder.encode(self.localBlocks,forKey:"localBlocks")
 		coder.encode(self.stateDictionary,forKey:"stateDictionary")
 		coder.encode(self.URLBookmarkData,forKey:"URLBookmarkData")
 		if let preferredFileName = self.preferredFileName {

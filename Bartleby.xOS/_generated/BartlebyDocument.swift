@@ -99,6 +99,9 @@ import Foundation
     // Bartleby's Synchronized File System for this document.
     open lazy var bsfs:BSFS=BSFS(in:self)
 
+    // The bsfs data file name
+    internal var _bsfsDataFileName: String { return "localBSFS" + BartlebyDocument.DATA_EXTENSION }
+
     // Hook the triggers
     public var triggerHooks=[TriggerHook]()
 
@@ -458,7 +461,7 @@ import Foundation
         if var fileWrappers=fileWrapper.fileWrappers {
 
             // ##############
-            // #1 Metadata
+            // # Metadata
             // ##############
 
             // Try to store a preferred filename
@@ -476,7 +479,21 @@ import Foundation
             fileWrapper.addFileWrapper(metadataFileWrapper)
 
             // ##############
-            // #2 Collections
+            // # BSFS DATA
+            // ##############
+
+            if let wrapper=fileWrappers[self._bsfsDataFileName]{
+            fileWrapper.removeFileWrapper(wrapper)
+            }
+
+            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState())
+            let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
+            bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
+            fileWrapper.addFileWrapper(bsfsFileWrapper)
+
+
+            // ##############
+            // # Collections
             // ##############
 
             for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
@@ -531,7 +548,7 @@ import Foundation
         if let fileWrappers=fileWrapper.fileWrappers {
 
             // ##############
-            // #1 Metadata
+            // # Metadata
             // ##############
 
             if let wrapper=fileWrappers[_metadataFileName] {
@@ -554,9 +571,21 @@ import Foundation
                 // ERROR
             }
 
+            // ##############
+            // # BSFS DATA
+            // ##############
+
+            if let wrapper=fileWrappers[_bsfsDataFileName] {
+                if var data=wrapper.regularFileContents {
+                    data = try Bartleby.cryptoDelegate.decryptData(data)
+                    try self.bsfs.restoreStateFrom(data: data)
+                }
+            } else {
+                // ERROR
+            }
 
             // ##############
-            // #2 Collections
+            // # Collections
             // ##############
 
             for metadatum in self.metadata.collectionsMetadata {
@@ -603,7 +632,6 @@ import Foundation
     }
 
 #else
-
 
     // MARK: iOS UIDocument serialization / deserialization
 

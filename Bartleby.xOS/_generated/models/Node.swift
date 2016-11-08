@@ -40,7 +40,7 @@ import Foundation
 	}
 
 	//The Box UID
-	dynamic open var boxUID:String? {
+	dynamic open var boxUID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if boxUID != oldValue {
 	            self.provisionChanges(forKey: "boxUID",oldValue: oldValue,newValue: boxUID) 
@@ -75,34 +75,11 @@ import Foundation
 	//The list of the authorized User.UID,(if set to ["*"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload
 	dynamic open var authorized:[String] = [String]()
 
-	//The node nature
-	public enum Nature:String{
-		case file = "file"
-		case folder = "folder"
-		case alias = "alias"
-	}
-	open var nature:Nature = .file  {
-	    didSet { 
-	       if nature != oldValue {
-	            self.provisionChanges(forKey: "nature",oldValue: oldValue.rawValue,newValue: nature.rawValue)  
-	       } 
-	    }
-	}
-
 	//The size of the file
 	dynamic open var size:Int = Int.max  {
 	    didSet { 
 	       if size != oldValue {
 	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size)  
-	       } 
-	    }
-	}
-
-	//If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all
-	dynamic open var referentNodeUID:String? {
-	    didSet { 
-	       if referentNodeUID != oldValue {
-	            self.provisionChanges(forKey: "referentNodeUID",oldValue: oldValue,newValue: referentNodeUID) 
 	       } 
 	    }
 	}
@@ -145,7 +122,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","nature","size","referentNodeUID","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -190,17 +167,9 @@ import Foundation
                 if let casted=value as? [String]{
                     self.authorized=casted
                 }
-            case "nature":
-                if let casted=value as? Node.Nature{
-                    self.nature=casted
-                }
             case "size":
                 if let casted=value as? Int{
                     self.size=casted
-                }
-            case "referentNodeUID":
-                if let casted=value as? String{
-                    self.referentNodeUID=casted
                 }
             case "compressed":
                 if let casted=value as? Bool{
@@ -261,12 +230,8 @@ import Foundation
                return self.blocksUIDS
             case "authorized":
                return self.authorized
-            case "nature":
-               return self.nature
             case "size":
                return self.size
-            case "referentNodeUID":
-               return self.referentNodeUID
             case "compressed":
                return self.compressed
             case "cryptedBlocks":
@@ -302,9 +267,7 @@ import Foundation
 			self.priority <- ( map["priority"] )
 			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
-			self.nature <- ( map["nature"] )
 			self.size <- ( map["size"] )
-			self.referentNodeUID <- ( map["referentNodeUID"] )
 			self.compressed <- ( map["compressed"] )
 			self.cryptedBlocks <- ( map["cryptedBlocks"] )
         }
@@ -318,15 +281,13 @@ import Foundation
         self.silentGroupedChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relativePath")! as NSString)
-			self.boxUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"boxUID") as NSString?)
+			self.boxUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "boxUID")! as NSString)
 			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
-			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
 			self.size=decoder.decodeInteger(forKey:"size") 
-			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.cryptedBlocks=decoder.decodeBool(forKey:"cryptedBlocks") 
         }
@@ -338,9 +299,7 @@ import Foundation
 			coder.encode(externalID,forKey:"externalID")
 		}
 		coder.encode(self.relativePath,forKey:"relativePath")
-		if let boxUID = self.boxUID {
-			coder.encode(boxUID,forKey:"boxUID")
-		}
+		coder.encode(self.boxUID,forKey:"boxUID")
 		if let proxyPath = self.proxyPath {
 			coder.encode(proxyPath,forKey:"proxyPath")
 		}
@@ -348,11 +307,7 @@ import Foundation
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
 		coder.encode(self.authorized,forKey:"authorized")
-		coder.encode(self.nature.rawValue ,forKey:"nature")
 		coder.encode(self.size,forKey:"size")
-		if let referentNodeUID = self.referentNodeUID {
-			coder.encode(referentNodeUID,forKey:"referentNodeUID")
-		}
 		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.cryptedBlocks,forKey:"cryptedBlocks")
     }

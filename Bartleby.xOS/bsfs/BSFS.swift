@@ -13,7 +13,6 @@ import Foundation
 public final class BSFS:TriggerHook{
 
     // Document
-
     fileprivate unowned var _document:BartlebyDocument
 
     /// The File manager used to perform all the BSFS operation on GCD global utility queue.
@@ -29,12 +28,38 @@ public final class BSFS:TriggerHook{
     /// The mounted node paths key:node.UID, value:tempFileName
     fileprivate var _mountedFileNames=[String:String]()
 
+    // The local container (the member are not referenced in the document)
+    fileprivate var _localContainer:FSShadowContainer=FSShadowContainer()
+
+    /// Returns the local nodes shadows
+    var localNodesShadows:[NodeShadow] { return self._localContainer.nodes }
+
+    /// Returns the local blocks shadows
+    var localBlocksShadows:[BlockShadow] { return self._localContainer.blocks }
+
     /// Each document has it own BSFS
     ///
     /// - Parameter document: the document instance
     required public init(in document:BartlebyDocument){
         self._document=document
     }
+
+    // MARKS: - Persistency
+
+    /// Serialize the local state of the BSFS
+    ///
+    /// - Returns: the serialized data
+    public func saveState()->Data{
+        return _localContainer.serialize()
+    }
+
+    /// Restore the state
+    ///
+    /// - Parameter data: from the serialized state data
+    public func restoreStateFrom(data:Data)throws->(){
+        let _ = try self._localContainer.updateData(data, provisionChanges: false)
+    }
+
 
     // MARKS: - Paths
 
@@ -153,9 +178,11 @@ public final class BSFS:TriggerHook{
     /// - Parameter node: the node
     /// - Returns: the assembled path (created if there no
     fileprivate func _mountedPath(for node:Node)->String{
-        if let fileName=self._mountedFileNames[node.UID]{
-            if let box=node.box{
-                return box.absoluteFolderPath+"\(node.relativePath)\(fileName)"
+        if !(node is Shadow){
+            if let fileName=self._mountedFileNames[node.UID]{
+                if let box=node.box{
+                    return box.absoluteFolderPath+"\(node.relativePath)\(fileName)"
+                }
             }
         }
         return Default.NO_PATH
@@ -168,16 +195,20 @@ public final class BSFS:TriggerHook{
     /// - Parameter node: the node
     /// - Returns: true if the file is available and the node not marked assemblyInProgress
     fileprivate func _isAssembled(_ node:Node)->Bool{
-        if node.assemblyInProgress {
+        if node is Shadow{
             return false
+        }else{
+            if node.assemblyInProgress {
+                return false
+            }
+            let group=AsyncGroup()
+            var exists=false
+            group.utility{
+                exists=self._fileManager.fileExists(atPath: self._mountedPath(for: node))
+            }
+            group.wait()
+            return exists
         }
-        let group=AsyncGroup()
-        var exists=false
-        group.utility{
-            exists=self._fileManager.fileExists(atPath: self._mountedPath(for: node))
-        }
-        group.wait()
-        return exists
     }
 
 
@@ -192,46 +223,52 @@ public final class BSFS:TriggerHook{
     internal func _assemble(node:Node,
                             progressed:@escaping (Progression)->(),
                             completed:@escaping (Completion)->()){
-        do {
-            if node.isAssemblable == false{
-                throw BSFSError.nodeIsNotAssemblable
-            }
-            if let delegate = self._boxDelegate{
-                delegate.nodeIsReady(node: node, proceed: {
 
-                    // Create a new file
-                    let fileName=Bartleby.createUID().lowercased()
-                    self._mountedFileNames[node.UID]=fileName
-                    let filePath=self._mountedPath(for: node)
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            do {
+                if node.isAssemblable == false{
+                    throw BSFSError.nodeIsNotAssemblable
+                }
+                if let delegate = self._boxDelegate{
+                    delegate.nodeIsReady(node: node, proceed: {
 
-                    let blocks=node.localBlocks
-                    var blockPaths=[String]()
-                    for block in blocks{
-                        blockPaths.append(block.absolutePath)
-                    }
-                    self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
-                        progressed(progression)
-                    }, success: {
-                        let completionState=Completion.successState()
-                        completionState.externalIdentifier=node.UID
-                        completed(completionState)
-                    }, failure: { (message) in
-                        let completion=Completion()
-                        completion.message=message
-                        completion.success=false
-                        completion.externalIdentifier=node.UID
-                        completed(completion)
+                        // Create a new file
+                        let fileName=Bartleby.createUID().lowercased()
+                        self._mountedFileNames[node.UID]=fileName
+                        let filePath=self._mountedPath(for: node)
+
+                        let blocks=node.localBlocks
+                        var blockPaths=[String]()
+                        for block in blocks{
+                            blockPaths.append(block.absolutePath)
+                        }
+                        self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                            progressed(progression)
+                        }, success: {
+                            let completionState=Completion.successState()
+                            completionState.externalIdentifier=node.UID
+                            completed(completionState)
+                        }, failure: { (message) in
+                            let completion=Completion()
+                            completion.message=message
+                            completion.success=false
+                            completion.externalIdentifier=node.UID
+                            completed(completion)
+                        })
                     })
-                })
-            }else{
-                throw BSFSError.boxDelegateIsNotAvailable
-            }
+                }else{
+                    throw BSFSError.boxDelegateIsNotAvailable
+                }
 
-        } catch{
-            completed(Completion.failureStateFromError(error))
+            } catch{
+                completed(Completion.failureStateFromError(error))
+            }
         }
+
     }
-    
+
 
 
     //MARK:  - File Level
@@ -245,22 +282,25 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameters:
     ///   - fileReference: the file reference
+    ///   - box: the box
     ///   - relativePath: the relative Path of the Node
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State (the node ref is stored in the completion.getResultExternalReference())
     public func add( fileReference:FileReference,
+                     in box:Box,
                      to relativePath:String,
                      deleteOriginal:Bool=false,
                      progressed:@escaping (Progression)->(),
                      completed:@escaping (Completion)->()){
 
-
-        let node=Node()
-        let finalState=Completion.successState()
-        finalState.setExternalReferenceResult(from:node)
-        
-        
+        if box is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            let node=Node()
+            let finalState=Completion.successState()
+            finalState.setExternalReferenceResult(from:node)
+        }
     }
 
 
@@ -280,10 +320,19 @@ public final class BSFS:TriggerHook{
                                accessor:NodeAccessor,
                                progressed:@escaping (Progression)->(),
                                completed:@escaping (Completion)->()){
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
 
+            if node.authorized.contains(self._document.currentUser.UID) ||
+                node.authorized.contains("*"){
 
+                // TODO
 
-
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
+            }
+        }
     }
 
 
@@ -333,7 +382,7 @@ public final class BSFS:TriggerHook{
     }
 
     fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
-        accessor.nodeIsUsable(node: node, at: self._mountedPath(for:node))
+        accessor.fileIsAvailable(for:node, at: self._mountedPath(for:node))
     }
 
 
@@ -424,17 +473,10 @@ public final class BSFS:TriggerHook{
             // We can download
             // @TODO
 
-            // On each completion :
-            // Call self._tryToAssembleNodesInProgress()
-
         }
     }
 
-    // MARK: - Internal Mechanisms
 
-    public func _tryToAssembleNodesInProgress(){
-        //TODO
-    }
 
     //MARK: - Chunk level: chunk->file and file->chunk
 
@@ -658,4 +700,6 @@ public final class BSFS:TriggerHook{
             }
         }
     }
+    
+    
 }

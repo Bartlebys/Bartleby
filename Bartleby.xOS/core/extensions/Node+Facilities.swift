@@ -26,29 +26,27 @@ extension Node{
 
     /// The parent box
     var box:Box?{
-        if let boxUID=self.boxUID{
-            if let box = try? Bartleby.registredObjectByUID(boxUID) as Box{
+        if let box = try? Bartleby.registredObjectByUID(boxUID) as Box{
                 return box
-            }
         }
         return nil
     }
 
 
     /// the currently referenced local blocks
-    var localBlocks:[Block]{
+    var localBlocks:[BlockShadow]{
         if let d=self.document{
-            return d.metadata.localBlocks.filter({ (block) -> Bool in
+            return d.bsfs.localBlocksShadows.filter({ (block) -> Bool in
                 return block.nodeUID==self.UID
             })
         }else{
-            return [Block]()
+            return [BlockShadow]()
         }
     }
 
 
     /// the currently referenced distant blocks
-    var distantBlocks:[Block]{
+    var blocks:[Block]{
         if let d=self.document{
             return d.blocks.filter({ (block) -> Bool in
                 return block.nodeUID==self.UID
@@ -89,7 +87,7 @@ extension Node{
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         if category==Default.CATEGORY_DOWNLOADS {
-            for node in self.distantBlocks{
+            for node in self.blocks{
                 node.consolidateProgression(for: category)
                 if let progression=node.progressionState(for: category){
                     progressions.append(progression)
