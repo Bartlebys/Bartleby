@@ -12,7 +12,6 @@ import Foundation
 
 // We expose pairs of Setter and Getter to cast the Result.
 // The result is serialized in the opaque NSdata data property.
-
 public extension Completion {
 
     // MARK: Generic Serializable result
@@ -114,5 +113,28 @@ public extension Completion {
             }
         }
         return  nil
+    }
+
+
+    // MARK: - External Reference result
+
+    /// Store an external reference in the result
+    ///
+    /// - Parameter ref: the reference
+    func setExternalReferenceResult(_ ref:ExternalReference) {
+        self.data = ref.serialize()
+    }
+
+
+    /// Retrieve the stored reference
+    ///
+    /// - Returns: the external reference
+    func getExternalReferenceResult() ->ExternalReference? {
+        if let ref:ExternalReference=self.getResult(){
+            return ref
+        }else{
+            return nil
+        }
+
     }
 }
