@@ -22,16 +22,10 @@ import Foundation
  footer
  --------
 
- The footer contains a Serialized Box
-
- - Box.nodes
- - Box.blocks
+ The footer contains
+ - [ box, nodes , blocks ]
 
  */
-
-// COMPRESSION is using LZFSE https://developer.apple.com/reference/compression/1665429-data_compression
-// file:///Users/bpds/Documents/Entrepot/Git/Clients/LyLo.TV/YouDubOSX/Bartleby/Documents/BSFS.md
-
 struct Flocker{
 
 
@@ -41,13 +35,11 @@ struct Flocker{
     /// By using this method you preserve the ACL
     ///
     /// - Parameters:
-    ///   - box: the box to be flocked
-    ///   - flockedFilePath: the flock path
-    ///   - holders:  you define the authorized users for each file (by default set to public ["*"])
-    func flockFolder(folderPath:String, destination flockedFilePath:String, authorized holders:[String]=["*"] ){
+    ///   - folderReference: the reference to folder to flock
+    ///   - path: the destination path
+    func flockFolder(folderReference:FileReference, destination path:String){
         // The result is single file containing a box.
         // It allow to group set of files
-        // The relative box path will be computed relatively to the app container (if sandboxed)
     }
 
     /// Flocks the box means you transform a box of Nodes to a single file

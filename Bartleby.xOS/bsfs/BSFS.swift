@@ -7,85 +7,7 @@
 //
 import Foundation
 
-enum BSFSError:Error{
-    case boxDelegateIsNotAvailable
-    case attemptToMountBoxMultipleTime(boxUID:String)
-    case nodeIsNotAssemblable
-}
 
-
-
-/// Should be implemented by anything that want to acceed to a node.
-/// This protocol is simplier than NSFilePresenter/Coordinator 
-/// It focuses on File consumers with read access to assembled files.
-public protocol NodeAccessor:Identifiable{
-
-    /// Called when:
-    /// - the current node assembled file will become temporaly unusable (for example on external update)
-    /// - the Box has been unmounted
-    /// - the file will be deleted
-    //  - or if the access to the file has been blocked (ACL)
-    /// 
-    /// If the node accessor remain active, if the node become usable again it will receive a `nodeIsUsable(node:Node)` call
-    ///
-    /// - Parameter node: the node
-    func willBecomeUnusable(node:Node)
-
-
-    /// Called after an `wantsAccess` demand  when
-    /// - the current node assembled file becomes available (all the block are available, and the file has been assembled)
-    ///
-    /// - Parameter node: the node
-    func nodeIsUsable(node:Node)
-
-}
-
-
-
-// Box Delegation is related to synchronization 
-// and content replacement
-public protocol BoxDelegate{
-
-
-    /// BSFS sends to BoxDelegate
-    /// The delegate invokes proceed asynchronously giving the time to perform required actions
-    ///
-    /// - Parameter node: the node that will be moved or copied
-    func moveIsReady(node:Node,to relativePath:String,proceed:()->())
-
-
-    /// BSFS sends to BoxDelegate
-    /// The delegate invokes proceed asynchronously giving the time to perform required actions
-    ///
-    /// - Parameter node: the node that will be moved or copied
-    func copyIsReady(node:Node,to relativePath:String,proceed:()->())
-
-
-    /// BSFS sends to BoxDelegate
-    /// The delegate invokes proceed asynchronously giving the time to perform required actions
-    ///
-    /// - Parameter node: the node that will be Updated
-    func deletionIsReady(node:Node,proceed:()->())
-
-
-    /// BSFS sends to BoxDelegate
-    /// The delegate invokes proceed asynchronously giving the time to perform required actions
-    ///
-    /// - Parameter node: the node that will be Updated
-    func nodeIsReady(node:Node,proceed:()->())
-
-
-    /// Should we allow the replacement of content node
-    ///
-    /// - Parameters:
-    ///   - node: the node
-    ///   - path: the path
-    ///   - accessor: the accessor
-    /// - Returns: true if allowed respond false by default (override required)
-    func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool
-
-
-}
 
 public class BSFS:TriggerHook{
 
@@ -97,10 +19,10 @@ public class BSFS:TriggerHook{
     /// Note that we also use specific FileHandle at chunk level
     fileprivate let _fileManager:FileManager=FileManager()
 
-    // The Boxes Delegate registry.
+    // The box Delegate
     fileprivate var _boxDelegate:BoxDelegate?
 
-    // And their accessors
+    // The current accessors
     fileprivate var _accessors=[String:[NodeAccessor]]()
 
 
@@ -225,6 +147,9 @@ public class BSFS:TriggerHook{
 
     //MARK:  - File API
 
+
+
+
     /// Any accessor to obtain access to the resource (file) of a node need to call this method.
     /// The nodeIsUsable() will be called when the file will be usable.
     ///
@@ -270,11 +195,23 @@ public class BSFS:TriggerHook{
     }
 
 
+    /// Call to replace the content of a node.
+    /// This action may be refused by the BoxDelegate (check the completion state)
+    ///
+    /// - Parameters:
+    ///   - node: the concerned node
+    ///   - path: the file path
+    ///   - destroyOriginalContent: should we destroy the original file
+    ///   - accessor: the accessor that ask for replacement
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State.
     func wantsToReplaceContent(of node:Node,
                                withContentAt path:String,
                                destroyOriginalContent:Bool,
                                accessor:NodeAccessor,
+                               progressed:@escaping (Progression)->(),
                                completed:@escaping (Completion)->()){
+
 
     }
 
@@ -282,26 +219,25 @@ public class BSFS:TriggerHook{
     //MARK:  - Boxed API
 
 
-    /// Adds a file into the box (copies if necessary the file into the box)
+    /// Adds a file into the box 
     ///
+    ///     + copies if necessary the file into the box
+    ///     + generate the blocks in background.
+    ///     + adds the node
+    ///     + the node UID is stored in Completion.externalIdentifier
+    /// 
     /// - Parameters:
-    ///   - absolutePath: the original file path
+    ///   - fileReference: the file reference
     ///   - relativePath: the relative Path of the Node
-    ///   - authorized: the User UIDS or "*" if public
     ///   - deleteOriginal: should we delete the original?
-    ///   - compressed: should we zip the node
-    ///   - crypted: should we encrypt the node
-    ///   - priority: synchronization priority (higher == will be synchronized before the other nodes)
-    /// - Returns: the node
-    public func add(original absolutePath:String,
-                    relativePath:String,
-                    authorized:[String],
+    ///   - progressed: a closure  to relay the Progression State
+    ///   - completed: a closure called on completion with Completion State (the node UID is stored in Completion.externalIdentifier)
+    public func add( fileReference:FileReference,
+                    to relativePath:String,
                     deleteOriginal:Bool=false,
-                    compressed:Bool=false,
-                    crypted:Bool=true,
-                    priority:Int=0)throws->Node{
+                    progressed:@escaping (Progression)->(),
+                    completed:@escaping (Completion)->()){
 
-        return Node()
     }
 
 
