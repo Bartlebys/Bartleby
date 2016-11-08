@@ -15,7 +15,9 @@ enum BSFSError:Error{
 
 
 
-// Should be implemented by anything that want to acceed to a node.
+/// Should be implemented by anything that want to acceed to a node.
+/// This protocol is simplier than NSFilePresenter/Coordinator 
+/// It focuses on File consumers with read access to assembled files.
 public protocol NodeAccessor:Identifiable{
 
     /// Called when:
@@ -39,7 +41,9 @@ public protocol NodeAccessor:Identifiable{
 }
 
 
-// Box Delegation is related to synchronization.
+
+// Box Delegation is related to synchronization 
+// and content replacement
 public protocol BoxDelegate{
 
 
@@ -64,14 +68,21 @@ public protocol BoxDelegate{
     func deletionIsReady(node:Node,proceed:()->())
 
 
-/// ????
-
-
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func blocksAreReady(node:Node,proceed:()->())
+    func nodeIsReady(node:Node,proceed:()->())
+
+
+    /// Should we allow the replacement of content node
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - path: the path
+    ///   - accessor: the accessor
+    /// - Returns: true if allowed respond false by default (override required)
+    func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool
 
 
 }
@@ -259,6 +270,14 @@ public class BSFS:TriggerHook{
     }
 
 
+    func wantsToReplaceContent(of node:Node,
+                               withContentAt path:String,
+                               destroyOriginalContent:Bool,
+                               accessor:NodeAccessor,
+                               completed:@escaping (Completion)->()){
+
+    }
+
 
     //MARK:  - Boxed API
 
@@ -405,7 +424,7 @@ public class BSFS:TriggerHook{
                 throw BSFSError.nodeIsNotAssemblable
             }
             if let delegate = self._boxDelegate{
-                delegate.blocksAreReady(node: node, proceed: {
+                delegate.nodeIsReady(node: node, proceed: {
                     let filePath=node.absolutePath
                     let blocks=node.localBlocks
                     var blockPaths=[String]()

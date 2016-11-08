@@ -388,7 +388,7 @@ import Foundation
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be moved or copied
-    public func moveIsReady(node:Node,to destinationPath:String,proceed:()->()){
+    open func moveIsReady(node:Node,to destinationPath:String,proceed:()->()){
         // If necessary we can wait
         proceed()
     }
@@ -398,7 +398,7 @@ import Foundation
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be moved or copied
-    public func copyIsReady(node:Node,to destinationPath:String,proceed:()->()){
+    open func copyIsReady(node:Node,to destinationPath:String,proceed:()->()){
         // If necessary we can wait
         proceed()
     }
@@ -407,7 +407,7 @@ import Foundation
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    public func deletionIsReady(node:Node,proceed:()->()){
+    open func deletionIsReady(node:Node,proceed:()->()){
         // If necessary we can wait
         proceed()
     }
@@ -415,11 +415,21 @@ import Foundation
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
-    /// - Parameter node: the node that will be Updated
-    public func blocksAreReady(node: Node, proceed: () -> ()) {
+    /// - Parameter node: the node that will be Created or Updated
+    open func nodeIsReady(node: Node, proceed: () -> ()) {
         proceed()
     }
 
+    /// Should we allow the replacement of content node
+    ///
+    /// - Parameters:
+    ///   - node: the node
+    ///   - path: the path
+    ///   - accessor: the accessor
+    /// - Returns: true if allowed
+    open func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool{
+        return false // Return false by default
+    }
 
     // MARK: - Synchronization
 
