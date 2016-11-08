@@ -342,7 +342,7 @@ open class HTTPManager: NSObject {
     
     
     /**
-     Salts a string to guarante that the app "knows" the shared salt
+     Salts a string to guarantee that the app "knows" the shared salt
      
      - parameter string: the string
      
