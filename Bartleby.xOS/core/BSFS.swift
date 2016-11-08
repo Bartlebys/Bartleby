@@ -14,12 +14,6 @@ enum BSFSError:Error{
 }
 
 
-public extension Node{
-    func realPath()->String{
-        return ""
-    }
-}
-
 
 // Should be implemented by anything that want to acceed to a node.
 public protocol NodeAccessor:Identifiable{
@@ -36,7 +30,7 @@ public protocol NodeAccessor:Identifiable{
     func willBecomeUnusable(node:Node)
 
 
-    /// Called after an `askForAccess` demand  when
+    /// Called after an `wantsAccess` demand  when
     /// - the current node assembled file becomes available (all the block are available, and the file has been assembled)
     ///
     /// - Parameter node: the node
@@ -88,8 +82,9 @@ public class BSFS:TriggerHook{
 
     fileprivate unowned var _document:BartlebyDocument
 
-    // The File manager
-    fileprivate var _fileManager: BartlebyFileIO { return Bartleby.fileManager }
+    /// The File manager used to perform all the BSFS operation on the utility queue.
+    /// Note that we also use specific FileHandle at chunk level
+    fileprivate let _fileManager:FileManager=FileManager()
 
     // The Boxes Delegate registry.
     fileprivate var _boxDelegate:BoxDelegate?
@@ -107,33 +102,30 @@ public class BSFS:TriggerHook{
 
     // MARKS: - Paths
 
-    /// Returns the BSFS base folder path
+    /// The BSFS base folder path
     /// ---
     /// baseFolder/
     ///     - blocks/ all the crypted compressed blocks (classifyed per 3 level of folders)
-    ///     - boxes/<boxUID/ the mounted files
     ///     - tmp/ downloads in progress
-    ///
-    /// - Returns: the base path
-    public func baseFolderPath()->String{
+    public var baseFolderPath:String{
         return NSHomeDirectory()+"/.bsfs/\(_document.UID)"
     }
 
-
-    public func blocksFolderPath()->String{
-        return self.baseFolderPath()+"/blocks"
+    public var blocksFolderPath:String{
+        return self.baseFolderPath+"/blocks"
     }
 
-
-    public func boxesFolderPath()->String{
-        return self.baseFolderPath()+"/boxes"
+    /// The path correspond is where the Boxes assemble their files.
+    /// The files are destroyed when a box is unmounted.
+    public var boxesFolderPath:String{
+        return Bartleby.getSearchPath(.cachesDirectory)!+"/boxes"
     }
 
 
     //MARK:  - BOX API
 
     /// Mounts the current local box == Assemble all its assemblable nodes
-    /// There is no guarante that the box is not fully up to date
+    /// There is no guarantee that the box is not fully up to date
     ///
     /// - Parameters:
     ///   - boxUID: the Box UID
@@ -153,8 +145,8 @@ public class BSFS:TriggerHook{
             var concernedNodes=[Node]()
 
             // Let's try to assemble as much nodes as we can.
-            for node in box.localNodes(){
-                if node.isAssemblable() && !node.isAssembled() && !node.assemblyInProgress{
+            for node in box.localNodes{
+                if node.isAssemblable && !node.isAssembled && !node.assemblyInProgress{
                     concernedNodes.append(node)
                 }
             }
@@ -204,14 +196,14 @@ public class BSFS:TriggerHook{
                          completed:@escaping (Completion)->()){
         do {
             let box = try Bartleby.registredObjectByUID(boxUID) as Box
-            for node in box.localNodes(){
+            for node in box.localNodes{
                 if let accessors=self._accessors[node.UID]{
                     for accessor in accessors{
                         accessor.willBecomeUnusable(node: node)
                     }
                 }
-                let assembledPath=node.absolutePath()
-                try FileManager.default.removeItem(atPath: assembledPath)
+                let assembledPath=node.absolutePath
+                try self._fileManager.removeItem(atPath: assembledPath)
             }
             box.isMounted=false
             completed(Completion.successState())
@@ -236,7 +228,7 @@ public class BSFS:TriggerHook{
     ///   - node: the node
     ///   - accessor: the accessor
     /// - Returns: false if the current user is not authorized.
-    public func accessorWantsAccess(to node:Node,accessor:NodeAccessor)->Bool{
+    public func wantsAccess(to node:Node,accessor:NodeAccessor)->Bool{
         // The nodeIsUsable() will be called when the file will be usable.
         if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
             if self._accessors[node.UID] != nil {
@@ -244,6 +236,9 @@ public class BSFS:TriggerHook{
             }
             if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
                 self._accessors[node.UID]!.append(accessor)
+            }
+            if node.isAssembled{
+                
             }
             return true
         }else{
@@ -257,7 +252,7 @@ public class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     ///   - accessor: the accessor
-    public func accessorStopsAccessing(to node:Node,accessor:NodeAccessor){
+    public func stopsAccessing(to node:Node,accessor:NodeAccessor){
         if let idx=self._accessors[node.UID]?.index(where: {$0.UID==accessor.UID}){
             self._accessors[node.UID]!.remove(at: idx)
         }
@@ -319,7 +314,6 @@ public class BSFS:TriggerHook{
         _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
             // TODO implement
         })
-
     }
 
 
@@ -407,16 +401,16 @@ public class BSFS:TriggerHook{
                             progressed:@escaping (Progression)->(),
                             completed:@escaping (Completion)->()){
         do {
-            if node.isAssemblable() == false{
+            if node.isAssemblable == false{
                 throw BSFSError.nodeIsNotAssemblable
             }
             if let delegate = self._boxDelegate{
                 delegate.blocksAreReady(node: node, proceed: {
-                    let filePath=node.absolutePath()
-                    let blocks=node.localBlocks()
+                    let filePath=node.absolutePath
+                    let blocks=node.localBlocks
                     var blockPaths=[String]()
                     for block in blocks{
-                        blockPaths.append(block.absolutePath())
+                        blockPaths.append(block.absolutePath)
                     }
                     self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
                         progressed(progression)
@@ -531,8 +525,8 @@ public class BSFS:TriggerHook{
 
 
 
-                let _ = try? FileManager.default.removeItem(atPath: folderPath)
-                let _ = try? FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+                let _ = try? self._fileManager.removeItem(atPath: folderPath)
+                let _ = try? self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
 
                 var offset:UInt64=0
                 var position:UInt64=0
@@ -548,7 +542,7 @@ public class BSFS:TriggerHook{
                     let c3=PString.substr(sha1, 2, 1)
                     let relativeFolderPath="\(c1)/\(c2)/\(c3)/"
                     let bFolderPath=folderPath+relativeFolderPath
-                    let _ = try FileManager.default.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
+                    let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
                     let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,originalSize:Int(offset))
@@ -634,8 +628,8 @@ public class BSFS:TriggerHook{
         Async.utility {
             do{
                 let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
-                try FileManager.default.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
-                FileManager.default.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
+                try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+                self._fileManager.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
 
                 // Assemble
                 if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
@@ -689,6 +683,4 @@ public class BSFS:TriggerHook{
             }
         }
     }
-    
-    
 }
