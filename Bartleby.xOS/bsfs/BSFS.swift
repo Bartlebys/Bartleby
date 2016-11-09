@@ -19,6 +19,9 @@ public final class BSFS:TriggerHook{
     /// Note that we also use specific FileHandle at chunk level
     fileprivate let _fileManager:FileManager=FileManager()
 
+    /// Chunk level operations
+    fileprivate let _chunker:Chunker
+
     // The box Delegate
     fileprivate var _boxDelegate:BoxDelegate?
 
@@ -47,6 +50,7 @@ public final class BSFS:TriggerHook{
     /// - Parameter document: the document instance
     required public init(in document:BartlebyDocument){
         self._document=document
+        self._chunker=Chunker(fileManager: self._fileManager)
     }
 
     // MARKS: - Persistency
@@ -107,6 +111,7 @@ public final class BSFS:TriggerHook{
     ///   - boxUID: the Box UID
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
+    ///                the box ref is stored in the completion.getResultExternalReference()
     public func mount( boxUID:String,
                        progressed:@escaping (Progression)->(),
                        completed:@escaping (Completion)->()){
@@ -149,7 +154,9 @@ public final class BSFS:TriggerHook{
                 }else{
                     box.assemblyInProgress=false
                     box.isMounted=true
-                    completed(Completion.successState())
+                    let completionState=Completion.successState()
+                    completionState.setExternalReferenceResult(from:box)
+                    completed(completionState)
                 }
             }
 
@@ -229,12 +236,12 @@ public final class BSFS:TriggerHook{
 
     /// Creates a file from the node blocks.
     /// IMPORTANT: this method requires a response from the BoxDelegate
-    /// The completion occurs when the BoxDelegate invokes `applyPendingChanges` on the concerned node
     ///
     /// - Parameters:
     ///   - node: the node
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
+    ///                the node ref is stored in the completion.getResultExternalReference()
     internal func _assemble(node:Node,
                             progressed:@escaping (Progression)->(),
                             completed:@escaping (Completion)->()){
@@ -253,25 +260,53 @@ public final class BSFS:TriggerHook{
                         let fileName=Bartleby.createUID().lowercased()
                         self._mountedFileNames[node.UID]=fileName
                         let filePath=self._mountedPath(for: node)
-
                         let blocks=node.localBlocks
-                        var blockPaths=[String]()
-                        for block in blocks{
-                            blockPaths.append(block.absolutePath)
-                        }
-                        self.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
-                            progressed(progression)
-                        }, success: {
+
+                        if node.nature == .file || node.nature == .flock {
+
+                            var blockPaths=[String]()
+                            for block in blocks{
+                                blockPaths.append(block.absolutePath)
+                            }
+                            self._chunker.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                                progressed(progression)
+                            }, success: {
+
+                                if node.nature == .flock{
+                                    //TODO
+
+                                    let completionState=Completion.successState()
+                                    completionState.setExternalReferenceResult(from:node)
+                                    completed(completionState)
+
+                                }else{
+                                    // The file has been assembled
+                                    let completionState=Completion.successState()
+                                    completionState.setExternalReferenceResult(from:node)
+                                    completed(completionState)
+                                }
+                            }, failure: { (message) in
+                                let completion=Completion()
+                                completion.message=message
+                                completion.success=false
+                                completion.externalIdentifier=node.UID
+                                completed(completion)
+                            })
+                        }else if node.nature == .alias{
+
+                            // TODO
+
                             let completionState=Completion.successState()
-                            completionState.externalIdentifier=node.UID
+                            completionState.setExternalReferenceResult(from:node)
                             completed(completionState)
-                        }, failure: { (message) in
-                            let completion=Completion()
-                            completion.message=message
-                            completion.success=false
-                            completion.externalIdentifier=node.UID
-                            completed(completion)
-                        })
+
+                        }else if node.nature == .folder{
+                            // TODO
+
+                            let completionState=Completion.successState()
+                            completionState.setExternalReferenceResult(from:node)
+                            completed(completionState)
+                        }
                     })
                 }else{
                     throw BSFSError.boxDelegateIsNotAvailable
@@ -318,7 +353,8 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the relative Path of the Node
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
-    ///   - completed: a closure called on completion with Completion State (the node ref is stored in the completion.getResultExternalReference())
+    ///   - completed: a closure called on completion with Completion State 
+    ///                the node ref is stored in the completion.getResultExternalReference()
     public func add( reference:FSReference,
                      in box:Box,
                      to relativePath:String,
@@ -335,7 +371,7 @@ public final class BSFS:TriggerHook{
             if self._fileManager.fileExists(atPath: reference.absolutePath){
 
                 /// Let's break the file into chunk.
-                self.breakIntoChunk(fileAt: reference.absolutePath,
+                self._chunker.breakIntoChunk(fileAt: reference.absolutePath,
                                     destination: box.absoluteFolderPath,
                                     compress: reference.compressed,
                                     encrypt: reference.crypted,
@@ -418,6 +454,7 @@ public final class BSFS:TriggerHook{
     ///   - accessor: the accessor that ask for replacement
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
+    ///                the node ref is stored in the completion.getResultExternalReference()
     func wantsToReplaceContent(of node:Node,
                                withContentAt path:String,
                                destroyOriginalContent:Bool,
@@ -433,6 +470,10 @@ public final class BSFS:TriggerHook{
                     node.authorized.contains("*"){
 
                     // TODO ****
+
+                    let finalState=Completion.successState()
+                    finalState.setExternalReferenceResult(from:node)
+                    completed(finalState)
 
                 }else{
                     completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
@@ -498,13 +539,17 @@ public final class BSFS:TriggerHook{
         }
     }
 
+    /// Grants the access
+    ///
+    /// - Parameters:
+    ///   - node: to the node
+    ///   - accessor: for an Accessor
     fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
         if node is Shadow{
             accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
         }else{
             accessor.fileIsAvailable(for:node, at: self._mountedPath(for:node))
         }
-
     }
 
 
@@ -518,6 +563,7 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - relativePath: the relative path
     ///   - completed: a closure called on completion with Completion State.
+    ///                the copied node ref is stored in the completion.getResultExternalReference()
     public func copy(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
         if node is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
@@ -526,6 +572,19 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
                     node.relativePath=relativePath
+
+
+                    // TODO **** NODE COPY REF
+                    /// Create the copy node
+                    /// Create its copy shadow
+
+                    /// QUID D'une création d'alias?
+
+                    let finalState=Completion.successState()
+                    finalState.setExternalReferenceResult(from:node)
+                    completed(finalState)
+
+
                 })
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
@@ -542,6 +601,7 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - relativePath: the relative path
     ///   - completed: a closure called on completion with Completion State.
+    ///                the copied node ref is stored in the completion.getResultExternalReference()
     public func move(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
         if node is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
@@ -550,6 +610,9 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
                     node.relativePath=relativePath
+                    let finalState=Completion.successState()
+                    finalState.setExternalReferenceResult(from:node)
+                    completed(finalState)
                 })
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
@@ -573,15 +636,16 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.deletionIsReady(node: node, proceed: {
                     /// TODO implement the deletion
+                    /// Delete the node
+                    /// Delete its shadow
+                    /// Delete the files if necessary 
+                    /// Refuse to delete folder containing nodes
 
-
-
+                    completed(Completion.successState())
                 })
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
             }
-        }
-        if !(node is Shadow){
         }
     }
 
@@ -591,7 +655,18 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the relative Path
     ///   - completed: a closure called on completion with Completion State.
     public func createFolder(in box:Box,at relativePath:String,completed:@escaping (Completion)->())->(){
+        if box is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            /// TODO implement
+            /// TEST IF THERE IS A LOCAL FOLDER 
+            /// Create the folder
+            /// Create the NODE 
+            /// Create its shadow
 
+            completed(Completion.successState())
+
+        }
 
     }
 
@@ -706,227 +781,4 @@ public final class BSFS:TriggerHook{
         }
     }
 
-
-    //MARK: - Chunk level: chunk->file and file->chunk
-
-
-    public struct Chunk {
-        var baseDirectory:String
-        var relativePath:String
-        var sha1:String
-        var originalSize:Int
-    }
-
-
-    /// This breaks efficiently a file to chunks.
-    /// - The hard stuff is done Asynchronously on a the Utility queue
-    /// - we use an Autorelease pool to lower the memory foot print
-    /// - closures are called on the Main thread
-    ///
-    /// - Parameters:
-    ///   - path: the file path
-    ///   - folderPath: the destination folder path
-    ///   - chunkMaxSize: the max size for a chunk / future block
-    ///   - compress: should we compress (using LZ4)
-    ///   - encrypt: should we encrypt (using AES256)
-    ///   - externalId: this identifier allow to map the progression
-    ///   - progression: progress closure called on each discreet progression.
-    ///   - success: the success closure returns a Chunk Struct to be used to create/update Block instances
-    ///   - failure: the failure closure
-    public func breakIntoChunk(  fileAt path:String,
-                                 destination folderPath:String,
-                                 chunkMaxSize:Int=10*MB,
-                                 compress:Bool,
-                                 encrypt:Bool,
-                                 externalId:String=Default.NO_UID,
-                                 progression:@escaping((Progression)->()),
-                                 success:@escaping ([Chunk])->(),
-                                 failure:@escaping (String)->()){
-
-
-        // Don't block the main thread with those intensive IO  processing
-        Async.utility {
-
-            // Read each chunk efficiently
-            if let fileHandle=FileHandle(forReadingAtPath:path ){
-
-                let _=fileHandle.seekToEndOfFile()
-                let l=fileHandle.offsetInFile
-                fileHandle.seek(toFileOffset: 0)
-                let maxSize:UInt64 = UInt64(chunkMaxSize)
-                let n:UInt64=l/maxSize
-                let r:UInt64=l % maxSize
-                var nb=n-1
-                if r>0 && l >= maxSize{
-                    nb += 1
-                }
-
-                let progressionState=Progression()
-                progressionState.silentGroupedChanges {
-                    progressionState.totalTaskCount=Int(nb)
-                    progressionState.currentTaskIndex=0
-                    progressionState.externalIdentifier=externalId
-                    progressionState.message=""
-                }
-
-
-
-                let _ = try? self._fileManager.removeItem(atPath: folderPath)
-                let _ = try? self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
-
-                var offset:UInt64=0
-                var position:UInt64=0
-                var chunks=[Chunk]()
-
-                var counter=0
-
-                func __writeData(data:Data,to folderPath:String)throws->(){
-                    let sha1=data.sha1
-                    // Generate a Classified Block Tree.
-                    let c1=PString.substr(sha1, 0, 1)
-                    let c2=PString.substr(sha1, 1, 1)
-                    let c3=PString.substr(sha1, 2, 1)
-                    let relativeFolderPath="\(c1)/\(c2)/\(c3)/"
-                    let bFolderPath=folderPath+relativeFolderPath
-                    let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
-                    let destination=bFolderPath+"/\(sha1)"
-                    let chunkRelativePath=relativeFolderPath+"\(sha1)"
-                    let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,originalSize:Int(offset))
-                    chunks.append(chunk)
-                    let url=URL(fileURLWithPath: destination)
-                    let _ = try data.write(to:url )
-                    Async.main{
-                        counter += 1
-                        progressionState.silentGroupedChanges {
-                            progressionState.message=chunkRelativePath
-                            progressionState.currentTaskIndex=counter
-                        }
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                        // Relay the progression
-                        progression(progressionState)
-                    }
-                }
-
-                do {
-                    for i in 0 ... nb{
-                        // We donnot want to reduce the memory usage
-                        // To the footprint of a Chunk +  Derivated Data.
-                        try autoreleasepool(invoking: { () -> Void in
-                            fileHandle.seek(toFileOffset: position)
-                            offset = (i==nb ? r : maxSize)
-                            position += offset
-                            var data=fileHandle.readData(ofLength: Int(offset))
-                            if compress{
-                                data = try data.compress(algorithm: .lz4)
-                            }
-                            if encrypt {
-                                data = try Bartleby.cryptoDelegate.encryptData(data)
-                            }
-                            try __writeData(data: data,to:folderPath)
-
-                        })
-                    }
-                    fileHandle.closeFile()
-                    Async.main{
-                        success(chunks)
-                    }
-
-                }catch{
-                    Async.main{
-                        failure("\(error)")
-                    }
-                }
-            }else{
-                Async.main{
-                    failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
-                }
-            }
-
-        }
-
-    }
-
-
-    /// Joins the chunks to form a file
-    /// - The hard stuff is done Asynchronously on a the Utility queue
-    /// - we use an Autorelease pool to lower the memory foot print
-    /// - closures are called on the Main thread
-    ///
-    /// - Parameters:
-    ///   - paths: the chunks absolute paths
-    ///   - destinationFilePath: the joined file destination
-    ///   - decompress: should we decompress using LZ4
-    ///   - decrypt: should we decrypt usign AES256
-    ///   - externalId: this identifier allow to map the progression
-    ///   - progression: progress closure called on each discreet progression.
-    ///   - success: the success closure
-    ///   - failure: the failure closure
-    public func joinChunks (   from paths:[String],
-                               to destinationFilePath:String,
-                               decompress:Bool,
-                               decrypt:Bool,
-                               externalId:String=Default.NO_UID,
-                               progression:@escaping((Progression)->()),
-                               success:@escaping ()->(),
-                               failure:@escaping (String)->()){
-
-        // Don't block the main thread with those intensive IO  processing
-        Async.utility {
-            do{
-                let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
-                try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
-                self._fileManager.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
-
-                // Assemble
-                if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
-                    writeFileHande.seek(toFileOffset: 0)
-
-                    let progressionState=Progression()
-                    progressionState.silentGroupedChanges {
-                        progressionState.totalTaskCount=paths.count
-                        progressionState.currentTaskIndex=0
-                        progressionState.message=""
-                        progressionState.externalIdentifier=externalId
-                    }
-
-                    var counter=0
-                    for source in paths{
-                        try autoreleasepool(invoking: { () -> Void in
-                            let url=URL(fileURLWithPath: source)
-                            var data = try Data(contentsOf:url)
-                            if decrypt{
-                                data = try Bartleby.cryptoDelegate.decryptData(data)
-                            }
-                            if decompress{
-                                data = try data.decompress(algorithm: .lz4)
-                            }
-                            writeFileHande.write(data)
-                            Async.main{
-                                counter += 1
-                                progressionState.silentGroupedChanges {
-                                    progressionState.message=source
-                                    progressionState.currentTaskIndex=counter
-                                }
-                                progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                                // Relay the progression
-                                progression(progressionState)
-                            }
-                        })
-                    }
-                    Async.main{
-                        success()
-                    }
-                    
-                }else{
-                    Async.main{
-                        failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
-                    }
-                }
-            }catch{
-                Async.main{
-                    failure("\(error)")
-                }
-            }
-        }
-    }
 }

@@ -32,6 +32,8 @@
 		E5238B2F1DC50091003D343D /* DecryptorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B2D1DC50091003D343D /* DecryptorViewController.xib */; };
 		E53E26C71DD3342A0040E32B /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */; };
 		E53E26C81DD3342A0040E32B /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */; };
+		E53E26CA1DD351580040E32B /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C91DD351580040E32B /* Chunker.swift */; };
+		E53E26CB1DD351580040E32B /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C91DD351580040E32B /* Chunker.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
@@ -507,6 +509,7 @@
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObjectError.swift; sourceTree = "<group>"; };
+		E53E26C91DD351580040E32B /* Chunker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunker.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -1003,6 +1006,7 @@
 			isa = PBXGroup;
 			children = (
 				E56AD79D1DD246760011EB77 /* BSFS.swift */,
+				E53E26C91DD351580040E32B /* Chunker.swift */,
 				E56AD79E1DD246760011EB77 /* BSFSError.swift */,
 				E56AD79F1DD246760011EB77 /* FSReference.swift */,
 				E56AD7A01DD246760011EB77 /* Flocker.swift */,
@@ -1617,6 +1621,7 @@
 				E56AD8DD1DD246760011EB77 /* String+HMAC.swift in Sources */,
 				E56AD85D1DD246760011EB77 /* CreateBlocks.swift in Sources */,
 				E56AD8D31DD246760011EB77 /* CryptoHelper.swift in Sources */,
+				E53E26CA1DD351580040E32B /* Chunker.swift in Sources */,
 				E56AD9831DD246760011EB77 /* User+Auth.swift in Sources */,
 				E56AD8811DD246760011EB77 /* DeleteUsers.swift in Sources */,
 				E56AD8611DD246760011EB77 /* CreateBoxes.swift in Sources */,
@@ -1719,6 +1724,7 @@
 				E56AD8EC1DD246760011EB77 /* DocumentError.swift in Sources */,
 				E56AD87A1DD246760011EB77 /* DeleteLockers.swift in Sources */,
 				E56AD9401DD246760011EB77 /* Commitable.swift in Sources */,
+				E53E26CB1DD351580040E32B /* Chunker.swift in Sources */,
 				E56AD8521DD246760011EB77 /* Report.swift in Sources */,
 				E56AD8AC1DD246760011EB77 /* UpdateLockers.swift in Sources */,
 				E56AD98E1DD246760011EB77 /* TriggersByIds.swift in Sources */,

@@ -17,12 +17,10 @@ import Foundation
 
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
-let d=BartlebyDocument()
-let b=BSFS(in:d)
-
+let chunker=Chunker(fileManager: FileManager.default)
 
 let startTime=CFAbsoluteTimeGetCurrent()
-    b.breakIntoChunk(fileAt:"/Users/bpds/Desktop/FileChunker/large.mp4", destination: "/Users/bpds/Desktop/TTT/", compress: true, encrypt: true
+    chunker.breakIntoChunk(fileAt:"/Users/bpds/Desktop/FileChunker/large.mp4", destination: "/Users/bpds/Desktop/TTT/", compress: true, encrypt: true
     ,progression:{ progression in
         print(progression)
     }, success: { chunks in
@@ -31,7 +29,7 @@ let startTime=CFAbsoluteTimeGetCurrent()
         let absolutePaths=chunks.map({ (chunk) -> String in
             return chunk.baseDirectory+chunk.relativePath
         })
-        b.joinChunks(from: absolutePaths, to: "/Users/bpds/Desktop/TTT/result.mp4", decompress: true, decrypt: true
+        chunker.joinChunks(from: absolutePaths, to: "/Users/bpds/Desktop/TTT/result.mp4", decompress: true, decrypt: true
         ,progression:{ progression in
             print(progression)
         }
