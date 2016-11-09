@@ -22,7 +22,7 @@ public struct FileReference{
     var crypted:Bool=true
     ///  priority: synchronization priority (higher == will be synchronized before the other nodes)
     var priority:Int=0
-    /// is a folder
-    var isAfolder:Bool=false
+    // We define the node nature
+    var nodeNature:Node.Nature = .file
 
 }

@@ -34,58 +34,22 @@ import Foundation
 	dynamic open var authorized:[String] = [String]()
 
 	//The UID of the holding node
-	dynamic open var nodeUID:String = "\(Default.NO_UID)"{
-	    didSet { 
-	       if nodeUID != oldValue {
-	            self.provisionChanges(forKey: "nodeUID",oldValue: oldValue,newValue: nodeUID) 
-	       } 
-	    }
-	}
+	dynamic open var nodeUID:String = "\(Default.NO_UID)"
 
 	//The starting address of the block in each Holding Node (== the position of the block in the file)
-	dynamic open var address:Int = 0  {
-	    didSet { 
-	       if address != oldValue {
-	            self.provisionChanges(forKey: "address",oldValue: oldValue,newValue: address)  
-	       } 
-	    }
-	}
+	dynamic open var address:Int = 0
 
 	//The size of the Block
-	dynamic open var size:Int = Int.max  {
-	    didSet { 
-	       if size != oldValue {
-	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size)  
-	       } 
-	    }
-	}
+	dynamic open var size:Int = Int.max
 
 	//The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
-	dynamic open var priority:Int = 0  {
-	    didSet { 
-	       if priority != oldValue {
-	            self.provisionChanges(forKey: "priority",oldValue: oldValue,newValue: priority)  
-	       } 
-	    }
-	}
+	dynamic open var priority:Int = 0
 
 	//If set to true the blocks should be compressed (using LZ4)
-	dynamic open var compressed:Bool = true  {
-	    didSet { 
-	       if compressed != oldValue {
-	            self.provisionChanges(forKey: "compressed",oldValue: oldValue,newValue: compressed)  
-	       } 
-	    }
-	}
+	dynamic open var compressed:Bool = true
 
 	//If set to true the blocks will be crypted (using AES256)
-	dynamic open var crypted:Bool = true  {
-	    didSet { 
-	       if crypted != oldValue {
-	            self.provisionChanges(forKey: "crypted",oldValue: oldValue,newValue: crypted)  
-	       } 
-	    }
-	}
+	dynamic open var crypted:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
 	dynamic open var uploadProgression:Progression = Progression()
@@ -220,7 +184,7 @@ import Foundation
 			self.digest <- ( map["digest"] )
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.nodeUID <- ( map["nodeUID"] )
-			self.address <- ( map["address"] )// @todo marked generatively as Cryptable Should be crypted!
+			self.address <- ( map["address"] )
 			self.size <- ( map["size"] )
 			self.priority <- ( map["priority"] )
 			self.compressed <- ( map["compressed"] )

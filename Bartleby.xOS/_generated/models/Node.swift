@@ -22,85 +22,49 @@ import Foundation
     }
 
 	//An external ID
-	dynamic open var externalID:String? {
-	    didSet { 
-	       if externalID != oldValue {
-	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
-	       } 
-	    }
-	}
+	dynamic open var externalID:String?
 
 	//The relative path inside the box
-	dynamic open var relativePath:String = "\(Default.NO_PATH)"{
-	    didSet { 
-	       if relativePath != oldValue {
-	            self.provisionChanges(forKey: "relativePath",oldValue: oldValue,newValue: relativePath) 
-	       } 
-	    }
-	}
+	dynamic open var relativePath:String = "\(Default.NO_PATH)"
 
 	//The Box UID
-	dynamic open var boxUID:String = "\(Default.NO_UID)"{
-	    didSet { 
-	       if boxUID != oldValue {
-	            self.provisionChanges(forKey: "boxUID",oldValue: oldValue,newValue: boxUID) 
-	       } 
-	    }
-	}
+	dynamic open var boxUID:String = "\(Default.NO_UID)"
 
 	//A relative path for a proxy file.
 	dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)
-	dynamic open var blocksMaxSize:Int = Int.max  {
-	    didSet { 
-	       if blocksMaxSize != oldValue {
-	            self.provisionChanges(forKey: "blocksMaxSize",oldValue: oldValue,newValue: blocksMaxSize)  
-	       } 
-	    }
-	}
+	dynamic open var blocksMaxSize:Int = Int.max
 
 	//The priority level of the node (is applicated to its block)
-	dynamic open var priority:Int = 0  {
-	    didSet { 
-	       if priority != oldValue {
-	            self.provisionChanges(forKey: "priority",oldValue: oldValue,newValue: priority)  
-	       } 
-	    }
-	}
+	dynamic open var priority:Int = 0
 
 	//An ordered list of the Block UIDS
 	dynamic open var blocksUIDS:[String] = [String]()
+
+	//The node nature
+	public enum Nature:String{
+		case file = "file"
+		case folder = "folder"
+		case alias = "alias"
+		case flock = "flock"
+	}
+	open var nature:Nature = .file
+
+	//If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all
+	dynamic open var referentNodeUID:String?
 
 	//The list of the authorized User.UID,(if set to ["*"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload
 	dynamic open var authorized:[String] = [String]()
 
 	//The size of the file
-	dynamic open var size:Int = Int.max  {
-	    didSet { 
-	       if size != oldValue {
-	            self.provisionChanges(forKey: "size",oldValue: oldValue,newValue: size)  
-	       } 
-	    }
-	}
+	dynamic open var size:Int = Int.max
 
 	//If set to true the blocks should be compressed (using LZ4)
-	dynamic open var compressed:Bool = true  {
-	    didSet { 
-	       if compressed != oldValue {
-	            self.provisionChanges(forKey: "compressed",oldValue: oldValue,newValue: compressed)  
-	       } 
-	    }
-	}
+	dynamic open var compressed:Bool = true
 
 	//If set to true the blocks will be crypted (using AES256)
-	dynamic open var cryptedBlocks:Bool = true  {
-	    didSet { 
-	       if cryptedBlocks != oldValue {
-	            self.provisionChanges(forKey: "cryptedBlocks",oldValue: oldValue,newValue: cryptedBlocks)  
-	       } 
-	    }
-	}
+	dynamic open var cryptedBlocks:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
 	dynamic open var uploadProgression:Progression = Progression()
@@ -122,7 +86,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","referentNodeUID","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -162,6 +126,14 @@ import Foundation
             case "blocksUIDS":
                 if let casted=value as? [String]{
                     self.blocksUIDS=casted
+                }
+            case "nature":
+                if let casted=value as? Node.Nature{
+                    self.nature=casted
+                }
+            case "referentNodeUID":
+                if let casted=value as? String{
+                    self.referentNodeUID=casted
                 }
             case "authorized":
                 if let casted=value as? [String]{
@@ -228,6 +200,10 @@ import Foundation
                return self.priority
             case "blocksUIDS":
                return self.blocksUIDS
+            case "nature":
+               return self.nature
+            case "referentNodeUID":
+               return self.referentNodeUID
             case "authorized":
                return self.authorized
             case "size":
@@ -266,6 +242,8 @@ import Foundation
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
 			self.priority <- ( map["priority"] )
 			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
+			self.nature <- ( map["nature"] )
+			self.referentNodeUID <- ( map["referentNodeUID"] )
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
 			self.compressed <- ( map["compressed"] )
@@ -286,6 +264,8 @@ import Foundation
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
+			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
+			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
@@ -306,6 +286,10 @@ import Foundation
 		coder.encode(self.blocksMaxSize,forKey:"blocksMaxSize")
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
+		coder.encode(self.nature.rawValue ,forKey:"nature")
+		if let referentNodeUID = self.referentNodeUID {
+			coder.encode(referentNodeUID,forKey:"referentNodeUID")
+		}
 		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.compressed,forKey:"compressed")

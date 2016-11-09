@@ -24,6 +24,9 @@ import Foundation
 	//Turned to true when the box is mounted (not serializable, not supervisable)
 	dynamic open var isMounted:Bool = false
 
+	//A volatile box is unmounted automatically
+	dynamic open var volatile:Bool = false
+
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
 	dynamic open var uploadProgression:Progression = Progression()
 
@@ -47,7 +50,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["isMounted","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["isMounted","volatile","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -63,6 +66,10 @@ import Foundation
             case "isMounted":
                 if let casted=value as? Bool{
                     self.isMounted=casted
+                }
+            case "volatile":
+                if let casted=value as? Bool{
+                    self.volatile=casted
                 }
             case "uploadProgression":
                 if let casted=value as? Progression{
@@ -105,6 +112,8 @@ import Foundation
         switch key {
             case "isMounted":
                return self.isMounted
+            case "volatile":
+               return self.volatile
             case "uploadProgression":
                return self.uploadProgression
             case "downloadProgression":

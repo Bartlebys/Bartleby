@@ -286,7 +286,7 @@ public final class BSFS:TriggerHook{
     ///     + the node  ref is stored in the Completon (use completion.getResultExternalReference())
     ///
     /// - Parameters:
-    ///   - fileReference: the file reference
+    ///   - fileReference: the file reference (Nature == file or flock)
     ///   - box: the box
     ///   - relativePath: the relative Path of the Node
     ///   - deleteOriginal: should we delete the original?
@@ -302,6 +302,16 @@ public final class BSFS:TriggerHook{
         if box is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
         }else{
+            switch fileReference.nodeNature {
+            case .file:
+                break
+            case .flock:
+                break
+            case .alias:
+                break
+            case .folder:
+                break
+            }
 
 
             // TODO
@@ -329,20 +339,27 @@ public final class BSFS:TriggerHook{
                                accessor:NodeAccessor,
                                progressed:@escaping (Progression)->(),
                                completed:@escaping (Completion)->()){
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
 
-            if node.authorized.contains(self._document.currentUser.UID) ||
-                node.authorized.contains("*"){
-
-                // TODO
-
+        if node.nature == .file{
+            if node is Shadow{
+                completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
             }else{
-                completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
+
+                if node.authorized.contains(self._document.currentUser.UID) ||
+                    node.authorized.contains("*"){
+
+                    // TODO
+
+                }else{
+                    completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
+                }
             }
+        }else{
+            completed(Completion.failureState("\(node.nature)", statusCode: .precondition_Failed))
         }
     }
+
+
 
 
     //MARK: Node access
@@ -361,7 +378,6 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - accessor: the accessor
     public func wantsAccess(to node:Node,accessor:NodeAccessor){
-
         if node is Shadow{
             accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
         }else{
@@ -414,12 +430,19 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     ///   - relativePath: the relative path
-    ///   - handler: the completion hanlder
-    public func copy(node:Node,to relativePath:String)->(){
-        if !(node is Shadow){
-            _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
-                node.relativePath=relativePath
-            })
+    ///   - completed: a closure called on completion with Completion State.
+    public func copy(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            // The nodeIsUsable() will be called when the file will be usable.
+            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+                _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
+                    node.relativePath=relativePath
+                })
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
+            }
         }
     }
 
@@ -431,12 +454,20 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     ///   - relativePath: the relative path
-    ///   - handler: the completion hanlder
-    public func move(node:Node,to relativePath:String)->(){
-        if !(node is Shadow){
-            _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
-                node.relativePath=relativePath
-            })
+    ///   - completed: a closure called on completion with Completion State.
+    public func move(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            // The nodeIsUsable() will be called when the file will be usable.
+            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+                _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
+                    node.relativePath=relativePath
+                    // TODO
+                })
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
+            }
         }
     }
 
@@ -447,14 +478,54 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameters:
     ///   - node: the node
-    ///   - handler: the completion Handler
-    public func delete(node:Node)->(){
+    ///   - completed: a closure called on completion with Completion State.
+    public func delete(node:Node,completed:@escaping (Completion)->())->(){
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            // The nodeIsUsable() will be called when the file will be usable.
+            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+                _boxDelegate?.deletionIsReady(node: node, proceed: {
+                    /// TODO implement the deletion
+                })
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
+            }
+        }
         if !(node is Shadow){
-            _boxDelegate?.deletionIsReady(node: node, proceed: {
-                /// TODO implement the deletion
-            })
         }
     }
+
+
+    /// Create Folders
+    /// - Parameters:
+    ///   - relativePath: the relative Path
+    ///   - completed: a closure called on completion with Completion State.
+    public func createFolder(at relativePath:String,completed:@escaping (Completion)->())->(){
+         // TODO
+    }
+
+
+
+    /// Creates the Alias
+    /// - Parameters:
+    ///   - node: the node to be aliased
+    ///   - relativePath: the destination relativePath
+    ///   - completed: a closure called on completion with Completion State.
+    public func createAlias(of node:Node,to relativePath:String, completed:@escaping (Completion)->())->(){
+        if node is Shadow{
+            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+        }else{
+            // The nodeIsUsable() will be called when the file will be usable.
+            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+                // TODO
+            }else{
+                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
+            }
+        }
+    }
+
+    
 
 
     // MARK: - TriggerHook
@@ -722,6 +793,4 @@ public final class BSFS:TriggerHook{
             }
         }
     }
-    
-    
 }
