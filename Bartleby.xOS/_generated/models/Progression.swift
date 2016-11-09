@@ -239,8 +239,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "progressions"
     }
@@ -251,7 +249,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class ProgressionShadow :Progression,Shadow{
 
     static func from(_ entity:Progression)->ProgressionShadow{
@@ -263,5 +262,21 @@ open class ProgressionShadow :Progression,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "ProgressionShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "progressionsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return ProgressionShadow.collectionName
     }
 }

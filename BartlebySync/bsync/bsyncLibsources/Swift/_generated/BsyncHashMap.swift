@@ -103,8 +103,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "bsyncHashMaps"
     }
@@ -115,7 +113,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class BsyncHashMapShadow :BsyncHashMap,Shadow{
 
     static func from(_ entity:BsyncHashMap)->BsyncHashMapShadow{
@@ -127,5 +126,21 @@ open class BsyncHashMapShadow :BsyncHashMap,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "BsyncHashMapShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "bsyncHashMapsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return BsyncHashMapShadow.collectionName
     }
 }

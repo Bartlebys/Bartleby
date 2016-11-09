@@ -112,8 +112,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "jDatas"
     }
@@ -124,7 +122,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class JDataShadow :JData,Shadow{
 
     static func from(_ entity:JData)->JDataShadow{
@@ -136,5 +135,21 @@ open class JDataShadow :JData,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "JDataShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "jDatasShadow"
+    }
+
+    override open var d_collectionName:String{
+        return JDataShadow.collectionName
     }
 }

@@ -145,8 +145,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "fSShadowContainers"
     }
@@ -157,7 +155,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class FSShadowContainerShadow :FSShadowContainer,Shadow{
 
     static func from(_ entity:FSShadowContainer)->FSShadowContainerShadow{
@@ -169,5 +168,21 @@ open class FSShadowContainerShadow :FSShadowContainer,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "FSShadowContainerShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "fSShadowContainersShadow"
+    }
+
+    override open var d_collectionName:String{
+        return FSShadowContainerShadow.collectionName
     }
 }

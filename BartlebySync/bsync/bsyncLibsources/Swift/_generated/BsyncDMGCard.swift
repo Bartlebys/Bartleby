@@ -206,8 +206,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "bsyncDMGCards"
     }
@@ -218,7 +216,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class BsyncDMGCardShadow :BsyncDMGCard,Shadow{
 
     static func from(_ entity:BsyncDMGCard)->BsyncDMGCardShadow{
@@ -230,5 +229,21 @@ open class BsyncDMGCardShadow :BsyncDMGCard,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "BsyncDMGCardShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "bsyncDMGCardsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return BsyncDMGCardShadow.collectionName
     }
 }

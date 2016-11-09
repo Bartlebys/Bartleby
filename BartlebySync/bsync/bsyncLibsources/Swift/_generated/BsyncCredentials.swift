@@ -134,8 +134,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "bsyncCredentials"
     }
@@ -146,7 +144,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class BsyncCredentialsShadow :BsyncCredentials,Shadow{
 
     static func from(_ entity:BsyncCredentials)->BsyncCredentialsShadow{
@@ -158,5 +157,21 @@ open class BsyncCredentialsShadow :BsyncCredentials,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "BsyncCredentialsShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "bsyncCredentialsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return BsyncCredentialsShadow.collectionName
     }
 }

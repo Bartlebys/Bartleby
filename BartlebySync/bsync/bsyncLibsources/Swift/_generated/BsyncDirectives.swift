@@ -164,8 +164,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "bsyncDirectives"
     }
@@ -176,7 +174,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class BsyncDirectivesShadow :BsyncDirectives,Shadow{
 
     static func from(_ entity:BsyncDirectives)->BsyncDirectivesShadow{
@@ -188,5 +187,21 @@ open class BsyncDirectivesShadow :BsyncDirectives,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "BsyncDirectivesShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "bsyncDirectivesShadow"
+    }
+
+    override open var d_collectionName:String{
+        return BsyncDirectivesShadow.collectionName
     }
 }

@@ -169,8 +169,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "hTTPContexts"
     }
@@ -181,7 +179,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class HTTPContextShadow :HTTPContext,Shadow{
 
     static func from(_ entity:HTTPContext)->HTTPContextShadow{
@@ -193,5 +192,21 @@ open class HTTPContextShadow :HTTPContext,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "HTTPContextShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "hTTPContextsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return HTTPContextShadow.collectionName
     }
 }

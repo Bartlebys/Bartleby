@@ -249,8 +249,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "triggers"
     }
@@ -261,7 +259,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class TriggerShadow :Trigger,Shadow{
 
     static func from(_ entity:Trigger)->TriggerShadow{
@@ -273,5 +272,21 @@ open class TriggerShadow :Trigger,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "TriggerShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "triggersShadow"
+    }
+
+    override open var d_collectionName:String{
+        return TriggerShadow.collectionName
     }
 }

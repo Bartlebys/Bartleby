@@ -447,8 +447,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "documentMetadatas"
     }
@@ -459,7 +457,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class DocumentMetadataShadow :DocumentMetadata,Shadow{
 
     static func from(_ entity:DocumentMetadata)->DocumentMetadataShadow{
@@ -471,5 +470,21 @@ open class DocumentMetadataShadow :DocumentMetadata,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "DocumentMetadataShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "documentMetadatasShadow"
+    }
+
+    override open var d_collectionName:String{
+        return DocumentMetadataShadow.collectionName
     }
 }

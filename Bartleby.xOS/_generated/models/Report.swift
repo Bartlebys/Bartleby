@@ -129,8 +129,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "reports"
     }
@@ -141,7 +139,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class ReportShadow :Report,Shadow{
 
     static func from(_ entity:Report)->ReportShadow{
@@ -153,5 +152,21 @@ open class ReportShadow :Report,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "ReportShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "reportsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return ReportShadow.collectionName
     }
 }

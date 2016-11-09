@@ -127,8 +127,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "externalReferences"
     }
@@ -139,7 +137,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class ExternalReferenceShadow :ExternalReference,Shadow{
 
     static func from(_ entity:ExternalReference)->ExternalReferenceShadow{
@@ -151,5 +150,21 @@ open class ExternalReferenceShadow :ExternalReference,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "ExternalReferenceShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "externalReferencesShadow"
+    }
+
+    override open var d_collectionName:String{
+        return ExternalReferenceShadow.collectionName
     }
 }

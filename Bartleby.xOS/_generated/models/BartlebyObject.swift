@@ -305,8 +305,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
      open class var collectionName:String{
         return "bartlebyObjects"
     }
@@ -317,7 +315,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class BartlebyObjectShadow :BartlebyObject,Shadow{
 
     static func from(_ entity:BartlebyObject)->BartlebyObjectShadow{
@@ -329,5 +328,21 @@ open class BartlebyObjectShadow :BartlebyObject,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "BartlebyObjectShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "bartlebyObjectsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return BartlebyObjectShadow.collectionName
     }
 }

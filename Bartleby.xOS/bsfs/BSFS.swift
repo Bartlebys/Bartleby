@@ -12,6 +12,8 @@ import Foundation
 /// File level operations are done on GCD global utility queue.
 public final class BSFS:TriggerHook{
 
+    // MARK: - Variables
+
     // Document
     fileprivate unowned var _document:BartlebyDocument
 
@@ -45,6 +47,8 @@ public final class BSFS:TriggerHook{
     /// Returns the local blocks shadows
     var localBlocksShadows:[BlockShadow] { return self._localContainer.blocks }
 
+    // MARK: - initialization
+
     /// Each document has it own BSFS
     ///
     /// - Parameter document: the document instance
@@ -53,7 +57,7 @@ public final class BSFS:TriggerHook{
         self._chunker=Chunker(fileManager: self._fileManager)
     }
 
-    // MARKS: - Persistency
+    // MARK: - Persistency
 
     /// Serialize the local state of the BSFS
     ///
@@ -70,7 +74,7 @@ public final class BSFS:TriggerHook{
     }
 
 
-    // MARKS: - Paths
+    // MARK: - Paths
 
     /// The BSFS base folder path
     /// ---

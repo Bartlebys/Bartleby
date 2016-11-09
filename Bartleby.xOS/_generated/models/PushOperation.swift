@@ -206,8 +206,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "pushOperations"
     }
@@ -218,7 +216,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class PushOperationShadow :PushOperation,Shadow{
 
     static func from(_ entity:PushOperation)->PushOperationShadow{
@@ -230,5 +229,21 @@ open class PushOperationShadow :PushOperation,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "PushOperationShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "pushOperationsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return PushOperationShadow.collectionName
     }
 }

@@ -127,8 +127,6 @@ import Foundation
         super.init()
     }
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return "acknowledgments"
     }
@@ -139,7 +137,8 @@ import Foundation
 }
 
 
-// The class shadow
+// MARK: Shadow
+
 open class AcknowledgmentShadow :Acknowledgment,Shadow{
 
     static func from(_ entity:Acknowledgment)->AcknowledgmentShadow{
@@ -151,5 +150,21 @@ open class AcknowledgmentShadow :Acknowledgment,Shadow{
             try? shadow.setShadowUID(UID: entity.UID)
         }
         return shadow
+    }
+
+    // MARK: Universal type support
+
+    override open class func typeName() -> String {
+        return "AcknowledgmentShadow"
+    }
+
+    // MARK: Collectible
+
+    override open class var collectionName:String{
+        return "acknowledgmentsShadow"
+    }
+
+    override open var d_collectionName:String{
+        return AcknowledgmentShadow.collectionName
     }
 }
