@@ -38,20 +38,7 @@ ext.fetchInstance(Tag.self){ (instance) in
 if let u:Tag=ext.toLocalInstance(){
     u.UID // Will never occur.
 }else{
-    let eureka="We support types safety in external references"
+    let eureka="We support types safety in external references"u
 }
-
-
-// PString
-
-PString.ltrim("    *   Hello    *    ")
-PString.rtrim("    *   Hello    *    ")
-
-PString.ltrim("*,    *   Hello    *    ",characterSet: CharacterSet(charactersIn:",* "))
-PString.ltrim(",A,B,C",characterSet: CharacterSet(charactersIn:","))
-
-//: [Go to externalReferences 
-
-let r = 0..<1
-r.count
+//: [Go to externalReferences](@next)
 

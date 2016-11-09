@@ -33,14 +33,6 @@ public struct PString {
         return string.lowercased()
     }
 
-    public static func substr(_ string: String, _ start: Int) -> String? {
-        if(start>0) {
-            return substr(string, start, string.characters.count)
-        } else {
-            return substr(string, string.characters.count+start, string.characters.count)
-        }
-    }
-
     /**
      Left trims the characters specified in the characterSet
 
@@ -77,8 +69,6 @@ public struct PString {
     }
 
 
-
-
     /**
      Right trim the characters specified in the characterSet
 
@@ -107,8 +97,21 @@ public struct PString {
     }
 
 
+
+    ///Returns a sub string
+    ///behaves 100% like PHP substring http://php.net/manual/en/function.substr.php
+    ///
+    /// - Parameters:
+    /// - parameter string: the string
+    /// - parameter start:  If start is negative, the returned string will start at the start'th character from the end of string.
+    /// - Returns: the sub string
+    public static func substr(_ string: String, _ start: Int) -> String {
+        return PString.substr(string, start, nil)
+    }
+
     /**
-     Returns a sub string
+     Returns a sub string 
+     behaves 100% like PHP substring http://php.net/manual/en/function.substr.php
 
      - parameter string: the string
      - parameter start:  If start is negative, the returned string will start at the start'th character from the end of string.
@@ -116,22 +119,32 @@ public struct PString {
 
      - returns: the sub string
      */
-    public static func substr(_ string: String, _ start: Int, _ length: Int) -> String {
-        var startIndex: String.Index = string.startIndex
-        if start<0 {
-            let l=strlen(string)
-            let from=l-start
-            if from>=l {
-                startIndex=string.endIndex
-            } else {
-                startIndex=string.characters.index(string.startIndex, offsetBy: from)
-            }
-        } else if start>0{
-            startIndex=string.characters.index(string.startIndex, offsetBy: start)
+    public static func substr(_ string: String, _ start: Int, _ length: Int?) -> String {
+
+        let strLength=Int(string.characters.count)
+        var start=start
+        let length:Int=length ?? strLength
+
+        if start<0{
+            start=strLength+start
         }
-        let endIndex = string.characters.index(startIndex, offsetBy:length)
+        var rightPos:Int=start+length
+
+        if length<0{
+            rightPos=strLength+length
+        }
+
+        var leftPos:Int=start
+
+        leftPos = leftPos>0 ? leftPos : 0
+        rightPos = rightPos<strLength ? rightPos : strLength
+
+        let startIndex = (leftPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: leftPos)
+        let endIndex = (rightPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: rightPos)
+        
         return string.substring(with: startIndex..<endIndex)
     }
+
 
     public static func strlen(_ string: String) -> Int {
         return string.characters.count

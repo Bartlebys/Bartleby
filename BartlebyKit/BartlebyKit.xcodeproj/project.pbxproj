@@ -34,6 +34,7 @@
 		E53E26C81DD3342A0040E32B /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */; };
 		E53E26CA1DD351580040E32B /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C91DD351580040E32B /* Chunker.swift */; };
 		E53E26CB1DD351580040E32B /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C91DD351580040E32B /* Chunker.swift */; };
+		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
@@ -510,6 +511,7 @@
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObjectError.swift; sourceTree = "<group>"; };
 		E53E26C91DD351580040E32B /* Chunker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunker.swift; sourceTree = "<group>"; };
+		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -520,7 +522,7 @@
 		E568A78B1DC8762100BE157D /* ReportTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTabViewController.xib; sourceTree = "<group>"; };
 		E56AD74B1DD246760011EB77 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E56AD74D1DD246760011EB77 /* BlocksManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksManagedCollection.swift; sourceTree = "<group>"; };
-		E56AD74E1DD246760011EB77 /* BoxesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesManagedCollection.swift; sourceTree = "<group>"; };
+		E56AD74E1DD246760011EB77 /* BoxesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BoxesManagedCollection.swift; path = managedCollections/BoxesManagedCollection.swift; sourceTree = "<group>"; };
 		E56AD74F1DD246760011EB77 /* LockersManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersManagedCollection.swift; sourceTree = "<group>"; };
 		E56AD7501DD246760011EB77 /* NodesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodesManagedCollection.swift; sourceTree = "<group>"; };
 		E56AD7511DD246760011EB77 /* PushOperationsManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationsManagedCollection.swift; sourceTree = "<group>"; };
@@ -842,6 +844,14 @@
 			path = BSFSOSXTests;
 			sourceTree = "<group>";
 		};
+		E53E2C3A1DD358670040E32B /* PString */ = {
+			isa = PBXGroup;
+			children = (
+				E53E2C3B1DD358920040E32B /* PStringTests.swift */,
+			);
+			path = PString;
+			sourceTree = "<group>";
+		};
 		E54995081C3A754F00C52A9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -884,6 +894,7 @@
 			isa = PBXGroup;
 			children = (
 				E56AD74B1DD246760011EB77 /* BartlebyDocument.swift */,
+				E56AD74E1DD246760011EB77 /* BoxesManagedCollection.swift */,
 				E56AD74C1DD246760011EB77 /* managedCollections */,
 				E56AD7531DD246760011EB77 /* models */,
 				E56AD76A1DD246760011EB77 /* operations */,
@@ -895,7 +906,6 @@
 			isa = PBXGroup;
 			children = (
 				E56AD74D1DD246760011EB77 /* BlocksManagedCollection.swift */,
-				E56AD74E1DD246760011EB77 /* BoxesManagedCollection.swift */,
 				E56AD74F1DD246760011EB77 /* LockersManagedCollection.swift */,
 				E56AD7501DD246760011EB77 /* NodesManagedCollection.swift */,
 				E56AD7511DD246760011EB77 /* PushOperationsManagedCollection.swift */,
@@ -1243,6 +1253,7 @@
 		E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
 			isa = PBXGroup;
 			children = (
+				E53E2C3A1DD358670040E32B /* PString */,
 				5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */,
 				5BBF7D441CC8E4E400F2237B /* TransformTests.swift */,
 				E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */,
@@ -1874,6 +1885,7 @@
 				E5B128FC1D1C317300D61261 /* LockerTests.swift in Sources */,
 				E5B128F81D1C317300D61261 /* UserStatusTests.swift in Sources */,
 				E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */,
+				E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */,
 				E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */,
 				E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */,
 				E5B128FB1D1C317300D61261 /* BasicApiTests.swift in Sources */,

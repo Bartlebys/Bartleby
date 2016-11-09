@@ -16,14 +16,14 @@ import Foundation
 
 /*
 
-let words=["megaquiz","quiz","Quiz","fly","FLY","Fly","alias","user","woman","Woman","man","money","Fish","fish","tomato","Tomato","axis","axe","test","Parenthesis"]
-for word in words{
-    let pluralized=Pluralization.pluralize(word.lowercaseString)
-    let singularized=Pluralization.singularize(pluralized)
-    let result = ( word.lowercaseString == singularized.lowercaseString ? "" : "!" )
-    print("\(word) -> \(pluralized) -> \(singularized) \(result)")
-}
-*/
+ let words=["megaquiz","quiz","Quiz","fly","FLY","Fly","alias","user","woman","Woman","man","money","Fish","fish","tomato","Tomato","axis","axe","test","Parenthesis"]
+ for word in words{
+ let pluralized=Pluralization.pluralize(word.lowercaseString)
+ let singularized=Pluralization.singularize(pluralized)
+ let result = ( word.lowercaseString == singularized.lowercaseString ? "" : "!" )
+ print("\(word) -> \(pluralized) -> \(singularized) \(result)")
+ }
+ */
 
 class Pluralization {
 
@@ -93,11 +93,11 @@ class Pluralization {
         let lowerCasedWord=word//PString.strtolower(word)
 
         for uncountable in Pluralization.uncountables {
-            if let sub=PString.substr(lowerCasedWord, (-1 * PString.strlen(uncountable))) {
-                if sub == uncountable {
-                    return word
-                }
+            let sub=PString.substr(lowerCasedWord, (-1 * PString.strlen(uncountable)))
+            if sub == uncountable {
+                return word
             }
+
         }
 
         for (singular, plural) in Pluralization.irregulars {
@@ -122,11 +122,11 @@ class Pluralization {
 
         let lowerCasedWord = word//PString.strtolower(word);
         for uncountable in Pluralization.uncountables {
-            if let sub=PString.substr(lowerCasedWord, (-1 * PString.strlen(uncountable))) {
-                if sub == uncountable {
-                    return word
-                }
+            let sub=PString.substr(lowerCasedWord, (-1 * PString.strlen(uncountable)))
+            if sub == uncountable {
+                return word
             }
+
         }
 
         for (plural, singular) in Pluralization.irregulars {
@@ -142,8 +142,8 @@ class Pluralization {
                 return PString.preg_replace(rule, replacement, word)
             }
         }
-
+        
         return "NOT_SINGULARIZED"
     }
-
+    
 }
