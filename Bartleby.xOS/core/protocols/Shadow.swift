@@ -13,6 +13,6 @@ import Foundation
 // to mark Shadow Instances
 // Shadows are the local projections of a given Entity
 // Shadows are not managed
-protocol Shadow {
+public protocol Shadow {
     
 }
