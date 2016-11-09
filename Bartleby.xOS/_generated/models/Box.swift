@@ -25,7 +25,7 @@ import Foundation
 	dynamic open var isMounted:Bool = false
 
 	//A volatile box is unmounted automatically
-	dynamic open var volatile:Bool = false
+	dynamic open var volatile:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
 	dynamic open var uploadProgression:Progression = Progression()
@@ -171,5 +171,21 @@ import Foundation
 
     override open var d_collectionName:String{
         return Box.collectionName
+    }
+}
+
+
+// The class shadow
+open class BoxShadow :Box,Shadow{
+
+    static func from(_ entity:Box)->BoxShadow{
+        let shadow=BoxShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
     }
 }

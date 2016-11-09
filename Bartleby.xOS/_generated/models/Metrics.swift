@@ -215,3 +215,19 @@ import Foundation
         return Metrics.collectionName
     }
 }
+
+
+// The class shadow
+open class MetricsShadow :Metrics,Shadow{
+
+    static func from(_ entity:Metrics)->MetricsShadow{
+        let shadow=MetricsShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

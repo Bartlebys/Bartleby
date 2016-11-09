@@ -249,3 +249,19 @@ import Foundation
         return Progression.collectionName
     }
 }
+
+
+// The class shadow
+open class ProgressionShadow :Progression,Shadow{
+
+    static func from(_ entity:Progression)->ProgressionShadow{
+        let shadow=ProgressionShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

@@ -122,3 +122,19 @@ import Foundation
         return JData.collectionName
     }
 }
+
+
+// The class shadow
+open class JDataShadow :JData,Shadow{
+
+    static func from(_ entity:JData)->JDataShadow{
+        let shadow=JDataShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

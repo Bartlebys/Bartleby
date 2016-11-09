@@ -314,3 +314,19 @@ import Foundation
         return Node.collectionName
     }
 }
+
+
+// The class shadow
+open class NodeShadow :Node,Shadow{
+
+    static func from(_ entity:Node)->NodeShadow{
+        let shadow=NodeShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

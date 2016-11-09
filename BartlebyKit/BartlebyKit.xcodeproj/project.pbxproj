@@ -30,6 +30,8 @@
 		E5238B2B1DC4FEAC003D343D /* ReportWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B291DC4FEAC003D343D /* ReportWindowController.xib */; };
 		E5238B2E1DC50091003D343D /* DecryptorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B2C1DC50091003D343D /* DecryptorViewController.swift */; };
 		E5238B2F1DC50091003D343D /* DecryptorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B2D1DC50091003D343D /* DecryptorViewController.xib */; };
+		E53E26C71DD3342A0040E32B /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */; };
+		E53E26C81DD3342A0040E32B /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
@@ -192,8 +194,8 @@
 		E56AD8B81DD246760011EB77 /* BSFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79D1DD246760011EB77 /* BSFS.swift */; };
 		E56AD8B91DD246760011EB77 /* BSFSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79E1DD246760011EB77 /* BSFSError.swift */; };
 		E56AD8BA1DD246760011EB77 /* BSFSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79E1DD246760011EB77 /* BSFSError.swift */; };
-		E56AD8BB1DD246760011EB77 /* FileReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79F1DD246760011EB77 /* FileReference.swift */; };
-		E56AD8BC1DD246760011EB77 /* FileReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79F1DD246760011EB77 /* FileReference.swift */; };
+		E56AD8BB1DD246760011EB77 /* FSReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79F1DD246760011EB77 /* FSReference.swift */; };
+		E56AD8BC1DD246760011EB77 /* FSReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD79F1DD246760011EB77 /* FSReference.swift */; };
 		E56AD8BD1DD246760011EB77 /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD7A01DD246760011EB77 /* Flocker.swift */; };
 		E56AD8BE1DD246760011EB77 /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD7A01DD246760011EB77 /* Flocker.swift */; };
 		E56AD8BF1DD246760011EB77 /* BoxDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD7A21DD246760011EB77 /* BoxDelegate.swift */; };
@@ -384,8 +386,6 @@
 		E56AD9781DD246760011EB77 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD8091DD246760011EB77 /* Reaction.swift */; };
 		E56AD9791DD246760011EB77 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80A1DD246760011EB77 /* ServerErrorCodes.swift */; };
 		E56AD97A1DD246760011EB77 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80A1DD246760011EB77 /* ServerErrorCodes.swift */; };
-		E56AD97B1DD246760011EB77 /* Shadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80B1DD246760011EB77 /* Shadows.swift */; };
-		E56AD97C1DD246760011EB77 /* Shadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80B1DD246760011EB77 /* Shadows.swift */; };
 		E56AD97D1DD246760011EB77 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80C1DD246760011EB77 /* StatusOfCompletion.swift */; };
 		E56AD97E1DD246760011EB77 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80C1DD246760011EB77 /* StatusOfCompletion.swift */; };
 		E56AD97F1DD246760011EB77 /* NSObject+Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AD80E1DD246760011EB77 /* NSObject+Bartleby.swift */; };
@@ -506,6 +506,7 @@
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
+		E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObjectError.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -592,7 +593,7 @@
 		E56AD79B1DD246760011EB77 /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E56AD79D1DD246760011EB77 /* BSFS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFS.swift; sourceTree = "<group>"; };
 		E56AD79E1DD246760011EB77 /* BSFSError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSError.swift; sourceTree = "<group>"; };
-		E56AD79F1DD246760011EB77 /* FileReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReference.swift; sourceTree = "<group>"; };
+		E56AD79F1DD246760011EB77 /* FSReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSReference.swift; sourceTree = "<group>"; };
 		E56AD7A01DD246760011EB77 /* Flocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flocker.swift; sourceTree = "<group>"; };
 		E56AD7A21DD246760011EB77 /* BoxDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxDelegate.swift; sourceTree = "<group>"; };
 		E56AD7A31DD246760011EB77 /* NodeAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeAccessor.swift; sourceTree = "<group>"; };
@@ -688,7 +689,6 @@
 		E56AD8081DD246760011EB77 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E56AD8091DD246760011EB77 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
 		E56AD80A1DD246760011EB77 /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
-		E56AD80B1DD246760011EB77 /* Shadows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shadows.swift; sourceTree = "<group>"; };
 		E56AD80C1DD246760011EB77 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E56AD80E1DD246760011EB77 /* NSObject+Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bartleby.swift"; sourceTree = "<group>"; };
 		E56AD80F1DD246760011EB77 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
@@ -1004,7 +1004,7 @@
 			children = (
 				E56AD79D1DD246760011EB77 /* BSFS.swift */,
 				E56AD79E1DD246760011EB77 /* BSFSError.swift */,
-				E56AD79F1DD246760011EB77 /* FileReference.swift */,
+				E56AD79F1DD246760011EB77 /* FSReference.swift */,
 				E56AD7A01DD246760011EB77 /* Flocker.swift */,
 				E56AD7A11DD246760011EB77 /* protocols */,
 			);
@@ -1098,8 +1098,8 @@
 				E56AD7E41DD246760011EB77 /* protocols */,
 				E56AD8091DD246760011EB77 /* Reaction.swift */,
 				E56AD80A1DD246760011EB77 /* ServerErrorCodes.swift */,
-				E56AD80B1DD246760011EB77 /* Shadows.swift */,
 				E56AD80C1DD246760011EB77 /* StatusOfCompletion.swift */,
+				E53E26C61DD3342A0040E32B /* BartlebyObjectError.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1460,8 +1460,8 @@
 				E56AD9171DD246760011EB77 /* HTTPContext+Conveniences.swift in Sources */,
 				E56AD8951DD246760011EB77 /* ReadNodeById.swift in Sources */,
 				E56AD8211DD246760011EB77 /* BlocksManagedCollection.swift in Sources */,
+				E53E26C71DD3342A0040E32B /* BartlebyObjectError.swift in Sources */,
 				E56AD86B1DD246760011EB77 /* CreateUser.swift in Sources */,
-				E56AD97B1DD246760011EB77 /* Shadows.swift in Sources */,
 				E56AD9651DD246760011EB77 /* Referenced.swift in Sources */,
 				E56AD8AB1DD246760011EB77 /* UpdateLockers.swift in Sources */,
 				E56AD9111DD246760011EB77 /* DocumentMetadata+Facilities.swift in Sources */,
@@ -1604,7 +1604,7 @@
 				E56AD8871DD246760011EB77 /* ReadBlocksByQuery.swift in Sources */,
 				E56AD9131DD246760011EB77 /* DocumentMetadata+Protocol.swift in Sources */,
 				E56AD8571DD246760011EB77 /* User.swift in Sources */,
-				E56AD8BB1DD246760011EB77 /* FileReference.swift in Sources */,
+				E56AD8BB1DD246760011EB77 /* FSReference.swift in Sources */,
 				E56AD8F91DD246760011EB77 /* BartlebyDocument+Operations.swift in Sources */,
 				E56AD8691DD246760011EB77 /* CreateNodes.swift in Sources */,
 				E56AD9611DD246760011EB77 /* Monitoring.swift in Sources */,
@@ -1692,7 +1692,6 @@
 				E56AD9921DD246760011EB77 /* UploadBlock.swift in Sources */,
 				E56AD8C01DD246760011EB77 /* BoxDelegate.swift in Sources */,
 				E56AD9441DD246760011EB77 /* CryptoDelegate.swift in Sources */,
-				E56AD97C1DD246760011EB77 /* Shadows.swift in Sources */,
 				E56AD8D41DD246760011EB77 /* CryptoHelper.swift in Sources */,
 				E56AD9741DD246760011EB77 /* UniversalType.swift in Sources */,
 				E56AD9321DD246760011EB77 /* BartlebyFileIO.swift in Sources */,
@@ -1794,7 +1793,7 @@
 				E56AD8501DD246760011EB77 /* PushOperation.swift in Sources */,
 				E56AD83A1DD246760011EB77 /* DocumentMetadata.swift in Sources */,
 				E56AD82C1DD246760011EB77 /* UsersManagedCollection.swift in Sources */,
-				E56AD8BC1DD246760011EB77 /* FileReference.swift in Sources */,
+				E56AD8BC1DD246760011EB77 /* FSReference.swift in Sources */,
 				E56AD8421DD246760011EB77 /* HTTPRequest.swift in Sources */,
 				E56AD8541DD246760011EB77 /* Tag.swift in Sources */,
 				E56AD86E1DD246760011EB77 /* CreateUsers.swift in Sources */,
@@ -1847,6 +1846,7 @@
 				E56AD9341DD246760011EB77 /* BartlebyOperation.swift in Sources */,
 				E56AD8A81DD246760011EB77 /* UpdateBoxes.swift in Sources */,
 				E56AD8BE1DD246760011EB77 /* Flocker.swift in Sources */,
+				E53E26C81DD3342A0040E32B /* BartlebyObjectError.swift in Sources */,
 				E56AD9901DD246760011EB77 /* TriggersForIndexes.swift in Sources */,
 				E56AD8F81DD246760011EB77 /* BartlebyDocument+Metrics.swift in Sources */,
 				E56AD9141DD246760011EB77 /* DocumentMetadata+Protocol.swift in Sources */,

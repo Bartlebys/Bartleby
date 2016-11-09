@@ -216,3 +216,19 @@ import Foundation
         return PushOperation.collectionName
     }
 }
+
+
+// The class shadow
+open class PushOperationShadow :PushOperation,Shadow{
+
+    static func from(_ entity:PushOperation)->PushOperationShadow{
+        let shadow=PushOperationShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

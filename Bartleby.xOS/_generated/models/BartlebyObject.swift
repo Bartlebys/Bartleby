@@ -96,6 +96,17 @@ import Foundation
         }
     }
 
+    /// You can set the UID on Shadows instances
+    ///
+    /// - Parameter UID: the uid
+    open func setShadowUID(UID:String)throws{
+        if self is Shadow{
+            self._id=UID
+        }else{
+            throw BartlebyObjectError.illegalAttemptToReplaceUID
+        }
+    }
+
     // Returns the UID
     final public var UID: String {
         get {
@@ -302,5 +313,21 @@ import Foundation
 
      open var d_collectionName:String{
         return BartlebyObject.collectionName
+    }
+}
+
+
+// The class shadow
+open class BartlebyObjectShadow :BartlebyObject,Shadow{
+
+    static func from(_ entity:BartlebyObject)->BartlebyObjectShadow{
+        let shadow=BartlebyObjectShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
     }
 }

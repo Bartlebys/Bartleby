@@ -344,3 +344,19 @@ import Foundation
         return User.collectionName
     }
 }
+
+
+// The class shadow
+open class UserShadow :User,Shadow{
+
+    static func from(_ entity:User)->UserShadow{
+        let shadow=UserShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

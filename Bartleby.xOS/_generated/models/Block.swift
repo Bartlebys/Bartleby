@@ -57,6 +57,12 @@ import Foundation
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
 	dynamic open var downloadProgression:Progression = Progression()
 
+	//Is Upload Needed
+	dynamic open var needsUpload:Bool = false
+
+	//Is download Needed
+	dynamic open var needsDownload:Bool = false
+
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
 	dynamic open var uploadInProgress:Bool = false
 
@@ -68,7 +74,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -121,6 +127,14 @@ import Foundation
                 if let casted=value as? Progression{
                     self.downloadProgression=casted
                 }
+            case "needsUpload":
+                if let casted=value as? Bool{
+                    self.needsUpload=casted
+                }
+            case "needsDownload":
+                if let casted=value as? Bool{
+                    self.needsDownload=casted
+                }
             case "uploadInProgress":
                 if let casted=value as? Bool{
                     self.uploadInProgress=casted
@@ -164,6 +178,10 @@ import Foundation
                return self.uploadProgression
             case "downloadProgression":
                return self.downloadProgression
+            case "needsUpload":
+               return self.needsUpload
+            case "needsDownload":
+               return self.needsDownload
             case "uploadInProgress":
                return self.uploadInProgress
             case "downloadInProgress":
@@ -189,6 +207,8 @@ import Foundation
 			self.priority <- ( map["priority"] )
 			self.compressed <- ( map["compressed"] )
 			self.crypted <- ( map["crypted"] )
+			self.needsUpload <- ( map["needsUpload"] )
+			self.needsDownload <- ( map["needsDownload"] )
         }
     }
 
@@ -206,6 +226,8 @@ import Foundation
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.crypted=decoder.decodeBool(forKey:"crypted") 
+			self.needsUpload=decoder.decodeBool(forKey:"needsUpload") 
+			self.needsDownload=decoder.decodeBool(forKey:"needsDownload") 
         }
     }
 
@@ -219,6 +241,8 @@ import Foundation
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.crypted,forKey:"crypted")
+		coder.encode(self.needsUpload,forKey:"needsUpload")
+		coder.encode(self.needsDownload,forKey:"needsDownload")
     }
 
     override open class var supportsSecureCoding:Bool{
@@ -237,5 +261,21 @@ import Foundation
 
     override open var d_collectionName:String{
         return Block.collectionName
+    }
+}
+
+
+// The class shadow
+open class BlockShadow :Block,Shadow{
+
+    static func from(_ entity:Block)->BlockShadow{
+        let shadow=BlockShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
     }
 }

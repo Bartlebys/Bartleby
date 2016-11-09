@@ -144,3 +144,19 @@ import Foundation
         return BsyncCredentials.collectionName
     }
 }
+
+
+// The class shadow
+open class BsyncCredentialsShadow :BsyncCredentials,Shadow{
+
+    static func from(_ entity:BsyncCredentials)->BsyncCredentialsShadow{
+        let shadow=BsyncCredentialsShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

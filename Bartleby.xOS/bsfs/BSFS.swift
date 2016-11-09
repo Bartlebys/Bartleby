@@ -90,6 +90,16 @@ public final class BSFS:TriggerHook{
 
     //MARK:  - Box Level
 
+
+    /// New Box Factory
+    /// Includes shadowing
+    /// - Returns: returns the box
+    public func newLocalBox()->Box{
+        let box=self._document.newBox()
+        let _=self._shadowBoxIfNecessary(box: box)
+        return box
+    }
+
     /// Mounts the current local box == Assemble all its assemblable nodes
     /// There is no guarantee that the box is not fully up to date
     ///
@@ -275,6 +285,23 @@ public final class BSFS:TriggerHook{
     }
 
 
+    /// Creates and store a local BoxShadow from its distant pair
+    ///
+    /// - Parameter box: the box
+    /// - Returns: the Shadow
+    func _shadowBoxIfNecessary(box:Box)->BoxShadow{
+        if let idx=self._localContainer.boxes.index(where: { (boxShadow) -> Bool in
+            return box.UID == boxShadow.UID
+        }){
+            return self._localContainer.boxes[idx]
+        }else{
+            // Let's add the boxShadow
+            let boxShadow=BoxShadow.from(box)
+            self._localContainer.boxes.append(boxShadow)
+            return boxShadow
+        }
+    }
+
 
     //MARK:  - File Level
 
@@ -286,13 +313,13 @@ public final class BSFS:TriggerHook{
     ///     + the node  ref is stored in the Completon (use completion.getResultExternalReference())
     ///
     /// - Parameters:
-    ///   - fileReference: the file reference (Nature == file or flock)
+    ///   - FSReference: the file reference (Nature == file or flock)
     ///   - box: the box
     ///   - relativePath: the relative Path of the Node
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State (the node ref is stored in the completion.getResultExternalReference())
-    public func add( fileReference:FileReference,
+    public func add( reference:FSReference,
                      in box:Box,
                      to relativePath:String,
                      deleteOriginal:Bool=false,
@@ -302,25 +329,83 @@ public final class BSFS:TriggerHook{
         if box is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
         }else{
-            switch fileReference.nodeNature {
-            case .file:
-                break
-            case .flock:
-                break
-            case .alias:
-                break
-            case .folder:
-                break
+
+            let _ = self._shadowBoxIfNecessary(box: box)
+
+            if self._fileManager.fileExists(atPath: reference.absolutePath){
+
+                /// Let's break the file into chunk.
+                self.breakIntoChunk(fileAt: reference.absolutePath,
+                                    destination: box.absoluteFolderPath,
+                                    compress: reference.compressed,
+                                    encrypt: reference.crypted,
+                                    progression: { (progression) in
+                                        progressed(progression)
+                }
+                    , success: { (chunks) in
+
+                        // Successful operation
+                        // Let's Upsert the distant models.
+                        // AND create their local Shadows
+
+                        // Create the new node.
+                        // And add its blocks
+                        let node=self._document.newNode()
+                        node.silentGroupedChanges {
+                            node.boxUID=box.UID
+                            node.nature=reference.nodeNature.forNode
+                            node.relativePath=relativePath
+                            node.priority=reference.priority
+
+                            // Let's add the blocks
+                            for chunk in chunks{
+                                let block=self._document.newBlock()
+                                block.silentGroupedChanges {
+                                    block.nodeUID=node.UID
+                                    block.digest=chunk.sha1
+                                    block.priority=reference.priority
+                                }
+
+                                let blockShadow=self._shadowBlockIfNecessary(block: block)
+                                blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
+                                self._localContainer.blocks.append(blockShadow)
+                                node.blocksUIDS.append(block.UID)
+                            }
+                            let nodeShadow=self._shadowNodeIfNecessary(node: node)
+                            self._localContainer.nodes.append(nodeShadow)
+                        }
+
+                        // Delete the original
+                        Async.utility{
+                            if deleteOriginal{
+                                // We consider deletion as non mandatory.
+                                // So we produce only a log.
+                                do {
+                                    try self._fileManager.removeItem(atPath: reference.absolutePath)
+                                } catch  {
+                                    self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                }
+                            }
+                        }
+
+                        let finalState=Completion.successState()
+                        finalState.setExternalReferenceResult(from:node)
+                        completed(finalState)
+
+                        // Call the centralized upload mechanism
+                        self._uploadNext()
+
+                }, failure: { (message) in
+                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                })
+
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Reference Not Found!", tableName:"system", comment: "Reference Not Found!")+" \(reference.absolutePath)", statusCode: .not_Found))
             }
-
-
-            // TODO
-
-            let node=Node()
-            let finalState=Completion.successState()
-            finalState.setExternalReferenceResult(from:node)
         }
     }
+
+
 
 
     /// Call to replace the content of a node.
@@ -344,11 +429,10 @@ public final class BSFS:TriggerHook{
             if node is Shadow{
                 completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
             }else{
-
                 if node.authorized.contains(self._document.currentUser.UID) ||
                     node.authorized.contains("*"){
 
-                    // TODO
+                    // TODO ****
 
                 }else{
                     completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
@@ -360,9 +444,12 @@ public final class BSFS:TriggerHook{
     }
 
 
+    //MARK: - Node Level
 
 
-    //MARK: Node access
+
+
+    //MARK: Access
 
     /// Any accessor to obtain access to the resource (file) of a node need to call this method.
     /// The nodeIsUsable() will be called when the file will be usable.
@@ -463,7 +550,6 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
                     node.relativePath=relativePath
-                    // TODO
                 })
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
@@ -487,6 +573,9 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.deletionIsReady(node: node, proceed: {
                     /// TODO implement the deletion
+
+
+
                 })
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
@@ -501,8 +590,9 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - relativePath: the relative Path
     ///   - completed: a closure called on completion with Completion State.
-    public func createFolder(at relativePath:String,completed:@escaping (Completion)->())->(){
-         // TODO
+    public func createFolder(in box:Box,at relativePath:String,completed:@escaping (Completion)->())->(){
+
+
     }
 
 
@@ -520,12 +610,29 @@ public final class BSFS:TriggerHook{
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 // TODO
             }else{
-                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
+                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
             }
         }
     }
 
-    
+
+    /// Creates and store a local NodeShadow from its distant pair
+    ///
+    /// - Parameter node: the Node
+    /// - Returns: the block shadow
+    func _shadowNodeIfNecessary(node:Node)->NodeShadow{
+        if let idx=self._localContainer.nodes.index(where: { (nodeShadow) -> Bool in
+            return nodeShadow.UID == node.UID
+        }){
+            return self._localContainer.nodes[idx]
+        }else{
+            // Let's add the nodeShadow
+            let nodeShadow=NodeShadow.from(node)
+            self._localContainer.nodes.append(nodeShadow)
+            return nodeShadow
+        }
+    }
+
 
 
     // MARK: - TriggerHook
@@ -547,12 +654,9 @@ public final class BSFS:TriggerHook{
 
         // TODO ANALYZE
         // HOW TO DETECT MIDDLE CHANGE user is authorized during Upload == The first block have not been received.
-
     }
 
-
     //MARK: - Triggered Block Level Action
-
 
     /// Downloads a Block.
     /// This occurs before triggered_create on each successfull upload.
@@ -562,13 +666,45 @@ public final class BSFS:TriggerHook{
     internal func triggered_download(block:Block){
         if block.authorized.contains(self._document.currentUser.UID) ||
             block.authorized.contains("*"){
-
-            // We can download
-            // @TODO
-
+            let shadowBlock=self._shadowBlockIfNecessary(block: block)
+            shadowBlock.needsDownload=true
+            self._downloadNext()
         }
     }
 
+
+    //MARK: - Block Level
+
+
+    /// Will upload the next block if possible
+    /// Respecting the priorities
+    internal func _uploadNext()->(){
+
+    }
+
+    /// Will download the next block if possible
+    /// Respecting the priorities
+    internal func _downloadNext()->(){
+
+    }
+
+
+    /// Creates and store a local BlockShadow from its distant pair
+    ///
+    /// - Parameter block: the Block
+    /// - Returns: the block shadow
+    func _shadowBlockIfNecessary(block:Block)->BlockShadow{
+        if let idx=self._localContainer.blocks.index(where: { (blockShadow) -> Bool in
+            return blockShadow.UID == block.UID
+        }){
+            return self._localContainer.blocks[idx]
+        }else{
+            // Let's add the blockShadow
+            let blockShadow=BlockShadow.from(block)
+            self._localContainer.blocks.append(blockShadow)
+            return blockShadow
+        }
+    }
 
 
     //MARK: - Chunk level: chunk->file and file->chunk

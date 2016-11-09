@@ -161,3 +161,19 @@ import Foundation
         return CollectionMetadatum.collectionName
     }
 }
+
+
+// The class shadow
+open class CollectionMetadatumShadow :CollectionMetadatum,Shadow{
+
+    static func from(_ entity:CollectionMetadatum)->CollectionMetadatumShadow{
+        let shadow=CollectionMetadatumShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

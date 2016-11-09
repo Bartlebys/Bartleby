@@ -457,3 +457,19 @@ import Foundation
         return DocumentMetadata.collectionName
     }
 }
+
+
+// The class shadow
+open class DocumentMetadataShadow :DocumentMetadata,Shadow{
+
+    static func from(_ entity:DocumentMetadata)->DocumentMetadataShadow{
+        let shadow=DocumentMetadataShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

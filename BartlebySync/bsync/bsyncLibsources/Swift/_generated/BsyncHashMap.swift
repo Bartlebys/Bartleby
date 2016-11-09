@@ -113,3 +113,19 @@ import Foundation
         return BsyncHashMap.collectionName
     }
 }
+
+
+// The class shadow
+open class BsyncHashMapShadow :BsyncHashMap,Shadow{
+
+    static func from(_ entity:BsyncHashMap)->BsyncHashMapShadow{
+        let shadow=BsyncHashMapShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}

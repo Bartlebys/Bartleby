@@ -199,3 +199,19 @@ import Foundation
         return Completion.collectionName
     }
 }
+
+
+// The class shadow
+open class CompletionShadow :Completion,Shadow{
+
+    static func from(_ entity:Completion)->CompletionShadow{
+        let shadow=CompletionShadow()
+            shadow.silentGroupedChanges {
+            for k in entity.exposedKeys{
+                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
+            }
+            try? shadow.setShadowUID(UID: entity.UID)
+        }
+        return shadow
+    }
+}
