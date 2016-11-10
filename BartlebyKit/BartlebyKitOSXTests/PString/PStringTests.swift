@@ -12,33 +12,7 @@ import BartlebyKit
 
 class PStringTests: XCTestCase {
 
-    let helloWorld="Hello World"
-    let hello="Hello 🗽 liberty"
-
-
-    /*
-
-     PString.ltrim("    *   Hello    *    ")
-     PString.rtrim("    *   Hello    *    ")
-
-     PString.ltrim("*,    *   Hello    *    ",characterSet: CharacterSet(charactersIn:",* "))
-     PString.ltrim(",A,B,C",characterSet: CharacterSet(charactersIn:","))
-     
-     */
-
-    func test001_substring_PHP_Compliance() {
-        XCTAssert(PString.substr(helloWorld, 0, 2)=="He")
-    }
-
-    func test002_substring_PHP_Compliance() {
-        XCTAssert(PString.substr(helloWorld, 1, 1)=="e")
-        XCTAssert(PString.substr(helloWorld, 0, 0)=="")
-    }
-
-    func test003_substring_PHP_Compliance() {
-        XCTAssert(PString.substr(helloWorld, 3, 2)=="lo")
-    }
-
+    // MARK: - PHP substring compliances tests
 
     /*
 
@@ -67,10 +41,29 @@ class PStringTests: XCTestCase {
      echo substr("Hello World",-9,-3)."\n";//   llo Wo
 
      echo substr("Hello 🗽 liberty",6,5)."\n";// 🗽
-
+     
      ?>
      
      */
+
+
+    let helloWorld="Hello World"
+    let hello="Hello 🗽 liberty"
+
+    func test001_substring_PHP_Compliance() {
+        XCTAssert(PString.substr(helloWorld, 0, 2)=="He")
+    }
+
+    func test002_substring_PHP_Compliance() {
+        XCTAssert(PString.substr(helloWorld, 1, 1)=="e")
+        XCTAssert(PString.substr(helloWorld, 0, 0)=="")
+    }
+
+    func test003_substring_PHP_Compliance() {
+        XCTAssert(PString.substr(helloWorld, 3, 2)=="lo")
+    }
+
+
 
     func test005_substring_PHP_Compliance() {
         XCTAssert(PString.substr(helloWorld, 0, 11)==helloWorld)
@@ -108,12 +101,35 @@ class PStringTests: XCTestCase {
          XCTAssert(s=="llo Wo") /// llo Worl
     }
 
+    // MARK: -
+
     // Not supported by PHP
     func test0011_substring_unicode_emoticon() {
         XCTAssert(PString.substr(hello, 6, 5)=="🗽 lib")
     }
 
 
+    // MARK: - Trimming
+
+    func test0012_ltrim() {
+        let s=PString.ltrim("    *   Hello    *    ")
+        XCTAssert(s=="*   Hello    *    ")
+    }
+
+    func test0013_rtrim() {
+        let s=PString.rtrim("    *   Hello    *    ")
+        XCTAssert(s=="    *   Hello    *")
+    }
+
+    func test0013_ltrim_charset() {
+        let s=PString.ltrim("*,    *   Hello    *    ",characterSet: CharacterSet(charactersIn:",* "))
+        XCTAssert(s=="Hello    *    ")
+    }
+
+    func test0014_ltrim_charset() {
+        let s=PString.ltrim(",A,B,C",characterSet: CharacterSet(charactersIn:","))
+        XCTAssert(s=="A,B,C")
+    }
 
 
 }
