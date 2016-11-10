@@ -128,6 +128,7 @@ public struct PString {
         if start<0{
             start=strLength+start
         }
+
         var rightPos:Int=start+length
 
         if length<0{
@@ -136,8 +137,11 @@ public struct PString {
 
         var leftPos:Int=start
 
-        leftPos = leftPos>0 ? leftPos : 0
-        rightPos = rightPos<strLength ? rightPos : strLength
+        leftPos =  max(0,leftPos)
+        rightPos = max(0,rightPos)
+
+        leftPos =  min(strLength,leftPos)
+        rightPos = min(strLength,rightPos)
 
         let startIndex = (leftPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: leftPos)
         let endIndex = (rightPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: rightPos)
