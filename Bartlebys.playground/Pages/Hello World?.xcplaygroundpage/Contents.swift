@@ -40,5 +40,6 @@ if let u:Tag=ext.toLocalInstance(){
 }else{
     let eureka="We support types safety in external references"u
 }
+
 //: [Go to externalReferences](@next)
 

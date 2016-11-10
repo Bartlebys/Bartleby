@@ -93,12 +93,12 @@ class PStringTests: XCTestCase {
 
     func test009_substring_PHP_Compliance_negative_values() {
         let s=PString.substr(helloWorld, -10, -2)
-        XCTAssert(s=="ello Wor") /// ello Worl 
+        XCTAssert(s=="ello Wor")
     }
 
     func test010_substring_PHP_Compliance_negative_values() {
         let s=PString.substr(helloWorld, -9, -3)
-         XCTAssert(s=="llo Wo") /// llo Worl
+         XCTAssert(s=="llo Wo")
     }
 
     // MARK: -
