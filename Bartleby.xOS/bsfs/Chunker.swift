@@ -88,8 +88,7 @@ struct  Chunker {
 
                 var counter=0
 
-                func __writeData(data:Data,to folderPath:String)throws->(){
-                    let sha1=data.sha1
+                func __writeData(data:Data,to folderPath:String,digest sha1:String)throws->(){
                     // Generate a Classified Block Tree.
                     let c1=PString.substr(sha1, 0, 1)
                     let c2=PString.substr(sha1, 1, 1)
@@ -124,13 +123,14 @@ struct  Chunker {
                             offset = (i==nb ? r : maxSize)
                             position += offset
                             var data=fileHandle.readData(ofLength: Int(offset))
+                            let sha1=data.sha1
                             if compress{
                                 data = try data.compress(algorithm: .lz4)
                             }
                             if encrypt {
                                 data = try Bartleby.cryptoDelegate.encryptData(data)
                             }
-                            try __writeData(data: data,to:folderPath)
+                            try __writeData(data: data,to:folderPath,digest:sha1)
 
                         })
                     }
