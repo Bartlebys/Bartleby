@@ -20,6 +20,11 @@ extension Block{
         }
     }
 
+    var url:URL{
+        return URL(fileURLWithPath: self.absolutePath)
+    }
+
+
     public var node:Node?{
        return try? Bartleby.registredObjectByUID(self.nodeUID) as Node
     }
