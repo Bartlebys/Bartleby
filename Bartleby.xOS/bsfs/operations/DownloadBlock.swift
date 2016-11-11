@@ -11,35 +11,65 @@ import Foundation
     import Alamofire
 #endif
 
-@objc(DownloadBlock) public class DownloadBlock: BlockOperationBase {
+/// A cancelable download Block Operation
+public class DownloadBlock {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "DownloadBlock"
+    // https://github.com/Alamofire/Alamofire#downloading-data-to-a-file
+    // We could may be resume if necessary.
+    // But with our block oriented approach it is not a priority
+
+
+    internal var _downloadRequest:DownloadRequest?
+
+    internal var _sucessHandler:(_ context:HTTPContext)->()
+
+    internal var _failureHandler:(_ context:HTTPContext)->()
+
+    internal var _cancelationHandler:()->()
+
+    internal var _block:Block
+
+    internal var _documentUID:String
+
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///   - block: the block
+    ///   - documentUID: its document UID
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    public init(block:Block,documentUID:String,
+                sucessHandler success: @escaping(_ context:HTTPContext)->(),
+                failureHandler failure: @escaping(_ context:HTTPContext)->(),
+                cancelationHandler cancel: @escaping()->()){
+        self._block=block
+        self._documentUID=documentUID
+        self._sucessHandler=success
+        self._failureHandler=failure
+        self._cancelationHandler=cancel
     }
 
-    open override class func execute(_ block:Block,
-                                     inDocumentWithUID documentUID:String,
-                                     sucessHandler success: @escaping(_ context:HTTPContext)->(),
-                                     failureHandler failure: @escaping(_ context:HTTPContext)->()){
+     /// Cancels the operation
+    public func cancel(){
+        if let downloadRequest = self._downloadRequest{
+            downloadRequest.cancel()
+        }
+        self._cancelationHandler()
+    }
 
-        if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
 
-            let pathURL = document.baseURL.appendingPathComponent("block/\(block.UID)")
+    public var blockUID:String{ return _block.UID }
+
+    public func execute(){
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+            let pathURL = document.baseURL.appendingPathComponent("block/\(self._block.UID)")
             let destination:DownloadRequest.DownloadFileDestination = {_,_ in
-                let url=URL(string:block.absolutePath)!
+                let url=URL(string:self._block.absolutePath)!
                 return (url, [.removePreviousFile, .createIntermediateDirectories])
             }
-
-            // https://github.com/Alamofire/Alamofire#downloading-data-to-a-file
-            // We could may be resume if necessary.
-            // But with our block oriented approach it is not a priority
-            // The Resume data could be stored in the Operation.
-
             let queue = GlobalQueue.main.get()
-
-            let r = download(HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DownloadBlock" ,forMethod:"GET", and: pathURL),to:destination)
-            r.response(completionHandler: { (response) in
+            self._downloadRequest = download(HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DownloadBlock" ,forMethod:"GET", and: pathURL),to:destination)
+            self._downloadRequest!.response(completionHandler: { (response) in
                 // Store the response
                 let request=response.request
                 let statusCode=response.response?.statusCode ?? 0
@@ -59,7 +89,7 @@ import Foundation
 
                 if 200...299 ~= statusCode {
                     Async.main{
-                        success(context)
+                        self._sucessHandler(context)
                     }
                 }else{
                     Async.main{
@@ -73,7 +103,7 @@ import Foundation
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
-                        failure(context)
+                        self._failureHandler(context)
                     }
                 }
                 Async.main{
@@ -81,12 +111,12 @@ import Foundation
                     document.perform(reactions, forContext: context)
                 }
             }).downloadProgress(queue: queue) { progress in
-                block.downloadProgression.updateProgression(from: progress)
+                self._block.downloadProgression.updateProgression(from: progress)
             }
 
 
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
         
     }

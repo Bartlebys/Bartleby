@@ -91,8 +91,6 @@
 		E54A9E601DD4634B0066F20D /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D6F1DD4634B0066F20D /* Trigger.swift */; };
 		E54A9E611DD4634B0066F20D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D701DD4634B0066F20D /* User.swift */; };
 		E54A9E621DD4634B0066F20D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D701DD4634B0066F20D /* User.swift */; };
-		E54A9E631DD4634B0066F20D /* BlockOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D731DD4634B0066F20D /* BlockOperationBase.swift */; };
-		E54A9E641DD4634B0066F20D /* BlockOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D731DD4634B0066F20D /* BlockOperationBase.swift */; };
 		E54A9E651DD4634B0066F20D /* CreateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D741DD4634B0066F20D /* CreateBlock.swift */; };
 		E54A9E661DD4634B0066F20D /* CreateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D741DD4634B0066F20D /* CreateBlock.swift */; };
 		E54A9E671DD4634B0066F20D /* CreateBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9D751DD4634B0066F20D /* CreateBlocks.swift */; };
@@ -543,7 +541,6 @@
 		E54A9D6E1DD4634B0066F20D /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E54A9D6F1DD4634B0066F20D /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E54A9D701DD4634B0066F20D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		E54A9D731DD4634B0066F20D /* BlockOperationBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperationBase.swift; sourceTree = "<group>"; };
 		E54A9D741DD4634B0066F20D /* CreateBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlock.swift; sourceTree = "<group>"; };
 		E54A9D751DD4634B0066F20D /* CreateBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlocks.swift; sourceTree = "<group>"; };
 		E54A9D761DD4634B0066F20D /* CreateBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBox.swift; sourceTree = "<group>"; };
@@ -946,7 +943,6 @@
 		E54A9D711DD4634B0066F20D /* operations */ = {
 			isa = PBXGroup;
 			children = (
-				E54A9D721DD4634B0066F20D /* bases */,
 				E54A9D741DD4634B0066F20D /* CreateBlock.swift */,
 				E54A9D751DD4634B0066F20D /* CreateBlocks.swift */,
 				E54A9D761DD4634B0066F20D /* CreateBox.swift */,
@@ -994,14 +990,6 @@
 				E54A9DA01DD4634B0066F20D /* UpdateUsers.swift */,
 			);
 			path = operations;
-			sourceTree = "<group>";
-		};
-		E54A9D721DD4634B0066F20D /* bases */ = {
-			isa = PBXGroup;
-			children = (
-				E54A9D731DD4634B0066F20D /* BlockOperationBase.swift */,
-			);
-			path = bases;
 			sourceTree = "<group>";
 		};
 		E54A9DA11DD4634B0066F20D /* adapters */ = {
@@ -1508,7 +1496,6 @@
 				E54A9F4B1DD4634B0066F20D /* CollectibleCollection.swift in Sources */,
 				E54A9EB51DD4634B0066F20D /* UpdateLockers.swift in Sources */,
 				E54A9E7F1DD4634B0066F20D /* DeleteBoxes.swift in Sources */,
-				E54A9E631DD4634B0066F20D /* BlockOperationBase.swift in Sources */,
 				E54A9EC11DD4634B0066F20D /* BSFS.swift in Sources */,
 				E54A9ECD1DD4634B0066F20D /* Flocker.swift in Sources */,
 				E54A9EFD1DD4634B0066F20D /* Consignation.swift in Sources */,
@@ -1726,7 +1713,6 @@
 				E54A9F5E1DD4634B0066F20D /* DocumentDependent.swift in Sources */,
 				E54A9F061DD4634B0066F20D /* BarltlebyDocument+Consignee.swift in Sources */,
 				E54A9E2E1DD4634B0066F20D /* BoxesManagedCollection.swift in Sources */,
-				E54A9E641DD4634B0066F20D /* BlockOperationBase.swift in Sources */,
 				E54A9F041DD4634B0066F20D /* DocumentError.swift in Sources */,
 				E54A9EEE1DD4634B0066F20D /* HMAC.swift in Sources */,
 				E54A9E8C1DD4634B0066F20D /* DeleteUsers.swift in Sources */,

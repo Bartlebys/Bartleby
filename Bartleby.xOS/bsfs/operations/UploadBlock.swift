@@ -12,28 +12,64 @@ import Foundation
 #endif
 
 
-enum UploadBlockError:Error{
-    case responseIssue(message:String)
-}
 
-@objc(UploadBlock) public class UploadBlock: BlockOperationBase {
+/// A cancelable Upload Block Operation
+public class UploadBlock {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "UploadBlock"
+    // https://github.com/Alamofire/Alamofire#uploading-data-to-a-server
+    // We could may be resume if necessary.
+    // But with our block oriented approach it is not a priority
+
+    enum UploadBlockError:Error{
+        case responseIssue(message:String)
     }
 
-    open override class func execute(_ block:Block,
-                                     inDocumentWithUID documentUID:String,
-                                     sucessHandler success: @escaping(_ context:HTTPContext)->(),
-                                     failureHandler failure: @escaping(_ context:HTTPContext)->()){
+    internal var _uploadRequest:UploadRequest?
 
-        if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
+    internal var _sucessHandler:(_ context:HTTPContext)->()
 
-            let pathURL = document.baseURL.appendingPathComponent("block/\(block.UID)")
-            let r = upload(block.url, with: HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"UploadBlock" ,forMethod:"POST", and: pathURL))
+    internal var _failureHandler:(_ context:HTTPContext)->()
 
-            r.responseString(completionHandler: { (response) in
+    internal var _cancelationHandler:()->()
+
+    internal var _block:Block
+
+    internal var _documentUID:String
+
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///   - block: the block
+    ///   - documentUID: its document UID
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    public init(block:Block,documentUID:String,
+                sucessHandler success: @escaping(_ context:HTTPContext)->(),
+                failureHandler failure: @escaping(_ context:HTTPContext)->(),
+                cancelationHandler cancel: @escaping()->()){
+        self._block=block
+        self._documentUID=documentUID
+        self._sucessHandler=success
+        self._failureHandler=failure
+        self._cancelationHandler=cancel
+    }
+
+    /// Cancels the operation
+    public func cancel(){
+        if let uploadRequest = self._uploadRequest{
+            uploadRequest.cancel()
+        }
+        self._cancelationHandler()
+    }
+
+    public var blockUID:String{ return _block.UID }
+
+    public func execute(){
+
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+            let pathURL = document.baseURL.appendingPathComponent("block/\(self._block.UID)")
+            self._uploadRequest = upload(self._block.url, with: HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"UploadBlock" ,forMethod:"POST", and: pathURL))
+            self._uploadRequest!.responseString(completionHandler: { (response) in
 
                 // Store the response
                 let request=response.request
@@ -68,7 +104,7 @@ enum UploadBlockError:Error{
                         transmit:{ (selectedIndex) -> () in
                     })
                     reactions.append(failureReaction)
-                    failure(context)
+                    self._failureHandler(context)
 
                 }else{
 
@@ -88,7 +124,7 @@ enum UploadBlockError:Error{
                                         acknowledgment.httpContext=context
                                         acknowledgment.operationName="UploadBlock"
                                         acknowledgment.triggerIndex=index.intValue
-                                        acknowledgment.uids=[block.UID]
+                                        acknowledgment.uids=[self._block.UID]
                                         document.record(acknowledgment)
                                     }else{
                                         throw UploadBlockError.responseIssue(message: "triggerIndex not found")
@@ -96,7 +132,7 @@ enum UploadBlockError:Error{
                                 }else{
                                     throw UploadBlockError.responseIssue(message: "dictionary is not available")
                                 }
-                                success(context)
+                                self._sucessHandler(context)
                             }else{
                                 throw UploadBlockError.responseIssue(message: "Data not found")
                             }
@@ -107,7 +143,7 @@ enum UploadBlockError:Error{
                                                        relatedURL:nil,
                                                        httpStatusCode:statusCode)
                             context.message="\(error)"
-                            failure(context)
+                            self._failureHandler(context)
                         }
 
                     }else{
@@ -125,7 +161,7 @@ enum UploadBlockError:Error{
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
-                        failure(context)
+                        self._failureHandler(context)
                     }
 
 
@@ -135,7 +171,7 @@ enum UploadBlockError:Error{
             })
             
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" _documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 }
