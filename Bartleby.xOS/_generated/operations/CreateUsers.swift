@@ -243,7 +243,7 @@ import Foundation
                 let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"CreateUsers" ,forMethod:"POST", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)
-                    request(r).validate().responseJSON(completionHandler: { (response) in
+                    request(r).responseJSON(completionHandler: { (response) in
 
                     // Store the response
                     let request=response.request

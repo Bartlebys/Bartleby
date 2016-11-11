@@ -14,7 +14,7 @@ extension Block{
     /// the block path baseFolder/blocks/<relatifvePath>/shA1
     var absolutePath:String{
         if let bsfs=self.document?.bsfs{
-            return bsfs.blocksFolderPath+"/"+self._blockRelativePath()
+            return bsfs.blocksFolderPath+"/"+self.blockRelativePath()
         }else{
             return Default.NO_PATH
         }
@@ -24,7 +24,7 @@ extension Block{
     /// Computes the block relative Path
     ///
     /// - Returns: the relative path
-    internal func _blockRelativePath()->String{
+    public func blockRelativePath()->String{
         // Generate a Classified Block Tree.
         let c1=PString.substr(digest, 0, 1)
         let c2=PString.substr(digest, 1, 1)
