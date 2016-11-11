@@ -39,12 +39,15 @@ import Foundation
 	//The responded data stringifyed
 	dynamic open var responseString:String?
 
+	//An optional message
+	dynamic open var message:String?
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","request","responseString"])
+        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","request","responseString","message"])
         return exposed
     }
 
@@ -81,6 +84,10 @@ import Foundation
                 if let casted=value as? String{
                     self.responseString=casted
                 }
+            case "message":
+                if let casted=value as? String{
+                    self.message=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -108,6 +115,8 @@ import Foundation
                return self.request
             case "responseString":
                return self.responseString
+            case "message":
+               return self.message
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -127,6 +136,7 @@ import Foundation
 			self.relatedURL <- ( map["relatedURL"], URLTransform() )
 			self.request <- ( map["request"] )
 			self.responseString <- ( map["responseString"] )
+			self.message <- ( map["message"] )
         }
     }
 
@@ -142,6 +152,7 @@ import Foundation
 			self.relatedURL=decoder.decodeObject(of: NSURL.self, forKey:"relatedURL") as URL?
 			self.request=decoder.decodeObject(of:HTTPRequest.self, forKey: "request") 
 			self.responseString=String(describing: decoder.decodeObject(of: NSString.self, forKey:"responseString") as NSString?)
+			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey:"message") as NSString?)
         }
     }
 
@@ -158,6 +169,9 @@ import Foundation
 		}
 		if let responseString = self.responseString {
 			coder.encode(responseString,forKey:"responseString")
+		}
+		if let message = self.message {
+			coder.encode(message,forKey:"message")
 		}
     }
 
