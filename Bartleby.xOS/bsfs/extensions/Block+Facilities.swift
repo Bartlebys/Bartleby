@@ -20,6 +20,10 @@ extension Block{
         }
     }
 
+    public var node:Node?{
+       return try? Bartleby.registredObjectByUID(self.nodeUID) as Node
+    }
+
 
     /// Computes the block relative Path
     ///

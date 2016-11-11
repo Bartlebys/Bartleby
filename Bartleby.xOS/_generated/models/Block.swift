@@ -30,9 +30,6 @@ import Foundation
 	    }
 	}
 
-	//Extracted from the node - to allow pre-downloading during node upload (if set to ["*"] the block is reputed public)
-	dynamic open var authorized:[String] = [String]()
-
 	//The UID of the holding node
 	dynamic open var nodeUID:String = "\(Default.NO_UID)"
 
@@ -74,7 +71,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","authorized","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -90,10 +87,6 @@ import Foundation
             case "digest":
                 if let casted=value as? String{
                     self.digest=casted
-                }
-            case "authorized":
-                if let casted=value as? [String]{
-                    self.authorized=casted
                 }
             case "nodeUID":
                 if let casted=value as? String{
@@ -160,8 +153,6 @@ import Foundation
         switch key {
             case "digest":
                return self.digest
-            case "authorized":
-               return self.authorized
             case "nodeUID":
                return self.nodeUID
             case "address":
@@ -200,7 +191,6 @@ import Foundation
         super.mapping(map: map)
         self.silentGroupedChanges {
 			self.digest <- ( map["digest"] )
-			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.nodeUID <- ( map["nodeUID"] )
 			self.address <- ( map["address"] )
 			self.size <- ( map["size"] )
@@ -219,7 +209,6 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
-			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "nodeUID")! as NSString)
 			self.address=decoder.decodeInteger(forKey:"address") 
 			self.size=decoder.decodeInteger(forKey:"size") 
@@ -234,7 +223,6 @@ import Foundation
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.digest,forKey:"digest")
-		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.nodeUID,forKey:"nodeUID")
 		coder.encode(self.address,forKey:"address")
 		coder.encode(self.size,forKey:"size")

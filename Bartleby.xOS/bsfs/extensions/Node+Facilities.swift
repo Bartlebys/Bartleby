@@ -27,7 +27,7 @@ extension Node{
     /// The parent box
     var box:Box?{
         if let box = try? Bartleby.registredObjectByUID(boxUID) as Box{
-                return box
+            return box
         }
         return nil
     }

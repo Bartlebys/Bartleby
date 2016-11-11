@@ -729,10 +729,12 @@ public final class BSFS:TriggerHook{
 
         // CHECK if there are Blocks, Node actions.
 
+        // UploadBlock -> download if allowed triggered_download
+        // DeleteBlock, DeleteBlocks -> delete the block immediately
+        // UpsertBlock, UpsertBlocks -> nothing to do
+
         // On Nodes or Blocks check if we are concerned / allowed.
 
-        // TODO ANALYZE
-        // HOW TO DETECT MIDDLE CHANGE user is authorized during Upload == The first block have not been received.
     }
 
     //MARK: - Triggered Block Level Action
@@ -743,12 +745,15 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - node: the node
     internal func triggered_download(block:Block){
-        if block.authorized.contains(self._document.currentUser.UID) ||
-            block.authorized.contains("*"){
-            let shadowBlock=self._shadowBlockIfNecessary(block: block)
-            shadowBlock.needsDownload=true
-            self._downloadNext()
+        if let node=block.node{
+            if node.authorized.contains(self._document.currentUser.UID) ||
+                node.authorized.contains("*"){
+                    let shadowBlock=self._shadowBlockIfNecessary(block: block)
+                    shadowBlock.needsDownload=true
+                    self._downloadNext()
+            }
         }
+
     }
 
 
