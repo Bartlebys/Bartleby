@@ -46,6 +46,17 @@ public extension Progression {
     }
 
 
+    /// Update progression from Foundation.Progress
+    ///
+    /// - Parameter progress: the progress
+    public func updateProgression(from progress:Foundation.Progress){
+        self.currentTaskIndex=min(Int(progress.completedUnitCount)+1,Int(progress.totalUnitCount))
+        self.totalTaskCount=Int(progress.totalUnitCount)
+        self.currentPercentProgress=Double(self.currentTaskIndex)*Double(100)/Double(self.totalTaskCount)
+    }
+
+
+
     ///  Proportionnal Probable duration
     public var probableDuration:Double{
         if self.currentPercentProgress==0{
