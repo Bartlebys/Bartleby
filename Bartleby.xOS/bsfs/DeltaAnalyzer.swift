@@ -11,7 +11,10 @@ import Foundation
 
 struct DeltaAnalyzer {
 
-    let local:NodeBlocksShadows
-    let distant:NodeBlocks
+    fileprivate let _local:NodeBlocksShadows?
+    fileprivate _distant:NodeBlocks?
 
+    func compute(completed:(localDeltaMap:DeltaMap, distantDeltaMap:DeltaMap)->())->(){
+    }
+    
 }

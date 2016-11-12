@@ -66,6 +66,15 @@ import Foundation
 	//The size of the file
 	dynamic open var size:Int = Int.max
 
+	//The SHA1 digest of the node is the digest of all its blocks digest.
+	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
+	    didSet { 
+	       if digest != oldValue {
+	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
+	       } 
+	    }
+	}
+
 	//If set to true the blocks should be compressed (using LZ4)
 	dynamic open var compressed:Bool = true
 
@@ -92,7 +101,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -156,6 +165,10 @@ import Foundation
             case "size":
                 if let casted=value as? Int{
                     self.size=casted
+                }
+            case "digest":
+                if let casted=value as? String{
+                    self.digest=casted
                 }
             case "compressed":
                 if let casted=value as? Bool{
@@ -226,6 +239,8 @@ import Foundation
                return self.authorized
             case "size":
                return self.size
+            case "digest":
+               return self.digest
             case "compressed":
                return self.compressed
             case "cryptedBlocks":
@@ -266,6 +281,7 @@ import Foundation
 			self.referentNodeUID <- ( map["referentNodeUID"] )
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
+			self.digest <- ( map["digest"] )
 			self.compressed <- ( map["compressed"] )
 			self.cryptedBlocks <- ( map["cryptedBlocks"] )
         }
@@ -290,6 +306,7 @@ import Foundation
 			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.size=decoder.decodeInteger(forKey:"size") 
+			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.cryptedBlocks=decoder.decodeBool(forKey:"cryptedBlocks") 
         }
@@ -320,6 +337,7 @@ import Foundation
 		}
 		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.size,forKey:"size")
+		coder.encode(self.digest,forKey:"digest")
 		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.cryptedBlocks,forKey:"cryptedBlocks")
     }

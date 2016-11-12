@@ -9,17 +9,9 @@
 import Foundation
 
 struct DeltaMap {
-
-    var created:[NodeBlocks]
-    var deleted:[NodeBlocks]
-    var updated:[NodeBlocks]
-    var copied:[NodeBlocks]
-    var moved:[NodeBlocks]
-
-    var createdShadows:[NodeBlocksShadows]
-    var deletedShadows:[NodeBlocksShadows]
-    var updatedShadows:[NodeBlocksShadows]
-    var copiedShadows:[NodeBlocksShadows]
-    var movedShadows:[NodeBlocksShadows]
-
+    var created:[String]=[String]()
+    var deleted:[String]=[String]()
+    var updated:[String]=[String]()
+    var copied:[String]=[String]()
+    var moved:[String]=[String]()
 }

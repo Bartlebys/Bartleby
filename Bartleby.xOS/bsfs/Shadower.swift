@@ -162,8 +162,8 @@ public struct  Shadower {
                     var position:UInt64=0
                     var counter=0
 
+                    var cumulatedDigests=""
                     for i in 0 ... nb{
-
                         // We donnot want to reduce the memory usage
                         // To the footprint of a Chunk +  Derivated Data.
                         autoreleasepool(invoking: { () -> Void in
@@ -172,7 +172,7 @@ public struct  Shadower {
                             position += offset
                             let data=fileHandle.readData(ofLength: Int(offset))
                             let sha1=data.sha1
-
+                            cumulatedDigests += sha1
                             let blockShadow=BlockShadow()
                             blockShadow.startsAt=Int(position)
                             blockShadow.size=Int(offset)
@@ -193,6 +193,8 @@ public struct  Shadower {
                     }
                     
                     fileHandle.closeFile()
+                    // Update the node digest
+                    nodeShadow.digest=cumulatedDigests.sha1
                     Async.main{
                         success(nodeBlocksShadows)
                     }

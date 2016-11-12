@@ -8,8 +8,11 @@
 
 import Foundation
 
+
+
 //MARK: - Chunk level: chunk->file and file->chunk
 
+// High performance Chunker, with a reduced memory foot print
 struct  Chunker {
 
     fileprivate let _fileManager:FileManager
@@ -101,7 +104,11 @@ struct  Chunker {
                     let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
-                    let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,startsAt:position,originalSize:Int(offset))
+                    let chunk=Chunk(baseDirectory:folderPath,
+                                    relativePath: chunkRelativePath,
+                                    sha1: sha1,
+                                    startsAt:position,
+                                    originalSize:Int(offset))
                     chunks.append(chunk)
                     let url=URL(fileURLWithPath: destination)
                     let _ = try data.write(to:url )
