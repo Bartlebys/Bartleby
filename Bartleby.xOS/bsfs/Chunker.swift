@@ -17,17 +17,13 @@ struct  Chunker {
 
     fileprivate let _fileManager:FileManager
 
+    /// The designated Initializer
+    ///
+    /// - Parameter fileManager: the file manager instance (should be only used on the Utility Queue)
     init(fileManager:FileManager) {
         self._fileManager=fileManager
     }
 
-    public struct Chunk {
-        var baseDirectory:String
-        var relativePath:String
-        var sha1:String
-        var startsAt:Int
-        var originalSize:Int
-    }
 
     /// This breaks efficiently a file to chunks.
     /// - The hard stuff is done Asynchronously on a the Utility queue
@@ -41,6 +37,7 @@ struct  Chunker {
     ///   - compress: should we compress (using LZ4)
     ///   - encrypt: should we encrypt (using AES256)
     ///   - externalId: this identifier allow to map the progression
+    ///   - excludeChunks: chunks to be excluded (Advanced Optimization: if you already know that you have some chunk you can by pass their processing)
     ///   - progression: progress closure called on each discreet progression.
     ///   - success: the success closure returns a Chunk Struct to be used to create/update Block instances
     ///   - failure: the failure closure
@@ -50,10 +47,10 @@ struct  Chunker {
                                  compress:Bool,
                                  encrypt:Bool,
                                  externalId:String=Default.NO_UID,
+                                 excludeChunks:[Chunk]=[Chunk](),
                                  progression:@escaping((Progression)->()),
                                  success:@escaping ([Chunk])->(),
                                  failure:@escaping (String)->()){
-
 
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
@@ -83,8 +80,6 @@ struct  Chunker {
                     progressionState.message=""
                 }
 
-
-
                 let _ = try? self._fileManager.removeItem(atPath: folderPath)
                 let _ = try? self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
 
@@ -94,7 +89,7 @@ struct  Chunker {
 
                 var counter=0
 
-                func __writeData(data:Data,to folderPath:String,digest sha1:String, position:Int)throws->(){
+                func __writeData(rank:Int,data:Data,to folderPath:String,digest sha1:String, position:Int)throws->(){
                     // Generate a Classified Block Tree.
                     let c1=PString.substr(sha1, 0, 1)
                     let c2=PString.substr(sha1, 1, 1)
@@ -104,11 +99,14 @@ struct  Chunker {
                     let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
-                    let chunk=Chunk(baseDirectory:folderPath,
+
+                    let chunk=Chunk( rank:rank,
+                                    baseDirectory:folderPath,
                                     relativePath: chunkRelativePath,
                                     sha1: sha1,
                                     startsAt:position,
                                     originalSize:Int(offset))
+
                     chunks.append(chunk)
                     let url=URL(fileURLWithPath: destination)
                     let _ = try data.write(to:url )
@@ -132,17 +130,24 @@ struct  Chunker {
                             fileHandle.seek(toFileOffset: position)
                             offset = (i==nb ? r : maxSize)
                             position += offset
-                            var data=fileHandle.readData(ofLength: Int(offset))
-                            let sha1=data.sha1
-                            if compress{
-                                data = try data.compress(algorithm: .lz4)
+                            if let idx=excludeChunks.index(where: {$0.rank == Int(i) }) {
+                                // Do not read nor process the data
+                                 fileHandle.seek(toFileOffset: position)
+                                 chunks.append(excludeChunks[idx])
+                            }else{
+                                var data=fileHandle.readData(ofLength: Int(offset))
+                                let sha1=data.sha1
+                                if compress{
+                                    data = try data.compress(algorithm: .lz4)
+                                }
+                                if encrypt {
+                                    data = try Bartleby.cryptoDelegate.encryptData(data)
+                                }
+                                try __writeData(rank:Int(i), data: data,to:folderPath,digest:sha1,position:Int(position))
                             }
-                            if encrypt {
-                                data = try Bartleby.cryptoDelegate.encryptData(data)
-                            }
-                            try __writeData(data: data,to:folderPath,digest:sha1,position:Int(position))
 
                         })
+                        
                     }
                     fileHandle.closeFile()
                     Async.main{
