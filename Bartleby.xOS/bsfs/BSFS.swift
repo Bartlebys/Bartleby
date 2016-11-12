@@ -404,22 +404,28 @@ public final class BSFS:TriggerHook{
                             node.relativePath=relativePath
                             node.priority=reference.priority
 
+                            var cumulatedDigests=""
                             // Let's add the blocks
                             for chunk in chunks{
                                 let block=self._document.newBlock()
                                 block.silentGroupedChanges {
                                     block.nodeUID=node.UID
+                                    block.rank=chunk.rank
                                     block.digest=chunk.sha1
                                     block.startsAt=chunk.startsAt
                                     block.size=chunk.originalSize
                                     block.priority=reference.priority
                                 }
 
+                                cumulatedDigests += chunk.sha1
+
                                 let blockShadow=self._shadowBlockIfNecessary(block: block)
                                 blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
                                 self._localContainer.blocks.append(blockShadow)
                                 node.blocksUIDS.append(block.UID)
                             }
+                            // Store the digest of the cumulated digests.
+                            node.digest=cumulatedDigests.sha1
                             let nodeShadow=self._shadowNodeIfNecessary(node: node)
                             self._localContainer.nodes.append(nodeShadow)
                         }
@@ -482,7 +488,7 @@ public final class BSFS:TriggerHook{
                 if node.authorized.contains(self._document.currentUser.UID) ||
                     node.authorized.contains("*"){
 
-                    // TODO ****
+                    // TODO ****IMPLEMENTATION WILL BE REQUIRED ****
 
                     let finalState=Completion.successState()
                     finalState.setExternalReferenceResult(from:node)
