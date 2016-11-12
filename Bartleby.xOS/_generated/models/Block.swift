@@ -33,8 +33,8 @@ import Foundation
 	//The UID of the holding node
 	dynamic open var nodeUID:String = "\(Default.NO_UID)"
 
-	//The starting address of the block in each Holding Node (== the position of the block in the file)
-	dynamic open var address:Int = 0
+	//The starting bytes of the block in the Node (== the position of the block in the file)
+	dynamic open var startsAt:Int = 0
 
 	//The size of the Block
 	dynamic open var size:Int = Int.max
@@ -71,7 +71,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","nodeUID","address","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","nodeUID","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -92,9 +92,9 @@ import Foundation
                 if let casted=value as? String{
                     self.nodeUID=casted
                 }
-            case "address":
+            case "startsAt":
                 if let casted=value as? Int{
-                    self.address=casted
+                    self.startsAt=casted
                 }
             case "size":
                 if let casted=value as? Int{
@@ -155,8 +155,8 @@ import Foundation
                return self.digest
             case "nodeUID":
                return self.nodeUID
-            case "address":
-               return self.address
+            case "startsAt":
+               return self.startsAt
             case "size":
                return self.size
             case "priority":
@@ -192,7 +192,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.digest <- ( map["digest"] )
 			self.nodeUID <- ( map["nodeUID"] )
-			self.address <- ( map["address"] )
+			self.startsAt <- ( map["startsAt"] )
 			self.size <- ( map["size"] )
 			self.priority <- ( map["priority"] )
 			self.compressed <- ( map["compressed"] )
@@ -210,7 +210,7 @@ import Foundation
         self.silentGroupedChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "nodeUID")! as NSString)
-			self.address=decoder.decodeInteger(forKey:"address") 
+			self.startsAt=decoder.decodeInteger(forKey:"startsAt") 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
@@ -224,7 +224,7 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.digest,forKey:"digest")
 		coder.encode(self.nodeUID,forKey:"nodeUID")
-		coder.encode(self.address,forKey:"address")
+		coder.encode(self.startsAt,forKey:"startsAt")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.compressed,forKey:"compressed")

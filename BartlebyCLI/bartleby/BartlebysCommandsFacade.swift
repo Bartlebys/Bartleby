@@ -23,10 +23,42 @@ struct BartlebysCommandFacade {
         case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
+        case "testShadower"?, "-tsh"?:
+            let startTime=CFAbsoluteTimeGetCurrent()
+            let shadower=Shadower()
+            if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
+                shadower.blocksShadowsFromFolder(folderPath: userDir,
+                                                 success: { fileShadows in
+
+                                                    let duration=CFAbsoluteTimeGetCurrent()-startTime
+                                                    print("blocksShadowsFromFile Duration \(duration) files:\(fileShadows.count)")
+                                                    var totalSize=0
+                                                    var blocksNb=0
+                                                    for n:NodeBlocksShadows in fileShadows{
+                                                        totalSize += n.nodeShadow.size
+                                                        blocksNb += n.blocksShadows.count
+                                                    }
+                                                    print("\(totalSize/MB) MB")
+                                                    print("\(Int(Double(totalSize/MB)/duration)) MB/s")
+                                                    print("For \(blocksNb) blocks")
+                                                    exit(EX_OK)
+                }
+                    , progression: { progression in
+                        
+                },
+                      failure: { message in
+                        print(message)
+                        exit(EX_DATAERR)
+                }
+                )
+            }else{
+                exit(EX_DATAERR)
+            }
         default:
             // We want to propose the best verb candidate
             let reference=[
                 "h", "help",
+                "testShadower",
                 "install",
                 "create",
                 "generate",
@@ -53,6 +85,7 @@ struct BartlebysCommandFacade {
         s += "\n\t\(executableName) create <Manifest FilePath>"
         s += "\n\t\(executableName) generate <Manifest FilePath>"
         s += "\n\t\(executableName) update <Manifest FilePath>"
+        s += "\n\t\(executableName) testShadower"
         s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"

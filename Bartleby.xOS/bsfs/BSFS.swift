@@ -48,13 +48,13 @@ public final class BSFS:TriggerHook{
     var localBlocksShadows:[BlockShadow] { return self._localContainer.blocks }
 
     /// The downloads operations in progrees
-    var _downloadsInProgress=[DownloadBlock]()
+    fileprivate var _downloadsInProgress=[DownloadBlock]()
+
     /// The uploads operations in progrees
-    var _uploadsInProgress=[UploadBlock]()
-    /// Max Simultaneous operations
-    var _maxSimultaneousOperations=1
+    fileprivate var _uploadsInProgress=[UploadBlock]()
 
-
+    /// Max Simultaneous operations ( per operation type and per bsfs instance. )
+    fileprivate var _maxSimultaneousOperations=1
 
     // MARK: - initialization
 
@@ -287,7 +287,6 @@ public final class BSFS:TriggerHook{
 
                                 if node.nature == .flock{
                                     //TODO
-
                                     let completionState=Completion.successState()
                                     completionState.setExternalReferenceResult(from:node)
                                     completed(completionState)
@@ -329,7 +328,6 @@ public final class BSFS:TriggerHook{
                 completed(Completion.failureStateFromError(error))
             }
         }
-
     }
 
 
@@ -412,6 +410,8 @@ public final class BSFS:TriggerHook{
                                 block.silentGroupedChanges {
                                     block.nodeUID=node.UID
                                     block.digest=chunk.sha1
+                                    block.startsAt=chunk.startsAt
+                                    block.size=chunk.originalSize
                                     block.priority=reference.priority
                                 }
 

@@ -51,6 +51,12 @@ import Foundation
 	}
 	open var nature:Nature = .file
 
+	//Can be extracted from FileAttributeKey.modificationDate
+	dynamic open var modificationDate:Date?
+
+	//Can be extracted from FileAttributeKey.creationDate
+	dynamic open var creationDate:Date?
+
 	//If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all
 	dynamic open var referentNodeUID:String?
 
@@ -86,7 +92,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","referentNodeUID","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -130,6 +136,14 @@ import Foundation
             case "nature":
                 if let casted=value as? Node.Nature{
                     self.nature=casted
+                }
+            case "modificationDate":
+                if let casted=value as? Date{
+                    self.modificationDate=casted
+                }
+            case "creationDate":
+                if let casted=value as? Date{
+                    self.creationDate=casted
                 }
             case "referentNodeUID":
                 if let casted=value as? String{
@@ -202,6 +216,10 @@ import Foundation
                return self.blocksUIDS
             case "nature":
                return self.nature
+            case "modificationDate":
+               return self.modificationDate
+            case "creationDate":
+               return self.creationDate
             case "referentNodeUID":
                return self.referentNodeUID
             case "authorized":
@@ -243,6 +261,8 @@ import Foundation
 			self.priority <- ( map["priority"] )
 			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.nature <- ( map["nature"] )
+			self.modificationDate <- ( map["modificationDate"], ISO8601DateTransform() )
+			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 			self.referentNodeUID <- ( map["referentNodeUID"] )
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
@@ -265,6 +285,8 @@ import Foundation
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
 			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
+			self.modificationDate=decoder.decodeObject(of: NSDate.self , forKey:"modificationDate") as Date?
+			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.size=decoder.decodeInteger(forKey:"size") 
@@ -287,6 +309,12 @@ import Foundation
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
 		coder.encode(self.nature.rawValue ,forKey:"nature")
+		if let modificationDate = self.modificationDate {
+			coder.encode(modificationDate,forKey:"modificationDate")
+		}
+		if let creationDate = self.creationDate {
+			coder.encode(creationDate,forKey:"creationDate")
+		}
 		if let referentNodeUID = self.referentNodeUID {
 			coder.encode(referentNodeUID,forKey:"referentNodeUID")
 		}

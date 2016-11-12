@@ -9,14 +9,15 @@
 import Foundation
 
 //Instanciate the facade
-//let facade=BartlebysCommandFacade()
-//facade.actOnArguments()
+let facade=BartlebysCommandFacade()
+facade.actOnArguments()
 
     // Chunk trials
 
-
-
+/*
+     
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
+
 let chunker=Chunker(fileManager: FileManager.default)
 
 let startTime=CFAbsoluteTimeGetCurrent()
@@ -44,11 +45,12 @@ let startTime=CFAbsoluteTimeGetCurrent()
     print(message)
     exit(EX_DATAERR)
 })
+*/
 
 
 
 
 
-var holdOn=true
-let runLoop=RunLoop.current
-while (holdOn && runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: NSDate.distantFuture) ) {}
+    var holdOn=true
+    let runLoop=RunLoop.current
+    while (holdOn && runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: NSDate.distantFuture) ) {}

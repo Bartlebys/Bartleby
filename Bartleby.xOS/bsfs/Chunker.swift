@@ -22,9 +22,9 @@ struct  Chunker {
         var baseDirectory:String
         var relativePath:String
         var sha1:String
+        var startsAt:Int
         var originalSize:Int
     }
-
 
     /// This breaks efficiently a file to chunks.
     /// - The hard stuff is done Asynchronously on a the Utility queue
@@ -63,10 +63,13 @@ struct  Chunker {
                 fileHandle.seek(toFileOffset: 0)
                 let maxSize:UInt64 = UInt64(chunkMaxSize)
                 let n:UInt64=l/maxSize
-                let r:UInt64=l % maxSize
+                var r:UInt64=l % maxSize
                 var nb=n-1
                 if r>0 && l >= maxSize{
                     nb += 1
+                }
+                if l < maxSize{
+                    r = l
                 }
 
                 let progressionState=Progression()
@@ -88,7 +91,7 @@ struct  Chunker {
 
                 var counter=0
 
-                func __writeData(data:Data,to folderPath:String,digest sha1:String)throws->(){
+                func __writeData(data:Data,to folderPath:String,digest sha1:String, position:Int)throws->(){
                     // Generate a Classified Block Tree.
                     let c1=PString.substr(sha1, 0, 1)
                     let c2=PString.substr(sha1, 1, 1)
@@ -98,7 +101,7 @@ struct  Chunker {
                     let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
-                    let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,originalSize:Int(offset))
+                    let chunk=Chunk(baseDirectory:folderPath, relativePath: chunkRelativePath,sha1: sha1,startsAt:position,originalSize:Int(offset))
                     chunks.append(chunk)
                     let url=URL(fileURLWithPath: destination)
                     let _ = try data.write(to:url )
@@ -130,7 +133,7 @@ struct  Chunker {
                             if encrypt {
                                 data = try Bartleby.cryptoDelegate.encryptData(data)
                             }
-                            try __writeData(data: data,to:folderPath,digest:sha1)
+                            try __writeData(data: data,to:folderPath,digest:sha1,position:Int(position))
 
                         })
                     }
