@@ -64,9 +64,9 @@ struct  Chunker {
                 let maxSize:UInt64 = UInt64(chunkMaxSize)
                 let n:UInt64=l/maxSize
                 var r:UInt64=l % maxSize
-                var nb=n-1
+                var nb:UInt64=1
                 if r>0 && l >= maxSize{
-                    nb += 1
+                    nb += n
                 }
                 if l < maxSize{
                     r = l

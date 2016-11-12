@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A high performance Folder to NodeBlocksShadows processor.
 public struct  Shadower {
 
     /// Computes the blocks shadows from a folder entry point  on a utility Queue
