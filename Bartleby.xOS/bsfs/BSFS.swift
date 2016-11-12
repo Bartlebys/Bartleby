@@ -281,7 +281,7 @@ public final class BSFS:TriggerHook{
                             for block in blocks{
                                 blockPaths.append(block.absolutePath)
                             }
-                            self._chunker.joinChunks(from: blockPaths, to: filePath, decompress: node.compressed, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                            self._chunker.joinChunks(from: blockPaths, to: filePath, decompress: node.compressedBlocks, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
                                 progressed(progression)
                             }, success: {
 
@@ -421,8 +421,8 @@ public final class BSFS:TriggerHook{
 
                                 let blockShadow=self._shadowBlockIfNecessary(block: block)
                                 blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
-                                self._localContainer.blocks.append(blockShadow)
                                 node.blocksUIDS.append(block.UID)
+                                self._localContainer.blocks.append(blockShadow)
                             }
                             // Store the digest of the cumulated digests.
                             node.digest=cumulatedDigests.sha1
@@ -466,20 +466,25 @@ public final class BSFS:TriggerHook{
     /// Call to replace the content of a node.
     /// This action may be refused by the BoxDelegate (check the completion state)
     ///
+    /// Delta Optimization:
+    /// We first compute the `deltaBlocks` to determine if some Blocks can be preserved
+    /// Then we `breakIntoChunk` the chunks that need to be chunked.
+    ///
+    ///
     /// - Parameters:
     ///   - node: the concerned node
     ///   - path: the file path
-    ///   - destroyOriginalContent: should we destroy the original file
+    ///   - deleteOriginal: should we destroy the original file
     ///   - accessor: the accessor that ask for replacement
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
     ///                the node ref is stored in the completion.getResultExternalReference()
-    func wantsToReplaceContent(of node:Node,
-                               withContentAt path:String,
-                               destroyOriginalContent:Bool,
-                               accessor:NodeAccessor,
-                               progressed:@escaping (Progression)->(),
-                               completed:@escaping (Completion)->()){
+    func replaceContent(of node:Node,
+                        withContentAt path:String,
+                        deleteOriginal:Bool,
+                        accessor:NodeAccessor,
+                        progressed:@escaping (Progression)->(),
+                        completed:@escaping (Completion)->()){
 
         if node.nature == .file{
             if node is Shadow{
@@ -488,12 +493,122 @@ public final class BSFS:TriggerHook{
                 if node.authorized.contains(self._document.currentUser.UID) ||
                     node.authorized.contains("*"){
 
-                    // TODO ****IMPLEMENTATION WILL BE REQUIRED ****
+                    if let box=node.box{
+                        let analyzer=DeltaAnalyzer()
 
-                    let finalState=Completion.successState()
-                    finalState.setExternalReferenceResult(from:node)
-                    completed(finalState)
+                        //////////////////////////////
+                        // #1 We first compute the `deltaBlocks` to determine if some Blocks can be preserved
+                        //////////////////////////////
 
+                        analyzer.deltaBlocks(fromFileAt: path, to: node, completed: { (toBePreservedBlocks, toBeDeletedBlocks) in
+
+                            /// delete the blocks to be deleted
+                            for block in toBeDeletedBlocks{
+                                self._deleteBlock(block)
+                            }
+
+                            let toBePreservedChunks:[Chunk]=toBePreservedBlocks.map({ (block) -> Chunk in
+                                return Chunk(from: block)
+                            })
+
+                            /////////////////////////////////
+                            // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
+                            /////////////////////////////////
+                            self._chunker.breakIntoChunk(fileAt: path,
+                                                         destination: box.absoluteFolderPath,
+                                                         compress: node.compressedBlocks,
+                                                         encrypt: node.cryptedBlocks,
+                                                         excludeChunks:toBePreservedChunks,
+                                                         progression: { (progression) in
+                                                            progressed(progression)
+                            }
+                                , success: { (chunks) in
+
+                                    // Successful operation
+                                    // Let's Upsert the node.
+                                    // AND create their local Shadows
+
+                                    node.silentGroupedChanges {
+
+                                        var cumulatedDigests=""
+                                        // Let's add the blocks
+                                        for chunk in chunks{
+
+                                            var block:Block?
+                                            if let idx=toBeDeletedBlocks.index(where: { (block) -> Bool in
+                                                return block.digest == chunk.sha1
+                                            }){
+                                                block=toBeDeletedBlocks[idx]
+                                            }else{
+                                                block=self._document.newBlock()
+                                            }
+
+                                            block!.silentGroupedChanges {
+                                                block!.nodeUID=node.UID
+                                                block!.rank=chunk.rank
+                                                block!.digest=chunk.sha1
+                                                block!.startsAt=chunk.startsAt
+                                                block!.size=chunk.originalSize
+                                                block!.priority=node.priority
+                                            }
+
+                                            cumulatedDigests += chunk.sha1
+
+                                            let blockShadow=self._shadowBlockIfNecessary(block:  block!)
+                                            blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
+                                            node.blocksUIDS.append( block!.UID)
+                                            if !self._localContainer.blocks.contains(where:{ $0.UID == blockShadow.UID }){
+                                                self._localContainer.blocks.append(blockShadow)
+                                            }
+                                        }
+
+                                        // Store the digest of the cumulated digests.
+                                        node.digest=cumulatedDigests.sha1
+
+                                        // Update the node Shadow
+                                        let nodeShadow=self._shadowNodeIfNecessary(node: node)
+                                        nodeShadow.silentGroupedChanges {
+                                            for k in node.exposedKeys{
+                                                try? nodeShadow.setExposedValue(node.getExposedValueForKey(k), forKey: k)
+                                            }
+                                            try? nodeShadow.setShadowUID(UID: node.UID)
+                                        }
+                                    }
+
+                                    // Mark the node to be committed
+                                    node.commitRequired()
+
+                                    // Delete the original
+                                    Async.utility{
+                                        if deleteOriginal{
+                                            // We consider deletion as non mandatory.
+                                            // So we produce only a log.
+                                            do {
+                                                try self._fileManager.removeItem(atPath: path)
+                                            } catch  {
+                                                self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                            }
+                                        }
+                                    }
+
+                                    let finalState=Completion.successState()
+                                    finalState.setExternalReferenceResult(from:node)
+                                    completed(finalState)
+
+                                    // Call the centralized upload mechanism
+                                    self._uploadNext()
+
+                            }, failure: { (message) in
+                                completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                            })
+
+                        }, failure: { (message) in
+                            completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                        })
+
+                    }else{
+                        completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
+                    }
                 }else{
                     completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
                 }
@@ -505,8 +620,6 @@ public final class BSFS:TriggerHook{
 
 
     //MARK: - Node Level
-
-
 
 
     //MARK: Access
@@ -809,7 +922,7 @@ public final class BSFS:TriggerHook{
 
                     }, failureHandler: { (context) in
                         __removeBlockFromList(block)
-                    }, cancelationHandler: { 
+                    }, cancelationHandler: {
                         __removeBlockFromList(block)
                     })
                     self._uploadsInProgress.append(uploadOperation)
@@ -846,7 +959,7 @@ public final class BSFS:TriggerHook{
                     self._downloadsInProgress.remove(at: idx)
                 }
             }
-            
+
             if toBeDownloaded != nil{
                 if let block = try? Bartleby.registredObjectByUID(toBeDownloaded!.UID) as Block {
                     block.downloadInProgress=true
@@ -884,6 +997,33 @@ public final class BSFS:TriggerHook{
             self._localContainer.blocks.append(blockShadow)
             return blockShadow
         }
+    }
+    
+    
+    
+    /// Delete the Bloc its BlockShadow, raw file
+    ///
+    /// - Parameter block: the block or the BlockShadow reference
+    func _deleteBlock(_ block:Block) {
+        if let idx=self._localContainer.blocks.index(where:{ $0.UID == block.UID }){
+            let block=self._localContainer.blocks[idx]
+            let path=block.absolutePath
+            Async.utility{
+                do{
+                    try self._fileManager.removeItem(atPath: path)
+                }catch{
+                    self._document.log("Block deletion failed found \(path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                }
+            }
+            // Remove the local block
+            self._localContainer.blocks.remove(at: idx)
+        }
+        
+        // Delete the distant Block
+        if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
+            self._document.blocks.removeObject(self._document.blocks[idx])
+        }
+        
     }
     
 }

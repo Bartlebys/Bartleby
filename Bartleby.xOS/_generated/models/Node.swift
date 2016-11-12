@@ -76,7 +76,7 @@ import Foundation
 	}
 
 	//If set to true the blocks should be compressed (using LZ4)
-	dynamic open var compressed:Bool = true
+	dynamic open var compressedBlocks:Bool = true
 
 	//If set to true the blocks will be crypted (using AES256)
 	dynamic open var cryptedBlocks:Bool = true
@@ -101,7 +101,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressed","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -170,9 +170,9 @@ import Foundation
                 if let casted=value as? String{
                     self.digest=casted
                 }
-            case "compressed":
+            case "compressedBlocks":
                 if let casted=value as? Bool{
-                    self.compressed=casted
+                    self.compressedBlocks=casted
                 }
             case "cryptedBlocks":
                 if let casted=value as? Bool{
@@ -241,8 +241,8 @@ import Foundation
                return self.size
             case "digest":
                return self.digest
-            case "compressed":
-               return self.compressed
+            case "compressedBlocks":
+               return self.compressedBlocks
             case "cryptedBlocks":
                return self.cryptedBlocks
             case "uploadProgression":
@@ -282,7 +282,7 @@ import Foundation
 			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.size <- ( map["size"] )
 			self.digest <- ( map["digest"] )
-			self.compressed <- ( map["compressed"] )
+			self.compressedBlocks <- ( map["compressedBlocks"] )
 			self.cryptedBlocks <- ( map["cryptedBlocks"] )
         }
     }
@@ -307,7 +307,7 @@ import Foundation
 			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
-			self.compressed=decoder.decodeBool(forKey:"compressed") 
+			self.compressedBlocks=decoder.decodeBool(forKey:"compressedBlocks") 
 			self.cryptedBlocks=decoder.decodeBool(forKey:"cryptedBlocks") 
         }
     }
@@ -338,7 +338,7 @@ import Foundation
 		coder.encode(self.authorized,forKey:"authorized")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.digest,forKey:"digest")
-		coder.encode(self.compressed,forKey:"compressed")
+		coder.encode(self.compressedBlocks,forKey:"compressedBlocks")
 		coder.encode(self.cryptedBlocks,forKey:"cryptedBlocks")
     }
 
