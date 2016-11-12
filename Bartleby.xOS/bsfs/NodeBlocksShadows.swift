@@ -11,7 +11,7 @@ import Foundation
 
 public struct NodeBlocksShadows {
 
-    public var nodeShadow:NodeShadow=NodeShadow()
-    public var blocksShadows=[BlockShadow]()
+    public var node:NodeShadow=NodeShadow()
+    public var blocks=[BlockShadow]()
     
 }

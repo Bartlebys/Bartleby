@@ -61,13 +61,13 @@ public struct  Shadower {
                 let pathNb=paths.count
                 var counter=1
                 for relativePath in paths{
-                    self.blocksShadowsFromFile(within: folderPath, relativePath: relativePath,chunkMaxSize: chunkMaxSize, success: { (NodeBlocksShadows) in
+                    self.blocksShadowsFromFile(within: folderPath, relativePath: relativePath,chunkMaxSize: chunkMaxSize, success: { (nodeBlocksShadows) in
                         counter += 1
                         progressionState.silentGroupedChanges {
-                            progressionState.message=NodeBlocksShadows.nodeShadow.relativePath
+                            progressionState.message=nodeBlocksShadows.node.relativePath
                             progressionState.currentTaskIndex=counter
                         }
-                        fShadows.append(NodeBlocksShadows)
+                        fShadows.append(nodeBlocksShadows)
                         progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
                         Async.main{
                             // Relay the progression
@@ -134,7 +134,7 @@ public struct  Shadower {
 
                     var nodeBlocksShadows=NodeBlocksShadows()
 
-                    nodeBlocksShadows.nodeShadow=nodeShadow
+                    nodeBlocksShadows.node=nodeShadow
 
                     let _=fileHandle.seekToEndOfFile()
                     let l=fileHandle.offsetInFile
@@ -177,7 +177,7 @@ public struct  Shadower {
                             blockShadow.startsAt=Int(position)
                             blockShadow.size=Int(offset)
                             blockShadow.digest=sha1
-                            nodeBlocksShadows.blocksShadows.append(blockShadow)
+                            nodeBlocksShadows.blocks.append(blockShadow)
 
                             Async.main{
                                 counter += 1

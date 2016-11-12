@@ -447,7 +447,9 @@
 		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 		E5FD15481DD74ED300AED411 /* DeltaAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */; };
 		E5FD154A1DD74F2B00AED411 /* NodeBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */; };
-		E5FD154C1DD7506700AED411 /* DeltaMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154B1DD7506700AED411 /* DeltaMap.swift */; };
+		E5FD154C1DD7506700AED411 /* DeltaBlocksMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */; };
+		E5FD154E1DD76E8600AED411 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154D1DD76E8600AED411 /* Chunk.swift */; };
+		E5FD154F1DD76FA100AED411 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154D1DD76E8600AED411 /* Chunk.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -735,7 +737,8 @@
 		E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaAnalyzer.swift; sourceTree = "<group>"; };
 		E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeBlocks.swift; sourceTree = "<group>"; };
-		E5FD154B1DD7506700AED411 /* DeltaMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaMap.swift; sourceTree = "<group>"; };
+		E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaBlocksMap.swift; sourceTree = "<group>"; };
+		E5FD154D1DD76E8600AED411 /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1021,14 +1024,15 @@
 				E54A9DA41DD4634B0066F20D /* BSFS.swift */,
 				E54A9DA51DD4634B0066F20D /* BSFSError.swift */,
 				E54A9DA61DD4634B0066F20D /* Chunker.swift */,
+				E5FD154D1DD76E8600AED411 /* Chunk.swift */,
 				E5F16D901DD6251800DBCD5C /* Shadower.swift */,
 				E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */,
-				E5FD154B1DD7506700AED411 /* DeltaMap.swift */,
+				E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */,
 				E5F16D931DD62A1100DBCD5C /* NodeBlocksShadows.swift */,
 				E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */,
-				E54A9DA71DD4634B0066F20D /* extensions */,
 				E54A9DAB1DD4634B0066F20D /* Flocker.swift */,
 				E54A9DAC1DD4634B0066F20D /* FSReference.swift */,
+				E54A9DA71DD4634B0066F20D /* extensions */,
 				E54A9DAD1DD4634B0066F20D /* operations */,
 				E54A9DB01DD4634B0066F20D /* protocols */,
 			);
@@ -1579,7 +1583,7 @@
 				E54A9EED1DD4634B0066F20D /* HMAC.swift in Sources */,
 				E54A9E771DD4634B0066F20D /* CreateUsers.swift in Sources */,
 				E54A9E2D1DD4634B0066F20D /* BoxesManagedCollection.swift in Sources */,
-				E5FD154C1DD7506700AED411 /* DeltaMap.swift in Sources */,
+				E5FD154C1DD7506700AED411 /* DeltaBlocksMap.swift in Sources */,
 				E54A9F851DD4634B0066F20D /* UniversalType.swift in Sources */,
 				E54A9F3D1DD4634B0066F20D /* JSerializer.swift in Sources */,
 				E54A9ECF1DD4634B0066F20D /* FSReference.swift in Sources */,
@@ -1690,6 +1694,7 @@
 				E54A9EC71DD4634B0066F20D /* Block+Facilities.swift in Sources */,
 				E54A9F2F1DD4634B0066F20D /* LogEntry+Conveniences.swift in Sources */,
 				E54A9EBD1DD4634B0066F20D /* UpdateUsers.swift in Sources */,
+				E5FD154E1DD76E8600AED411 /* Chunk.swift in Sources */,
 				E54A9F651DD4634B0066F20D /* Identifiable.swift in Sources */,
 				E54A9F8D1DD4634B0066F20D /* StatusOfCompletion.swift in Sources */,
 				E54A9F771DD4634B0066F20D /* Referenced.swift in Sources */,
@@ -1771,6 +1776,7 @@
 				E54A9EDE1DD4634B0066F20D /* Data+Compression.swift in Sources */,
 				E54A9F561DD4634B0066F20D /* CryptoDelegate.swift in Sources */,
 				E54A9E7C1DD4634B0066F20D /* DeleteBlocks.swift in Sources */,
+				E5FD154F1DD76FA100AED411 /* Chunk.swift in Sources */,
 				E54A9EA41DD4634B0066F20D /* ReadNodesByQuery.swift in Sources */,
 				E54A9F621DD4634B0066F20D /* DocumentProvider.swift in Sources */,
 				E54A9E621DD4634B0066F20D /* User.swift in Sources */,
