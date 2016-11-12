@@ -23,7 +23,7 @@ struct BartlebysCommandFacade {
         case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
-        case "testShadower"?, "-tsh"?:
+        case "testShadower"?:
             let startTime=CFAbsoluteTimeGetCurrent()
             let shadower=Shadower()
             if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
@@ -35,8 +35,8 @@ struct BartlebysCommandFacade {
                                                     var totalSize=0
                                                     var blocksNb=0
                                                     for n:NodeBlocksShadows in fileShadows{
-                                                        totalSize += n.nodeShadow.size
-                                                        blocksNb += n.blocksShadows.count
+                                                        totalSize += n.node.size
+                                                        blocksNb += n.blocks.count
                                                     }
                                                     print("\(totalSize/MB) MB")
                                                     print("\(Int(Double(totalSize/MB)/duration)) MB/s")
@@ -44,7 +44,7 @@ struct BartlebysCommandFacade {
                                                     exit(EX_OK)
                 }
                     , progression: { progression in
-                        
+
                 },
                       failure: { message in
                         print(message)
@@ -52,18 +52,54 @@ struct BartlebysCommandFacade {
                 }
                 )
             }else{
-                exit(EX_DATAERR)
+                exit(EX_OK)
             }
+        case "testChunker"? :
+            // Chunk trials
+            Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
+            let chunker=Chunker(fileManager: FileManager.default)
+
+            let startTime=CFAbsoluteTimeGetCurrent()
+            if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
+                chunker.breakIntoChunk(fileAt:"\(userDir)/FileChunker/large.mp4", destination: "\(userDir)/chunkerTest/", compress: true, encrypt: true
+                    ,progression:{ progression in
+                        print(progression)
+                }, success: { chunks in
+                    print("Break to Chunk Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                    let joinStartTime=CFAbsoluteTimeGetCurrent()
+                    let absolutePaths=chunks.map({ (chunk) -> String in
+                        return chunk.baseDirectory+chunk.relativePath
+                    })
+                    chunker.joinChunks(from: absolutePaths, to: "/Users/bpds/Desktop/TTT/result.mp4", decompress: true, decrypt: true
+                        ,progression:{ progression in
+                            print(progression)
+                    }
+                        , success: {
+                            print("Join Chunks Duration \(CFAbsoluteTimeGetCurrent()-joinStartTime)")
+                            exit(EX_OK)
+                    }, failure: { (message) in
+                        print(message)
+                        exit(EX_DATAERR)
+                    })
+                }, failure:{ message in
+                    print(message)
+                    exit(EX_DATAERR)
+                })
+            }else{
+                exit(EX_OK)
+            }
+
         default:
             // We want to propose the best verb candidate
             let reference=[
                 "h", "help",
-                "testShadower",
                 "install",
                 "create",
                 "generate",
-                "update"
-            ]
+                "update",
+                "testShadower",
+                "testChunker",
+                ]
             let bestCandidate=self.bestCandidate(string: firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bartleby \(firstArgumentAfterExecutablePath!)\" is unexpected!")
             print("Did you mean:\"bartleby \(bestCandidate)\"?")
@@ -86,6 +122,7 @@ struct BartlebysCommandFacade {
         s += "\n\t\(executableName) generate <Manifest FilePath>"
         s += "\n\t\(executableName) update <Manifest FilePath>"
         s += "\n\t\(executableName) testShadower"
+        s += "\n\t\(executableName) testChunker"
         s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"
