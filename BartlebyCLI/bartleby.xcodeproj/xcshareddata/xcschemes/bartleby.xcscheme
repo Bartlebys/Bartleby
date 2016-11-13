@@ -79,7 +79,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "testShadower"
+            argument = "testChunkerSimulated"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "testChunker"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

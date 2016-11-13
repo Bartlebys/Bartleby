@@ -483,7 +483,7 @@ public final class BSFS:TriggerHook{
     /// This action may be refused by the BoxDelegate (check the completion state)
     ///
     /// Delta Optimization:
-    /// We first compute the `deltaBlocks` to determine if some Blocks can be preserved
+    /// We first compute the `deltaChunks` to determine if some Blocks can be preserved
     /// Then we `breakIntoChunk` the chunks that need to be chunked.
     ///
     ///
@@ -513,19 +513,18 @@ public final class BSFS:TriggerHook{
                         let analyzer=DeltaAnalyzer()
 
                         //////////////////////////////
-                        // #1 We first compute the `deltaBlocks` to determine if some Blocks can be preserved
+                        // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
                         //////////////////////////////
 
-                        analyzer.deltaBlocks(fromFileAt: path, to: node,using:self._fileManager,completed: { (toBePreservedBlocks, toBeDeletedBlocks) in
+                        analyzer.deltaChunks(fromFileAt: path, to: node, using: self._fileManager, completed: { (toBePreserved, toBeDeleted) in
+
 
                             /// delete the blocks to be deleted
-                            for block in toBeDeletedBlocks{
-                                self._deleteBlock(block)
+                            for chunk in toBeDeleted{
+                                if let block=self._findBlockMatching(chunk: chunk){
+                                    self._deleteBlock(block)
+                                }
                             }
-
-                            let toBePreservedChunks:[Chunk]=toBePreservedBlocks.map({ (block) -> Chunk in
-                                return Chunk(from: block)
-                            })
 
                             /////////////////////////////////
                             // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
@@ -534,7 +533,7 @@ public final class BSFS:TriggerHook{
                                                          destination: box.absoluteFolderPath,
                                                          compress: node.compressedBlocks,
                                                          encrypt: node.cryptedBlocks,
-                                                         excludeChunks:toBePreservedChunks,
+                                                         excludeChunks:toBePreserved,
                                                          progression: { (progression) in
                                                             progressed(progression)
                             }
@@ -549,12 +548,10 @@ public final class BSFS:TriggerHook{
                                         var cumulatedDigests=""
                                         // Let's add the blocks
                                         for chunk in chunks{
-
                                             var block:Block?
-                                            if let idx=toBeDeletedBlocks.index(where: { (block) -> Bool in
-                                                return block.digest == chunk.sha1
-                                            }){
-                                                block=toBeDeletedBlocks[idx]
+                                            if let b=self._findBlockMatching(chunk: chunk){
+                                                block=b
+                                                block?.commitRequired()
                                             }else{
                                                 block=self._document.newBlock()
                                             }
@@ -567,7 +564,6 @@ public final class BSFS:TriggerHook{
                                                 block!.size=chunk.originalSize
                                                 block!.priority=node.priority
                                             }
-
                                             cumulatedDigests += chunk.sha1
 
                                             let blockShadow=self._shadowBlockIfNecessary(block:  block!)
@@ -1037,7 +1033,20 @@ public final class BSFS:TriggerHook{
     }
     
     
-    
+
+    /// Return the block matching the Chunk if found
+    ///
+    /// - Parameter chunk: the chunk
+    /// - Returns: the block.
+    internal func _findBlockMatching(chunk:Chunk) -> Block? {
+        if let idx=self._document.blocks.index(where: { (block) -> Bool in
+            return block.digest==chunk.sha1
+        }){
+            return self._document.blocks[idx]
+        }
+        return nil
+    }
+
     /// Delete a Block its BlockShadow, raw file
     ///
     /// - Parameter block: the block or the BlockShadow reference

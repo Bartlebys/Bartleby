@@ -11,4 +11,5 @@ import Foundation
 public extension NSObject{
     // A short cut to Bartleby's Shared instance
     public var b:Bartleby { return Bartleby.sharedInstance }
+
 }

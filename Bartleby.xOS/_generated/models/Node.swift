@@ -30,7 +30,7 @@ import Foundation
 	//The Box UID
 	dynamic open var boxUID:String = "\(Default.NO_UID)"
 
-	//A relative path for a proxy file.
+	//A relative path for a proxy file (And the resolved path if nature==.alias)
 	dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)

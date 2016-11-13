@@ -53,8 +53,8 @@ struct  Chunker {
     public func breakFolderIntoChunk(  filesIn sourceFolder:String,
                                  destinationFolder:String,
                                  chunkMaxSize:Int=10*MB,
-                                 compress:Bool,
-                                 encrypt:Bool,
+                                 compress:Bool=true,
+                                 encrypt:Bool=true,
                                  externalId:String=Default.NO_UID,
                                  excludeChunks:[Chunk]=[Chunk](),
                                  progression:@escaping((Progression)->()),
@@ -74,12 +74,11 @@ struct  Chunker {
             var failuresMessages=[String]()
             var cumulatedChunks=[Chunk]()
 
-            let fm:FileManager = FileManager()
+            let fm:FileManager = self._fileManager
             if let folderURL=URL(string: sourceFolder){
                 let keys:[URLResourceKey]=[URLResourceKey.fileSizeKey,URLResourceKey.fileResourceTypeKey, URLResourceKey.attributeModificationDateKey,URLResourceKey.pathKey,URLResourceKey.isRegularFileKey,URLResourceKey.isDirectoryKey,URLResourceKey.isAliasFileKey,URLResourceKey.isSymbolicLinkKey]
                 let options: FileManager.DirectoryEnumerationOptions = .skipsHiddenFiles
                 var paths=[String]()
-
                 let enumerator=fm.enumerator(at: folderURL, includingPropertiesForKeys: keys, options: options, errorHandler: { (URL, error) -> Bool in
                     return false
                 })
@@ -173,7 +172,6 @@ struct  Chunker {
         Async.utility {
             if self._fileManager.fileExists(atPath:path){
                 if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: path){
-
                     if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
                         if type==FileAttributeType.typeRegular{
                             self._breakIntoChunk(fileAt: path, destination: folderPath, chunkMaxSize: chunkMaxSize, compress: compress, encrypt: encrypt, externalId: externalId, excludeChunks: excludeChunks, progression: progression, success: success, failure: failure)
@@ -190,23 +188,32 @@ struct  Chunker {
                                 }catch{
                                      glog("Alias resolution error for path \(path) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                                 }
-                                let chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/aliases/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.alias, parentFilePath:aliasDestinationPath)
-                                success([chunk])
+                                var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/aliases/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.alias, nodePath:aliasDestinationPath)
+                                chunk.sha1=chunk.relativePath.sha1
+                                Async.main{
+                                    success([chunk])
+                                }
+
                             }
                             if type==FileAttributeType.typeDirectory{
-                                    let chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/folders/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.folder, parentFilePath:path)
-                                success([chunk])
+                                    var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/folders/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.folder, nodePath:path)
+                                chunk.sha1=chunk.relativePath.sha1
+                                Async.main{
+                                    success([chunk])
+                                }
                             }
                         }
 
                     }
                 }else{
-                    failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(path)")
-
+                     Async.main{
+                        failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(path)")
+                    }
                 }
             }else{
-                failure(NSLocalizedString("Unexisting file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(path)")
-
+                 Async.main{
+                    failure(NSLocalizedString("Unexisting file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(path)")
+                }
             }
         }
     }
@@ -278,7 +285,7 @@ struct  Chunker {
                                  sha1: sha1,
                                  startsAt:position,
                                  originalSize:Int(offset),
-                                 parentFilePath:parentPath)
+                                 nodePath:parentPath)
 
                 chunks.append(chunk)
                 if self.mode == .real{

@@ -175,30 +175,34 @@ Such an archive is :
 
 ## Chunker
 
-Is a high performance file *Chunker*, with a reduced memory foot print.
+Is a high performance file *Chunker*, with a reduced memory foot print
+
+In Real mode: 
 
 - It cuts files to chunks and merge chunks into files efficiently.
 - Is not coupled to higher level concept (uses its own struct Chunk)
  
+In Simulated mode the Chunker 5 times faster and does not consume Disk Room:
 
-## Shadower
+- Is a high performance tools to compute the Chunk Model including its Digest.
+- It can digest more than 1gb/s files with a with a reduced memory foot print on an utility queue. 
 
-Is a high performance tools to compute Digest of files.
-It can digest more than 1gb/s files with a with a reduced memory foot print on an utility queue.
-
-The digests correspond to the Chunked digest but its computation at 5 times faster than invoking the Chunker and does not consume Disk Room.
 
 ### Sample Benchmark:
 
 ```
-blocksShadowsFromFile Duration 45.9052919745445 files:19857
+Simulated mode Duration 45.9052919745445 files:19857
 54686 MB at 1191 MB/s for 45129 blocks
 ```
 
 ## DeltaAnalyzer
 
-The goal of the DeltaAnalyzer is to produce a DeltaMap by comparing a local and a distant state.
-** NOT IMPLEMENTED** 
+The goal of the DeltaAnalyzer is to compare and determine what to do.
+
+- File to Block `deltaBlocks(fromFileAt path:String, to node:Node ...)`
+- Box to BoxShadow
+
+ 
 
 
 # BSFS Daemon - Currently not implemented

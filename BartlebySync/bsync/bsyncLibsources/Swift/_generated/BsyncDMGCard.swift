@@ -222,12 +222,10 @@ open class BsyncDMGCardShadow :BsyncDMGCard,Shadow{
 
     static func from(_ entity:BsyncDMGCard)->BsyncDMGCardShadow{
         let shadow=BsyncDMGCardShadow()
-            shadow.silentGroupedChanges {
-            for k in entity.exposedKeys{
-                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-            }
-            try? shadow.setShadowUID(UID: entity.UID)
+        for k in entity.exposedKeys{
+            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
         }
+        try? shadow.setShadowUID(UID: entity.UID)
         return shadow
     }
 

@@ -37,7 +37,7 @@ struct Flocker{
     /// - Parameters:
     ///   - folderReference: the reference to folder to flock
     ///   - path: the destination path
-    func flockFolder(folderReference:FSReference, destination path:String){
+    func flockFolder(folderReference:FileReference, destination path:String){
         // The result is single file containing a box.
         // It allow to group set of files
     }

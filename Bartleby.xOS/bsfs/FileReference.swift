@@ -1,5 +1,5 @@
 //
-//  FSReference.swift
+//  FileReference.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 08/11/2016.
@@ -10,7 +10,7 @@ import Foundation
 
 
 /// A file or a folder reference (used to add references to a box)
-public struct FSReference{
+public struct FileReference{
 
     /// The absolutePath
     var absolutePath:String
@@ -24,9 +24,22 @@ public struct FSReference{
     var priority:Int=0
 
     /// The nature of the reference
-    public enum Natures{
+    /// We support file and Flock only
+    public enum Nature{
+
         case file
         case flock
+
+        static func fromNodeNature(nodeNature:Node.Nature)->Nature?{
+            if nodeNature == .file{
+                return Nature.file
+            }
+            if nodeNature == .flock{
+                return Nature.flock
+            }
+            return nil
+        }
+        
         var forNode:Node.Nature{
             switch self {
             case .file:
@@ -38,7 +51,7 @@ public struct FSReference{
     }
 
     // We define the node nature
-    var nodeNature:Natures = Natures.file
+    var nodeNature:Nature = Nature.file
 
     /// Designated initializer
     ///
@@ -62,8 +75,8 @@ public struct FSReference{
     ///   - absolutePath: the external absolute path
     ///   - usersUIDs: the authorized users UIDS
     /// - Returns: return a private file instance
-    public static func privateFSReference(at absolutePath:String, authorized usersUIDs:[String])->FSReference{
-        var r=FSReference(at: absolutePath)
+    public static func privateFileReference(at absolutePath:String, authorized usersUIDs:[String])->FileReference{
+        var r=FileReference(at: absolutePath)
         r.authorized=usersUIDs
         return r
     }
@@ -72,8 +85,8 @@ public struct FSReference{
     ///
     /// - Parameter absolutePath: the external absolute path
     /// - Returns: the public file reference
-    public static func publicFSReference(at absolutePath:String)->FSReference{
-        var r=FSReference(at:absolutePath)
+    public static func publicFileReference(at absolutePath:String)->FileReference{
+        var r=FileReference(at:absolutePath)
         r.authorized=["*"]
         return r
     }

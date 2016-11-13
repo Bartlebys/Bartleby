@@ -37,6 +37,7 @@ public extension Node{
                 }
                 if type==FileAttributeType.typeSymbolicLink{
                     self.nature = .alias
+                    self.proxyPath = try? self._resolveAlias(at: p)
                 }
                 if type==FileAttributeType.typeDirectory{
                     self.nature = .folder
@@ -46,11 +47,18 @@ public extension Node{
                 self.creationDate=creationDate
             }
             if let modificationDate=attributes[FileAttributeKey.modificationDate] as? Date{
-                self.creationDate=modificationDate
+                self.modificationDate=modificationDate
             }
         }else{
             throw NodeExtractionError.message("Unexisting file at: \(p)")
         }
+    }
+
+
+    func _resolveAlias(at path:String) throws -> String {
+        let pathURL=URL(fileURLWithPath: path)
+        let original = try URL(resolvingAliasFileAt: pathURL, options:[])
+        return original.path
     }
 
 }

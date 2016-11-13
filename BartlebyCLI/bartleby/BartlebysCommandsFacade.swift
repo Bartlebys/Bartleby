@@ -23,34 +23,34 @@ struct BartlebysCommandFacade {
         case "-h"?, "-help"?, "h"?, "help"?:
             print(self._noArgMessage())
             exit(EX_USAGE)
-        case "testShadower"?:
+        case "testChunkerSimulated"?:
             let startTime=CFAbsoluteTimeGetCurrent()
-            let shadower=Shadower()
-            if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
-                shadower.blocksShadowsFromFolder(folderPath: userDir,
-                                                 success: { fileShadows in
-
-                                                    let duration=CFAbsoluteTimeGetCurrent()-startTime
-                                                    print("blocksShadowsFromFile Duration \(duration) files:\(fileShadows.count)")
-                                                    var totalSize=0
-                                                    var blocksNb=0
-                                                    for n:NodeBlocksShadows in fileShadows{
-                                                        totalSize += n.node.size
-                                                        blocksNb += n.blocks.count
-                                                    }
-                                                    print("\(totalSize/MB) MB")
-                                                    print("\(Int(Double(totalSize/MB)/duration)) MB/s")
-                                                    print("For \(blocksNb) blocks")
-                                                    exit(EX_OK)
-                }
-                    , progression: { progression in
-
-                },
-                      failure: { message in
-                        print(message)
-                        exit(EX_DATAERR)
-                }
-                )
+            // Chunk trials
+            Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
+            let chunker=Chunker(fileManager: FileManager.default,mode:.simulated)
+            if let desktopFolder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory),
+                let destFolder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
+                chunker.breakFolderIntoChunk(filesIn: desktopFolder,
+                                             destinationFolder:destFolder,
+                                             progression: { (progression) in
+                    //Do mark progress
+                }, success: { (chunks) in
+                    let duration=CFAbsoluteTimeGetCurrent()-startTime
+                    print("blocksShadowsFromFile Duration \(duration) files:\(chunks.count)")
+                    var totalSize=0
+                    var blocksNb=0
+                    for chunk in chunks{
+                        totalSize += chunk.originalSize
+                        blocksNb += 1
+                    }
+                    print("\(totalSize/MB) MB")
+                    print("\(Int(Double(totalSize/MB)/duration)) MB/s")
+                    print("For \(blocksNb) blocks")
+                    exit(EX_OK)
+                }, failure: { (chunks, message) in
+                    print(message)
+                    exit(EX_DATAERR)
+                })
             }else{
                 exit(EX_OK)
             }
@@ -97,7 +97,7 @@ struct BartlebysCommandFacade {
                 "create",
                 "generate",
                 "update",
-                "testShadower",
+                "testChunkerSimulated",
                 "testChunker",
                 ]
             let bestCandidate=self.bestCandidate(string: firstArgumentAfterExecutablePath!, reference: reference)
@@ -121,7 +121,7 @@ struct BartlebysCommandFacade {
         s += "\n\t\(executableName) create <Manifest FilePath>"
         s += "\n\t\(executableName) generate <Manifest FilePath>"
         s += "\n\t\(executableName) update <Manifest FilePath>"
-        s += "\n\t\(executableName) testShadower"
+        s += "\n\t\(executableName) testChunkerSimulated"
         s += "\n\t\(executableName) testChunker"
         s += "\n"
         s += "\nRemember that you can call help for each verb"

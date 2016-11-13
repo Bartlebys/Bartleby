@@ -199,8 +199,8 @@
 		E54A9ECC1DD4634B0066F20D /* Node+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAA1DD4634B0066F20D /* Node+Facilities.swift */; };
 		E54A9ECD1DD4634B0066F20D /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAB1DD4634B0066F20D /* Flocker.swift */; };
 		E54A9ECE1DD4634B0066F20D /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAB1DD4634B0066F20D /* Flocker.swift */; };
-		E54A9ECF1DD4634B0066F20D /* FSReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAC1DD4634B0066F20D /* FSReference.swift */; };
-		E54A9ED01DD4634B0066F20D /* FSReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAC1DD4634B0066F20D /* FSReference.swift */; };
+		E54A9ECF1DD4634B0066F20D /* FileReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAC1DD4634B0066F20D /* FileReference.swift */; };
+		E54A9ED01DD4634B0066F20D /* FileReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAC1DD4634B0066F20D /* FileReference.swift */; };
 		E54A9ED11DD4634B0066F20D /* DownloadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAE1DD4634B0066F20D /* DownloadBlock.swift */; };
 		E54A9ED21DD4634B0066F20D /* DownloadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAE1DD4634B0066F20D /* DownloadBlock.swift */; };
 		E54A9ED31DD4634B0066F20D /* UploadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9DAF1DD4634B0066F20D /* UploadBlock.swift */; };
@@ -440,14 +440,8 @@
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
 		E5E6E1C61DBE3F9D0036594C /* ChronologyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */; };
 		E5E6E1C71DBE3F9D0036594C /* ChronologyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */; };
-		E5F16D911DD6251800DBCD5C /* Shadower.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F16D901DD6251800DBCD5C /* Shadower.swift */; };
-		E5F16D921DD6251800DBCD5C /* Shadower.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F16D901DD6251800DBCD5C /* Shadower.swift */; };
-		E5F16D941DD62A1100DBCD5C /* NodeBlocksShadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F16D931DD62A1100DBCD5C /* NodeBlocksShadows.swift */; };
-		E5F16D951DD62A1100DBCD5C /* NodeBlocksShadows.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F16D931DD62A1100DBCD5C /* NodeBlocksShadows.swift */; };
 		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 		E5FD15481DD74ED300AED411 /* DeltaAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */; };
-		E5FD154A1DD74F2B00AED411 /* NodeBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */; };
-		E5FD154C1DD7506700AED411 /* DeltaBlocksMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */; };
 		E5FD154E1DD76E8600AED411 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154D1DD76E8600AED411 /* Chunk.swift */; };
 		E5FD154F1DD76FA100AED411 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD154D1DD76E8600AED411 /* Chunk.swift */; };
 /* End PBXBuildFile section */
@@ -606,7 +600,7 @@
 		E54A9DA91DD4634B0066F20D /* Box+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Box+Facilities.swift"; sourceTree = "<group>"; };
 		E54A9DAA1DD4634B0066F20D /* Node+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Facilities.swift"; sourceTree = "<group>"; };
 		E54A9DAB1DD4634B0066F20D /* Flocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flocker.swift; sourceTree = "<group>"; };
-		E54A9DAC1DD4634B0066F20D /* FSReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSReference.swift; sourceTree = "<group>"; };
+		E54A9DAC1DD4634B0066F20D /* FileReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReference.swift; sourceTree = "<group>"; };
 		E54A9DAE1DD4634B0066F20D /* DownloadBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadBlock.swift; sourceTree = "<group>"; };
 		E54A9DAF1DD4634B0066F20D /* UploadBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadBlock.swift; sourceTree = "<group>"; };
 		E54A9DB11DD4634B0066F20D /* BoxDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxDelegate.swift; sourceTree = "<group>"; };
@@ -732,12 +726,8 @@
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
 		E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChronologyViewController.swift; sourceTree = "<group>"; };
 		E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChronologyViewController.xib; sourceTree = "<group>"; };
-		E5F16D901DD6251800DBCD5C /* Shadower.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shadower.swift; sourceTree = "<group>"; };
-		E5F16D931DD62A1100DBCD5C /* NodeBlocksShadows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeBlocksShadows.swift; sourceTree = "<group>"; };
 		E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaAnalyzer.swift; sourceTree = "<group>"; };
-		E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeBlocks.swift; sourceTree = "<group>"; };
-		E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaBlocksMap.swift; sourceTree = "<group>"; };
 		E5FD154D1DD76E8600AED411 /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunk.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1025,13 +1015,9 @@
 				E54A9DA51DD4634B0066F20D /* BSFSError.swift */,
 				E54A9DA61DD4634B0066F20D /* Chunker.swift */,
 				E5FD154D1DD76E8600AED411 /* Chunk.swift */,
-				E5F16D901DD6251800DBCD5C /* Shadower.swift */,
 				E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */,
-				E5FD154B1DD7506700AED411 /* DeltaBlocksMap.swift */,
-				E5F16D931DD62A1100DBCD5C /* NodeBlocksShadows.swift */,
-				E5FD15491DD74F2B00AED411 /* NodeBlocks.swift */,
 				E54A9DAB1DD4634B0066F20D /* Flocker.swift */,
-				E54A9DAC1DD4634B0066F20D /* FSReference.swift */,
+				E54A9DAC1DD4634B0066F20D /* FileReference.swift */,
 				E54A9DA71DD4634B0066F20D /* extensions */,
 				E54A9DAD1DD4634B0066F20D /* operations */,
 				E54A9DB01DD4634B0066F20D /* protocols */,
@@ -1541,7 +1527,6 @@
 				E54A9EA71DD4634B0066F20D /* ReadUsersByIds.swift in Sources */,
 				E54A9ECB1DD4634B0066F20D /* Node+Facilities.swift in Sources */,
 				E54A9F671DD4634B0066F20D /* Initializable.swift in Sources */,
-				E5FD154A1DD74F2B00AED411 /* NodeBlocks.swift in Sources */,
 				E54A9E7B1DD4634B0066F20D /* DeleteBlocks.swift in Sources */,
 				E54A9E551DD4634B0066F20D /* Node.swift in Sources */,
 				E54A9E871DD4634B0066F20D /* DeleteNodes.swift in Sources */,
@@ -1583,10 +1568,9 @@
 				E54A9EED1DD4634B0066F20D /* HMAC.swift in Sources */,
 				E54A9E771DD4634B0066F20D /* CreateUsers.swift in Sources */,
 				E54A9E2D1DD4634B0066F20D /* BoxesManagedCollection.swift in Sources */,
-				E5FD154C1DD7506700AED411 /* DeltaBlocksMap.swift in Sources */,
 				E54A9F851DD4634B0066F20D /* UniversalType.swift in Sources */,
 				E54A9F3D1DD4634B0066F20D /* JSerializer.swift in Sources */,
-				E54A9ECF1DD4634B0066F20D /* FSReference.swift in Sources */,
+				E54A9ECF1DD4634B0066F20D /* FileReference.swift in Sources */,
 				E54A9F171DD4634B0066F20D /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E54A9F1B1DD4634B0066F20D /* BartlebyObject+BaseImplementation.swift in Sources */,
 				E54A9FA31DD4634B0066F20D /* HTTPManager.swift in Sources */,
@@ -1608,7 +1592,6 @@
 				E54A9F7F1DD4634B0066F20D /* SuperIterable.swift in Sources */,
 				E54A9EE51DD4634B0066F20D /* CryptedStringKeyValueTransform.swift in Sources */,
 				E54A9F391DD4634B0066F20D /* Global.swift in Sources */,
-				E5F16D911DD6251800DBCD5C /* Shadower.swift in Sources */,
 				E54A9F411DD4634B0066F20D /* BartlebyCollection.swift in Sources */,
 				E54A9FA11DD4634B0066F20D /* BFileManager.swift in Sources */,
 				E50F3AF81D40D27F00532B09 /* DocumentInspector.swift in Sources */,
@@ -1662,7 +1645,6 @@
 				E54A9F7D1DD4634B0066F20D /* Shadow.swift in Sources */,
 				E54A9F111DD4634B0066F20D /* BartlebyDocument+Operations.swift in Sources */,
 				E54A9E571DD4634B0066F20D /* Progression.swift in Sources */,
-				E5F16D941DD62A1100DBCD5C /* NodeBlocksShadows.swift in Sources */,
 				E54A9E511DD4634B0066F20D /* LogEntry.swift in Sources */,
 				E54A9E671DD4634B0066F20D /* CreateBlocks.swift in Sources */,
 				E54A9F351DD4634B0066F20D /* Progression+Conveniences.swift in Sources */,
@@ -1715,7 +1697,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E54A9F7E1DD4634B0066F20D /* Shadow.swift in Sources */,
-				E54A9ED01DD4634B0066F20D /* FSReference.swift in Sources */,
+				E54A9ED01DD4634B0066F20D /* FileReference.swift in Sources */,
 				E54A9E321DD4634B0066F20D /* NodesManagedCollection.swift in Sources */,
 				E54A9EE01DD4634B0066F20D /* CryptedDataTransform.swift in Sources */,
 				E54A9E3A1DD4634B0066F20D /* BartlebyObject.swift in Sources */,
@@ -1750,7 +1732,6 @@
 				E54A9E8C1DD4634B0066F20D /* DeleteUsers.swift in Sources */,
 				E54A9F8E1DD4634B0066F20D /* StatusOfCompletion.swift in Sources */,
 				E54A9F2C1DD4634B0066F20D /* HTTPContext+Conveniences.swift in Sources */,
-				E5F16D951DD62A1100DBCD5C /* NodeBlocksShadows.swift in Sources */,
 				E54A9EF61DD4634B0066F20D /* Async.swift in Sources */,
 				E54A9F401DD4634B0066F20D /* ImageTransform.swift in Sources */,
 				E54A9E761DD4634B0066F20D /* CreateUser.swift in Sources */,
@@ -1818,7 +1799,6 @@
 				E54A9E501DD4634B0066F20D /* Locker.swift in Sources */,
 				E54A9F201DD4634B0066F20D /* CollectionMetadatum+Proxy.swift in Sources */,
 				E54A9F521DD4634B0066F20D /* Commitable.swift in Sources */,
-				E5F16D921DD6251800DBCD5C /* Shadower.swift in Sources */,
 				E54A9ECE1DD4634B0066F20D /* Flocker.swift in Sources */,
 				E54A9F701DD4634B0066F20D /* LogEntriesObserver.swift in Sources */,
 				E54A9F341DD4634B0066F20D /* NSNotification+Progression.swift in Sources */,
