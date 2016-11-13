@@ -30,9 +30,6 @@ public final class BSFS:TriggerHook{
     // The current accessors key:node.UID, value:Array of Accessors
     fileprivate var _accessors=[String:[NodeAccessor]]()
 
-    /// The mounted node paths key:node.UID, value:tempFileName
-    fileprivate var _mountedFileNames=[String:String]()
-
     /// The shadow container Reflects the local state
     /// We use the shadows to store the upload, download and assembly state
     /// And to determine the delta operations.
@@ -214,11 +211,10 @@ public final class BSFS:TriggerHook{
     /// - Returns: the assembled path (created if there no
     fileprivate func _mountedPath(for node:Node)->String{
         if !(node is Shadow){
-            if let fileName=self._mountedFileNames[node.UID]{
-                if let box=node.box{
-                    return box.absoluteFolderPath+"\(node.relativePath)\(fileName)"
-                }
+            if let box=node.box{
+                return box.absoluteFolderPath+"\(node.relativePath)"
             }
+
         }
         return Default.NO_PATH
     }
@@ -269,10 +265,7 @@ public final class BSFS:TriggerHook{
                 if let delegate = self._boxDelegate{
                     delegate.nodeIsReady(node: node, proceed: {
 
-                        // Create a new file
-                        let fileName=Bartleby.createUID().lowercased()
-                        self._mountedFileNames[node.UID]=fileName
-                        let filePath=self._mountedPath(for: node)
+                        let path=self._mountedPath(for: node)
                         let blocks=node.localBlocks
 
                         if node.nature == .file || node.nature == .flock {
@@ -281,12 +274,15 @@ public final class BSFS:TriggerHook{
                             for block in blocks{
                                 blockPaths.append(block.absolutePath)
                             }
-                            self._chunker.joinChunks(from: blockPaths, to: filePath, decompress: node.compressedBlocks, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                            self._chunker.joinChunks(from: blockPaths, to: path, decompress: node.compressedBlocks, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
                                 progressed(progression)
                             }, success: {
 
                                 if node.nature == .flock{
                                     //TODO
+
+                                    // FLOCK path == path
+
                                     let completionState=Completion.successState()
                                     completionState.setExternalReferenceResult(from:node)
                                     completed(completionState)
@@ -305,19 +301,39 @@ public final class BSFS:TriggerHook{
                                 completed(completion)
                             })
                         }else if node.nature == .alias{
+                            Async.utility{
+                                do{
+                                    if let rNodeUID=node.referentNodeUID{
+                                        if let rNode = try? Bartleby.registredObjectByUID(rNodeUID) as Node{
+                                            let destination=self._mountedPath(for: rNode)
+                                            try self._fileManager.createSymbolicLink(atPath: path, withDestinationPath:destination)
+                                            let completionState=Completion.successState()
+                                            completionState.setExternalReferenceResult(from:node)
+                                            completed(completionState)
+                                        }else{
+                                            completed(Completion.failureState("Unable to find Alias referent node", statusCode:.expectation_Failed))
+                                        }
+                                    }else{
+                                        completed(Completion.failureState("Unable to find Alias destination", statusCode:.expectation_Failed))
 
-                            // TODO
-
-                            let completionState=Completion.successState()
-                            completionState.setExternalReferenceResult(from:node)
-                            completed(completionState)
+                                    }
+                                }catch{
+                                    completed(Completion.failureStateFromError(error))
+                                }
+                            }
 
                         }else if node.nature == .folder{
-                            // TODO
+                            Async.utility{
+                                do{
+                                    try self._fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                                    let completionState=Completion.successState()
+                                    completionState.setExternalReferenceResult(from:node)
+                                    completed(completionState)
+                                }catch{
+                                    completed(Completion.failureStateFromError(error))
+                                }
+                            }
 
-                            let completionState=Completion.successState()
-                            completionState.setExternalReferenceResult(from:node)
-                            completed(completionState)
                         }
                     })
                 }else{
@@ -359,14 +375,14 @@ public final class BSFS:TriggerHook{
     ///     + the node  ref is stored in the Completon (use completion.getResultExternalReference())
     ///
     /// - Parameters:
-    ///   - FSReference: the file reference (Nature == file or flock)
+    ///   - FileReference: the file reference (Nature == file or flock)
     ///   - box: the box
     ///   - relativePath: the relative Path of the Node
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State
     ///                the node ref is stored in the completion.getResultExternalReference()
-    public func add( reference:FSReference,
+    public func add( reference:FileReference,
                      in box:Box,
                      to relativePath:String,
                      deleteOriginal:Bool=false,
@@ -500,7 +516,7 @@ public final class BSFS:TriggerHook{
                         // #1 We first compute the `deltaBlocks` to determine if some Blocks can be preserved
                         //////////////////////////////
 
-                        analyzer.deltaBlocks(fromFileAt: path, to: node, completed: { (toBePreservedBlocks, toBeDeletedBlocks) in
+                        analyzer.deltaBlocks(fromFileAt: path, to: node,using:self._fileManager,completed: { (toBePreservedBlocks, toBeDeletedBlocks) in
 
                             /// delete the blocks to be deleted
                             for block in toBeDeletedBlocks{
@@ -703,18 +719,33 @@ public final class BSFS:TriggerHook{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
-                    node.relativePath=relativePath
+                    if let box=node.box{
+                        Async.utility{
+                            do{
+                                try self._fileManager.copyItem(atPath: self._mountedPath(for: node), toPath:box.absoluteFolderPath+relativePath)
 
+                                // Create the copiedNode
+                                let copiedNode=self._document.newNode()
+                                copiedNode.silentGroupedChanges {
+                                    try? copiedNode.mergeWith(node)// merge
+                                    copiedNode.relativePath=relativePath // Thats it!
+                                }
+                                // Create the copiedNode shadow
+                                let nodeShadow=self._shadowNodeIfNecessary(node: copiedNode)
+                                self._localContainer.nodes.append(nodeShadow)
 
-                    // TODO **** NODE COPY REF
-                    /// Create the copy node
-                    /// Create its copy shadow
+                                let finalState=Completion.successState()
+                                finalState.setExternalReferenceResult(from:copiedNode)
+                                completed(finalState)
+                            }catch{
+                                completed(Completion.failureStateFromError(error))
 
-                    /// QUID D'une création d'alias?
+                            }
+                        }
+                    }else{
+                        completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
+                    }
 
-                    let finalState=Completion.successState()
-                    finalState.setExternalReferenceResult(from:node)
-                    completed(finalState)
 
 
                 })
@@ -746,6 +777,7 @@ public final class BSFS:TriggerHook{
                     finalState.setExternalReferenceResult(from:node)
                     completed(finalState)
                 })
+
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
             }
@@ -767,6 +799,7 @@ public final class BSFS:TriggerHook{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 _boxDelegate?.deletionIsReady(node: node, proceed: {
+
                     /// TODO implement the deletion
                     /// Delete the node
                     /// Delete its shadow
@@ -797,7 +830,6 @@ public final class BSFS:TriggerHook{
             /// Create its shadow
 
             completed(Completion.successState())
-
         }
 
     }
@@ -816,6 +848,9 @@ public final class BSFS:TriggerHook{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
                 // TODO
+                /// Create the Alias
+                /// Create the NODE
+                /// Create its shadow
             }else{
                 completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
             }
@@ -848,7 +883,9 @@ public final class BSFS:TriggerHook{
     /// Called by the Document before trigger integration
     ///
     /// - Parameter trigger: the trigger
-    public func triggerWillBeIntegrated(trigger:Trigger){}
+    public func triggerWillBeIntegrated(trigger:Trigger){
+        // We have nothing to do.
+    }
 
     /// Called by the Document after trigger integration
     ///
@@ -967,7 +1004,7 @@ public final class BSFS:TriggerHook{
                         __removeBlockFromList(block)
                         block.needsUpload=false
                         self._uploadNext()
-
+                        
                     }, failureHandler: { (context) in
                         __removeBlockFromList(block)
                     }, cancelationHandler: {
@@ -1001,7 +1038,7 @@ public final class BSFS:TriggerHook{
     
     
     
-    /// Delete the Bloc its BlockShadow, raw file
+    /// Delete a Block its BlockShadow, raw file
     ///
     /// - Parameter block: the block or the BlockShadow reference
     func _deleteBlock(_ block:Block) {
@@ -1023,7 +1060,5 @@ public final class BSFS:TriggerHook{
         if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
             self._document.blocks.removeObject(self._document.blocks[idx])
         }
-        
     }
-    
 }
