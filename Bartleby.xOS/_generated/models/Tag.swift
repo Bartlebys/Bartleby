@@ -164,12 +164,10 @@ open class TagShadow :Tag,Shadow{
 
     static func from(_ entity:Tag)->TagShadow{
         let shadow=TagShadow()
-            shadow.silentGroupedChanges {
-            for k in entity.exposedKeys{
-                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-            }
-            try? shadow.setShadowUID(UID: entity.UID)
+        for k in entity.exposedKeys{
+            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
         }
+        try? shadow.setShadowUID(UID: entity.UID)
         return shadow
     }
 

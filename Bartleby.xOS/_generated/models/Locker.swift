@@ -295,12 +295,10 @@ open class LockerShadow :Locker,Shadow{
 
     static func from(_ entity:Locker)->LockerShadow{
         let shadow=LockerShadow()
-            shadow.silentGroupedChanges {
-            for k in entity.exposedKeys{
-                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-            }
-            try? shadow.setShadowUID(UID: entity.UID)
+        for k in entity.exposedKeys{
+            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
         }
+        try? shadow.setShadowUID(UID: entity.UID)
         return shadow
     }
 

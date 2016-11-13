@@ -209,12 +209,10 @@ open class LogEntryShadow :LogEntry,Shadow{
 
     static func from(_ entity:LogEntry)->LogEntryShadow{
         let shadow=LogEntryShadow()
-            shadow.silentGroupedChanges {
-            for k in entity.exposedKeys{
-                try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-            }
-            try? shadow.setShadowUID(UID: entity.UID)
+        for k in entity.exposedKeys{
+            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
         }
+        try? shadow.setShadowUID(UID: entity.UID)
         return shadow
     }
 
