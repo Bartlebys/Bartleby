@@ -17,6 +17,9 @@ struct  Chunker {
 
     fileprivate let _fileManager:FileManager
 
+    //
+    var destroyDestinationFolders:Bool
+
     enum Mode{
         case real
         case simulated
@@ -26,12 +29,17 @@ struct  Chunker {
     // Simulated can be 5X faster than real mode and do not require Disk room.
     var mode:Chunker.Mode
 
-    /// The designated Initializer
+
+    ///  The designated Initializer
     ///
-    /// - Parameter fileManager: the file manager instance (should be only used on the Utility Queue)
-    init(fileManager:FileManager,mode:Chunker.Mode = .real) {
+    /// - Parameters:
+    ///   - fileManager: the file manager instance (should be only used on the Utility Queue)
+    ///   - mode:  When using `.real` mode the file are chunked, when using `.simulated` we compute their digest only
+    ///   - destroyDestinationFolders: if set to true the destinations folder will be cleanup before writing the chunks (.real mode only)
+    init(fileManager:FileManager,mode:Chunker.Mode = .real, destroyDestinationFolders:Bool=false) {
         self._fileManager=fileManager
         self.mode=mode
+        self.destroyDestinationFolders=destroyDestinationFolders
     }
 
     /// Breaks recursively any file, folder, alias from a given folder path.
@@ -119,7 +127,7 @@ struct  Chunker {
                                 if counter > pathNb{
                                     if failuresMessages.count==0{
                                         // it is a success
-                                        success(chunks)
+                                        success(cumulatedChunks)
                                     }else{
                                         failure(cumulatedChunks,failuresMessages.reduce("Errors: ", { (r, s) -> String in
                                             return r + " \(s)"
@@ -129,6 +137,7 @@ struct  Chunker {
                             }
 
                         }, failure: { (message) in
+                             counter += 1
                              failuresMessages.append(message)
                         })
                 }
@@ -170,17 +179,13 @@ struct  Chunker {
 
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
-            if self._fileManager.fileExists(atPath:path){
+            if self._isPathValid(path){
                 if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: path){
                     if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
                         if type==FileAttributeType.typeRegular{
                             self._breakIntoChunk(fileAt: path, destination: folderPath, chunkMaxSize: chunkMaxSize, compress: compress, encrypt: encrypt, externalId: externalId, excludeChunks: excludeChunks, progression: progression, success: success, failure: failure)
                         }else{
                             // Not a Regular file
-                            var size=0
-                            if let extractedSize=attributes[FileAttributeKey.size] as? Int{
-                                size=extractedSize
-                            }
                             if type==FileAttributeType.typeSymbolicLink{
                                 var aliasDestinationPath:String=Default.NO_PATH
                                 do{
@@ -188,7 +193,7 @@ struct  Chunker {
                                 }catch{
                                      glog("Alias resolution error for path \(path) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                                 }
-                                var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/aliases/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.alias, nodePath:aliasDestinationPath)
+                                var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/aliases/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:0, nature: Chunk.Nature.alias, nodePath:aliasDestinationPath)
                                 chunk.sha1=chunk.relativePath.sha1
                                 Async.main{
                                     success([chunk])
@@ -196,7 +201,7 @@ struct  Chunker {
 
                             }
                             if type==FileAttributeType.typeDirectory{
-                                    var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/folders/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:size, nature: Chunk.Nature.folder, nodePath:path)
+                                    var chunk=Chunk(rank: 0, baseDirectory:folderPath, relativePath: "/folders/"+Bartleby.createUID(), sha1: Default.NO_DIGEST, startsAt: 0, originalSize:0, nature: Chunk.Nature.folder, nodePath:path)
                                 chunk.sha1=chunk.relativePath.sha1
                                 Async.main{
                                     success([chunk])
@@ -212,10 +217,32 @@ struct  Chunker {
                 }
             }else{
                  Async.main{
-                    failure(NSLocalizedString("Unexisting file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(path)")
+                    failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(path)")
                 }
             }
         }
+    }
+
+
+    /// Test the validity of a path
+    /// 1# We test the existence of the path.
+    /// 2# Some typeSymbolicLink may point to themselves and then be considerated as inexistent
+    /// We consider those symlinks as valid entries (those symlink are generally in frameworks QA required)
+    ///
+    /// - Parameter path: the path
+    /// - Returns: true if the path is valid
+    fileprivate func _isPathValid(_ path:String)->Bool{
+        if self._fileManager.fileExists(atPath:path){
+            return true
+        }
+        if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: path){
+            if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
+                if type == .typeSymbolicLink{
+                    return true
+                }
+            }
+        }
+        return false
     }
 
 
@@ -242,7 +269,7 @@ struct  Chunker {
             let maxSize:UInt64 = UInt64(chunkMaxSize)
             let n:UInt64=l/maxSize
             var r:UInt64=l % maxSize
-            var nb:UInt64=1
+            var nb:UInt64=0
             if r>0 && l >= maxSize{
                 nb += n
             }
@@ -257,9 +284,14 @@ struct  Chunker {
                 progressionState.externalIdentifier=externalId
                 progressionState.message=""
             }
+            if self.mode == .real{
+                if self.destroyDestinationFolders{
+                    let _ = try? self._fileManager.removeItem(atPath: folderPath)
+                }
 
-            let _ = try? self._fileManager.removeItem(atPath: folderPath)
-            let _ = try? self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+                let _ = try? self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+
+            }
 
             var offset:UInt64=0
             var position:UInt64=0
@@ -268,14 +300,16 @@ struct  Chunker {
             var counter=0
 
 
-            func __writeData(rank:Int,data:Data,to folderPath:String,digest sha1:String, position:Int,parentPath:String)throws->(){
+            func __writeData(rank:Int,size:Int, data:Data,to folderPath:String,digest sha1:String, position:Int,parentPath:String)throws->(){
                 // Generate a Classified Block Tree.
                 let c1=PString.substr(sha1, 0, 1)
                 let c2=PString.substr(sha1, 1, 1)
                 let c3=PString.substr(sha1, 2, 1)
                 let relativeFolderPath="\(c1)/\(c2)/\(c3)/"
                 let bFolderPath=folderPath+relativeFolderPath
-                let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
+                if self.mode == .real{
+                    let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
+                }
                 let destination=bFolderPath+"/\(sha1)"
                 let chunkRelativePath=relativeFolderPath+"\(sha1)"
 
@@ -284,7 +318,7 @@ struct  Chunker {
                                  relativePath: chunkRelativePath,
                                  sha1: sha1,
                                  startsAt:position,
-                                 originalSize:Int(offset),
+                                 originalSize:size,
                                  nodePath:parentPath)
 
                 chunks.append(chunk)
@@ -327,7 +361,7 @@ struct  Chunker {
                             if encrypt && self.mode == .real{
                                 data = try Bartleby.cryptoDelegate.encryptData(data)
                             }
-                            try __writeData(rank:Int(i), data: data,to:folderPath,digest:sha1,position:Int(position),parentPath:path)
+                            try __writeData(rank:Int(i),size:Int(offset), data: data,to:folderPath,digest:sha1,position:Int(position),parentPath:path)
                         }
 
                     })

@@ -128,7 +128,7 @@ public struct Chunk {
                 }
                 if type==FileAttributeType.typeSymbolicLink{
                     self.nodeNature = .alias
-                    self.nodePath = self._resolveAlias(at: p)
+                    self.nodePath = self._resolveAliasPath(at: p)
                 }
                 if type==FileAttributeType.typeDirectory{
                     self.nodeNature = .folder
@@ -139,7 +139,7 @@ public struct Chunk {
         }
     }
 
-    func _resolveAlias(at path:String)-> String {
+    func _resolveAliasPath(at path:String)-> String {
         do{
             let pathURL=URL(fileURLWithPath: path)
             let original = try URL(resolvingAliasFileAt: pathURL, options:[])

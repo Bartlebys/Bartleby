@@ -28,32 +28,35 @@ struct BartlebysCommandFacade {
             // Chunk trials
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
             let chunker=Chunker(fileManager: FileManager.default,mode:.simulated)
-            if let desktopFolder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory),
-                let destFolder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
-                chunker.breakFolderIntoChunk(filesIn: desktopFolder,
-                                             destinationFolder:destFolder,
-                                             progression: { (progression) in
-                    //Do mark progress
-                }, success: { (chunks) in
-                    let duration=CFAbsoluteTimeGetCurrent()-startTime
-                    print("blocksShadowsFromFile Duration \(duration) files:\(chunks.count)")
-                    var totalSize=0
-                    var blocksNb=0
-                    for chunk in chunks{
-                        totalSize += chunk.originalSize
-                        blocksNb += 1
-                    }
-                    print("\(totalSize/MB) MB")
-                    print("\(Int(Double(totalSize/MB)/duration)) MB/s")
-                    print("For \(blocksNb) blocks")
-                    exit(EX_OK)
-                }, failure: { (chunks, message) in
-                    print(message)
-                    exit(EX_DATAERR)
-                })
-            }else{
+            //Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory),
+            let folder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!//"/Users/bpds/Documents/Entrepot"
+            let destFolder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!
+            chunker.breakFolderIntoChunk(filesIn: folder,
+                                         destinationFolder:destFolder+"ChunkerTestSimulated",
+                                         progression: { (progression) in
+                                            //print(progression)
+
+            }, success: { (chunks) in
+                let duration=CFAbsoluteTimeGetCurrent()-startTime
+                print("blocksShadowsFromFile Duration \(duration) files:\(chunks.count)")
+                var totalSize=0
+                var blocksNb=0
+                var i=0
+                for chunk in chunks{
+                    i += 1
+                    //print("\(i) \(chunk.originalSize) \(totalSize) \( (chunk.nodePath) )")
+                    totalSize += chunk.originalSize
+                    blocksNb += 1
+                }
+                print("\(totalSize/MB) MB")
+                print("\(Int(Double(totalSize/MB)/duration)) MB/s")
+                print("For \(blocksNb) blocks")
                 exit(EX_OK)
-            }
+            }, failure: { (chunks, message) in
+                print(message)
+                exit(EX_DATAERR)
+            })
+
         case "testChunker"? :
             // Chunk trials
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
@@ -65,7 +68,9 @@ struct BartlebysCommandFacade {
                     ,progression:{ progression in
                         print(progression)
                 }, success: { chunks in
+                    print("----------------------------------------------------")
                     print("Break to Chunk Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                    print("\n\n")
                     let joinStartTime=CFAbsoluteTimeGetCurrent()
                     let absolutePaths=chunks.map({ (chunk) -> String in
                         return chunk.baseDirectory+chunk.relativePath
