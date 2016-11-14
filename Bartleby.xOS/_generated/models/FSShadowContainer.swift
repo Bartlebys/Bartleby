@@ -22,31 +22,13 @@ import Foundation
     }
 
 	//Boxes
-	dynamic open var boxes:[BoxShadow] = [BoxShadow]()  {
-	    didSet { 
-	       if boxes != oldValue {
-	            self.provisionChanges(forKey: "boxes",oldValue: oldValue,newValue: boxes)  
-	       } 
-	    }
-	}
+	dynamic open var boxes:[BoxShadow] = [BoxShadow]()
 
 	//Nodes
-	dynamic open var nodes:[NodeShadow] = [NodeShadow]()  {
-	    didSet { 
-	       if nodes != oldValue {
-	            self.provisionChanges(forKey: "nodes",oldValue: oldValue,newValue: nodes)  
-	       } 
-	    }
-	}
+	dynamic open var nodes:[NodeShadow] = [NodeShadow]()
 
 	//Blocks
-	dynamic open var blocks:[BlockShadow] = [BlockShadow]()  {
-	    didSet { 
-	       if blocks != oldValue {
-	            self.provisionChanges(forKey: "blocks",oldValue: oldValue,newValue: blocks)  
-	       } 
-	    }
-	}
+	dynamic open var blocks:[BlockShadow] = [BlockShadow]()
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
