@@ -238,7 +238,7 @@ import Foundation
         let urls = FileManager.default.urls(for: searchPath, in: .userDomainMask)
         if urls.count>0 {
             let path = urls[0].path
-            return path + "/"
+            return path
         }
         return nil
     }

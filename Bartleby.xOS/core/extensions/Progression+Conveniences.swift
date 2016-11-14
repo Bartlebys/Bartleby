@@ -16,7 +16,7 @@ import Foundation
 extension Progression:Descriptible {
 
     public func toString() -> String {
-        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
+        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)-\(externalIdentifier)]"
     }
 
 }
