@@ -95,7 +95,7 @@ class TestCase: XCTestCase {
 
 
         //        assetPath = NSTemporaryDirectory() + testName + "/"
-        assetPath = Bartleby.getSearchPath(.desktopDirectory)! + testName + "/"
+        assetPath = Bartleby.getSearchPath(.desktopDirectory)! + "/\(testName)/"
         glog("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
 
         // Remove asset folder if it exists
