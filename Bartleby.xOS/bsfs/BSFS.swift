@@ -33,7 +33,7 @@ public final class BSFS:TriggerHook{
     /// The shadow container Reflects the local state
     /// We use the shadows to store the upload, download and assembly state
     /// And to determine the delta operations.
-    fileprivate var _localContainer:FSShadowContainer=FSShadowContainer()
+    fileprivate var _localContainer:Container=Container()
 
     /// Returns the local nodes shadows
     var localBoxesShadows:[BoxShadow] { return self._localContainer.boxes }

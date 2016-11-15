@@ -25,7 +25,7 @@
 		E56719A11DD855C500AF5418 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718C91DD855C500AF5418 /* Completion.swift */; };
 		E56719A21DD855C500AF5418 /* DocumentMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CA1DD855C500AF5418 /* DocumentMetadata.swift */; };
 		E56719A31DD855C500AF5418 /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CB1DD855C500AF5418 /* ExternalReference.swift */; };
-		E56719A41DD855C500AF5418 /* FSShadowContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CC1DD855C500AF5418 /* FSShadowContainer.swift */; };
+		E56719A41DD855C500AF5418 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CC1DD855C500AF5418 /* Container.swift */; };
 		E56719A51DD855C500AF5418 /* HTTPContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CD1DD855C500AF5418 /* HTTPContext.swift */; };
 		E56719A61DD855C500AF5418 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CE1DD855C500AF5418 /* HTTPRequest.swift */; };
 		E56719A71DD855C500AF5418 /* KeyedChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718CF1DD855C500AF5418 /* KeyedChanges.swift */; };
@@ -278,7 +278,7 @@
 		E56718C91DD855C500AF5418 /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E56718CA1DD855C500AF5418 /* DocumentMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentMetadata.swift; sourceTree = "<group>"; };
 		E56718CB1DD855C500AF5418 /* ExternalReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalReference.swift; sourceTree = "<group>"; };
-		E56718CC1DD855C500AF5418 /* FSShadowContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSShadowContainer.swift; sourceTree = "<group>"; };
+		E56718CC1DD855C500AF5418 /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		E56718CD1DD855C500AF5418 /* HTTPContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPContext.swift; sourceTree = "<group>"; };
 		E56718CE1DD855C500AF5418 /* HTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		E56718CF1DD855C500AF5418 /* KeyedChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyedChanges.swift; sourceTree = "<group>"; };
@@ -615,7 +615,7 @@
 				E56718C91DD855C500AF5418 /* Completion.swift */,
 				E56718CA1DD855C500AF5418 /* DocumentMetadata.swift */,
 				E56718CB1DD855C500AF5418 /* ExternalReference.swift */,
-				E56718CC1DD855C500AF5418 /* FSShadowContainer.swift */,
+				E56718CC1DD855C500AF5418 /* Container.swift */,
 				E56718CD1DD855C500AF5418 /* HTTPContext.swift */,
 				E56718CE1DD855C500AF5418 /* HTTPRequest.swift */,
 				E56718CF1DD855C500AF5418 /* KeyedChanges.swift */,
@@ -1386,7 +1386,7 @@
 				E5671A181DD855C500AF5418 /* DocumentMetadata+Protocol.swift in Sources */,
 				E5671A281DD855C500AF5418 /* ChangesInspectable.swift in Sources */,
 				E56719F21DD855C500AF5418 /* CompressionError.swift in Sources */,
-				E56719A41DD855C500AF5418 /* FSShadowContainer.swift in Sources */,
+				E56719A41DD855C500AF5418 /* Container.swift in Sources */,
 				E56719E31DD855C500AF5418 /* Chunker.swift in Sources */,
 				E56719A61DD855C500AF5418 /* HTTPRequest.swift in Sources */,
 				E56719D21DD855C500AF5418 /* ReadUserById.swift in Sources */,
