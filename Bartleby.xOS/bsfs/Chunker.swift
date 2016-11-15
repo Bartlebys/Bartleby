@@ -26,18 +26,24 @@ struct  Chunker {
     // Simulated can be 5X faster than real mode and do not require Disk room.
     var mode:Chunker.Mode
 
+    // The Crypto Helper
+    fileprivate let _cryptoHelper:CryptoHelper
+
     // MARK: - Init
 
     ///  The designated Initializer
     ///
     /// - Parameters:
     ///   - fileManager: the file manager instance (should be only used on the Utility Queue)
+    ///   - cryptoKey: the key used for crypto 32 char min.
+    ///   - cryptoSalt: the salt
     ///   - mode:  When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     ///   - destroyChunksFolder: if set to true the chunks destination folder will be cleanup before writing the chunks (.real mode only)
-    init(fileManager:FileManager,mode:Chunker.Mode = .digestAndProcessing, destroyChunksFolder:Bool=false) {
+    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,mode:Chunker.Mode = .digestAndProcessing, destroyChunksFolder:Bool=false) {
         self._fileManager=fileManager
         self.mode=mode
         self.destroyChunksFolder=destroyChunksFolder
+        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt)
     }
 
 
@@ -375,7 +381,7 @@ struct  Chunker {
                                     data = try data.compress(algorithm: .lz4)
                                 }
                                 if encrypt && self.mode == .digestAndProcessing{
-                                    data = try Bartleby.cryptoDelegate.encryptData(data)
+                                    data = try self._cryptoHelper.encryptData(data)
                                 }
                                 try __writeData(rank:Int(i),size:Int(offset), data: data,to:chunksfolderPath,digest:sha1,position:Int(position),relativePath:relativePath)
                             }
@@ -579,7 +585,7 @@ struct  Chunker {
                             let url=URL(fileURLWithPath: source)
                             var data = try Data(contentsOf:url)
                             if decrypt{
-                                data = try Bartleby.cryptoDelegate.decryptData(data)
+                                data = try self._cryptoHelper.decryptData(data)
                             }
                             if decompress{
                                 data = try data.decompress(algorithm: .lz4)

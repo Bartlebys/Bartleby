@@ -60,7 +60,7 @@ public final class BSFS:TriggerHook{
     /// - Parameter document: the document instance
     required public init(in document:BartlebyDocument){
         self._document=document
-        self._chunker=Chunker(fileManager: self._fileManager)
+        self._chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
     }
 
     // MARK: - Persistency
@@ -410,6 +410,7 @@ public final class BSFS:TriggerHook{
                 self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
                                             relativePath:relativePath,
                                              chunksFolderPath: box.nodesFolderPath,
+                                             chunkMaxSize:reference.chunkMaxSize,
                                              compress: reference.compressed,
                                              encrypt: reference.crypted,
                                              progression: { (progression) in
@@ -520,7 +521,7 @@ public final class BSFS:TriggerHook{
                     node.authorized.contains("*"){
 
                     if let box=node.box{
-                        let analyzer=DeltaAnalyzer()
+                        let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
 
                         //////////////////////////////
                         // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved

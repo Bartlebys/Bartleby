@@ -14,6 +14,21 @@ enum DeltaAnalyzerError:Error {
 
 struct DeltaAnalyzer {
 
+    fileprivate var _cryptoKey:String
+    fileprivate var _cryptoSalt:String
+
+
+    ///  The designated Initializer
+    ///
+    /// - Parameters:
+    ///   - cryptoKey: the key used for crypto 32 char min.
+    ///   - cryptoSalt: the salt
+    init(cryptoKey:String,cryptoSalt:String) {
+        self._cryptoKey=cryptoKey
+        self._cryptoSalt=cryptoSalt
+    }
+    
+
 
     /// Computes the blocks to preserve and the Chunk to delete when remplacing a node by the content of file.
     ///
@@ -26,12 +41,12 @@ struct DeltaAnalyzer {
     func deltaChunks(fromFileAt path:String,
                      to node:Node,
                      using fileManager:FileManager,x
-                      chunkMaxSize:Int=10*MB,
+                     chunkMaxSize:Int=10*MB,
                      completed:@escaping(_ preserve:[Chunk],_ delete:[Chunk])->(),
                      failure:@escaping(_ message:String)->())->(){
         // We use a Chunker is .digestOnly mode.
         // simulated mode can be 5 X times faster and do not consume Disk Room.
-        let chunker=Chunker(fileManager: fileManager,mode:.digestOnly)
+        let chunker=Chunker(fileManager: fileManager,cryptoKey:self._cryptoKey,cryptoSalt:self._cryptoSalt, mode:.digestOnly)
         chunker.breakIntoChunk( fileAt: path,
                                 relativePath: node.relativePath,
                                 chunksFolderPath: "/",// The destination is not important at all.

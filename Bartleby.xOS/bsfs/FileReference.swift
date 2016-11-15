@@ -22,6 +22,8 @@ public struct FileReference{
     var crypted:Bool=true
     ///  priority: synchronization priority (higher == will be synchronized before the other nodes)
     var priority:Int=0
+    /// The chunks or blocks max size
+    var chunkMaxSize:Int=10*MB
 
     /// The nature of the reference
     /// We support file and Flock only
@@ -53,21 +55,6 @@ public struct FileReference{
     // We define the node nature
     var nodeNature:Nature = Nature.file
 
-    /// Designated initializer
-    ///
-    /// - Parameter absolutePath: the absolute path of the reference
-    init(at absolutePath:String) {
-        self.absolutePath=absolutePath
-    }
-
-    /// Authorize the users with UID
-    ///
-    /// - Parameter userUID: the user UID to authorize
-    public mutating func authorize(userUID:String){
-        if !self.authorized.contains(userUID){
-            self.authorized.append(userUID)
-        }
-    }
 
     /// Creates a private file reference.
     ///
@@ -90,5 +77,23 @@ public struct FileReference{
         r.authorized=["*"]
         return r
     }
+
+
+    /// Designated initializer
+    ///
+    /// - Parameter absolutePath: the absolute path of the reference
+    init(at absolutePath:String) {
+        self.absolutePath=absolutePath
+    }
+
+    /// Authorize the users with UID
+    ///
+    /// - Parameter userUID: the user UID to authorize
+    public mutating func authorize(userUID:String){
+        if !self.authorized.contains(userUID){
+            self.authorized.append(userUID)
+        }
+    }
+
 
 }
