@@ -88,11 +88,11 @@ public final class BSFS:TriggerHook{
     ///     - blocks/ all the crypted compressed blocks (classifyed per 3 level of folders)
     ///     - tmp/ downloads in progress
     public var baseFolderPath:String{
-        return NSHomeDirectory()+"/.bsfs/\(_document.UID)"
+        return NSHomeDirectory()+"/.bsfs/\(_document.UID)" //@*
     }
 
     public var blocksFolderPath:String{
-        return self.baseFolderPath+"/blocks"
+        return self.baseFolderPath+"/blocks"//@*
     }
 
     /// The path correspond is where the Boxes assemble their files.
@@ -195,7 +195,7 @@ public final class BSFS:TriggerHook{
                         accessor.willBecomeUnusable(node: node)
                     }
                 }
-                let assembledPath=self._mountedPath(for:node)
+                let assembledPath=self._assemblyPath(for:node)
                 try self._fileManager.removeItem(atPath: assembledPath)
             }
             box.isMounted=false
@@ -209,16 +209,20 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameter node: the node
     /// - Returns: the assembled path (created if there no
-    fileprivate func _mountedPath(for node:Node)->String{
+    fileprivate func _assemblyPath(for node:Node)->String{
         if !(node is Shadow){
             if let box=node.box{
-                return box.absoluteFolderPath+"\(node.relativePath)"
+                return self.assemblyPath(for: box)
             }
 
         }
         return Default.NO_PATH
     }
 
+
+    public func assemblyPath(for box:Box)->String{
+        return  box.nodesFolderPath//@*
+    }
 
 
     /// Return is the node file has been assembled
@@ -235,7 +239,7 @@ public final class BSFS:TriggerHook{
             let group=AsyncGroup()
             var exists=false
             group.utility{
-                exists=self._fileManager.fileExists(atPath: self._mountedPath(for: node))
+                exists=self._fileManager.fileExists(atPath: self._assemblyPath(for: node))
             }
             group.wait()
             return exists
@@ -265,7 +269,7 @@ public final class BSFS:TriggerHook{
                 if let delegate = self._boxDelegate{
                     delegate.nodeIsReady(node: node, proceed: {
 
-                        let path=self._mountedPath(for: node)
+                        let path=self._assemblyPath(for: node)
                         let blocks=node.localBlocks
 
                         if node.nature == .file || node.nature == .flock {
@@ -274,9 +278,14 @@ public final class BSFS:TriggerHook{
                             for block in blocks{
                                 blockPaths.append(block.absolutePath)
                             }
-                            self._chunker.joinChunks(from: blockPaths, to: path, decompress: node.compressedBlocks, decrypt: node.cryptedBlocks,externalId:node.UID, progression: { (progression) in
+                            self._chunker.joinChunksToFile(from: blockPaths,
+                                                           to: path,
+                                                           decompress: node.compressedBlocks,
+                                                           decrypt: node.cryptedBlocks,
+                                                           externalId:node.UID,
+                                                           progression: { (progression) in
                                 progressed(progression)
-                            }, success: {
+                            }, success: { path in
 
                                 if node.nature == .flock{
                                     //TODO
@@ -305,7 +314,7 @@ public final class BSFS:TriggerHook{
                                 do{
                                     if let rNodeUID=node.referentNodeUID{
                                         if let rNode = try? Bartleby.registredObjectByUID(rNodeUID) as Node{
-                                            let destination=self._mountedPath(for: rNode)
+                                            let destination=self._assemblyPath(for: rNode)
                                             try self._fileManager.createSymbolicLink(atPath: path, withDestinationPath:destination)
                                             let completionState=Completion.successState()
                                             completionState.setExternalReferenceResult(from:node)
@@ -377,7 +386,7 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - FileReference: the file reference (Nature == file or flock)
     ///   - box: the box
-    ///   - relativePath: the relative Path of the Node
+    ///   - relativePath: the relative Path of the Node in the box
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State
@@ -398,8 +407,9 @@ public final class BSFS:TriggerHook{
             if self._fileManager.fileExists(atPath: reference.absolutePath){
 
                 /// Let's break the file into chunk.
-                self._chunker.breakIntoChunk(fileAt: reference.absolutePath,
-                                             destination: box.absoluteFolderPath,
+                self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
+                                            relativePath:relativePath,
+                                             chunksFolderPath: box.nodesFolderPath,
                                              compress: reference.compressed,
                                              encrypt: reference.crypted,
                                              progression: { (progression) in
@@ -530,7 +540,8 @@ public final class BSFS:TriggerHook{
                             // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
                             /////////////////////////////////
                             self._chunker.breakIntoChunk(fileAt: path,
-                                                         destination: box.absoluteFolderPath,
+                                                         relativePath: node.relativePath,
+                                                         chunksFolderPath: box.nodesFolderPath,
                                                          compress: node.compressedBlocks,
                                                          encrypt: node.cryptedBlocks,
                                                          excludeChunks:toBePreserved,
@@ -692,7 +703,7 @@ public final class BSFS:TriggerHook{
         if node is Shadow{
             accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
         }else{
-            accessor.fileIsAvailable(for:node, at: self._mountedPath(for:node))
+            accessor.fileIsAvailable(for:node, at: self._assemblyPath(for:node))
         }
     }
 
@@ -718,7 +729,7 @@ public final class BSFS:TriggerHook{
                     if let box=node.box{
                         Async.utility{
                             do{
-                                try self._fileManager.copyItem(atPath: self._mountedPath(for: node), toPath:box.absoluteFolderPath+relativePath)
+                                try self._fileManager.copyItem(atPath: self._assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
                                 // Create the copiedNode
                                 let copiedNode=self._document.newNode()

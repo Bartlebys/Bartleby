@@ -15,15 +15,12 @@ import Foundation
  Binary Format specs
 
  --------
- 8Bytes for one Int -> footer size
+ data -> the Chunked file
  --------
- data
+ footer -> serialized crypted and compressed FSShadowContainer
  --------
- footer
+ 8Bytes for one Int -> gives the footer size
  --------
-
- The footer contains
- - [ box, nodes , blocks ]
 
  */
 struct Flocker{
@@ -38,19 +35,7 @@ struct Flocker{
     ///   - folderReference: the reference to folder to flock
     ///   - path: the destination path
     func flockFolder(folderReference:FileReference, destination path:String){
-        // The result is single file containing a box.
-        // It allow to group set of files
-    }
-
-    /// Flocks the box means you transform a box of Nodes to a single file
-    /// By using this method you preserve the ACL
-    ///
-    /// - Parameters:
-    ///   - box: the box to be flocked
-    ///   - flockedFilePath: the flock path
-    ///   - holders: the targeted user UID
-    func flockTheBox(box:Box, destination flockedFilePath:String, authorized holders:[String]=["*"]){
-        // The result is single file containing a box.
+        // The result is single file containing Chunks.
         // It allow to group set of files
     }
 

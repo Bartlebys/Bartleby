@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
+		E53B423B1DDA222100F130AA /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B423A1DDA222100F130AA /* URL+Utilities.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
 		E56719951DD855C500AF5418 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718BB1DD855C500AF5418 /* BartlebyDocument.swift */; };
 		E56719961DD855C500AF5418 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56718BD1DD855C500AF5418 /* BlocksManagedCollection.swift */; };
@@ -92,7 +93,6 @@
 		E56719E51DD855C500AF5418 /* Block+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719111DD855C500AF5418 /* Block+Facilities.swift */; };
 		E56719E61DD855C500AF5418 /* Box+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719121DD855C500AF5418 /* Box+Facilities.swift */; };
 		E56719E71DD855C500AF5418 /* Node+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719131DD855C500AF5418 /* Node+Facilities.swift */; };
-		E56719E81DD855C500AF5418 /* Node+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719141DD855C500AF5418 /* Node+File.swift */; };
 		E56719E91DD855C500AF5418 /* FileReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719151DD855C500AF5418 /* FileReference.swift */; };
 		E56719EA1DD855C500AF5418 /* Flocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719161DD855C500AF5418 /* Flocker.swift */; };
 		E56719EC1DD855C500AF5418 /* DownloadBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56719191DD855C500AF5418 /* DownloadBlock.swift */; };
@@ -259,6 +259,7 @@
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
+		E53B423A1DDA222100F130AA /* URL+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		E548A4821D880577006FF410 /* bartlebyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bartlebyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E548A4841D880577006FF410 /* bartlebyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bartlebyTests.swift; sourceTree = "<group>"; };
 		E548A4861D880577006FF410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -345,7 +346,6 @@
 		E56719111DD855C500AF5418 /* Block+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Facilities.swift"; sourceTree = "<group>"; };
 		E56719121DD855C500AF5418 /* Box+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Box+Facilities.swift"; sourceTree = "<group>"; };
 		E56719131DD855C500AF5418 /* Node+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Facilities.swift"; sourceTree = "<group>"; };
-		E56719141DD855C500AF5418 /* Node+File.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+File.swift"; sourceTree = "<group>"; };
 		E56719151DD855C500AF5418 /* FileReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileReference.swift; sourceTree = "<group>"; };
 		E56719161DD855C500AF5418 /* Flocker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Flocker.swift; sourceTree = "<group>"; };
 		E56719191DD855C500AF5418 /* DownloadBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadBlock.swift; sourceTree = "<group>"; };
@@ -716,7 +716,6 @@
 				E56719111DD855C500AF5418 /* Block+Facilities.swift */,
 				E56719121DD855C500AF5418 /* Box+Facilities.swift */,
 				E56719131DD855C500AF5418 /* Node+Facilities.swift */,
-				E56719141DD855C500AF5418 /* Node+File.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -919,6 +918,7 @@
 		E56719851DD855C500AF5418 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E53B423A1DDA222100F130AA /* URL+Utilities.swift */,
 				E56719861DD855C500AF5418 /* NSObject+Bartleby.swift */,
 				E56719871DD855C500AF5418 /* NSUndomanager+RegisterUndo.swift */,
 				E56719881DD855C500AF5418 /* User+Auth.swift */,
@@ -1174,6 +1174,7 @@
 				E5671A261DD855C500AF5418 /* BartlebyFileIO.swift in Sources */,
 				E5671A501DD855C500AF5418 /* LogoutUser.swift in Sources */,
 				E5671A1B1DD855C500AF5418 /* HTTPRequest+URLRequest.swift in Sources */,
+				E53B423B1DDA222100F130AA /* URL+Utilities.swift in Sources */,
 				E56719F31DD855C500AF5418 /* Data+Compression.swift in Sources */,
 				E5CC292D1D846CB300F7C783 /* CustomDateFormatTransform.swift in Sources */,
 				E5CC29091D846CB300F7C783 /* Validation.swift in Sources */,
@@ -1258,7 +1259,6 @@
 				E56719961DD855C500AF5418 /* BlocksManagedCollection.swift in Sources */,
 				E5671A071DD855C500AF5418 /* BarltlebyDocument+Consignee.swift in Sources */,
 				E56719C61DD855C500AF5418 /* ReadBlockById.swift in Sources */,
-				E56719E81DD855C500AF5418 /* Node+File.swift in Sources */,
 				E56719DF1DD855C500AF5418 /* UIX.swift in Sources */,
 				E5CC29301D846CB300F7C783 /* DateTransform.swift in Sources */,
 				E56719B81DD855C500AF5418 /* CreateNode.swift in Sources */,

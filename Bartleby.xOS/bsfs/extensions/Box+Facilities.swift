@@ -12,8 +12,8 @@ import Foundation
 extension Box{
 
 
-    /// The mounted folder path (we use caches)
-    var absoluteFolderPath:String{
+    /// The nodes folder path
+    var nodesFolderPath:String{
         if let bsfs=self.document?.bsfs{
             return bsfs.boxesFolderPath+"/"+self.UID
         }else{

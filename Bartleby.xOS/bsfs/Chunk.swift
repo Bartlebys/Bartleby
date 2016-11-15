@@ -9,12 +9,13 @@
 import Foundation
 
 
+/// A chunk is part of a file , or a refernce to a folder or an Alias/SymLink.
 public struct Chunk {
 
-
     // Chunks folder base Directory
-    var baseDirectory:String=Default.NO_PATH
-    // Chunk's relative path in chunk folder
+    var chunksFolderPath:String=Default.NO_PATH
+
+    // Chunk's relative path in chunk folder chunksFolderPath
     var relativePath:String
 
     // The rank in its parent node
@@ -28,8 +29,12 @@ public struct Chunk {
 
     // The parent node nature
     var nodeNature:Nature = .file
-    // the parent node file path (or the alias destination)
+
+    // the parent node relative path (relative to the box)
     var nodePath:String=Default.NO_PATH
+
+    // If Nature == .alias the destination of the alias (is an absolute path)
+    var aliasDestination=Default.NO_PATH
 
     /// The nature of the reference
     /// We support files, aliases and folders
@@ -77,15 +82,15 @@ public struct Chunk {
     ///   - originalSize: the original size (before compression, encryption)
     ///   - nature: the nature of the parent of the chunk
     ///   - nodePath: the parent file path (or the alias destination)
-    init(rank:Int,baseDirectory:String,relativePath:String,sha1:String,startsAt:Int, originalSize:Int,nature:Nature = .file,nodePath:String = Default.NO_PATH){
+    init(rank:Int,baseDirectory:String,relativePath:String,sha1:String,startsAt:Int, originalSize:Int,nature:Nature = .file,nodeRelativePath:String = Default.NO_PATH){
         self.rank=rank
-        self.baseDirectory=baseDirectory
+        self.chunksFolderPath=baseDirectory
         self.relativePath=relativePath
         self.sha1=sha1
         self.startsAt=startsAt
         self.originalSize=originalSize
         self.nodeNature=nature
-        self.nodePath=nodePath
+        self.nodePath=nodeRelativePath
     }
 
 
@@ -98,7 +103,7 @@ public struct Chunk {
         if let node=block.node{
             self.nodeNature=Chunk.Nature.fromNodeNature(node.nature) ?? .file
             if let box=node.box{
-                self.baseDirectory=box.absoluteFolderPath
+                self.chunksFolderPath=box.nodesFolderPath
             }
         }
         self.relativePath=block.blockRelativePath()
@@ -107,48 +112,6 @@ public struct Chunk {
         self.originalSize=block.size
     }
 
-
-    /// Extracts the information from a file at a given path.
-    ///
-    /// - Parameters:
-    ///   - relativePath: the relative path
-    ///   - folderPath: the box or referent folder path
-    public mutating func extractInformationsFromFile(at relativePath:String,within folderPath:String)throws->(){
-        let fm=FileManager.default
-        let p=folderPath+relativePath
-        if fm.fileExists(atPath:p){
-            self.relativePath=relativePath
-            let attributes:[FileAttributeKey : Any]=try fm.attributesOfItem(atPath: p)
-            if let size=attributes[FileAttributeKey.size] as? Int{
-                self.originalSize=size
-            }
-            if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
-                if type==FileAttributeType.typeRegular{
-                    self.nodeNature = .file
-                }
-                if type==FileAttributeType.typeSymbolicLink{
-                    self.nodeNature = .alias
-                    self.nodePath = self._resolveAliasPath(at: p)
-                }
-                if type==FileAttributeType.typeDirectory{
-                    self.nodeNature = .folder
-                }
-            }
-        }else{
-            throw NodeExtractionError.message("Unexisting file at: \(p)")
-        }
-    }
-
-    func _resolveAliasPath(at path:String)-> String {
-        do{
-            let pathURL=URL(fileURLWithPath: path)
-            let original = try URL(resolvingAliasFileAt: pathURL, options:[])
-            return original.path
-        }catch{
-            return Default.NO_PATH
-        }
-
-    }
 
 
 }

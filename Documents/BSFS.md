@@ -182,25 +182,49 @@ In Real mode:
 - It cuts files to chunks and merge chunks into files efficiently.
 - Is not coupled to higher level concept (uses its own struct Chunk)
  
-In Simulated mode the Chunker 5 times faster and does not consume Disk Room:
+In `.digestOnly` mode the Chunker 5 times faster and does not consume Disk Room:
 
 - Is a high performance tools to compute the Chunk Model including its Digest.
-- It can digest more than 1gb/s files with a with a reduced memory foot print on an utility queue. 
+- It can digest GB/s with a reduced memory foot print on an utility queue. 
 
 
-### Sample Benchmark:
+### Benchmarks:
+
+On a Robust Mac the Chunker performance may vary from dozens of MB/s to 2GB/s depending on the nature of the nodes.
 
 ```
-Simulated mode Duration 45.9052919745445 files:19857
-54686 MB at 1191 MB/s for 45129 blocks
+Chunker . digestOnly on small files Duration 7.15675497055054 seconds
+Number of files:33727
+For 34077 blocks
+1852 MB
+258 MB/s
 ```
+
+```
+Chunker . digestOnly on large and little  files Duration 10.5638520121574 seconds
+Number of files:12476
+For 13950 blocks
+15379 MB
+1455 MB/s
+Program ended with exit code: 0
+```
+
+```
+Chunker . digestOnly on large files Duration 7.70704996585846 seconds
+Number of files:33
+For 1488 blocks
+14665 MB
+1902 MB/s
+Program ended with exit code: 0
+```
+
+
 
 ## DeltaAnalyzer
 
-The goal of the DeltaAnalyzer is to compare and determine what to do.
+The goal of the DeltaAnalyzer is to compare and determine difference between a file and node.
 
 - File to Block `deltaBlocks(fromFileAt path:String, to node:Node ...)`
-- Box to BoxShadow
 
  
 
