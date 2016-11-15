@@ -37,9 +37,10 @@ struct Flocker{
     ///   - fileManager: the file manager to use on the Flocker Queue
     ///   - cryptoKey: the key used for crypto 32 char min
     ///   - cryptoSalt: the salt
-    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String) {
+    ///   - keySize: the key size
+    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,keySize:KeySize = .s128bits) {
         self._fileManager=fileManager
-        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt)
+        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt,keySize:keySize)
     }
 
 
@@ -57,6 +58,7 @@ struct Flocker{
 
         self._flock(filesIn: folderReference.absolutePath,
                     flockFilePath: path,
+                    authorized:folderReference.authorized,
                     chunkMaxSize: folderReference.chunkMaxSize,
                     compress: folderReference.compressed,
                     encrypt: folderReference.crypted,
@@ -71,16 +73,19 @@ struct Flocker{
     /// - we use an Autorelease pool to lower the memory foot print
     /// - closures are called on the Main thread
     public func _flock(  filesIn folderPath:String,
-                                       flockFilePath:String,
-                                       chunkMaxSize:Int=10*MB,
-                                       compress:Bool=true,
-                                       encrypt:Bool=true,
-                                       progression:@escaping((Progression)->()),
-                                       success:@escaping ()->(),
-                                       failure:@escaping (Container,String)->()){
+                         flockFilePath:String,
+                         authorized:[String],
+                         chunkMaxSize:Int=10*MB,
+                         compress:Bool=true,
+                         encrypt:Bool=true,
+                         progression:@escaping((Progression)->()),
+                         success:@escaping ()->(),
+                         failure:@escaping (Container,String)->()){
 
-        var container=Container()
+        let container=Container()
+        container.defineUID()
         let box=BoxShadow()
+        box.defineUID()
         container.boxes.append(box)
         Async.utility{
             try? self._fileManager.removeItem(atPath: flockFilePath)
@@ -127,12 +132,16 @@ struct Flocker{
                     let pathNb=paths.count
                     var counter=1
                     for relativePath in paths{
-                        self._appendDataFromFilePath(folderPath: folderPath,
-                                                     relativePath:relativePath,
-                                                     handle: flockFileHandle,
-                                                     container: &container,
-                                                     progression: { (Progression) in
-                                                    // We donnot need to consign discreet progression
+                        self._append(folderPath: folderPath,
+                                     relativePath:relativePath,
+                                     handle: flockFileHandle,
+                                     container: container,
+                                     authorized:authorized,
+                                     chunkMaxSize:chunkMaxSize,
+                                     compress:compress,
+                                     encrypt:encrypt,
+                                     progression: { (Progression) in
+                                        // We donnot need to consign discreet progression
                         }, success: {
                             counter += 1
                             progressionState.silentGroupedChanges {
@@ -143,6 +152,11 @@ struct Flocker{
                                 // Relay the progression
                                 progression(progressionState)
                                 if counter > pathNb{
+                                    do{
+                                        try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
+                                    }catch{
+                                        failuresMessages.append("_writeContainerIntoFlock \(error)")
+                                    }
                                     if failuresMessages.count==0{
                                         // it is a success
                                         success()
@@ -174,25 +188,74 @@ struct Flocker{
     }
 
 
-    fileprivate func _appendDataFromFilePath( folderPath:String,
-                                             relativePath:String,
-                                             handle:FileHandle,
-                                             container:inout Container,
-                                             progression:@escaping((Progression)->()),
-                                             success:@escaping ()->(),
-                                             failure:@escaping (String)->() )->(){
+    fileprivate func _append( folderPath:String,
+                              relativePath:String,
+                              handle:FileHandle,
+                              container:Container,
+                              authorized:[String],
+                              chunkMaxSize:Int=10*MB,
+                              compress:Bool=true,
+                              encrypt:Bool=true,
+                              progression:@escaping((Progression)->()),
+                              success:@escaping ()->(),
+                              failure:@escaping (String)->() )->(){
 
 
         let filePath=folderPath+relativePath
+        let node=NodeShadow()
+        node.defineUID()
+        node.relativePath=relativePath
+        node.boxUID=container.boxes[0].UID
+        Async.utility {
+            if self._isPathValid(filePath){
+                if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: filePath){
+                    if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
+
+                        if (URL(fileURLWithPath: filePath).isAnAlias){
+                            // It is an alias
+                            var aliasDestinationPath:String=Default.NO_PATH
+                            do{
+                                aliasDestinationPath = try self._resolveAlias(at:filePath)
+                            }catch{
+                                glog("Alias resolution error for path \(filePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                            }
+                            node.nature=Node.Nature.alias
+                            node.proxyPath=aliasDestinationPath
+                        }else if type==FileAttributeType.typeRegular{
+                            node.nature=Node.Nature.file
+
+                            /// READ AND WRITE THE DATA + CONSIGN THE BLOCKS in THE NODE + IN CONTAINER
 
 
+
+
+                        }else if type==FileAttributeType.typeDirectory{
+                            node.nature=Node.Nature.folder
+                        }
+                    }
+                    container.nodes.append(node)
+                    Async.main{
+                        // success([chunk])
+                    }
+
+                }else{
+                    Async.main{
+                        failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(filePath)")
+                    }
+                }
+            }else{
+                Async.main{
+                    failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(filePath)")
+                }
+            }
+        }
 
     }
 
 
 
-    fileprivate func _writeContainerIntoFlock( handle:FileHandle,
-                                               container:Container)throws->(){
+    fileprivate func _writeContainerIntoFlock( handle: FileHandle,
+                                               container: Container)throws->(){
 
         try autoreleasepool { () -> Void in
             let data=container.serialize()
@@ -208,247 +271,8 @@ struct Flocker{
             // CLose the file handle
             handle.closeFile()
         }
-
     }
 
-    /*
-
-    /// This breaks efficiently a file to chunks.
-    /// - The hard stuff is done Asynchronously on a the Utility queue
-    /// - we use an Autorelease pool to lower the memory foot print
-    /// - closures are called on the Main thread
-    ///
-    /// - Parameters:
-    ///   - absolutePath: the file absolute path (can be external to assembledFolderPath or box)
-    ///   - relativePath: the file relative path to assembledFolderPath
-    ///   - chunksfolderPath: the destination folder path for the chunk
-    ///   - chunkMaxSize: the max size for a chunk / future block
-    ///   - compress: should we compress (using LZ4)
-    ///   - encrypt: should we encrypt (using AES256)
-    ///   - externalId: this identifier allow to map the progression
-    ///   - excludeChunks: chunks to be excluded (Advanced Optimization: if you already know that you have some chunk you can by pass their processing)
-    ///   - progression: progress closure called on each discreet progression.
-    ///   - success: the success closure returns a Chunk Struct to be used to create/update Block instances
-    ///   - failure: the failure closure
-    public func breakIntoChunk(  fileAt absolutePath:String,
-                                 relativePath:String,
-                                 chunksFolderPath:String,
-                                 chunkMaxSize:Int=10*MB,
-                                 compress:Bool=true,
-                                 encrypt:Bool=true,
-                                 progression:@escaping((Progression)->()),
-                                 success:@escaping ([Chunk])->(),
-                                 failure:@escaping (String)->()){
-
-        // Don't block the main thread with those intensive IO  processing
-        Async.utility {
-            if self._isPathValid(absolutePath){
-                if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: absolutePath){
-                    if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
-
-                        if (URL(fileURLWithPath: absolutePath).isAnAlias){
-                            // It is an alias
-                            var aliasDestinationPath:String=Default.NO_PATH
-                            do{
-                                aliasDestinationPath = try self._resolveAlias(at:absolutePath)
-                            }catch{
-                                glog("Alias resolution error for path \(absolutePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                            }
-                            var chunk=Chunk(rank: 0,
-                                            baseDirectory:chunksFolderPath,
-                                            relativePath: "/aliases/"+Bartleby.createUID(),
-                                            sha1: Default.NO_DIGEST, startsAt: 0,
-                                            originalSize:0,
-                                            nature: Chunk.Nature.alias,
-                                            nodeRelativePath:relativePath)
-                            chunk.aliasDestination=aliasDestinationPath
-                            chunk.sha1=chunk.relativePath.sha1
-                            Async.main{
-                                success([chunk])
-                            }
-
-                        }else if type==FileAttributeType.typeRegular{
-
-                            self._breakIntoChunk( fileAt: absolutePath,
-                                                  relativePath:relativePath,
-                                                  chunksfolderPath: chunksFolderPath,
-                                                  chunkMaxSize: chunkMaxSize,
-                                                  compress: compress,
-                                                  encrypt: encrypt,
-                                                  progression: progression,
-                                                  success: success,
-                                                  failure: failure)
-
-                        }else if type==FileAttributeType.typeDirectory{
-                            var chunk=Chunk( rank: 0,
-                                             baseDirectory:chunksFolderPath,
-                                             relativePath: "/folders/"+Bartleby.createUID(),
-                                             sha1: Default.NO_DIGEST,
-                                             startsAt: 0,
-                                             originalSize:0,
-                                             nature: Chunk.Nature.folder,
-                                             nodeRelativePath:relativePath)
-                            chunk.sha1=chunk.relativePath.sha1
-                            Async.main{
-                                success([chunk])
-                            }
-                        }
-                    }
-                }else{
-                    Async.main{
-                        failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(absolutePath)")
-                    }
-                }
-            }else{
-                Async.main{
-                    failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(absolutePath)")
-                }
-            }
-        }
-    }
-
-
-
-    fileprivate func _breakIntoChunk(   fileAt path:String,
-                                        relativePath:String,
-                                        chunksfolderPath:String,
-                                        chunkMaxSize:Int=10*MB,
-                                        compress:Bool,
-                                        encrypt:Bool,
-                                        progression:@escaping((Progression)->()),
-                                        success:@escaping ([Chunk])->(),
-                                        failure:@escaping (String)->()){
-
-        Async.utility {
-
-
-            // Read each chunk efficiently
-            if let fileHandle=FileHandle(forReadingAtPath:path ){
-
-                let _=fileHandle.seekToEndOfFile()
-                let l=fileHandle.offsetInFile
-                fileHandle.seek(toFileOffset: 0)
-                let maxSize:UInt64 = UInt64(chunkMaxSize)
-                let n:UInt64=l/maxSize
-                var r:UInt64=l % maxSize
-                var nb:UInt64=0
-                if r>0 && l >= maxSize{
-                    nb += n
-                }
-                if l < maxSize{
-                    r = l
-                }
-
-                let progressionState=Progression()
-                progressionState.silentGroupedChanges {
-                    progressionState.totalTaskCount=Int(nb)
-                    progressionState.currentTaskIndex=0
-                    progressionState.externalIdentifier=externalId
-                    progressionState.message=""
-                }
-                if self.mode == .digestAndProcessing{
-                    if self.destroyChunksFolder{
-                        let _ = try? self._fileManager.removeItem(atPath: chunksfolderPath)
-                    }
-
-                    let _ = try? self._fileManager.createDirectory(atPath: chunksfolderPath, withIntermediateDirectories: true, attributes: nil)
-
-                }
-
-                var offset:UInt64=0
-                var position:UInt64=0
-                var chunks=[Chunk]()
-
-                var counter=0
-
-
-                func __writeData(rank:Int,size:Int, data:Data,to chunksFolderPath:String,digest sha1:String, position:Int,relativePath:String)throws->(){
-                    // Generate a Classified Block Tree.
-                    let c1=PString.substr(sha1, 0, 1)
-                    let c2=PString.substr(sha1, 1, 1)
-                    let c3=PString.substr(sha1, 2, 1)
-                    let relativeFolderPath="/\(c1)/\(c2)/\(c3)/"
-                    let bFolderPath=chunksFolderPath+relativeFolderPath
-                    if self.mode == .digestAndProcessing{
-                        let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
-                    }
-                    let destination=bFolderPath+"/\(sha1)"
-                    let chunkRelativePath=relativeFolderPath+"\(sha1)"
-
-                    let chunk=Chunk( rank:rank,
-                                     baseDirectory:chunksFolderPath,
-                                     relativePath: chunkRelativePath,
-                                     sha1: sha1,
-                                     startsAt:position,
-                                     originalSize:size,
-                                     nodeRelativePath:relativePath)
-
-                    chunks.append(chunk)
-                    if self.mode == .digestAndProcessing{
-                        let url=URL(fileURLWithPath: destination)
-                        let _ = try data.write(to:url )
-                    }
-
-                    Async.main{
-                        counter += 1
-                        progressionState.silentGroupedChanges {
-                            progressionState.message=chunkRelativePath
-                            progressionState.currentTaskIndex=counter
-                        }
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                        // Relay the progression
-                        progression(progressionState)
-                    }
-
-                }
-
-                do {
-                    for i in 0 ... nb{
-                        // We donnot want to reduce the memory usage
-                        // To the footprint of a Chunk +  Derivated Data.
-                        try autoreleasepool(invoking: { () -> Void in
-                            fileHandle.seek(toFileOffset: position)
-                            offset = (i==nb ? r : maxSize)
-                            position += offset
-                            if let idx=excludeChunks.index(where: {$0.rank == Int(i) }) {
-                                // Do not read nor process the data
-                                fileHandle.seek(toFileOffset: position)
-                                chunks.append(excludeChunks[idx])
-                            }else{
-                                var data=fileHandle.readData(ofLength: Int(offset))
-                                let sha1=data.sha1
-                                if compress && self.mode == .digestAndProcessing{
-                                    data = try data.compress(algorithm: .lz4)
-                                }
-                                if encrypt && self.mode == .digestAndProcessing{
-                                    data = try Bartleby.cryptoDelegate.encryptData(data)
-                                }
-                                try __writeData(rank:Int(i),size:Int(offset), data: data,to:chunksfolderPath,digest:sha1,position:Int(position),relativePath:relativePath)
-                            }
-
-                        })
-
-                    }
-                    fileHandle.closeFile()
-                    Async.main{
-                        success(chunks)
-                    }
-                    
-                }catch{
-                    Async.main{
-                        failure("\(error)")
-                    }
-                }
-            }else{
-                Async.main{
-                    failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
-                }
-            }
-            
-        }
-    }
-    
-*/
 
 
     // MARK: - UnFlocking
@@ -457,7 +281,7 @@ struct Flocker{
     ///
     /// - Parameters:
     ///   - flockedFile: the flock
-    ///   - relativePath: the folder path 
+    ///   - relativePath: the folder path
     func unFlock(flockedFile:String,to folderPath:String?)->(){
     }
 

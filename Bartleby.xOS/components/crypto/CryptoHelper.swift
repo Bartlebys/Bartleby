@@ -36,14 +36,27 @@ import Foundation
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
 
 
+
+
+    var _keySize=kCCKeySizeAES128
+
+
     /// The designated initializer
     ///
     /// - Parameters:
     ///   - key: the key to use
     ///   - salt: the salf
-    public init(key: String, salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz") {
+    public init(key: String, salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz",keySize:KeySize = .s128bits) {
         self.key=key
         self.salt=salt
+        switch keySize {
+        case .s128bits:
+            self._keySize=kCCKeySizeAES128
+        case .s192bits:
+            self._keySize=kCCKeySizeAES192
+        case .s256bits:
+            self._keySize=kCCKeySizeAES256
+        }
     }
 
     // We use a hash of the _salt+key as initialization vector
@@ -211,7 +224,7 @@ import Foundation
         let outData: NSMutableData! = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
         let cryptPointer = UnsafeMutableRawPointer(outData.mutableBytes)
         let cryptLength  = size_t(outData.length)
-        let keyLength              = size_t(kCCKeySizeAES256)
+        let keyLength              = size_t(_keySize)
         let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
         let ivBuffer = (initializationVector! as NSData).bytes.bindMemory(to: Void.self, capacity: initializationVector!.count)
         var numBytesProcessed: size_t = 0

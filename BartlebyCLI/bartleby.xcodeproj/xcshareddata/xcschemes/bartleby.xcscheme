@@ -80,7 +80,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "testChunkerDigest"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "testChunker"
@@ -88,7 +88,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "testChunkerFolder"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

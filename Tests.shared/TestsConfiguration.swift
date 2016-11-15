@@ -20,6 +20,10 @@ open class TestsConfiguration: BartlebyConfiguration {
 
     open static var SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
 
+    // To conform to crypto legal context
+    open static var KEY_SIZE: KeySize = .s128bits
+
+
     //MARK: - URLS
 
     static let trackAllApiCalls=true

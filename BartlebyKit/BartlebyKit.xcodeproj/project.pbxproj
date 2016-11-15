@@ -11,6 +11,7 @@
 		5BFDA6FC1CC279AB002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		5BFDA6FF1CC27A05002B1C29 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */; };
 		5BFDA7021CC27A87002B1C29 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */; };
+		E5010CB81DDB36D3004E551E /* CryptoKeySize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5010CB71DDB36D3004E551E /* CryptoKeySize.swift */; };
 		E50A10691DC2261D00869BFB /* MetricsDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */; };
 		E50A106A1DC2261D00869BFB /* MetricsDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */; };
 		E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */; };
@@ -491,6 +492,7 @@
 		5BFDA6FA1CC279AB002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ObjectMapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA6FD1CC27A05002B1C29 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../Debug-iphoneos/Alamofire.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BFDA7011CC27A87002B1C29 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = "../Debug-iphonesimulator/ObjectMapper.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5010CB71DDB36D3004E551E /* CryptoKeySize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeySize.swift; sourceTree = "<group>"; };
 		E50A10671DC2261D00869BFB /* MetricsDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetricsDetailsViewController.swift; sourceTree = "<group>"; };
 		E50A10681DC2261D00869BFB /* MetricsDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetricsDetailsViewController.xib; sourceTree = "<group>"; };
 		E50F3AE01D40D27F00532B09 /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
@@ -1086,6 +1088,7 @@
 				E54A9DBC1DD4634B0066F20D /* CryptedStringKeyValueTransform.swift */,
 				E54A9DBD1DD4634B0066F20D /* CryptedStringTransform.swift */,
 				E54A9DBE1DD4634B0066F20D /* CryptoHelper.swift */,
+				E5010CB71DDB36D3004E551E /* CryptoKeySize.swift */,
 				E54A9DBF1DD4634B0066F20D /* Data+HMAC.swift */,
 				E54A9DC01DD4634B0066F20D /* HMAC.swift */,
 				E54A9DC11DD4634B0066F20D /* HMACAlgorithms.swift */,
@@ -1627,6 +1630,7 @@
 				E54A9E3B1DD4634B0066F20D /* Block.swift in Sources */,
 				E54A9F631DD4634B0066F20D /* Exposed.swift in Sources */,
 				E54A9F531DD4634B0066F20D /* ConsolidableProgression.swift in Sources */,
+				E5010CB81DDB36D3004E551E /* CryptoKeySize.swift in Sources */,
 				E54A9E7D1DD4634B0066F20D /* DeleteBox.swift in Sources */,
 				E54A9EC91DD4634B0066F20D /* Box+Facilities.swift in Sources */,
 				E54A9EFF1DD4634B0066F20D /* Context.swift in Sources */,

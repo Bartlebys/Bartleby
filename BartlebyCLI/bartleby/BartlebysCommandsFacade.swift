@@ -27,7 +27,7 @@ struct BartlebysCommandFacade {
             let startTime=CFAbsoluteTimeGetCurrent()
             // Chunk trials
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
-            let chunker=Chunker(fileManager: FileManager.default,mode:.digestOnly)
+            let chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
             // let folder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!
             // let folder="/Users/bpds/Documents/Entrepot/Autoformation/Videos"
             let folder="/Users/bpds/Documents/Entrepot/Autoformation/Videos"
@@ -69,7 +69,7 @@ struct BartlebysCommandFacade {
         case "testChunker"? :
             // Chunk trials
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
-            let chunker=Chunker(fileManager: FileManager.default)
+            let chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
 
             let startTime=CFAbsoluteTimeGetCurrent()
             if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
@@ -111,7 +111,7 @@ struct BartlebysCommandFacade {
             print("Processing...")
 
             Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
-            var chunker=Chunker(fileManager: FileManager.default)
+            var chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
             chunker.destroyChunksFolder=true// Destruct the chunks 
 
             if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){

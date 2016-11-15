@@ -19,6 +19,9 @@ public protocol BartlebyConfiguration {
     // Should be the same server and client side and should not be disclosed
     static var SHARED_SALT: String { get set }
 
+    // To conform to crypto legal context
+    static var KEY_SIZE: KeySize { get set }
+
     // Collaboration server base URL
     // eg : https://demo.bartlebys.org/www/api/v1
     static var API_BASE_URL: URL { get set }
@@ -79,6 +82,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
     public static var SHARED_SALT: String="rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
+
+    // To conform to crypto legal context
+    public static var KEY_SIZE: KeySize = .s128bits
 
     // Collaboration server base URL
     // This bartlebys default ephemeral demo server (data are erased chronically)

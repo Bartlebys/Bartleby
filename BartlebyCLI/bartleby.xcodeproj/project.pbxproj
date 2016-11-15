@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5010CBA1DDB37D6004E551E /* CryptoKeySize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5010CB91DDB37D6004E551E /* CryptoKeySize.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E53B423B1DDA222100F130AA /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B423A1DDA222100F130AA /* URL+Utilities.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
@@ -256,6 +257,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E5010CB91DDB37D6004E551E /* CryptoKeySize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeySize.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -446,7 +448,7 @@
 		E56719861DD855C500AF5418 /* NSObject+Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bartleby.swift"; sourceTree = "<group>"; };
 		E56719871DD855C500AF5418 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
 		E56719881DD855C500AF5418 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
-		E567198A1DD855C500AF5418 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
+		E567198A1DD855C500AF5418 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginUser.swift; path = ../operations/LoginUser.swift; sourceTree = "<group>"; };
 		E567198B1DD855C500AF5418 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
 		E567198C1DD855C500AF5418 /* TriggersAfterIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersAfterIndex.swift; sourceTree = "<group>"; };
 		E567198D1DD855C500AF5418 /* TriggersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggersByIds.swift; sourceTree = "<group>"; };
@@ -767,6 +769,7 @@
 				E56719281DD855C500AF5418 /* CryptedStringKeyValueTransform.swift */,
 				E56719291DD855C500AF5418 /* CryptedStringTransform.swift */,
 				E567192A1DD855C500AF5418 /* CryptoHelper.swift */,
+				E5010CB91DDB37D6004E551E /* CryptoKeySize.swift */,
 				E567192B1DD855C500AF5418 /* Data+HMAC.swift */,
 				E567192C1DD855C500AF5418 /* HMAC.swift */,
 				E567192D1DD855C500AF5418 /* HMACAlgorithms.swift */,
@@ -810,6 +813,7 @@
 				E56719391DD855C500AF5418 /* Context.swift */,
 				E567193A1DD855C500AF5418 /* Default.swift */,
 				E567193B1DD855C500AF5418 /* DocumentError.swift */,
+				E567198A1DD855C500AF5418 /* LoginUser.swift */,
 				E567193C1DD855C500AF5418 /* extensions */,
 				E56719571DD855C500AF5418 /* Global.swift */,
 				E56719581DD855C500AF5418 /* Handlers.swift */,
@@ -929,7 +933,6 @@
 		E56719891DD855C500AF5418 /* operations */ = {
 			isa = PBXGroup;
 			children = (
-				E567198A1DD855C500AF5418 /* LoginUser.swift */,
 				E567198B1DD855C500AF5418 /* LogoutUser.swift */,
 				E567198C1DD855C500AF5418 /* TriggersAfterIndex.swift */,
 				E567198D1DD855C500AF5418 /* TriggersByIds.swift */,
@@ -1286,6 +1289,7 @@
 				E5671A3C1DD855C500AF5418 /* LogEntriesObserver.swift in Sources */,
 				E5671A541DD855C500AF5418 /* VerifyLocker.swift in Sources */,
 				E56719D91DD855C500AF5418 /* UpdateLocker.swift in Sources */,
+				E5010CBA1DDB37D6004E551E /* CryptoKeySize.swift in Sources */,
 				E56719B91DD855C500AF5418 /* CreateNodes.swift in Sources */,
 				E56719D71DD855C500AF5418 /* UpdateBox.swift in Sources */,
 				E5CC28FD1D846CB300F7C783 /* NetworkReachabilityManager.swift in Sources */,

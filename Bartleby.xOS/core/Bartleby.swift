@@ -79,7 +79,7 @@ import Foundation
             Bartleby.cryptoDelegate=NoCrypto()
         } else {
             //Initialize the crypto delegate with the valid KEY & SALT
-            Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT)
+            Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT,keySize:configuration.KEY_SIZE)
         }
 
         // Store the configuration

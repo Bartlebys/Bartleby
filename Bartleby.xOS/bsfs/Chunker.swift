@@ -37,15 +37,15 @@ struct  Chunker {
     ///   - fileManager: the file manager instance (should be only used on the Utility Queue)
     ///   - cryptoKey: the key used for crypto 32 char min.
     ///   - cryptoSalt: the salt
+    ///   - keySize: the key size
     ///   - mode:  When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     ///   - destroyChunksFolder: if set to true the chunks destination folder will be cleanup before writing the chunks (.real mode only)
-    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,mode:Chunker.Mode = .digestAndProcessing, destroyChunksFolder:Bool=false) {
+    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,keySize:KeySize = .s128bits,mode:Chunker.Mode = .digestAndProcessing, destroyChunksFolder:Bool=false) {
         self._fileManager=fileManager
         self.mode=mode
         self.destroyChunksFolder=destroyChunksFolder
-        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt)
+        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt,keySize:keySize)
     }
-
 
 
     // MARK: - Files and Folder to Chunk
