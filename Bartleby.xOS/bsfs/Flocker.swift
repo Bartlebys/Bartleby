@@ -14,7 +14,7 @@ import Foundation
  Binary Format specs
 
  --------
- data -> the  Nodes binary
+ data -> the  Nodes binary  
  --------
  footer -> serialized crypted and compressed Container
  --------
@@ -238,6 +238,13 @@ struct Flocker{
                             // It is a file
                             node.nature=Node.Nature.file
                             if let fileHandle=FileHandle(forReadingAtPath:filePath ){
+
+                                // We Can't guess what will Happen
+                                // But we want a guarantee the handle will be closed
+                                defer{
+                                    fileHandle.closeFile()
+                                }
+
                                 // determine the length
                                 let _=fileHandle.seekToEndOfFile()
                                 let length=fileHandle.offsetInFile
@@ -257,7 +264,11 @@ struct Flocker{
                                 var position:UInt64=0
                                 var counter=0
 
+
+
                                 do {
+
+
                                     for i in 0 ... nb{
                                         // We try to reduce the memory usage
                                         // To the footprint of a Chunk +  Derivated Data.
@@ -273,14 +284,12 @@ struct Flocker{
                                             if encrypt{
                                                 data = try self._cryptoHelper.encryptData(data)
                                             }
-
-                                            writeHandle.seekToEndOfFile()
-
                                             let writePosition=Int(writeHandle.offsetInFile)
                                             let lengthOfAddedData:Int=data.count
-                                            print("\(filePath) [\(length)] \(position) \(writePosition) \(writePosition+lengthOfAddedData) | \(lengthOfAddedData)")
+                                            print("\(i) \(filePath) [\(length)] \(position) \(writePosition) \(writePosition+lengthOfAddedData) | \(lengthOfAddedData)")
 
                                             writeHandle.write(data)
+
                                             let block=BlockShadow()
                                             block.defineUID()
                                             block.startsAt = writePosition-lengthOfAddedData
@@ -293,14 +302,15 @@ struct Flocker{
                                             node.blocksUIDS.append(block.UID)
                                             container.blocks.append(block)
                                             counter+=1
-
                                         })
                                     }
-                                    fileHandle.closeFile()
+
                                     container.nodes.append(node)
                                     Async.main{
                                         success()
                                     }
+
+
                                 }catch{
                                     Async.main{
                                         failure("\(error)")
@@ -347,8 +357,6 @@ struct Flocker{
             // Write its size
             let sizeData=Data(bytes:&cryptedSize,count:intSize)
             handle.write(sizeData)
-            // CLose the file handle
-            handle.closeFile()
         }
     }
 
@@ -441,6 +449,13 @@ struct Flocker{
         var catched:Error?=nil
         group.utility {
             if let fileHandle=FileHandle(forReadingAtPath:flockedFile ){
+
+                // We Can't guess what will Happen
+                // But we want a guarantee the handle will be closed
+                defer{
+                    fileHandle.closeFile()
+                }
+
                 /*
                  Binary Format specs
                  --------
@@ -468,7 +483,6 @@ struct Flocker{
                     data = try self._cryptoHelper.decryptData(data)
                     data = try data.decompress(algorithm: .lz4)
                     container = try JSerializer.deserialize(data) as? Container
-                    fileHandle.closeFile()
                 }catch{
                     catched=error
                 }
@@ -563,8 +577,15 @@ struct Flocker{
                     try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
                     self._fileManager.createFile(atPath: destinationFile, contents: nil, attributes: nil)
 
-                    if let writeFileHande = FileHandle(forWritingAtPath:destinationFile ){
-                        writeFileHande.seek(toFileOffset: 0)
+                    if let writeFileHandler = FileHandle(forWritingAtPath:destinationFile ){
+
+                        // We Can't guess what will Happen
+                        // But we want a guarantee the handle will be closed
+                        defer{
+                            writeFileHandler.closeFile()
+                        }
+
+                        writeFileHandler.seek(toFileOffset: 0)
                         for block in blocks{
                             autoreleasepool(invoking: { () -> Void in
                                 do{
@@ -581,7 +602,7 @@ struct Flocker{
                                         data = try data.decompress(algorithm: .lz4)
                                     }
                                     let decompressDataSize=data.count
-                                    writeFileHande.write(data)
+                                    writeFileHandler.write(data)
                                     print("\(counter)-\(block.rank)| \(startsAt) \(size) =>\(rawDataSize) - \(decryptDataSize)- \(decompressDataSize) --")
                                     __progressWithPath(destinationFile)
                                 }catch{
@@ -590,7 +611,6 @@ struct Flocker{
                                 }
                             })
                         }
-                        writeFileHande.closeFile()
                     }else{
                         failuresMessages.append("Enable to create file Handle \(destinationFile)")
                         __progressWithPath(destinationFile,error:true)
@@ -605,7 +625,7 @@ struct Flocker{
             }else if nodeNature == .folder{
                 Async.utility{
                     do{
-                        try FileManager.default.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                        try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
                         __progressWithPath(destinationFile)
                     }catch{
                         failuresMessages.append("\(error)")
@@ -617,7 +637,7 @@ struct Flocker{
             }else if nodeNature == .alias{
                 Async.utility{
                     do{
-                        try FileManager.default.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
+                        try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
                         __progressWithPath(destinationFile)
                     }catch{
                         failuresMessages.append("\(error)")

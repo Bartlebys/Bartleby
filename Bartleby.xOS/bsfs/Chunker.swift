@@ -287,6 +287,12 @@ struct  Chunker {
             // Read each chunk efficiently
             if let fileHandle=FileHandle(forReadingAtPath:path ){
 
+                // We Can't guess what will Happen
+                // But we want a guarantee the handle will be closed
+                defer{
+                    fileHandle.closeFile()
+                }
+
                 let _=fileHandle.seekToEndOfFile()
                 let l=fileHandle.offsetInFile
                 fileHandle.seek(toFileOffset: 0)
@@ -389,9 +395,8 @@ struct  Chunker {
                             }
 
                         })
-
                     }
-                    fileHandle.closeFile()
+
                     Async.main{
                         success(chunks)
                     }
