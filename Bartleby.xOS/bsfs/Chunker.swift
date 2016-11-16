@@ -85,7 +85,9 @@ struct  Chunker {
                 progressionState.externalIdentifier=assembledFolderPath
                 progressionState.message=NSLocalizedString("Creating chunks: ", tableName:"system", comment: "Creating chunks: ")+" \(assembledFolderPath)"
             }
-            progression(progressionState)
+            Async.main{
+                progression(progressionState)
+            }
 
             var failuresMessages=[String]()
             var cumulatedChunks=[Chunk]()
@@ -364,7 +366,7 @@ struct  Chunker {
 
                 do {
                     for i in 0 ... nb{
-                        // We donnot want to reduce the memory usage
+                        // We try to reduce the memory usage
                         // To the footprint of a Chunk +  Derivated Data.
                         try autoreleasepool(invoking: { () -> Void in
                             fileHandle.seek(toFileOffset: position)
@@ -458,10 +460,12 @@ struct  Chunker {
                 let destinationFile=assemblyFolderPath+v[0].nodePath
                 let nodeNature=v[0].nodeNature
 
-                // Sub func for normalized progression relay
-                func __progressWithPath(_ path:String){
+                // Sub func for normalized progression and finalization handling
+                func __progressWithPath(_ path:String,error:Bool=false){
                     counter += 1
-                    createdPaths.append(path)
+                    if (!error){
+                        createdPaths.append(path)
+                    }
                     progressionState.silentGroupedChanges {
                         progressionState.message=path
                         progressionState.currentTaskIndex=counter
@@ -471,6 +475,19 @@ struct  Chunker {
                     Async.main{
                         progression(progressionState)
                     }
+                    if counter==filePathToChunks.count{
+                        Async.main{
+                            if failuresMessages.count==0{
+                                // it is a success
+                                success()
+                            }else{
+                                // Reduce the errors
+                                failure(createdPaths, failuresMessages.reduce("Errors: ", { (r, s) -> String in
+                                    return r + " \(s)"
+                                }))
+                            }
+                        }
+                    }
                 }
 
                 if nodeNature == .file{
@@ -478,6 +495,9 @@ struct  Chunker {
                     let chunksPaths=v.map({ (chunk) -> String in
                         return assemblyFolderPath+"/.blocks"+chunk.relativePath //chunk.absolutePath
                     })
+
+                    try? self._fileManager.removeItem(atPath: destinationFile)
+
                     self.joinChunksToFile(from: chunksPaths,
                                           to: destinationFile,
                                           decompress: true,
@@ -485,55 +505,42 @@ struct  Chunker {
                                           progression: { (progression) in
                                             //
                     }, success: { path in
-                        counter += 1
                         __progressWithPath(path)
-                        if counter==filePathToChunks.count{
-                            Async.main{
-                                if failuresMessages.count==0{
-                                    // it is a success
-                                    success()
-                                }else{
-                                    // Reduce the errors
-                                    failure(createdPaths, failuresMessages.reduce("Errors: ", { (r, s) -> String in
-                                        return r + " \(s)"
-                                    }))
-                                }
-                            }
-                        }
                     }, failure: { (message) in
-                        counter += 1
                         failuresMessages.append(message)
+                        __progressWithPath(destinationFile,error:true)
                     })
 
                 }else if nodeNature == .folder{
-                    counter += 1
                     Async.utility{
                         do{
-                            try FileManager.default.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                            if !self._fileManager.fileExists(atPath: destinationFile){
+                                try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                            }
                             __progressWithPath(destinationFile)
                         }catch{
+
                             failuresMessages.append("\(error)")
+                            __progressWithPath(destinationFile,error:true)
                         }
                     }
 
-
                 }else if nodeNature == .alias{
-                    counter += 1
+
                     Async.utility{
                         do{
-                            try FileManager.default.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
+                            try? self._fileManager.removeItem(atPath: destinationFile)
+                            try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
                             __progressWithPath(destinationFile)
                         }catch{
                             failuresMessages.append("\(error)")
+                            __progressWithPath(destinationFile,error:true)
                         }
                     }
 
                 }
             }
         }
-
-
-
     }
 
 
@@ -552,7 +559,7 @@ struct  Chunker {
     ///   - success: the success closure
     ///   - failure: the failure closure
     public func joinChunksToFile (   from chunksPaths:[String],
-                                     to assemblyFolderPath:String,
+                                     to destinationFilePath:String,
                                      decompress:Bool,
                                      decrypt:Bool,
                                      externalId:String=Default.NO_UID,
@@ -563,12 +570,12 @@ struct  Chunker {
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
             do{
-                let folderPath=(assemblyFolderPath as NSString).deletingLastPathComponent
+                let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
                 try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
-                self._fileManager.createFile(atPath: assemblyFolderPath, contents: nil, attributes: nil)
+                self._fileManager.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
 
                 // Assemble
-                if let writeFileHande = FileHandle(forWritingAtPath:assemblyFolderPath ){
+                if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
                     writeFileHande.seek(toFileOffset: 0)
 
                     let progressionState=Progression()
@@ -604,12 +611,12 @@ struct  Chunker {
                         })
                     }
                     Async.main{
-                        success(assemblyFolderPath)
+                        success(destinationFilePath)
                     }
 
                 }else{
                     Async.main{
-                        failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(assemblyFolderPath)")
+                        failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
                     }
                 }
             }catch{
