@@ -164,6 +164,28 @@ Such an archive is :
  The footer contains a Serialized Container
 ```
 
+# Benchmarks
+
+On standard H264 video using average 30MB of RAM
+
+```
+-----
+Flocking: /Users/bpds/Desktop/FolderForTests
+Total: 3038 MB
+Total Compressed: 1611 MB
+Duration:19.9752079844475seconds
+Processing Rate: 152 MB/s
+Compression : 53%
+Unflocking: /Users/bpds/Desktop/flock.flk
+Total: 3038 MB
+Total Compressed: 1611 MB
+Duration:6.44131100177765seconds
+Processing Rate: 471 MB/s
+Compression : 53%
+Program ended with exit code: 0
+```
+
+
 ----
 # Extended Models
 

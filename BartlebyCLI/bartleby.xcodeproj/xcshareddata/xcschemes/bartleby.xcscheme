@@ -79,15 +79,19 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "testChunkerDigest"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "testChunker"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "testChunkerFolder"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "testChunkerDigest"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "testFlocker"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
