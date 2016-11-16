@@ -425,6 +425,8 @@
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
 		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E5854AE01DDCAAAD00C774E5 /* BytesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */; };
+		E5854AE11DDCAE1400C774E5 /* BytesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */; };
 		E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906C1DC77F0600F235B5 /* DecryptView.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
@@ -724,6 +726,7 @@
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BytesStats.swift; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E598906C1DC77F0600F235B5 /* DecryptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptView.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1023,6 +1026,7 @@
 				E542422F1DDAFF3900E4A777 /* DataChunk.swift */,
 				E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */,
 				E54A9DAB1DD4634B0066F20D /* Flocker.swift */,
+				E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */,
 				E54A9DAC1DD4634B0066F20D /* FileReference.swift */,
 				E54A9DA71DD4634B0066F20D /* extensions */,
 				E54A9DAD1DD4634B0066F20D /* operations */,
@@ -1568,6 +1572,7 @@
 				E54A9E4B1DD4634B0066F20D /* HTTPRequest.swift in Sources */,
 				E54A9E6D1DD4634B0066F20D /* CreateLocker.swift in Sources */,
 				E54A9F371DD4634B0066F20D /* PushOperation+Conveniences.swift in Sources */,
+				E5854AE01DDCAAAD00C774E5 /* BytesStats.swift in Sources */,
 				E54A9F5B1DD4634B0066F20D /* Distribuable.swift in Sources */,
 				E54A9E351DD4634B0066F20D /* UsersManagedCollection.swift in Sources */,
 				E54A9F931DD4634B0066F20D /* User+Auth.swift in Sources */,
@@ -1714,6 +1719,7 @@
 				E54A9EE21DD4634B0066F20D /* CryptedKeyValueStorage.swift in Sources */,
 				E54A9F3A1DD4634B0066F20D /* Global.swift in Sources */,
 				E54A9E6C1DD4634B0066F20D /* CreateBoxes.swift in Sources */,
+				E5854AE11DDCAE1400C774E5 /* BytesStats.swift in Sources */,
 				E54A9F3C1DD4634B0066F20D /* Handlers.swift in Sources */,
 				E54A9F321DD4634B0066F20D /* NSNotification+Completion.swift in Sources */,
 				E54A9EC81DD4634B0066F20D /* Block+Facilities.swift in Sources */,

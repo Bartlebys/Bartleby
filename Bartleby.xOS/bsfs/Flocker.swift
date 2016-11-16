@@ -56,7 +56,7 @@ struct Flocker{
     func flockFolder(folderReference:FileReference,
                      destination path:String,
                      progression:@escaping((Progression)->()),
-                     success:@escaping ()->(),
+                     success:@escaping (BytesStats)->(),
                      failure:@escaping (Container,String)->())->(){
 
         self._flock(filesIn: folderReference.absolutePath,
@@ -82,9 +82,10 @@ struct Flocker{
                               compress:Bool=true,
                               encrypt:Bool=true,
                               progression:@escaping((Progression)->()),
-                              success:@escaping ()->(),
+                              success:@escaping (BytesStats)->(),
                               failure:@escaping (Container,String)->()){
 
+        var stats=BytesStats(name: "Flocking: \(folderPath)")
         let container=Container()
         container.defineUID()
         let box=BoxShadow()
@@ -97,13 +98,10 @@ struct Flocker{
 
                 let progressionState=Progression()
                 progressionState.silentGroupedChanges {
-                    progressionState.totalTaskCount=1
+                    progressionState.totalTaskCount=0
                     progressionState.currentTaskIndex=0
                     progressionState.externalIdentifier=folderPath
-                    progressionState.message=NSLocalizedString("Adding file: ", tableName:"system", comment: "Adding file:  ")+" \(folderPath)"
-                }
-                Async.main{
-                    progression(progressionState)
+                    progressionState.message=""
                 }
 
                 var failuresMessages=[String]()
@@ -135,6 +133,23 @@ struct Flocker{
                     progressionState.totalTaskCount += paths.count
                     let pathNb=paths.count
                     var counter=0
+
+                    // Relays the progression
+                    func __onProgression(message:String, incrementGlobalCounter:Bool=true){
+                        if incrementGlobalCounter{
+                            counter += 1
+                        }
+                        progressionState.silentGroupedChanges {
+                            progressionState.currentTaskIndex=counter
+                            progressionState.message=message
+                        }
+                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        Async.main{
+                            // Relay the progression
+                            progression(progressionState)
+                        }
+                    }
+
                     for relativePath in paths{
                         self._append(folderPath: folderPath,
                                      relativePath:relativePath,
@@ -144,19 +159,11 @@ struct Flocker{
                                      chunkMaxSize:chunkMaxSize,
                                      compress:compress,
                                      encrypt:encrypt,
-                                     progression: { (Progression) in
-                                        // We donnot need to consign discreet progression
+                                     stats:stats,
+                                     progression: { (subProgression) in
+                                __onProgression(message: subProgression.message,incrementGlobalCounter: false)
                         }, success: {
-                            counter += 1
-                            progressionState.silentGroupedChanges {
-                                progressionState.currentTaskIndex=counter
-                                progressionState.message=relativePath
-                            }
-                            progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                            Async.main{
-                                // Relay the progression
-                                progression(progressionState)
-                            }
+                            __onProgression(message: "Flocked: \(relativePath)")
                             if counter == pathNb{
                                 defer{
                                     // Close the flockFileHandle
@@ -170,7 +177,7 @@ struct Flocker{
                                 }
                                 if failuresMessages.count==0{
                                     // it is a success
-                                    success()
+                                    success(stats)
                                 }else{
                                     // Reduce the errors
                                     failure(container,failuresMessages.reduce("Errors: ", { (r, s) -> String in
@@ -223,6 +230,7 @@ struct Flocker{
                               chunkMaxSize:Int=10*MB,
                               compress:Bool=true,
                               encrypt:Bool=true,
+                              stats:BytesStats,
                               progression:@escaping((Progression)->()),
                               success:@escaping ()->(),
                               failure:@escaping (String)->() )->(){
@@ -285,6 +293,15 @@ struct Flocker{
                             var position:UInt64=0
                             var counter=0
 
+                            let progressionState=Progression()
+                            progressionState.silentGroupedChanges {
+                                progressionState.totalTaskCount=Int(nb)
+                                progressionState.currentTaskIndex=0
+                                progressionState.externalIdentifier=filePath
+                                progressionState.message=""
+                            }
+
+
                             do {
 
                                 for i in 0 ... nb{
@@ -316,6 +333,9 @@ struct Flocker{
                                         // Write the data to flock File
                                         writeHandle.write(data)
 
+                                        // Consign the processing 
+                                        stats.consign(numberOfBytes:UInt(offset),compressedBytes: UInt(lengthOfAddedData))
+
                                         // Create the related block
                                         let block=BlockShadow()
                                         block.defineUID()
@@ -328,19 +348,19 @@ struct Flocker{
                                         block.crypted=encrypt
                                         node.blocksUIDS.append(block.UID)
                                         container.blocks.append(block)
-
                                         counter+=1
-                                        print("\(i) \(filePath) | \( block.startsAt) + \(block.size) = \(block.startsAt+block.size) ")
+                                        Async.main{
+                                            progressionState.currentTaskIndex=counter
+                                            progressionState.message="\(i) \(filePath): <\( block.startsAt), \(block.startsAt+block.size)> + \(block.size) Bytes"
+                                            progression(progressionState)
+                                        }
 
                                     })
                                 }
-
                                 container.nodes.append(node)
                                 Async.main{
                                     success()
                                 }
-
-
                             }catch{
                                 Async.main{
                                     failure("\(error)")
@@ -411,7 +431,7 @@ struct Flocker{
     func unFlock(flockedFile:String
         ,to destination:String
         ,progression:@escaping((Progression)->()),
-         success:@escaping ()->(),
+         success:@escaping (BytesStats)->(),
          failure:@escaping(_ message:String)->()){
         do{
             let container = try self.containerFrom(flockedFile: flockedFile)
@@ -426,11 +446,28 @@ struct Flocker{
                         progressionState.message=""
                     }
 
+                    let stats=BytesStats(name: "Unflocking: \(flockedFile)")
+                    
                     var failuresMessages=[String]()
                     var counter=0
-                    Async.main{
-                        progression(progressionState)
+
+
+                    // Relays the progression
+                    func __onProgression(message:String, incrementGlobalCounter:Bool=true){
+                        if incrementGlobalCounter{
+                            counter += 1
+                        }
+                        progressionState.silentGroupedChanges {
+                            progressionState.currentTaskIndex=counter
+                            progressionState.message=message
+                        }
+                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        Async.main{
+                            // Relay the progression
+                            progression(progressionState)
+                        }
                     }
+
                     for node in container.nodes{
                         let blocks=container.blocks.filter({ (block) -> Bool in
                             return block.nodeUID==node.UID
@@ -442,16 +479,18 @@ struct Flocker{
                         self._assembleNode(node: node,
                                            blocks: sortedBlocks,
                                            flockFileHandle:fileHandle,
-                                           assemblyFolderPath: destination, progression: {
-                                            (progression) in
-                                            // No discreet progression
+                                           assemblyFolderPath: destination,
+                                           stats:stats,
+                                           progression: {
+                                            (subProgression) in
+                                           __onProgression(message:subProgression.message,incrementGlobalCounter: false)
                         }, success: {
-                            counter += 1
+                           __onProgression(message:"Unflocked: \(node.relativePath)",incrementGlobalCounter: true)
                             if counter==container.nodes.count{
                                 Async.main{
                                     if failuresMessages.count==0{
                                         // it is a success
-                                        success()
+                                        success(stats)
                                     }else{
                                         // Reduce the errors
                                         failure(failuresMessages.reduce("Errors: ", { (r, s) -> String in
@@ -461,11 +500,10 @@ struct Flocker{
                                 }
                             }
                         }, failure: { (createdPaths,message) in
-                            counter += 1
+                            __onProgression(message:"Unflocking error: \(message)",incrementGlobalCounter: true)
                             failuresMessages.append(message)
                         })
                     }
-
                 }else{
                     Async.main{
                         failure(NSLocalizedString("Enable to create Reading file Handle", tableName:"system", comment: "Enable to create Reading file Handle")+" \(flockedFile)")
@@ -549,12 +587,10 @@ struct Flocker{
                                blocks:[BlockShadow],
                                flockFileHandle:FileHandle,
                                assemblyFolderPath:String,
+                               stats:BytesStats,
                                progression:@escaping((Progression)->()),
                                success:@escaping ()->(),
                                failure:@escaping (_ createdPaths:[String],_ message:String)->()){
-
-
-        print("\(node.relativePath) \(blocks.count)")
 
         var failuresMessages=[String]()
         var createdPaths=[String]()
@@ -578,13 +614,13 @@ struct Flocker{
 
 
         // Sub func for normalized progression and finalization handling
-        func __progressWithPath(_ path:String,error:Bool=false){
+        func __progressWithPath(_ path:String,error:Bool=false,message:String=""){
             counter += 1
             if (!error){
                 createdPaths.append(path)
             }
             progressionState.silentGroupedChanges {
-                progressionState.message=path
+                progressionState.message = (message == "") ? path : message
                 progressionState.currentTaskIndex=counter
             }
             progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
@@ -632,18 +668,18 @@ struct Flocker{
                                 let size=block.size
                                 flockFileHandle.seek(toFileOffset: startsAt)
                                 var data = flockFileHandle.readData(ofLength: size)
-                                let rawDataSize=data.count
                                 if decrypt{
                                     data = try self._cryptoHelper.decryptData(data)
                                 }
-                                let decryptDataSize=data.count
                                 if decompress{
                                     data = try data.decompress(algorithm: .lz4)
                                 }
                                 let decompressDataSize=data.count
                                 writeFileHandler.write(data)
-                                print("\(counter)-\(block.rank)| \(startsAt) \(size) =>\(rawDataSize) - \(decryptDataSize)- \(decompressDataSize) -- \(destinationFile)")
-                                __progressWithPath(destinationFile)
+                                stats.consign(numberOfBytes: UInt(decompressDataSize),compressedBytes: UInt(size))
+
+                                let message="\(block.rank) \(destinationFile): <\( block.startsAt), \(block.startsAt+block.size)> + \(block.size) Bytes"
+                                __progressWithPath(destinationFile,error: false,message:message )
                             }catch{
                                 failuresMessages.append("\(error)")
                                 __progressWithPath(destinationFile,error:true)
@@ -659,20 +695,21 @@ struct Flocker{
                 failuresMessages.append("\(error)")
                 __progressWithPath(destinationFile,error:true)
             }
-
-
         }else if nodeNature == .folder{
-
             do{
-                try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                if !self._fileManager.fileExists(atPath: destinationFile){
+                    try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                }
                 __progressWithPath(destinationFile)
             }catch{
                 failuresMessages.append("\(error)")
                 __progressWithPath(destinationFile,error:true)
             }
-
         }else if nodeNature == .alias{
             do{
+                if self._fileManager.fileExists(atPath: destinationFile){
+                   try? self._fileManager.removeItem(atPath: destinationFile)
+                }
                 try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
                 __progressWithPath(destinationFile)
             }catch{
@@ -686,8 +723,7 @@ struct Flocker{
 
     // MARK:  Read Access
 
-    func extractNode(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String)->String{
-        return ""
+    func extractNode(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String){
     }
 
     // MARK: Write Access
@@ -705,7 +741,7 @@ struct Flocker{
 
     // Remove the holes
     func compact(container:Container, of flockedFilePath:String){
-
+        // TODO
     }
 
     // MARK: - Private implementation details
