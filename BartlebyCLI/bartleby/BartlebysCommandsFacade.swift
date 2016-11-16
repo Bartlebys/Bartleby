@@ -26,7 +26,6 @@ struct BartlebysCommandFacade {
         case "testChunkerDigest"?:
             let startTime=CFAbsoluteTimeGetCurrent()
             // Chunk trials
-            Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
             let chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
             // let folder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!
             // let folder="/Users/bpds/Documents/Entrepot/Autoformation/Videos"
@@ -68,9 +67,7 @@ struct BartlebysCommandFacade {
             break
         case "testChunker"? :
             // Chunk trials
-            Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
             let chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
-
             let startTime=CFAbsoluteTimeGetCurrent()
             if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
                 chunker.breakIntoChunk(fileAt:"\(userDir)/FileChunker/large.mp4", relativePath:"/large.mp4", chunksFolderPath: "\(userDir)/Tests-One-Large-File/.blocks", compress: true, encrypt: true
@@ -109,10 +106,8 @@ struct BartlebysCommandFacade {
         case "testChunkerFolder"? :
 
             print("Processing...")
-
-            Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration.self)
             var chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
-            chunker.destroyChunksFolder=true// Destruct the chunks 
+            chunker.destroyChunksFolder=true// Destruct the chunks
 
             if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
                 let sourceFolder="\(userDir)/FolderForTests"
@@ -126,7 +121,7 @@ struct BartlebysCommandFacade {
                     chunker.joinsChunks(chunks: chunks,
                                         assemblyFolderPath: destinationFolder,
                                         progression: { (progression) in
-                        print (progression)
+                                            print (progression)
                     }, success: {
                         print ("Success")
                         exit(EX_OK)
@@ -134,73 +129,6 @@ struct BartlebysCommandFacade {
                         print ("Failure \(error)")
                         exit(EX_DATAERR)
                     })
-
-                    /*
-
-                    // #1 Compute the file path to chunk.
-                    var filePathToChunks=[String:[Chunk]]()
-                    for chunk in chunks{
-                        if !filePathToChunks.contains(where: { (k,v) -> Bool in
-                            return k==chunk.nodePath
-                        }){
-                            filePathToChunks[chunk.nodePath]=[Chunk]()
-                        }
-                        filePathToChunks[chunk.nodePath]!.append(chunk)
-                    }
-
-                    // #2 re-join the files
-                    var counter=0
-                    for (_,v) in filePathToChunks{
-                        let destinationFile=destinationFolder+v[0].nodePath
-                        let nodeNature=v[0].nodeNature
-
-                        if nodeNature == .file{
-
-                            let chunksPaths=v.map({ (chunk) -> String in
-                                return destinationFolder+"/.blocks"+chunk.relativePath //chunk.absolutePath
-                            })
-
-                            print ("Joining \(destinationFile)")
-                            chunker.joinChunksToFile(from: chunksPaths,
-                                               to: destinationFile,
-                                               decompress: true,
-                                               decrypt: true,
-                                               progression: { (progression) in
-                                                //
-                            }, success: { path in
-                                counter += 1
-                                print ("\(counter)/\(filePathToChunks.count) \(path)")
-                                if counter==filePathToChunks.count{
-                                    exit(EX_OK)
-                                }
-                            }, failure: { (message) in
-                                print("ERROR \(message)")
-                                exit(EX_DATAERR)
-                            })
-
-                        }else if nodeNature == .folder{
-                            counter += 1
-                            print ("\(nodeNature): \(counter)/\(filePathToChunks.count) \(destinationFile)")
-                            Async.utility{
-                                try? FileManager.default.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
-                            }
-
-
-                        }else if nodeNature == .alias{
-                            counter += 1
-                            print ("\(nodeNature): \(counter)/\(filePathToChunks.count) \(destinationFile)")
-                            Async.utility{
-                                try? FileManager.default.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
-                            }
-
-                        }
-
-                        if counter==filePathToChunks.count{
-                            exit(EX_OK)
-                        }
-                    }
-*/
-
                 }, failure: { (chunks, message) in
                     print(message)
                     exit(EX_DATAERR)
@@ -208,6 +136,54 @@ struct BartlebysCommandFacade {
             }else{
                 exit(EX_OK)
             }
+            break
+        case "testFlocker"? :
+
+            func __unFlock(using flocker:Flocker){
+                print("Processing...")
+                let startTime=CFAbsoluteTimeGetCurrent()
+                if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
+                    let source="\(userDir)/flock.flk"
+                    let destination="\(userDir)/Unflocked"
+                    flocker.unFlock(flockedFile: source, to: destination, progression: { (progression) in
+                        print(progression)
+                    }, success: {
+                        print("Unflock Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                        exit(EX_OK)
+                    }, failure: { (message) in
+                        print("\(message)")
+                    })
+                }else{
+                    exit(EX_OK)
+                }
+            }
+
+            func __flock(){
+                print("Processing...")
+                let startTime=CFAbsoluteTimeGetCurrent()
+                let flocker=Flocker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
+                if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
+                    let sourceFolder="\(userDir)/FolderForTests"
+                    let destination="\(userDir)/flock.flk"
+                    var sourceRef=FileReference.publicFileReference(at: sourceFolder)
+                    sourceRef.crypted=true
+                    sourceRef.compressed=true
+                    sourceRef.priority=1
+                    flocker.flockFolder(folderReference: sourceRef, destination: destination, progression: { (progression) in
+                        print(progression)
+                    }, success: {
+                        print("Flock Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                        __unFlock(using:flocker)
+                    }, failure: { (container, message) in
+                        print(message)
+                        exit(EX_DATAERR)
+                    })
+                }else{
+                    exit(EX_OK)
+                }
+            }
+            __flock()
+
             break
         default:
             // We want to propose the best verb candidate
@@ -220,7 +196,8 @@ struct BartlebysCommandFacade {
                 "testChunker",
                 "testChunkerDigest",
                 "testChunkerFolder",
-                ]
+                "testFlocker"
+            ]
             let bestCandidate=self.bestCandidate(string: firstArgumentAfterExecutablePath!, reference: reference)
             print("Hey ...\"bartleby \(firstArgumentAfterExecutablePath!)\" is unexpected!")
             print("Did you mean:\"bartleby \(bestCandidate)\"?")
@@ -245,6 +222,7 @@ struct BartlebysCommandFacade {
         s += "\n\t\(executableName) testChunker"
         s += "\n\t\(executableName) testChunkerDigest"
         s += "\n\t\(executableName) testChunkerFolder"
+        s += "\n\t\(executableName) testFlocker"
         s += "\n"
         s += "\nRemember that you can call help for each verb"
         s += "\n"
