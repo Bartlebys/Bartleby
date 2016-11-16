@@ -150,6 +150,7 @@ struct Flocker{
                             counter += 1
                             progressionState.silentGroupedChanges {
                                 progressionState.currentTaskIndex=counter
+                                progressionState.message=relativePath
                             }
                             progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
                             Async.main{
@@ -184,7 +185,7 @@ struct Flocker{
                         })
                     }
                 }else{
-                     // Close the flockFileHandle
+                    // Close the flockFileHandle
                     flockFileHandle.closeFile()
                     Async.main{
                         failure(container,NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(folderPath)")
@@ -200,6 +201,20 @@ struct Flocker{
     }
 
 
+    /// Appends a file a folder or an alias to flock file
+    /// IMPORTANT! this method Must be called on the utility Queue
+    /// - Parameters:
+    ///   - folderPath: the base folder path
+    ///   - relativePath: the relative path
+    ///   - writeHandle: the flock file handle
+    ///   - container: the container (flock informations)
+    ///   - authorized: the authorized list
+    ///   - chunkMaxSize: the chunk or block max size
+    ///   - compress: should we compress ?
+    ///   - encrypt: should we encrypt?
+    ///   - progression: the progression closure
+    ///   - success: the success closure
+    ///   - failure: the failure closure
     fileprivate func _append( folderPath:String,
                               relativePath:String,
                               writeHandle:FileHandle,
@@ -220,135 +235,151 @@ struct Flocker{
         node.boxUID=container.boxes[0].UID
         node.compressedBlocks=compress
         node.cryptedBlocks=encrypt
-        Async.utility {
-            if self._isPathValid(filePath){
-                if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: filePath){
-                    if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
+        node.authorized=authorized
 
-                        if (URL(fileURLWithPath: filePath).isAnAlias){
-                            // It is an alias
-                            var aliasDestinationPath:String=Default.NO_PATH
-                            do{
-                                aliasDestinationPath = try self._resolveAlias(at:filePath)
-                            }catch{
-                                glog("Alias resolution error for path \(filePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+        if self._isPathValid(filePath){
+            if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: filePath){
+                if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
+
+                    if (URL(fileURLWithPath: filePath).isAnAlias){
+                        // It is an alias
+                        var aliasDestinationPath:String=Default.NO_PATH
+                        do{
+                            aliasDestinationPath = try self._resolveAlias(at:filePath)
+                        }catch{
+                            glog("Alias resolution error for path \(filePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        }
+                        node.nature=Node.Nature.alias
+                        node.proxyPath=aliasDestinationPath
+                        container.nodes.append(node)
+                        Async.main{
+                            success()
+                        }
+                    }else if type==FileAttributeType.typeRegular{
+                        // It is a file
+                        node.nature=Node.Nature.file
+                        if let fileHandle=FileHandle(forReadingAtPath:filePath ){
+
+                            // We Can't guess what will Happen
+                            // But we want a guarantee the handle will be closed
+                            defer{
+                                fileHandle.closeFile()
                             }
-                            node.nature=Node.Nature.alias
-                            node.proxyPath=aliasDestinationPath
-                            container.nodes.append(node)
-                            Async.main{
-                                success()
+
+                            // determine the length
+                            let _=fileHandle.seekToEndOfFile()
+                            let length=fileHandle.offsetInFile
+                            // reposition to 0
+                            fileHandle.seek(toFileOffset: 0)
+                            let maxSize:UInt64 = UInt64(chunkMaxSize)
+                            let n:UInt64 = length / maxSize
+                            var rest:UInt64 = length % maxSize
+                            var nb:UInt64=0
+                            if rest>0 && length >= maxSize{
+                                nb += n
                             }
-                        }else if type==FileAttributeType.typeRegular{
-                            // It is a file
-                            node.nature=Node.Nature.file
-                            if let fileHandle=FileHandle(forReadingAtPath:filePath ){
+                            if length < maxSize{
+                                rest = length
+                            }
+                            var offset:UInt64=0
+                            var position:UInt64=0
+                            var counter=0
 
-                                // We Can't guess what will Happen
-                                // But we want a guarantee the handle will be closed
-                                defer{
-                                    fileHandle.closeFile()
+                            do {
+
+                                for i in 0 ... nb{
+                                    // We try to reduce the memory usage
+                                    // To the footprint of a Chunk +  Derivated Data.
+                                    try autoreleasepool(invoking: { () -> Void in
+
+                                        fileHandle.seek(toFileOffset: position)
+                                        offset = (i==nb ? rest : maxSize)
+                                        position += offset
+
+                                        // Read the block data
+                                        var data=fileHandle.readData(ofLength: Int(offset))
+                                        // Store the original sha1 (independent from compression and encryption)
+                                        let sha1=data.sha1
+                                        if compress{
+                                            data = try data.compress(algorithm: .lz4)
+                                        }
+                                        if encrypt{
+                                            data = try self._cryptoHelper.encryptData(data)
+                                        }
+
+                                        // Store the current write position before adding the new data
+                                        let writePosition=Int(writeHandle.offsetInFile)
+
+                                        // How much data will we write ?
+                                        let lengthOfAddedData:Int=data.count
+
+                                        // Write the data to flock File
+                                        writeHandle.write(data)
+
+                                        // Create the related block
+                                        let block=BlockShadow()
+                                        block.defineUID()
+                                        block.startsAt = writePosition
+                                        block.size = lengthOfAddedData
+                                        block.digest=sha1
+                                        block.rank=counter
+                                        block.nodeUID=node.UID
+                                        block.compressed=compress
+                                        block.crypted=encrypt
+                                        node.blocksUIDS.append(block.UID)
+                                        container.blocks.append(block)
+
+                                        counter+=1
+                                        print("\(i) \(filePath) | \( block.startsAt) + \(block.size) = \(block.startsAt+block.size) ")
+
+                                    })
                                 }
 
-                                // determine the length
-                                let _=fileHandle.seekToEndOfFile()
-                                let length=fileHandle.offsetInFile
-                                // reposition to 0
-                                fileHandle.seek(toFileOffset: 0)
-                                let maxSize:UInt64 = UInt64(chunkMaxSize)
-                                let n:UInt64 = length / maxSize
-                                var rest:UInt64 = length % maxSize
-                                var nb:UInt64=0
-                                if rest>0 && length >= maxSize{
-                                    nb += n
-                                }
-                                if length < maxSize{
-                                    rest = length
-                                }
-                                var offset:UInt64=0
-                                var position:UInt64=0
-                                var counter=0
-
-
-
-                                do {
-
-
-                                    for i in 0 ... nb{
-                                        // We try to reduce the memory usage
-                                        // To the footprint of a Chunk +  Derivated Data.
-                                        try autoreleasepool(invoking: { () -> Void in
-                                            fileHandle.seek(toFileOffset: position)
-                                            offset = (i==nb ? rest : maxSize)
-                                            position += offset
-                                            var data=fileHandle.readData(ofLength: Int(offset))
-                                            let sha1=data.sha1
-                                            if compress{
-                                                data = try data.compress(algorithm: .lz4)
-                                            }
-                                            if encrypt{
-                                                data = try self._cryptoHelper.encryptData(data)
-                                            }
-                                            let writePosition=Int(writeHandle.offsetInFile)
-                                            let lengthOfAddedData:Int=data.count
-                                            print("\(i) \(filePath) [\(length)] \(position) \(writePosition) \(writePosition+lengthOfAddedData) | \(lengthOfAddedData)")
-
-                                            writeHandle.write(data)
-
-                                            let block=BlockShadow()
-                                            block.defineUID()
-                                            block.startsAt = writePosition-lengthOfAddedData
-                                            block.size = lengthOfAddedData
-                                            block.digest=sha1
-                                            block.rank=counter
-                                            block.nodeUID=node.UID
-                                            block.compressed=compress
-                                            block.crypted=encrypt
-                                            node.blocksUIDS.append(block.UID)
-                                            container.blocks.append(block)
-                                            counter+=1
-                                        })
-                                    }
-
-                                    container.nodes.append(node)
-                                    Async.main{
-                                        success()
-                                    }
-
-
-                                }catch{
-                                    Async.main{
-                                        failure("\(error)")
-                                    }
-                                }
-                            }else{
+                                container.nodes.append(node)
                                 Async.main{
-                                    failure(NSLocalizedString("Enable to create Reading file Handle", tableName:"system", comment: "Enable to create Reading file Handle")+" \(filePath)")
+                                    success()
+                                }
+
+
+                            }catch{
+                                Async.main{
+                                    failure("\(error)")
                                 }
                             }
-                        }else if type==FileAttributeType.typeDirectory{
-                            node.nature=Node.Nature.folder
-                            container.nodes.append(node)
+                        }else{
                             Async.main{
-                                success()
+                                failure(NSLocalizedString("Enable to create Reading file Handle", tableName:"system", comment: "Enable to create Reading file Handle")+" \(filePath)")
                             }
                         }
-                    }
-                }else{
-                    Async.main{
-                        failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(filePath)")
+                    }else if type==FileAttributeType.typeDirectory{
+                        node.nature=Node.Nature.folder
+                        container.nodes.append(node)
+                        Async.main{
+                            success()
+                        }
                     }
                 }
             }else{
                 Async.main{
-                    failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(filePath)")
+                    failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(filePath)")
                 }
             }
+        }else{
+            Async.main{
+                failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(filePath)")
+            }
         }
+
     }
 
 
 
+    /// Appends a file a folder or an alias to flock file
+    /// IMPORTANT! this method Must be called on the utility Queue
+    ///
+    /// - Parameters:
+    ///   - handle: the flock file handle
+    ///   - container: the container to be written
     fileprivate func _writeContainerIntoFlock( handle: FileHandle,
                                                container: Container)throws->(){
         try autoreleasepool { () -> Void in
@@ -404,8 +435,12 @@ struct Flocker{
                         let blocks=container.blocks.filter({ (block) -> Bool in
                             return block.nodeUID==node.UID
                         })
+                        // Consecutive blocks are faster to assemble
+                        let sortedBlocks=blocks.sorted(by: { (lb, rb) -> Bool in
+                            return lb.rank < rb.rank
+                        })
                         self._assembleNode(node: node,
-                                           blocks: blocks,
+                                           blocks: sortedBlocks,
                                            flockFileHandle:fileHandle,
                                            assemblyFolderPath: destination, progression: {
                                             (progression) in
@@ -501,8 +536,8 @@ struct Flocker{
     }
 
 
-    /// Assemble the node
-    ///
+    /// Assembles the node
+    /// IMPORTANT! this method Must be called on the utility Queue
     /// - Parameters:
     ///   - node: the node
     ///   - blocks: the blocks
@@ -518,139 +553,132 @@ struct Flocker{
                                success:@escaping ()->(),
                                failure:@escaping (_ createdPaths:[String],_ message:String)->()){
 
-        Async.utility {
 
-            print("\(node.relativePath) \(blocks.count)")
+        print("\(node.relativePath) \(blocks.count)")
 
-            var failuresMessages=[String]()
-            var createdPaths=[String]()
+        var failuresMessages=[String]()
+        var createdPaths=[String]()
 
-            let decrypt=node.cryptedBlocks
-            let decompress=node.compressedBlocks
+        let decrypt=node.cryptedBlocks
+        let decompress=node.compressedBlocks
 
-            let progressionState=Progression()
+        let progressionState=Progression()
+        progressionState.silentGroupedChanges {
+            progressionState.totalTaskCount=blocks.count
+            progressionState.currentTaskIndex=0
+            progressionState.externalIdentifier=""
+            progressionState.message=""
+        }
+
+
+        var counter=0
+
+        let destinationFile=assemblyFolderPath+node.relativePath
+        let nodeNature=node.nature
+
+
+        // Sub func for normalized progression and finalization handling
+        func __progressWithPath(_ path:String,error:Bool=false){
+            counter += 1
+            if (!error){
+                createdPaths.append(path)
+            }
             progressionState.silentGroupedChanges {
-                progressionState.totalTaskCount=blocks.count
-                progressionState.currentTaskIndex=0
-                progressionState.externalIdentifier=""
-                progressionState.message=""
+                progressionState.message=path
+                progressionState.currentTaskIndex=counter
+            }
+            progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+            // Relay the progression
+            Async.main{
+                progression(progressionState)
             }
 
-
-            var counter=0
-
-            let destinationFile=assemblyFolderPath+node.relativePath
-            let nodeNature=node.nature
-
-
-            // Sub func for normalized progression and finalization handling
-            func __progressWithPath(_ path:String,error:Bool=false){
-                counter += 1
-                if (!error){
-                    createdPaths.append(path)
-                }
-                progressionState.silentGroupedChanges {
-                    progressionState.message=path
-                    progressionState.currentTaskIndex=counter
-                }
-                progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                // Relay the progression
+            if counter>=blocks.count{
                 Async.main{
-                    progression(progressionState)
-                }
-
-                if counter>=blocks.count{
-                    Async.main{
-                        if failuresMessages.count==0{
-                            // it is a success
-                            success()
-                        }else{
-                            let messages=failuresMessages.reduce("Errors: ", { (r, s) -> String in
-                                return r + " \(s)"
-                            })
-                            // Reduce the errors
-                            failure(createdPaths, messages)
-                        }
-                    }
-                }
-            }
-
-
-            if nodeNature == .file{
-                do{
-                    let folderPath=(destinationFile as NSString).deletingLastPathComponent
-                    try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
-                    self._fileManager.createFile(atPath: destinationFile, contents: nil, attributes: nil)
-
-                    if let writeFileHandler = FileHandle(forWritingAtPath:destinationFile ){
-
-                        // We Can't guess what will Happen
-                        // But we want a guarantee the handle will be closed
-                        defer{
-                            writeFileHandler.closeFile()
-                        }
-
-                        writeFileHandler.seek(toFileOffset: 0)
-                        for block in blocks{
-                            autoreleasepool(invoking: { () -> Void in
-                                do{
-                                    let startsAt=UInt64(block.startsAt)
-                                    let size=block.size
-                                    flockFileHandle.seek(toFileOffset: startsAt)
-                                    var data = flockFileHandle.readData(ofLength: size)
-                                    let rawDataSize=data.count
-                                    if decrypt{
-                                        data = try self._cryptoHelper.decryptData(data)
-                                    }
-                                    let decryptDataSize=data.count
-                                    if decompress{
-                                        data = try data.decompress(algorithm: .lz4)
-                                    }
-                                    let decompressDataSize=data.count
-                                    writeFileHandler.write(data)
-                                    print("\(counter)-\(block.rank)| \(startsAt) \(size) =>\(rawDataSize) - \(decryptDataSize)- \(decompressDataSize) --")
-                                    __progressWithPath(destinationFile)
-                                }catch{
-                                    failuresMessages.append("\(error)")
-                                    __progressWithPath(destinationFile,error:true)
-                                }
-                            })
-                        }
+                    if failuresMessages.count==0{
+                        // it is a success
+                        success()
                     }else{
-                        failuresMessages.append("Enable to create file Handle \(destinationFile)")
-                        __progressWithPath(destinationFile,error:true)
-
-                    }
-                }catch{
-                    failuresMessages.append("\(error)")
-                    __progressWithPath(destinationFile,error:true)
-                }
-
-
-            }else if nodeNature == .folder{
-                Async.utility{
-                    do{
-                        try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
-                        __progressWithPath(destinationFile)
-                    }catch{
-                        failuresMessages.append("\(error)")
-                        __progressWithPath(destinationFile,error:true)
-                    }
-                }
-
-
-            }else if nodeNature == .alias{
-                Async.utility{
-                    do{
-                        try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
-                        __progressWithPath(destinationFile)
-                    }catch{
-                        failuresMessages.append("\(error)")
-                        __progressWithPath(destinationFile,error:true)
+                        let messages=failuresMessages.reduce("Errors: ", { (r, s) -> String in
+                            return r + " \(s)"
+                        })
+                        // Reduce the errors
+                        failure(createdPaths, messages)
                     }
                 }
             }
+        }
 
+
+        if nodeNature == .file{
+            do{
+                let folderPath=(destinationFile as NSString).deletingLastPathComponent
+                try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
+                self._fileManager.createFile(atPath: destinationFile, contents: nil, attributes: nil)
+
+                if let writeFileHandler = FileHandle(forWritingAtPath:destinationFile ){
+
+                    // We Can't guess what will Happen
+                    // But we want a guarantee the handle will be closed
+                    defer{
+                        writeFileHandler.closeFile()
+                    }
+
+                    writeFileHandler.seek(toFileOffset: 0)
+                    for block in blocks{
+                        autoreleasepool(invoking: { () -> Void in
+                            do{
+                                let startsAt=UInt64(block.startsAt)
+                                let size=block.size
+                                flockFileHandle.seek(toFileOffset: startsAt)
+                                var data = flockFileHandle.readData(ofLength: size)
+                                let rawDataSize=data.count
+                                if decrypt{
+                                    data = try self._cryptoHelper.decryptData(data)
+                                }
+                                let decryptDataSize=data.count
+                                if decompress{
+                                    data = try data.decompress(algorithm: .lz4)
+                                }
+                                let decompressDataSize=data.count
+                                writeFileHandler.write(data)
+                                print("\(counter)-\(block.rank)| \(startsAt) \(size) =>\(rawDataSize) - \(decryptDataSize)- \(decompressDataSize) -- \(destinationFile)")
+                                __progressWithPath(destinationFile)
+                            }catch{
+                                failuresMessages.append("\(error)")
+                                __progressWithPath(destinationFile,error:true)
+                            }
+                        })
+                    }
+                }else{
+                    failuresMessages.append("Enable to create file Handle \(destinationFile)")
+                    __progressWithPath(destinationFile,error:true)
+
+                }
+            }catch{
+                failuresMessages.append("\(error)")
+                __progressWithPath(destinationFile,error:true)
+            }
+
+
+        }else if nodeNature == .folder{
+
+            do{
+                try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                __progressWithPath(destinationFile)
+            }catch{
+                failuresMessages.append("\(error)")
+                __progressWithPath(destinationFile,error:true)
+            }
+
+        }else if nodeNature == .alias{
+            do{
+                try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
+                __progressWithPath(destinationFile)
+            }catch{
+                failuresMessages.append("\(error)")
+                __progressWithPath(destinationFile,error:true)
+            }
         }
     }
 
@@ -680,10 +708,9 @@ struct Flocker{
 
     }
 
-
     // MARK: - Private implementation details
-    
-    
+
+
     /// Test the validity of a path
     /// 1# We test the existence of the path.
     /// 2# Some typeSymbolicLink may point to themselves and then be considerated as inexistent
