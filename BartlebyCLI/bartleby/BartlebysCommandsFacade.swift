@@ -139,16 +139,18 @@ struct BartlebysCommandFacade {
             break
         case "testFlocker"? :
 
+            var flockStats:BytesStats?
+
             func __unFlock(using flocker:Flocker){
-                print("Processing...")
-                let startTime=CFAbsoluteTimeGetCurrent()
                 if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
                     let source="\(userDir)/flock.flk"
                     let destination="\(userDir)/Unflocked"
                     flocker.unFlock(flockedFile: source, to: destination, progression: { (progression) in
-                        print(progression)
-                    }, success: {
-                        print("Unflock Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                        print(progression.message)
+                    }, success: { unFlockStats in
+                        print("\n-----")
+                        print(flockStats!)
+                        print(unFlockStats)
                         exit(EX_OK)
                     }, failure: { (message) in
                         print("\(message)")
@@ -159,8 +161,6 @@ struct BartlebysCommandFacade {
             }
 
             func __flock(){
-                print("Processing...")
-                let startTime=CFAbsoluteTimeGetCurrent()
                 let flocker=Flocker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
                 if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
                     let sourceFolder="\(userDir)/FolderForTests"
@@ -170,9 +170,9 @@ struct BartlebysCommandFacade {
                     sourceRef.compressed=true
                     sourceRef.priority=1
                     flocker.flockFolder(folderReference: sourceRef, destination: destination, progression: { (progression) in
-                        print(progression)
-                    }, success: {
-                        print("Flock Duration \(CFAbsoluteTimeGetCurrent()-startTime)")
+                        print(progression.message)
+                    }, success: { stats in
+                        flockStats=stats
                         __unFlock(using:flocker)
                     }, failure: { (container, message) in
                         print(message)
