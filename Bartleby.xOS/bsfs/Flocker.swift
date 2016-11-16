@@ -14,7 +14,7 @@ import Foundation
  Binary Format specs
 
  --------
- data -> the  Nodes binary  
+ data -> the  Nodes binary
  --------
  footer -> serialized crypted and compressed Container
  --------
@@ -95,7 +95,6 @@ struct Flocker{
             self._fileManager.createFile(atPath: flockFilePath, contents: nil, attributes: nil)
             if let flockFileHandle = FileHandle(forWritingAtPath: flockFilePath){
 
-
                 let progressionState=Progression()
                 progressionState.silentGroupedChanges {
                     progressionState.totalTaskCount=1
@@ -156,31 +155,37 @@ struct Flocker{
                             Async.main{
                                 // Relay the progression
                                 progression(progressionState)
-                                if counter == pathNb{
-                                    // Important release the flockFileHandle
+                            }
+                            if counter == pathNb{
+                                defer{
+                                    // Close the flockFileHandle
                                     flockFileHandle.closeFile()
-                                    do{
-                                        try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
-                                    }catch{
-                                        failuresMessages.append("_writeContainerIntoFlock \(error)")
-                                    }
-                                    if failuresMessages.count==0{
-                                        // it is a success
-                                        success()
-                                    }else{
-                                        // Reduce the errors
-                                        failure(container,failuresMessages.reduce("Errors: ", { (r, s) -> String in
-                                            return r + " \(s)"
-                                        }))
-                                    }
+                                }
+                                do{
+                                    try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
+
+                                }catch{
+                                    failuresMessages.append("_writeContainerIntoFlock \(error)")
+                                }
+                                if failuresMessages.count==0{
+                                    // it is a success
+                                    success()
+                                }else{
+                                    // Reduce the errors
+                                    failure(container,failuresMessages.reduce("Errors: ", { (r, s) -> String in
+                                        return r + " \(s)"
+                                    }))
                                 }
                             }
+
                         }, failure: { (message) in
                             counter += 1
                             failuresMessages.append(message)
                         })
                     }
                 }else{
+                     // Close the flockFileHandle
+                    flockFileHandle.closeFile()
                     Async.main{
                         failure(container,NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(folderPath)")
                     }
@@ -677,8 +682,8 @@ struct Flocker{
 
 
     // MARK: - Private implementation details
-
-
+    
+    
     /// Test the validity of a path
     /// 1# We test the existence of the path.
     /// 2# Some typeSymbolicLink may point to themselves and then be considerated as inexistent
