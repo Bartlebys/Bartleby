@@ -166,6 +166,7 @@ public struct Default {
     static public let NO_GROUP: String="NO_GROUP"
     static public let NO_METHOD: String="NO_METHOD"
     static public let NO_DIGEST: String="NO_DIGEST"
+    static public let NO_PASSWORD: String="NO_PASSWORD"
     static public let NO_INT_INDEX=Int.max
     static public let STRING_ENCODING = String.Encoding.utf8
 

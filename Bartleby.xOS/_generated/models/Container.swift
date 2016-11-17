@@ -21,6 +21,9 @@ import Foundation
         return "Container"
     }
 
+	//You can setup a password
+	dynamic open var password:String?
+
 	//Boxes
 	dynamic open var boxes:[BoxShadow] = [BoxShadow]()
 
@@ -35,7 +38,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["boxes","nodes","blocks"])
+        exposed.append(contentsOf:["password","boxes","nodes","blocks"])
         return exposed
     }
 
@@ -48,6 +51,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "password":
+                if let casted=value as? String{
+                    self.password=casted
+                }
             case "boxes":
                 if let casted=value as? [BoxShadow]{
                     self.boxes=casted
@@ -75,6 +82,8 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "password":
+               return self.password
             case "boxes":
                return self.boxes
             case "nodes":
@@ -94,6 +103,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
+			self.password <- ( map["password"] )
 			self.boxes <- ( map["boxes"] )
 			self.nodes <- ( map["nodes"] )
 			self.blocks <- ( map["blocks"] )
@@ -106,6 +116,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
+			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.boxes=decoder.decodeObject(of: [NSArray.classForCoder(),BoxShadow.classForCoder()], forKey: "boxes")! as! [BoxShadow]
 			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),NodeShadow.classForCoder()], forKey: "nodes")! as! [NodeShadow]
 			self.blocks=decoder.decodeObject(of: [NSArray.classForCoder(),BlockShadow.classForCoder()], forKey: "blocks")! as! [BlockShadow]
@@ -114,6 +125,9 @@ import Foundation
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
+		if let password = self.password {
+			coder.encode(password,forKey:"password")
+		}
 		coder.encode(self.boxes,forKey:"boxes")
 		coder.encode(self.nodes,forKey:"nodes")
 		coder.encode(self.blocks,forKey:"blocks")

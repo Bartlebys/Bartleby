@@ -10,7 +10,7 @@ import Foundation
 
 
 /// A file or a folder reference (used to add references to a box)
-public struct FileReference{
+@objc(FileReference) public class FileReference:NSObject{
 
     /// The absolutePath
     var absolutePath:String
@@ -24,6 +24,8 @@ public struct FileReference{
     var priority:Int=0
     /// The chunks or blocks max size
     var chunkMaxSize:Int=10*MB
+    /// You can set a password.
+    var password:String=Default.NO_PASSWORD
 
     /// The nature of the reference
     /// We support file and Flock only
@@ -63,7 +65,7 @@ public struct FileReference{
     ///   - usersUIDs: the authorized users UIDS
     /// - Returns: return a private file instance
     public static func privateFileReference(at absolutePath:String, authorized usersUIDs:[String])->FileReference{
-        var r=FileReference(at: absolutePath)
+        let r=FileReference(at: absolutePath)
         r.authorized=usersUIDs
         return r
     }
@@ -73,7 +75,7 @@ public struct FileReference{
     /// - Parameter absolutePath: the external absolute path
     /// - Returns: the public file reference
     public static func publicFileReference(at absolutePath:String)->FileReference{
-        var r=FileReference(at:absolutePath)
+        let r=FileReference(at:absolutePath)
         r.authorized=["*"]
         return r
     }
@@ -89,7 +91,7 @@ public struct FileReference{
     /// Authorize the users with UID
     ///
     /// - Parameter userUID: the user UID to authorize
-    public mutating func authorize(userUID:String){
+    public func authorize(userUID:String){
         if !self.authorized.contains(userUID){
             self.authorized.append(userUID)
         }
