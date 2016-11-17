@@ -8,6 +8,9 @@
 
 import Foundation
 
+enum FlockerError:Error{
+    case unableToAccessToContainer(at:String)
+}
 
 /*
 
@@ -93,7 +96,7 @@ struct Flocker{
         container.boxes.append(box)
         Async.utility{
             try? self._fileManager.removeItem(atPath: flockFilePath)
-            self._fileManager.createFile(atPath: flockFilePath, contents: nil, attributes: nil)
+            let r = self._fileManager.createFile(atPath: flockFilePath, contents: nil, attributes: nil)
             if let flockFileHandle = FileHandle(forWritingAtPath: flockFilePath){
 
                 let progressionState=Progression()
@@ -564,13 +567,19 @@ struct Flocker{
                 }catch{
                     catched=error
                 }
+            }else{
+                glog("Unable to create Handle on Container \(flockedFile)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }
         group.wait()
         if catched != nil{
             throw catched!
         }
-        return container!
+        if let c=container{
+            return c
+        }else{
+            throw FlockerError.unableToAccessToContainer(at:flockedFile)
+        }
     }
 
 
