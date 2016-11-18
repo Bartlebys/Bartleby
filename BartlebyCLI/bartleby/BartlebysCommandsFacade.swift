@@ -137,6 +137,8 @@ struct BartlebysCommandFacade {
                 exit(EX_OK)
             }
             break
+
+
         case "testFlocker"? :
 
             var flockStats:BytesStats?
@@ -149,7 +151,9 @@ struct BartlebysCommandFacade {
                         print(progression.message)
                     }, success: { unFlockStats in
                         print("\n-----")
-                        print(flockStats!)
+                        if let f=flockStats{
+                            print(f)
+                        }
                         print(unFlockStats)
                         exit(EX_OK)
                     }, failure: { (message) in
@@ -169,6 +173,7 @@ struct BartlebysCommandFacade {
                     sourceRef.crypted=true
                     sourceRef.compressed=true
                     sourceRef.priority=1
+                    sourceRef.chunkMaxSize=10*MB
                     flocker.flockFolder(folderReference: sourceRef, destination: destination, progression: { (progression) in
                         print(progression.message)
                     }, success: { stats in
@@ -182,7 +187,9 @@ struct BartlebysCommandFacade {
                     exit(EX_OK)
                 }
             }
-            __flock()
+            //__flock()
+            let flocker=Flocker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
+            __unFlock(using: flocker)
 
             break
         default:
