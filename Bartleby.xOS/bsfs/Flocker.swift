@@ -9,7 +9,7 @@
 import Foundation
 
 enum FlockerError:Error{
-    case unableToAccessToContainer(at:String)
+    case unableToAccessToContainer(at:String,message:String)
 }
 
 /*
@@ -78,7 +78,7 @@ struct Flocker{
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
     /// - closures are called on the Main thread
-    fileprivate func _flock(  filesIn folderPath:String,
+    fileprivate func _flock(  filesIn path:String,
                               flockFilePath:String,
                               authorized:[String],
                               chunkMaxSize:Int=10*MB,
@@ -88,122 +88,145 @@ struct Flocker{
                               success:@escaping (BytesStats)->(),
                               failure:@escaping (Container,String)->()){
 
-        var stats=BytesStats(name: "Flocking: \(folderPath)")
+        var stats=BytesStats(name: "Flocking: \(path)")
         let container=Container()
         container.defineUID()
         let box=BoxShadow()
         box.defineUID()
         container.boxes.append(box)
         Async.utility{
+
             try? self._fileManager.removeItem(atPath: flockFilePath)
             let r = self._fileManager.createFile(atPath: flockFilePath, contents: nil, attributes: nil)
             if let flockFileHandle = FileHandle(forWritingAtPath: flockFilePath){
+
+                var folderPath=path
+                var paths=[String]()
 
                 let progressionState=Progression()
                 progressionState.silentGroupedChanges {
                     progressionState.totalTaskCount=0
                     progressionState.currentTaskIndex=0
-                    progressionState.externalIdentifier=folderPath
+                    progressionState.externalIdentifier=path
                     progressionState.message=""
                 }
 
                 var failuresMessages=[String]()
-
                 let fm:FileManager = self._fileManager
-                if let folderURL=URL(string: folderPath){
-                    let keys:[URLResourceKey]=[ URLResourceKey.fileSizeKey,
-                                                URLResourceKey.fileResourceTypeKey,
-                                                URLResourceKey.attributeModificationDateKey,
-                                                URLResourceKey.pathKey,
-                                                URLResourceKey.isRegularFileKey,
-                                                URLResourceKey.isDirectoryKey,
-                                                URLResourceKey.isAliasFileKey,
-                                                URLResourceKey.isSymbolicLinkKey ]
-                    let options: FileManager.DirectoryEnumerationOptions = []//.skipsHiddenFiles TODO to be verified
-                    var paths=[String]()
-                    let enumerator=fm.enumerator(at: folderURL, includingPropertiesForKeys: keys, options: options, errorHandler: { (URL, error) -> Bool in
-                        return false
-                    })
-                    while let url:URL = enumerator?.nextObject() as? URL {
-                        let set:Set=Set(keys)
-                        if let r:URLResourceValues = try? url.resourceValues(forKeys:set){
-                            if r.isRegularFile == true || r.isDirectory==true || r.isAliasFile==true{
-                                let path:String=r.path!.replacingOccurrences(of: folderPath, with: "")
-                                paths.append(path)
-                            }
-                        }
-                    }
-                    progressionState.totalTaskCount += paths.count
-                    let pathNb=paths.count
-                    var counter=0
+                var isDirectory:ObjCBool=false
 
-                    // Relays the progression
-                    func __onProgression(message:String, incrementGlobalCounter:Bool=true){
-                        if incrementGlobalCounter{
-                            counter += 1
-                        }
-                        progressionState.silentGroupedChanges {
-                            progressionState.currentTaskIndex=counter
-                            progressionState.message=message
-                        }
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                        Async.main{
-                            // Relay the progression
-                            progression(progressionState)
-                        }
-                    }
+                if fm.fileExists(atPath: path, isDirectory: &isDirectory){
+                    if isDirectory.boolValue{
+                        /// Directory scanning
+                        if let rootURL=URL(string: path){
+                            let keys:[URLResourceKey]=[ URLResourceKey.fileSizeKey,
+                                                        URLResourceKey.fileResourceTypeKey,
+                                                        URLResourceKey.attributeModificationDateKey,
+                                                        URLResourceKey.pathKey,
+                                                        URLResourceKey.isRegularFileKey,
+                                                        URLResourceKey.isDirectoryKey,
+                                                        URLResourceKey.isAliasFileKey,
+                                                        URLResourceKey.isSymbolicLinkKey ]
 
-                    for relativePath in paths{
-                        self._append(folderPath: folderPath,
-                                     relativePath:relativePath,
-                                     writeHandle: flockFileHandle,
-                                     container: container,
-                                     authorized:authorized,
-                                     chunkMaxSize:chunkMaxSize,
-                                     compress:compress,
-                                     encrypt:encrypt,
-                                     stats:stats,
-                                     progression: { (subProgression) in
-                                __onProgression(message: subProgression.message,incrementGlobalCounter: false)
-                        }, success: {
-                            __onProgression(message: "Flocked: \(relativePath)")
-                            if counter == pathNb{
-                                defer{
-                                    // Close the flockFileHandle
-                                    flockFileHandle.closeFile()
-                                }
-                                do{
-                                    try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
+                            let options: FileManager.DirectoryEnumerationOptions = []//.skipsHiddenFiles TODO to be verified
 
-                                }catch{
-                                    failuresMessages.append("_writeContainerIntoFlock \(error)")
-                                }
-                                if failuresMessages.count==0{
-                                    // it is a success
-                                    success(stats)
-                                }else{
-                                    // Reduce the errors
-                                    failure(container,failuresMessages.reduce("Errors: ", { (r, s) -> String in
-                                        return r + " \(s)"
-                                    }))
+                            let enumerator=fm.enumerator(at: rootURL, includingPropertiesForKeys: keys, options: options, errorHandler: { (URL, error) -> Bool in
+                                return false
+                            })
+                            while let url:URL = enumerator?.nextObject() as? URL {
+                                let set:Set=Set(keys)
+                                if let r:URLResourceValues = try? url.resourceValues(forKeys:set){
+                                    if r.isRegularFile == true || r.isDirectory==true || r.isAliasFile==true{
+                                        let path:String=r.path!.replacingOccurrences(of: path, with: "")
+                                        paths.append(path)
+                                    }
                                 }
                             }
-
-                        }, failure: { (message) in
-                            counter += 1
-                            failuresMessages.append(message)
-                        })
+                        }else{
+                            // Close the flockFileHandle
+                            flockFileHandle.closeFile()
+                            Async.main{
+                                failure(container,NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(path)")
+                            }
+                        }
+                    }else{
+                        // Append one file
+                        let pathURL=URL(fileURLWithPath: path)
+                        folderPath=pathURL.deletingLastPathComponent().path
+                        paths.append("/"+pathURL.lastPathComponent)
                     }
                 }else{
-                    // Close the flockFileHandle
-                    flockFileHandle.closeFile()
                     Async.main{
-                        failure(container,NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(folderPath)")
+                        failure(container,NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+flockFilePath)
                     }
                 }
+
+
+                progressionState.totalTaskCount += paths.count
+                let pathNb=paths.count
+                var counter=0
+
+                // Relays the progression
+                func __onProgression(message:String, incrementGlobalCounter:Bool=true){
+                    if incrementGlobalCounter{
+                        counter += 1
+                    }
+                    progressionState.silentGroupedChanges {
+                        progressionState.currentTaskIndex=counter
+                        progressionState.message=message
+                    }
+                    progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                    Async.main{
+                        // Relay the progression
+                        progression(progressionState)
+                    }
+                }
+
+                for relativePath in paths{
+                    self._append(folderPath: folderPath,
+                                 relativePath:relativePath,
+                                 writeHandle: flockFileHandle,
+                                 container: container,
+                                 authorized:authorized,
+                                 chunkMaxSize:chunkMaxSize,
+                                 compress:compress,
+                                 encrypt:encrypt,
+                                 stats:stats,
+                                 progression: { (subProgression) in
+                                    __onProgression(message: subProgression.message,incrementGlobalCounter: false)
+                    }, success: {
+                        __onProgression(message: "Flocked: \(relativePath)")
+                        if counter == pathNb{
+                            defer{
+                                // Close the flockFileHandle
+                                flockFileHandle.closeFile()
+                            }
+                            do{
+                                try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
+
+                            }catch{
+                                failuresMessages.append("_writeContainerIntoFlock \(error)")
+                            }
+                            if failuresMessages.count==0{
+                                // it is a success
+                                success(stats)
+                            }else{
+                                // Reduce the errors
+                                failure(container,failuresMessages.reduce("Errors: ", { (r, s) -> String in
+                                    return r + " \(s)"
+                                }))
+                            }
+                        }
+
+                    }, failure: { (message) in
+                        counter += 1
+                        failuresMessages.append(message)
+                    })
+                }
+
             }else{
                 Async.main{
-                    failure(container,NSLocalizedString("Unable to handle file at path: ", tableName:"system", comment: "Unable to handle file at path: ")+flockFilePath)
+                    failure(container,NSLocalizedString("Invalid Path", tableName:"system", comment: "Invalid Path")+" \(path)")
                 }
             }
 
@@ -336,7 +359,7 @@ struct Flocker{
                                         // Write the data to flock File
                                         writeHandle.write(data)
 
-                                        // Consign the processing 
+                                        // Consign the processing
                                         stats.consign(numberOfBytes:UInt(offset),compressedBytes: UInt(lengthOfAddedData))
 
                                         // Create the related block
@@ -450,7 +473,7 @@ struct Flocker{
                     }
 
                     let stats=BytesStats(name: "Unflocking: \(flockedFile)")
-                    
+
                     var failuresMessages=[String]()
                     var counter=0
 
@@ -486,9 +509,9 @@ struct Flocker{
                                            stats:stats,
                                            progression: {
                                             (subProgression) in
-                                           __onProgression(message:subProgression.message,incrementGlobalCounter: false)
+                                            __onProgression(message:subProgression.message,incrementGlobalCounter: false)
                         }, success: {
-                           __onProgression(message:"Unflocked: \(node.relativePath)",incrementGlobalCounter: true)
+                            __onProgression(message:"Unflocked: \(node.relativePath)",incrementGlobalCounter: true)
                             if counter==container.nodes.count{
                                 Async.main{
                                     if failuresMessages.count==0{
@@ -527,10 +550,9 @@ struct Flocker{
     func containerFrom(flockedFile:String)throws->Container{
         let group=AsyncGroup()
         var container:Container?
-        var catched:Error?=nil
+        var error:Error?=nil
         group.utility {
             if let fileHandle=FileHandle(forReadingAtPath:flockedFile ){
-
                 // We Can't guess what will Happen
                 // But we want a guarantee the handle will be closed
                 defer{
@@ -564,21 +586,21 @@ struct Flocker{
                     data = try self._cryptoHelper.decryptData(data)
                     data = try data.decompress(algorithm: .lz4)
                     container = try JSerializer.deserialize(data) as? Container
-                }catch{
-                    catched=error
+                }catch let e{
+                    error=e
                 }
             }else{
-                glog("Unable to create Handle on Container \(flockedFile)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                error=FlockerError.unableToAccessToContainer(at:flockedFile,message:"Unable to create Handle")
             }
         }
         group.wait()
-        if catched != nil{
-            throw catched!
+        if error != nil{
+            throw error!
         }
-        if let c=container{
-            return c
+        if let container = container{
+            return container
         }else{
-            throw FlockerError.unableToAccessToContainer(at:flockedFile)
+            throw FlockerError.unableToAccessToContainer(at:flockedFile,message: "Container is void")
         }
     }
 
@@ -717,7 +739,7 @@ struct Flocker{
         }else if nodeNature == .alias{
             do{
                 if self._fileManager.fileExists(atPath: destinationFile){
-                   try? self._fileManager.removeItem(atPath: destinationFile)
+                    try? self._fileManager.removeItem(atPath: destinationFile)
                 }
                 try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: node.proxyPath!)
                 __progressWithPath(destinationFile)
@@ -729,33 +751,33 @@ struct Flocker{
     }
 
     // MARK: - Random Access TODO
-
+    
     // MARK:  Read Access
-
+    
     func extractNode(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String){
     }
-
+    
     // MARK: Write Access
-
+    
     // LOGICAL action bytes are not removed.
     func delete(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String)->String{
         return ""
     }
-
+    
     func add(fileReference:FileReference,from container:Container, of flockedFilePath:String,to relativePath:String){
-
+        
     }
-
+    
     // MARK: Utility
-
+    
     // Remove the holes
     func compact(container:Container, of flockedFilePath:String){
         // TODO
     }
-
+    
     // MARK: - Private implementation details
-
-
+    
+    
     /// Test the validity of a path
     /// 1# We test the existence of the path.
     /// 2# Some typeSymbolicLink may point to themselves and then be considerated as inexistent
