@@ -20,7 +20,7 @@ public class BytesStats:CustomStringConvertible {
 
     var processingRateMBPerSeconds:UInt { return (UInt(Double(totalMB)/elasped)) }
 
-    var compressionPercent:Int { return Int( _compressedBytes * 100 / _totalBytes ) }
+    var compressionPercent:Int { return 100-Int( _compressedBytes * 100 / _totalBytes ) }
 
     fileprivate var _totalBytes:UInt=0
 
