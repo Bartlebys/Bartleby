@@ -27,6 +27,7 @@
 		E50F3AF91D40D27F00532B09 /* DocumentInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEA1D40D27F00532B09 /* DocumentInspector.xib */; };
 		E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */; };
 		E50F3AFB1D40D27F00532B09 /* SourceEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */; };
+		E520C84D1DDF4F10004F9CB7 /* BartlebyDocument+Persistency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520C84C1DDF4F10004F9CB7 /* BartlebyDocument+Persistency.swift */; };
 		E5238B2A1DC4FEAC003D343D /* ReportWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B281DC4FEAC003D343D /* ReportWindowController.swift */; };
 		E5238B2B1DC4FEAC003D343D /* ReportWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B291DC4FEAC003D343D /* ReportWindowController.xib */; };
 		E5238B2E1DC50091003D343D /* DecryptorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5238B2C1DC50091003D343D /* DecryptorViewController.swift */; };
@@ -511,6 +512,7 @@
 		E50F3AEB1D40D27F00532B09 /* SourceEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceEditor.swift; sourceTree = "<group>"; };
 		E50F3AEC1D40D27F00532B09 /* SourceEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SourceEditor.xib; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* BaseObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObjectTests.swift; sourceTree = "<group>"; };
+		E520C84C1DDF4F10004F9CB7 /* BartlebyDocument+Persistency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Persistency.swift"; sourceTree = "<group>"; };
 		E5238B281DC4FEAC003D343D /* ReportWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportWindowController.swift; sourceTree = "<group>"; };
 		E5238B291DC4FEAC003D343D /* ReportWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportWindowController.xib; sourceTree = "<group>"; };
 		E5238B2C1DC50091003D343D /* DecryptorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptorViewController.swift; sourceTree = "<group>"; };
@@ -1151,6 +1153,7 @@
 		E54A9DD01DD4634B0066F20D /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E520C84C1DDF4F10004F9CB7 /* BartlebyDocument+Persistency.swift */,
 				E54A9DD11DD4634B0066F20D /* BarltlebyDocument+Consignee.swift */,
 				E54A9DD21DD4634B0066F20D /* BartlebyDocument+AppFacilities.swift */,
 				E54A9DD31DD4634B0066F20D /* BartlebyDocument+LocalUpsertAndDelete.swift */,
@@ -1536,6 +1539,7 @@
 				E5FD15481DD74ED300AED411 /* DeltaAnalyzer.swift in Sources */,
 				E54A9E8D1DD4634B0066F20D /* ReadBlockById.swift in Sources */,
 				E54A9F211DD4634B0066F20D /* Completion+Conveniences.swift in Sources */,
+				E520C84D1DDF4F10004F9CB7 /* BartlebyDocument+Persistency.swift in Sources */,
 				E54A9F5F1DD4634B0066F20D /* DocumentMetadataProtocol.swift in Sources */,
 				E54A9EA71DD4634B0066F20D /* ReadUsersByIds.swift in Sources */,
 				E54A9ECB1DD4634B0066F20D /* Node+Facilities.swift in Sources */,

@@ -31,7 +31,7 @@ import Foundation
     }()
 
     static let b_version = "1.0"
-    static let b_release = "RC"
+    static let b_release = "GC"
 
     /// The version string of Bartleby framework
     open static var versionString: String {
