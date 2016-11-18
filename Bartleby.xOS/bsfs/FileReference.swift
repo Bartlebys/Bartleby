@@ -10,7 +10,7 @@ import Foundation
 
 
 /// A file or a folder reference (used to add references to a box)
-@objc(FileReference) public class FileReference:NSObject{
+public class FileReference:NSObject{
 
     /// The absolutePath
     var absolutePath:String
