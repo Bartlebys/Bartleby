@@ -167,7 +167,7 @@ extension BartlebyDocument {
                 if let serialized=operation.toDictionary {
                     if let o = try? JSerializer.deserializeFromDictionary(serialized) {
                         if let op=o as? BartlebyOperation {
-                            DispatchQueue.main.async(execute: {
+                           Async.main{
                                 // Push the command.
                                 op.push(sucessHandler: {  (context) in
                                     //////////////////////////////////////////////////
@@ -205,7 +205,7 @@ extension BartlebyDocument {
                                         self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
 
                                 })
-                            })
+                            }
                         } else {
                             let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.expectation_Failed)
                             self.log(completion, file: #file, function: #function, line: #line, category: "Operations")

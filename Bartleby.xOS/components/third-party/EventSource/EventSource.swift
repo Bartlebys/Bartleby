@@ -170,7 +170,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
 
         self.readyState = EventSourceState.open
         if self.onOpenCallback != nil {
-            DispatchQueue.main.async {
+           Async.main {
                 self.onOpenCallback!()
             }
         }
@@ -191,7 +191,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
             }
         }
 
-        DispatchQueue.main.async {
+       Async.main {
             if let errorCallback = self.onErrorCallback {
                 errorCallback(error as NSError?)
             } else {
@@ -268,14 +268,14 @@ open class EventSource: NSObject, URLSessionDataDelegate {
 
             if parsedEvent.event == nil {
                 if let data = parsedEvent.data, let onMessage = self.onMessageCallback {
-                    DispatchQueue.main.async {
+                   Async.main {
                         onMessage(self.lastEventID, "message", data)
                     }
                 }
             }
 
             if let event = parsedEvent.event, let data = parsedEvent.data, let eventHandler = self.eventListeners[event] {
-                DispatchQueue.main.async {
+               Async.main {
                     eventHandler(self.lastEventID, event, data)
                 }
             }

@@ -40,14 +40,14 @@ extension BartlebyDocument {
             savePanel.allowedFileTypes=["json"]
         }
         savePanel.begin(completionHandler: { (result) in
-            DispatchQueue.main.async(execute: {
+           Async.main{
                 if result==NSFileHandlingPanelOKButton{
                     if let url = savePanel.url {
                         let filePath=url.path
                         self.exportMetadataTo(filePath,crypted: crypted, handlers:handlers)
                     }
                 }
-            })
+            }
         })
     }
 
@@ -65,7 +65,7 @@ extension BartlebyDocument {
             openPanel.allowedFileTypes=["json"]
         }
         openPanel.begin(completionHandler: { (result) in
-            DispatchQueue.main.async(execute: {
+           Async.main{
                 if result==NSFileHandlingPanelOKButton{
                     if let url = openPanel.url {
                         let filePath=url.path
@@ -73,7 +73,7 @@ extension BartlebyDocument {
                 
                     }
                 }
-            })
+            }
         })
     }
 

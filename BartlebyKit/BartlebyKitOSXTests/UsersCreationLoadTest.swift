@@ -122,9 +122,9 @@ class UsersCreationLoadTest: TestCase {
             if  UsersCreationLoadTest.userCounter == UsersCreationLoadTest.nbOfIteration {
                 __fullFill()
             }else{
-                DispatchQueue.main.async(execute: { 
+               Async.main{
                     __create(idMethod)
-                })
+                }
 
             }
         }

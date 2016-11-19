@@ -118,9 +118,9 @@ extension BartlebyDocument{
                 self.log("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
             
-            DispatchQueue.main.async(execute: {
+           Async.main{
                 self.documentDidLoad()
-            })
+            }
         }
 
     }

@@ -158,10 +158,10 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
                     alert.addButton(withTitle: "OK")
                     alert.informativeText = body
                     alert.beginSheetModal( for: window, completionHandler: nil)
-                    let dispatchTime=DispatchTime.now() + Double(Int64(BartlebyDocument.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                    DispatchQueue.main.asyncAfter(deadline: dispatchTime) { () -> Void in
+                    Async.main(after: BartlebyDocument.VOLATILE_DISPLAY_DURATION,{
                         window.attachedSheet?.close()
-                    }
+                    })
+
                 } else {
                     // ERROR
                 }
@@ -178,11 +178,11 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
             }
 
             self.rootViewController.present(a, animated: true, completion:nil)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + BartlebyDocument.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC)) {
+            Async.main(after: BartlebyDocument.VOLATILE_DISPLAY_DURATION,{
                 self.rootViewController.dismiss(animated: true, completion: { () -> Void in
                 })
-            }
+
+            })
 
         #elseif os(watchOS)
         #elseif os(tvOS)
@@ -195,18 +195,17 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
     #if os(OSX)
         //#if !USE_EMBEDDED_MODULES
         open func presentVolatileMessage(_ window: NSWindow, title: String, body: String)->() {
-            DispatchQueue.main.async { () -> Void in
+           Async.main{() -> Void in
                 let alert = NSAlert()
                 alert.messageText = title
                 alert.addButton(withTitle: "OK")
                 alert.informativeText = body
                 alert.beginSheetModal( for: window, completionHandler: nil)
-                let dispatchTime=DispatchTime.now() + Double(Int64(BartlebyDocument.VOLATILE_DISPLAY_DURATION * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: dispatchTime) { () -> Void in
+                Async.main(after: BartlebyDocument.VOLATILE_DISPLAY_DURATION , {
                     if let sheet=window.attachedSheet {
                         sheet.close()
                     }
-                }
+                })
                 glog("presentVolatileMessage title:\(title) body:\(body)", file: #file, function: #function, line: #line, category: "AdaptiveConsignation", decorative: false)
             }
 

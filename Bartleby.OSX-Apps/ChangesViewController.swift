@@ -29,9 +29,9 @@ import Cocoa
             self._selectedItem?.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                     self.tableView.reloadData()
             })
-            DispatchQueue.main.async(execute: {
+           Async.main{
                 self.tableView.reloadData()
-            })
+            }
         }
     }
 

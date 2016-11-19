@@ -327,14 +327,14 @@ import AppKit
                 arrayController.rearrangeObjects()
 
                 if let tableView = self.tableView{
-                    DispatchQueue.main.async(execute: {
+                    Async.main{
                         let sorted=self.arrayController?.arrangedObjects as! [PushOperation]
                         // Find the object just added
                         if let row=sorted.index(where:{ $0.UID==item.UID }){
                             // Start editing
                             tableView.editColumn(0, row: row, with: nil, select: true)
                         }
-                    })
+                    }
                 }
             }
             #endif
