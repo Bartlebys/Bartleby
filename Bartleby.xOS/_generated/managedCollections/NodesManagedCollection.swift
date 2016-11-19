@@ -16,6 +16,16 @@ import AppKit
 	import ObjectMapper
 #endif
 
+// MARK: - Notification
+
+extension Notification.Name {
+    public struct Nodes {
+        /// Posted when the selected nodes changed
+        public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Nodes.selectednodesChanged")
+    }
+}
+
+
 // MARK: A  collection controller of "nodes"
 
 // This controller implements data automation features.
@@ -54,20 +64,6 @@ import AppKit
     }
 
     weak open var undoManager:UndoManager?
-
-    #if os(OSX) && !USE_EMBEDDED_MODULES
-
-    // We auto configure most of the array controller.
-    open weak var arrayController:NSArrayController? {
-        didSet{
-            self.document?.setValue(self, forKey: "nodes")
-            arrayController?.objectClass=Node.self
-            arrayController?.entityName=Node.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
-        }
-    }
-
-    #endif
 
     weak open var tableView: BXTableView?
 
@@ -419,4 +415,93 @@ import AppKit
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
+
+
+    // MARK: - Selection management Facilities
+
+    fileprivate var _KVOContext: Int = 0
+
+#if os(OSX) && !USE_EMBEDDED_MODULES
+    // We auto-configure most of the array controller.
+    // And set up  indexes selection observation layer.
+    open weak var arrayController:NSArrayController? {
+        willSet{
+        // Remove observer on previous array Controller
+            arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            //self.document?.setValue(self, forKey: "nodes")
+            arrayController?.objectClass=Node.self
+            arrayController?.entityName=Node.className()
+            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            // Add observer
+            arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.document?.metadata.stateDictionary[self.selectedNodesIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+
+    // KVO on ArrayController selectionIndexes
+
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &_KVOContext else {
+            // If the context does not match, this message
+            // must be intended for our superclass.
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        if let keyPath = keyPath, let object = object {
+            if keyPath=="selectionIndexes" &&  (object as? NSArrayController) == self.arrayController {
+                if let items = self.arrayController?.selectedObjects as? [Node] {
+                     if let selected = self.selectedNodes{
+                        if items.count == selected.count{
+                            var noChanges=true
+                            for item in items{
+                              if !items.contains(where: { (instance) -> Bool in
+                                    return instance.UID==item.UID
+                                }){
+                                    noChanges=false
+                                    break
+                                }
+                            }
+                            if noChanges==true{
+                                return
+                            }
+                        }
+                        self.selectedNodes=items
+                    }
+                }
+            }
+        }
+    }
+
+
+    deinit{
+        self.arrayController?.removeObserver(self, forKeyPath: "selectionIndexes")
+    }
+
+#endif
+
+    open let selectedNodesIndexesKey="selectedNodesIndexesKey"
+
+    dynamic open var selectedNodes:[Node]?{
+        didSet{
+            if let nodes = selectedNodes {
+                 let indexes:[Int]=nodes.map({ (node) -> Int in
+                    return nodes.index(where:{ return $0.UID == node.UID })!
+                })
+                self.document?.metadata.stateDictionary[selectedNodesIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name.Nodes.selectionChanged, object: nil)
+            }
+        }
+    }
+
+    // A facility
+    var firstSelectedNode:Node? { return self.selectedNodes?.first }
+
+
+
 }

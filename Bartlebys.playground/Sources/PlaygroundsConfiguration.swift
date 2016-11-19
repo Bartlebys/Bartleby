@@ -15,10 +15,15 @@ import Foundation
 
 // A shared configuration Model
 open class PlaygroundsConfiguration: BartlebyConfiguration {
+
+
+
     // The cryptographic key used to encrypt/decrypt the data
     open static var KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
 
     open static var SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
+
+    public static var KEY_SIZE:KeySize = .s128bits
 
     //MARK: - URLS
 

@@ -16,6 +16,16 @@ import AppKit
 	import ObjectMapper
 #endif
 
+// MARK: - Notification
+
+extension Notification.Name {
+    public struct Boxes {
+        /// Posted when the selected boxes changed
+        public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Boxes.selectedboxesChanged")
+    }
+}
+
+
 // MARK: A  collection controller of "boxes"
 
 // This controller implements data automation features.
@@ -54,20 +64,6 @@ import AppKit
     }
 
     weak open var undoManager:UndoManager?
-
-    #if os(OSX) && !USE_EMBEDDED_MODULES
-
-    // We auto configure most of the array controller.
-    open weak var arrayController:NSArrayController? {
-        didSet{
-            self.document?.setValue(self, forKey: "boxes")
-            arrayController?.objectClass=Box.self
-            arrayController?.entityName=Box.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
-        }
-    }
-
-    #endif
 
     weak open var tableView: BXTableView?
 
@@ -419,4 +415,93 @@ import AppKit
             self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
+
+
+    // MARK: - Selection management Facilities
+
+    fileprivate var _KVOContext: Int = 0
+
+#if os(OSX) && !USE_EMBEDDED_MODULES
+    // We auto-configure most of the array controller.
+    // And set up  indexes selection observation layer.
+    open weak var arrayController:NSArrayController? {
+        willSet{
+        // Remove observer on previous array Controller
+            arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
+        }
+        didSet{
+            //self.document?.setValue(self, forKey: "boxes")
+            arrayController?.objectClass=Box.self
+            arrayController?.entityName=Box.className()
+            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            // Add observer
+            arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            if let indexes=self.document?.metadata.stateDictionary[self.selectedBoxesIndexesKey] as? [Int]{
+                let indexesSet = NSMutableIndexSet()
+                indexes.forEach{ indexesSet.add($0) }
+                arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+             }
+        }
+    }
+
+    // KVO on ArrayController selectionIndexes
+
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &_KVOContext else {
+            // If the context does not match, this message
+            // must be intended for our superclass.
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        if let keyPath = keyPath, let object = object {
+            if keyPath=="selectionIndexes" &&  (object as? NSArrayController) == self.arrayController {
+                if let items = self.arrayController?.selectedObjects as? [Box] {
+                     if let selected = self.selectedBoxes{
+                        if items.count == selected.count{
+                            var noChanges=true
+                            for item in items{
+                              if !items.contains(where: { (instance) -> Bool in
+                                    return instance.UID==item.UID
+                                }){
+                                    noChanges=false
+                                    break
+                                }
+                            }
+                            if noChanges==true{
+                                return
+                            }
+                        }
+                        self.selectedBoxes=items
+                    }
+                }
+            }
+        }
+    }
+
+
+    deinit{
+        self.arrayController?.removeObserver(self, forKeyPath: "selectionIndexes")
+    }
+
+#endif
+
+    open let selectedBoxesIndexesKey="selectedBoxesIndexesKey"
+
+    dynamic open var selectedBoxes:[Box]?{
+        didSet{
+            if let boxes = selectedBoxes {
+                 let indexes:[Int]=boxes.map({ (box) -> Int in
+                    return boxes.index(where:{ return $0.UID == box.UID })!
+                })
+                self.document?.metadata.stateDictionary[selectedBoxesIndexesKey]=indexes
+                NotificationCenter.default.post(name:NSNotification.Name.Boxes.selectionChanged, object: nil)
+            }
+        }
+    }
+
+    // A facility
+    var firstSelectedBox:Box? { return self.selectedBoxes?.first }
+
+
+
 }

@@ -26,15 +26,8 @@ public protocol CollectibleCollection: Collectible {
     // The document UID
     var documentUID:String { get }
 
-    #if os(OSX) && !USE_EMBEDDED_MODULES
-    // When using cocoa bindings with an array controller
-    // You can set the arrayController for a seamless integration
-    weak var arrayController: NSArrayController? { get set }
-    #endif
-
     /// You can reference a tableview for automation
     weak var tableView: BXTableView? { get set }
-
 
     /**
      Update or create an item
