@@ -22,6 +22,14 @@ struct  Chunker {
         case digestOnly
     }
 
+    /// If the document is set we use the Document.fileWrapper to read or write chunk coordinated data
+    /// We consider that the blocks are embedded.
+    /// Else the chunker loads directly the data from  the File System (blocks are not embedded)
+    var document:BartlebyDocument?
+
+    var embeddedInADocument:Bool { return (self.document != nil) }
+
+
     // When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     // Simulated can be 5X faster than real mode and do not require Disk room.
     var mode:Chunker.Mode
@@ -40,10 +48,17 @@ struct  Chunker {
     ///   - keySize: the key size
     ///   - mode:  When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     ///   - destroyChunksFolder: if set to true the chunks destination folder will be cleanup before writing the chunks (.real mode only)
-    init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,keySize:KeySize = .s128bits,mode:Chunker.Mode = .digestAndProcessing, destroyChunksFolder:Bool=false) {
+    init(fileManager:FileManager,
+         cryptoKey:String,
+         cryptoSalt:String,
+         keySize:KeySize = .s128bits,
+         mode:Chunker.Mode = .digestAndProcessing,
+         destroyChunksFolder:Bool=false,
+         embeddedIn:BartlebyDocument?=nil) {
         self._fileManager=fileManager
         self.mode=mode
         self.destroyChunksFolder=destroyChunksFolder
+        self.document=embeddedIn
         self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt,keySize:keySize)
     }
 
@@ -283,7 +298,6 @@ struct  Chunker {
 
         Async.utility {
 
-
             // Read each chunk efficiently
             if let fileHandle=FileHandle(forReadingAtPath:path ){
 
@@ -314,13 +328,12 @@ struct  Chunker {
                     progressionState.externalIdentifier=externalId
                     progressionState.message=""
                 }
-                if self.mode == .digestAndProcessing{
+                if !self.embeddedInADocument && self.mode == .digestAndProcessing{
                     if self.destroyChunksFolder{
                         let _ = try? self._fileManager.removeItem(atPath: chunksfolderPath)
                     }
 
                     let _ = try? self._fileManager.createDirectory(atPath: chunksfolderPath, withIntermediateDirectories: true, attributes: nil)
-
                 }
 
                 var offset:UInt64=0
@@ -331,18 +344,23 @@ struct  Chunker {
 
 
                 func __writeData(rank:Int,size:Int, data:Data,to chunksFolderPath:String,digest sha1:String, position:Int,relativePath:String)throws->(){
-                    // Generate a Classified Block Tree.
-                    let c1=PString.substr(sha1, 0, 1)
-                    let c2=PString.substr(sha1, 1, 1)
-                    let c3=PString.substr(sha1, 2, 1)
-                    let relativeFolderPath="/\(c1)/\(c2)/\(c3)/"
-                    let bFolderPath=chunksFolderPath+relativeFolderPath
-                    if self.mode == .digestAndProcessing{
+
+                    var relativeFolderPath=""
+
+                    if !self.embeddedInADocument{
+                        // Generate a Classified Block Tree.
+                        let c1=PString.substr(sha1, 0, 1)
+                        let c2=PString.substr(sha1, 1, 1)
+                        let c3=PString.substr(sha1, 2, 1)
+                        relativeFolderPath="/\(c1)/\(c2)/\(c3)"
+                    }
+
+                    let bFolderPath = self.embeddedInADocument ? relativeFolderPath : chunksFolderPath+relativeFolderPath
+                    if !self.embeddedInADocument && self.mode == .digestAndProcessing{
                         let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
                     }
                     let destination=bFolderPath+"/\(sha1)"
                     let chunkRelativePath=relativeFolderPath+"\(sha1)"
-
                     let chunk=Chunk( rank:rank,
                                      baseDirectory:chunksFolderPath,
                                      relativePath: chunkRelativePath,
@@ -350,11 +368,15 @@ struct  Chunker {
                                      startsAt:position,
                                      originalSize:size,
                                      nodeRelativePath:relativePath)
-
                     chunks.append(chunk)
                     if self.mode == .digestAndProcessing{
-                        let url=URL(fileURLWithPath: destination)
-                        let _ = try data.write(to:url )
+                        if self.embeddedInADocument{
+                            try self.document?.put(data: data, identifiedBy: chunk.sha1)
+                        }else{
+                            let url=URL(fileURLWithPath: destination)
+                            let _ = try data.write(to:url )
+                        }
+
                     }
 
                     Async.main{
@@ -501,7 +523,9 @@ struct  Chunker {
                         return assemblyFolderPath+"/.blocks"+chunk.relativePath //chunk.absolutePath
                     })
 
-                    try? self._fileManager.removeItem(atPath: destinationFile)
+                    if !self.embeddedInADocument{
+                        try? self._fileManager.removeItem(atPath: destinationFile)
+                    }
 
                     self.joinChunksToFile(from: chunksPaths,
                                           to: destinationFile,
@@ -519,8 +543,10 @@ struct  Chunker {
                 }else if nodeNature == .folder{
                     Async.utility{
                         do{
-                            if !self._fileManager.fileExists(atPath: destinationFile){
-                                try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                            if !self.embeddedInADocument{
+                                if !self._fileManager.fileExists(atPath: destinationFile){
+                                    try self._fileManager.createDirectory(atPath: destinationFile, withIntermediateDirectories: true, attributes: nil)
+                                }
                             }
                             __progressWithPath(destinationFile)
                         }catch{
@@ -534,8 +560,11 @@ struct  Chunker {
 
                     Async.utility{
                         do{
-                            try? self._fileManager.removeItem(atPath: destinationFile)
-                            try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
+                            if !self.embeddedInADocument{
+                                try? self._fileManager.removeItem(atPath: destinationFile)
+                                try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
+
+                            }
                             __progressWithPath(destinationFile)
                         }catch{
                             failuresMessages.append("\(error)")
@@ -555,7 +584,7 @@ struct  Chunker {
     /// - closures are called on the Main thread
     ///
     /// - Parameters:
-    ///   - chunksPaths: the chunks absolute paths
+    ///   - chunksPaths: the chunks absolute paths (or the sha1 when using document encapsulated chunks)
     ///   - destinationFilePath: the joined file destination
     ///   - decompress: should we decompress using LZ4
     ///   - decrypt: should we decrypt usign AES256
@@ -594,8 +623,14 @@ struct  Chunker {
                     var counter=0
                     for source in chunksPaths{
                         try autoreleasepool(invoking: { () -> Void in
-                            let url=URL(fileURLWithPath: source)
-                            var data = try Data(contentsOf:url)
+                            var data=Data()
+                            if self.embeddedInADocument{
+                                data = try self.document!.dataForBlock(identifiedBy: source)
+                            }else{
+                                let url=URL(fileURLWithPath: source)
+                                data = try Data(contentsOf:url)
+                            }
+
                             if decrypt{
                                 data = try self._cryptoHelper.decryptData(data)
                             }

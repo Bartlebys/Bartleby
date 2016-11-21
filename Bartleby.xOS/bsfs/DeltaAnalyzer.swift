@@ -40,7 +40,7 @@ struct DeltaAnalyzer {
     ///   - failure: the failure closure
     func deltaChunks(fromFileAt path:String,
                      to node:Node,
-                     using fileManager:FileManager,x
+                     using fileManager:FileManager,
                      chunkMaxSize:Int=10*MB,
                      completed:@escaping(_ preserve:[Chunk],_ delete:[Chunk])->(),
                      failure:@escaping(_ message:String)->())->(){

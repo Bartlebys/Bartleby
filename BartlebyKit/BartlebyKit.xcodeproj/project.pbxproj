@@ -34,8 +34,6 @@
 		E5238B2F1DC50091003D343D /* DecryptorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5238B2D1DC50091003D343D /* DecryptorViewController.xib */; };
 		E53B42391DDA214200F130AA /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B42381DDA214200F130AA /* URL+Utilities.swift */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
-		E54242301DDAFF3900E4A777 /* DataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E542422F1DDAFF3900E4A777 /* DataChunk.swift */; };
-		E54242341DDB024700E4A777 /* DataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E542422F1DDAFF3900E4A777 /* DataChunk.swift */; };
 		E54242351DDB024700E4A777 /* DeltaAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */; };
 		E54242371DDB03CC00E4A777 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54242361DDB03CC00E4A777 /* Container.swift */; };
 		E54242381DDB03CC00E4A777 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54242361DDB03CC00E4A777 /* Container.swift */; };
@@ -524,7 +522,6 @@
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53B42381DDA214200F130AA /* URL+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
-		E542422F1DDAFF3900E4A777 /* DataChunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataChunk.swift; sourceTree = "<group>"; };
 		E54242361DDB03CC00E4A777 /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1027,7 +1024,6 @@
 				E54A9DA51DD4634B0066F20D /* BSFSError.swift */,
 				E54A9DA61DD4634B0066F20D /* Chunker.swift */,
 				E5FD154D1DD76E8600AED411 /* Chunk.swift */,
-				E542422F1DDAFF3900E4A777 /* DataChunk.swift */,
 				E5FD15471DD74ED300AED411 /* DeltaAnalyzer.swift */,
 				E54A9DAB1DD4634B0066F20D /* Flocker.swift */,
 				E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */,
@@ -1497,7 +1493,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E54A9F191DD4634B0066F20D /* BartlebyDocument+Triggers.swift in Sources */,
-				E54242301DDAFF3900E4A777 /* DataChunk.swift in Sources */,
 				E53B42391DDA214200F130AA /* URL+Utilities.swift in Sources */,
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
 				E54A9F031DD4634B0066F20D /* DocumentError.swift in Sources */,
@@ -1756,7 +1751,6 @@
 				E54A9F8E1DD4634B0066F20D /* StatusOfCompletion.swift in Sources */,
 				E54A9F2C1DD4634B0066F20D /* HTTPContext+Conveniences.swift in Sources */,
 				E54A9EF61DD4634B0066F20D /* Async.swift in Sources */,
-				E54242341DDB024700E4A777 /* DataChunk.swift in Sources */,
 				E54A9F401DD4634B0066F20D /* ImageTransform.swift in Sources */,
 				E54A9E761DD4634B0066F20D /* CreateUser.swift in Sources */,
 				E54A9E601DD4634B0066F20D /* Trigger.swift in Sources */,

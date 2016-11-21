@@ -60,7 +60,11 @@ public final class BSFS:TriggerHook{
     /// - Parameter document: the document instance
     required public init(in document:BartlebyDocument){
         self._document=document
-        self._chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
+        self._chunker=Chunker(fileManager: FileManager.default,
+                              cryptoKey:Bartleby.configuration.KEY,
+                              cryptoSalt:Bartleby.configuration.SHARED_SALT,
+                              mode:.digestAndProcessing
+            ,embeddedIn:document)
     }
 
     // MARK: - Persistency
@@ -98,12 +102,10 @@ public final class BSFS:TriggerHook{
     /// The path correspond is where the Boxes assemble their files.
     /// The files are destroyed when a box is unmounted.
     public var boxesFolderPath:String{
-        return Bartleby.getSearchPath(.cachesDirectory)!+"/boxes"
+        return Bartleby.getSearchPath(.documentDirectory)!+"/boxes"
     }
 
-
     //MARK:  - Box Level
-
 
     /// New Box Factory
     /// Includes shadowing
@@ -169,7 +171,6 @@ public final class BSFS:TriggerHook{
                     completed(completionState)
                 }
             }
-
             // Call the first pop.
             __popNode()
 
@@ -284,7 +285,7 @@ public final class BSFS:TriggerHook{
                                                            decrypt: node.cryptedBlocks,
                                                            externalId:node.UID,
                                                            progression: { (progression) in
-                                progressed(progression)
+                                                            progressed(progression)
                             }, success: { path in
 
                                 if node.nature == .flock{
@@ -408,12 +409,12 @@ public final class BSFS:TriggerHook{
 
                 /// Let's break the file into chunk.
                 self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
-                                            relativePath:relativePath,
-                                             chunksFolderPath: box.nodesFolderPath,
-                                             chunkMaxSize:reference.chunkMaxSize,
-                                             compress: reference.compressed,
-                                             encrypt: reference.crypted,
-                                             progression: { (progression) in
+                                              relativePath:relativePath,
+                                              chunksFolderPath: box.nodesFolderPath, // @? useless if embedded
+                                              chunkMaxSize:reference.chunkMaxSize,
+                                              compress: reference.compressed,
+                                              encrypt: reference.crypted,
+                                              progression: { (progression) in
                                                 progressed(progression)
                 }
                     , success: { (chunks) in
@@ -1012,7 +1013,7 @@ public final class BSFS:TriggerHook{
                         __removeBlockFromList(block)
                         block.needsUpload=false
                         self._uploadNext()
-                        
+
                     }, failureHandler: { (context) in
                         __removeBlockFromList(block)
                     }, cancelationHandler: {
@@ -1045,7 +1046,7 @@ public final class BSFS:TriggerHook{
     }
     
     
-
+    
     /// Return the block matching the Chunk if found
     ///
     /// - Parameter chunk: the chunk
@@ -1058,7 +1059,7 @@ public final class BSFS:TriggerHook{
         }
         return nil
     }
-
+    
     /// Delete a Block its BlockShadow, raw file
     ///
     /// - Parameter block: the block or the BlockShadow reference

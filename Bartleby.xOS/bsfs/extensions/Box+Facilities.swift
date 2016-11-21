@@ -13,7 +13,7 @@ extension Box{
 
 
     /// The nodes folder path
-    var nodesFolderPath:String{
+    public var nodesFolderPath:String{
         if let bsfs=self.document?.bsfs{
             return bsfs.boxesFolderPath+"/"+self.UID
         }else{

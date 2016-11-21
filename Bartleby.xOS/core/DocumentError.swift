@@ -35,4 +35,5 @@ public enum DocumentError: Error {
     case undefined
     case utf8EncodingError
     case fileWrapperNotFound(message:String)
+    case blockNotFound(identifiedBy:String)
 }
