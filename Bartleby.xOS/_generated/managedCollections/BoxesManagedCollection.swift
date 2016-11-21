@@ -32,6 +32,10 @@ extension Notification.Name {
 
 @objc(BoxesManagedCollection) open class BoxesManagedCollection : BartlebyObject,IterableCollectibleCollection{
 
+
+    // Used to determine if the wrapper should be saved.
+    open var shouldBeSaved:Bool=false
+
     // Universal type support
     override open class func typeName() -> String {
         return "BoxesManagedCollection"

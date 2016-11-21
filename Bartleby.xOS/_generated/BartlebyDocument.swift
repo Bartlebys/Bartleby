@@ -35,6 +35,7 @@ import Foundation
 
 
 
+
     //MARK: - Initializers
 
 
@@ -86,6 +87,8 @@ import Foundation
 
     #endif
 
+    // Keep a reference to the document file Wrapper
+    open var documentFileWrapper:FileWrapper?
 
     // The file extension for crypted data
     open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
@@ -352,23 +355,6 @@ import Foundation
         #else
             self.updateChangeCount(UIDocumentChangeKind.done)
         #endif
-    }
-
-
-
-    /**
-     Returns the collection file name
-
-     - parameter metadatum: the collectionMetadatim
-
-     - returns: the crypted and the non crypted file name in a tupple.
-     */
-    internal func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
-        let cryptedExtension=BartlebyDocument.DATA_EXTENSION
-        let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
-        let cryptedFileName=metadatum.collectionName + cryptedExtension
-        let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
-        return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
     }
 
     /**

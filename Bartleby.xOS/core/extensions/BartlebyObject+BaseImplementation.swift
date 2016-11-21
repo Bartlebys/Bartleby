@@ -72,6 +72,11 @@ extension BartlebyObject{
      - parameter newValue: the newValue
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
+
+        if var collection = self as? BartlebyCollection{
+            collection.shouldBeSaved=true
+        }
+
         if !(self is Shadow){
             if self._autoCommitIsEnabled == true {
                 // Set up the commit flag
@@ -79,7 +84,6 @@ extension BartlebyObject{
             }
 
             if self._supervisionIsEnabled{
-
                 if key=="*" && !(self is BartlebyCollection){
                     if self.isInspectable {
                         // Dictionnary or NSData Patch
@@ -135,9 +139,7 @@ extension BartlebyObject{
                 for (_,supervisionClosure) in self._supervisers{
                     supervisionClosure(key,oldValue,newValue)
                 }
-                
             }
-
         }
 
     }

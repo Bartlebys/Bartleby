@@ -17,6 +17,9 @@ import Cocoa
 // The collection behavior is generated using flexions.
 public protocol CollectibleCollection: Collectible {
 
+      // Used to determine if the wrapper should be saved.
+    var shouldBeSaved:Bool { get set }
+
     // The undo manager (for automation)
     weak var undoManager: UndoManager? { get set }
 

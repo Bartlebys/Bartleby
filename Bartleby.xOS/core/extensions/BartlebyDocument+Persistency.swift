@@ -84,7 +84,7 @@ extension BartlebyDocument{
             for metadatum in self.metadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
                 if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
-                    let names=self._collectionFileNames(metadatum)
+                    let names=self.collectionFileNames(metadatum)
                     if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
                         let filename=wrapper.filename
                         if var collectionData=wrapper.regularFileContents {
@@ -123,86 +123,101 @@ extension BartlebyDocument{
             }
         }
 
+        // Store the reference
+        self.documentFileWrapper=fileWrapper
+
     }
 
     open override func write(to url: URL, ofType typeName: String) throws {
 
         self.documentWillSave()
-        let fileWrapper=FileWrapper(directoryWithFileWrappers:[:])
-        if var fileWrappers=fileWrapper.fileWrappers {
+        self.documentFileWrapper=self.documentFileWrapper ?? FileWrapper(directoryWithFileWrappers:[:])
 
-            // ##############
-            // # Metadata
-            // ##############
+        if  let fileWrapper=self.documentFileWrapper{
+            if var fileWrappers=fileWrapper.fileWrappers {
 
-            // Try to store a preferred filename
-            self.metadata.preferredFileName=self.fileURL?.lastPathComponent
-            var metadataData=self.metadata.serialize()
+                // ##############
+                // # Metadata
+                // ##############
 
-            metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
+                // Try to store a preferred filename
+                self.metadata.preferredFileName=self.fileURL?.lastPathComponent
+                var metadataData=self.metadata.serialize()
 
-            // Remove the previous metadata
-            if let wrapper=fileWrappers[self._metadataFileName] {
-                fileWrapper.removeFileWrapper(wrapper)
-            }
-            let metadataFileWrapper=FileWrapper(regularFileWithContents: metadataData)
-            metadataFileWrapper.preferredFilename=self._metadataFileName
-            fileWrapper.addFileWrapper(metadataFileWrapper)
+                metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
 
-            // ##############
-            // # BSFS DATA
-            // ##############
+                // Remove the previous metadata
+                if let wrapper=fileWrappers[self._metadataFileName] {
+                    fileWrapper.removeFileWrapper(wrapper)
+                }
+                let metadataFileWrapper=FileWrapper(regularFileWithContents: metadataData)
+                metadataFileWrapper.preferredFilename=self._metadataFileName
+                fileWrapper.addFileWrapper(metadataFileWrapper)
 
-            if let wrapper=fileWrappers[self._bsfsDataFileName]{
-                fileWrapper.removeFileWrapper(wrapper)
-            }
+                // ##############
+                // # BSFS DATA
+                // ##############
 
-            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState())
-            let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
-            bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
-            fileWrapper.addFileWrapper(bsfsFileWrapper)
+                if let wrapper=fileWrappers[self._bsfsDataFileName]{
+                    fileWrapper.removeFileWrapper(wrapper)
+                }
+
+                let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState())
+                let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
+                bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
+                fileWrapper.addFileWrapper(bsfsFileWrapper)
 
 
-            // ##############
-            // # Collections
-            // ##############
+                // ##############
+                // # Collections
+                // ##############
 
-            for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
+                for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
 
-                if !metadatum.inMemory {
-                    let collectionfileName=self._collectionFileNames(metadatum).crypted
-                    // MONOLITHIC STORAGE
-                    if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
+                    if !metadatum.inMemory {
+                        let collectionfileName=self.collectionFileNames(metadatum).crypted
+                        // MONOLITHIC STORAGE
+                        if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
 
-                        if let collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
+                            if var collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
 
-                            // We use multiple files
+                                if collection.shouldBeSaved{
 
-                            // Use the faster possible approach.
-                            // The resulting data is not a valid String check CryptoDelegate for details.
-                            let collectionString = collection.serializeToUFf8String()
-                            let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString)
-                            
-                            // Remove the previous data
-                            if let wrapper=fileWrappers[collectionfileName] {
-                                fileWrapper.removeFileWrapper(wrapper)
+                                    // We use multiple files
+                                    // The resulting data is not a valid String check CryptoDelegate for details.
+                                    let collectionString = collection.serializeToUFf8String()
+                                    let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString)
+
+                                    // Remove the previous data
+                                    if let wrapper=fileWrappers[collectionfileName] {
+                                        fileWrapper.removeFileWrapper(wrapper)
+                                    }
+
+                                    let collectionFileWrapper=FileWrapper(regularFileWithContents: collectionData)
+                                    collectionFileWrapper.preferredFilename=collectionfileName
+                                    fileWrapper.addFileWrapper(collectionFileWrapper)
+
+                                    // Reinitialize the flag
+                                    collection.shouldBeSaved=false
+                                }
+                                
+                            } else {
+                                // NO COLLECTION
                             }
-                            
-                            let collectionFileWrapper=FileWrapper(regularFileWithContents: collectionData)
-                            collectionFileWrapper.preferredFilename=collectionfileName
-                            fileWrapper.addFileWrapper(collectionFileWrapper)
                         } else {
-                            // NO COLLECTION
+                            // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                         }
-                    } else {
-                        // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
+                        
                     }
-                    
                 }
             }
-        }
+            
+            //FileWrapper(url: URl, options: FileWrapper.ReadingOptions)
+            
+            
+            try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
 
-        try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+        }
 
     }
 #else
@@ -223,5 +238,21 @@ extension BartlebyDocument{
     }
     
 #endif
+
+
+    /**
+     Returns the collection file name
+
+     - parameter metadatum: the collectionMetadatim
+
+     - returns: the crypted and the non crypted file name in a tupple.
+     */
+    func collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
+        let cryptedExtension=BartlebyDocument.DATA_EXTENSION
+        let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
+        let cryptedFileName=metadatum.collectionName + cryptedExtension
+        let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
+        return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
+    }
 
 }
