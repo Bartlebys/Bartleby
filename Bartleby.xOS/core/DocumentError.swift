@@ -34,5 +34,5 @@ public enum DocumentError: Error {
     case unSupportedFileType(typeName:String)
     case undefined
     case utf8EncodingError
-    case fileWrapperNotFound
+    case fileWrapperNotFound(message:String)
 }

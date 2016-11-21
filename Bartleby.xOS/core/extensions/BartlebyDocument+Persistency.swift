@@ -52,7 +52,7 @@ extension BartlebyDocument{
         if let fileWrapper = contents as? FileWrapper{
             try self._read(from:fileWrapper)
         }else{
-            throw DocumentError.fileWrapperNotFound
+            throw DocumentError.fileWrapperNotFound(message:"on load")
         }
     }
 
@@ -62,7 +62,6 @@ extension BartlebyDocument{
     }
 
 #endif
-
 
     private func _read(from fileWrapper:FileWrapper) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
@@ -149,7 +148,6 @@ extension BartlebyDocument{
                 self.documentDidLoad()
             }
         }
-
         // Store the reference
         self.documentFileWrapper=fileWrapper
         
@@ -236,15 +234,78 @@ extension BartlebyDocument{
                         } else {
                             // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                         }
-                        
                     }
                 }
             }
+
+
+            // Bsfs blocks
+            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
+            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+            fileWrapper.addFileWrapper(blocksFileWrapper)
+
         }
+
         return self.documentFileWrapper!
     }
 
 
+    // MARK: - Wrappers
+
+    // The bsfs data file name
+    private var _blocksDirectoryWrapperName: String { return "blocks" }
+    private var _blocksWrapper:FileWrapper? {
+        return self.documentFileWrapper?.fileWrappers?[self._blocksDirectoryWrapperName]
+    }
+
+
+    /// Add a file into the package
+    ///
+    /// - Parameters:
+    ///   - url: the original content URL
+    ///   - identifier: the identifier of the block (use UDID)
+    ///   - isABlock: defines if the file must be considerate as a block (bsfs)
+    public func put(data:Data,intoBlockWith identifier:String)throws->(){
+        if let directoryFileWrapper = self._blocksWrapper {
+            let f = FileWrapper(regularFileWithContents: data)
+            Async.utility{
+                f.preferredFilename=identifier
+                directoryFileWrapper.addFileWrapper(f)
+            }
+        }else{
+            throw DocumentError.fileWrapperNotFound(message: "Directory Wrapper not found ")
+        }
+    }
+
+
+    /// Removes a Block from the package
+    ///
+    /// - Parameters:
+    ///   - identifier: the identifier of the file (use UDID)
+    ///   - isABlock: defines if the file must be considerate as a block (bsfs)
+    public func removeBlock(with identifier:String)throws->(){
+        if let directoryFileWrapper:FileWrapper = self._blocksWrapper {
+            if let w=directoryFileWrapper.fileWrappers?[identifier]{
+                 directoryFileWrapper.removeFileWrapper(w)
+            }else{
+                throw DocumentError.fileWrapperNotFound(message:"File Wrapper with identifier \(identifier)")
+            }
+        }else{
+            throw DocumentError.fileWrapperNotFound(message: "Directory Wrapper not found )")
+        }
+    }
+
+
+    /// Returns the data for a given identifier
+    ///
+    /// - Parameter identifier: identifier description
+    /// - Returns: the block file Wrapper
+    public func dataForBlock(with identifier:String)->Data?{
+        return self._blocksWrapper?.fileWrappers?[identifier]?.regularFileContents
+    }
+
+
+    // MARK: Collections
 
     /**
      Returns the collection file name
