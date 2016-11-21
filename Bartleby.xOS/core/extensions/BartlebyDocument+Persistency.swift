@@ -36,8 +36,35 @@ extension BartlebyDocument{
 #if os(OSX)
 
     open override func read(from url: URL, ofType typeName: String) throws {
-
         let fileWrapper = try FileWrapper(url: url, options: FileWrapper.ReadingOptions.immediate)
+        try self._read(from: fileWrapper)
+    }
+
+    open override func write(to url: URL, ofType typeName: String) throws {
+        let fileWrapper = try self._updatedFileWrappers()
+        try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+    }
+
+#else
+
+    // To Read content
+    open override func load(fromContents contents: Any, ofType typeName: String?) throws {
+        if let fileWrapper = contents as? FileWrapper{
+            try self._read(from:fileWrapper)
+        }else{
+            throw DocumentError.fileWrapperNotFound
+        }
+    }
+
+    // To Write content
+    override open func contents(forType typeName: String) throws -> Any {
+        return try self._updatedFileWrappers()
+    }
+
+#endif
+
+
+    private func _read(from fileWrapper:FileWrapper) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
 
             // ##############
@@ -84,7 +111,7 @@ extension BartlebyDocument{
             for metadatum in self.metadata.collectionsMetadata {
                 // MONOLITHIC STORAGE
                 if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
-                    let names=self.collectionFileNames(metadatum)
+                    let names=self._collectionFileNames(metadatum)
                     if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
                         let filename=wrapper.filename
                         if var collectionData=wrapper.regularFileContents {
@@ -117,19 +144,21 @@ extension BartlebyDocument{
             } catch {
                 self.log("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }
-            
-           Async.main{
+
+            Async.main{
                 self.documentDidLoad()
             }
         }
 
         // Store the reference
         self.documentFileWrapper=fileWrapper
-
+        
     }
 
-    open override func write(to url: URL, ofType typeName: String) throws {
 
+
+
+    private func _updatedFileWrappers()throws ->FileWrapper{
         self.documentWillSave()
         self.documentFileWrapper=self.documentFileWrapper ?? FileWrapper(directoryWithFileWrappers:[:])
 
@@ -175,7 +204,7 @@ extension BartlebyDocument{
                 for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
 
                     if !metadatum.inMemory {
-                        let collectionfileName=self.collectionFileNames(metadatum).crypted
+                        let collectionfileName=self._collectionFileNames(metadatum).crypted
                         // MONOLITHIC STORAGE
                         if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
 
@@ -211,33 +240,10 @@ extension BartlebyDocument{
                     }
                 }
             }
-            
-            //FileWrapper(url: URl, options: FileWrapper.ReadingOptions)
-            
-            
-            try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
-
         }
-
-    }
-#else
-
-
-    // MARK: iOS UIDocument serialization / deserialization
-
-    // TODO: @bpds(#IOS) UIDocument support
-
-    // SAVE content
-    override open func contents(forType typeName: String) throws -> Any {
-    return ""
+        return self.documentFileWrapper!
     }
 
-    // READ content
-    open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-
-    }
-    
-#endif
 
 
     /**
@@ -247,12 +253,14 @@ extension BartlebyDocument{
 
      - returns: the crypted and the non crypted file name in a tupple.
      */
-    func collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
+    private func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=BartlebyDocument.DATA_EXTENSION
         let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName + cryptedExtension
         let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
     }
+
+
 
 }

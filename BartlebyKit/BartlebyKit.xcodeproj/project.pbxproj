@@ -429,6 +429,8 @@
 		E5854AE01DDCAAAD00C774E5 /* BytesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */; };
 		E5854AE11DDCAE1400C774E5 /* BytesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854ADF1DDCAAAD00C774E5 /* BytesStats.swift */; };
 		E598906D1DC77F0600F235B5 /* DecryptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E598906C1DC77F0600F235B5 /* DecryptView.swift */; };
+		E5A6BFA01DE2F46800E5E3E6 /* CryptoKeySize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5010CB71DDB36D3004E551E /* CryptoKeySize.swift */; };
+		E5A6BFA11DE2F49200E5E3E6 /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B42381DDA214200F130AA /* URL+Utilities.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -1729,6 +1731,7 @@
 				E54A9EC81DD4634B0066F20D /* Block+Facilities.swift in Sources */,
 				E54A9F9C1DD4634B0066F20D /* TriggersByIds.swift in Sources */,
 				E54A9F981DD4634B0066F20D /* LogoutUser.swift in Sources */,
+				E5A6BFA01DE2F46800E5E3E6 /* CryptoKeySize.swift in Sources */,
 				E54A9E9E1DD4634B0066F20D /* ReadLockersByQuery.swift in Sources */,
 				E54A9F8A1DD4634B0066F20D /* Reaction.swift in Sources */,
 				E54A9EF41DD4634B0066F20D /* String+HMAC.swift in Sources */,
@@ -1892,6 +1895,7 @@
 				E54A9E9C1DD4634B0066F20D /* ReadLockersByIds.swift in Sources */,
 				E54A9E7E1DD4634B0066F20D /* DeleteBox.swift in Sources */,
 				E54A9FA81DD4634B0066F20D /* PString.swift in Sources */,
+				E5A6BFA11DE2F49200E5E3E6 /* URL+Utilities.swift in Sources */,
 				E54A9E741DD4634B0066F20D /* CreateNodes.swift in Sources */,
 				E54A9F6E1DD4634B0066F20D /* LogCategorizable.swift in Sources */,
 				E54A9F5C1DD4634B0066F20D /* Distribuable.swift in Sources */,
