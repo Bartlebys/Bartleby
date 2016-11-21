@@ -155,10 +155,7 @@ extension BartlebyDocument{
 
     private func _updatedFileWrappers()throws ->FileWrapper{
         self.documentWillSave()
-        self.documentFileWrapper=self.documentFileWrapper ?? FileWrapper(directoryWithFileWrappers:[:])
-
-        if  let fileWrapper=self.documentFileWrapper{
-            if var fileWrappers=fileWrapper.fileWrappers {
+            if var fileWrappers=self.documentFileWrapper.fileWrappers {
 
                 // ##############
                 // # Metadata
@@ -172,24 +169,24 @@ extension BartlebyDocument{
 
                 // Remove the previous metadata
                 if let wrapper=fileWrappers[self._metadataFileName] {
-                    fileWrapper.removeFileWrapper(wrapper)
+                    self.documentFileWrapper.removeFileWrapper(wrapper)
                 }
                 let metadataFileWrapper=FileWrapper(regularFileWithContents: metadataData)
                 metadataFileWrapper.preferredFilename=self._metadataFileName
-                fileWrapper.addFileWrapper(metadataFileWrapper)
+                self.documentFileWrapper.addFileWrapper(metadataFileWrapper)
 
                 // ##############
                 // # BSFS DATA
                 // ##############
 
                 if let wrapper=fileWrappers[self._bsfsDataFileName]{
-                    fileWrapper.removeFileWrapper(wrapper)
+                    self.documentFileWrapper.removeFileWrapper(wrapper)
                 }
 
                 let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState())
                 let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
                 bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
-                fileWrapper.addFileWrapper(bsfsFileWrapper)
+                self.documentFileWrapper.addFileWrapper(bsfsFileWrapper)
 
 
                 // ##############
@@ -214,12 +211,12 @@ extension BartlebyDocument{
 
                                     // Remove the previous data
                                     if let wrapper=fileWrappers[collectionfileName] {
-                                        fileWrapper.removeFileWrapper(wrapper)
+                                        self.documentFileWrapper.removeFileWrapper(wrapper)
                                     }
 
                                     let collectionFileWrapper=FileWrapper(regularFileWithContents: collectionData)
                                     collectionFileWrapper.preferredFilename=collectionfileName
-                                    fileWrapper.addFileWrapper(collectionFileWrapper)
+                                    self.documentFileWrapper.addFileWrapper(collectionFileWrapper)
 
                                     // Reinitialize the flag
                                     collection.shouldBeSaved=false
@@ -238,23 +235,20 @@ extension BartlebyDocument{
                 if  fileWrappers[self._blocksDirectoryWrapperName] == nil{
                     let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
                     blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
-                    fileWrapper.addFileWrapper(blocksFileWrapper)
+                    self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
                 }
-
             }
 
-        }
-
-        return self.documentFileWrapper!
+        return self.documentFileWrapper
     }
 
 
     // MARK: - Wrappers
 
     // The bsfs data file name
-    private var _blocksDirectoryWrapperName: String { return "blocks" }
-    private var _blocksWrapper:FileWrapper? {
-        return self.documentFileWrapper?.fileWrappers?[self._blocksDirectoryWrapperName]
+    internal var _blocksDirectoryWrapperName: String { return "blocks" }
+    internal var _blocksWrapper:FileWrapper? {
+        return self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName]
     }
 
 

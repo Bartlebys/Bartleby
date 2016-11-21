@@ -38,35 +38,24 @@ import Foundation
 
     //MARK: - Initializers
 
-
     #if os(OSX)
 
     required public override init() {
         super.init()
-
-        Bartleby.sharedInstance.declare(self)
-        addGlobalLogsObserver(self) // Add the document to globals logs observer
-        BartlebyDocument.declareTypes()
-
-        self.metadata.document=self
-
-        // Setup the spaceUID if necessary
-        if (self.metadata.spaceUID==Default.NO_UID) {
-            self.metadata.spaceUID=self.metadata.UID
-        }
-        // Setup the default collaboration server
-        self.metadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-
-        // Configure the schemas
-        self.configureSchema()
-
+        self._configure()
     }
+
     #else
 
 
     public override init(fileURL url: URL) {
         super.init(fileURL: url as URL)
+        self._configure()
+    }
 
+    #endif
+
+    private func _configure(){
         Bartleby.sharedInstance.declare(self)
         addGlobalLogsObserver(self) // Add the document to globals logs observer
         BartlebyDocument.declareTypes()
@@ -83,12 +72,18 @@ import Foundation
 
         // Configure the schemas
         self.configureSchema()
+
+        // We want to be able to write blocks even on Document drafts.
+        if  self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName] == nil{
+            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
+            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+            documentFileWrapper.addFileWrapper(blocksFileWrapper)
+        }
     }
 
-    #endif
+   // Keep a reference to the document file Wrapper
+    open var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
 
-    // Keep a reference to the document file Wrapper
-    open var documentFileWrapper:FileWrapper?
 
     // The file extension for crypted data
     open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }

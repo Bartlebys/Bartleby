@@ -137,6 +137,8 @@ public final class BSFS:TriggerHook{
 
             var concernedNodes=[Node]()
 
+            try? self._fileManager.createDirectory(atPath: box.nodesFolderPath, withIntermediateDirectories: true, attributes: nil)
+
             // Let's try to assemble as much nodes as we can.
             for node in box.localNodes{
                 if node.isAssemblable && !self._isAssembled(node) && !node.assemblyInProgress{
