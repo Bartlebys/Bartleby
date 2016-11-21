@@ -103,7 +103,7 @@ import Foundation
     open lazy var bsfs:BSFS=BSFS(in:self)
 
     // The bsfs data file name
-    internal var _bsfsDataFileName: String { return "localBSFS" + BartlebyDocument.DATA_EXTENSION }
+    internal var _bsfsDataFileName: String { return "bsfs" + BartlebyDocument.DATA_EXTENSION }
 
     // Hook the triggers
     public var triggerHooks=[TriggerHook]()
