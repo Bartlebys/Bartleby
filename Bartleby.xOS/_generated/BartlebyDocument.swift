@@ -237,7 +237,7 @@ import Foundation
      Let's say we instantiate an Alias<Tag>
 
      To insure **cross product deserialization**
-     Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5bsync5AliasCS_3Tag_" are transformed to "Alias<Tag>"
+     Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5DDD5AliasCS_3Tag_" are transformed to "Alias<Tag>"
 
      To associate those disymetric type you can add the class declareTypes
      And implement typeName() and runTimeTypeName()

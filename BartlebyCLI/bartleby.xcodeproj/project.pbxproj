@@ -462,6 +462,7 @@
 		E5854BBE1DDCAE9700C774E5 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E5854BBF1DDCAE9700C774E5 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E5854BC01DDCAE9700C774E5 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
+		E5A6BFA31DE302B600E5E3E6 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E5CC28521D846CB300F7C783 /* AFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
 		E5CC28541D846CB300F7C783 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Alamofire.swift"; sourceTree = "<group>"; };
@@ -527,6 +528,7 @@
 				E50A3ABE1C453AC1004BB7E3 /* Embedded-Modules */,
 				E50A3AB61C453A6D004BB7E3 /* bartleby */,
 				E548A4831D880577006FF410 /* bartlebyTests */,
+				E5A6BFA21DE302B600E5E3E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -957,6 +959,14 @@
 				E5854BC01DDCAE9700C774E5 /* PString.swift */,
 			);
 			path = tools;
+			sourceTree = "<group>";
+		};
+		E5A6BFA21DE302B600E5E3E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E5A6BFA31DE302B600E5E3E6 /* BartlebyKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		E5B98E001CC0DC9B00A7ECD1 /* Vendors */ = {

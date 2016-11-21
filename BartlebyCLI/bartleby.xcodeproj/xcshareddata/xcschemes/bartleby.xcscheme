@@ -92,7 +92,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "testFlocker"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

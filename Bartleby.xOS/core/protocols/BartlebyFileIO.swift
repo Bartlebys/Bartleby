@@ -10,8 +10,7 @@ import Foundation
 
 
 /**
- * Provides an abstraction for file IO.
- * Sandoboxed os x App can use BsyncXPCHelper that implement BartlebyFileIO
+ * Provides an abstraction for file IO
  */
 public protocol BartlebyFileIO {
     
