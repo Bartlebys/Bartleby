@@ -33,7 +33,7 @@ import Foundation
 
 extension BartlebyDocument{
 
-#if os(OSX)
+    #if os(OSX)
 
     open override func read(from url: URL, ofType typeName: String) throws {
         let fileWrapper = try FileWrapper(url: url, options: FileWrapper.ReadingOptions.immediate)
@@ -45,23 +45,23 @@ extension BartlebyDocument{
         try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
     }
 
-#else
+    #else
 
     // To Read content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-        if let fileWrapper = contents as? FileWrapper{
-            try self._read(from:fileWrapper)
-        }else{
-            throw DocumentError.fileWrapperNotFound(message:"on load")
-        }
+    if let fileWrapper = contents as? FileWrapper{
+    try self._read(from:fileWrapper)
+    }else{
+    throw DocumentError.fileWrapperNotFound(message:"on load")
+    }
     }
 
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-        return try self._updatedFileWrappers()
+    return try self._updatedFileWrappers()
     }
 
-#endif
+    #endif
 
     private func _read(from fileWrapper:FileWrapper) throws {
         if let fileWrappers=fileWrapper.fileWrappers {
@@ -150,10 +150,7 @@ extension BartlebyDocument{
         }
         // Store the reference
         self.documentFileWrapper=fileWrapper
-        
     }
-
-
 
 
     private func _updatedFileWrappers()throws ->FileWrapper{
@@ -227,7 +224,7 @@ extension BartlebyDocument{
                                     // Reinitialize the flag
                                     collection.shouldBeSaved=false
                                 }
-                                
+
                             } else {
                                 // NO COLLECTION
                             }
@@ -236,13 +233,15 @@ extension BartlebyDocument{
                         }
                     }
                 }
+
+                // Bsfs blocks
+                if  fileWrappers[self._blocksDirectoryWrapperName] == nil{
+                    let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
+                    blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+                    fileWrapper.addFileWrapper(blocksFileWrapper)
+                }
+
             }
-
-
-            // Bsfs blocks
-            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
-            fileWrapper.addFileWrapper(blocksFileWrapper)
 
         }
 
@@ -263,13 +262,18 @@ extension BartlebyDocument{
     ///
     /// - Parameters:
     ///   - url: the original content URL
-    ///   - identifier: the identifier of the block (use UDID)
+    ///   - digest: the identifier of the block (use the block digests)
     ///   - isABlock: defines if the file must be considerate as a block (bsfs)
-    public func put(data:Data,intoBlockWith identifier:String)throws->(){
+    public func put(data:Data,identifiedBy digest:String)throws->(){
         if let directoryFileWrapper = self._blocksWrapper {
-            let f = FileWrapper(regularFileWithContents: data)
-            Async.utility{
-                f.preferredFilename=identifier
+            Async.main{
+                // Remove the previous wrapper if there is one
+                if let w=directoryFileWrapper.fileWrappers?[digest]{
+                    directoryFileWrapper.removeFileWrapper(w)
+                }
+                let f = FileWrapper(regularFileWithContents: data)
+
+                f.preferredFilename=digest
                 directoryFileWrapper.addFileWrapper(f)
             }
         }else{
@@ -281,14 +285,16 @@ extension BartlebyDocument{
     /// Removes a Block from the package
     ///
     /// - Parameters:
-    ///   - identifier: the identifier of the file (use UDID)
+    ///   - digest: the identifier of the file (use UDID)
     ///   - isABlock: defines if the file must be considerate as a block (bsfs)
-    public func removeBlock(with identifier:String)throws->(){
+    public func removeBlock(with digest:String)throws->(){
         if let directoryFileWrapper:FileWrapper = self._blocksWrapper {
-            if let w=directoryFileWrapper.fileWrappers?[identifier]{
-                 directoryFileWrapper.removeFileWrapper(w)
+            if let w=directoryFileWrapper.fileWrappers?[digest]{
+                Async.main{
+                    directoryFileWrapper.removeFileWrapper(w)
+                }
             }else{
-                throw DocumentError.fileWrapperNotFound(message:"File Wrapper with identifier \(identifier)")
+                throw DocumentError.fileWrapperNotFound(message:"File Wrapper with digest \(digest)")
             }
         }else{
             throw DocumentError.fileWrapperNotFound(message: "Directory Wrapper not found )")
@@ -298,10 +304,20 @@ extension BartlebyDocument{
 
     /// Returns the data for a given identifier
     ///
-    /// - Parameter identifier: identifier description
+    /// - Parameter digest: the block digest
     /// - Returns: the block file Wrapper
-    public func dataForBlock(with identifier:String)->Data?{
-        return self._blocksWrapper?.fileWrappers?[identifier]?.regularFileContents
+    public func dataForBlock(identifiedBy digest:String)throws->Data{
+        let mainGroup=AsyncGroup()
+        var data:Data?
+        mainGroup.main {
+            data=self._blocksWrapper?.fileWrappers?[digest]?.regularFileContents
+        }
+        mainGroup.wait()
+        if let data=data{
+            return data
+        }else{
+            throw DocumentError.blockNotFound(identifiedBy: digest)
+        }
     }
 
 
@@ -309,9 +325,9 @@ extension BartlebyDocument{
 
     /**
      Returns the collection file name
-
+     
      - parameter metadatum: the collectionMetadatim
-
+     
      - returns: the crypted and the non crypted file name in a tupple.
      */
     private func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
@@ -321,7 +337,7 @@ extension BartlebyDocument{
         let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
     }
-
-
-
+    
+    
+    
 }
