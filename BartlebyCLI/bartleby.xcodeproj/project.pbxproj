@@ -89,7 +89,6 @@
 		E5854C0E1DDCAE9800C774E5 /* BytesStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B381DDCAE9700C774E5 /* BytesStats.swift */; };
 		E5854C0F1DDCAE9800C774E5 /* Chunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B391DDCAE9700C774E5 /* Chunk.swift */; };
 		E5854C101DDCAE9800C774E5 /* Chunker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B3A1DDCAE9700C774E5 /* Chunker.swift */; };
-		E5854C111DDCAE9800C774E5 /* DataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B3B1DDCAE9700C774E5 /* DataChunk.swift */; };
 		E5854C121DDCAE9800C774E5 /* DeltaAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B3C1DDCAE9700C774E5 /* DeltaAnalyzer.swift */; };
 		E5854C131DDCAE9800C774E5 /* Block+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B3E1DDCAE9700C774E5 /* Block+Facilities.swift */; };
 		E5854C141DDCAE9800C774E5 /* Box+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854B3F1DDCAE9700C774E5 /* Box+Facilities.swift */; };
@@ -206,6 +205,7 @@
 		E5854C831DDCAE9800C774E5 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854BBE1DDCAE9700C774E5 /* HTTPManager.swift */; };
 		E5854C841DDCAE9800C774E5 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854BBF1DDCAE9700C774E5 /* Pluralization.swift */; };
 		E5854C851DDCAE9800C774E5 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5854BC01DDCAE9700C774E5 /* PString.swift */; };
+		E5AC3A561DE340A000368AA8 /* BartlebyDocument+Persistency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC3A551DE340A000368AA8 /* BartlebyDocument+Persistency.swift */; };
 		E5CC28F91D846CB300F7C783 /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28521D846CB300F7C783 /* AFError.swift */; };
 		E5CC28FA1D846CB300F7C783 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28541D846CB300F7C783 /* Alamofire.swift */; };
 		E5CC28FB1D846CB300F7C783 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */; };
@@ -345,7 +345,6 @@
 		E5854B381DDCAE9700C774E5 /* BytesStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BytesStats.swift; sourceTree = "<group>"; };
 		E5854B391DDCAE9700C774E5 /* Chunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunk.swift; sourceTree = "<group>"; };
 		E5854B3A1DDCAE9700C774E5 /* Chunker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chunker.swift; sourceTree = "<group>"; };
-		E5854B3B1DDCAE9700C774E5 /* DataChunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataChunk.swift; sourceTree = "<group>"; };
 		E5854B3C1DDCAE9700C774E5 /* DeltaAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaAnalyzer.swift; sourceTree = "<group>"; };
 		E5854B3E1DDCAE9700C774E5 /* Block+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Facilities.swift"; sourceTree = "<group>"; };
 		E5854B3F1DDCAE9700C774E5 /* Box+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Box+Facilities.swift"; sourceTree = "<group>"; };
@@ -463,6 +462,7 @@
 		E5854BBF1DDCAE9700C774E5 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E5854BC01DDCAE9700C774E5 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5A6BFA31DE302B600E5E3E6 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
+		E5AC3A551DE340A000368AA8 /* BartlebyDocument+Persistency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Persistency.swift"; sourceTree = "<group>"; };
 		E5CC28521D846CB300F7C783 /* AFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
 		E5CC28541D846CB300F7C783 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Alamofire.swift"; sourceTree = "<group>"; };
@@ -709,7 +709,6 @@
 				E5854B381DDCAE9700C774E5 /* BytesStats.swift */,
 				E5854B391DDCAE9700C774E5 /* Chunk.swift */,
 				E5854B3A1DDCAE9700C774E5 /* Chunker.swift */,
-				E5854B3B1DDCAE9700C774E5 /* DataChunk.swift */,
 				E5854B3C1DDCAE9700C774E5 /* DeltaAnalyzer.swift */,
 				E5854B3D1DDCAE9700C774E5 /* extensions */,
 				E5854B411DDCAE9700C774E5 /* FileReference.swift */,
@@ -836,6 +835,7 @@
 		E5854B671DDCAE9700C774E5 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5AC3A551DE340A000368AA8 /* BartlebyDocument+Persistency.swift */,
 				E5854B681DDCAE9700C774E5 /* BarltlebyDocument+Consignee.swift */,
 				E5854B691DDCAE9700C774E5 /* BartlebyDocument+AppFacilities.swift */,
 				E5854B6A1DDCAE9700C774E5 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
@@ -1307,7 +1307,6 @@
 				E5854C291DDCAE9800C774E5 /* NoCrypto.swift in Sources */,
 				E5854C031DDCAE9800C774E5 /* UpdateBox.swift in Sources */,
 				E5854C771DDCAE9800C774E5 /* StatusOfCompletion.swift in Sources */,
-				E5854C111DDCAE9800C774E5 /* DataChunk.swift in Sources */,
 				E5854C611DDCAE9800C774E5 /* DocumentProvider.swift in Sources */,
 				E5CC29371D846CB300F7C783 /* URLTransform.swift in Sources */,
 				E5854C591DDCAE9800C774E5 /* Commitable.swift in Sources */,
@@ -1411,6 +1410,7 @@
 				E5CC29331D846CB300F7C783 /* ISO8601DateTransform.swift in Sources */,
 				E5854BD21DDCAE9800C774E5 /* HTTPRequest.swift in Sources */,
 				E5854BFE1DDCAE9800C774E5 /* ReadUserById.swift in Sources */,
+				E5AC3A561DE340A000368AA8 /* BartlebyDocument+Persistency.swift in Sources */,
 				E5854C491DDCAE9800C774E5 /* NSNotification+Completion.swift in Sources */,
 				E5854BDF1DDCAE9800C774E5 /* CreateBlocks.swift in Sources */,
 				E5854C1E1DDCAE9800C774E5 /* Data+Compression.swift in Sources */,
