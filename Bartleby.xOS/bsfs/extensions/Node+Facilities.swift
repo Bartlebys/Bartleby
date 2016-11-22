@@ -15,13 +15,21 @@ extension Node{
 
     /// true if the node can be assembled
     var isAssemblable:Bool{
-        // Do we have all the required blocks?
-        for uid in self.blocksUIDS{
-            guard let _ = self.localBlocks.index(where: { $0.UID==uid }) else{
-                return false
+        if let document=self.document{
+            // Do we have all the required blocks?
+            for uid in self.blocksUIDS{
+                if let block = try? Bartleby.registredObjectByUID(uid) as Block{
+                    if !document.blockIsAvailable(identifiedBy:block.digest){
+                        return false
+                    }
+                }else{
+                    return false
+                }
             }
+            return true
+        }else{
+            return false
         }
-        return true
     }
 
     /// The parent box

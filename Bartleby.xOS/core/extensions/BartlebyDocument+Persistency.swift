@@ -245,11 +245,26 @@ extension BartlebyDocument{
 
     // MARK: - Wrappers
 
+
     // The bsfs data file name
     internal var _blocksDirectoryWrapperName: String { return "blocks" }
     internal var _blocksWrapper:FileWrapper? {
         return self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName]
     }
+
+
+
+
+    /// Returns true if the block is Available
+    ///
+    /// - Parameter digest: the identifier of the file
+    /// - Returns: the availability of the block
+    public func blockIsAvailable(identifiedBy digest:String)->Bool{
+        return !(self._blocksWrapper?.fileWrappers?.index(forKey: digest) == nil)
+    }
+    
+    
+
 
 
     /// Add a file into the package
@@ -279,7 +294,7 @@ extension BartlebyDocument{
     /// Removes a Block from the package
     ///
     /// - Parameters:
-    ///   - digest: the identifier of the file (use UDID)
+    ///   - digest: the identifier of the file
     ///   - isABlock: defines if the file must be considerate as a block (bsfs)
     public func removeBlock(with digest:String)throws->(){
         if let directoryFileWrapper:FileWrapper = self._blocksWrapper {
