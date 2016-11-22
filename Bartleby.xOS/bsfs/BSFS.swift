@@ -12,7 +12,7 @@ import Foundation
 /// File level operations are done on GCD global utility queue.
 public final class BSFS:TriggerHook{
 
-    // MARK: - Variables
+    // MARK: -
 
     // Document
     fileprivate unowned var _document:BartlebyDocument
@@ -30,19 +30,12 @@ public final class BSFS:TriggerHook{
     // The current accessors key:node.UID, value:Array of Accessors
     fileprivate var _accessors=[String:[NodeAccessor]]()
 
-    /// The shadow container Reflects the local state
-    /// We use the shadows to store the upload, download and assembly state
-    /// And to determine the delta operations.
-    fileprivate var _localContainer:Container=Container()
 
-    /// Returns the local nodes shadows
-    var localBoxesShadows:[BoxShadow] { return self._localContainer.boxes }
+    /// Store the blocks UIDs that need to be uploaded
+    fileprivate var _toBeUploadedBlocksUIDS=[String]()
 
-    /// Returns the local nodes shadows
-    var localNodesShadows:[NodeShadow] { return self._localContainer.nodes }
-
-    /// Returns the local blocks shadows
-    var localBlocksShadows:[BlockShadow] { return self._localContainer.blocks }
+    // Store the blocks UIDs that need to be downloaded
+    fileprivate var _toBeDownloadedBlocksUIDS=[String]()
 
     /// The downloads operations in progrees
     fileprivate var _downloadsInProgress=[DownloadBlock]()
@@ -73,14 +66,22 @@ public final class BSFS:TriggerHook{
     ///
     /// - Returns: the serialized data
     public func saveState()->Data{
-        return _localContainer.serialize()
+        let state=["toBeUploaded":self._toBeUploadedBlocksUIDS,
+                        "toBeDownloaded":self._toBeDownloadedBlocksUIDS]
+        if let data = try? JSONSerialization.data(withJSONObject: state){
+            return data
+        }
+        return Data()
     }
 
     /// Restore the state
     ///
     /// - Parameter data: from the serialized state data
     public func restoreStateFrom(data:Data)throws->(){
-        let _ = try self._localContainer.updateData(data, provisionChanges: false)
+        if let state = try? JSONSerialization.jsonObject(with: data) as? [String:[String]]{
+            self._toBeDownloadedBlocksUIDS=state?["toBeDownloaded"] ?? [String]()
+            self._toBeUploadedBlocksUIDS=state?["toBeUploaded"] ?? [String]()
+        }
     }
 
 
@@ -107,15 +108,6 @@ public final class BSFS:TriggerHook{
 
     //MARK:  - Box Level
 
-    /// New Box Factory
-    /// Includes shadowing
-    /// - Returns: returns the box
-    public func newLocalBox()->Box{
-        let box=self._document.newBox()
-        let _=self._shadowBoxIfNecessary(box: box)
-        return box
-    }
-
     /// Mounts the current local box == Assemble all its assemblable nodes
     /// There is no guarantee that the box is not fully up to date
     ///
@@ -140,7 +132,7 @@ public final class BSFS:TriggerHook{
             try? self._fileManager.createDirectory(atPath: box.nodesFolderPath, withIntermediateDirectories: true, attributes: nil)
 
             // Let's try to assemble as much nodes as we can.
-            for node in box.localNodes{
+            for node in box.nodes{
                 if node.isAssemblable && !self._isAssembled(node) && !node.assemblyInProgress{
                     concernedNodes.append(node)
                 }
@@ -192,7 +184,7 @@ public final class BSFS:TriggerHook{
                          completed:@escaping (Completion)->()){
         do {
             let box = try Bartleby.registredObjectByUID(boxUID) as Box
-            for node in box.localNodes{
+            for node in box.nodes{
                 if let accessors=self._accessors[node.UID]{
                     for accessor in accessors{
                         accessor.willBecomeUnusable(node: node)
@@ -273,7 +265,7 @@ public final class BSFS:TriggerHook{
                     delegate.nodeIsReady(node: node, proceed: {
 
                         let path=self._assemblyPath(for: node)
-                        let blocks=node.localBlocks
+                        let blocks=node.blocks
 
                         if node.nature == .file || node.nature == .flock {
 
@@ -359,24 +351,6 @@ public final class BSFS:TriggerHook{
     }
 
 
-    /// Creates and store a local BoxShadow from its distant pair
-    ///
-    /// - Parameter box: the box
-    /// - Returns: the Shadow
-    func _shadowBoxIfNecessary(box:Box)->BoxShadow{
-        if let idx=self._localContainer.boxes.index(where: { (boxShadow) -> Bool in
-            return box.UID == boxShadow.UID
-        }){
-            return self._localContainer.boxes[idx]
-        }else{
-            // Let's add the boxShadow
-            let boxShadow=BoxShadow.from(box)
-            self._localContainer.boxes.append(boxShadow)
-            return boxShadow
-        }
-    }
-
-
     //MARK:  - File Level
 
 
@@ -405,7 +379,6 @@ public final class BSFS:TriggerHook{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
         }else{
 
-            let _ = self._shadowBoxIfNecessary(box: box)
 
             if self._fileManager.fileExists(atPath: reference.absolutePath){
 
@@ -435,6 +408,7 @@ public final class BSFS:TriggerHook{
                             node.priority=reference.priority
 
                             var cumulatedDigests=""
+                            var cumulatedSize=0
                             // Let's add the blocks
                             for chunk in chunks{
                                 let block=self._document.newBlock()
@@ -446,18 +420,15 @@ public final class BSFS:TriggerHook{
                                     block.size=chunk.originalSize
                                     block.priority=reference.priority
                                 }
-
+                                cumulatedSize += chunk.originalSize
                                 cumulatedDigests += chunk.sha1
-
-                                let blockShadow=self._shadowBlockIfNecessary(block: block)
-                                blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
                                 node.blocksUIDS.append(block.UID)
-                                self._localContainer.blocks.append(blockShadow)
+                                self._toBeUploadedBlocksUIDS.append(block.UID)
                             }
                             // Store the digest of the cumulated digests.
                             node.digest=cumulatedDigests.sha1
-                            let nodeShadow=self._shadowNodeIfNecessary(node: node)
-                            self._localContainer.nodes.append(nodeShadow)
+                            // And the node original size
+                            node.size=cumulatedSize
                         }
 
                         // Delete the original
@@ -561,6 +532,8 @@ public final class BSFS:TriggerHook{
                                     node.silentGroupedChanges {
 
                                         var cumulatedDigests=""
+                                        var cumulatedSize=0
+
                                         // Let's add the blocks
                                         for chunk in chunks{
                                             var block:Block?
@@ -580,26 +553,13 @@ public final class BSFS:TriggerHook{
                                                 block!.priority=node.priority
                                             }
                                             cumulatedDigests += chunk.sha1
-
-                                            let blockShadow=self._shadowBlockIfNecessary(block:  block!)
-                                            blockShadow.needsUpload=true // Mark the upload requirement on the Block shadow
-                                            node.blocksUIDS.append( block!.UID)
-                                            if !self._localContainer.blocks.contains(where:{ $0.UID == blockShadow.UID }){
-                                                self._localContainer.blocks.append(blockShadow)
-                                            }
+                                            cumulatedSize += chunk.originalSize
                                         }
 
                                         // Store the digest of the cumulated digests.
                                         node.digest=cumulatedDigests.sha1
-
-                                        // Update the node Shadow
-                                        let nodeShadow=self._shadowNodeIfNecessary(node: node)
-                                        nodeShadow.silentGroupedChanges {
-                                            for k in node.exposedKeys{
-                                                try? nodeShadow.setExposedValue(node.getExposedValueForKey(k), forKey: k)
-                                            }
-                                            try? nodeShadow.setShadowUID(UID: node.UID)
-                                        }
+                                        // And the node original size
+                                        node.size=cumulatedSize
                                     }
 
                                     // Mark the node to be committed
@@ -741,10 +701,6 @@ public final class BSFS:TriggerHook{
                                     try? copiedNode.mergeWith(node)// merge
                                     copiedNode.relativePath=relativePath // Thats it!
                                 }
-                                // Create the copiedNode shadow
-                                let nodeShadow=self._shadowNodeIfNecessary(node: copiedNode)
-                                self._localContainer.nodes.append(nodeShadow)
-
                                 let finalState=Completion.successState()
                                 finalState.setExternalReferenceResult(from:copiedNode)
                                 completed(finalState)
@@ -869,24 +825,6 @@ public final class BSFS:TriggerHook{
     }
 
 
-    /// Creates and store a local NodeShadow from its distant pair
-    ///
-    /// - Parameter node: the Node
-    /// - Returns: the block shadow
-    func _shadowNodeIfNecessary(node:Node)->NodeShadow{
-        if let idx=self._localContainer.nodes.index(where: { (nodeShadow) -> Bool in
-            return nodeShadow.UID == node.UID
-        }){
-            return self._localContainer.nodes[idx]
-        }else{
-            // Let's add the nodeShadow
-            let nodeShadow=NodeShadow.from(node)
-            self._localContainer.nodes.append(nodeShadow)
-            return nodeShadow
-        }
-    }
-
-
 
     // MARK: - TriggerHook
 
@@ -924,12 +862,10 @@ public final class BSFS:TriggerHook{
         if let node=block.node{
             if node.authorized.contains(self._document.currentUser.UID) ||
                 node.authorized.contains("*"){
-                let shadowBlock=self._shadowBlockIfNecessary(block: block)
-                shadowBlock.needsDownload=true
+                self._toBeDownloadedBlocksUIDS.append(block.UID)
                 self._downloadNext()
             }
         }
-
     }
 
 
@@ -941,43 +877,56 @@ public final class BSFS:TriggerHook{
     internal func _uploadNext()->(){
         if self._uploadsInProgress.count<_maxSimultaneousOperations{
 
-            let blocksS=self.localBlocksShadows.sorted { (l, r) -> Bool in
-                return l.priority>r.priority
-            }
+            do{
+                let uploadableBlocks = try self._toBeUploadedBlocksUIDS.map({ (UID) -> Block in
+                    return try Bartleby.registredObjectByUID(UID) as Block
+                })
 
-            var toBeUploaded:BlockShadow?
-            for candidate in blocksS{
-                if candidate.needsUpload && candidate.uploadInProgress==false {
-                    toBeUploaded=candidate
-                    break
+                let priorizedBlocks=uploadableBlocks.sorted { (l, r) -> Bool in
+                    return l.priority>r.priority
                 }
-            }
 
-            func __removeBlockFromList(_ block:Block){
-                block.uploadInProgress=false
-                if let idx=self._uploadsInProgress.index(where:{ $0.blockUID == block.UID}){
-                    self._uploadsInProgress.remove(at: idx)
+                var toBeUploaded:Block?
+                for candidate in priorizedBlocks{
+                    if self._toBeUploadedBlocksUIDS.contains(candidate.UID) && candidate.uploadInProgress==false {
+                        toBeUploaded=candidate
+                        break
+                    }
                 }
-            }
 
-            if toBeUploaded != nil{
-                if let block = try? Bartleby.registredObjectByUID(toBeUploaded!.UID) as Block {
-                    block.uploadInProgress=true
-                    let uploadOperation=UploadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (context) in
-                        __removeBlockFromList(block)
-                        block.needsUpload=false
-                        self._uploadNext()
+                func __removeBlockFromList(_ block:Block){
+                    block.uploadInProgress=false
 
-                    }, failureHandler: { (context) in
-                        __removeBlockFromList(block)
-                    }, cancelationHandler: {
-                        __removeBlockFromList(block)
-                    })
-                    self._uploadsInProgress.append(uploadOperation)
+                    if let idx=self._toBeUploadedBlocksUIDS.index(where:{ $0 == block.UID}){
+                        self._toBeUploadedBlocksUIDS.remove(at: idx)
+                    }
 
-                }else{
-                    self._document.log("Block not found \(toBeUploaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                    if let idx=self._uploadsInProgress.index(where:{ $0.blockUID == block.UID}){
+                        self._uploadsInProgress.remove(at: idx)
+                    }
                 }
+
+                if toBeUploaded != nil{
+                    if let block = try? Bartleby.registredObjectByUID(toBeUploaded!.UID) as Block {
+                        block.uploadInProgress=true
+                        let uploadOperation=UploadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (context) in
+                            __removeBlockFromList(block)
+                            self._uploadNext()
+
+                        }, failureHandler: { (context) in
+                            __removeBlockFromList(block)
+                        }, cancelationHandler: {
+                            __removeBlockFromList(block)
+                        })
+                        self._uploadsInProgress.append(uploadOperation)
+                        
+                    }else{
+                        self._document.log("Block not found \(toBeUploaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                    }
+                }
+
+            } catch{
+                    self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }
 
@@ -988,66 +937,61 @@ public final class BSFS:TriggerHook{
     internal func _downloadNext()->(){
 
         if self._downloadsInProgress.count<_maxSimultaneousOperations{
+            do{
 
-            let blocksS=self.localBlocksShadows.sorted { (l, r) -> Bool in
-                return l.priority>r.priority
-            }
+                let downloadableBlocks = try self._toBeDownloadedBlocksUIDS.map({ (UID) -> Block in
+                    return try Bartleby.registredObjectByUID(UID) as Block
+                })
 
-            var toBeDownloaded:BlockShadow?
-            for candidate in blocksS{
-                if candidate.needsDownload && candidate.downloadInProgress==false {
-                    toBeDownloaded=candidate
-                    break
+
+                let priorizedBlocks=downloadableBlocks.sorted { (l, r) -> Bool in
+                    return l.priority>r.priority
                 }
-            }
 
-            func __removeBlockFromList(_ block:Block){
-                block.downloadInProgress=false
-                if let idx=self._downloadsInProgress.index(where:{ $0.blockUID == block.UID }){
-                    self._downloadsInProgress.remove(at: idx)
+                var toBeDownloaded:Block?
+                for candidate in priorizedBlocks{
+                    if self._toBeDownloadedBlocksUIDS.contains(candidate.UID) && candidate.downloadInProgress==false {
+                        toBeDownloaded=candidate
+                        break
+                    }
                 }
-            }
 
-            if toBeDownloaded != nil{
-                if let block = try? Bartleby.registredObjectByUID(toBeDownloaded!.UID) as Block {
-                    block.downloadInProgress=true
-                    let downLoadOperation=DownloadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (context) in
-                        __removeBlockFromList(block)
-                        block.needsUpload=false
-                        self._uploadNext()
+                func __removeBlockFromList(_ block:Block){
+                    block.downloadInProgress=false
+                    if let idx=self._toBeDownloadedBlocksUIDS.index(where:{ $0 == block.UID }){
+                        self._toBeDownloadedBlocksUIDS.remove(at: idx)
+                    }
 
-                    }, failureHandler: { (context) in
-                        __removeBlockFromList(block)
-                    }, cancelationHandler: {
-                        __removeBlockFromList(block)
-                    })
-                    self._downloadsInProgress.append(downLoadOperation)
-                }else{
-                    self._document.log("Block not found \(toBeDownloaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                    if let idx=self._downloadsInProgress.index(where:{ $0.blockUID == block.UID }){
+                        self._downloadsInProgress.remove(at: idx)
+                    }
                 }
+
+                if toBeDownloaded != nil{
+                    if let block = try? Bartleby.registredObjectByUID(toBeDownloaded!.UID) as Block {
+                        block.downloadInProgress=true
+                        let downLoadOperation=DownloadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (context) in
+                            __removeBlockFromList(block)
+                            self._uploadNext()
+
+                        }, failureHandler: { (context) in
+                            __removeBlockFromList(block)
+                        }, cancelationHandler: {
+                            __removeBlockFromList(block)
+                        })
+                        self._downloadsInProgress.append(downLoadOperation)
+                    }else{
+                        self._document.log("Block not found \(toBeDownloaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                    }
+                }
+
+            }catch{
+                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
+
         }
     }
-    
-    
-    /// Creates and store a local BlockShadow from its distant pair
-    ///
-    /// - Parameter block: the Block
-    /// - Returns: the block shadow
-    func _shadowBlockIfNecessary(block:Block)->BlockShadow{
-        if let idx=self._localContainer.blocks.index(where: { (blockShadow) -> Bool in
-            return blockShadow.UID == block.UID
-        }){
-            return self._localContainer.blocks[idx]
-        }else{
-            // Let's add the blockShadow
-            let blockShadow=BlockShadow.from(block)
-            self._localContainer.blocks.append(blockShadow)
-            return blockShadow
-        }
-    }
-    
-    
+
     
     /// Return the block matching the Chunk if found
     ///
@@ -1066,23 +1010,16 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameter block: the block or the BlockShadow reference
     func _deleteBlock(_ block:Block) {
-        if let idx=self._localContainer.blocks.index(where:{ $0.UID == block.UID }){
-            let block=self._localContainer.blocks[idx]
-            let path=block.absolutePath
-            Async.utility{
-                do{
-                    try self._fileManager.removeItem(atPath: path)
-                }catch{
-                    self._document.log("Block deletion failed found \(path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                }
+        do{
+            try self._document.removeBlock(with: block.digest)
+
+            // Delete the distant Block
+            if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
+                self._document.blocks.removeObject(self._document.blocks[idx])
             }
-            // Remove the local block
-            self._localContainer.blocks.remove(at: idx)
+        }catch{
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
-        
-        // Delete the distant Block
-        if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
-            self._document.blocks.removeObject(self._document.blocks[idx])
-        }
+
     }
 }

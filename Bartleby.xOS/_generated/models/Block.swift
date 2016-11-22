@@ -60,12 +60,6 @@ import Foundation
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
 	dynamic open var downloadProgression:Progression = Progression()
 
-	//Is Upload Needed
-	dynamic open var needsUpload:Bool = false
-
-	//Is download Needed
-	dynamic open var needsDownload:Bool = false
-
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
 	dynamic open var uploadInProgress:Bool = false
 
@@ -77,7 +71,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["embedded","digest","nodeUID","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","needsUpload","needsDownload","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["embedded","digest","nodeUID","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -134,14 +128,6 @@ import Foundation
                 if let casted=value as? Progression{
                     self.downloadProgression=casted
                 }
-            case "needsUpload":
-                if let casted=value as? Bool{
-                    self.needsUpload=casted
-                }
-            case "needsDownload":
-                if let casted=value as? Bool{
-                    self.needsDownload=casted
-                }
             case "uploadInProgress":
                 if let casted=value as? Bool{
                     self.uploadInProgress=casted
@@ -187,10 +173,6 @@ import Foundation
                return self.uploadProgression
             case "downloadProgression":
                return self.downloadProgression
-            case "needsUpload":
-               return self.needsUpload
-            case "needsDownload":
-               return self.needsDownload
             case "uploadInProgress":
                return self.uploadInProgress
             case "downloadInProgress":

@@ -21,16 +21,6 @@ extension Box{
         }
     }
 
-    /// The currently local nodes Shadows
-    public var localNodes:[NodeShadow]{
-        if let d=self.document{
-            return d.bsfs.localNodesShadows.filter({ (node) -> Bool in
-                return node.boxUID==self.UID
-            })
-        }else{
-            return [NodeShadow]()
-        }
-    }
 
 
     /// the currently referenced  nodes
@@ -76,19 +66,10 @@ extension Box{
     /// - Returns: the array of Progression states
     override func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
-        if category==Default.CATEGORY_DOWNLOADS{
-            for node in self.nodes{
-                node.consolidateProgression(for: category)
-                if let progression=node.progressionState(for: category){
-                    progressions.append(progression)
-                }
-            }
-        }else if category==Default.CATEGORY_UPLOADS || category==Default.CATEGORY_ASSEMBLIES {
-            for node in self.localNodes{
-                node.consolidateProgression(for: category)
-                if let progression=node.progressionState(for: category){
-                    progressions.append(progression)
-                }
+        for node in self.nodes{
+            node.consolidateProgression(for: category)
+            if let progression=node.progressionState(for: category){
+                progressions.append(progression)
             }
         }
         if progressions.count>0{
@@ -97,7 +78,7 @@ extension Box{
             return nil
         }
     }
-
-
-
+    
+    
+    
 }
