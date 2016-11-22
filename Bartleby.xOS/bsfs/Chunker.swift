@@ -26,7 +26,6 @@ struct  Chunker {
     /// We consider that the blocks are embedded.
     /// Else the chunker loads directly the data from  the File System (blocks are not embedded)
     var document:BartlebyDocument?
-
     var embeddedInADocument:Bool { return (self.document != nil) }
 
 
@@ -622,10 +621,11 @@ struct  Chunker {
 
                     var counter=0
                     for source in chunksPaths{
+                        let digest=URL(fileURLWithPath: source).lastPathComponent
                         try autoreleasepool(invoking: { () -> Void in
                             var data=Data()
                             if self.embeddedInADocument{
-                                data = try self.document!.dataForBlock(identifiedBy: source)
+                                data = try self.document!.dataForBlock(identifiedBy: digest)
                             }else{
                                 let url=URL(fileURLWithPath: source)
                                 data = try Data(contentsOf:url)

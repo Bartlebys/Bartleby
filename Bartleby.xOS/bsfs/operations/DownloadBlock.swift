@@ -21,7 +21,7 @@ public class DownloadBlock {
 
     internal var _downloadRequest:DownloadRequest?
 
-    internal var _sucessHandler:(_ context:HTTPContext)->()
+    internal var _sucessHandler:(_ fileTempURL:URL)->()
 
     internal var _failureHandler:(_ context:HTTPContext)->()
 
@@ -39,7 +39,7 @@ public class DownloadBlock {
     ///   - success: the success closure
     ///   - failure: the failure closure
     public init(block:Block,documentUID:String,
-                sucessHandler success: @escaping(_ context:HTTPContext)->(),
+                sucessHandler success: @escaping(_ fileTempURL:URL)->(),
                 failureHandler failure: @escaping(_ context:HTTPContext)->(),
                 cancelationHandler cancel: @escaping()->()){
         self._block=block
@@ -63,10 +63,12 @@ public class DownloadBlock {
     public func execute(){
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
             let pathURL = document.baseURL.appendingPathComponent("block/\(self._block.UID)")
+
+            let tempUrl=URL(fileURLWithPath:document.bsfs.downloadFolderPath+"/\(Bartleby.createUID())")
             let destination:DownloadRequest.DownloadFileDestination = {_,_ in
-                let url=URL(string:self._block.absolutePath)!
-                return (url, [.removePreviousFile, .createIntermediateDirectories])
+                return (tempUrl, [.removePreviousFile, .createIntermediateDirectories])
             }
+
             let queue = GlobalQueue.main.get()
             self._downloadRequest = download(HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DownloadBlock" ,forMethod:"GET", and: pathURL),to:destination)
             self._downloadRequest!.response(completionHandler: { (response) in
@@ -83,13 +85,12 @@ public class DownloadBlock {
                 if let request=request{
                     context.request=HTTPRequest(urlRequest: request)
                 }
-
                 // React according to the situation
                 var reactions = Array<Reaction> ()
 
                 if 200...299 ~= statusCode {
                     Async.main{
-                        self._sucessHandler(context)
+                        self._sucessHandler(tempUrl)
                     }
                 }else{
                     Async.main{

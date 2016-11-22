@@ -58,7 +58,9 @@ public final class BSFS:TriggerHook{
                               cryptoSalt:Bartleby.configuration.SHARED_SALT,
                               mode:.digestAndProcessing
             ,embeddedIn:document)
+        self._boxDelegate=document
     }
+
 
     // MARK: - Persistency
 
@@ -67,7 +69,7 @@ public final class BSFS:TriggerHook{
     /// - Returns: the serialized data
     public func saveState()->Data{
         let state=["toBeUploaded":self._toBeUploadedBlocksUIDS,
-                        "toBeDownloaded":self._toBeDownloadedBlocksUIDS]
+                   "toBeDownloaded":self._toBeDownloadedBlocksUIDS]
         if let data = try? JSONSerialization.data(withJSONObject: state){
             return data
         }
@@ -90,21 +92,22 @@ public final class BSFS:TriggerHook{
     /// The BSFS base folder path
     /// ---
     /// baseFolder/
-    ///     - blocks/ all the crypted compressed blocks (classifyed per 3 level of folders)
-    ///     - tmp/ downloads in progress
+    ///     - boxes/<boxUID>/[files]
+    ///     - downloads/[files] tmp download files
     public var baseFolderPath:String{
-        return NSHomeDirectory()+"/.bsfs/\(_document.UID)" //@*
+        return Bartleby.getSearchPath(.documentDirectory)!+"/\(_document.UID)"
     }
 
-    public var blocksFolderPath:String{
-        return self.baseFolderPath+"/blocks"//@*
+    /// Downloads folder
+    public var downloadFolderPath:String{
+        return baseFolderPath+"/downloads"
     }
 
-    /// The path correspond is where the Boxes assemble their files.
-    /// The files are destroyed when a box is unmounted.
+    /// Boxes folder
     public var boxesFolderPath:String{
-        return Bartleby.getSearchPath(.documentDirectory)!+"/boxes"
+        return baseFolderPath+"/boxes"
     }
+
 
     //MARK:  - Box Level
 
@@ -132,8 +135,11 @@ public final class BSFS:TriggerHook{
             try? self._fileManager.createDirectory(atPath: box.nodesFolderPath, withIntermediateDirectories: true, attributes: nil)
 
             // Let's try to assemble as much nodes as we can.
-            for node in box.nodes{
-                if node.isAssemblable && !self._isAssembled(node) && !node.assemblyInProgress{
+            let nodes=box.nodes
+            for node in nodes{
+                let isNotAssembled = !self._isAssembled(node)
+                let isAssemblable = node.isAssemblable
+                if node.isAssemblable && isNotAssembled{
                     concernedNodes.append(node)
                 }
             }
@@ -149,14 +155,20 @@ public final class BSFS:TriggerHook{
             func __popNode(){
                 if let node=concernedNodes.popLast(){
                     node.assemblyInProgress=true
-                    self._assemble(node: node, progressed: { (progression) in
-                        // We can add proportional box.assemblyProgression if we want smoother progression
-                    }, completed: { (completion) in
-                        node.assemblyInProgress=false
-                        box.assemblyProgression.currentTaskIndex += 1
-                        box.assemblyProgression.currentPercentProgress=Double(box.assemblyProgression.currentTaskIndex)*Double(100)/Double(box.assemblyProgression.totalTaskCount)
-                        __popNode()
-                    })
+                    do{
+                        try self._assemble(node: node, progressed: { (progression) in
+                            progressed(progression)
+                        }, completed: { (completion) in
+                            node.assemblyInProgress=false
+                            box.assemblyProgression.currentTaskIndex += 1
+                            box.assemblyProgression.currentPercentProgress=Double(box.assemblyProgression.currentTaskIndex)*Double(100)/Double(box.assemblyProgression.totalTaskCount)
+                            __popNode()
+                        })
+                    }catch{
+                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        completed(Completion.failureStateFromError(error))
+                    }
+
                 }else{
                     box.assemblyInProgress=false
                     box.isMounted=true
@@ -207,7 +219,7 @@ public final class BSFS:TriggerHook{
     fileprivate func _assemblyPath(for node:Node)->String{
         if !(node is Shadow){
             if let box=node.box{
-                return self.assemblyPath(for: box)
+                return self.assemblyPath(for: box)+node.relativePath
             }
 
         }
@@ -216,7 +228,7 @@ public final class BSFS:TriggerHook{
 
 
     public func assemblyPath(for box:Box)->String{
-        return  box.nodesFolderPath//@*
+        return  box.nodesFolderPath
     }
 
 
@@ -229,15 +241,27 @@ public final class BSFS:TriggerHook{
             return false
         }else{
             if node.assemblyInProgress {
+                // Return false if the assembly is in progress
                 return false
             }
             let group=AsyncGroup()
-            var exists=false
+            var isAssembled=false
             group.utility{
-                exists=self._fileManager.fileExists(atPath: self._assemblyPath(for: node))
+                let path=self._assemblyPath(for: node)
+                isAssembled=self._fileManager.fileExists(atPath: path)
+                if isAssembled{
+                    if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
+                        if let size:Int=attributes[FileAttributeKey.size] as? Int{
+                            self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                            if size != node.size{
+                                isAssembled=false
+                            }
+                        }
+                    }
+                }
             }
             group.wait()
-            return exists
+            return isAssembled
         }
     }
 
@@ -252,7 +276,7 @@ public final class BSFS:TriggerHook{
     ///                the node ref is stored in the completion.getResultExternalReference()
     internal func _assemble(node:Node,
                             progressed:@escaping (Progression)->(),
-                            completed:@escaping (Completion)->()){
+                            completed:@escaping (Completion)->()) throws->(){
 
         if node is Shadow{
             completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
@@ -271,7 +295,9 @@ public final class BSFS:TriggerHook{
 
                             var blockPaths=[String]()
                             for block in blocks{
-                                blockPaths.append(block.absolutePath)
+                                // The blocks are embedded in a document
+                                // So we use the relative path
+                                blockPaths.append(block.blockRelativePath())
                             }
                             self._chunker.joinChunksToFile(from: blockPaths,
                                                            to: path,
@@ -354,7 +380,8 @@ public final class BSFS:TriggerHook{
     //MARK:  - File Level
 
 
-    /// Adds a file into the box
+    /// Adds a file or all the file from o folder into the box
+    ///     Flocks may be supported soon
     ///
     ///     + generate the blocks in background.
     ///     + adds the node
@@ -382,78 +409,110 @@ public final class BSFS:TriggerHook{
 
             if self._fileManager.fileExists(atPath: reference.absolutePath){
 
-                /// Let's break the file into chunk.
-                self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
-                                              relativePath:relativePath,
-                                              chunksFolderPath: box.nodesFolderPath, // @? useless if embedded
-                                              chunkMaxSize:reference.chunkMaxSize,
-                                              compress: reference.compressed,
-                                              encrypt: reference.crypted,
-                                              progression: { (progression) in
-                                                progressed(progression)
+
+                func __chunksHaveBeenCreated(chunks:[Chunk]){
+                    // Successful operation
+                    // Let's Upsert the distant models.
+                    // AND create their local Shadows
+
+                    // Create the new node.
+                    // And add its blocks
+                    let node=self._document.newNode()
+                    node.silentGroupedChanges {
+                        node.boxUID=box.UID
+                        node.nature=reference.nodeNature.forNode
+                        node.relativePath=relativePath
+                        node.priority=reference.priority
+
+                        var cumulatedDigests=""
+                        var cumulatedSize=0
+                        // Let's add the blocks
+                        for chunk in chunks{
+                            let block=self._document.newBlock()
+                            block.silentGroupedChanges {
+                                block.nodeUID=node.UID
+                                block.rank=chunk.rank
+                                block.digest=chunk.sha1
+                                block.startsAt=chunk.startsAt
+                                block.size=chunk.originalSize
+                                block.priority=reference.priority
+                            }
+                            cumulatedSize += chunk.originalSize
+                            cumulatedDigests += chunk.sha1
+                            node.blocksUIDS.append(block.UID)
+                            self._toBeUploadedBlocksUIDS.append(block.UID)
+                        }
+                        // Store the digest of the cumulated digests.
+                        node.digest=cumulatedDigests.sha1
+                        // And the node original size
+                        node.size=cumulatedSize
+                    }
+
+                    // Delete the original
+                    Async.utility{
+                        if deleteOriginal{
+                            // We consider deletion as non mandatory.
+                            // So we produce only a log.
+                            do {
+                                try self._fileManager.removeItem(atPath: reference.absolutePath)
+                            } catch  {
+                                self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                            }
+                        }
+                    }
+
+                    let finalState=Completion.successState()
+                    finalState.setExternalReferenceResult(from:node)
+                    completed(finalState)
+
+                    // Call the centralized upload mechanism
+                    self._uploadNext()
+
                 }
-                    , success: { (chunks) in
-
-                        // Successful operation
-                        // Let's Upsert the distant models.
-                        // AND create their local Shadows
-
-                        // Create the new node.
-                        // And add its blocks
-                        let node=self._document.newNode()
-                        node.silentGroupedChanges {
-                            node.boxUID=box.UID
-                            node.nature=reference.nodeNature.forNode
-                            node.relativePath=relativePath
-                            node.priority=reference.priority
-
-                            var cumulatedDigests=""
-                            var cumulatedSize=0
-                            // Let's add the blocks
-                            for chunk in chunks{
-                                let block=self._document.newBlock()
-                                block.silentGroupedChanges {
-                                    block.nodeUID=node.UID
-                                    block.rank=chunk.rank
-                                    block.digest=chunk.sha1
-                                    block.startsAt=chunk.startsAt
-                                    block.size=chunk.originalSize
-                                    block.priority=reference.priority
+                Async.utility{
+                    if  reference.nodeNature == .file{
+                        var isDirectory:ObjCBool=false
+                        if self._fileManager.fileExists(atPath: reference.absolutePath, isDirectory: &isDirectory){
+                            if isDirectory.boolValue{
+                                self._chunker.breakFolderIntoChunk(filesIn: reference.absolutePath,
+                                                                   chunksFolderPath: box.nodesFolderPath,
+                                                                   progression: { (progression) in
+                                    progressed(progression)
+                                }, success: { (chunks) in
+                                    __chunksHaveBeenCreated(chunks: chunks)
+                                }, failure: { (chunks, message) in
+                                     completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                                })
+                            }else{
+                                /// Let's break the file into chunk.
+                                self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
+                                                              relativePath:relativePath,
+                                                              chunksFolderPath: box.nodesFolderPath,
+                                    chunkMaxSize:reference.chunkMaxSize,
+                                    compress: reference.compressed,
+                                    encrypt: reference.crypted,
+                                    progression: { (progression) in
+                                        progressed(progression)
                                 }
-                                cumulatedSize += chunk.originalSize
-                                cumulatedDigests += chunk.sha1
-                                node.blocksUIDS.append(block.UID)
-                                self._toBeUploadedBlocksUIDS.append(block.UID)
+                                    , success: { (chunks) in
+                                        __chunksHaveBeenCreated(chunks: chunks)
+
+                                }, failure: { (message) in
+                                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                                })
                             }
-                            // Store the digest of the cumulated digests.
-                            node.digest=cumulatedDigests.sha1
-                            // And the node original size
-                            node.size=cumulatedSize
+                        }else{
+                            let message=NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+reference.absolutePath
+                            completed(Completion.failureState(message, statusCode: .expectation_Failed))
                         }
+                    }
 
-                        // Delete the original
-                        Async.utility{
-                            if deleteOriginal{
-                                // We consider deletion as non mandatory.
-                                // So we produce only a log.
-                                do {
-                                    try self._fileManager.removeItem(atPath: reference.absolutePath)
-                                } catch  {
-                                    self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                                }
-                            }
-                        }
+                    if  reference.nodeNature == .flock{
+                        // @TODO
+                    }
 
-                        let finalState=Completion.successState()
-                        finalState.setExternalReferenceResult(from:node)
-                        completed(finalState)
+                }
 
-                        // Call the centralized upload mechanism
-                        self._uploadNext()
-
-                }, failure: { (message) in
-                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                })
 
             }else{
                 completed(Completion.failureState(NSLocalizedString("Reference Not Found!", tableName:"system", comment: "Reference Not Found!")+" \(reference.absolutePath)", statusCode: .not_Found))
@@ -689,7 +748,7 @@ public final class BSFS:TriggerHook{
         }else{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                _boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
+                self._boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
                     if let box=node.box{
                         Async.utility{
                             do{
@@ -738,7 +797,7 @@ public final class BSFS:TriggerHook{
         }else{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                _boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
+                self._boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
                     node.relativePath=relativePath
                     let finalState=Completion.successState()
                     finalState.setExternalReferenceResult(from:node)
@@ -765,7 +824,7 @@ public final class BSFS:TriggerHook{
         }else{
             // The nodeIsUsable() will be called when the file will be usable.
             if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                _boxDelegate?.deletionIsReady(node: node, proceed: {
+                self._boxDelegate?.deletionIsReady(node: node, proceed: {
 
                     /// TODO implement the deletion
                     /// Delete the node
@@ -919,14 +978,14 @@ public final class BSFS:TriggerHook{
                             __removeBlockFromList(block)
                         })
                         self._uploadsInProgress.append(uploadOperation)
-                        
+
                     }else{
                         self._document.log("Block not found \(toBeUploaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                     }
                 }
 
             } catch{
-                    self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }
 
@@ -970,10 +1029,29 @@ public final class BSFS:TriggerHook{
                 if toBeDownloaded != nil{
                     if let block = try? Bartleby.registredObjectByUID(toBeDownloaded!.UID) as Block {
                         block.downloadInProgress=true
-                        let downLoadOperation=DownloadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (context) in
-                            __removeBlockFromList(block)
-                            self._uploadNext()
-
+                        let downLoadOperation=DownloadBlock(block: block, documentUID: self._document.UID, sucessHandler: { (tempURL) in
+                            var data:Data?
+                            var sha1=""
+                            Async.utility{
+                                do{
+                                    data=try Data(contentsOf:tempURL)
+                                    sha1=data!.sha1
+                                }catch{
+                                    self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                }
+                                }.main{
+                                    do{
+                                        if sha1==block.digest{
+                                            try self._document.put(data: data!, identifiedBy:sha1)
+                                            __removeBlockFromList(block)
+                                            self._uploadNext()
+                                        }else{
+                                            self._document.log("Digest of the block is not matching", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY_CATEGORY, decorative: false)
+                                        }
+                                    }catch{
+                                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                    }
+                            }
                         }, failureHandler: { (context) in
                             __removeBlockFromList(block)
                         }, cancelationHandler: {
@@ -984,14 +1062,14 @@ public final class BSFS:TriggerHook{
                         self._document.log("Block not found \(toBeDownloaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                     }
                 }
-
+                
             }catch{
                 self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
-
+            
         }
     }
-
+    
     
     /// Return the block matching the Chunk if found
     ///
@@ -1012,7 +1090,7 @@ public final class BSFS:TriggerHook{
     func _deleteBlock(_ block:Block) {
         do{
             try self._document.removeBlock(with: block.digest)
-
+            
             // Delete the distant Block
             if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
                 self._document.blocks.removeObject(self._document.blocks[idx])
@@ -1020,6 +1098,6 @@ public final class BSFS:TriggerHook{
         }catch{
             self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
-
+        
     }
 }

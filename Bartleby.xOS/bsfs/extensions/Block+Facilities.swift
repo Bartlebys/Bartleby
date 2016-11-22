@@ -11,22 +11,6 @@ import Foundation
 extension Block{
 
 
-    /// If embedded /digest
-    /// the block path baseFolder/blocks/<relatifvePath>/digest
-    var absolutePath:String{
-        if let bsfs=self.document?.bsfs{
-            if self.embedded{
-                return self.blockRelativePath()
-            }else{
-                return bsfs.blocksFolderPath+self.blockRelativePath()
-            }
-
-        }else{
-            return Default.NO_PATH
-        }
-    }
-
-
     public var node:Node?{
         return try? Bartleby.registredObjectByUID(self.nodeUID) as Node
     }
@@ -34,12 +18,7 @@ extension Block{
 
     var data:Data?{
         do{
-            if self.embedded{
-                return try self.document?.dataForBlock(identifiedBy: self.digest)
-            }else{
-                let url=URL(fileURLWithPath: self.absolutePath)
-                return try Data(contentsOf: url)
-            }
+            return try self.document?.dataForBlock(identifiedBy: self.digest)
         }catch {
              self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
@@ -52,15 +31,7 @@ extension Block{
     ///
     /// - Returns: the relative path
     public func blockRelativePath()->String{
-        if self.embedded{
-            return "/"+self.digest
-        }else{
-            // Generate a Classified Block Tree.
-            let c1=PString.substr(digest, 0, 1)
-            let c2=PString.substr(digest, 1, 1)
-            let c3=PString.substr(digest, 2, 1)
-            return "/\(c1)/\(c2)/\(c3)/+\(digest)"
-        }
+        return "/"+self.digest
     }
 
 

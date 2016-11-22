@@ -21,9 +21,6 @@ import Foundation
         return "Block"
     }
 
-	//If embedded the blocks are stored into the document wrapper
-	dynamic open var embedded:Bool = true
-
 	//The SHA1 digest of the block
 	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
 	    didSet { 
@@ -71,7 +68,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["embedded","digest","nodeUID","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","nodeUID","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -84,10 +81,6 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "embedded":
-                if let casted=value as? Bool{
-                    self.embedded=casted
-                }
             case "digest":
                 if let casted=value as? String{
                     self.digest=casted
@@ -151,8 +144,6 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "embedded":
-               return self.embedded
             case "digest":
                return self.digest
             case "nodeUID":
