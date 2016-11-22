@@ -216,8 +216,6 @@ import Foundation
 			self.priority <- ( map["priority"] )
 			self.compressed <- ( map["compressed"] )
 			self.crypted <- ( map["crypted"] )
-			self.needsUpload <- ( map["needsUpload"] )
-			self.needsDownload <- ( map["needsDownload"] )
         }
     }
 
@@ -235,8 +233,6 @@ import Foundation
 			self.priority=decoder.decodeInteger(forKey:"priority") 
 			self.compressed=decoder.decodeBool(forKey:"compressed") 
 			self.crypted=decoder.decodeBool(forKey:"crypted") 
-			self.needsUpload=decoder.decodeBool(forKey:"needsUpload") 
-			self.needsDownload=decoder.decodeBool(forKey:"needsDownload") 
         }
     }
 
@@ -250,8 +246,6 @@ import Foundation
 		coder.encode(self.priority,forKey:"priority")
 		coder.encode(self.compressed,forKey:"compressed")
 		coder.encode(self.crypted,forKey:"crypted")
-		coder.encode(self.needsUpload,forKey:"needsUpload")
-		coder.encode(self.needsDownload,forKey:"needsDownload")
     }
 
     override open class var supportsSecureCoding:Bool{
