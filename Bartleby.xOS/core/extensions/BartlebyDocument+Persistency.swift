@@ -346,7 +346,19 @@ extension BartlebyDocument{
         let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)
     }
-    
+
+
+    /// Clean procedure usable during maintenance to clean up potential Orphans blocks@
+    public func eraseOrphansBlocks()throws->(){
+        if let fileWrappers=self._blocksWrapper?.fileWrappers{
+            for (k,_) in fileWrappers {
+                if !self.blocks.contains(where: { return $0.digest==k }){
+                    try removeBlock(with: k)
+                     self.log("Erased block with digest \(k)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                }
+            }
+        }
+    }
     
     
 }
