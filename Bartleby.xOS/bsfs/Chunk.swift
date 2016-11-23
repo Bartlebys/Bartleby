@@ -114,4 +114,23 @@ public struct Chunk {
 
 
 
+    /// A facility that groups chunks per relative paths
+    ///
+    /// - Parameter chunks: the chunks to group
+    /// - Returns: the grouped chunks
+    static func groupByNodePath(chunks:[Chunk])->[String:[Chunk]]{
+        var groupedPerPath=[String:[Chunk]]()
+        for chunk in chunks{
+            if !groupedPerPath.contains(where: { (key, _) -> Bool in
+                return key == chunk.nodePath
+            }){
+                groupedPerPath[chunk.nodePath]=[Chunk]()
+            }
+            groupedPerPath[chunk.nodePath]!.append(chunk)
+        }
+        return groupedPerPath
+    }
+
+
+
 }

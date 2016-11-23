@@ -384,8 +384,8 @@ public final class BSFS:TriggerHook{
     ///     Flocks may be supported soon
     ///
     ///     + generate the blocks in background.
-    ///     + adds the node
-    ///     + the node  ref is stored in the Completon (use completion.getResultExternalReference())
+    ///     + adds the node(s)
+    ///     + the first node ref is stored in the Completion (use completion.getResultExternalReference())
     ///
     /// - Parameters:
     ///   - FileReference: the file reference (Nature == file or flock)
@@ -409,60 +409,73 @@ public final class BSFS:TriggerHook{
 
             if self._fileManager.fileExists(atPath: reference.absolutePath){
 
-
+                var firstNode:Node?
                 func __chunksHaveBeenCreated(chunks:[Chunk]){
+
                     // Successful operation
                     // Let's Upsert the distant models.
                     // AND create their local Shadows
 
-                    // Create the new node.
-                    // And add its blocks
-                    let node=self._document.newNode()
-                    node.silentGroupedChanges {
-                        node.boxUID=box.UID
-                        node.nature=reference.nodeNature.forNode
-                        node.relativePath=relativePath
-                        node.priority=reference.priority
-
-                        var cumulatedDigests=""
-                        var cumulatedSize=0
-                        // Let's add the blocks
-                        for chunk in chunks{
-                            let block=self._document.newBlock()
-                            block.silentGroupedChanges {
-                                block.nodeUID=node.UID
-                                block.rank=chunk.rank
-                                block.digest=chunk.sha1
-                                block.startsAt=chunk.startsAt
-                                block.size=chunk.originalSize
-                                block.priority=reference.priority
-                            }
-                            cumulatedSize += chunk.originalSize
-                            cumulatedDigests += chunk.sha1
-                            node.blocksUIDS.append(block.UID)
-                            self._toBeUploadedBlocksUIDS.append(block.UID)
+                    let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
+                    
+                    for (nodeRelativePath,groupOfChunks) in groupedChunks{
+                        // Create the new node.
+                        // And add its blocks
+                        let node=self._document.newNode()
+                        if firstNode==nil{
+                            firstNode=node
                         }
-                        // Store the digest of the cumulated digests.
-                        node.digest=cumulatedDigests.sha1
-                        // And the node original size
-                        node.size=cumulatedSize
+                        node.silentGroupedChanges {
+                            node.boxUID=box.UID
+                            node.nature=reference.nodeNature.forNode
+                            node.relativePath=relativePath///
+                            node.priority=reference.priority
+                            // Set up the node relative path
+                            node.relativePath=nodeRelativePath
+
+                            var cumulatedDigests=""
+                            var cumulatedSize=0
+
+                            // Let's add the blocks
+                            for chunk in groupOfChunks{
+                                let block=self._document.newBlock()
+                                block.silentGroupedChanges {
+                                    block.nodeUID=node.UID
+                                    block.rank=chunk.rank
+                                    block.digest=chunk.sha1
+                                    block.startsAt=chunk.startsAt
+                                    block.size=chunk.originalSize
+                                    block.priority=reference.priority
+                                }
+                                cumulatedSize += chunk.originalSize
+                                cumulatedDigests += chunk.sha1
+                                node.blocksUIDS.append(block.UID)
+                                self._toBeUploadedBlocksUIDS.append(block.UID)
+                            }
+                            // Store the digest of the cumulated digests.
+                            node.digest=cumulatedDigests.sha1
+                            // And the node original size
+                            node.size=cumulatedSize
+                        }
+
                     }
 
+
                     // Delete the original
-                    Async.utility{
-                        if deleteOriginal{
-                            // We consider deletion as non mandatory.
-                            // So we produce only a log.
-                            do {
-                                try self._fileManager.removeItem(atPath: reference.absolutePath)
-                            } catch  {
-                                self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                            }
+                    if deleteOriginal{
+                        // We consider deletion as non mandatory.
+                        // So we produce only a log.
+                        do {
+                            try self._fileManager.removeItem(atPath: reference.absolutePath)
+                        } catch  {
+                            self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                         }
                     }
 
                     let finalState=Completion.successState()
-                    finalState.setExternalReferenceResult(from:node)
+                    if let node=firstNode{
+                        finalState.setExternalReferenceResult(from:node)
+                    }
                     completed(finalState)
 
                     // Call the centralized upload mechanism
@@ -477,22 +490,22 @@ public final class BSFS:TriggerHook{
                                 self._chunker.breakFolderIntoChunk(filesIn: reference.absolutePath,
                                                                    chunksFolderPath: box.nodesFolderPath,
                                                                    progression: { (progression) in
-                                    progressed(progression)
+                                                                    progressed(progression)
                                 }, success: { (chunks) in
                                     __chunksHaveBeenCreated(chunks: chunks)
                                 }, failure: { (chunks, message) in
-                                     completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
                                 })
                             }else{
                                 /// Let's break the file into chunk.
                                 self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
                                                               relativePath:relativePath,
                                                               chunksFolderPath: box.nodesFolderPath,
-                                    chunkMaxSize:reference.chunkMaxSize,
-                                    compress: reference.compressed,
-                                    encrypt: reference.crypted,
-                                    progression: { (progression) in
-                                        progressed(progression)
+                                                              chunkMaxSize:reference.chunkMaxSize,
+                                                              compress: reference.compressed,
+                                                              encrypt: reference.crypted,
+                                                              progression: { (progression) in
+                                                                progressed(progression)
                                 }
                                     , success: { (chunks) in
                                         __chunksHaveBeenCreated(chunks: chunks)
@@ -523,7 +536,7 @@ public final class BSFS:TriggerHook{
 
 
 
-    /// Call to replace the content of a node.
+    /// Call to replace the content of a file node with a given file. (alias, flocks, folders are not supported)
     /// This action may be refused by the BoxDelegate (check the completion state)
     ///
     /// Delta Optimization:
@@ -553,107 +566,115 @@ public final class BSFS:TriggerHook{
                 if node.authorized.contains(self._document.currentUser.UID) ||
                     node.authorized.contains("*"){
 
-                    if let box=node.box{
-                        let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
+                    var isDirectory:ObjCBool=false
+                    if self._fileManager.fileExists(atPath:path, isDirectory: &isDirectory){
+                        if isDirectory.boolValue{
+                            completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement is restricted to single files not folder", tableName:"system", comment: "Forbidden! Replacement is restricted to single files not folder"), statusCode: .forbidden))
+                        }else{
 
-                        //////////////////////////////
-                        // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
-                        //////////////////////////////
+                            if let box=node.box{
+                                let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
 
-                        analyzer.deltaChunks(fromFileAt: path, to: node, using: self._fileManager, completed: { (toBePreserved, toBeDeleted) in
+                                //////////////////////////////
+                                // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
+                                //////////////////////////////
+
+                                analyzer.deltaChunks(fromFileAt: path, to: node, using: self._fileManager, completed: { (toBePreserved, toBeDeleted) in
 
 
-                            /// delete the blocks to be deleted
-                            for chunk in toBeDeleted{
-                                if let block=self._findBlockMatching(chunk: chunk){
-                                    self._deleteBlock(block)
-                                }
-                            }
-
-                            /////////////////////////////////
-                            // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
-                            /////////////////////////////////
-                            self._chunker.breakIntoChunk(fileAt: path,
-                                                         relativePath: node.relativePath,
-                                                         chunksFolderPath: box.nodesFolderPath,
-                                                         compress: node.compressedBlocks,
-                                                         encrypt: node.cryptedBlocks,
-                                                         excludeChunks:toBePreserved,
-                                                         progression: { (progression) in
-                                                            progressed(progression)
-                            }
-                                , success: { (chunks) in
-
-                                    // Successful operation
-                                    // Let's Upsert the node.
-                                    // AND create their local Shadows
-
-                                    node.silentGroupedChanges {
-
-                                        var cumulatedDigests=""
-                                        var cumulatedSize=0
-
-                                        // Let's add the blocks
-                                        for chunk in chunks{
-                                            var block:Block?
-                                            if let b=self._findBlockMatching(chunk: chunk){
-                                                block=b
-                                                block?.commitRequired()
-                                            }else{
-                                                block=self._document.newBlock()
-                                            }
-
-                                            block!.silentGroupedChanges {
-                                                block!.nodeUID=node.UID
-                                                block!.rank=chunk.rank
-                                                block!.digest=chunk.sha1
-                                                block!.startsAt=chunk.startsAt
-                                                block!.size=chunk.originalSize
-                                                block!.priority=node.priority
-                                            }
-                                            cumulatedDigests += chunk.sha1
-                                            cumulatedSize += chunk.originalSize
-                                        }
-
-                                        // Store the digest of the cumulated digests.
-                                        node.digest=cumulatedDigests.sha1
-                                        // And the node original size
-                                        node.size=cumulatedSize
-                                    }
-
-                                    // Mark the node to be committed
-                                    node.commitRequired()
-
-                                    // Delete the original
-                                    Async.utility{
-                                        if deleteOriginal{
-                                            // We consider deletion as non mandatory.
-                                            // So we produce only a log.
-                                            do {
-                                                try self._fileManager.removeItem(atPath: path)
-                                            } catch  {
-                                                self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                                            }
+                                    /// delete the blocks to be deleted
+                                    for chunk in toBeDeleted{
+                                        if let block=self._findBlockMatching(chunk: chunk){
+                                            self._deleteBlock(block)
                                         }
                                     }
 
-                                    let finalState=Completion.successState()
-                                    finalState.setExternalReferenceResult(from:node)
-                                    completed(finalState)
+                                    /////////////////////////////////
+                                    // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
+                                    /////////////////////////////////
+                                    self._chunker.breakIntoChunk(fileAt: path,
+                                                                 relativePath: node.relativePath,
+                                                                 chunksFolderPath: box.nodesFolderPath,
+                                                                 compress: node.compressedBlocks,
+                                                                 encrypt: node.cryptedBlocks,
+                                                                 excludeChunks:toBePreserved,
+                                                                 progression: { (progression) in
+                                                                    progressed(progression)
+                                    }
+                                        , success: { (chunks) in
 
-                                    // Call the centralized upload mechanism
-                                    self._uploadNext()
+                                            // Successful operation
+                                            // Let's Upsert the node.
+                                            // AND create their local Shadows
 
-                            }, failure: { (message) in
-                                completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                            })
+                                            node.silentGroupedChanges {
 
-                        }, failure: { (message) in
-                            completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                        })
+                                                var cumulatedDigests=""
+                                                var cumulatedSize=0
 
-                    }else{
-                        completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
+                                                // Let's add the blocks
+                                                for chunk in chunks{
+                                                    var block:Block?
+                                                    if let b=self._findBlockMatching(chunk: chunk){
+                                                        block=b
+                                                        block?.commitRequired()
+                                                    }else{
+                                                        block=self._document.newBlock()
+                                                    }
+
+                                                    block!.silentGroupedChanges {
+                                                        block!.nodeUID=node.UID
+                                                        block!.rank=chunk.rank
+                                                        block!.digest=chunk.sha1
+                                                        block!.startsAt=chunk.startsAt
+                                                        block!.size=chunk.originalSize
+                                                        block!.priority=node.priority
+                                                    }
+                                                    cumulatedDigests += chunk.sha1
+                                                    cumulatedSize += chunk.originalSize
+                                                }
+
+                                                // Store the digest of the cumulated digests.
+                                                node.digest=cumulatedDigests.sha1
+                                                // And the node original size
+                                                node.size=cumulatedSize
+                                            }
+
+                                            // Mark the node to be committed
+                                            node.commitRequired()
+
+                                            // Delete the original
+                                            Async.utility{
+                                                if deleteOriginal{
+                                                    // We consider deletion as non mandatory.
+                                                    // So we produce only a log.
+                                                    do {
+                                                        try self._fileManager.removeItem(atPath: path)
+                                                    } catch  {
+                                                        self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                                    }
+                                                }
+                                            }
+                                            
+                                            let finalState=Completion.successState()
+                                            finalState.setExternalReferenceResult(from:node)
+                                            completed(finalState)
+                                            
+                                            // Call the centralized upload mechanism
+                                            self._uploadNext()
+                                            
+                                    }, failure: { (message) in
+                                        completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                                    })
+                                    
+                                }, failure: { (message) in
+                                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                                })
+                                
+                            }else{
+                                completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
+                            }
+                        }
                     }
                 }else{
                     completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))

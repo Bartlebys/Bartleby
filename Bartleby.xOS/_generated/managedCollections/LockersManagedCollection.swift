@@ -481,6 +481,12 @@ extension Notification.Name {
 
     // KVO on ArrayController selectionIndexes
 
+    // Note :
+    // If you use an ArrayController & Bartleby automation
+    // to modify the current selection you should use the array controller
+    // e.g: document.lockers.arrayController?.setSelectedObjects(lockers)
+    // Do not use document.lockers.selectedLockers=lockers
+
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
             // If the context does not match, this message
@@ -491,23 +497,7 @@ extension Notification.Name {
         if let keyPath = keyPath, let object = object {
             if keyPath=="selectionIndexes" &&  (object as? NSArrayController) == self.arrayController {
                 if let items = self.arrayController?.selectedObjects as? [Locker] {
-                     if let selected = self.selectedLockers{
-                        if items.count == selected.count{
-                            var noChanges=true
-                            for item in items{
-                              if !items.contains(where: { (instance) -> Bool in
-                                    return instance.UID==item.UID
-                                }){
-                                    noChanges=false
-                                    break
-                                }
-                            }
-                            if noChanges==true{
-                                return
-                            }
-                        }
-                        self.selectedLockers=items
-                    }
+                    self.selectedLockers=items
                 }
             }
         }
