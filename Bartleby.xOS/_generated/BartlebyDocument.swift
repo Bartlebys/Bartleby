@@ -453,36 +453,6 @@ import Foundation
     open var glogTrackedEntries: Bool=false
 
     open var trackingStack=[(result:Any?, context:Consignable)]()
-
-    // MARK : -  Entity factories
-
-    /**
-    * Creates a new user
-    *
-    * you should override this method to customize default (name, email, ...)
-    */
-    open func newUser() -> User {
-        let user=User()
-        user.silentGroupedChanges {
-            user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
-            if let creator=self.metadata.currentUser {
-                user.creatorUID = creator.UID
-            }else{
-                // Autopoiesis.
-                user.creatorUID = user.UID
-            }
-            user.spaceUID = self.metadata.spaceUID
-            if(user.creatorUID != user.UID){
-                // We don't want to add the Document's current user
-                self.users.add(user, commit:false)
-            }else{
-                user.document = self
-            }
-        }
-        user.commitRequired()// We defer the commit to allow to take account of overriden possible changes.
-        return user
-    }
-
     // MARK  Universal Type Support
 
      open class func declareTypes() {
@@ -616,7 +586,37 @@ import Foundation
     }
 
 
+
     
+    // MARK: -  Entities factories
+
+    /**
+    * Creates a new user
+    *
+    * you should override this method to customize default (name, email, ...)
+    */
+    open func newUser() -> User {
+        let user=User()
+        user.silentGroupedChanges {
+            user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
+            if let creator=self.metadata.currentUser {
+                user.creatorUID = creator.UID
+            }else{
+                // Autopoiesis.
+                user.creatorUID = user.UID
+            }
+            user.spaceUID = self.metadata.spaceUID
+            if(user.creatorUID != user.UID){
+                // We don't want to add the Document's current user
+                self.users.add(user, commit:false)
+            }else{
+                user.document = self
+            }
+        }
+        user.commitRequired()// We defer the commit to allow to take account of overriden possible changes.
+        return user
+    }
+
     /**
      * Creates a new Block
      * you can override this method to customize the properties
