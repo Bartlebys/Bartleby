@@ -285,24 +285,36 @@ extension Notification.Name {
 
 
     open func upsert(_ item: Collectible, commit:Bool=true){
-        if let idx=_items.index(where:{return $0.UID == item.UID}){
-            // it is an update
-            // we must patch it
-            let currentInstance=_items[idx]
-            if commit==false{
-                // When upserting from a trigger
-                // We do not want to produce Larsen effect on data.
-                // So we lock the auto commit observer before applying the patch
-                // And we unlock the autoCommit Observer after the patch.
-                currentInstance.doNotCommit {
-                    try? currentInstance.mergeWith(item)
+        do{
+            if let idx=_items.index(where:{return $0.UID == item.UID}){
+                // it is an update
+                // we must patch it
+                let currentInstance=_items[idx]
+                if commit==false{
+                    var catched:Error?
+                    // When upserting from a trigger
+                    // We do not want to produce Larsen effect on data.
+                    // So we lock the auto commit observer before to merge
+                    // And we unlock the autoCommit Observer after the merging.
+                    currentInstance.doNotCommit {
+                        do{
+                            try currentInstance.mergeWith(item)
+                        }catch{
+                            catched=error
+                        }
+                    }
+                    if catched != nil{
+                        throw catched!
+                    }
+                }else{
+                    try currentInstance.mergeWith(item)
                 }
             }else{
-                try? currentInstance.mergeWith(item)
+                // It is a creation
+                self.add(item, commit:commit)
             }
-        }else{
-            // It is a creation
-            self.add(item, commit:commit)
+        }catch{
+            self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 

@@ -20,7 +20,7 @@ import Foundation
         return "CreateNodes"
     }
 
-    fileprivate var _nodes:[Node] = [Node]()
+    fileprivate var _nodes:[Node]?
 
     fileprivate var _documentUID:String=Default.NO_UID
 
@@ -98,14 +98,16 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "_nodes")! as! [Node]
+			self._nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "_nodes") as? [Node]
 			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self._nodes,forKey:"_nodes")
+		if let _nodes = self._nodes {
+			coder.encode(_nodes,forKey:"_nodes")
+		}
 		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
@@ -153,77 +155,85 @@ import Foundation
 
 
     func commit(){
-        let context=Context(code:1234672191, caller: "\(self.runTimeTypeName()).commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
-            // Provision the pushOperation.
-            do{
-                let ic:PushOperationsManagedCollection = try document.getCollection()
-                let pushOperation=self._getOperation()
-                pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
-				let stringIDS=PString.ltrim(self._nodes.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    self.creatorUID=currentUser.UID
-                }
-				for item in self._nodes{
+        if let nodes = self._nodes{
+            let context=Context(code:1234672191, caller: "\(self.runTimeTypeName()).commit")
+            if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+                // Provision the pushOperation.
+                do{
+                    let ic:PushOperationsManagedCollection = try document.getCollection()
+                    let pushOperation=self._getOperation()
+                    pushOperation.counter += 1
+                    pushOperation.status=PushOperation.Status.pending
+                    pushOperation.creationDate=Date()
+				let stringIDS=PString.ltrim(nodes.reduce("", { $0+","+$1.UID }),characters:",")
+					pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
+                    if let currentUser=document.metadata.currentUser{
+                        pushOperation.creatorUID=currentUser.UID
+                        self.creatorUID=currentUser.UID
+                    }
+				for item in nodes{
 					item.committed=true
 				}
 
-                pushOperation.toDictionary=self.dictionaryRepresentation()
-                ic.add(pushOperation, commit:false)
-            }catch{
-               document.dispatchAdaptiveMessage(context,
-                    title: "Structural Error",
-                    body: "Operation collection is missing in \(self.runTimeTypeName())",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                })
+                    pushOperation.toDictionary=self.dictionaryRepresentation()
+                    ic.add(pushOperation, commit:false)
+                }catch{
+                   document.dispatchAdaptiveMessage(context,
+                        title: "Structural Error",
+                        body: "Operation collection is missing in \(self.runTimeTypeName())",
+                        onSelectedIndex: { (selectedIndex) -> () in
+                    })
+                }
+            }else{
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_nodes should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
-        // The unitary operation are not always idempotent
-        // so we do not want to push multiple times unintensionnaly.
-        // Check BartlebyDocument+Operations.swift to understand Operation status
-        let pushOperation=self._getOperation()
-        if  pushOperation.canBePushed(){
-            // We try to execute
-            pushOperation.status=PushOperation.Status.inProgress
-            type(of: self).execute(self._nodes,
-                inDocumentWithUID:self._documentUID,
-                sucessHandler: { (context: HTTPContext) -> () in 
-					for item in self._nodes{
+        if let nodes = self._nodes{
+            // The unitary operation are not always idempotent
+            // so we do not want to push multiple times unintensionnaly.
+            // Check BartlebyDocument+Operations.swift to understand Operation status
+            let pushOperation=self._getOperation()
+            if  pushOperation.canBePushed(){
+                // We try to execute
+                pushOperation.status=PushOperation.Status.inProgress
+                type(of: self).execute(nodes,
+                    inDocumentWithUID:self._documentUID,
+                    sucessHandler: { (context: HTTPContext) -> () in 
+					for item in nodes{
 						item.hasBeenPushed=true
 					}
-                    pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.successStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    success(context)
-                },
-                failureHandler: {(context: HTTPContext) -> () in
-                    pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.failureStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    failure(context)
-                }
-            )
+                        pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.successStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        success(context)
+                    },
+                    failureHandler: {(context: HTTPContext) -> () in
+                        pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.failureStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        failure(context)
+                    }
+                )
+            }else{
+                // This document is not available there is nothing to do.
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            }
         }else{
-            // This document is not available there is nothing to do.
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_nodes should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 

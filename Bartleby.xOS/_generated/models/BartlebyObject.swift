@@ -64,9 +64,7 @@ import Foundation
 	dynamic open var hasBeenPushed:Bool = false  {
 	    didSet { 
 	       if hasBeenPushed != oldValue {
-                print("\(self._typeName) \(hasBeenPushed) \(self.UID)")
-	            self.provisionChanges(forKey: "hasBeenPushed",oldValue: oldValue,newValue: hasBeenPushed)
-            
+	            self.provisionChanges(forKey: "hasBeenPushed",oldValue: oldValue,newValue: hasBeenPushed)  
 	       } 
 	    }
 	}

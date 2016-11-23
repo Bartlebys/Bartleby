@@ -20,7 +20,7 @@ import Foundation
         return "DeleteBlock"
     }
 
-    fileprivate var _block:Block = Block()
+    fileprivate var _block:Block?
 
     fileprivate var _documentUID:String=Default.NO_UID
 
@@ -98,14 +98,16 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._block=decoder.decodeObject(of:Block.self, forKey: "_block")! 
+			self._block=decoder.decodeObject(of:Block.self, forKey: "_block") 
 			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self._block,forKey:"_block")
+		if let _block = self._block {
+			coder.encode(_block,forKey:"_block")
+		}
 		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
@@ -153,68 +155,76 @@ import Foundation
 
 
     func commit(){
-        let context=Context(code:1882299827, caller: "\(self.runTimeTypeName()).commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
-            // Provision the pushOperation.
-            do{
-                let ic:PushOperationsManagedCollection = try document.getCollection()
-                let pushOperation=self._getOperation()
-                pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
-				pushOperation.summary="\(self.runTimeTypeName())(\(self._block.UID))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    self.creatorUID=currentUser.UID
+        if let block = self._block{
+            let context=Context(code:1882299827, caller: "\(self.runTimeTypeName()).commit")
+            if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+                // Provision the pushOperation.
+                do{
+                    let ic:PushOperationsManagedCollection = try document.getCollection()
+                    let pushOperation=self._getOperation()
+                    pushOperation.counter += 1
+                    pushOperation.status=PushOperation.Status.pending
+                    pushOperation.creationDate=Date()
+					pushOperation.summary="\(self.runTimeTypeName())(\(block.UID))"
+                    if let currentUser=document.metadata.currentUser{
+                        pushOperation.creatorUID=currentUser.UID
+                        self.creatorUID=currentUser.UID
+                    }
+                    pushOperation.toDictionary=self.dictionaryRepresentation()
+                    ic.add(pushOperation, commit:false)
+                }catch{
+                   document.dispatchAdaptiveMessage(context,
+                        title: "Structural Error",
+                        body: "Operation collection is missing in \(self.runTimeTypeName())",
+                        onSelectedIndex: { (selectedIndex) -> () in
+                    })
                 }
-                pushOperation.toDictionary=self.dictionaryRepresentation()
-                ic.add(pushOperation, commit:false)
-            }catch{
-               document.dispatchAdaptiveMessage(context,
-                    title: "Structural Error",
-                    body: "Operation collection is missing in \(self.runTimeTypeName())",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                })
+            }else{
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_block should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
-        // The unitary operation are not always idempotent
-        // so we do not want to push multiple times unintensionnaly.
-        // Check BartlebyDocument+Operations.swift to understand Operation status
-        let pushOperation=self._getOperation()
-        if  pushOperation.canBePushed(){
-            // We try to execute
-            pushOperation.status=PushOperation.Status.inProgress
-            type(of: self).execute(self._block,
-                from:self._documentUID,
-                sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.successStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    success(context)
-                },
-                failureHandler: {(context: HTTPContext) -> () in
-                    pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.failureStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    failure(context)
-                }
-            )
+        if let block = self._block{
+            // The unitary operation are not always idempotent
+            // so we do not want to push multiple times unintensionnaly.
+            // Check BartlebyDocument+Operations.swift to understand Operation status
+            let pushOperation=self._getOperation()
+            if  pushOperation.canBePushed(){
+                // We try to execute
+                pushOperation.status=PushOperation.Status.inProgress
+                type(of: self).execute(block,
+                    from:self._documentUID,
+                    sucessHandler: { (context: HTTPContext) -> () in                         pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.successStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        success(context)
+                    },
+                    failureHandler: {(context: HTTPContext) -> () in
+                        pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.failureStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        failure(context)
+                    }
+                )
+            }else{
+                // This document is not available there is nothing to do.
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            }
         }else{
-            // This document is not available there is nothing to do.
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_block should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 

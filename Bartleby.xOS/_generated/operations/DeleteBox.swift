@@ -20,7 +20,7 @@ import Foundation
         return "DeleteBox"
     }
 
-    fileprivate var _box:Box = Box()
+    fileprivate var _box:Box?
 
     fileprivate var _documentUID:String=Default.NO_UID
 
@@ -98,14 +98,16 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._box=decoder.decodeObject(of:Box.self, forKey: "_box")! 
+			self._box=decoder.decodeObject(of:Box.self, forKey: "_box") 
 			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self._box,forKey:"_box")
+		if let _box = self._box {
+			coder.encode(_box,forKey:"_box")
+		}
 		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
@@ -153,68 +155,76 @@ import Foundation
 
 
     func commit(){
-        let context=Context(code:3535938554, caller: "\(self.runTimeTypeName()).commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
-            // Provision the pushOperation.
-            do{
-                let ic:PushOperationsManagedCollection = try document.getCollection()
-                let pushOperation=self._getOperation()
-                pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
-				pushOperation.summary="\(self.runTimeTypeName())(\(self._box.UID))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    self.creatorUID=currentUser.UID
+        if let box = self._box{
+            let context=Context(code:3535938554, caller: "\(self.runTimeTypeName()).commit")
+            if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+                // Provision the pushOperation.
+                do{
+                    let ic:PushOperationsManagedCollection = try document.getCollection()
+                    let pushOperation=self._getOperation()
+                    pushOperation.counter += 1
+                    pushOperation.status=PushOperation.Status.pending
+                    pushOperation.creationDate=Date()
+					pushOperation.summary="\(self.runTimeTypeName())(\(box.UID))"
+                    if let currentUser=document.metadata.currentUser{
+                        pushOperation.creatorUID=currentUser.UID
+                        self.creatorUID=currentUser.UID
+                    }
+                    pushOperation.toDictionary=self.dictionaryRepresentation()
+                    ic.add(pushOperation, commit:false)
+                }catch{
+                   document.dispatchAdaptiveMessage(context,
+                        title: "Structural Error",
+                        body: "Operation collection is missing in \(self.runTimeTypeName())",
+                        onSelectedIndex: { (selectedIndex) -> () in
+                    })
                 }
-                pushOperation.toDictionary=self.dictionaryRepresentation()
-                ic.add(pushOperation, commit:false)
-            }catch{
-               document.dispatchAdaptiveMessage(context,
-                    title: "Structural Error",
-                    body: "Operation collection is missing in \(self.runTimeTypeName())",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                })
+            }else{
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_box should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
-        // The unitary operation are not always idempotent
-        // so we do not want to push multiple times unintensionnaly.
-        // Check BartlebyDocument+Operations.swift to understand Operation status
-        let pushOperation=self._getOperation()
-        if  pushOperation.canBePushed(){
-            // We try to execute
-            pushOperation.status=PushOperation.Status.inProgress
-            type(of: self).execute(self._box,
-                from:self._documentUID,
-                sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.successStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    success(context)
-                },
-                failureHandler: {(context: HTTPContext) -> () in
-                    pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.failureStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    failure(context)
-                }
-            )
+        if let box = self._box{
+            // The unitary operation are not always idempotent
+            // so we do not want to push multiple times unintensionnaly.
+            // Check BartlebyDocument+Operations.swift to understand Operation status
+            let pushOperation=self._getOperation()
+            if  pushOperation.canBePushed(){
+                // We try to execute
+                pushOperation.status=PushOperation.Status.inProgress
+                type(of: self).execute(box,
+                    from:self._documentUID,
+                    sucessHandler: { (context: HTTPContext) -> () in                         pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.successStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        success(context)
+                    },
+                    failureHandler: {(context: HTTPContext) -> () in
+                        pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.failureStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        failure(context)
+                    }
+                )
+            }else{
+                // This document is not available there is nothing to do.
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            }
         }else{
-            // This document is not available there is nothing to do.
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_box should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 

@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Synchronized File System: A container With shadows of Boxes,Nodes,Blocks
+// MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
 @objc(Container) open class Container : BartlebyObject{
 
     // Universal type support

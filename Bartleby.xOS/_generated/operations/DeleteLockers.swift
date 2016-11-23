@@ -20,7 +20,7 @@ import Foundation
         return "DeleteLockers"
     }
 
-    fileprivate var _lockers:[Locker] = [Locker]()
+    fileprivate var _lockers:[Locker]?
 
     fileprivate var _documentUID:String=Default.NO_UID
 
@@ -98,14 +98,16 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self._lockers=decoder.decodeObject(of: [NSArray.classForCoder(),Locker.classForCoder()], forKey: "_lockers")! as! [Locker]
+			self._lockers=decoder.decodeObject(of: [NSArray.classForCoder(),Locker.classForCoder()], forKey: "_lockers") as? [Locker]
 			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self._lockers,forKey:"_lockers")
+		if let _lockers = self._lockers {
+			coder.encode(_lockers,forKey:"_lockers")
+		}
 		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
@@ -153,69 +155,77 @@ import Foundation
 
 
     func commit(){
-        let context=Context(code:3799478402, caller: "\(self.runTimeTypeName()).commit")
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
-            // Provision the pushOperation.
-            do{
-                let ic:PushOperationsManagedCollection = try document.getCollection()
-                let pushOperation=self._getOperation()
-                pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
-				let stringIDS=PString.ltrim(self._lockers.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    self.creatorUID=currentUser.UID
+        if let lockers = self._lockers{
+            let context=Context(code:3799478402, caller: "\(self.runTimeTypeName()).commit")
+            if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
+                // Provision the pushOperation.
+                do{
+                    let ic:PushOperationsManagedCollection = try document.getCollection()
+                    let pushOperation=self._getOperation()
+                    pushOperation.counter += 1
+                    pushOperation.status=PushOperation.Status.pending
+                    pushOperation.creationDate=Date()
+				let stringIDS=PString.ltrim(lockers.reduce("", { $0+","+$1.UID }),characters:",")
+					pushOperation.summary="\(self.runTimeTypeName())(\(stringIDS))"
+                    if let currentUser=document.metadata.currentUser{
+                        pushOperation.creatorUID=currentUser.UID
+                        self.creatorUID=currentUser.UID
+                    }
+                    pushOperation.toDictionary=self.dictionaryRepresentation()
+                    ic.add(pushOperation, commit:false)
+                }catch{
+                   document.dispatchAdaptiveMessage(context,
+                        title: "Structural Error",
+                        body: "Operation collection is missing in \(self.runTimeTypeName())",
+                        onSelectedIndex: { (selectedIndex) -> () in
+                    })
                 }
-                pushOperation.toDictionary=self.dictionaryRepresentation()
-                ic.add(pushOperation, commit:false)
-            }catch{
-               document.dispatchAdaptiveMessage(context,
-                    title: "Structural Error",
-                    body: "Operation collection is missing in \(self.runTimeTypeName())",
-                    onSelectedIndex: { (selectedIndex) -> () in
-                })
+            }else{
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
             }
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_lockers should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
-        // The unitary operation are not always idempotent
-        // so we do not want to push multiple times unintensionnaly.
-        // Check BartlebyDocument+Operations.swift to understand Operation status
-        let pushOperation=self._getOperation()
-        if  pushOperation.canBePushed(){
-            // We try to execute
-            pushOperation.status=PushOperation.Status.inProgress
-            type(of: self).execute(self._lockers,
-                from:self._documentUID,
-                sucessHandler: { (context: HTTPContext) -> () in                     pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.successStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    success(context)
-                },
-                failureHandler: {(context: HTTPContext) -> () in
-                    pushOperation.counter=pushOperation.counter+1
-                    pushOperation.status=PushOperation.Status.completed
-                    pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
-                    pushOperation.lastInvocationDate=Date()
-                    let completion=Completion.failureStateFromHTTPContext(context)
-                    completion.setResult(context)
-                    pushOperation.completionState=completion
-                    failure(context)
-                }
-            )
+        if let lockers = self._lockers{
+            // The unitary operation are not always idempotent
+            // so we do not want to push multiple times unintensionnaly.
+            // Check BartlebyDocument+Operations.swift to understand Operation status
+            let pushOperation=self._getOperation()
+            if  pushOperation.canBePushed(){
+                // We try to execute
+                pushOperation.status=PushOperation.Status.inProgress
+                type(of: self).execute(lockers,
+                    from:self._documentUID,
+                    sucessHandler: { (context: HTTPContext) -> () in                         pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.successStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        success(context)
+                    },
+                    failureHandler: {(context: HTTPContext) -> () in
+                        pushOperation.counter=pushOperation.counter+1
+                        pushOperation.status=PushOperation.Status.completed
+                        pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                        pushOperation.lastInvocationDate=Date()
+                        let completion=Completion.failureStateFromHTTPContext(context)
+                        completion.setResult(context)
+                        pushOperation.completionState=completion
+                        failure(context)
+                    }
+                )
+            }else{
+                // This document is not available there is nothing to do.
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            }
         }else{
-            // This document is not available there is nothing to do.
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog("_lockers should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 

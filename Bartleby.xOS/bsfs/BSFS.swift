@@ -406,7 +406,7 @@ public final class BSFS:TriggerHook{
 
                 // Successful operation
                 // Let's Upsert the distant models.
-                // AND create their local Shadows
+                // AND  the local nodes
 
                 let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
 
@@ -595,7 +595,7 @@ public final class BSFS:TriggerHook{
 
                                         // Successful operation
                                         // Let's Upsert the node.
-                                        // AND create their local Shadows
+                                        // AND create the local node
 
                                         node.silentGroupedChanges {
 
@@ -827,7 +827,6 @@ public final class BSFS:TriggerHook{
 
                 /// TODO implement the deletion
                 /// Delete the node
-                /// Delete its shadow
                 /// Delete the files if necessary
                 /// Refuse to delete folder containing nodes
 
@@ -850,7 +849,6 @@ public final class BSFS:TriggerHook{
         /// TEST IF THERE IS A LOCAL FOLDER
         /// Create the folder
         /// Create the NODE
-        /// Create its shadow
 
         completed(Completion.successState())
 
@@ -871,7 +869,6 @@ public final class BSFS:TriggerHook{
             // TODO
             /// Create the Alias
             /// Create the NODE
-            /// Create its shadow
         }else{
             completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
         }
