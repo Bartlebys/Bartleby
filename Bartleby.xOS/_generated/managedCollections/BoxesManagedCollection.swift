@@ -394,8 +394,8 @@ extension Notification.Name {
     }
 
 
-    open func removeObjects(_ _items: [Collectible],commit:Bool=true){
-        for item in self._items{
+    open func removeObjects(_ items: [Collectible],commit:Bool=true){
+        for item in items{
             self.removeObject(item,commit:commit)
         }
     }
