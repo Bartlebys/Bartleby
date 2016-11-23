@@ -91,7 +91,7 @@ struct Flocker{
         var stats=BytesStats(name: "Flocking: \(path)")
         let container=Container()
         container.defineUID()
-        let box=BoxShadow()
+        let box=Box()
         box.defineUID()
         container.boxes.append(box)
         Async.utility{
@@ -263,7 +263,7 @@ struct Flocker{
 
 
         let filePath=folderPath+relativePath
-        let node=NodeShadow()
+        let node=Node()
         node.defineUID()
         node.relativePath=relativePath
         node.boxUID=container.boxes[0].UID
@@ -363,7 +363,7 @@ struct Flocker{
                                         stats.consign(numberOfBytes:UInt(offset),compressedBytes: UInt(lengthOfAddedData))
 
                                         // Create the related block
-                                        let block=BlockShadow()
+                                        let block=Block()
                                         block.defineUID()
                                         block.startsAt = writePosition
                                         block.size = lengthOfAddedData
@@ -615,7 +615,7 @@ struct Flocker{
     ///   - success: the success closure
     ///   - failure: the failure closure with to created paths (to be able to roll back)
     public func _assembleNode( node:Node,
-                               blocks:[BlockShadow],
+                               blocks:[Block],
                                flockFileHandle:FileHandle,
                                assemblyFolderPath:String,
                                stats:BytesStats,
@@ -754,13 +754,13 @@ struct Flocker{
     
     // MARK:  Read Access
     
-    func extractNode(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String){
+    func extractNode(node:Node,from container:Container, of flockedFilePath:String, destinationPath:String){
     }
     
     // MARK: Write Access
     
     // LOGICAL action bytes are not removed.
-    func delete(node:NodeShadow,from container:Container, of flockedFilePath:String, destinationPath:String)->String{
+    func delete(node:Node,from container:Container, of flockedFilePath:String, destinationPath:String)->String{
         return ""
     }
     

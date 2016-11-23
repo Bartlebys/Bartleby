@@ -159,34 +159,3 @@ import Foundation
         return CollectionMetadatum.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class CollectionMetadatumShadow :CollectionMetadatum,Shadow{
-
-    static func from(_ entity:CollectionMetadatum)->CollectionMetadatumShadow{
-        let shadow=CollectionMetadatumShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "CollectionMetadatumShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "collectionMetadataShadow"
-    }
-
-    override open var d_collectionName:String{
-        return CollectionMetadatumShadow.collectionName
-    }
-}

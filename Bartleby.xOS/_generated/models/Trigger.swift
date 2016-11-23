@@ -257,34 +257,3 @@ import Foundation
         return Trigger.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class TriggerShadow :Trigger,Shadow{
-
-    static func from(_ entity:Trigger)->TriggerShadow{
-        let shadow=TriggerShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "TriggerShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "triggersShadow"
-    }
-
-    override open var d_collectionName:String{
-        return TriggerShadow.collectionName
-    }
-}

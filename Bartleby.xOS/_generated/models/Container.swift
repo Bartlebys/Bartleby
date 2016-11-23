@@ -25,13 +25,13 @@ import Foundation
 	dynamic open var password:String?
 
 	//Boxes
-	dynamic open var boxes:[BoxShadow] = [BoxShadow]()
+	dynamic open var boxes:[Box] = [Box]()
 
 	//Nodes
-	dynamic open var nodes:[NodeShadow] = [NodeShadow]()
+	dynamic open var nodes:[Node] = [Node]()
 
 	//Blocks
-	dynamic open var blocks:[BlockShadow] = [BlockShadow]()
+	dynamic open var blocks:[Block] = [Block]()
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
@@ -56,15 +56,15 @@ import Foundation
                     self.password=casted
                 }
             case "boxes":
-                if let casted=value as? [BoxShadow]{
+                if let casted=value as? [Box]{
                     self.boxes=casted
                 }
             case "nodes":
-                if let casted=value as? [NodeShadow]{
+                if let casted=value as? [Node]{
                     self.nodes=casted
                 }
             case "blocks":
-                if let casted=value as? [BlockShadow]{
+                if let casted=value as? [Block]{
                     self.blocks=casted
                 }
             default:
@@ -117,9 +117,9 @@ import Foundation
         super.init(coder: decoder)
         self.silentGroupedChanges {
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
-			self.boxes=decoder.decodeObject(of: [NSArray.classForCoder(),BoxShadow.classForCoder()], forKey: "boxes")! as! [BoxShadow]
-			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),NodeShadow.classForCoder()], forKey: "nodes")! as! [NodeShadow]
-			self.blocks=decoder.decodeObject(of: [NSArray.classForCoder(),BlockShadow.classForCoder()], forKey: "blocks")! as! [BlockShadow]
+			self.boxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "boxes")! as! [Box]
+			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "nodes")! as! [Node]
+			self.blocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "blocks")! as! [Block]
         }
     }
 
@@ -147,36 +147,5 @@ import Foundation
 
     override open var d_collectionName:String{
         return Container.collectionName
-    }
-}
-
-
-// MARK: Shadow
-
-open class ContainerShadow :Container,Shadow{
-
-    static func from(_ entity:Container)->ContainerShadow{
-        let shadow=ContainerShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "ContainerShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "containersShadow"
-    }
-
-    override open var d_collectionName:String{
-        return ContainerShadow.collectionName
     }
 }

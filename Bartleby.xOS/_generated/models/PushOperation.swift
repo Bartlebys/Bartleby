@@ -214,34 +214,3 @@ import Foundation
         return PushOperation.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class PushOperationShadow :PushOperation,Shadow{
-
-    static func from(_ entity:PushOperation)->PushOperationShadow{
-        let shadow=PushOperationShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "PushOperationShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "pushOperationsShadow"
-    }
-
-    override open var d_collectionName:String{
-        return PushOperationShadow.collectionName
-    }
-}

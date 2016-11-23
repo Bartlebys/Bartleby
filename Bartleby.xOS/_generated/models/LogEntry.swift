@@ -201,34 +201,3 @@ import Foundation
         return LogEntry.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class LogEntryShadow :LogEntry,Shadow{
-
-    static func from(_ entity:LogEntry)->LogEntryShadow{
-        let shadow=LogEntryShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "LogEntryShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "logEntriesShadow"
-    }
-
-    override open var d_collectionName:String{
-        return LogEntryShadow.collectionName
-    }
-}

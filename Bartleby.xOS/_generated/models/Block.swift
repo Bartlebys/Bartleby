@@ -237,34 +237,3 @@ import Foundation
         return Block.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class BlockShadow :Block,Shadow{
-
-    static func from(_ entity:Block)->BlockShadow{
-        let shadow=BlockShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "BlockShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "blocksShadow"
-    }
-
-    override open var d_collectionName:String{
-        return BlockShadow.collectionName
-    }
-}

@@ -358,34 +358,3 @@ import Foundation
         return Node.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class NodeShadow :Node,Shadow{
-
-    static func from(_ entity:Node)->NodeShadow{
-        let shadow=NodeShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "NodeShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "nodesShadow"
-    }
-
-    override open var d_collectionName:String{
-        return NodeShadow.collectionName
-    }
-}

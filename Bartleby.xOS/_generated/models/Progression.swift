@@ -247,34 +247,3 @@ import Foundation
         return Progression.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class ProgressionShadow :Progression,Shadow{
-
-    static func from(_ entity:Progression)->ProgressionShadow{
-        let shadow=ProgressionShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "ProgressionShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "progressionsShadow"
-    }
-
-    override open var d_collectionName:String{
-        return ProgressionShadow.collectionName
-    }
-}

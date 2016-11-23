@@ -28,7 +28,7 @@ import Foundation
  By putting @objc(name) we fix the serialization name.
  This is due to the impossibility to link a FrameWork to an XPC services.
 
-*/
+ */
 
 // MARK: - Equatable
 
@@ -73,72 +73,83 @@ extension BartlebyObject{
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
+        // Special  key distributed is used when using CRUD model (for example on users)
+        // To discriminate creation from update
+        if key=="distributed"{
+            if let distributed = newValue as? Bool{
+                if distributed==true{
+                    self.collection?.shouldBeSaved=true
+                }
+            }
+            return
+        }
+
+        // We want to save collection only if needed.
         if var collection = self as? BartlebyCollection{
             collection.shouldBeSaved=true
         }
 
-        if !(self is Shadow){
-            if self._autoCommitIsEnabled == true {
-                // Set up the commit flag
-                self._shouldBeCommitted=true
-            }
 
-            if self._supervisionIsEnabled{
-                if key=="*" && !(self is BartlebyCollection){
+        if self._autoCommitIsEnabled == true {
+            // Set up the commit flag
+            self._shouldBeCommitted=true
+        }
+
+        if self._supervisionIsEnabled{
+            if key=="*" && !(self is BartlebyCollection){
+                if self.isInspectable {
+                    // Dictionnary or NSData Patch
+                    self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
+                }
+                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+            }else{
+                if let collection = self as? BartlebyCollection {
                     if self.isInspectable {
-                        // Dictionnary or NSData Patch
-                        self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
+                        let entityName=Pluralization.singularize(collection.d_collectionName)
+                        if key=="items"{
+                            if let oldArray=oldValue as? [BartlebyObject], let newArray=newValue as? [BartlebyObject]{
+                                if oldArray.count < newArray.count{
+                                    let stringValue:String! = (newArray.last?.UID ?? "")
+                                    self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
+                                }else{
+                                    self._appendChanges(key:key,changes:"Removed One \(entityName)")
+                                }
+                            }
+                        }
+                        if key == "item" {
+                            if let o = newValue as? BartlebyObject{
+                                self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
+                            }else{
+                                self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
+                            }
+                        }
+                        if key == "*" {
+                            self._appendChanges(key:key,changes:"This collection has been patched")
+                        }
                     }
+                }else if let collectibleNewValue = newValue as? Collectible{
+                    if self.isInspectable {
+                        // Collectible objects
+                        self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
+                    }
+                    // Relay the as a global change to the collection
                     self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }else{
-                    if let collection = self as? BartlebyCollection {
-                        if self.isInspectable {
-                            let entityName=Pluralization.singularize(collection.d_collectionName)
-                            if key=="items"{
-                                if let oldArray=oldValue as? [BartlebyObject], let newArray=newValue as? [BartlebyObject]{
-                                    if oldArray.count < newArray.count{
-                                        let stringValue:String! = (newArray.last?.UID ?? "")
-                                        self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
-                                    }else{
-                                        self._appendChanges(key:key,changes:"Removed One \(entityName)")
-                                    }
-                                }
-                            }
-                            if key == "item" {
-                                if let o = newValue as? BartlebyObject{
-                                    self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
-                                }else{
-                                    self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
-                                }
-                            }
-                            if key == "*" {
-                                self._appendChanges(key:key,changes:"This collection has been patched")
-                            }
-                        }
-                    }else if let collectibleNewValue = newValue as? Collectible{
-                        if self.isInspectable {
-                            // Collectible objects
-                            self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
-                        }
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-                    }else{
-                        // Natives types
-                        let o = oldValue ?? "void"
-                        let n = newValue ?? "void"
-                        if self.isInspectable {
-                            self._appendChanges(key:key,changes:"\(o) ->\(n)")
-                        }
-                        // Relay the as a global change to the collection
-                        self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                    // Natives types
+                    let o = oldValue ?? "void"
+                    let n = newValue ?? "void"
+                    if self.isInspectable {
+                        self._appendChanges(key:key,changes:"\(o) ->\(n)")
                     }
+                    // Relay the as a global change to the collection
+                    self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
                 }
+            }
 
-                // Invoke the closures (changes Observers)
-                // note that it occurs even changes are not inspectable.
-                for (_,supervisionClosure) in self._supervisers{
-                    supervisionClosure(key,oldValue,newValue)
-                }
+            // Invoke the closures (changes Observers)
+            // note that it occurs even changes are not inspectable.
+            for (_,supervisionClosure) in self._supervisers{
+                supervisionClosure(key,oldValue,newValue)
             }
         }
 
@@ -330,7 +341,7 @@ extension BartlebyObject{
             }
         }
     }
-    
+
 }
 
 

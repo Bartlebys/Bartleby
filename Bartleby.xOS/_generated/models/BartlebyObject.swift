@@ -60,7 +60,7 @@ import Foundation
 	    }
 	}
 
-	//Collectible protocol: distributed
+	//Collectible protocol: distributed, not really supervised
 	dynamic open var distributed:Bool = false  {
 	    didSet { 
 	       if distributed != oldValue {
@@ -93,17 +93,6 @@ import Foundation
     open func defineUID() {
         if self._id == Default.NO_UID {
             self._id=Bartleby.createUID()
-        }
-    }
-
-    /// You can set the UID on Shadows instances
-    ///
-    /// - Parameter UID: the uid
-    open func setShadowUID(UID:String)throws{
-        if self is Shadow{
-            self._id=UID
-        }else{
-            throw BartlebyObjectError.illegalAttemptToReplaceUID
         }
     }
 
@@ -311,36 +300,5 @@ import Foundation
 
      open var d_collectionName:String{
         return BartlebyObject.collectionName
-    }
-}
-
-
-// MARK: Shadow
-
-open class BartlebyObjectShadow :BartlebyObject,Shadow{
-
-    static func from(_ entity:BartlebyObject)->BartlebyObjectShadow{
-        let shadow=BartlebyObjectShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "BartlebyObjectShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "bartlebyObjectsShadow"
-    }
-
-    override open var d_collectionName:String{
-        return BartlebyObjectShadow.collectionName
     }
 }

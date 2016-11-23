@@ -455,34 +455,3 @@ import Foundation
         return DocumentMetadata.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class DocumentMetadataShadow :DocumentMetadata,Shadow{
-
-    static func from(_ entity:DocumentMetadata)->DocumentMetadataShadow{
-        let shadow=DocumentMetadataShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "DocumentMetadataShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "documentMetadatasShadow"
-    }
-
-    override open var d_collectionName:String{
-        return DocumentMetadataShadow.collectionName
-    }
-}

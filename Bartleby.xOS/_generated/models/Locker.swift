@@ -287,34 +287,3 @@ import Foundation
         return Locker.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class LockerShadow :Locker,Shadow{
-
-    static func from(_ entity:Locker)->LockerShadow{
-        let shadow=LockerShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "LockerShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "lockersShadow"
-    }
-
-    override open var d_collectionName:String{
-        return LockerShadow.collectionName
-    }
-}

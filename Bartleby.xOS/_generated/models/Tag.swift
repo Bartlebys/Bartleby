@@ -156,34 +156,3 @@ import Foundation
         return Tag.collectionName
     }
 }
-
-
-// MARK: Shadow
-
-open class TagShadow :Tag,Shadow{
-
-    static func from(_ entity:Tag)->TagShadow{
-        let shadow=TagShadow()
-        for k in entity.exposedKeys{
-            try? shadow.setExposedValue(entity.getExposedValueForKey(k), forKey: k)
-        }
-        try? shadow.setShadowUID(UID: entity.UID)
-        return shadow
-    }
-
-    // MARK: Universal type support
-
-    override open class func typeName() -> String {
-        return "TagShadow"
-    }
-
-    // MARK: Collectible
-
-    override open class var collectionName:String{
-        return "tagsShadow"
-    }
-
-    override open var d_collectionName:String{
-        return TagShadow.collectionName
-    }
-}

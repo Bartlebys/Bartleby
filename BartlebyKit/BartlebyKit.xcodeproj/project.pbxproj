@@ -375,8 +375,6 @@
 		E54A9F7A1DD4634B0066F20D /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E0E1DD4634B0066F20D /* Serializable.swift */; };
 		E54A9F7B1DD4634B0066F20D /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E0F1DD4634B0066F20D /* Serializer.swift */; };
 		E54A9F7C1DD4634B0066F20D /* Serializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E0F1DD4634B0066F20D /* Serializer.swift */; };
-		E54A9F7D1DD4634B0066F20D /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E101DD4634B0066F20D /* Shadow.swift */; };
-		E54A9F7E1DD4634B0066F20D /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E101DD4634B0066F20D /* Shadow.swift */; };
 		E54A9F7F1DD4634B0066F20D /* SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E111DD4634B0066F20D /* SuperIterable.swift */; };
 		E54A9F801DD4634B0066F20D /* SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E111DD4634B0066F20D /* SuperIterable.swift */; };
 		E54A9F811DD4634B0066F20D /* Supervisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A9E121DD4634B0066F20D /* Supervisable.swift */; };
@@ -695,7 +693,6 @@
 		E54A9E0D1DD4634B0066F20D /* Referenced.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referenced.swift; sourceTree = "<group>"; };
 		E54A9E0E1DD4634B0066F20D /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		E54A9E0F1DD4634B0066F20D /* Serializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializer.swift; sourceTree = "<group>"; };
-		E54A9E101DD4634B0066F20D /* Shadow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		E54A9E111DD4634B0066F20D /* SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperIterable.swift; sourceTree = "<group>"; };
 		E54A9E121DD4634B0066F20D /* Supervisable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Supervisable.swift; sourceTree = "<group>"; };
 		E54A9E131DD4634B0066F20D /* TriggerHook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerHook.swift; sourceTree = "<group>"; };
@@ -1232,7 +1229,6 @@
 				E54A9E0D1DD4634B0066F20D /* Referenced.swift */,
 				E54A9E0E1DD4634B0066F20D /* Serializable.swift */,
 				E54A9E0F1DD4634B0066F20D /* Serializer.swift */,
-				E54A9E101DD4634B0066F20D /* Shadow.swift */,
 				E54A9E111DD4634B0066F20D /* SuperIterable.swift */,
 				E54A9E121DD4634B0066F20D /* Supervisable.swift */,
 				E54A9E131DD4634B0066F20D /* TriggerHook.swift */,
@@ -1659,7 +1655,6 @@
 				E54A9F131DD4634B0066F20D /* BartlebyDocument+Reachability.swift in Sources */,
 				E54A9F011DD4634B0066F20D /* Default.swift in Sources */,
 				E54A9E731DD4634B0066F20D /* CreateNodes.swift in Sources */,
-				E54A9F7D1DD4634B0066F20D /* Shadow.swift in Sources */,
 				E54A9F111DD4634B0066F20D /* BartlebyDocument+Operations.swift in Sources */,
 				E54A9E571DD4634B0066F20D /* Progression.swift in Sources */,
 				E54A9E511DD4634B0066F20D /* LogEntry.swift in Sources */,
@@ -1711,7 +1706,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E54A9F7E1DD4634B0066F20D /* Shadow.swift in Sources */,
 				E54A9ED01DD4634B0066F20D /* FileReference.swift in Sources */,
 				E54A9E321DD4634B0066F20D /* NodesManagedCollection.swift in Sources */,
 				E54A9EE01DD4634B0066F20D /* CryptedDataTransform.swift in Sources */,

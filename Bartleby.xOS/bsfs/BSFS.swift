@@ -217,12 +217,10 @@ public final class BSFS:TriggerHook{
     /// - Parameter node: the node
     /// - Returns: the assembled path (created if there no
     fileprivate func _assemblyPath(for node:Node)->String{
-        if !(node is Shadow){
-            if let box=node.box{
-                return self.assemblyPath(for: box)+node.relativePath
-            }
-
+        if let box=node.box{
+            return self.assemblyPath(for: box)+node.relativePath
         }
+
         return Default.NO_PATH
     }
 
@@ -237,32 +235,30 @@ public final class BSFS:TriggerHook{
     /// - Parameter node: the node
     /// - Returns: true if the file is available and the node not marked assemblyInProgress
     fileprivate func _isAssembled(_ node:Node)->Bool{
-        if node is Shadow{
+
+        if node.assemblyInProgress {
+            // Return false if the assembly is in progress
             return false
-        }else{
-            if node.assemblyInProgress {
-                // Return false if the assembly is in progress
-                return false
-            }
-            let group=AsyncGroup()
-            var isAssembled=false
-            group.utility{
-                let path=self._assemblyPath(for: node)
-                isAssembled=self._fileManager.fileExists(atPath: path)
-                if isAssembled{
-                    if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
-                        if let size:Int=attributes[FileAttributeKey.size] as? Int{
-                            self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                            if size != node.size{
-                                isAssembled=false
-                            }
+        }
+        let group=AsyncGroup()
+        var isAssembled=false
+        group.utility{
+            let path=self._assemblyPath(for: node)
+            isAssembled=self._fileManager.fileExists(atPath: path)
+            if isAssembled{
+                if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
+                    if let size:Int=attributes[FileAttributeKey.size] as? Int{
+                        self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        if size != node.size{
+                            isAssembled=false
                         }
                     }
                 }
             }
-            group.wait()
-            return isAssembled
         }
+        group.wait()
+        return isAssembled
+
     }
 
 
@@ -278,102 +274,100 @@ public final class BSFS:TriggerHook{
                             progressed:@escaping (Progression)->(),
                             completed:@escaping (Completion)->()) throws->(){
 
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
-            do {
-                if node.isAssemblable == false{
-                    throw BSFSError.nodeIsNotAssemblable
-                }
-                if let delegate = self._boxDelegate{
-                    delegate.nodeIsReady(node: node, proceed: {
 
-                        let path=self._assemblyPath(for: node)
-                        let blocks=node.blocks
-
-                        if node.nature == .file || node.nature == .flock {
-
-                            var blockPaths=[String]()
-                            for block in blocks{
-                                // The blocks are embedded in a document
-                                // So we use the relative path
-                                blockPaths.append(block.blockRelativePath())
-                            }
-                            self._chunker.joinChunksToFile(from: blockPaths,
-                                                           to: path,
-                                                           decompress: node.compressedBlocks,
-                                                           decrypt: node.cryptedBlocks,
-                                                           externalId:node.UID,
-                                                           progression: { (progression) in
-                                                            progressed(progression)
-                            }, success: { path in
-
-                                if node.nature == .flock{
-                                    //TODO
-
-                                    // FLOCK path == path
-
-                                    let completionState=Completion.successState()
-                                    completionState.setExternalReferenceResult(from:node)
-                                    completed(completionState)
-
-                                }else{
-                                    // The file has been assembled
-                                    let completionState=Completion.successState()
-                                    completionState.setExternalReferenceResult(from:node)
-                                    completed(completionState)
-                                }
-                            }, failure: { (message) in
-                                let completion=Completion()
-                                completion.message=message
-                                completion.success=false
-                                completion.externalIdentifier=node.UID
-                                completed(completion)
-                            })
-                        }else if node.nature == .alias{
-                            Async.utility{
-                                do{
-                                    if let rNodeUID=node.referentNodeUID{
-                                        if let rNode = try? Bartleby.registredObjectByUID(rNodeUID) as Node{
-                                            let destination=self._assemblyPath(for: rNode)
-                                            try self._fileManager.createSymbolicLink(atPath: path, withDestinationPath:destination)
-                                            let completionState=Completion.successState()
-                                            completionState.setExternalReferenceResult(from:node)
-                                            completed(completionState)
-                                        }else{
-                                            completed(Completion.failureState("Unable to find Alias referent node", statusCode:.expectation_Failed))
-                                        }
-                                    }else{
-                                        completed(Completion.failureState("Unable to find Alias destination", statusCode:.expectation_Failed))
-
-                                    }
-                                }catch{
-                                    completed(Completion.failureStateFromError(error))
-                                }
-                            }
-
-                        }else if node.nature == .folder{
-                            Async.utility{
-                                do{
-                                    try self._fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
-                                    let completionState=Completion.successState()
-                                    completionState.setExternalReferenceResult(from:node)
-                                    completed(completionState)
-                                }catch{
-                                    completed(Completion.failureStateFromError(error))
-                                }
-                            }
-
-                        }
-                    })
-                }else{
-                    throw BSFSError.boxDelegateIsNotAvailable
-                }
-
-            } catch{
-                completed(Completion.failureStateFromError(error))
+        do {
+            if node.isAssemblable == false{
+                throw BSFSError.nodeIsNotAssemblable
             }
+            if let delegate = self._boxDelegate{
+                delegate.nodeIsReady(node: node, proceed: {
+
+                    let path=self._assemblyPath(for: node)
+                    let blocks=node.blocks
+
+                    if node.nature == .file || node.nature == .flock {
+
+                        var blockPaths=[String]()
+                        for block in blocks{
+                            // The blocks are embedded in a document
+                            // So we use the relative path
+                            blockPaths.append(block.blockRelativePath())
+                        }
+                        self._chunker.joinChunksToFile(from: blockPaths,
+                                                       to: path,
+                                                       decompress: node.compressedBlocks,
+                                                       decrypt: node.cryptedBlocks,
+                                                       externalId:node.UID,
+                                                       progression: { (progression) in
+                                                        progressed(progression)
+                        }, success: { path in
+
+                            if node.nature == .flock{
+                                //TODO
+
+                                // FLOCK path == path
+
+                                let completionState=Completion.successState()
+                                completionState.setExternalReferenceResult(from:node)
+                                completed(completionState)
+
+                            }else{
+                                // The file has been assembled
+                                let completionState=Completion.successState()
+                                completionState.setExternalReferenceResult(from:node)
+                                completed(completionState)
+                            }
+                        }, failure: { (message) in
+                            let completion=Completion()
+                            completion.message=message
+                            completion.success=false
+                            completion.externalIdentifier=node.UID
+                            completed(completion)
+                        })
+                    }else if node.nature == .alias{
+                        Async.utility{
+                            do{
+                                if let rNodeUID=node.referentNodeUID{
+                                    if let rNode = try? Bartleby.registredObjectByUID(rNodeUID) as Node{
+                                        let destination=self._assemblyPath(for: rNode)
+                                        try self._fileManager.createSymbolicLink(atPath: path, withDestinationPath:destination)
+                                        let completionState=Completion.successState()
+                                        completionState.setExternalReferenceResult(from:node)
+                                        completed(completionState)
+                                    }else{
+                                        completed(Completion.failureState("Unable to find Alias referent node", statusCode:.expectation_Failed))
+                                    }
+                                }else{
+                                    completed(Completion.failureState("Unable to find Alias destination", statusCode:.expectation_Failed))
+
+                                }
+                            }catch{
+                                completed(Completion.failureStateFromError(error))
+                            }
+                        }
+
+                    }else if node.nature == .folder{
+                        Async.utility{
+                            do{
+                                try self._fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                                let completionState=Completion.successState()
+                                completionState.setExternalReferenceResult(from:node)
+                                completed(completionState)
+                            }catch{
+                                completed(Completion.failureStateFromError(error))
+                            }
+                        }
+
+                    }
+                })
+            }else{
+                throw BSFSError.boxDelegateIsNotAvailable
+            }
+
+        } catch{
+            completed(Completion.failureStateFromError(error))
         }
+
     }
 
 
@@ -402,135 +396,133 @@ public final class BSFS:TriggerHook{
                      progressed:@escaping (Progression)->(),
                      completed:@escaping (Completion)->()){
 
-        if box is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
 
 
-            if self._fileManager.fileExists(atPath: reference.absolutePath){
 
-                var firstNode:Node?
-                func __chunksHaveBeenCreated(chunks:[Chunk]){
+        if self._fileManager.fileExists(atPath: reference.absolutePath){
 
-                    // Successful operation
-                    // Let's Upsert the distant models.
-                    // AND create their local Shadows
+            var firstNode:Node?
+            func __chunksHaveBeenCreated(chunks:[Chunk]){
 
-                    let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
-                    
-                    for (nodeRelativePath,groupOfChunks) in groupedChunks{
-                        // Create the new node.
-                        // And add its blocks
-                        let node=self._document.newNode()
-                        if firstNode==nil{
-                            firstNode=node
-                        }
-                        node.silentGroupedChanges {
-                            node.boxUID=box.UID
-                            node.nature=reference.nodeNature.forNode
-                            node.relativePath=relativePath///
-                            node.priority=reference.priority
-                            // Set up the node relative path
-                            node.relativePath=nodeRelativePath
+                // Successful operation
+                // Let's Upsert the distant models.
+                // AND create their local Shadows
 
-                            var cumulatedDigests=""
-                            var cumulatedSize=0
+                let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
 
-                            // Let's add the blocks
-                            for chunk in groupOfChunks{
-                                let block=self._document.newBlock()
-                                block.silentGroupedChanges {
-                                    block.nodeUID=node.UID
-                                    block.rank=chunk.rank
-                                    block.digest=chunk.sha1
-                                    block.startsAt=chunk.startsAt
-                                    block.size=chunk.originalSize
-                                    block.priority=reference.priority
-                                }
-                                cumulatedSize += chunk.originalSize
-                                cumulatedDigests += chunk.sha1
-                                node.blocksUIDS.append(block.UID)
-                                self._toBeUploadedBlocksUIDS.append(block.UID)
+                for (nodeRelativePath,groupOfChunks) in groupedChunks{
+                    // Create the new node.
+                    // And add its blocks
+                    let node=self._document.newNode()
+                    if firstNode==nil{
+                        firstNode=node
+                    }
+                    node.silentGroupedChanges {
+                        node.boxUID=box.UID
+                        node.nature=reference.nodeNature.forNode
+                        node.relativePath=relativePath///
+                        node.priority=reference.priority
+                        // Set up the node relative path
+                        node.relativePath=nodeRelativePath
+
+                        var cumulatedDigests=""
+                        var cumulatedSize=0
+
+                        // Let's add the blocks
+                        for chunk in groupOfChunks{
+                            let block=self._document.newBlock()
+                            block.silentGroupedChanges {
+                                block.nodeUID=node.UID
+                                block.rank=chunk.rank
+                                block.digest=chunk.sha1
+                                block.startsAt=chunk.startsAt
+                                block.size=chunk.originalSize
+                                block.priority=reference.priority
                             }
-                            // Store the digest of the cumulated digests.
-                            node.digest=cumulatedDigests.sha1
-                            // And the node original size
-                            node.size=cumulatedSize
+                            cumulatedSize += chunk.originalSize
+                            cumulatedDigests += chunk.sha1
+                            node.blocksUIDS.append(block.UID)
+                            self._toBeUploadedBlocksUIDS.append(block.UID)
                         }
-
-                    }
-
-
-                    // Delete the original
-                    if deleteOriginal{
-                        // We consider deletion as non mandatory.
-                        // So we produce only a log.
-                        do {
-                            try self._fileManager.removeItem(atPath: reference.absolutePath)
-                        } catch  {
-                            self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                        }
-                    }
-
-                    let finalState=Completion.successState()
-                    if let node=firstNode{
-                        finalState.setExternalReferenceResult(from:node)
-                    }
-                    completed(finalState)
-
-                    // Call the centralized upload mechanism
-                    self._uploadNext()
-
-                }
-                Async.utility{
-                    if  reference.nodeNature == .file{
-                        var isDirectory:ObjCBool=false
-                        if self._fileManager.fileExists(atPath: reference.absolutePath, isDirectory: &isDirectory){
-                            if isDirectory.boolValue{
-                                self._chunker.breakFolderIntoChunk(filesIn: reference.absolutePath,
-                                                                   chunksFolderPath: box.nodesFolderPath,
-                                                                   progression: { (progression) in
-                                                                    progressed(progression)
-                                }, success: { (chunks) in
-                                    __chunksHaveBeenCreated(chunks: chunks)
-                                }, failure: { (chunks, message) in
-                                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                                })
-                            }else{
-                                /// Let's break the file into chunk.
-                                self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
-                                                              relativePath:relativePath,
-                                                              chunksFolderPath: box.nodesFolderPath,
-                                                              chunkMaxSize:reference.chunkMaxSize,
-                                                              compress: reference.compressed,
-                                                              encrypt: reference.crypted,
-                                                              progression: { (progression) in
-                                                                progressed(progression)
-                                }
-                                    , success: { (chunks) in
-                                        __chunksHaveBeenCreated(chunks: chunks)
-
-                                }, failure: { (message) in
-                                    completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                                })
-                            }
-                        }else{
-                            let message=NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+reference.absolutePath
-                            completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                        }
-                    }
-
-                    if  reference.nodeNature == .flock{
-                        // @TODO
+                        // Store the digest of the cumulated digests.
+                        node.digest=cumulatedDigests.sha1
+                        // And the node original size
+                        node.size=cumulatedSize
                     }
 
                 }
 
 
-            }else{
-                completed(Completion.failureState(NSLocalizedString("Reference Not Found!", tableName:"system", comment: "Reference Not Found!")+" \(reference.absolutePath)", statusCode: .not_Found))
+                // Delete the original
+                if deleteOriginal{
+                    // We consider deletion as non mandatory.
+                    // So we produce only a log.
+                    do {
+                        try self._fileManager.removeItem(atPath: reference.absolutePath)
+                    } catch  {
+                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                    }
+                }
+
+                let finalState=Completion.successState()
+                if let node=firstNode{
+                    finalState.setExternalReferenceResult(from:node)
+                }
+                completed(finalState)
+
+                // Call the centralized upload mechanism
+                self._uploadNext()
+
             }
+            Async.utility{
+                if  reference.nodeNature == .file{
+                    var isDirectory:ObjCBool=false
+                    if self._fileManager.fileExists(atPath: reference.absolutePath, isDirectory: &isDirectory){
+                        if isDirectory.boolValue{
+                            self._chunker.breakFolderIntoChunk(filesIn: reference.absolutePath,
+                                                               chunksFolderPath: box.nodesFolderPath,
+                                                               progression: { (progression) in
+                                                                progressed(progression)
+                            }, success: { (chunks) in
+                                __chunksHaveBeenCreated(chunks: chunks)
+                            }, failure: { (chunks, message) in
+                                completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                            })
+                        }else{
+                            /// Let's break the file into chunk.
+                            self._chunker.breakIntoChunk( fileAt: reference.absolutePath,
+                                                          relativePath:relativePath,
+                                                          chunksFolderPath: box.nodesFolderPath,
+                                                          chunkMaxSize:reference.chunkMaxSize,
+                                                          compress: reference.compressed,
+                                                          encrypt: reference.crypted,
+                                                          progression: { (progression) in
+                                                            progressed(progression)
+                            }
+                                , success: { (chunks) in
+                                    __chunksHaveBeenCreated(chunks: chunks)
+
+                            }, failure: { (message) in
+                                completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                            })
+                        }
+                    }else{
+                        let message=NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+reference.absolutePath
+                        completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                    }
+                }
+
+                if  reference.nodeNature == .flock{
+                    // @TODO
+                }
+
+            }
+
+
+        }else{
+            completed(Completion.failureState(NSLocalizedString("Reference Not Found!", tableName:"system", comment: "Reference Not Found!")+" \(reference.absolutePath)", statusCode: .not_Found))
         }
+
     }
 
 
@@ -560,126 +552,124 @@ public final class BSFS:TriggerHook{
                         completed:@escaping (Completion)->()){
 
         if node.nature == .file{
-            if node is Shadow{
-                completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-            }else{
-                if node.authorized.contains(self._document.currentUser.UID) ||
-                    node.authorized.contains("*"){
 
-                    var isDirectory:ObjCBool=false
-                    if self._fileManager.fileExists(atPath:path, isDirectory: &isDirectory){
-                        if isDirectory.boolValue{
-                            completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement is restricted to single files not folder", tableName:"system", comment: "Forbidden! Replacement is restricted to single files not folder"), statusCode: .forbidden))
-                        }else{
+            if node.authorized.contains(self._document.currentUser.UID) ||
+                node.authorized.contains("*"){
 
-                            if let box=node.box{
-                                let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
+                var isDirectory:ObjCBool=false
+                if self._fileManager.fileExists(atPath:path, isDirectory: &isDirectory){
+                    if isDirectory.boolValue{
+                        completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement is restricted to single files not folder", tableName:"system", comment: "Forbidden! Replacement is restricted to single files not folder"), statusCode: .forbidden))
+                    }else{
 
-                                //////////////////////////////
-                                // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
-                                //////////////////////////////
+                        if let box=node.box{
+                            let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
 
-                                analyzer.deltaChunks(fromFileAt: path, to: node, using: self._fileManager, completed: { (toBePreserved, toBeDeleted) in
+                            //////////////////////////////
+                            // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
+                            //////////////////////////////
+
+                            analyzer.deltaChunks(fromFileAt: path, to: node, using: self._fileManager, completed: { (toBePreserved, toBeDeleted) in
 
 
-                                    /// delete the blocks to be deleted
-                                    for chunk in toBeDeleted{
-                                        if let block=self._findBlockMatching(chunk: chunk){
-                                            self._deleteBlock(block)
+                                /// delete the blocks to be deleted
+                                for chunk in toBeDeleted{
+                                    if let block=self._findBlockMatching(chunk: chunk){
+                                        self._deleteBlock(block)
+                                    }
+                                }
+
+                                /////////////////////////////////
+                                // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
+                                /////////////////////////////////
+                                self._chunker.breakIntoChunk(fileAt: path,
+                                                             relativePath: node.relativePath,
+                                                             chunksFolderPath: box.nodesFolderPath,
+                                                             compress: node.compressedBlocks,
+                                                             encrypt: node.cryptedBlocks,
+                                                             excludeChunks:toBePreserved,
+                                                             progression: { (progression) in
+                                                                progressed(progression)
+                                }
+                                    , success: { (chunks) in
+
+                                        // Successful operation
+                                        // Let's Upsert the node.
+                                        // AND create their local Shadows
+
+                                        node.silentGroupedChanges {
+
+                                            var cumulatedDigests=""
+                                            var cumulatedSize=0
+
+                                            // Let's add the blocks
+                                            for chunk in chunks{
+                                                var block:Block?
+                                                if let b=self._findBlockMatching(chunk: chunk){
+                                                    block=b
+                                                    block?.commitRequired()
+                                                }else{
+                                                    block=self._document.newBlock()
+                                                }
+
+                                                block!.silentGroupedChanges {
+                                                    block!.nodeUID=node.UID
+                                                    block!.rank=chunk.rank
+                                                    block!.digest=chunk.sha1
+                                                    block!.startsAt=chunk.startsAt
+                                                    block!.size=chunk.originalSize
+                                                    block!.priority=node.priority
+                                                }
+                                                cumulatedDigests += chunk.sha1
+                                                cumulatedSize += chunk.originalSize
+                                            }
+
+                                            // Store the digest of the cumulated digests.
+                                            node.digest=cumulatedDigests.sha1
+                                            // And the node original size
+                                            node.size=cumulatedSize
                                         }
-                                    }
 
-                                    /////////////////////////////////
-                                    // #2 Then we `breakIntoChunk` the chunks that need to be chunked.
-                                    /////////////////////////////////
-                                    self._chunker.breakIntoChunk(fileAt: path,
-                                                                 relativePath: node.relativePath,
-                                                                 chunksFolderPath: box.nodesFolderPath,
-                                                                 compress: node.compressedBlocks,
-                                                                 encrypt: node.cryptedBlocks,
-                                                                 excludeChunks:toBePreserved,
-                                                                 progression: { (progression) in
-                                                                    progressed(progression)
-                                    }
-                                        , success: { (chunks) in
+                                        // Mark the node to be committed
+                                        node.commitRequired()
 
-                                            // Successful operation
-                                            // Let's Upsert the node.
-                                            // AND create their local Shadows
-
-                                            node.silentGroupedChanges {
-
-                                                var cumulatedDigests=""
-                                                var cumulatedSize=0
-
-                                                // Let's add the blocks
-                                                for chunk in chunks{
-                                                    var block:Block?
-                                                    if let b=self._findBlockMatching(chunk: chunk){
-                                                        block=b
-                                                        block?.commitRequired()
-                                                    }else{
-                                                        block=self._document.newBlock()
-                                                    }
-
-                                                    block!.silentGroupedChanges {
-                                                        block!.nodeUID=node.UID
-                                                        block!.rank=chunk.rank
-                                                        block!.digest=chunk.sha1
-                                                        block!.startsAt=chunk.startsAt
-                                                        block!.size=chunk.originalSize
-                                                        block!.priority=node.priority
-                                                    }
-                                                    cumulatedDigests += chunk.sha1
-                                                    cumulatedSize += chunk.originalSize
-                                                }
-
-                                                // Store the digest of the cumulated digests.
-                                                node.digest=cumulatedDigests.sha1
-                                                // And the node original size
-                                                node.size=cumulatedSize
-                                            }
-
-                                            // Mark the node to be committed
-                                            node.commitRequired()
-
-                                            // Delete the original
-                                            Async.utility{
-                                                if deleteOriginal{
-                                                    // We consider deletion as non mandatory.
-                                                    // So we produce only a log.
-                                                    do {
-                                                        try self._fileManager.removeItem(atPath: path)
-                                                    } catch  {
-                                                        self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
-                                                    }
+                                        // Delete the original
+                                        Async.utility{
+                                            if deleteOriginal{
+                                                // We consider deletion as non mandatory.
+                                                // So we produce only a log.
+                                                do {
+                                                    try self._fileManager.removeItem(atPath: path)
+                                                } catch  {
+                                                    self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
                                                 }
                                             }
-                                            
-                                            let finalState=Completion.successState()
-                                            finalState.setExternalReferenceResult(from:node)
-                                            completed(finalState)
-                                            
-                                            // Call the centralized upload mechanism
-                                            self._uploadNext()
-                                            
-                                    }, failure: { (message) in
-                                        completed(Completion.failureState(message, statusCode: .expectation_Failed))
-                                    })
-                                    
+                                        }
+
+                                        let finalState=Completion.successState()
+                                        finalState.setExternalReferenceResult(from:node)
+                                        completed(finalState)
+
+                                        // Call the centralized upload mechanism
+                                        self._uploadNext()
+
                                 }, failure: { (message) in
                                     completed(Completion.failureState(message, statusCode: .expectation_Failed))
                                 })
-                                
-                            }else{
-                                completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
-                            }
+
+                            }, failure: { (message) in
+                                completed(Completion.failureState(message, statusCode: .expectation_Failed))
+                            })
+
+                        }else{
+                            completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
                         }
                     }
-                }else{
-                    completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
                 }
+            }else{
+                completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement refused", tableName:"system", comment: "Forbidden! Replacement refused"), statusCode: .forbidden))
             }
+
         }else{
             completed(Completion.failureState("\(node.nature)", statusCode: .precondition_Failed))
         }
@@ -705,24 +695,22 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - accessor: the accessor
     public func wantsAccess(to node:Node,accessor:NodeAccessor){
-        if node is Shadow{
-            accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
-        }else{
-            // The nodeIsUsable() will be called when the file will be usable.
-            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                if self._accessors[node.UID] != nil {
-                    self._accessors[node.UID]=[NodeAccessor]()
-                }
-                if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
-                    self._accessors[node.UID]!.append(accessor)
-                }
-                if self._isAssembled(node){
-                    self._grantAccess(to: node, accessor: accessor)
-                }
-            }else{
-                accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
+
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            if self._accessors[node.UID] != nil {
+                self._accessors[node.UID]=[NodeAccessor]()
             }
+            if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
+                self._accessors[node.UID]!.append(accessor)
+            }
+            if self._isAssembled(node){
+                self._grantAccess(to: node, accessor: accessor)
+            }
+        }else{
+            accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
         }
+
     }
 
 
@@ -744,11 +732,7 @@ public final class BSFS:TriggerHook{
     ///   - node: to the node
     ///   - accessor: for an Accessor
     fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
-        if node is Shadow{
-            accessor.accessRefused(to: node, explanations: NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"))
-        }else{
-            accessor.fileIsAvailable(for:node, at: self._assemblyPath(for:node))
-        }
+        accessor.fileIsAvailable(for:node, at: self._assemblyPath(for:node))
     }
 
 
@@ -764,42 +748,40 @@ public final class BSFS:TriggerHook{
     ///   - completed: a closure called on completion with Completion State.
     ///                the copied node ref is stored in the completion.getResultExternalReference()
     public func copy(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
-            // The nodeIsUsable() will be called when the file will be usable.
-            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                self._boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
-                    if let box=node.box{
-                        Async.utility{
-                            do{
-                                try self._fileManager.copyItem(atPath: self._assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
-                                // Create the copiedNode
-                                let copiedNode=self._document.newNode()
-                                copiedNode.silentGroupedChanges {
-                                    try? copiedNode.mergeWith(node)// merge
-                                    copiedNode.relativePath=relativePath // Thats it!
-                                }
-                                let finalState=Completion.successState()
-                                finalState.setExternalReferenceResult(from:copiedNode)
-                                completed(finalState)
-                            }catch{
-                                completed(Completion.failureStateFromError(error))
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            self._boxDelegate?.copyIsReady(node: node, to: relativePath, proceed: {
+                if let box=node.box{
+                    Async.utility{
+                        do{
+                            try self._fileManager.copyItem(atPath: self._assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
+                            // Create the copiedNode
+                            let copiedNode=self._document.newNode()
+                            copiedNode.silentGroupedChanges {
+                                try? copiedNode.mergeWith(node)// merge
+                                copiedNode.relativePath=relativePath // Thats it!
                             }
+                            let finalState=Completion.successState()
+                            finalState.setExternalReferenceResult(from:copiedNode)
+                            completed(finalState)
+                        }catch{
+                            completed(Completion.failureStateFromError(error))
+
                         }
-                    }else{
-                        completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
                     }
+                }else{
+                    completed(Completion.failureState(NSLocalizedString("Forbidden! Box not found", tableName:"system", comment: "Forbidden! Box not found"), statusCode: .forbidden))
+                }
 
 
 
-                })
-            }else{
-                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
-            }
+            })
+        }else{
+            completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
         }
+
     }
 
 
@@ -813,22 +795,20 @@ public final class BSFS:TriggerHook{
     ///   - completed: a closure called on completion with Completion State.
     ///                the copied node ref is stored in the completion.getResultExternalReference()
     public func move(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
-            // The nodeIsUsable() will be called when the file will be usable.
-            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                self._boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
-                    node.relativePath=relativePath
-                    let finalState=Completion.successState()
-                    finalState.setExternalReferenceResult(from:node)
-                    completed(finalState)
-                })
 
-            }else{
-                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
-            }
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            self._boxDelegate?.moveIsReady(node: node, to: relativePath, proceed: {
+                node.relativePath=relativePath
+                let finalState=Completion.successState()
+                finalState.setExternalReferenceResult(from:node)
+                completed(finalState)
+            })
+
+        }else{
+            completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
         }
+
     }
 
 
@@ -840,25 +820,23 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - completed: a closure called on completion with Completion State.
     public func delete(node:Node,completed:@escaping (Completion)->())->(){
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            self._boxDelegate?.deletionIsReady(node: node, proceed: {
+
+                /// TODO implement the deletion
+                /// Delete the node
+                /// Delete its shadow
+                /// Delete the files if necessary
+                /// Refuse to delete folder containing nodes
+
+                completed(Completion.successState())
+            })
         }else{
-            // The nodeIsUsable() will be called when the file will be usable.
-            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                self._boxDelegate?.deletionIsReady(node: node, proceed: {
-
-                    /// TODO implement the deletion
-                    /// Delete the node
-                    /// Delete its shadow
-                    /// Delete the files if necessary
-                    /// Refuse to delete folder containing nodes
-
-                    completed(Completion.successState())
-                })
-            }else{
-                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
-            }
+            completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
         }
+
     }
 
 
@@ -867,17 +845,15 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the relative Path
     ///   - completed: a closure called on completion with Completion State.
     public func createFolder(in box:Box,at relativePath:String,completed:@escaping (Completion)->())->(){
-        if box is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
-        }else{
-            /// TODO implement
-            /// TEST IF THERE IS A LOCAL FOLDER
-            /// Create the folder
-            /// Create the NODE
-            /// Create its shadow
 
-            completed(Completion.successState())
-        }
+        /// TODO implement
+        /// TEST IF THERE IS A LOCAL FOLDER
+        /// Create the folder
+        /// Create the NODE
+        /// Create its shadow
+
+        completed(Completion.successState())
+
 
     }
 
@@ -889,19 +865,17 @@ public final class BSFS:TriggerHook{
     ///   - relativePath: the destination relativePath
     ///   - completed: a closure called on completion with Completion State.
     public func createAlias(of node:Node,to relativePath:String, completed:@escaping (Completion)->())->(){
-        if node is Shadow{
-            completed(Completion.failureState(NSLocalizedString("Shadows are forbidden!", tableName:"system", comment: "Shadows are forbidden!"), statusCode: .forbidden))
+
+        // The nodeIsUsable() will be called when the file will be usable.
+        if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
+            // TODO
+            /// Create the Alias
+            /// Create the NODE
+            /// Create its shadow
         }else{
-            // The nodeIsUsable() will be called when the file will be usable.
-            if node.authorized.contains("*") || node.authorized.contains(self._document.currentUser.UID){
-                // TODO
-                /// Create the Alias
-                /// Create the NODE
-                /// Create its shadow
-            }else{
-                completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
-            }
+            completed(Completion.failureState(NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"), statusCode: .unauthorized))
         }
+
     }
 
 
@@ -1105,9 +1079,9 @@ public final class BSFS:TriggerHook{
         return nil
     }
     
-    /// Delete a Block its BlockShadow, raw file
+    /// Delete a Block its Block, raw file
     ///
-    /// - Parameter block: the block or the BlockShadow reference
+    /// - Parameter block: the block or the Block reference
     func _deleteBlock(_ block:Block) {
         do{
             try self._document.removeBlock(with: block.digest)
