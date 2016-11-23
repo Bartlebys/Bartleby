@@ -178,16 +178,16 @@ extension Notification.Name {
             let changedItems=self._items.filter { $0.shouldBeCommitted == true }
             for changed in changedItems{
                 UIDS.append(changed.UID)
-				let tobeUpdated = changedItems.filter { $0.distributed == true }
-				let toBeCreated = changedItems.filter { $0.distributed == false }
-				if toBeCreated.count > 0 {
-				    CreateLockers.commit(toBeCreated, inDocumentWithUID:self.documentUID)
-				}
-				if tobeUpdated.count > 0 {
-				    UpdateLockers.commit(tobeUpdated, inDocumentWithUID:self.documentUID)
-				}
-
             }
+			let tobeUpdated = changedItems.filter { $0.distributed == true }
+			let toBeCreated = changedItems.filter { $0.distributed == false }
+			if toBeCreated.count > 0 {
+			    CreateLockers.commit(toBeCreated, inDocumentWithUID:self.documentUID)
+			}
+			if tobeUpdated.count > 0 {
+			    UpdateLockers.commit(tobeUpdated, inDocumentWithUID:self.documentUID)
+			}
+
             self.committed=true
         }
         return UIDS
