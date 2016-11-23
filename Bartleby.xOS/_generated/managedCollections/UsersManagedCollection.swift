@@ -178,7 +178,7 @@ extension Notification.Name {
             let changedItems=self._items.filter { $0.shouldBeCommitted == true }
             for changed in changedItems{
                 UIDS.append(changed.UID)
-				if changed.distributed{
+				if changed.hasBeenPushed{
 				    UpdateUser.commit(changed, inDocumentWithUID:self.documentUID)
 				}else{
 				    CreateUser.commit(changed, inDocumentWithUID:self.documentUID)

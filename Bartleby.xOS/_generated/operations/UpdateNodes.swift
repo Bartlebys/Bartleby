@@ -199,7 +199,7 @@ import Foundation
                 inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in 
 					for item in self._nodes{
-						item.distributed=true
+						item.hasBeenPushed=true
 					}
                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed

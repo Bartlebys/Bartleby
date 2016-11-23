@@ -19,7 +19,7 @@ public protocol Distribuable {
 
     // This flag should be set to true
     // When the collaborative server has acknowledged the object creation
-    var distributed: Bool { get set }
+    var hasBeenPushed: Bool { get set }
 
     /// Perform changes without commit
     ///

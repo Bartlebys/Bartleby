@@ -195,7 +195,7 @@ import Foundation
             type(of: self).execute(self._user,
                 inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in 
-					self._user.distributed=true
+					self._user.hasBeenPushed=true
                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
                     pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)

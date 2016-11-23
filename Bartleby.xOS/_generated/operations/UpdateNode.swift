@@ -195,7 +195,7 @@ import Foundation
             type(of: self).execute(self._node,
                 inDocumentWithUID:self._documentUID,
                 sucessHandler: { (context: HTTPContext) -> () in 
-					self._node.distributed=true
+					self._node.hasBeenPushed=true
                     pushOperation.counter=pushOperation.counter+1
                     pushOperation.status=PushOperation.Status.completed
                     pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)

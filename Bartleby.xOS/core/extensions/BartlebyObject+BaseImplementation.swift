@@ -75,9 +75,9 @@ extension BartlebyObject{
 
         // Special  key distributed is used when using CRUD model (for example on users)
         // To discriminate creation from update
-        if key=="distributed"{
-            if let distributed = newValue as? Bool{
-                if distributed==true{
+        if key=="hasBeenPushed"{
+            if let hasBeenPushed = newValue as? Bool{
+                if hasBeenPushed == true{
                     self.collection?.shouldBeSaved=true
                 }
             }

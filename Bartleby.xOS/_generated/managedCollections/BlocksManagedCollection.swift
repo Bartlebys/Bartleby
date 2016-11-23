@@ -179,8 +179,8 @@ extension Notification.Name {
             for changed in changedItems{
                 UIDS.append(changed.UID)
             }
-			let tobeUpdated = changedItems.filter { $0.distributed == true }
-			let toBeCreated = changedItems.filter { $0.distributed == false }
+			let tobeUpdated = changedItems.filter { $0.hasBeenPushed == true }
+			let toBeCreated = changedItems.filter { $0.hasBeenPushed == false }
 			if toBeCreated.count > 0 {
 			    CreateBlocks.commit(toBeCreated, inDocumentWithUID:self.documentUID)
 			}

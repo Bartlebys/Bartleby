@@ -60,11 +60,13 @@ import Foundation
 	    }
 	}
 
-	//Collectible protocol: distributed, not really supervised
-	dynamic open var distributed:Bool = false  {
+	//Collectible protocol: distributed, set to true on first successful push
+	dynamic open var hasBeenPushed:Bool = false  {
 	    didSet { 
-	       if distributed != oldValue {
-	            self.provisionChanges(forKey: "distributed",oldValue: oldValue,newValue: distributed)  
+	       if hasBeenPushed != oldValue {
+                print("\(self._typeName) \(hasBeenPushed) \(self.UID)")
+	            self.provisionChanges(forKey: "hasBeenPushed",oldValue: oldValue,newValue: hasBeenPushed)
+            
 	       } 
 	    }
 	}
@@ -164,7 +166,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","distributed","changedKeys"])
+        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","hasBeenPushed","changedKeys"])
         return exposed
     }
 
@@ -193,9 +195,9 @@ import Foundation
                 if let casted=value as? Bool{
                     self.ephemeral=casted
                 }
-            case "distributed":
+            case "hasBeenPushed":
                 if let casted=value as? Bool{
-                    self.distributed=casted
+                    self.hasBeenPushed=casted
                 }
             case "changedKeys":
                 if let casted=value as? [KeyedChanges]{
@@ -224,8 +226,8 @@ import Foundation
                return self.summary
             case "ephemeral":
                return self.ephemeral
-            case "distributed":
-               return self.distributed
+            case "hasBeenPushed":
+               return self.hasBeenPushed
             case "changedKeys":
                return self.changedKeys
             default:
@@ -245,7 +247,7 @@ import Foundation
 			self.creatorUID <- ( map["creatorUID"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
-			self.distributed <- ( map["distributed"] )
+			self.hasBeenPushed <- ( map["hasBeenPushed"] )
             if map.mappingType == .toJSON {
                 // Define if necessary the UID
                 self.defineUID()
@@ -265,7 +267,7 @@ import Foundation
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
-			self.distributed=decoder.decodeBool(forKey:"distributed") 
+			self.hasBeenPushed=decoder.decodeBool(forKey:"hasBeenPushed") 
             self._typeName=type(of: self).typeName()
             self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
         }
@@ -279,7 +281,7 @@ import Foundation
 			coder.encode(summary,forKey:"summary")
 		}
 		coder.encode(self.ephemeral,forKey:"ephemeral")
-		coder.encode(self.distributed,forKey:"distributed")
+		coder.encode(self.hasBeenPushed,forKey:"hasBeenPushed")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
