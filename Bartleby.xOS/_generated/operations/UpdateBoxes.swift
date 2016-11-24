@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=UpdateBoxes()
         operationInstance._boxes=boxes
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let boxes = self._boxes{
             let context=Context(code:730093331, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {

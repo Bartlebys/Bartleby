@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=CreateBlocks()
         operationInstance._blocks=blocks
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let blocks = self._blocks{
             let context=Context(code:4192090395, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {

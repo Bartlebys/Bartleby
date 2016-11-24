@@ -10,12 +10,6 @@ import Foundation
 
 extension User {
 
-    /// Returns the document UID
-    open var documentUID:String{
-        get{
-            return self.document?.UID ?? "User_Extension_NO_UID_defined"
-        }
-    }
 
     /// Returns the commplete singIn URL
     open func signInURL(for document:BartlebyDocument)->URL?{

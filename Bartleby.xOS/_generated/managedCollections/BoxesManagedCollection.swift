@@ -47,12 +47,6 @@ extension Notification.Name {
         }
     }
 
-    open var documentUID:String{
-        get{
-            return self.document?.UID ?? Default.NO_UID
-        }
-    }
-
     /// Init with prefetched content
     ///
     /// - parameter items: itels

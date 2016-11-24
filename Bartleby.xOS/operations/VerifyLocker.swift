@@ -253,7 +253,7 @@ open class VerifyLocker: BartlebyObject {
 
         if locker.verificationMethod==Locker.VerificationMethod.offline {
             // Let find the current user
-            if let documentUID=locker.documentUID {
+            if let documentUID=locker.associatedDocumentUID {
                 // 1. Verify the data space consistency
                 if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID) {
                     // 2. Verify the current user iUD

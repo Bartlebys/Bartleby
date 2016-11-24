@@ -119,7 +119,7 @@ class LockerTests: XCTestCase {
     func test104_CreateLocker() {
         let expectation = self.expectation(description: "CreateLocker should respond")
         let locker = Locker()
-        locker.documentUID = LockerTests._document.UID
+        locker.associatedDocumentUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID
         locker.verificationMethod = .online

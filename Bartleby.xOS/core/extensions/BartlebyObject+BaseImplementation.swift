@@ -364,6 +364,14 @@ extension BartlebyObject{
     }
 }
 
+extension BartlebyObject{
+
+    open var documentUID:String{
+        return self.document?.UID ?? Default.NO_UID
+    }
+
+}
+
 
 
 // MARK: - NSCopying

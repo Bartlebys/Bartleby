@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=DeleteNodes()
         operationInstance._nodes=nodes
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let nodes = self._nodes{
             let context=Context(code:3363643088, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {

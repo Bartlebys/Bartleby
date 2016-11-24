@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=DeleteLocker()
         operationInstance._locker=locker
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let locker = self._locker{
             let context=Context(code:1496840969, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {

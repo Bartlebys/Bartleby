@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=DeleteUsers()
         operationInstance._users=users
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let users = self._users{
             let context=Context(code:913851816, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {

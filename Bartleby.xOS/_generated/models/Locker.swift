@@ -22,10 +22,10 @@ import Foundation
     }
 
 	//The associated document UID.
-	dynamic open var documentUID:String? {
+	dynamic open var associatedDocumentUID:String? {
 	    didSet { 
-	       if documentUID != oldValue {
-	            self.provisionChanges(forKey: "documentUID",oldValue: oldValue,newValue: documentUID) 
+	       if associatedDocumentUID != oldValue {
+	            self.provisionChanges(forKey: "associatedDocumentUID",oldValue: oldValue,newValue: associatedDocumentUID) 
 	       } 
 	    }
 	}
@@ -122,7 +122,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["documentUID","subjectUID","userUID","mode","verificationMethod","code","numberOfAttempt","startDate","endDate","gems"])
+        exposed.append(contentsOf:["associatedDocumentUID","subjectUID","userUID","mode","verificationMethod","code","numberOfAttempt","startDate","endDate","gems"])
         return exposed
     }
 
@@ -135,9 +135,9 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "documentUID":
+            case "associatedDocumentUID":
                 if let casted=value as? String{
-                    self.documentUID=casted
+                    self.associatedDocumentUID=casted
                 }
             case "subjectUID":
                 if let casted=value as? String{
@@ -190,8 +190,8 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "documentUID":
-               return self.documentUID
+            case "associatedDocumentUID":
+               return self.associatedDocumentUID
             case "subjectUID":
                return self.subjectUID
             case "userUID":
@@ -223,7 +223,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.silentGroupedChanges {
-			self.documentUID <- ( map["documentUID"] )
+			self.associatedDocumentUID <- ( map["associatedDocumentUID"] )
 			self.subjectUID <- ( map["subjectUID"] )
 			self.userUID <- ( map["userUID"] )
 			self.mode <- ( map["mode"] )
@@ -242,7 +242,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.silentGroupedChanges {
-			self.documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"documentUID") as NSString?)
+			self.associatedDocumentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"associatedDocumentUID") as NSString?)
 			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
 			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
 			self.mode=Locker.Mode(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
@@ -257,8 +257,8 @@ import Foundation
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		if let documentUID = self.documentUID {
-			coder.encode(documentUID,forKey:"documentUID")
+		if let associatedDocumentUID = self.associatedDocumentUID {
+			coder.encode(associatedDocumentUID,forKey:"associatedDocumentUID")
 		}
 		coder.encode(self.subjectUID,forKey:"subjectUID")
 		coder.encode(self.userUID,forKey:"userUID")

@@ -150,11 +150,11 @@ import Foundation
         let operationInstance=DeleteBlock()
         operationInstance._block=block
         operationInstance._documentUID=documentUID
-        operationInstance.commit()
+        operationInstance._commit()
     }
 
 
-    func commit(){
+    internal func _commit(){
         if let block = self._block{
             let context=Context(code:1882299827, caller: "\(self.runTimeTypeName()).commit")
             if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
