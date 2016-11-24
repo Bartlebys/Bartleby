@@ -21,15 +21,6 @@ import Foundation
         return "BartlebyObject"
     }
 
-	//Auto commit availability
-	dynamic internal var _autoCommitIsEnabled:Bool = true
-
-	//Is supervision enabled?
-	dynamic internal var _supervisionIsEnabled:Bool = true
-
-	//The internal flag for auto commit
-	dynamic internal var _shouldBeCommitted:Bool = false
-
 	//Reflects the index of of the item in the collection initial value is -1. During it life cycle the collection updates if necessary its real value. ‡It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
 	dynamic open var collectedIndex:Int = -1
 
@@ -52,27 +43,39 @@ import Foundation
 	}
 
 	//An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.This flag allows for example to remove entities that have been for example created by unit-tests.
-	dynamic open var ephemeral:Bool = false  {
-	    didSet { 
-	       if ephemeral != oldValue {
-	            self.provisionChanges(forKey: "ephemeral",oldValue: oldValue,newValue: ephemeral)  
-	       } 
-	    }
-	}
-
-	//Collectible protocol: distributed, set to true on first successful push
-	dynamic open var hasBeenPushed:Bool = false  {
-	    didSet { 
-	       if hasBeenPushed != oldValue {
-	            self.provisionChanges(forKey: "hasBeenPushed",oldValue: oldValue,newValue: hasBeenPushed)  
-	       } 
-	    }
-	}
+	dynamic open var ephemeral:Bool = false
 
 	//MARK: - ChangesInspectable Protocol
 	dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
 
-    // MARK: - BaseObject Block
+	//Auto commit availability
+	dynamic internal var _autoCommitIsEnabled:Bool = true
+
+	//Is supervision enabled?
+	dynamic internal var _supervisionIsEnabled:Bool = true
+
+	//The internal flag for auto commit
+	dynamic internal var _shouldBeCommitted:Bool = false
+
+	//Distribuable protocol
+	dynamic open var committed:Bool = false  {
+	    didSet { 
+	       if committed != oldValue {
+	            self.provisionChanges(forKey: "committed",oldValue: oldValue,newValue: committed)  
+	       } 
+	    }
+	}
+
+	//Distribuable protocol
+	dynamic open var pushed:Bool = false  {
+	    didSet { 
+	       if pushed != oldValue {
+	            self.provisionChanges(forKey: "pushed",oldValue: oldValue,newValue: pushed)  
+	       } 
+	    }
+	}
+
+    // MARK: -
 
     // This  id is always  created locally and used as primary index by MONGODB
     internal var _id: String=Default.NO_UID{
@@ -86,24 +89,6 @@ import Foundation
         }
     }
 
-    /**
-     The creation of a Unique Identifier is ressource intensive.
-     We create the UID only if necessary.
-     */
-    open func defineUID() {
-        if self._id == Default.NO_UID {
-            self._id=Bartleby.createUID()
-        }
-    }
-
-    // Returns the UID
-    final public var UID: String {
-        get {
-            self.defineUID()
-            return  self._id
-        }
-    }
-    
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()
 
@@ -127,16 +112,6 @@ import Foundation
         }
     }
 
-    // Called when the object has been commited
-    open var committed: Bool = false {
-        willSet {
-            if newValue==true{
-                // The changes have been committed
-                self._shouldBeCommitted=false
-            }
-        }
-    }
-
     // MARK: UniversalType
 
     // Used to store the type name on serialization
@@ -144,27 +119,12 @@ import Foundation
 
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
-
-    // The runTypeName is used when deserializing the instance.
-    open func runTimeTypeName() -> String {
-        guard let _ = self._runTimeTypeName  else {
-            self._runTimeTypeName = NSStringFromClass(type(of: self))
-            return self._runTimeTypeName!
-        }
-        return self._runTimeTypeName!
-    }
-
-    // You can in specific situation mark that an instance should be committed by calling this method.
-    // For example after a bunch of un supervised changes.
-    open func commitRequired(){
-        self._shouldBeCommitted=true
-    }
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","hasBeenPushed","changedKeys"])
+        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","changedKeys","committed","pushed"])
         return exposed
     }
 
@@ -193,13 +153,17 @@ import Foundation
                 if let casted=value as? Bool{
                     self.ephemeral=casted
                 }
-            case "hasBeenPushed":
-                if let casted=value as? Bool{
-                    self.hasBeenPushed=casted
-                }
             case "changedKeys":
                 if let casted=value as? [KeyedChanges]{
                     self.changedKeys=casted
+                }
+            case "committed":
+                if let casted=value as? Bool{
+                    self.committed=casted
+                }
+            case "pushed":
+                if let casted=value as? Bool{
+                    self.pushed=casted
                 }
             default:
                 throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
@@ -224,10 +188,12 @@ import Foundation
                return self.summary
             case "ephemeral":
                return self.ephemeral
-            case "hasBeenPushed":
-               return self.hasBeenPushed
             case "changedKeys":
                return self.changedKeys
+            case "committed":
+               return self.committed
+            case "pushed":
+               return self.pushed
             default:
                 throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
         }
@@ -245,7 +211,8 @@ import Foundation
 			self.creatorUID <- ( map["creatorUID"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
-			self.hasBeenPushed <- ( map["hasBeenPushed"] )
+			self.committed <- ( map["committed"] )
+			self.pushed <- ( map["pushed"] )
             if map.mappingType == .toJSON {
                 // Define if necessary the UID
                 self.defineUID()
@@ -265,7 +232,8 @@ import Foundation
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
-			self.hasBeenPushed=decoder.decodeBool(forKey:"hasBeenPushed") 
+			self.committed=decoder.decodeBool(forKey:"committed") 
+			self.pushed=decoder.decodeBool(forKey:"pushed") 
             self._typeName=type(of: self).typeName()
             self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
         }
@@ -279,7 +247,8 @@ import Foundation
 			coder.encode(summary,forKey:"summary")
 		}
 		coder.encode(self.ephemeral,forKey:"ephemeral")
-		coder.encode(self.hasBeenPushed,forKey:"hasBeenPushed")
+		coder.encode(self.committed,forKey:"committed")
+		coder.encode(self.pushed,forKey:"pushed")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
