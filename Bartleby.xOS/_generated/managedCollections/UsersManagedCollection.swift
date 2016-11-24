@@ -68,7 +68,7 @@ extension Notification.Name {
     // The underling _items storage
     fileprivate dynamic var _items:[User]=[User](){
         didSet {
-            if _items != oldValue {
+            if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
         }
@@ -172,10 +172,10 @@ extension Notification.Name {
             let changedItems=self._items.filter { $0.shouldBeCommitted == true }
             for changed in changedItems{
                 UIDS.append(changed.UID)
-				if changed.hasBeenPushed{
-				    UpdateUser.commit(changed, inDocumentWithUID:self.documentUID)
+				if changed.pushed{
+				    UpdateUser.commit(changed, in:self.document!)
 				}else{
-				    CreateUser.commit(changed, inDocumentWithUID:self.documentUID)
+				    CreateUser.commit(changed, in:self.document!)
 				}
 
             }
@@ -246,7 +246,7 @@ extension Notification.Name {
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items <- ( map["_items"] )
 
             if map.mappingType == .fromJSON {
@@ -260,7 +260,7 @@ extension Notification.Name {
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),User.classForCoder()], forKey: "_items")! as! [User]
         }
     }
@@ -376,7 +376,7 @@ extension Notification.Name {
 
 
             if item.committed==false && commit==true {
-               CreateUser.commit(item, inDocumentWithUID:self.documentUID)
+               CreateUser.commit(item, in:self.document!)
             }
 
         }else{
@@ -423,7 +423,7 @@ extension Notification.Name {
 
     
         if commit==true{
-            DeleteUser.commit(item,from:self.documentUID) 
+            DeleteUser.commit(item,from:self.document!) 
         }
     }
 

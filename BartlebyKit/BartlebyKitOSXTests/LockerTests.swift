@@ -64,7 +64,7 @@ class LockerTests: XCTestCase {
             LockerTests._creatorUserID = creator.UID
             LockerTests._creatorUserPassword = creator.password ?? ""
 
-            CreateUser.execute(creator, inDocumentWithUID: LockerTests._document.UID,
+            CreateUser.execute(creator, in: LockerTests._document.UID,
                                sucessHandler: { (context) in
                                 expectation.fulfill()
             }) { (context) in
@@ -89,7 +89,7 @@ class LockerTests: XCTestCase {
         LockerTests._consumerUserID = consumer.UID
         LockerTests._consumerUserPassword = consumer.password ?? ""
 
-        CreateUser.execute(consumer, inDocumentWithUID: LockerTests._document.UID,
+        CreateUser.execute(consumer, in: LockerTests._document.UID,
                            sucessHandler: { (context) in
                             expectation.fulfill()
         }) { (context) in
@@ -128,7 +128,7 @@ class LockerTests: XCTestCase {
         LockerTests._lockerID = locker.UID
 
         CreateLocker.execute(locker,
-                             inDocumentWithUID: LockerTests._document.UID,
+                             in: LockerTests._document.UID,
                              sucessHandler: { (context) in
                                 expectation.fulfill()
         }) { (context) in

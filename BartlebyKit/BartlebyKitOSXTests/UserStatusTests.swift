@@ -60,7 +60,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._creatorUserID = user.UID // We store the UID for future deletion
 
         CreateUser.execute(user,
-                           inDocumentWithUID:UserStatusTests.document.UID,
+                           in:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -84,7 +84,7 @@ class UserStatusTests: XCTestCase {
         UserStatusTests._suspendedUserID = user.UID
 
         CreateUser.execute(user,
-                           inDocumentWithUID:UserStatusTests.document.UID,
+                           in:UserStatusTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -156,7 +156,7 @@ class UserStatusTests: XCTestCase {
             user.status = .suspended
 
             UpdateUser.execute(user,
-                               inDocumentWithUID: UserStatusTests.document.UID,
+                               in: UserStatusTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in

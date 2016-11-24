@@ -174,7 +174,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.index <- ( map["index"] )
 			self.spaceUID <- ( map["spaceUID"] )
 			self.observationUID <- ( map["observationUID"] )
@@ -195,7 +195,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.index=decoder.decodeInteger(forKey:"index") 
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"spaceUID") as NSString?)
 			self.observationUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"observationUID") as NSString?)

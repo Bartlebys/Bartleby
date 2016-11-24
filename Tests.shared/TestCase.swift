@@ -199,7 +199,7 @@ class TestCase: XCTestCase {
         TestCase._createdUsers.append(user)
 
         // Create user on the server
-        CreateUser.execute(user, inDocumentWithUID:TestCase.document.UID, sucessHandler: { (context) in
+        CreateUser.execute(user, in:TestCase.document.UID, sucessHandler: { (context) in
 
             if autologin {
                 // Login if needed

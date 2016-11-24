@@ -241,7 +241,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func reloadData(){
-        GlobalQueue.main.get().async {
+        Async.main {
             var selectedIndexes=self._outlineView.selectedRowIndexes
             self._outlineView.reloadData()
             if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
@@ -416,7 +416,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        GlobalQueue.main.get().async {
+        Async.main{
             let selected=self._outlineView.selectedRow
             if let item=self._outlineView.item(atRow: selected) as? BartlebyObject {
                 self._selectionHandler(item)

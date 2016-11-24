@@ -111,7 +111,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.url <- ( map["url"], URLTransform() )
 			self.httpMethod <- ( map["httpMethod"] )
 			self.headers <- ( map["headers"] )
@@ -125,7 +125,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.url=decoder.decodeObject(of: NSURL.self, forKey:"url") as URL?
 			self.httpMethod=String(describing: decoder.decodeObject(of: NSString.self, forKey: "httpMethod")! as NSString)
 			self.headers=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "headers")as? [String:Any]

@@ -27,7 +27,7 @@ import Foundation
 	//Collectible protocol: The Creator UID
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"{
 	    didSet { 
-	       if creatorUID != oldValue {
+	       if !self.wantsQuietChanges && creatorUID != oldValue {
 	            self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID) 
 	       } 
 	    }
@@ -36,7 +36,7 @@ import Foundation
 	//The object summary can be used for example by externalReferences to describe the JObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
 	dynamic open var summary:String? {
 	    didSet { 
-	       if summary != oldValue {
+	       if !self.wantsQuietChanges && summary != oldValue {
 	            self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary) 
 	       } 
 	    }
@@ -47,6 +47,9 @@ import Foundation
 
 	//MARK: - ChangesInspectable Protocol
 	dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
+
+	//Internal flag used not to propagate changes for example during deserialization (it blocks provisionChanges)
+	dynamic internal var _quietChanges:Bool = false
 
 	//Auto commit availability
 	dynamic internal var _autoCommitIsEnabled:Bool = true
@@ -60,7 +63,7 @@ import Foundation
 	//Distribuable protocol
 	dynamic open var committed:Bool = false  {
 	    didSet { 
-	       if committed != oldValue {
+	       if !self.wantsQuietChanges && committed != oldValue {
 	            self.provisionChanges(forKey: "committed",oldValue: oldValue,newValue: committed)  
 	       } 
 	    }
@@ -69,7 +72,7 @@ import Foundation
 	//Distribuable protocol
 	dynamic open var pushed:Bool = false  {
 	    didSet { 
-	       if pushed != oldValue {
+	       if !self.wantsQuietChanges && pushed != oldValue {
 	            self.provisionChanges(forKey: "pushed",oldValue: oldValue,newValue: pushed)  
 	       } 
 	    }
@@ -206,7 +209,7 @@ import Foundation
 
      open func mapping(map: Map) {
         
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.collectedIndex <- ( map["collectedIndex"] )
 			self.creatorUID <- ( map["creatorUID"] )
 			self.summary <- ( map["summary"] )
@@ -227,7 +230,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init()
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)

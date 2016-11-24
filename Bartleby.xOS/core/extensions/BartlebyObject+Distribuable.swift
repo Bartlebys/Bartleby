@@ -10,6 +10,8 @@ import Foundation
 
 extension BartlebyObject:Distribuable{
 
+    // Part of the protocol is generated
+    // committed and pushed properties are generated
 
     /// Perform changes without commit
     ///

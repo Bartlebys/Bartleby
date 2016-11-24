@@ -68,7 +68,7 @@ extension Notification.Name {
     // The underling _items storage
     fileprivate dynamic var _items:[PushOperation]=[PushOperation](){
         didSet {
-            if _items != oldValue {
+            if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
         }
@@ -235,7 +235,7 @@ extension Notification.Name {
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items <- ( map["_items"] )
 
             if map.mappingType == .fromJSON {
@@ -249,7 +249,7 @@ extension Notification.Name {
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "_items")! as! [PushOperation]
         }
     }

@@ -29,7 +29,7 @@ public enum DocumentError: Error {
     case collectionTypeError
     case rootObjectTypeMissMatch
     case instanceNotFound
-    case instanceTypeMissMatch
+    case instanceTypeMissMatch(found:String)
     case attemptToSetUpRootObjectUIDMoreThanOnce
     case unSupportedFileType(typeName:String)
     case undefined

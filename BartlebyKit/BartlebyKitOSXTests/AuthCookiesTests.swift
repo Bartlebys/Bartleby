@@ -50,7 +50,7 @@ class AuthCookiesTests: XCTestCase {
         // Store the current user
         AuthCookiesTests._createdUser=user
         CreateUser.execute(user,
-                           inDocumentWithUID:AuthCookiesTests.document.UID,
+                           in:AuthCookiesTests.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

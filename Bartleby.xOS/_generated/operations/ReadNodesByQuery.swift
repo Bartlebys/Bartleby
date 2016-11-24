@@ -92,7 +92,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.result_fields <- ( map["result_fields"] )
 			self.sort <- ( map["sort"] )
 			self.query <- ( map["query"] )
@@ -104,7 +104,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.result_fields=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "result_fields") as? [String]
 			self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
 			self.query=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "query")as? [String:Any]

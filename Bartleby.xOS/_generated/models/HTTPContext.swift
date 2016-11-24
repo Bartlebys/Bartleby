@@ -129,7 +129,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.caller <- ( map["caller"] )
 			self.code <- ( map["code"] )
 			self.httpStatusCode <- ( map["httpStatusCode"] )
@@ -145,7 +145,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.caller=String(describing: decoder.decodeObject(of: NSString.self, forKey: "caller")! as NSString)
 			self.code=decoder.decodeInteger(forKey:"code") 
 			self.httpStatusCode=decoder.decodeInteger(forKey:"httpStatusCode") 

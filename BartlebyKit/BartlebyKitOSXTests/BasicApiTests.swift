@@ -42,7 +42,7 @@ class BasicApiTests: TestCase {
         BasicApiTests._createdUser=user
 
         CreateUser.execute(user,
-                           inDocumentWithUID:TestCase.document.UID,
+                           in:TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -203,7 +203,7 @@ class BasicApiTests: TestCase {
         user.email=BasicApiTests._newEmail
 
         UpdateUser.execute(user,
-                           inDocumentWithUID: TestCase.document.UID,
+                           in: TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in
@@ -244,7 +244,7 @@ class BasicApiTests: TestCase {
         user.password=BasicApiTests._newPassword
 
         UpdateUser.execute(user,
-                           inDocumentWithUID: TestCase.document.UID,
+                           in: TestCase.document.UID,
                            sucessHandler: { (context) -> () in
                             expectation.fulfill()
         }) { (context) -> () in

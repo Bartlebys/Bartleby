@@ -145,7 +145,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.commandUID <- ( map["commandUID"] )
 			self.toDictionary <- ( map["toDictionary"] )
 			self.responseDictionary <- ( map["responseDictionary"] )
@@ -162,7 +162,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
 			self.toDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "toDictionary")as? [String:Any]
 			self.responseDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "responseDictionary")as? [String:Any]

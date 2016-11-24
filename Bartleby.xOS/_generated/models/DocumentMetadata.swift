@@ -85,7 +85,7 @@ import Foundation
 	//When monitoring reachability we need to know if we should be connected to Collaborative server
 	dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
 	    didSet { 
-	       if shouldBeOnline != oldValue {
+	       if !self.wantsQuietChanges && shouldBeOnline != oldValue {
 	            self.provisionChanges(forKey: "shouldBeOnline",oldValue: oldValue,newValue: shouldBeOnline)  
 	       } 
 	    }
@@ -94,7 +94,7 @@ import Foundation
 	//is the user performing Online
 	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
 	    didSet { 
-	       if online != oldValue {
+	       if !self.wantsQuietChanges && online != oldValue {
 	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
 	       } 
 	    }
@@ -108,7 +108,7 @@ import Foundation
 	}
 	open var transition:Transition = .none  {
 	    didSet { 
-	       if transition != oldValue {
+	       if !self.wantsQuietChanges && transition != oldValue {
 	            self.provisionChanges(forKey: "transition",oldValue: oldValue.rawValue,newValue: transition.rawValue)  
 	       } 
 	    }
@@ -117,7 +117,7 @@ import Foundation
 	//If set to true committed object will be pushed as soon as possible.
 	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
 	    didSet { 
-	       if pushOnChanges != oldValue {
+	       if !self.wantsQuietChanges && pushOnChanges != oldValue {
 	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
 	       } 
 	    }
@@ -126,7 +126,7 @@ import Foundation
 	//Save the password or not?
 	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {
 	    didSet { 
-	       if saveThePassword != oldValue {
+	       if !self.wantsQuietChanges && saveThePassword != oldValue {
 	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
 	       } 
 	    }
@@ -348,7 +348,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.spaceUID <- ( map["spaceUID"] )
 			self.currentUser <- ( map["currentUser"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
@@ -379,7 +379,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 

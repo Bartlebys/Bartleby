@@ -33,21 +33,4 @@ extension BartlebyObject:Supervisable{
         }
     }
 
-
-
-    /// Performs some changes silently
-    /// Supervision and auto commit are disabled.
-    /// Then supervision and auto commit availability is restored
-    ///
-    /// - parameter changes: the changes closure
-    open func silentGroupedChanges(_ changes:()->()){
-        let autoCommitIsEnabled = self._autoCommitIsEnabled
-        let supervisionIsEnabled = self._supervisionIsEnabled
-        self._supervisionIsEnabled=false
-        self._autoCommitIsEnabled=false
-        changes()
-        self._autoCommitIsEnabled = autoCommitIsEnabled
-        self._supervisionIsEnabled = supervisionIsEnabled
-    }
-
 }

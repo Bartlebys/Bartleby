@@ -165,20 +165,6 @@ import Foundation
     }
 
     /**
-     Defers a closure execution on main queue
-
-     - parameter seconds: the delay in fraction of seconds
-     - parameter closure: the closure
-     */
-    open static func executeAfter(_ seconds: Double,on queue:DispatchQueue=DispatchQueue.main,closure:@escaping ()->())->() {
-        let delayInNanoSeconds = seconds * Double(NSEC_PER_SEC)
-        let delayTime = DispatchTime.now() + Double(Int64(delayInNanoSeconds)) / Double(NSEC_PER_SEC)
-        queue.asyncAfter(deadline: delayTime) {
-            closure()
-        }
-    }
-
-    /**
      An UID generator compliant with MONGODB primary IDS constraints
 
      - returns: the UID
@@ -303,7 +289,7 @@ import Foundation
             if let casted=instance as? T{
                 return casted
             }else{
-                throw DocumentError.instanceTypeMissMatch
+                throw DocumentError.instanceTypeMissMatch(found: instance.runTimeTypeName())
             }
         }
         throw DocumentError.instanceNotFound
@@ -318,7 +304,7 @@ import Foundation
      î
      - returns: the instance
      */
-    static open func collectibleInstanceByUID(_ UID: String) -> Collectible? {
+    open static func collectibleInstanceByUID(_ UID: String) -> Collectible? {
         return self._instancesByUID[UID]
     }
 
@@ -338,4 +324,23 @@ import Foundation
     }
 
 
+    // MARK: - Commit / Push Distribution (dynamic)
+
+
+    open static func markCommitted(_ instanceUID:String){
+        if var instance=Bartleby.collectibleInstanceByUID(instanceUID){
+            instance.committed=true
+        }else{
+            glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+        }
+    }
+
+
+    open static func markPushed(_ instanceUID:String){
+        if var instance=Bartleby.collectibleInstanceByUID(instanceUID){
+            instance.pushed=true
+        }else{
+            glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+        }
+    }
 }

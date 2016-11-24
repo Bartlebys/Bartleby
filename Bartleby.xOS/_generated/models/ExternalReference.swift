@@ -24,7 +24,7 @@ import Foundation
 	//The UID of the referred instance
 	dynamic open var iUID:String = "\(Default.NO_UID)"{
 	    didSet { 
-	       if iUID != oldValue {
+	       if !self.wantsQuietChanges && iUID != oldValue {
 	            self.provisionChanges(forKey: "iUID",oldValue: oldValue,newValue: iUID) 
 	       } 
 	    }
@@ -33,7 +33,7 @@ import Foundation
 	//The typeName of the referred instance
 	dynamic open var iTypeName:String = "\(Default.NO_UID)"{
 	    didSet { 
-	       if iTypeName != oldValue {
+	       if !self.wantsQuietChanges && iTypeName != oldValue {
 	            self.provisionChanges(forKey: "iTypeName",oldValue: oldValue,newValue: iTypeName) 
 	       } 
 	    }
@@ -96,7 +96,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.iUID <- ( map["iUID"] )
 			self.iTypeName <- ( map["iTypeName"] )
         }
@@ -107,7 +107,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.iUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iUID")! as NSString)
 			self.iTypeName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "iTypeName")! as NSString)
         }

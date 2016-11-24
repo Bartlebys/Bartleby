@@ -573,9 +573,9 @@ import Foundation
 			try self.metadata.configureSchema(userDefinition)
 
         }catch DocumentError.duplicatedCollectionName(let collectionName){
-            self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line)
+            self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line,category: Default.LOG_DEVELOPER_CATEGORY)
         }catch {
-            self.log("\(error)",file:#file,function:#function,line:#line)
+            self.log("\(error)",file:#file,function:#function,line:#line,category: Default.LOG_DEVELOPER_CATEGORY)
         }
 
         // #2 Registers the collections
@@ -597,7 +597,7 @@ import Foundation
     */
     open func newUser() -> User {
         let user=User()
-        user.silentGroupedChanges {
+        user.quietChanges {
             user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
             if let creator=self.metadata.currentUser {
                 user.creatorUID = creator.UID
@@ -623,7 +623,7 @@ import Foundation
      */
     open func newBlock() -> Block {
         let block=Block()
-        block.silentGroupedChanges {
+        block.quietChanges {
             if let creator=self.metadata.currentUser {
                 block.creatorUID = creator.UID
             }
@@ -640,7 +640,7 @@ import Foundation
      */
     open func newBox() -> Box {
         let box=Box()
-        box.silentGroupedChanges {
+        box.quietChanges {
             if let creator=self.metadata.currentUser {
                 box.creatorUID = creator.UID
             }
@@ -657,7 +657,7 @@ import Foundation
      */
     open func newLocker() -> Locker {
         let locker=Locker()
-        locker.silentGroupedChanges {
+        locker.quietChanges {
             if let creator=self.metadata.currentUser {
                 locker.creatorUID = creator.UID
             }
@@ -674,7 +674,7 @@ import Foundation
      */
     open func newNode() -> Node {
         let node=Node()
-        node.silentGroupedChanges {
+        node.quietChanges {
             if let creator=self.metadata.currentUser {
                 node.creatorUID = creator.UID
             }

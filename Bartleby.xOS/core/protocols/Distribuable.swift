@@ -11,15 +11,16 @@ import Foundation
 
 public protocol Distribuable {
 
-    /// Shall we commit that instance during next autocommit?
-    var shouldBeCommitted: Bool { get }
-
     // This flag is set to true on first commit.
     var committed: Bool { get set }
 
     // This flag should be set to true
     // When the collaborative server has acknowledged the object creation
-    var hasBeenPushed: Bool { get set }
+    var pushed: Bool { get set }
+
+
+    /// Shall we commit that instance during next autocommit?
+    var shouldBeCommitted: Bool { get }
 
     /// Perform changes without commit
     ///

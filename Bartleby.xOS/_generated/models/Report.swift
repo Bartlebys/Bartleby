@@ -93,7 +93,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.metadata <- ( map["metadata"] )
 			self.logs <- ( map["logs"] )
 			self.metrics <- ( map["metrics"] )
@@ -105,7 +105,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.metadata=decoder.decodeObject(of:DocumentMetadata.self, forKey: "metadata") 
 			self.logs=decoder.decodeObject(of: [NSArray.classForCoder(),LogEntry.classForCoder()], forKey: "logs")! as! [LogEntry]
 			self.metrics=decoder.decodeObject(of: [NSArray.classForCoder(),Metrics.classForCoder()], forKey: "metrics")! as! [Metrics]

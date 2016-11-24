@@ -114,7 +114,7 @@ extension BartlebyDocument:Logger{
         let folderPath=Bartleby.getSearchPath(FileManager.SearchPathDirectory.applicationSupportDirectory)! + "Bartlebys/logs/\(groupFolder)/\(dateFolder)/"
         let filePath=folderPath+"\(fileName ?? "" ).txt"
 
-        GlobalQueue.background.get().async {
+        Async.main{
             let fileCreationHandler=Handlers { (folderCreation) in
                 if folderCreation.success {
                     Bartleby.fileManager.writeString(log, path:filePath, handlers: Handlers.withoutCompletion())

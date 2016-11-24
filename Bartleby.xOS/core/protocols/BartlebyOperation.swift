@@ -11,6 +11,10 @@ import Foundation
     import ObjectMapper
 #endif
 
+public enum BartlebyOperationError:Error{
+    case operationNotFound
+}
+
 /// An operation is a client server request CRUD or URD
 public protocol BartlebyOperation:  Collectible, Mappable, NSCopying, NSSecureCoding,Pusher {
 }

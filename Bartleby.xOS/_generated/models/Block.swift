@@ -24,7 +24,7 @@ import Foundation
 	//The SHA1 digest of the block
 	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
 	    didSet { 
-	       if digest != oldValue {
+	       if !self.wantsQuietChanges && digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
 	       } 
 	    }
@@ -180,7 +180,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.digest <- ( map["digest"] )
 			self.nodeUID <- ( map["nodeUID"] )
 			self.rank <- ( map["rank"] )
@@ -197,7 +197,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "nodeUID")! as NSString)
 			self.rank=decoder.decodeInteger(forKey:"rank") 

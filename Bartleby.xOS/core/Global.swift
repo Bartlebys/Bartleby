@@ -58,6 +58,12 @@ public func glog(_ message: Any, file: String, function: String, line: Int, cate
     for observer in glogObservers{
         observer.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }
+    if decorative{
+        print ("\(message)")
+    }else{
+        print("\(category)-\(file)(\(line)).\(function): \(message)")
+    }
+
 }
 
 
@@ -95,32 +101,4 @@ public func instancesFromExternalReferences<T: Collectible>(_ externalReferences
         }
     }
     return instances
-}
-
-
-
-
-public enum GlobalQueue {
-
-    case main
-    case userInteractive
-    case userInitiated
-    case utility
-    case background
-
-     public func get() -> DispatchQueue {
-        switch self {
-        case .main:
-            return DispatchQueue.main
-        case .userInteractive:
-            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInteractive)
-        case .userInitiated:
-            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated)
-        case .utility:
-            return DispatchQueue.global(qos: DispatchQoS.QoSClass.utility)
-        case .background:
-            return DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
-
-        }
-    }
 }

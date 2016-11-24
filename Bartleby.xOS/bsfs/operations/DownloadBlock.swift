@@ -69,7 +69,7 @@ public class DownloadBlock {
                 return (tempUrl, [.removePreviousFile, .createIntermediateDirectories])
             }
 
-            let queue = GlobalQueue.main.get()
+            let queue = DispatchQueue.main
             self._downloadRequest = download(HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DownloadBlock" ,forMethod:"GET", and: pathURL),to:destination)
             self._downloadRequest!.response(completionHandler: { (response) in
                 // Store the response

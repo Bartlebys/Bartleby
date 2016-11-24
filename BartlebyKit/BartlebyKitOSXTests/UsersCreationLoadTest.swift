@@ -50,7 +50,7 @@ class UsersCreationLoadTest: TestCase {
         user.spaceUID=document.spaceUID
 
         CreateUser.execute(user,
-                           inDocumentWithUID:document.UID,
+                           in:document.UID,
                            sucessHandler: { (context) -> () in
                             completionHandler(user,Completion.successStateFromHTTPContext(context))
         }) { (context) -> () in
@@ -89,7 +89,7 @@ class UsersCreationLoadTest: TestCase {
 
         func __update(_ user:User){
             user.notes=Bartleby.randomStringWithLength(40)
-            UpdateUser.execute(user, inDocumentWithUID:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
+            UpdateUser.execute(user, in:UsersCreationLoadTest.document.UID, sucessHandler: { (context) in
                 __delete(user)
             }) { (context) in
                 __fullFill()

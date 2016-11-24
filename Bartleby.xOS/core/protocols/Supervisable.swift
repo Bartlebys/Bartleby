@@ -13,19 +13,6 @@ public typealias SupervisionClosure = (_ key:String,_ oldValue:Any?,_ newValue:A
 
 public protocol Supervisable {
 
-    // Supervision
-
-    /**
-     Tags the changed keys
-     And Mark that the instance requires to be committed if the auto commit observer is active
-     This mecanism can replace KVO if necessary.
-
-     - parameter key:      the key
-     - parameter oldValue: the oldValue
-     - parameter newValue: the newValue
-     */
-    func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?)
-
 
     /**
      Adds a closure observer
@@ -42,12 +29,6 @@ public protocol Supervisable {
      */
     func removeChangesSuperviser(_ superviser:Identifiable)
 
-
-    /// Performs some changes silently
-    /// Supervision and autocommit (if implementing Distribuable) should be disabled during changes invocation
-    ///
-    /// - parameter changes: the changes closure
-    func silentGroupedChanges(_ changes:()->())
 
 }
 

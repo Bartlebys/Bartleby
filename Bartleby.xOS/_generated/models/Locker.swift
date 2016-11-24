@@ -24,7 +24,7 @@ import Foundation
 	//The associated document UID.
 	dynamic open var associatedDocumentUID:String? {
 	    didSet { 
-	       if associatedDocumentUID != oldValue {
+	       if !self.wantsQuietChanges && associatedDocumentUID != oldValue {
 	            self.provisionChanges(forKey: "associatedDocumentUID",oldValue: oldValue,newValue: associatedDocumentUID) 
 	       } 
 	    }
@@ -33,7 +33,7 @@ import Foundation
 	//The subject UID you want to lock
 	dynamic open var subjectUID:String = "\(Default.NO_UID)"{
 	    didSet { 
-	       if subjectUID != oldValue {
+	       if !self.wantsQuietChanges && subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
 	       } 
 	    }
@@ -42,7 +42,7 @@ import Foundation
 	//The userUID that can unlock the locker
 	dynamic open var userUID:String = "\(Default.NO_UID)"{
 	    didSet { 
-	       if userUID != oldValue {
+	       if !self.wantsQuietChanges && userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
 	       } 
 	    }
@@ -55,7 +55,7 @@ import Foundation
 	}
 	open var mode:Mode = .autoDestructive  {
 	    didSet { 
-	       if mode != oldValue {
+	       if !self.wantsQuietChanges && mode != oldValue {
 	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
 	       } 
 	    }
@@ -68,7 +68,7 @@ import Foundation
 	}
 	open var verificationMethod:VerificationMethod = .online  {
 	    didSet { 
-	       if verificationMethod != oldValue {
+	       if !self.wantsQuietChanges && verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
 	       } 
 	    }
@@ -77,7 +77,7 @@ import Foundation
 	//This code should be crypted / decrypted
 	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
 	    didSet { 
-	       if code != oldValue {
+	       if !self.wantsQuietChanges && code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
 	       } 
 	    }
@@ -86,7 +86,7 @@ import Foundation
 	//The number of attempts
 	dynamic open var numberOfAttempt:Int = 3  {
 	    didSet { 
-	       if numberOfAttempt != oldValue {
+	       if !self.wantsQuietChanges && numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
 	       } 
 	    }
@@ -94,7 +94,7 @@ import Foundation
 
 	dynamic open var startDate:Date = Date.distantPast  {
 	    didSet { 
-	       if startDate != oldValue {
+	       if !self.wantsQuietChanges && startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
 	       } 
 	    }
@@ -102,7 +102,7 @@ import Foundation
 
 	dynamic open var endDate:Date = Date.distantFuture  {
 	    didSet { 
-	       if endDate != oldValue {
+	       if !self.wantsQuietChanges && endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
 	       } 
 	    }
@@ -111,7 +111,7 @@ import Foundation
 	//Thoses data gems will be return on success
 	dynamic open var gems:String = "\(Default.NO_GEM)"{
 	    didSet { 
-	       if gems != oldValue {
+	       if !self.wantsQuietChanges && gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
 	       } 
 	    }
@@ -222,7 +222,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.associatedDocumentUID <- ( map["associatedDocumentUID"] )
 			self.subjectUID <- ( map["subjectUID"] )
 			self.userUID <- ( map["userUID"] )
@@ -241,7 +241,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.associatedDocumentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"associatedDocumentUID") as NSString?)
 			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
 			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)

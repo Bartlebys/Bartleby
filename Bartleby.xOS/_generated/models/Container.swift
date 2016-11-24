@@ -102,7 +102,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.password <- ( map["password"] )
 			self.boxes <- ( map["boxes"] )
 			self.nodes <- ( map["nodes"] )
@@ -115,7 +115,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.boxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "boxes")! as! [Box]
 			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "nodes")! as! [Node]

@@ -144,7 +144,7 @@ public final class BSFS:TriggerHook{
                 }
             }
 
-            box.silentGroupedChanges {
+            box.quietChanges{
                 box.assemblyProgression.totalTaskCount=concernedNodes.count
                 box.assemblyProgression.currentTaskIndex=0
                 box.assemblyProgression.currentPercentProgress=0
@@ -417,7 +417,7 @@ public final class BSFS:TriggerHook{
                     if firstNode==nil{
                         firstNode=node
                     }
-                    node.silentGroupedChanges {
+                    node.quietChanges{
                         node.boxUID=box.UID
                         node.nature=reference.nodeNature.forNode
                         node.relativePath=relativePath///
@@ -431,7 +431,7 @@ public final class BSFS:TriggerHook{
                         // Let's add the blocks
                         for chunk in groupOfChunks{
                             let block=self._document.newBlock()
-                            block.silentGroupedChanges {
+                            block.quietChanges{
                                 block.nodeUID=node.UID
                                 block.rank=chunk.rank
                                 block.digest=chunk.sha1
@@ -597,7 +597,7 @@ public final class BSFS:TriggerHook{
                                         // Let's Upsert the node.
                                         // AND create the local node
 
-                                        node.silentGroupedChanges {
+                                        node.quietChanges{
 
                                             var cumulatedDigests=""
                                             var cumulatedSize=0
@@ -612,7 +612,7 @@ public final class BSFS:TriggerHook{
                                                     block=self._document.newBlock()
                                                 }
 
-                                                block!.silentGroupedChanges {
+                                                block!.quietChanges{
                                                     block!.nodeUID=node.UID
                                                     block!.rank=chunk.rank
                                                     block!.digest=chunk.sha1
@@ -759,7 +759,7 @@ public final class BSFS:TriggerHook{
 
                             // Create the copiedNode
                             let copiedNode=self._document.newNode()
-                            copiedNode.silentGroupedChanges {
+                            copiedNode.quietChanges{
                                 try? copiedNode.mergeWith(node)// merge
                                 copiedNode.relativePath=relativePath // Thats it!
                             }

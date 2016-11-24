@@ -143,6 +143,8 @@ public struct Default {
     // B
     static public let LOG_CATEGORY="default"
     static public let LOG_SECURITY_CATEGORY="security"
+    static public let LOG_DEVELOPER_CATEGORY="developer"
+
 
     //MARK: UserDefault key/values
     static public let SERVER_KEY="user_default_server"

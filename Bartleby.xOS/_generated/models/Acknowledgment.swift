@@ -93,7 +93,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.triggerIndex <- ( map["triggerIndex"] )
 			self.uids <- ( map["uids"] )
 			self.triggerRelayDuration <- ( map["triggerRelayDuration"] )
@@ -105,7 +105,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.triggerIndex=decoder.decodeInteger(forKey:"triggerIndex") 
 			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids")! as! [String]
 			self.triggerRelayDuration=decoder.decodeDouble(forKey:"triggerRelayDuration") 

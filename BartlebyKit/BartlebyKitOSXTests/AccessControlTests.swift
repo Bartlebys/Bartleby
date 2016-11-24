@@ -121,7 +121,7 @@ class AccessControlTests: TestCase {
             user.email=AccessControlTests._thirdUserNewEmail
             
             UpdateUser.execute(user,
-                               inDocumentWithUID:TestCase.document.UID,
+                               in:TestCase.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
             }) { (context) -> () in
@@ -276,7 +276,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._creatorUser {
             user.email = "badmail@lylo.tv"
             
-            UpdateUser.execute(user, inDocumentWithUID: AccessControlTests.document.UID,
+            UpdateUser.execute(user, in: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update the document owner")
@@ -299,7 +299,7 @@ class AccessControlTests: TestCase {
         if let user = AccessControlTests._thirdUser {
             user.email = "otherbadmail@lylo.tv"
             
-            UpdateUser.execute(user, inDocumentWithUID: AccessControlTests.document.UID,
+            UpdateUser.execute(user, in: AccessControlTests.document.UID,
                                sucessHandler: { (context) -> () in
                                 expectation.fulfill()
                                 XCTFail("Other user cannot update third user")

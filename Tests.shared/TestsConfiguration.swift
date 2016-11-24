@@ -105,5 +105,5 @@ open class TestsConfiguration: BartlebyConfiguration {
     open static let LONG_TIME_OUT_DURATION = 360.0
 
 
-    open static let ENABLE_TEST_OBSERVATION=false
+    open static let ENABLE_TEST_OBSERVATION=true
 }

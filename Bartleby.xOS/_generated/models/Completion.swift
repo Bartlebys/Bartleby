@@ -24,7 +24,7 @@ import Foundation
 	//Success if set to true
 	dynamic open var success:Bool = true  {
 	    didSet { 
-	       if success != oldValue {
+	       if !self.wantsQuietChanges && success != oldValue {
 	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
 	       } 
 	    }
@@ -33,7 +33,7 @@ import Foundation
 	//The status
 	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {
 	    didSet { 
-	       if statusCode != oldValue {
+	       if !self.wantsQuietChanges && statusCode != oldValue {
 	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
 	       } 
 	    }
@@ -42,7 +42,7 @@ import Foundation
 	//The Message
 	dynamic open var message:String = ""{
 	    didSet { 
-	       if message != oldValue {
+	       if !self.wantsQuietChanges && message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
 	       } 
 	    }
@@ -51,7 +51,7 @@ import Foundation
 	//completion data
 	dynamic open var data:Data? {
 	    didSet { 
-	       if data != oldValue {
+	       if !self.wantsQuietChanges && data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
@@ -144,7 +144,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.success <- ( map["success"] )
 			self.statusCode <- ( map["statusCode"] )
 			self.message <- ( map["message"] )
@@ -159,7 +159,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.success=decoder.decodeBool(forKey:"success") 
 			self.statusCode=decoder.decodeInteger(forKey:"statusCode") 
 			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)

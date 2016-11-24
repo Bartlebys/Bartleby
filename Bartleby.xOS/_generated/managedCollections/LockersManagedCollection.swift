@@ -68,7 +68,7 @@ extension Notification.Name {
     // The underling _items storage
     fileprivate dynamic var _items:[Locker]=[Locker](){
         didSet {
-            if _items != oldValue {
+            if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
         }
@@ -173,13 +173,13 @@ extension Notification.Name {
             for changed in changedItems{
                 UIDS.append(changed.UID)
             }
-			let tobeUpdated = changedItems.filter { $0.hasBeenPushed == true }
-			let toBeCreated = changedItems.filter { $0.hasBeenPushed == false }
+			let tobeUpdated = changedItems.filter { $0.pushed == true }
+			let toBeCreated = changedItems.filter { $0.pushed == false }
 			if toBeCreated.count > 0 {
-			    CreateLockers.commit(toBeCreated, inDocumentWithUID:self.documentUID)
+			    CreateLockers.commit(toBeCreated, in:self.document!)
 			}
 			if tobeUpdated.count > 0 {
-			    UpdateLockers.commit(tobeUpdated, inDocumentWithUID:self.documentUID)
+			    UpdateLockers.commit(tobeUpdated, in:self.document!)
 			}
 
             self.committed=true
@@ -249,7 +249,7 @@ extension Notification.Name {
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items <- ( map["_items"] )
 
             if map.mappingType == .fromJSON {
@@ -263,7 +263,7 @@ extension Notification.Name {
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),Locker.classForCoder()], forKey: "_items")! as! [Locker]
         }
     }
@@ -379,7 +379,7 @@ extension Notification.Name {
 
 
             if item.committed==false && commit==true {
-               CreateLocker.commit(item, inDocumentWithUID:self.documentUID)
+               CreateLocker.commit(item, in:self.document!)
             }
 
         }else{
@@ -426,7 +426,7 @@ extension Notification.Name {
 
     
         if commit==true{
-            DeleteLocker.commit(item,from:self.documentUID) 
+            DeleteLocker.commit(item,from:self.document!) 
         }
     }
 

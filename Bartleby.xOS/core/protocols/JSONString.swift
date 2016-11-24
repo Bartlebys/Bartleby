@@ -9,6 +9,6 @@
 import Foundation
 
 
-public protocol JSONString{
+public protocol JSONString:CustomStringConvertible{
     func toJSONString(_ prettyPrint:Bool)->String
 }

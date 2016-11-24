@@ -93,7 +93,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.elapsed <- ( map["elapsed"] )
 			self.key <- ( map["key"] )
 			self.changes <- ( map["changes"] )
@@ -105,7 +105,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.elapsed=decoder.decodeDouble(forKey:"elapsed") 
 			self.key=String(describing: decoder.decodeObject(of: NSString.self, forKey: "key")! as NSString)
 			self.changes=String(describing: decoder.decodeObject(of: NSString.self, forKey: "changes")! as NSString)

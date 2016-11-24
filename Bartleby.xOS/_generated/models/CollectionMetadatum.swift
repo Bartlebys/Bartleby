@@ -114,7 +114,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.storage <- ( map["storage"] )
 			self.collectionName <- ( map["collectionName"] )
 			self.persistsDistantly <- ( map["persistsDistantly"] )
@@ -127,7 +127,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
 			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
 			self.persistsDistantly=decoder.decodeBool(forKey:"persistsDistantly") 

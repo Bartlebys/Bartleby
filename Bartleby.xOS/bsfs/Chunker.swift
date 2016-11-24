@@ -93,7 +93,7 @@ struct  Chunker {
 
         Async.utility{
             let progressionState=Progression()
-            progressionState.silentGroupedChanges {
+            progressionState.quietChanges{
                 progressionState.totalTaskCount=1
                 progressionState.currentTaskIndex=0
                 progressionState.externalIdentifier=assembledFolderPath
@@ -145,7 +145,7 @@ struct  Chunker {
                                             // We donnot need to consign discreet progression
                     }, success: { (chunks) in
                         counter += 1
-                        progressionState.silentGroupedChanges {
+                        progressionState.quietChanges{
                             if chunks.count>0{
                                 progressionState.message=chunks[0].relativePath
                             }
@@ -321,7 +321,7 @@ struct  Chunker {
                 }
 
                 let progressionState=Progression()
-                progressionState.silentGroupedChanges {
+                progressionState.quietChanges{
                     progressionState.totalTaskCount=Int(nb)
                     progressionState.currentTaskIndex=0
                     progressionState.externalIdentifier=externalId
@@ -380,7 +380,7 @@ struct  Chunker {
 
                     Async.main{
                         counter += 1
-                        progressionState.silentGroupedChanges {
+                        progressionState.quietChanges{
                             progressionState.message=chunkRelativePath
                             progressionState.currentTaskIndex=counter
                         }
@@ -472,7 +472,7 @@ struct  Chunker {
             var createdPaths=[String]()
 
             let progressionState=Progression()
-            progressionState.silentGroupedChanges {
+            progressionState.quietChanges{
                 progressionState.totalTaskCount=filePathToChunks.count
                 progressionState.currentTaskIndex=0
                 progressionState.externalIdentifier=""
@@ -492,7 +492,7 @@ struct  Chunker {
                     if (!error){
                         createdPaths.append(path)
                     }
-                    progressionState.silentGroupedChanges {
+                    progressionState.quietChanges{
                         progressionState.message=path
                         progressionState.currentTaskIndex=counter
                     }
@@ -612,7 +612,7 @@ struct  Chunker {
                     writeFileHande.seek(toFileOffset: 0)
 
                     let progressionState=Progression()
-                    progressionState.silentGroupedChanges {
+                    progressionState.quietChanges{
                         progressionState.totalTaskCount=chunksPaths.count
                         progressionState.currentTaskIndex=0
                         progressionState.message=""
@@ -640,7 +640,7 @@ struct  Chunker {
                             writeFileHande.write(data)
                             Async.main{
                                 counter += 1
-                                progressionState.silentGroupedChanges {
+                                progressionState.quietChanges{
                                     progressionState.message=source
                                     progressionState.currentTaskIndex=counter
                                 }

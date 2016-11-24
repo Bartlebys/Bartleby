@@ -24,7 +24,7 @@ import Foundation
 	//An external unique identifier
 	dynamic open var externalID:String? {
 	    didSet { 
-	       if externalID != oldValue {
+	       if !self.wantsQuietChanges && externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
 	       } 
 	    }
@@ -33,7 +33,7 @@ import Foundation
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
 	    didSet { 
-	       if spaceUID != oldValue {
+	       if !self.wantsQuietChanges && spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
 	       } 
 	    }
@@ -47,7 +47,7 @@ import Foundation
 	}
 	open var verificationMethod:VerificationMethod = .byPhoneNumber  {
 	    didSet { 
-	       if verificationMethod != oldValue {
+	       if !self.wantsQuietChanges && verificationMethod != oldValue {
 	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
 	       } 
 	    }
@@ -55,7 +55,7 @@ import Foundation
 
 	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
 	    didSet { 
-	       if firstname != oldValue {
+	       if !self.wantsQuietChanges && firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
 	       } 
 	    }
@@ -63,7 +63,7 @@ import Foundation
 
 	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
 	    didSet { 
-	       if lastname != oldValue {
+	       if !self.wantsQuietChanges && lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
 	       } 
 	    }
@@ -72,7 +72,7 @@ import Foundation
 	//The user's email. Can be the secondary Identification source 
 	dynamic open var email:String? {
 	    didSet { 
-	       if email != oldValue {
+	       if !self.wantsQuietChanges && email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
 	       } 
 	    }
@@ -81,7 +81,7 @@ import Foundation
 	//The user's phone number. Can be the secondary Identification source 
 	dynamic open var phoneNumber:String? {
 	    didSet { 
-	       if phoneNumber != oldValue {
+	       if !self.wantsQuietChanges && phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
 	       } 
 	    }
@@ -90,7 +90,7 @@ import Foundation
 	//The hashed version of the user password
 	dynamic open var password:String? {
 	    didSet { 
-	       if password != oldValue {
+	       if !self.wantsQuietChanges && password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
 	       } 
 	    }
@@ -99,7 +99,7 @@ import Foundation
 	//An activation code
 	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
 	    didSet { 
-	       if activationCode != oldValue {
+	       if !self.wantsQuietChanges && activationCode != oldValue {
 	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
 	       } 
 	    }
@@ -113,7 +113,7 @@ import Foundation
 	}
 	open var status:Status = .new  {
 	    didSet { 
-	       if status != oldValue {
+	       if !self.wantsQuietChanges && status != oldValue {
 	            self.provisionChanges(forKey: "status",oldValue: oldValue.rawValue,newValue: status.rawValue)  
 	       } 
 	    }
@@ -122,7 +122,7 @@ import Foundation
 	//The user Tags. External reference to Tags instances
 	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {
 	    didSet { 
-	       if tags != oldValue {
+	       if !self.wantsQuietChanges && tags != oldValue {
 	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
 	       } 
 	    }
@@ -131,7 +131,7 @@ import Foundation
 	//Notes
 	dynamic open var notes:String? {
 	    didSet { 
-	       if notes != oldValue {
+	       if !self.wantsQuietChanges && notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
 	       } 
 	    }
@@ -263,7 +263,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.externalID <- ( map["externalID"] )
 			self.spaceUID <- ( map["spaceUID"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
@@ -284,7 +284,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 

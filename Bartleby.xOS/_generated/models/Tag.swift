@@ -23,7 +23,7 @@ import Foundation
 
 	dynamic open var creationDate:Date? {
 	    didSet { 
-	       if creationDate != oldValue {
+	       if !self.wantsQuietChanges && creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
 	       } 
 	    }
@@ -31,7 +31,7 @@ import Foundation
 
 	dynamic open var color:String? {
 	    didSet { 
-	       if color != oldValue {
+	       if !self.wantsQuietChanges && color != oldValue {
 	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
 	       } 
 	    }
@@ -39,7 +39,7 @@ import Foundation
 
 	dynamic open var icon:String? {
 	    didSet { 
-	       if icon != oldValue {
+	       if !self.wantsQuietChanges && icon != oldValue {
 	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
 	       } 
 	    }
@@ -108,7 +108,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
 			self.color <- ( map["color"] )
 			self.icon <- ( map["icon"] )
@@ -120,7 +120,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
 			self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
 			self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)

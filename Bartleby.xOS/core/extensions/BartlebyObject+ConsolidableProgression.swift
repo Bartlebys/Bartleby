@@ -32,7 +32,7 @@ extension BartlebyObject:ConsolidableProgression{
                         currentPercent += 100
                     }
                 }
-                progression.silentGroupedChanges {
+                progression.quietChanges{
                     progression.currentTaskIndex=currentTaskIndex/counter
                     progression.totalTaskCount=totalTaskCount/counter
                 }

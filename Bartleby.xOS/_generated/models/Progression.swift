@@ -27,7 +27,7 @@ import Foundation
 	//Index of the task
 	dynamic open var currentTaskIndex:Int = 0  {
 	    didSet { 
-	       if currentTaskIndex != oldValue {
+	       if !self.wantsQuietChanges && currentTaskIndex != oldValue {
 	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
 	       } 
 	    }
@@ -36,7 +36,7 @@ import Foundation
 	//Total number of tasks
 	dynamic open var totalTaskCount:Int = 0  {
 	    didSet { 
-	       if totalTaskCount != oldValue {
+	       if !self.wantsQuietChanges && totalTaskCount != oldValue {
 	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
 	       } 
 	    }
@@ -45,7 +45,7 @@ import Foundation
 	//0 to 100
 	dynamic open var currentPercentProgress:Double = 0  {
 	    didSet { 
-	       if currentPercentProgress != oldValue {
+	       if !self.wantsQuietChanges && currentPercentProgress != oldValue {
 	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue,newValue: currentPercentProgress)  
 	       } 
 	    }
@@ -54,7 +54,7 @@ import Foundation
 	//The Message
 	dynamic open var message:String = ""{
 	    didSet { 
-	       if message != oldValue {
+	       if !self.wantsQuietChanges && message != oldValue {
 	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
 	       } 
 	    }
@@ -63,7 +63,7 @@ import Foundation
 	//The consolidated information (may include the message)
 	dynamic open var informations:String = ""{
 	    didSet { 
-	       if informations != oldValue {
+	       if !self.wantsQuietChanges && informations != oldValue {
 	            self.provisionChanges(forKey: "informations",oldValue: oldValue,newValue: informations) 
 	       } 
 	    }
@@ -72,7 +72,7 @@ import Foundation
 	//The associated data
 	dynamic open var data:Data? {
 	    didSet { 
-	       if data != oldValue {
+	       if !self.wantsQuietChanges && data != oldValue {
 	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
 	       } 
 	    }
@@ -183,7 +183,7 @@ import Foundation
 
     override open func mapping(map: Map) {
         super.mapping(map: map)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.startTime <- ( map["startTime"] )
 			self.currentTaskIndex <- ( map["currentTaskIndex"] )
 			self.totalTaskCount <- ( map["totalTaskCount"] )
@@ -201,7 +201,7 @@ import Foundation
 
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        self.silentGroupedChanges {
+        self.quietChanges {
 			self.startTime=decoder.decodeDouble(forKey:"startTime") 
 			self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
 			self.totalTaskCount=decoder.decodeInteger(forKey:"totalTaskCount") 

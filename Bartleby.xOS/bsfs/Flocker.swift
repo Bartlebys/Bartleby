@@ -104,7 +104,7 @@ struct Flocker{
                 var paths=[String]()
 
                 let progressionState=Progression()
-                progressionState.silentGroupedChanges {
+                progressionState.quietChanges{
                     progressionState.totalTaskCount=0
                     progressionState.currentTaskIndex=0
                     progressionState.externalIdentifier=path
@@ -171,7 +171,7 @@ struct Flocker{
                     if incrementGlobalCounter{
                         counter += 1
                     }
-                    progressionState.silentGroupedChanges {
+                    progressionState.quietChanges{
                         progressionState.currentTaskIndex=counter
                         progressionState.message=message
                     }
@@ -320,7 +320,7 @@ struct Flocker{
                             var counter=0
 
                             let progressionState=Progression()
-                            progressionState.silentGroupedChanges {
+                            progressionState.quietChanges{
                                 progressionState.totalTaskCount=Int(nb)
                                 progressionState.currentTaskIndex=0
                                 progressionState.externalIdentifier=filePath
@@ -465,7 +465,7 @@ struct Flocker{
                 if let fileHandle=FileHandle(forReadingAtPath:flockedFile ){
 
                     let progressionState=Progression()
-                    progressionState.silentGroupedChanges {
+                    progressionState.quietChanges{
                         progressionState.totalTaskCount=container.nodes.count
                         progressionState.currentTaskIndex=0
                         progressionState.externalIdentifier=flockedFile
@@ -483,7 +483,7 @@ struct Flocker{
                         if incrementGlobalCounter{
                             counter += 1
                         }
-                        progressionState.silentGroupedChanges {
+                        progressionState.quietChanges{
                             progressionState.currentTaskIndex=counter
                             progressionState.message=message
                         }
@@ -630,7 +630,7 @@ struct Flocker{
         let decompress=node.compressedBlocks
 
         let progressionState=Progression()
-        progressionState.silentGroupedChanges {
+        progressionState.quietChanges{
             progressionState.totalTaskCount=blocks.count
             progressionState.currentTaskIndex=0
             progressionState.externalIdentifier=""
@@ -650,7 +650,7 @@ struct Flocker{
             if (!error){
                 createdPaths.append(path)
             }
-            progressionState.silentGroupedChanges {
+            progressionState.quietChanges{
                 progressionState.message = (message == "") ? path : message
                 progressionState.currentTaskIndex=counter
             }
