@@ -123,10 +123,10 @@
 		E592B8661DE7555A008D31DB /* Default.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7901DE75559008D31DB /* Default.swift */; };
 		E592B8671DE7555A008D31DB /* DocumentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7911DE75559008D31DB /* DocumentError.swift */; };
 		E592B8681DE7555A008D31DB /* BarltlebyDocument+Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7931DE75559008D31DB /* BarltlebyDocument+Consignee.swift */; };
-		E592B8691DE7555A008D31DB /* BartlebyDocument+AppFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7941DE75559008D31DB /* BartlebyDocument+AppFacilities.swift */; };
+		E592B8691DE7555A008D31DB /* BartlebyDocument+DotBart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7941DE75559008D31DB /* BartlebyDocument+DotBart.swift */; };
 		E592B86A1DE7555A008D31DB /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7951DE75559008D31DB /* BartlebyDocument+LocalUpsertAndDelete.swift */; };
 		E592B86B1DE7555A008D31DB /* BartlebyDocument+Logs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7961DE75559008D31DB /* BartlebyDocument+Logs.swift */; };
-		E592B86C1DE7555A008D31DB /* BartlebyDocument+MetaDataImportExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7971DE75559008D31DB /* BartlebyDocument+MetaDataImportExport.swift */; };
+		E592B86C1DE7555A008D31DB /* BartlebyDocument+ComputedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7971DE75559008D31DB /* BartlebyDocument+ComputedProperties.swift */; };
 		E592B86D1DE7555A008D31DB /* BartlebyDocument+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7981DE75559008D31DB /* BartlebyDocument+Metrics.swift */; };
 		E592B86E1DE7555A008D31DB /* BartlebyDocument+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B7991DE75559008D31DB /* BartlebyDocument+Operations.swift */; };
 		E592B86F1DE7555A008D31DB /* BartlebyDocument+Persistency.swift in Sources */ = {isa = PBXBuildFile; fileRef = E592B79A1DE75559008D31DB /* BartlebyDocument+Persistency.swift */; };
@@ -254,6 +254,10 @@
 		E5CC29361D846CB300F7C783 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28D41D846CB300F7C783 /* TransformType.swift */; };
 		E5CC29371D846CB300F7C783 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28D51D846CB300F7C783 /* URLTransform.swift */; };
 		E5D085411C550DC500F0090E /* BartlebysCommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */; };
+		E5F29AD31DE82C11000917D8 /* BartlebyDocument+Preparation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F29AD21DE82C11000917D8 /* BartlebyDocument+Preparation.swift */; };
+		E5F29AD51DE82CC0000917D8 /* BartlebyDocument+BoxDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F29AD41DE82CC0000917D8 /* BartlebyDocument+BoxDelegate.swift */; };
+		E5F29AD71DE82D97000917D8 /* BartlebyDocument+Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F29AD61DE82D97000917D8 /* BartlebyDocument+Collections.swift */; };
+		E5F29AD91DE82DDB000917D8 /* BartlebyDocument+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F29AD81DE82DDB000917D8 /* BartlebyDocument+Blocks.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -389,10 +393,10 @@
 		E592B7901DE75559008D31DB /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
 		E592B7911DE75559008D31DB /* DocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentError.swift; sourceTree = "<group>"; };
 		E592B7931DE75559008D31DB /* BarltlebyDocument+Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BarltlebyDocument+Consignee.swift"; sourceTree = "<group>"; };
-		E592B7941DE75559008D31DB /* BartlebyDocument+AppFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+AppFacilities.swift"; sourceTree = "<group>"; };
+		E592B7941DE75559008D31DB /* BartlebyDocument+DotBart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+DotBart.swift"; sourceTree = "<group>"; };
 		E592B7951DE75559008D31DB /* BartlebyDocument+LocalUpsertAndDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+LocalUpsertAndDelete.swift"; sourceTree = "<group>"; };
 		E592B7961DE75559008D31DB /* BartlebyDocument+Logs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Logs.swift"; sourceTree = "<group>"; };
-		E592B7971DE75559008D31DB /* BartlebyDocument+MetaDataImportExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+MetaDataImportExport.swift"; sourceTree = "<group>"; };
+		E592B7971DE75559008D31DB /* BartlebyDocument+ComputedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+ComputedProperties.swift"; sourceTree = "<group>"; };
 		E592B7981DE75559008D31DB /* BartlebyDocument+Metrics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Metrics.swift"; sourceTree = "<group>"; };
 		E592B7991DE75559008D31DB /* BartlebyDocument+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Operations.swift"; sourceTree = "<group>"; };
 		E592B79A1DE75559008D31DB /* BartlebyDocument+Persistency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Persistency.swift"; sourceTree = "<group>"; };
@@ -522,6 +526,10 @@
 		E5CC28D51D846CB300F7C783 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
 		E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysCommandsFacade.swift; sourceTree = "<group>"; };
 		E5D086D01C550EFD00F0090E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5F29AD21DE82C11000917D8 /* BartlebyDocument+Preparation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Preparation.swift"; sourceTree = "<group>"; };
+		E5F29AD41DE82CC0000917D8 /* BartlebyDocument+BoxDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+BoxDelegate.swift"; sourceTree = "<group>"; };
+		E5F29AD61DE82D97000917D8 /* BartlebyDocument+Collections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Collections.swift"; sourceTree = "<group>"; };
+		E5F29AD81DE82DDB000917D8 /* BartlebyDocument+Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Blocks.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -856,18 +864,22 @@
 		E592B7921DE75559008D31DB /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E592B7971DE75559008D31DB /* BartlebyDocument+ComputedProperties.swift */,
+				E5F29AD21DE82C11000917D8 /* BartlebyDocument+Preparation.swift */,
+				E5F29AD41DE82CC0000917D8 /* BartlebyDocument+BoxDelegate.swift */,
 				E592B7931DE75559008D31DB /* BarltlebyDocument+Consignee.swift */,
-				E592B7941DE75559008D31DB /* BartlebyDocument+AppFacilities.swift */,
+				E592B7941DE75559008D31DB /* BartlebyDocument+DotBart.swift */,
 				E592B7951DE75559008D31DB /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E592B7961DE75559008D31DB /* BartlebyDocument+Logs.swift */,
-				E592B7971DE75559008D31DB /* BartlebyDocument+MetaDataImportExport.swift */,
 				E592B7981DE75559008D31DB /* BartlebyDocument+Metrics.swift */,
 				E592B7991DE75559008D31DB /* BartlebyDocument+Operations.swift */,
 				E592B79A1DE75559008D31DB /* BartlebyDocument+Persistency.swift */,
+				E5F29AD81DE82DDB000917D8 /* BartlebyDocument+Blocks.swift */,
 				E592B79B1DE75559008D31DB /* BartlebyDocument+Reachability.swift */,
 				E592B79C1DE75559008D31DB /* BartlebyDocument+SecurityScopes.swift */,
 				E592B79D1DE75559008D31DB /* BartlebyDocument+SuperIterable.swift */,
 				E592B79E1DE75559008D31DB /* BartlebyDocument+Triggers.swift */,
+				E5F29AD61DE82D97000917D8 /* BartlebyDocument+Collections.swift */,
 				E592B79F1DE75559008D31DB /* BartlebyObject+ConsolidableProgression.swift */,
 				E592B7A01DE75559008D31DB /* BartlebyObject+DictionaryRepresentation.swift */,
 				E592B7A11DE75559008D31DB /* BartlebyObject+Distribuable.swift */,
@@ -1240,7 +1252,7 @@
 				E592B8801DE7555A008D31DB /* CollectionMetadatum+Proxy.swift in Sources */,
 				E592B8311DE7555A008D31DB /* ReadNodeById.swift in Sources */,
 				E592B8951DE7555A008D31DB /* ChangesInspectable.swift in Sources */,
-				E592B86C1DE7555A008D31DB /* BartlebyDocument+MetaDataImportExport.swift in Sources */,
+				E592B86C1DE7555A008D31DB /* BartlebyDocument+ComputedProperties.swift in Sources */,
 				E592B8971DE7555A008D31DB /* CollectibleCollection.swift in Sources */,
 				E592B8AA1DE7555A008D31DB /* Logger.swift in Sources */,
 				E592B8501DE7555A008D31DB /* NodeAccessor.swift in Sources */,
@@ -1256,6 +1268,7 @@
 				E592B80E1DE7555A008D31DB /* Progression.swift in Sources */,
 				E592B83A1DE7555A008D31DB /* UpdateBoxes.swift in Sources */,
 				E592B8BC1DE7555A008D31DB /* LoginUser.swift in Sources */,
+				E5F29AD71DE82D97000917D8 /* BartlebyDocument+Collections.swift in Sources */,
 				E592B8821DE7555A008D31DB /* Completion+Result.swift in Sources */,
 				E592B8051DE7555A008D31DB /* DocumentMetadata.swift in Sources */,
 				E592B7FC1DE7555A008D31DB /* PushOperationsManagedCollection.swift in Sources */,
@@ -1263,7 +1276,7 @@
 				E592B8701DE7555A008D31DB /* BartlebyDocument+Reachability.swift in Sources */,
 				E592B8B31DE7555A008D31DB /* TriggerHook.swift in Sources */,
 				E592B8891DE7555A008D31DB /* NSNotification+Completion.swift in Sources */,
-				E592B8691DE7555A008D31DB /* BartlebyDocument+AppFacilities.swift in Sources */,
+				E592B8691DE7555A008D31DB /* BartlebyDocument+DotBart.swift in Sources */,
 				E592B8351DE7555A008D31DB /* ReadUsersByIds.swift in Sources */,
 				E592B8681DE7555A008D31DB /* BarltlebyDocument+Consignee.swift in Sources */,
 				E592B8911DE7555A008D31DB /* ObjectExpositionError.swift in Sources */,
@@ -1344,6 +1357,7 @@
 				E592B8581DE7555A008D31DB /* CryptedStringTransform.swift in Sources */,
 				E592B8401DE7555A008D31DB /* UpdateUsers.swift in Sources */,
 				E5CC29211D846CB300F7C783 /* StringExtensions.swift in Sources */,
+				E5F29AD51DE82CC0000917D8 /* BartlebyDocument+BoxDelegate.swift in Sources */,
 				E592B82B1DE7555A008D31DB /* ReadBoxById.swift in Sources */,
 				E5CC28FE1D846CB300F7C783 /* Notifications.swift in Sources */,
 				E592B83C1DE7555A008D31DB /* UpdateLockers.swift in Sources */,
@@ -1402,6 +1416,7 @@
 				E592B88A1DE7555A008D31DB /* NSNotification+Progression.swift in Sources */,
 				E592B84A1DE7555A008D31DB /* Node+Facilities.swift in Sources */,
 				E592B8B71DE7555A008D31DB /* ServerErrorCodes.swift in Sources */,
+				E5F29AD31DE82C11000917D8 /* BartlebyDocument+Preparation.swift in Sources */,
 				E592B8371DE7555A008D31DB /* UpdateBlock.swift in Sources */,
 				E592B8BA1DE7555A008D31DB /* URL+Utilities.swift in Sources */,
 				E5CC29041D846CB300F7C783 /* ServerTrustPolicy.swift in Sources */,
@@ -1412,6 +1427,7 @@
 				E592B80A1DE7555A008D31DB /* Locker.swift in Sources */,
 				E592B87F1DE7555A008D31DB /* BartlebyObject+Supervisable.swift in Sources */,
 				E5CC29281D846CB300F7C783 /* Map.swift in Sources */,
+				E5F29AD91DE82DDB000917D8 /* BartlebyDocument+Blocks.swift in Sources */,
 				E592B86E1DE7555A008D31DB /* BartlebyDocument+Operations.swift in Sources */,
 				E592B8011DE7555A008D31DB /* Box.swift in Sources */,
 				E592B8571DE7555A008D31DB /* CryptedStringKeyValueTransform.swift in Sources */,

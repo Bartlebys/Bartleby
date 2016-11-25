@@ -97,11 +97,12 @@ import Foundation
 
     // We want to remove all the superviser on removal.
     deinit{
+        self.document=nil
         self._supervisers.removeAll()
     }
 
     // A reference to the document
-    open weak var document:BartlebyDocument?
+    open var document:BartlebyDocument?
 
     // We setup this collection reference on:
     // - object insertion

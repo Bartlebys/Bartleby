@@ -115,24 +115,6 @@ import Foundation
 
 
     /**
-     Returns an operation with self.UID as commandUID
-
-     - returns: return the operation
-     */
-    internal func _getOperation()throws->PushOperation{
-        if let document = Bartleby.sharedInstance.getDocumentByUID(self.documentUID) {
-            if let ic:PushOperationsManagedCollection = try? document.getCollection(){
-                let pushOperations=ic.filter({ (pushOperation) -> Bool in
-                    return pushOperation.commandUID==self.UID
-                })
-                if let pushOperation=pushOperations.first {
-                    return pushOperation
-                }}
-        }
-        throw BartlebyOperationError.operationNotFound
-    }
-
-    /**
     Creates the operation and proceeds to commit
 
     - parameter lockers: the instance
@@ -140,6 +122,7 @@ import Foundation
     */
     static func commit(_ lockers:[Locker], in document:BartlebyDocument){
         let operationInstance=UpdateLockers()
+        operationInstance.defineUID()
         operationInstance._documentUID=document.UID
         operationInstance._payload=lockers.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:776462226, caller: "\(operationInstance.runTimeTypeName()).commit")
@@ -227,13 +210,25 @@ import Foundation
                 httpStatusCode:StatusOfCompletion.undefined.rawValue)
                 context.message="\(error)"
                 failure(context)
-                self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
             }
 
         }else{
             glog("lockers should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
         }
     }
+
+    internal func _getOperation()throws->PushOperation{
+        if let document = Bartleby.sharedInstance.getDocumentByUID(self.documentUID) {
+            if let idx=document.pushOperations.indexOf(element: { $0.commandUID==self.UID }){
+                return document.pushOperations[idx]
+            }
+            throw BartlebyOperationError.operationNotFound(UID:self.UID)
+        }
+        throw BartlebyOperationError.documentNotFound(documentUID:self.documentUID)
+    }
+
+    
 
     open class func execute(_ lockers:[Locker],
             in documentUID:String,

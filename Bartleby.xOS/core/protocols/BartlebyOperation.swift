@@ -12,7 +12,8 @@ import Foundation
 #endif
 
 public enum BartlebyOperationError:Error{
-    case operationNotFound
+    case operationNotFound(UID:String)
+    case documentNotFound(documentUID:String)
 }
 
 /// An operation is a client server request CRUD or URD
