@@ -17,6 +17,7 @@ import Foundation
 // The underlining model has been implemented by flexions in BaseDocumentMetadata
 extension DocumentMetadata:DocumentMetadataProtocol {
 
+
     public func configureSchema(_ metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {
             if m.collectionName == metadatum.collectionName {

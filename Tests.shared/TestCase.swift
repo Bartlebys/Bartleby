@@ -61,7 +61,6 @@ class TestCase: XCTestCase {
     fileprivate static var _document:BartlebyDocument?
     static var document=_document!
 
-    static let rootObjectUID=Bartleby.createUID()
 
     /// MARK: Behaviour after test run
 
@@ -81,7 +80,6 @@ class TestCase: XCTestCase {
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         TestCase._document=BartlebyDocument()
         TestCase.document.configureSchema()
-        let _ = try? TestCase.document.setRootObjectUID(TestCase.rootObjectUID)
         Bartleby.sharedInstance.declare(TestCase.document)
         // By default we use kvid auth.
         TestCase.document.metadata.identificationMethod=DocumentMetadata.IdentificationMethod.key

@@ -10,10 +10,8 @@ import XCPlayground
 Bartleby.sharedInstance.configureWith(PlaygroundsConfiguration.self)
 
 // Set up a BartlebyDocument
-let rootObjectUID=Bartleby.createUID()
 let document=BartlebyDocument()
 document.configureSchema()
-let _ = try? document.setRootObjectUID(rootObjectUID)
 Bartleby.sharedInstance.declare(document)
 print(document.UID)
 

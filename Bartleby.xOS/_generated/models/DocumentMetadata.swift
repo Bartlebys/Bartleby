@@ -21,8 +21,11 @@ import Foundation
         return "DocumentMetadata"
     }
 
-	//The data space UID can be shared between multiple registries.
-	dynamic open var spaceUID:String = "\(Default.NO_UID)"
+	//The data space UID can be shared between multiple Docuemnt.
+	dynamic open var spaceUID:String = "\(Bartleby.createUID())"
+
+	//Defines the document UID.
+	dynamic open var persistentUID:String = "\(Bartleby.createUID())"
 
 	//The user currently associated to the local instance of the document
 	dynamic open var currentUser:User?
@@ -36,9 +39,6 @@ import Foundation
 
 	//The current kvid identification value (injected in HTTP headers)
 	dynamic open var identificationValue:String?
-
-	//The rootObject UID
-	dynamic open var rootObjectUID:String = "\(Default.NO_UID)"
 
 	//The url of the collaboration server
 	dynamic open var collaborationServerURL:URL?
@@ -146,7 +146,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","currentUser","identificationMethod","identificationValue","rootObjectUID","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","identificationValue","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -163,6 +163,10 @@ import Foundation
                 if let casted=value as? String{
                     self.spaceUID=casted
                 }
+            case "persistentUID":
+                if let casted=value as? String{
+                    self.persistentUID=casted
+                }
             case "currentUser":
                 if let casted=value as? User{
                     self.currentUser=casted
@@ -174,10 +178,6 @@ import Foundation
             case "identificationValue":
                 if let casted=value as? String{
                     self.identificationValue=casted
-                }
-            case "rootObjectUID":
-                if let casted=value as? String{
-                    self.rootObjectUID=casted
                 }
             case "collaborationServerURL":
                 if let casted=value as? URL{
@@ -284,14 +284,14 @@ import Foundation
         switch key {
             case "spaceUID":
                return self.spaceUID
+            case "persistentUID":
+               return self.persistentUID
             case "currentUser":
                return self.currentUser
             case "identificationMethod":
                return self.identificationMethod
             case "identificationValue":
                return self.identificationValue
-            case "rootObjectUID":
-               return self.rootObjectUID
             case "collaborationServerURL":
                return self.collaborationServerURL
             case "changesAreInspectables":
@@ -350,10 +350,10 @@ import Foundation
         super.mapping(map: map)
         self.quietChanges {
 			self.spaceUID <- ( map["spaceUID"] )
+			self.persistentUID <- ( map["persistentUID"] )
 			self.currentUser <- ( map["currentUser"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.identificationValue <- ( map["identificationValue"] )
-			self.rootObjectUID <- ( map["rootObjectUID"] )
 			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
 			self.collectionsMetadata <- ( map["collectionsMetadata"] )
 			self.stateDictionary <- ( map["stateDictionary"] )
@@ -381,10 +381,10 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
+			self.persistentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "persistentUID")! as NSString)
 			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
-			self.rootObjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "rootObjectUID")! as NSString)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 			self.collectionsMetadata=decoder.decodeObject(of: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
@@ -408,6 +408,7 @@ import Foundation
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
+		coder.encode(self.persistentUID,forKey:"persistentUID")
 		if let currentUser = self.currentUser {
 			coder.encode(currentUser,forKey:"currentUser")
 		}
@@ -415,7 +416,6 @@ import Foundation
 		if let identificationValue = self.identificationValue {
 			coder.encode(identificationValue,forKey:"identificationValue")
 		}
-		coder.encode(self.rootObjectUID,forKey:"rootObjectUID")
 		if let collaborationServerURL = self.collaborationServerURL {
 			coder.encode(collaborationServerURL,forKey:"collaborationServerURL")
 		}

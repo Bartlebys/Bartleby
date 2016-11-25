@@ -27,7 +27,7 @@ import Foundation
 	//The dataSpace UID
 	dynamic open var spaceUID:String?
 
-	//The observation UID for a given document correspond  to the BartlebyDocument.rootObjectUID
+	//The observation UID
 	dynamic open var observationUID:String?
 
 	//The user.UID of the sender

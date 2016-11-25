@@ -80,7 +80,7 @@ extension BartlebyDocument{
                         self.log("ERROR \(r)", file: #file, function: #function, line: #line)
                         return
                     }
-                    let documentUID=self.metadata.rootObjectUID
+                    let documentUID=self.metadata.persistentUID
                     Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: documentUID)
                     self.metadata.currentUser?.document=self
                 }

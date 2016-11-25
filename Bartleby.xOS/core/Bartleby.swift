@@ -121,7 +121,7 @@ import Foundation
 
 
     /**
-     Returns a document by its UID ( == document.metadata.rootObjectUID)
+     Returns a document by its UID ( == document.metadata.persistentUID)
      The SpaceUID is shared between multiple document.
 
      - parameter UID: the uid of the document

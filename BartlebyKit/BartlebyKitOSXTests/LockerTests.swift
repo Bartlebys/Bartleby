@@ -14,7 +14,6 @@ class LockerTests: XCTestCase {
     fileprivate static let _document = BartlebyDocument()
     fileprivate static var _spaceUID = Default.NO_UID
 
-    static let rootObjectUID=Bartleby.createUID()
 
     fileprivate static var _creatorUser: User? {
         didSet {
@@ -43,7 +42,6 @@ class LockerTests: XCTestCase {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         let document=LockerTests._document
-        let _ = try? document.setRootObjectUID(LockerTests.rootObjectUID)
         Bartleby.sharedInstance.declare(document)
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = document.newUser()

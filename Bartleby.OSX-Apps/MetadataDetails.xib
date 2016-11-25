@@ -114,7 +114,7 @@
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zFj-gB-QOO">
                                         <rect key="frame" x="9" y="401" width="202" height="17"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Root Object UID" id="B7F-em-Tfm">
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Persistent UID" id="B7F-em-Tfm">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -128,7 +128,7 @@
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <connections>
-                                            <binding destination="-2" name="value" keyPath="self._metadata.rootObjectUID" id="5ui-il-ul3"/>
+                                            <binding destination="-2" name="value" keyPath="self._metadata.persistentUID" id="UWp-Et-UmT"/>
                                         </connections>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cD5-KA-AgE">
@@ -416,15 +416,15 @@
                                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6lS-e2-Qcl">
                                         <rect key="frame" x="20" y="10" width="865" height="571"/>
                                         <clipView key="contentView" id="r9g-Zk-zQE">
-                                            <rect key="frame" x="1" y="1" width="863" height="569"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <rect key="frame" x="1" y="1" width="848" height="569"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" spellingCorrection="YES" id="pST-KF-jSX">
-                                                    <rect key="frame" x="0.0" y="0.0" width="863" height="569"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="848" height="569"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="863" height="569"/>
+                                                    <size key="minSize" width="848" height="569"/>
                                                     <size key="maxSize" width="905" height="10000000"/>
                                                     <color key="insertionPointColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                                     <allowedInputSourceLocales>
@@ -1189,14 +1189,14 @@
                                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1bT-zo-Lzg">
                                         <rect key="frame" x="20" y="10" width="865" height="571"/>
                                         <clipView key="contentView" id="sd3-mQ-zXQ">
-                                            <rect key="frame" x="1" y="1" width="863" height="569"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <rect key="frame" x="1" y="1" width="848" height="569"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" spellingCorrection="YES" id="2yx-SA-hf6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="863" height="569"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="848" height="569"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="863" height="569"/>
+                                                    <size key="minSize" width="848" height="569"/>
                                                     <size key="maxSize" width="905" height="10000000"/>
                                                     <color key="insertionPointColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                                                     <allowedInputSourceLocales>

@@ -17,23 +17,6 @@ import Foundation
 extension BartlebyDocument{
 
 
-    /**
-     Sets the root object UID
-
-     - parameter UID: the UID
-
-     - throws: throws value description
-     */
-    open func setRootObjectUID(_ UID:String) throws {
-        if (self.metadata.rootObjectUID==Default.NO_UID){
-            self.metadata.rootObjectUID=UID
-            Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: UID)
-        }else{
-            throw DocumentError.attemptToSetUpRootObjectUIDMoreThanOnce
-        }
-    }
-
-
     open func registerCollections() throws {
         for metadatum in self.metadata.collectionsMetadata {
             if let proxy=metadatum.proxy {

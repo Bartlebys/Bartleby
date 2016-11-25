@@ -22,16 +22,16 @@ public protocol DocumentMetadataProtocol: Identifiable, Serializable {
     associatedtype CollectionMetadatumType
     associatedtype User
 
-    //The data space UID can be shared between multiple registries.
+    //The data space UID can be shared between multiple Documents.
     var spaceUID: String { get set }
+
+    //Defines the document UID
+    var persistentUID: String { get set}
 
     //The root user of the Document is the user currently associated to the local instance of the Document
     // The full user instance.
     // We donnot want to store this user in the user collection ( to prevent its deletion and to mark its singularity)
     var currentUser: User? { get set }
-
-    // Root Object UID defines the
-    var rootObjectUID: String { get }
 
     // The state dictionary
     var stateDictionary: [String:Any] { get set }

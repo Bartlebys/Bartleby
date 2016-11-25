@@ -235,7 +235,6 @@ import Foundation
 	open func configureSchema(){
         let blockDefinition = CollectionMetadatum()
         blockDefinition.proxy = self.blocks
-        // By default we group the observation via the rootObjectUID
         blockDefinition.collectionName = Block.collectionName
         blockDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         blockDefinition.persistsDistantly = true
@@ -243,7 +242,6 @@ import Foundation
         
         let boxDefinition = CollectionMetadatum()
         boxDefinition.proxy = self.boxes
-        // By default we group the observation via the rootObjectUID
         boxDefinition.collectionName = Box.collectionName
         boxDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         boxDefinition.persistsDistantly = true
@@ -251,7 +249,6 @@ import Foundation
         
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
-        // By default we group the observation via the rootObjectUID
         lockerDefinition.collectionName = Locker.collectionName
         lockerDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         lockerDefinition.persistsDistantly = true
@@ -259,7 +256,6 @@ import Foundation
         
         let nodeDefinition = CollectionMetadatum()
         nodeDefinition.proxy = self.nodes
-        // By default we group the observation via the rootObjectUID
         nodeDefinition.collectionName = Node.collectionName
         nodeDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         nodeDefinition.persistsDistantly = true
@@ -267,7 +263,6 @@ import Foundation
         
         let pushOperationDefinition = CollectionMetadatum()
         pushOperationDefinition.proxy = self.pushOperations
-        // By default we group the observation via the rootObjectUID
         pushOperationDefinition.collectionName = PushOperation.collectionName
         pushOperationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         pushOperationDefinition.persistsDistantly = false
@@ -275,7 +270,6 @@ import Foundation
         
         let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
-        // By default we group the observation via the rootObjectUID
         userDefinition.collectionName = User.collectionName
         userDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         userDefinition.persistsDistantly = true

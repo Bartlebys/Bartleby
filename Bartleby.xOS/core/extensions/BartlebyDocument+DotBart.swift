@@ -89,7 +89,7 @@ extension BartlebyDocument {
         self.currentUser.login( sucessHandler: {
 
             let pathURL=self.baseURL.appendingPathComponent("/Export")
-            let dictionary=["excludeTriggers":"true","observationUID":self.metadata.rootObjectUID];
+            let dictionary=["excludeTriggers":"true","observationUID":self.metadata.persistentUID];
 
             let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:self.UID, withActionName:"Export", forMethod:"GET", and: pathURL)
 

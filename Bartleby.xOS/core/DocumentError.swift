@@ -30,7 +30,6 @@ public enum DocumentError: Error {
     case rootObjectTypeMissMatch
     case instanceNotFound
     case instanceTypeMissMatch(found:String)
-    case attemptToSetUpRootObjectUIDMoreThanOnce
     case unSupportedFileType(typeName:String)
     case undefined
     case utf8EncodingError

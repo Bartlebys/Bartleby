@@ -12,12 +12,11 @@ import Foundation
 public extension BartlebyDocument{
 
     // This is the BartlebyDocument UID
-    // We use the root object UID as observationUID
-    // You should have set up the rootObjectUID before any trigger emitted.
+    // We also use by default the root object UID as observationUID
     // The triggers are observable via this UID
     public var UID:String{
         get{
-            return self.metadata.rootObjectUID
+            return self.metadata.persistentUID
         }
     }
 
