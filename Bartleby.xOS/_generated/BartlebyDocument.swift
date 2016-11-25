@@ -33,9 +33,6 @@ import Foundation
 
 @objc(BartlebyDocument) open class BartlebyDocument : BXDocument,BoxDelegate {
 
-
-
-
     //MARK: - Initializers
 
     #if os(OSX)
@@ -55,41 +52,8 @@ import Foundation
 
     #endif
 
-    private func _configure(){
-        Bartleby.sharedInstance.declare(self)
-        addGlobalLogsObserver(self) // Add the document to globals logs observer
-        BartlebyDocument.declareTypes()
-
-        self.metadata.document=self
-
-        // Setup the spaceUID if necessary
-        if (self.metadata.spaceUID==Default.NO_UID) {
-            self.metadata.spaceUID=self.metadata.UID
-        }
-
-        // Setup the default collaboration server
-        self.metadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-
-        // Configure the schemas
-        self.configureSchema()
-
-        // We want to be able to write blocks even on Document drafts.
-        if  self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName] == nil{
-            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
-            documentFileWrapper.addFileWrapper(blocksFileWrapper)
-        }
-    }
-
    // Keep a reference to the document file Wrapper
     open var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
-
-
-    // The file extension for crypted data
-    open static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
-
-    // The metadata file name
-    internal var _metadataFileName: String { return "metadata" + BartlebyDocument.DATA_EXTENSION }
 
     // The Document Metadata
     dynamic open var metadata=DocumentMetadata()
@@ -97,47 +61,11 @@ import Foundation
     // Bartleby's Synchronized File System for this document.
     open lazy var bsfs:BSFS=BSFS(in:self)
 
-    // The bsfs data file name
-    internal var _bsfsDataFileName: String { return "bsfs" + BartlebyDocument.DATA_EXTENSION }
-
     // Hook the triggers
     public var triggerHooks=[TriggerHook]()
 
-
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
-
-
-    // This is the BartlebyDocument UID
-    // We use the root object UID as observationUID
-    // You should have set up the rootObjectUID before any trigger emitted.
-    // The triggers are observable via this UID
-    open var UID:String{
-        get{
-            return self.metadata.rootObjectUID
-        }
-    }
-
-    // The spaceUID can be shared between multiple documents-registries
-    // It defines a dataSpace in wich a user can perform operations.
-    // A user can `live` in one data space only.
-    open var spaceUID: String {
-        get {
-            return self.metadata.spaceUID
-        }
-    }
-
-
-    /// The current document user
-    open var currentUser: User {
-        get {
-            if let currentUser=self.metadata.currentUser {
-                return currentUser
-            } else {
-                return User()
-            }
-        }
-    }
 
     // Set to true when the data has been loaded once or more.
     open var hasBeenLoaded: Bool=false
@@ -156,14 +84,9 @@ import Foundation
 
     // MARK: Universal Type management.
 
-    fileprivate static var _associatedTypesMap=[String:String]()
+    internal static var _associatedTypesMap=[String:String]()
 
     // MARK: URI
-
-    // The collection server base URL
-    open dynamic var baseURL:URL{
-        return self.metadata.collaborationServerURL ?? Bartleby.configuration.API_BASE_URL
-    }
 
     // The online flag is driving the "connection" process
     // It connects to the SSE and starts the pushLoop
@@ -188,183 +111,44 @@ import Foundation
         }
     }
 
-    // MARK:
+    // MARK: - Synchronization
 
-    /**
-     Sets the root object UID.
-     The previsou
+    // SSE server sent event source
+    internal var _sse:EventSource?
 
-     - parameter UID: the UID
+    // The EventSource URL for Server Sent Events
+    open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.metadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
 
-     - throws: throws value description
-     */
-    open func setRootObjectUID(_ UID:String) throws {
-        if (self.metadata.rootObjectUID==Default.NO_UID){
-            self.metadata.rootObjectUID=UID
-            Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: UID)
-        }else{
-            throw DocumentError.attemptToSetUpRootObjectUIDMoreThanOnce
-        }
-    }
+    open var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
 
-    /**
-     Declares a collectible type with disymetric runTimeTypeName() and typeName()
+    internal var _timer:Timer?
 
-     You can associate disymetric Type name
-     For example if you create an Alias class that uses Generics
-     runTimeTypeName() & typeName() can diverges.
+    // MARK: - Metrics
 
-     **IMPORTANT** You Cannot use NSecureCoding for diverging classes
+    open dynamic var metrics=[Metrics]()
 
-     The role of declareTypes() is to declare diverging members.
-     Or to produce an adaptation layer (from a type to another)
+    // MARK: - Logs
 
-     ## Let's take an advanced example:
+    open var enableLog: Bool=true
 
-     ```
-     public class Alias<T:Collectible>:BartlebyObject {
+    open var printLogsToTheConsole: Bool=false
 
-     override public class func typeName() -> String {
-     return "Alias<\(T.typeName())>"
-     }
+    open var logs=[LogEntry]()
 
-     ```
-     Let's say we instantiate an Alias<Tag>
+    open var logsObservers=[LogEntriesObserver]()
 
-     To insure **cross product deserialization**
-     Eg:  "_TtGC11BartlebyKit5AliasCS_3Tag_" or "_TtGC5DDD5AliasCS_3Tag_" are transformed to "Alias<Tag>"
+    // MARK: - Consignation
 
-     To associate those disymetric type you can add the class declareTypes
-     And implement typeName() and runTimeTypeName()
+    /// The display duration of volatile messages
+    static open let VOLATILE_DISPLAY_DURATION: Double=3
 
-     ```
-     public class func declareTypes() {
-     BartlebyDocument.declareCollectibleType(Object)
-     BartlebyDocument.declareCollectibleType(Alias<Object>)
+    // MARK:  Simple stack management
 
-     ```
-     - parameter type: a Collectible type
-     */
-    open static func declareCollectibleType(_ type: Collectible.Type) {
-        let prototype=type.init()
-        let name = prototype.runTimeTypeName()
-        BartlebyDocument._associatedTypesMap[type(of: prototype).typeName()]=name
-    }
+    open var trackingIsEnabled: Bool=false
 
+    open var glogTrackedEntries: Bool=false
 
-    /**
-     Bartleby is able to associate the types to allow translitterations
-
-     - parameter universalTypeName: the universal typename
-
-     - returns: the resolved type name
-     */
-    open static func resolveTypeName(from universalTypeName: String) -> String {
-        if let name = BartlebyDocument._associatedTypesMap[universalTypeName] {
-            return name
-        } else {
-            return universalTypeName
-        }
-    }
-
-    //MARK: - Preparations
-
-
-    open func registerCollections() throws {
-        for metadatum in self.metadata.collectionsMetadata {
-            if let proxy=metadatum.proxy {
-                if var proxy = proxy as? BartlebyCollection {
-                    self._addCollection(proxy)
-                    self._refreshIdentifier(&proxy)
-                } else {
-                    throw DocumentError.collectionProxyTypeError
-                }
-            } else {
-                throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
-            }
-        }
-    }
-
-    internal func _refreshProxies()throws {
-        for metadatum in self.metadata.collectionsMetadata {
-            if var proxy=self.collectionByName(metadatum.collectionName) {
-                self._refreshIdentifier(&proxy)
-            } else {
-                throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
-            }
-        }
-    }
-
-    fileprivate func _refreshIdentifier(_ collectionProxy: inout BartlebyCollection) {
-        collectionProxy.undoManager=self.undoManager
-        collectionProxy.document=self
-    }
-
-
-    // MARK: - Collections Public API
-
-    open func getCollection<T: CollectibleCollection>  () throws -> T {
-        guard var collection=self.collectionByName(T.collectionName) as? T else {
-            throw DocumentError.unExistingCollection(collectionName: T.collectionName)
-        }
-        collection.undoManager=self.undoManager
-        return collection
-    }
-
-
-
-    /**
-     Returns the collection Names.
-
-     - returns: the names
-     */
-    open func getCollectionsNames()->[String]{
-        return self._collections.map {$0.0}
-    }
-
-    // MARK: Private Collections Implementation
-    // Weak Casting for internal behavior
-    // Those dynamic method are only used internally
-
-    internal func _addCollection(_ collection: BartlebyCollection) {
-        let collectionName=collection.d_collectionName
-        _collections[collectionName]=collection
-    }
-
-
-    // Any call should always be casted to a CollectibleCollection
-    func collectionByName(_ name: String) -> BartlebyCollection? {
-        if _collections.keys.contains(name){
-            return _collections[name]
-        }
-        return nil
-    }
-
-
-    /**
-     Universal change
-     */
-    open func hasChanged() -> () {
-        #if os(OSX)
-            self.updateChangeCount(NSDocumentChangeType.changeDone)
-        #else
-            self.updateChangeCount(UIDocumentChangeKind.done)
-        #endif
-    }
-
-    /**
-     BartlebyDocument did load
-     */
-    open func documentDidLoad() {
-        self.hasBeenLoaded=true
-    }
-
-    /**
-     BartlebyDocument will save
-     */
-    open func documentWillSave() {
-
-    }
+    open var trackingStack=[(result:Any?, context:Consignable)]()
 
     // MARK: - BSFS: BoxDelegate
 
@@ -413,47 +197,7 @@ import Foundation
     /// - Returns: true if allowed
     open func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool{
         return false // Return false by default
-    }
-
-    // MARK: - Synchronization
-
-    // SSE server sent event source
-    internal var _sse:EventSource?
-
-    // The EventSource URL for Server Sent Events
-    open dynamic lazy var sseURL:URL=URL(string: self.baseURL.absoluteString+"/SSETriggers?spaceUID=\(self.spaceUID)&observationUID=\(self.UID)&lastIndex=\(self.metadata.lastIntegratedTriggerIndex)&runUID=\(Bartleby.runUID)&showDetails=false")!
-
-    open var synchronizationHandlers:Handlers=Handlers.withoutCompletion()
-
-    internal var _timer:Timer?
-
-    // MARK: - Metrics
-
-    open dynamic var metrics=[Metrics]()
-
-    // MARK: - Logs
-
-    open var enableLog: Bool=true
-
-    open var printLogsToTheConsole: Bool=false
-
-    open var logs=[LogEntry]()
-
-    open var logsObservers=[LogEntriesObserver]()
-
-    // MARK: - Consignation
-
-    /// The display duration of volatile messages
-    static open let VOLATILE_DISPLAY_DURATION: Double=3
-
-    // MARK:  Simple stack management
-
-    open var trackingIsEnabled: Bool=false
-
-    open var glogTrackedEntries: Bool=false
-
-    open var trackingStack=[(result:Any?, context:Consignable)]()
-    // MARK  Universal Type Support
+    }    // MARK  Universal Type Support
 
      open class func declareTypes() {
     }
@@ -463,42 +207,18 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var blocks=BlocksManagedCollection(){
-		willSet{
-			blocks.document=self
-		}
-	}
-	
-	open dynamic var boxes=BoxesManagedCollection(){
-		willSet{
-			boxes.document=self
-		}
-	}
-	
-	open dynamic var lockers=LockersManagedCollection(){
-		willSet{
-			lockers.document=self
-		}
-	}
-	
-	open dynamic var nodes=NodesManagedCollection(){
-		willSet{
-			nodes.document=self
-		}
-	}
-	
-	open dynamic var pushOperations=PushOperationsManagedCollection(){
-		willSet{
-			pushOperations.document=self
-		}
-	}
-	
-	open dynamic var users=UsersManagedCollection(){
-		willSet{
-			users.document=self
-		}
-	}
-	
+	open dynamic var blocks=BlocksManagedCollection()
+
+	open dynamic var boxes=BoxesManagedCollection()
+
+	open dynamic var lockers=LockersManagedCollection()
+
+	open dynamic var nodes=NodesManagedCollection()
+
+	open dynamic var pushOperations=PushOperationsManagedCollection()
+
+	open dynamic var users=UsersManagedCollection()
+
 
     // MARK: - Schemas
 
