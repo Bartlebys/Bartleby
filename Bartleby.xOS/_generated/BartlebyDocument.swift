@@ -82,10 +82,6 @@ import Foundation
     // Reachability Manager
     internal var _reachabilityManager:NetworkReachabilityManager?
 
-    // MARK: Universal Type management.
-
-    internal static var _associatedTypesMap=[String:String]()
-
     // MARK: URI
 
     // The online flag is driving the "connection" process
@@ -197,11 +193,7 @@ import Foundation
     /// - Returns: true if allowed
     open func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool{
         return false // Return false by default
-    }    // MARK  Universal Type Support
-
-     open class func declareTypes() {
     }
-
     // MARK: - Collection Controllers
 
     // The initial instances are proxies

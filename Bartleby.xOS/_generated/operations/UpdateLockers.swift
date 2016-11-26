@@ -22,6 +22,11 @@ import Foundation
 
     fileprivate var _payload:String=Default.VOID_STRING
 
+    // Required because the command is serialized in a PushOperation container
+    override public var documentUID: String{
+        return self._documentUID
+    }
+
     fileprivate var _documentUID:String=Default.NO_UID
 
     required public init() {
@@ -143,7 +148,7 @@ import Foundation
                     operationInstance.creatorUID=currentUser.UID
                 }
 				for item in lockers{
-					item.committed=true
+					Bartleby.markCommitted(item.UID)
 				}
 
             }
@@ -176,9 +181,9 @@ import Foundation
                     type(of: self).execute(lockers,
                         in:self.documentUID,
                         sucessHandler: { (context: HTTPContext) -> () in 
-						for item in lockers{
-							Bartleby.markPushed(item.UID)
-						}
+							for item in lockers{
+								Bartleby.markPushed(item.UID)
+							}
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
                             pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
@@ -220,7 +225,7 @@ import Foundation
 
     internal func _getOperation()throws->PushOperation{
         if let document = Bartleby.sharedInstance.getDocumentByUID(self.documentUID) {
-            if let idx=document.pushOperations.indexOf(element: { $0.commandUID==self.UID }){
+            if let idx=document.pushOperations.index(where: { $0.commandUID==self.UID }){
                 return document.pushOperations[idx]
             }
             throw BartlebyOperationError.operationNotFound(UID:self.UID)

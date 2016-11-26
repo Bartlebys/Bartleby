@@ -227,11 +227,10 @@ open class HTTPManager: NSObject {
                 Bartleby.sharedInstance.report(metrics,forURL:url)
             }
 
-            glog( NSLocalizedString("Server is not reachable",comment: "Server is not reachable")+NSLocalizedString("Please Check your connection or your configuration!",comment: "Please Check your connection or your configuration!"), file: #file, function: #function, line: #line)
-
-
             if result.isFailure {
                 failureHandler(context)
+                glog( NSLocalizedString("Server is not reachable",comment: "Server is not reachable")+NSLocalizedString("Please Check your connection or your configuration!",comment: "Please Check your connection or your configuration!"), file: #file, function: #function, line: #line)
+
             } else {
                 if 200...299 ~= statusCode {
                     successHandler()

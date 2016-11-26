@@ -78,8 +78,7 @@ open class JSerializer: Serializer {
     /// - Returns: the serializable instance
     /// - Throws:  SerializableError and CryptoError JSON errors
     static open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
-        if var typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
-            typeName = BartlebyDocument.resolveTypeName(from: typeName)
+        if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
                     let map=Map(mappingType: .fromJSON, JSON : dictionary)

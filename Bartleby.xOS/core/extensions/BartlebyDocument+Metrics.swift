@@ -10,6 +10,10 @@ import Foundation
 
 extension BartlebyDocument{
 
+
+    /// Adds the metrics and computes the qosIndice
+    ///
+    /// - Parameter metrics: the metrics
     open func report(_ metrics:Metrics){
         metrics.counter=self.metrics.count+1
         metrics.elapsed=Bartleby.elapsedTime

@@ -9,7 +9,7 @@
 import Foundation
 
 // Any Initializable Object should implement an argument free init.
-// This force to have an inital consistent state to allow universal serialization / deserialization.
+// This force to have an inital consistent state to allow  serialization / deserialization.
 public protocol Initializable {
     init()
 }

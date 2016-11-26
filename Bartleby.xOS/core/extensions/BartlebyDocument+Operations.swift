@@ -27,37 +27,27 @@ extension BartlebyDocument {
     }
 
 
-    internal func _pushLoop () -> () {
-        if self.shouldBePushed(){
-            self.synchronizePendingOperations()
-        }
+    func destroyThePushLoop(){
+        self._timer?.invalidate()
+        self._timer=nil
     }
 
-    public func shouldBePushed()->Bool{
-        return self.metadata.pushOnChanges
+
+    // The push loop
+    internal func _pushLoop () -> () {
+        if self.metadata.pushOnChanges{
+            self.synchronizePendingOperations()
+        }
     }
 
 
     // MARK: - Operations
 
     /**
-     Commits the pending changes.
-     - throws: may throw on collection iteration
-     */
-    public func commitPendingChanges() throws {
-        var triggerUpsertString=""
-        self.iterateOnCollections { (collection) in
-            let UIDS=collection.commitChanges()
-            if UIDS.count>0{
-                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joined(separator: ",")
-            }
-        }
-    }
-
-    /**
      Synchronizes the pending operations
-     1. Proceeds to login
-     3. Then pushes the pending operations
+
+     1. Proceeds to login if necessart
+     2. Then commits the pending changes and pushes operations
 
      - parameter handlers: the handlers to monitor the progress and completion
      */
@@ -99,6 +89,20 @@ extension BartlebyDocument {
         self._pushNextBunch()
     }
 
+
+    /**
+     Commits the pending changes.
+     - throws: may throw on collection iteration
+     */
+    public func commitPendingChanges() throws {
+        var triggerUpsertString=""
+        self.iterateOnCollections { (collection) in
+            let UIDS=collection.commitChanges()
+            if UIDS.count>0{
+                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joined(separator: ",")
+            }
+        }
+    }
 
     fileprivate func _pushNextBunch(){
         // Push next bunch if there is no bunch in progress

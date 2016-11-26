@@ -13,7 +13,7 @@
  NSClassFromString(ClassName) is constant in any target.
  Multiple Apps can interchange and consume Bartleby's Dynamic / Distributed Object
 
- E.g `class MyClass<T:AnyProtocol> ` is not possible to keep the support of NSSecureCoding.
+ E.g `class MyClass<T:AnyProtocol> ` is not possible to keep the support of NSSecureCoding
 
  */
 public protocol UniversalType {

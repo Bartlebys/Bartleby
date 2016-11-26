@@ -253,7 +253,7 @@ import Foundation
 		coder.encode(self.ephemeral,forKey:"ephemeral")
 		coder.encode(self.committed,forKey:"committed")
 		coder.encode(self.pushed,forKey:"pushed")
-        self._typeName=type(of: self).typeName()// Store the universal type name on serialization
+        self._typeName=type(of: self).typeName()// Store the  type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
         

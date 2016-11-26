@@ -7,7 +7,7 @@ import BartlebyKit
 
 
 Bartleby.sharedInstance.configureWith(BartlebyDefaultConfiguration)
-let document=BartlebyDocument() // Required to declare the universal types
+let document=BartlebyDocument()
 
 let user=User()
 user.email="bartleby@bartlebys.org"
