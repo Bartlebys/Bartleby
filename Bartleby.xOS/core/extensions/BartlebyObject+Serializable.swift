@@ -61,6 +61,7 @@ extension BartlebyObject:Serializable{
                 self.log("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: logsCategoryFor(self), decorative: false)
             }
         }
+        self._commitCounter=Int(instance.commitCounter)
     }
     
 }

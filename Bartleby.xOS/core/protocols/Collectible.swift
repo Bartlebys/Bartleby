@@ -9,7 +9,7 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRepresentation, Supervisable,Distribuable,ChangesInspectable, UniversalType,Exposed, JSONString {
+public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRepresentation, Supervisable,Committable,ChangesInspectable, UniversalType,Exposed, JSONString {
 
     // The collection of the item
     var collection:CollectibleCollection? { get set }

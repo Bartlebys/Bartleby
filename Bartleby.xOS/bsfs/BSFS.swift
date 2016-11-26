@@ -607,7 +607,7 @@ public final class BSFS:TriggerHook{
                                                 var block:Block?
                                                 if let b=self._findBlockMatching(chunk: chunk){
                                                     block=b
-                                                    block?.commitRequired()
+                                                    block?.needsToBeCommitted()
                                                 }else{
                                                     block=self._document.newBlock()
                                                 }
@@ -631,7 +631,7 @@ public final class BSFS:TriggerHook{
                                         }
 
                                         // Mark the node to be committed
-                                        node.commitRequired()
+                                        node.needsToBeCommitted()
 
                                         // Delete the original
                                         Async.utility{

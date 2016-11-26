@@ -173,8 +173,8 @@ extension Notification.Name {
             for changed in changedItems{
                 UIDS.append(changed.UID)
             }
-			let tobeUpdated = changedItems.filter { $0.pushed == true }
-			let toBeCreated = changedItems.filter { $0.pushed == false }
+			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
+			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
 			    CreateNodes.commit(toBeCreated, in:self.document!)
 			}
@@ -182,12 +182,9 @@ extension Notification.Name {
 			    UpdateNodes.commit(tobeUpdated, in:self.document!)
 			}
 
-            self.committed=true
         }
         return UIDS
     }
-
-    // MARK: Identifiable
 
     override open class var collectionName:String{
         return Node.collectionName
@@ -278,7 +275,7 @@ extension Notification.Name {
     }
 
 
-    // MARK: Upsert
+    // MARK: - Upsert
 
 
     open func upsert(_ item: Collectible, commit:Bool=true){
@@ -360,7 +357,7 @@ extension Notification.Name {
             #endif
 
 
-            if item.committed==false && commit==true {
+            if item.shouldBeCommitted && commit==true {
                CreateNode.commit(item, in:self.document!)
             }
 
@@ -386,9 +383,6 @@ extension Notification.Name {
 
         // Unregister the item
         Bartleby.unRegister(item)
-
-        //Update the commit flag
-        item.committed=false
 
         // Remove the item from the collection
         self._items.remove(at:index)

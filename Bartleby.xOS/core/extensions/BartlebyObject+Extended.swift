@@ -41,6 +41,7 @@ extension BartlebyObject{
         }
     }
 
+    // Retunrns the document UID
     open var documentUID:String{
         return self.document?.UID ?? Default.NO_UID
     }
@@ -53,12 +54,6 @@ extension BartlebyObject{
             return self._runTimeTypeName!
         }
         return self._runTimeTypeName!
-    }
-
-    // You can in specific situation mark that an instance should be committed by calling this method.
-    // For example after a bunch of un supervised changes.
-    open func commitRequired(){
-        self._shouldBeCommitted=true
     }
 
 

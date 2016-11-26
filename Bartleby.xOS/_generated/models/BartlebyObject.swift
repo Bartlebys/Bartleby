@@ -60,23 +60,8 @@ import Foundation
 	//The internal flag for auto commit
 	dynamic internal var _shouldBeCommitted:Bool = false
 
-	//Distribuable protocol
-	dynamic open var committed:Bool = false  {
-	    didSet { 
-	       if !self.wantsQuietChanges && committed != oldValue {
-	            self.provisionChanges(forKey: "committed",oldValue: oldValue,newValue: committed)  
-	       } 
-	    }
-	}
-
-	//Distribuable protocol
-	dynamic open var pushed:Bool = false  {
-	    didSet { 
-	       if !self.wantsQuietChanges && pushed != oldValue {
-	            self.provisionChanges(forKey: "pushed",oldValue: oldValue,newValue: pushed)  
-	       } 
-	    }
-	}
+	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
+	dynamic internal var _commitCounter:Int = 0
 
     // MARK: -
 
@@ -128,7 +113,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","changedKeys","committed","pushed"])
+        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","changedKeys"])
         return exposed
     }
 
@@ -161,14 +146,6 @@ import Foundation
                 if let casted=value as? [KeyedChanges]{
                     self.changedKeys=casted
                 }
-            case "committed":
-                if let casted=value as? Bool{
-                    self.committed=casted
-                }
-            case "pushed":
-                if let casted=value as? Bool{
-                    self.pushed=casted
-                }
             default:
                 throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
         }
@@ -194,10 +171,6 @@ import Foundation
                return self.ephemeral
             case "changedKeys":
                return self.changedKeys
-            case "committed":
-               return self.committed
-            case "pushed":
-               return self.pushed
             default:
                 throw ObjectExpositionError.UnknownKey(key: key,forTypeName: BartlebyObject.typeName())
         }
@@ -215,8 +188,7 @@ import Foundation
 			self.creatorUID <- ( map["creatorUID"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
-			self.committed <- ( map["committed"] )
-			self.pushed <- ( map["pushed"] )
+			self._commitCounter <- ( map["_commitCounter"] )
             if map.mappingType == .toJSON {
                 // Define if necessary the UID
                 self.defineUID()
@@ -236,8 +208,7 @@ import Foundation
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
-			self.committed=decoder.decodeBool(forKey:"committed") 
-			self.pushed=decoder.decodeBool(forKey:"pushed") 
+			self._commitCounter=decoder.decodeInteger(forKey:"_commitCounter") 
             self._typeName=type(of: self).typeName()
             self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
         }
@@ -251,8 +222,7 @@ import Foundation
 			coder.encode(summary,forKey:"summary")
 		}
 		coder.encode(self.ephemeral,forKey:"ephemeral")
-		coder.encode(self.committed,forKey:"committed")
-		coder.encode(self.pushed,forKey:"pushed")
+		coder.encode(self._commitCounter,forKey:"_commitCounter")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)

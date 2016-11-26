@@ -43,6 +43,9 @@ import Foundation
 	//The url of the collaboration server
 	dynamic open var collaborationServerURL:URL?
 
+	//Should be Set to true only when the document has been correctly registred on collaboration server
+	dynamic open var registred:Bool = false
+
 	//If the changes are inspectable all the changes are stored in KeyChanges objects
 	dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
 
@@ -146,7 +149,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","identificationValue","collaborationServerURL","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","identificationValue","collaborationServerURL","registred","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -182,6 +185,10 @@ import Foundation
             case "collaborationServerURL":
                 if let casted=value as? URL{
                     self.collaborationServerURL=casted
+                }
+            case "registred":
+                if let casted=value as? Bool{
+                    self.registred=casted
                 }
             case "changesAreInspectables":
                 if let casted=value as? Bool{
@@ -294,6 +301,8 @@ import Foundation
                return self.identificationValue
             case "collaborationServerURL":
                return self.collaborationServerURL
+            case "registred":
+               return self.registred
             case "changesAreInspectables":
                return self.changesAreInspectables
             case "collectionsMetadata":
@@ -355,6 +364,7 @@ import Foundation
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.identificationValue <- ( map["identificationValue"] )
 			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
+			self.registred <- ( map["registred"] )
 			self.collectionsMetadata <- ( map["collectionsMetadata"] )
 			self.stateDictionary <- ( map["stateDictionary"] )
 			self.URLBookmarkData <- ( map["URLBookmarkData"] )
@@ -386,6 +396,7 @@ import Foundation
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
+			self.registred=decoder.decodeBool(forKey:"registred") 
 			self.collectionsMetadata=decoder.decodeObject(of: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
 			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
@@ -419,6 +430,7 @@ import Foundation
 		if let collaborationServerURL = self.collaborationServerURL {
 			coder.encode(collaborationServerURL,forKey:"collaborationServerURL")
 		}
+		coder.encode(self.registred,forKey:"registred")
 		coder.encode(self.collectionsMetadata,forKey:"collectionsMetadata")
 		coder.encode(self.stateDictionary,forKey:"stateDictionary")
 		coder.encode(self.URLBookmarkData,forKey:"URLBookmarkData")

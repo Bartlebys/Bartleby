@@ -31,7 +31,7 @@ import Foundation
     }()
 
     static let b_version = "1.0"
-    static let b_release = "GC"
+    static let b_release = "0"
 
     /// The version string of Bartleby framework
     open static var versionString: String {
@@ -150,7 +150,9 @@ import Foundation
     }
 
     /**
-     Replaces the UID of a proxy Document
+     Replaces the UID of a proxy Document 
+     The proxy document is an instance that is created before to deserialize asynchronously the document Data
+     Should be exclusively used when re-openning an existing document.
 
      - parameter documentProxyUID: the proxy UID
      - parameter documentUID:      the final UID
@@ -328,19 +330,13 @@ import Foundation
 
 
     open static func markCommitted(_ instanceUID:String){
-        if var instance=Bartleby.collectibleInstanceByUID(instanceUID){
-            instance.committed=true
+        if let instance=Bartleby.collectibleInstanceByUID(instanceUID){
+            instance.hasBeenCommitted()
         }else{
             glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
         }
     }
 
 
-    open static func markPushed(_ instanceUID:String){
-        if var instance=Bartleby.collectibleInstanceByUID(instanceUID){
-            instance.pushed=true
-        }else{
-            glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
-        }
-    }
+
 }

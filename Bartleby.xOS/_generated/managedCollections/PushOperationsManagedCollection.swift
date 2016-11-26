@@ -173,8 +173,6 @@ extension Notification.Name {
     
 
 
-    // MARK: Identifiable
-
     override open class var collectionName:String{
         return PushOperation.collectionName
     }
@@ -264,7 +262,7 @@ extension Notification.Name {
     }
 
 
-    // MARK: Upsert
+    // MARK: - Upsert
 
 
     open func upsert(_ item: Collectible, commit:Bool=true){
@@ -371,9 +369,6 @@ extension Notification.Name {
 
         // Unregister the item
         Bartleby.unRegister(item)
-
-        //Update the commit flag
-        item.committed=false
 
         // Remove the item from the collection
         self._items.remove(at:index)

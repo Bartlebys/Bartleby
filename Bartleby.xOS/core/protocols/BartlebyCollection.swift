@@ -11,6 +11,6 @@ import Foundation
 
 // A collection without generic constraint of IterableCollectibleCollection
 // @todo use type erasure?
-public protocol BartlebyCollection:CollectibleCollection, SuperIterable, Committable{
+public protocol BartlebyCollection:CollectibleCollection, SuperIterable, GroupedCommits{
 
 }

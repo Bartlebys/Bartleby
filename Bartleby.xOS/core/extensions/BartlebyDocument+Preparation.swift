@@ -28,6 +28,7 @@ extension BartlebyDocument{
 
         // Remap the document
         self.metadata.document=self
+        self.metadata.currentUser?.document=self
 
         // Configure the schemas
         self.configureSchema()
@@ -59,7 +60,7 @@ extension BartlebyDocument{
     }
 
     // Injects into the collections proxie the document and undoManager.
-    internal func _refreshProxies()throws {
+    internal func _refreshCollectionsProxies()throws {
         for metadatum in self.metadata.collectionsMetadata {
             if var proxy=self.collectionByName(metadatum.collectionName) {
                 proxy.undoManager=self.undoManager

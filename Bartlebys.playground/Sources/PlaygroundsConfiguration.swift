@@ -16,8 +16,6 @@ import Foundation
 // A shared configuration Model
 open class PlaygroundsConfiguration: BartlebyConfiguration {
 
-
-
     // The cryptographic key used to encrypt/decrypt the data
     open static var KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
 

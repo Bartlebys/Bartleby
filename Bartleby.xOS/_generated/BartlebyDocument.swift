@@ -319,7 +319,7 @@ import Foundation
                 user.document = self
             }
         }
-        user.commitRequired()// We defer the commit to allow to take account of overriden possible changes.
+        user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
         return user
     }
 
@@ -336,7 +336,7 @@ import Foundation
             // Become managed
             self.blocks.add(block, commit:false)
         }
-        block.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        block.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
         return  block
     }
 
@@ -353,7 +353,7 @@ import Foundation
             // Become managed
             self.boxes.add(box, commit:false)
         }
-        box.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        box.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
         return  box
     }
 
@@ -370,7 +370,7 @@ import Foundation
             // Become managed
             self.lockers.add(locker, commit:false)
         }
-        locker.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        locker.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
         return  locker
     }
 
@@ -387,7 +387,7 @@ import Foundation
             // Become managed
             self.nodes.add(node, commit:false)
         }
-        node.commitRequired() // We defer the commit to allow to take account of overriden possible changes.
+        node.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
         return  node
     }
 

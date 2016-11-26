@@ -72,17 +72,23 @@ extension BartlebyDocument{
                 if var metadataData=wrapper.regularFileContents {
                     metadataData = try Bartleby.cryptoDelegate.decryptData(metadataData)
                     let r = try Bartleby.defaultSerializer.deserialize(metadataData)
+
+                    // What is the proxy UID?
+                    let proxyDocumentUID=self.UID
+
                     if let metadata=r as? DocumentMetadata {
                         self.metadata = metadata
                         self.metadata.document = self
+                        self.metadata.currentUser?.document=self
                     } else {
                         // There is an error
                         self.log("ERROR \(r)", file: #file, function: #function, line: #line)
                         return
                     }
-                    let documentUID=self.metadata.persistentUID
-                    Bartleby.sharedInstance.replaceDocumentUID(Default.NO_UID, by: documentUID)
-                    self.metadata.currentUser?.document=self
+
+                    // Replace the document proxy declared document UID
+                    // By the persistent UID
+                    Bartleby.sharedInstance.replaceDocumentUID(proxyDocumentUID, by: self.metadata.persistentUID)
                 }
             } else {
                 // ERROR
@@ -137,7 +143,7 @@ extension BartlebyDocument{
                 }
             }
             do {
-                try self._refreshProxies()
+                try self._refreshCollectionsProxies()
             } catch {
                 self.log("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
             }

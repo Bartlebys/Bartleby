@@ -175,15 +175,12 @@ import Foundation
                 // so we do not want to push multiple times unintensionnaly.
                 // Check BartlebyDocument+Operations.swift to understand Operation status
                 let pushOperation = try self._getOperation()
+                // Provision the operation
                 if  pushOperation.canBePushed(){
-                    // We try to execute
                     pushOperation.status=PushOperation.Status.inProgress
                     type(of: self).execute(blocks,
                         in:self.documentUID,
-                        sucessHandler: { (context: HTTPContext) -> () in 
-							for item in blocks{
-								Bartleby.markPushed(item.UID)
-							}
+                        sucessHandler: { (context: HTTPContext) -> () in
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
                             pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)

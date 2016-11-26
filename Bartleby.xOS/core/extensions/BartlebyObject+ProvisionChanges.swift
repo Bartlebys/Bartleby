@@ -15,11 +15,10 @@ extension BartlebyObject:ProvisionChanges{
     /**
      The change provisionning is related to multiple essential notions.
 
-     ## **Supervision** is a local  "observation" mecanism
-     We use supervision to determine if an object has changed.
+     ## **Supervision** is a local mechanism used to determine if an object has changed.
      Properties that are declared `supervisable` provision their changes using this method.
 
-     ## **Commit** is the first phase of the **distribution** mecanism (the second is Push, and the Third Trigger and integration on another node)
+     ## **Commit** is the first phase of the **distribution** mechanism (the second is Push, and the Third Trigger and integration on another node)
      If auto-commit is enabled on any supervised change an object is marked  to be committed `_shouldBeCommitted=true`
 
      ## You can add **supervisers** to any BartlebyObject.
@@ -29,7 +28,7 @@ extension BartlebyObject:ProvisionChanges{
      If Bartleby.inspectable we store in memory the changes changed Keys to allow Bartleby's runtime inspections
      (we use  `KeyedChanges` objects)
 
-     `provisionChanges` is the entry point of those mecanisms.
+     `provisionChanges` is the entry point of those mechanisms.
 
      - parameter key:      the key
      - parameter oldValue: the oldValue
@@ -37,39 +36,21 @@ extension BartlebyObject:ProvisionChanges{
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
-        if self._autoCommitIsEnabled == true {
-            // Set up the commit flag
-            self._shouldBeCommitted=true
-        }
-
         // Invoke the closures (changes Observers)
         // note that it occurs even changes are not inspectable.
         for (_,supervisionClosure) in self._supervisers{
             supervisionClosure(key,oldValue,newValue)
         }
 
-
         // We want to save collections only if needed.
         if var collection = self as? BartlebyCollection{
             collection.shouldBeSaved=true
         }
 
-
-        // Used when using CRUD model (for example on users)
-        // To discriminate creation from update
-        if key=="committed"{
-            if let committed = newValue as? Bool{
-                self._shouldBeCommitted = !committed
-            }
-            self.collection?.shouldBeSaved=true
+       if self._autoCommitIsEnabled == true {
+            // Set up the commit flag (can be propagated to the collection)
+            self._shouldBeCommitted=true
         }
-
-        // Used when using CRUD model (for example on users)
-        // To discriminate creation from update
-        if key=="pushed"{
-            self.collection?.shouldBeSaved=true
-        }
-
 
         // Changes propagation & Inspection
         // Propagate item changes to its collections
@@ -123,7 +104,6 @@ extension BartlebyObject:ProvisionChanges{
                 self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }
         }
-
 
     }
 

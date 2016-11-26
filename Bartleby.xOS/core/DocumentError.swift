@@ -9,17 +9,6 @@
 
 import Foundation
 
-#if os(OSX)
-    import AppKit
-#else
-    import UIKit
-#endif
-
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
-
 public enum DocumentError: Error {
     case duplicatedCollectionName(collectionName:String)
     case attemptToLoadAnNonSupportedCollection(collectionName:String)

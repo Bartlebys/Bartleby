@@ -1,5 +1,5 @@
 //
-//  Commitable.swift
+//  GroupedCommits.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 20/07/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol Committable {
+public protocol GroupedCommits {
 
     /**
 
