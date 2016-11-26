@@ -37,6 +37,24 @@ extension BartlebyObject:ProvisionChanges{
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
+        if self._autoCommitIsEnabled == true {
+            // Set up the commit flag
+            self._shouldBeCommitted=true
+        }
+
+        // Invoke the closures (changes Observers)
+        // note that it occurs even changes are not inspectable.
+        for (_,supervisionClosure) in self._supervisers{
+            supervisionClosure(key,oldValue,newValue)
+        }
+
+
+        // We want to save collections only if needed.
+        if var collection = self as? BartlebyCollection{
+            collection.shouldBeSaved=true
+        }
+
+
         // Used when using CRUD model (for example on users)
         // To discriminate creation from update
         if key=="committed"{
@@ -44,34 +62,17 @@ extension BartlebyObject:ProvisionChanges{
                 self._shouldBeCommitted = !committed
             }
             self.collection?.shouldBeSaved=true
-            return
         }
 
         // Used when using CRUD model (for example on users)
         // To discriminate creation from update
         if key=="pushed"{
             self.collection?.shouldBeSaved=true
-            return
-        }
-
-        // We want to save collections only if needed.
-        if var collection = self as? BartlebyCollection{
-            collection.shouldBeSaved=true
-        }
-
-        if self._autoCommitIsEnabled == true {
-            // Set up the commit flag
-            self._shouldBeCommitted=true
         }
 
 
-            // Invoke the closures (changes Observers)
-            // note that it occurs even changes are not inspectable.
-            for (_,supervisionClosure) in self._supervisers{
-                supervisionClosure(key,oldValue,newValue)
-            }
-
-
+        // Changes propagation & Inspection
+        // Propagate item changes to its collections
 
         if key=="*" && !(self is BartlebyCollection){
             if self.isInspectable {
@@ -122,6 +123,8 @@ extension BartlebyObject:ProvisionChanges{
                 self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }
         }
+
+
     }
 
 

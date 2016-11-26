@@ -59,7 +59,7 @@ open class TestsConfiguration: BartlebyConfiguration {
     open static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
 
     // Supervision loop interval (1 second min )
-    open static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
+    open static var LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
      // To guarantee the sequential Execution use 1
     open static var MAX_OPERATIONS_BUNCH_SIZE: Int = 10

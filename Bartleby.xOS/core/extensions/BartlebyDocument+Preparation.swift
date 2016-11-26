@@ -17,6 +17,31 @@ import Foundation
 extension BartlebyDocument{
 
 
+    // Essential document preparation
+    internal func _configure(){
+
+        // Declare the document
+        Bartleby.sharedInstance.declare(self)
+
+        // Add the document to globals logs observer
+        addGlobalLogsObserver(self)
+
+        // Remap the document
+        self.metadata.document=self
+
+        // Configure the schemas
+        self.configureSchema()
+
+        // We want to be able to write blocks even on Document drafts.
+        if  self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName] == nil{
+            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
+            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+            documentFileWrapper.addFileWrapper(blocksFileWrapper)
+        }
+    }
+
+
+    /// Registers the collections into the document
     open func registerCollections() throws {
         for metadatum in self.metadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
@@ -33,6 +58,7 @@ extension BartlebyDocument{
         }
     }
 
+    // Injects into the collections proxie the document and undoManager.
     internal func _refreshProxies()throws {
         for metadatum in self.metadata.collectionsMetadata {
             if var proxy=self.collectionByName(metadatum.collectionName) {
@@ -41,30 +67,6 @@ extension BartlebyDocument{
             } else {
                 throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }
-        }
-    }
-
-
-    internal func _configure(){
-        Bartleby.sharedInstance.declare(self)
-        addGlobalLogsObserver(self) // Add the document to globals logs observer
-        self.metadata.document=self
-        // Setup the spaceUID if necessary
-        if (self.metadata.spaceUID==Default.NO_UID) {
-            self.metadata.spaceUID=self.metadata.UID
-        }
-
-        // Setup the default collaboration server
-        self.metadata.collaborationServerURL=Bartleby.configuration.API_BASE_URL
-
-        // Configure the schemas
-        self.configureSchema()
-
-        // We want to be able to write blocks even on Document drafts.
-        if  self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName] == nil{
-            let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
-            documentFileWrapper.addFileWrapper(blocksFileWrapper)
         }
     }
 

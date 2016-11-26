@@ -58,7 +58,7 @@ public protocol BartlebyConfiguration {
     static var PASSWORD_CHAR_CART: String { get set }
 
     // Supervision loop interval (1 second min )
-    static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
+    static var LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
 
      // To guarantee the sequential Execution use 1 (!)
     static var MAX_OPERATIONS_BUNCH_SIZE: Int { get set }
@@ -119,7 +119,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var MIN_PASSWORD_SIZE: UInt=6
 
     // Supervision loop interval (1 second min )
-    public static var SUPERVISION_LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
+    public static var LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
     // To guarantee the sequential Execution use 1
     public static var MAX_OPERATIONS_BUNCH_SIZE: Int=10

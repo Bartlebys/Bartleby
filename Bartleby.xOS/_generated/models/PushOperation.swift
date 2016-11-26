@@ -33,11 +33,10 @@ import Foundation
 	//The completion state of the operation
 	dynamic open var completionState:Completion?
 
-	//The invocation Status None: on creation, Pending: can be pushed, Provisionned: is currently in an operation bunch, InProgress: the endpoint has been called, Completed : The end point call has been completed
+	//The invocation Status None: on creation, Pending: can be pushed, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
 		case none = "none"
 		case pending = "pending"
-		case provisionned = "provisionned"
 		case inProgress = "inProgress"
 		case completed = "completed"
 	}
