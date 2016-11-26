@@ -127,7 +127,6 @@ import Foundation
     */
     static func commit(_ users:[User], in document:BartlebyDocument){
         let operationInstance=CreateUsers()
-        operationInstance.defineUID()
         operationInstance._documentUID=document.UID
         operationInstance._payload=users.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:3079848263, caller: "\(operationInstance.runTimeTypeName()).commit")

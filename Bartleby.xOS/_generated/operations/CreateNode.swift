@@ -127,7 +127,6 @@ import Foundation
     */
     static func commit(_ node:Node, in document:BartlebyDocument){
         let operationInstance=CreateNode()
-        operationInstance.defineUID()
         operationInstance._documentUID=document.UID
         operationInstance._payload=node.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:1759518502, caller: "\(operationInstance.runTimeTypeName()).commit")

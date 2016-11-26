@@ -16,7 +16,7 @@ extension BartlebyObject{
      We create the UID only if necessary.
      */
     open func defineUID() {
-        if self._id == Default.NO_UID {
+        if  self._id == nil{
             self._id=Bartleby.createUID()
         }
     }
@@ -25,7 +25,7 @@ extension BartlebyObject{
     final public var UID: String {
         get {
             self.defineUID()
-            return  self._id
+            return  self._id!
         }
     }
 

@@ -15,7 +15,6 @@ import Foundation
 extension BartlebyObject:DictionaryRepresentation {
 
     open func dictionaryRepresentation()->[String:Any] {
-        self.defineUID()
         return Mapper().toJSON(self)
     }
     

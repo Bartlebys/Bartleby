@@ -127,7 +127,6 @@ import Foundation
     */
     static func commit(_ lockers:[Locker], in document:BartlebyDocument){
         let operationInstance=UpdateLockers()
-        operationInstance.defineUID()
         operationInstance._documentUID=document.UID
         operationInstance._payload=lockers.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:776462226, caller: "\(operationInstance.runTimeTypeName()).commit")

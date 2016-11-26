@@ -66,7 +66,7 @@ import Foundation
     // MARK: -
 
     // This  id is always  created locally and used as primary index by MONGODB
-    internal var _id: String=Default.NO_UID{
+    internal var _id: String?{
         didSet {
             // tag ephemeral instance
             if Bartleby.ephemeral {
@@ -190,8 +190,7 @@ import Foundation
 			self.ephemeral <- ( map["ephemeral"] )
 			self._commitCounter <- ( map["_commitCounter"] )
             if map.mappingType == .toJSON {
-                // Define if necessary the UID
-                self.defineUID()
+                self.defineUID()// Define if necessary the UID
             }
             self._typeName <- map[Default.TYPE_NAME_KEY]
             self._id <- map[Default.UID_KEY]
@@ -224,6 +223,7 @@ import Foundation
 		coder.encode(self.ephemeral,forKey:"ephemeral")
 		coder.encode(self._commitCounter,forKey:"_commitCounter")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
+        self.defineUID()// Define if necessary the UID    
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
         
