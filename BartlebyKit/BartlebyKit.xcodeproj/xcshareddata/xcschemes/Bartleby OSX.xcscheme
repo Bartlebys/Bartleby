@@ -40,6 +40,42 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "AccessControlTests">
+               </Test>
+               <Test
+                  Identifier = "AuthCookiesTests">
+               </Test>
+               <Test
+                  Identifier = "BFileManagerTests">
+               </Test>
+               <Test
+                  Identifier = "BaseObjectTests">
+               </Test>
+               <Test
+                  Identifier = "BasicApiTests">
+               </Test>
+               <Test
+                  Identifier = "CompletionWithResultTests">
+               </Test>
+               <Test
+                  Identifier = "CryptoHelperTests">
+               </Test>
+               <Test
+                  Identifier = "LockerTests">
+               </Test>
+               <Test
+                  Identifier = "PStringTests">
+               </Test>
+               <Test
+                  Identifier = "TestCase">
+               </Test>
+               <Test
+                  Identifier = "TransformTests">
+               </Test>
+               <Test
+                  Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests">
+               </Test>
+               <Test
                   Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test002_deleteUser2_shouldFail()">
                </Test>
                <Test
@@ -56,6 +92,12 @@
                </Test>
                <Test
                   Identifier = "UserCreationWithTheSameMailInDifferentSpaceTests/test009_DeleteUser2()">
+               </Test>
+               <Test
+                  Identifier = "UserStatusTests">
+               </Test>
+               <Test
+                  Identifier = "UsersCreationLoadTest">
                </Test>
                <Test
                   Identifier = "UsersCreationLoadTest/test_005A_10X10_key()">

@@ -455,6 +455,8 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
+		E55D61421DE9EE7900BF63B6 /* BSFSTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61411DE9EE7900BF63B6 /* BSFSTestBase.swift */; };
+		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
 		E568A78D1DC8762100BE157D /* ReportTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E568A78B1DC8762100BE157D /* ReportTabViewController.xib */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
@@ -762,6 +764,8 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
+		E55D61411DE9EE7900BF63B6 /* BSFSTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSTestBase.swift; sourceTree = "<group>"; };
+		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
 		E568A78A1DC8762100BE157D /* ReportTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTabViewController.swift; sourceTree = "<group>"; };
 		E568A78B1DC8762100BE157D /* ReportTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportTabViewController.xib; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1296,6 +1300,8 @@
 		E536C06E1DC9F5D00053DE31 /* BSFSOSXTests */ = {
 			isa = PBXGroup;
 			children = (
+				E55D61411DE9EE7900BF63B6 /* BSFSTestBase.swift */,
+				E55D61431DE9F79800BF63B6 /* BlocksTests.swift */,
 			);
 			path = BSFSOSXTests;
 			sourceTree = "<group>";
@@ -2006,6 +2012,8 @@
 				E5B128F51D1C317300D61261 /* CryptoHelperTests.swift in Sources */,
 				E5B128FB1D1C317300D61261 /* BasicApiTests.swift in Sources */,
 				E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */,
+				E55D61421DE9EE7900BF63B6 /* BSFSTestBase.swift in Sources */,
+				E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */,
 				E5B128FA1D1C317300D61261 /* UsersCreationLoadTest.swift in Sources */,
 				E5B128FD1D1C317300D61261 /* AuthCookiesTests.swift in Sources */,
 			);

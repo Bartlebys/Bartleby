@@ -14,7 +14,7 @@ extension Node{
 
 
     /// true if the node can be assembled
-    var isAssemblable:Bool{
+    public var isAssemblable:Bool{
         if let document=self.document{
             // Do we have all the required blocks?
             for uid in self.blocksUIDS{
