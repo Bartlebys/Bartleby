@@ -11,6 +11,8 @@ import BartlebyKit
 
 class BSFSTestBase: XCTestCase {
 
+    static var documentCounter=0
+
     static var document:BartlebyDocument=BartlebyDocument()
 
     static var documentURL:URL=urlByAppending(path:"blockTest.document")

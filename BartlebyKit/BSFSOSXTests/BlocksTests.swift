@@ -10,10 +10,10 @@ import XCTest
 import BartlebyKit
 
 // IMPORTANT TO UNDERSTAND
-// in Those test we use file wrappers that are not explicitly saved.
+// in Those tests we use file wrappers that are not explicitly saved.
 // At the end of the chunk process it calls :
 // try self.document?.put(data: data, identifiedBy: chunk.sha1)
-// Put there is no guarantee the data is written ( we use the document file wrappers)
+// there is no guarantee the data is written within the package( we use the document file wrappers)
 class BlocksTests: BSFSTestBase {
 
     override func setUp() {

@@ -478,6 +478,7 @@
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
 		E5E6E1C61DBE3F9D0036594C /* ChronologyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */; };
 		E5E6E1C71DBE3F9D0036594C /* ChronologyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */; };
+		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
 		E5F8B4EA1DC39B3B00525EF7 /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */; };
 /* End PBXBuildFile section */
 
@@ -781,6 +782,7 @@
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
 		E5E6E1C41DBE3F9D0036594C /* ChronologyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChronologyViewController.swift; sourceTree = "<group>"; };
 		E5E6E1C51DBE3F9D0036594C /* ChronologyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChronologyViewController.xib; sourceTree = "<group>"; };
+		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 		E5F8B4E91DC39B3B00525EF7 /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1339,6 +1341,7 @@
 		E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
 			isa = PBXGroup;
 			children = (
+				E5F538491DEAE472008DEBF7 /* Documents */,
 				E53E2C3A1DD358670040E32B /* PString */,
 				5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */,
 				5BBF7D441CC8E4E400F2237B /* TransformTests.swift */,
@@ -1386,6 +1389,14 @@
 				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
 			);
 			name = "Support-files";
+			sourceTree = "<group>";
+		};
+		E5F538491DEAE472008DEBF7 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */,
+			);
+			path = Documents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2016,6 +2027,7 @@
 				E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */,
 				E5B128FA1D1C317300D61261 /* UsersCreationLoadTest.swift in Sources */,
 				E5B128FD1D1C317300D61261 /* AuthCookiesTests.swift in Sources */,
+				E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
