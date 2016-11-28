@@ -60,8 +60,8 @@ extension BartlebyDocument {
         if !self._securityScopedBookmarkExits(originalURL, appScoped: false) {
             let bookmarked = try self._bookmarkURL(originalURL, appScoped: false)
             //Start acessing
-            self._startAccessingToSecurityScopedResourceAtURL(bookmarked)
-            return bookmarked
+            self._startAccessingToSecurityScopedResourceAtURL(bookmarked.key,bookmarked.url)
+            return bookmarked.url
         } else {
             return try self._getSecurityScopedURLFrom(originalURL, appScoped: false)
         }
@@ -75,11 +75,11 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func releaseSecurizedUrl(originalURL:URL,appScoped: Bool=false){
-        do {
-            let securizedURL = try self._bookmarkURL(originalURL, appScoped: false)
-            self._stopAccessingToSecurityScopedResourceAtURL(securizedURL)
-        }catch{
-            self.log("Unable to release Bookmark for \(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+        if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
+            let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+            self._stopAccessingToResourceIdentifiedBy(key)
+        }else{
+            self.log("Unable to release Bookmark for \(originalURL) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
         }
     }
 
@@ -88,8 +88,8 @@ extension BartlebyDocument {
      Stops to access to all the security Scoped Resources
      */
     public func releaseAllSecurizedURLS() {
-        while  let url = self._activeSecurityBookmarks.first {
-            self._stopAccessingToSecurityScopedResourceAtURL(url as URL)
+        for (key,_) in self._activeSecurityBookmarks{
+            self._stopAccessingToResourceIdentifiedBy(key)
         }
     }
 
@@ -100,10 +100,11 @@ extension BartlebyDocument {
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
         let key=_getBookMarkKeyFor(originalURL, appScoped: appScoped)
+        self._stopAccessingToResourceIdentifiedBy(key)
         if self.metadata.URLBookmarkData.keys.contains(key){
             self.metadata.URLBookmarkData.removeValue(forKey: key)
         }else{
-            self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
         }
     }
 
@@ -119,16 +120,16 @@ extension BartlebyDocument {
 
      - returns: return the security scoped resource URL
      */
-    fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws -> URL {
+    fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws ->(key:String,url:URL) {
         var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped)
         // Encode the bookmark data as a Base64 string.
         shareData=shareData.base64EncodedData(options: .endLineWithCarriageReturn)
         let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped)
+        let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
         self.metadata.URLBookmarkData[key]=stringifyedData as AnyObject?
         self.hasChanged()
-        return try self._getSecurityScopedURLFrom(url)
-
+        let sURL = try self._getSecurityScopedURLFrom(url)
+        return (key, sURL)
     }
 
     fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false) -> String {
@@ -219,10 +220,10 @@ extension BartlebyDocument {
 
      - parameter scopedUrl: the scopedUrl
      */
-    fileprivate func _startAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
-        if self._activeSecurityBookmarks.index(of: scopedUrl)==nil {
+    fileprivate func _startAccessingToSecurityScopedResourceAtURL(_ key:String,_ scopedUrl: URL) {
+        if !self._activeSecurityBookmarks.keys.contains(key){
             let _ = scopedUrl.startAccessingSecurityScopedResource()
-            self._activeSecurityBookmarks.append(scopedUrl)
+            self._activeSecurityBookmarks[key]=scopedUrl
         }
     }
 
@@ -232,11 +233,12 @@ extension BartlebyDocument {
 
      - parameter url: the url
      */
-    fileprivate func _stopAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
-        if let idx=self._activeSecurityBookmarks.index(of: scopedUrl) {
-            scopedUrl.stopAccessingSecurityScopedResource()
-            self._activeSecurityBookmarks.remove(at: idx)
-        }
 
+    fileprivate func _stopAccessingToResourceIdentifiedBy(_ key:String) {
+        if self._activeSecurityBookmarks.keys.contains(key) {
+            let scopedUrl=self._activeSecurityBookmarks[key]!
+            scopedUrl.stopAccessingSecurityScopedResource()
+            self._activeSecurityBookmarks.removeValue(forKey: key)
+        }
     }
 }
