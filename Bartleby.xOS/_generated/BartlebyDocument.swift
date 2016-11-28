@@ -52,6 +52,12 @@ import Foundation
 
     #endif
 
+    // Perform cleanUp when closing a document
+    public func cleanUp(){
+        self.releaseAllSecurizedURLS()
+        self.online=false
+    }
+
    // Keep a reference to the document file Wrapper
     open var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
 
