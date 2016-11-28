@@ -75,7 +75,7 @@ open class Request {
     // MARK: Helper Types
 
     /// A closure executed when monitoring upload or download progress of a request.
-    public typealias ProgressionHandler = (Progress) -> Void
+    public typealias ProgressHandler = (Progress) -> Void
 
     enum RequestTask {
         case data(TaskConvertible?, URLSessionTask?)
@@ -109,6 +109,9 @@ open class Request {
 
     /// The response received from the server, if any.
     open var response: HTTPURLResponse? { return task?.response as? HTTPURLResponse }
+
+    /// The number of times the request has been retried.
+    open internal(set) var retryCount: UInt = 0
 
     let originalTask: TaskConvertible?
 
@@ -351,12 +354,24 @@ open class DataRequest: Request {
         let urlRequest: URLRequest
 
         func task(session: URLSession, adapter: RequestAdapter?, queue: DispatchQueue) throws -> URLSessionTask {
-            let urlRequest = try self.urlRequest.adapt(using: adapter)
-            return queue.syncResult { session.dataTask(with: urlRequest) }
+            do {
+                let urlRequest = try self.urlRequest.adapt(using: adapter)
+                return queue.syncResult { session.dataTask(with: urlRequest) }
+            } catch {
+                throw AdaptError(error: error)
+            }
         }
     }
 
     // MARK: Properties
+
+    /// The request sent or to be sent to the server.
+    open override var request: URLRequest? {
+        if let request = super.request { return request }
+        if let requestable = originalTask as? Requestable { return requestable.urlRequest }
+
+        return nil
+    }
 
     /// The progress of fetching the response data from the server for the request.
     open var progress: Progress { return dataDelegate.progress }
@@ -389,8 +404,8 @@ open class DataRequest: Request {
     ///
     /// - returns: The request.
     @discardableResult
-    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
-        dataDelegate.ProgressionHandler = (closure, queue)
+    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
+        dataDelegate.progressHandler = (closure, queue)
         return self
     }
 }
@@ -438,21 +453,36 @@ open class DownloadRequest: Request {
         case resumeData(Data)
 
         func task(session: URLSession, adapter: RequestAdapter?, queue: DispatchQueue) throws -> URLSessionTask {
-            let task: URLSessionTask
+            do {
+                let task: URLSessionTask
 
-            switch self {
-            case let .request(urlRequest):
-                let urlRequest = try urlRequest.adapt(using: adapter)
-                task = queue.syncResult { session.downloadTask(with: urlRequest) }
-            case let .resumeData(resumeData):
-                task = queue.syncResult { session.downloadTask(withResumeData: resumeData) }
+                switch self {
+                case let .request(urlRequest):
+                    let urlRequest = try urlRequest.adapt(using: adapter)
+                    task = queue.syncResult { session.downloadTask(with: urlRequest) }
+                case let .resumeData(resumeData):
+                    task = queue.syncResult { session.downloadTask(withResumeData: resumeData) }
+                }
+
+                return task
+            } catch {
+                throw AdaptError(error: error)
             }
-
-            return task
         }
     }
 
     // MARK: Properties
+
+    /// The request sent or to be sent to the server.
+    open override var request: URLRequest? {
+        if let request = super.request { return request }
+
+        if let downloadable = originalTask as? Downloadable, case let .request(urlRequest) = downloadable {
+            return urlRequest
+        }
+
+        return nil
+    }
 
     /// The resume data of the underlying download task if available after a failure.
     open var resumeData: Data? { return downloadDelegate.resumeData }
@@ -471,7 +501,7 @@ open class DownloadRequest: Request {
         NotificationCenter.default.post(
             name: Notification.Name.Task.DidCancel,
             object: self,
-            userInfo: [Notification.Key.Task: task]
+            userInfo: [Notification.Key.Task: task as Any]
         )
     }
 
@@ -484,8 +514,8 @@ open class DownloadRequest: Request {
     ///
     /// - returns: The request.
     @discardableResult
-    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
-        downloadDelegate.ProgressionHandler = (closure, queue)
+    open func downloadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
+        downloadDelegate.progressHandler = (closure, queue)
         return self
     }
 
@@ -528,25 +558,41 @@ open class UploadRequest: DataRequest {
         case stream(InputStream, URLRequest)
 
         func task(session: URLSession, adapter: RequestAdapter?, queue: DispatchQueue) throws -> URLSessionTask {
-            let task: URLSessionTask
+            do {
+                let task: URLSessionTask
 
-            switch self {
-            case let .data(data, urlRequest):
-                let urlRequest = try urlRequest.adapt(using: adapter)
-                task = queue.syncResult { session.uploadTask(with: urlRequest, from: data) }
-            case let .file(url, urlRequest):
-                let urlRequest = try urlRequest.adapt(using: adapter)
-                task = queue.syncResult { session.uploadTask(with: urlRequest, fromFile: url) }
-            case let .stream(_, urlRequest):
-                let urlRequest = try urlRequest.adapt(using: adapter)
-                task = queue.syncResult { session.uploadTask(withStreamedRequest: urlRequest) }
+                switch self {
+                case let .data(data, urlRequest):
+                    let urlRequest = try urlRequest.adapt(using: adapter)
+                    task = queue.syncResult { session.uploadTask(with: urlRequest, from: data) }
+                case let .file(url, urlRequest):
+                    let urlRequest = try urlRequest.adapt(using: adapter)
+                    task = queue.syncResult { session.uploadTask(with: urlRequest, fromFile: url) }
+                case let .stream(_, urlRequest):
+                    let urlRequest = try urlRequest.adapt(using: adapter)
+                    task = queue.syncResult { session.uploadTask(withStreamedRequest: urlRequest) }
+                }
+
+                return task
+            } catch {
+                throw AdaptError(error: error)
             }
-
-            return task
         }
     }
 
     // MARK: Properties
+
+    /// The request sent or to be sent to the server.
+    open override var request: URLRequest? {
+        if let request = super.request { return request }
+
+        guard let uploadable = originalTask as? Uploadable else { return nil }
+
+        switch uploadable {
+        case .data(_, let urlRequest), .file(_, let urlRequest), .stream(_, let urlRequest):
+            return urlRequest
+        }
+    }
 
     /// The progress of uploading the payload to the server for the upload request.
     open var uploadProgress: Progress { return uploadDelegate.uploadProgress }
@@ -566,7 +612,7 @@ open class UploadRequest: DataRequest {
     ///
     /// - returns: The request.
     @discardableResult
-    open func uploadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressionHandler) -> Self {
+    open func uploadProgress(queue: DispatchQueue = DispatchQueue.main, closure: @escaping ProgressHandler) -> Self {
         uploadDelegate.uploadProgressHandler = (closure, queue)
         return self
     }
@@ -577,6 +623,7 @@ open class UploadRequest: DataRequest {
 #if !os(watchOS)
 
 /// Specific type of `Request` that manages an underlying `URLSessionStreamTask`.
+@available(iOS 9.0, macOS 10.11, tvOS 9.0, *)
 open class StreamRequest: Request {
     enum Streamable: TaskConvertible {
         case stream(hostName: String, port: Int)
