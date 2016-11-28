@@ -14,132 +14,126 @@ import Foundation
     import UIKit
 #endif
 
+//
+// Simplified persistent Security Scoped Bookmarks
+// This extension allows to acquire , store and release securized URLs
+//
+// Usage :
+//
+// 1. Call acquireSecurizedURLFrom(...) - The first call must be consecutive to an explicit user Intent.
+// 2. Call releaseSecurizedUrl(...) when you want to release the resource
+//
+// Multiple consecutive call to acquireSecurizedURLFrom(..) counts for one call.
+//
+// If you need more information refer to:
+// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16
+//
+
+public enum SecurityScopedBookMarkError: Error {
+    // Bookmarking
+    case bookMarkFailed(message:String)
+    // Scoped URL
+    case getScopedURLRessourceFailed(message:String)
+    case bookMarkIsStale
+}
+
 
 extension BartlebyDocument {
 
-    public enum SecurityScopedBookMarkError: Error {
-        // Bookmarking
-        case bookMarkFailed(message:String)
-        // Scoped URL
-        case getScopedURLRessourceFailed(message:String)
-        case bookMarkIsStale
-    }
-    // MARK: Security-Scoped Bookmarks support
+    // MARK: - API Security-Scoped Bookmarks support
 
-
-    // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16
-
-    // After an explicit user intent
-    // #1 scopedURL=getSecurizedURL(url, ... )
-    // #2 startAccessingToSecurityScopedResourceAtURL(scopedURL)
-    // ... use the resource
-    // #3 stopAccessingToSecurityScopedResourceAtURL(scopedURL)
-
-
-    /**
-
-     Returns the securized URL
-     If the Securirty scoped Bookmark do not exists, it creates one.
-     You must call this method after a user explicit intent (NSOpenPanel ...)
-     You cannot get security scoped bookmark for an arbritrary URL.
-
-     NOTE : Don't forget that you must call startAccessingToSecurityScopedResourceAtURL(scopedURL) as soon as you use the URL, and stopAccessingToSecurityScopedResourceAtURL(scopedURL) as soon as you can release the resource.
-
-
-
-     - parameter url:             the URL to be accessed
-     - parameter appScoped:       appScoped description
-     - parameter documentfileURL: documentfileURL description
-
-     - throws: throws various exception (on creation, and or resolution)
-
-     - returns: the securized URL
-     */
-    public func getSecurizedURL(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) throws ->URL {
-        if self.securityScopedBookmarkExits(url, appScoped: false, documentfileURL:nil)==false {
-            return try self.bookmarkURL(url, appScoped: false, documentfileURL:nil)
+    ///
+    ///Returns and acquires securized URL
+    // If the Securirty scoped Bookmark do not exists, it creates one.
+    ///
+    /// **IMPORTANT**
+    /// 1. You must call this method after a user explicit intent (NSOpenPanel ...)
+    ///    You cannot get security scoped bookmark for an arbritrary URL.
+    /// 2. Don't forget : Each call should be balanced with a `releaseSecurizedUrl(..) ` call
+    ///
+    /// - Parameters:
+    ///   - url: the url to be accessed
+    ///   - appScoped: is it an app scoped Bookmark?
+    /// - Returns: the Securized URL
+    /// - Throws: errors
+    public func acquireSecurizedURLFrom(_ url: URL, appScoped: Bool=false) throws ->URL {
+        if !self._securityScopedBookmarkExits(url, appScoped: false) {
+            let bookmarked = try self._bookmarkURL(url, appScoped: false)
+            //Start acessing
+            self._startAccessingToSecurityScopedResourceAtURL(bookmarked)
+            return bookmarked
         } else {
-            return try self.getSecurityScopedURLFrom(url, appScoped: false, documentfileURL:nil)
-        }
-    }
-
-    /**
-     Deletes a security scoped bookmark (e.g : when you delete a resource)
-
-     - parameter url:             url description
-     - parameter appScoped:       appScoped description
-     - parameter documentfileURL: documentfileURL description
-     */
-    public func deleteSecurityScopedBookmark(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) {
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
-        self.metadata.URLBookmarkData.removeValue(forKey: key)
-
-    }
-
-    /**
-     Starts acessing to the securityScopedResource
-
-     - parameter scopedUrl: the scopedUrl
-     */
-    public func startAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
-        let _ = scopedUrl.startAccessingSecurityScopedResource()
-        if self._activeSecurityBookmarks.index(of: scopedUrl)==nil {
-            self._activeSecurityBookmarks.append(scopedUrl)
+            return try self._getSecurityScopedURLFrom(url, appScoped: false)
         }
     }
 
 
-    /**
-     Stops to access to securityScopedResource
-
-     - parameter url: the url
-     */
-    public func stopAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
-        scopedUrl.stopAccessingSecurityScopedResource()
-        if let idx=self._activeSecurityBookmarks.index(of: scopedUrl) {
-            self._activeSecurityBookmarks.remove(at: idx)
+    /// Release the access to the sandboxed securized URL
+    /// Each acquireSecurizedURLFrom(...) must be balanced by releaseSecurizedUrl(...)
+    ///
+    /// - Parameters:
+    ///   - originalURL: the original URL
+    ///   - appScoped: is it an app scoped Bookmark?
+    public func releaseSecurizedUrl(_ originalURL:URL,appScoped: Bool=false){
+        do {
+            let securizedURL = try self._bookmarkURL(originalURL, appScoped: false)
+            self._stopAccessingToSecurityScopedResourceAtURL(securizedURL)
+        }catch{
+            self.log("Unable to release Bookmark for \(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
-
     }
-
 
 
     /**
      Stops to access to all the security Scoped Resources
      */
-    public func stopAccessingAllSecurityScopedResources() {
-        while  let key = self._activeSecurityBookmarks.first {
-            self.stopAccessingToSecurityScopedResourceAtURL(key as URL)
+    public func releaseAllSecurizedURLS() {
+        while  let url = self._activeSecurityBookmarks.first {
+            self._stopAccessingToSecurityScopedResourceAtURL(url as URL)
+        }
+    }
+
+    ///  Deletes a security scoped bookmark (e.g : when you delete a resource)
+    ///
+    /// - Parameters:
+    ///   - originalURL: the original URL
+    ///   - appScoped: is it an app scoped Bookmark?
+    public func deleteSecurityScopedBookmark(_ originalURL: URL, appScoped: Bool=false) {
+        let key=_getBookMarkKeyFor(originalURL, appScoped: appScoped)
+        if self.metadata.URLBookmarkData.keys.contains(key){
+            self.metadata.URLBookmarkData.removeValue(forKey: key)
+        }else{
+            self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
 
-    //MARK: Advanced interface (can be used in special context)
+    //MARK: - Implementation
+
 
     /**
      Creates and store for future usage a security scoped bookmark.
 
      - parameter url:       the url
      - parameter appScoped: if set to true it is an app-scoped bookmark else a document-scoped bookmark
-     - parameter documentfileURL :  the document file URL if not app scoped (you can create a bookmark for another document)
 
      - returns: return the security scoped resource URL
      */
-    public func bookmarkURL(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) throws -> URL {
-        var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped, documentfileURL:documentfileURL)
+    fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws -> URL {
+        var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped)
         // Encode the bookmark data as a Base64 string.
         shareData=shareData.base64EncodedData(options: .endLineWithCarriageReturn)
         let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
+        let key=_getBookMarkKeyFor(url, appScoped: appScoped)
         self.metadata.URLBookmarkData[key]=stringifyedData as AnyObject?
         self.hasChanged()
-        return try getSecurityScopedURLFrom(url)
+        return try self._getSecurityScopedURLFrom(url)
 
     }
 
-    fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> String {
+    fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false) -> String {
         let path=url.path
-        return CryptoHelper.hashString("\(path)-\((appScoped ? "YES" : "NO" ))-\(documentfileURL?.path ?? Default.NO_PATH ))")
+        return"\(path)-\((appScoped ? "YES" : "NO" ))-\(self.UID)".sha1
     }
 
     /**
@@ -147,14 +141,13 @@ extension BartlebyDocument {
 
      - parameter url:             the url
      - parameter appScoped:       is it appScoped?
-     - parameter documentfileURL: the document file URL if not app scoped
 
      - throws: throws value description
 
      - returns: the securized URL
      */
-    public func getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil)throws -> URL {
-        let key=self._getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
+    internal func _getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false)throws -> URL {
+        let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
         if let stringifyedData=self.metadata.URLBookmarkData[key] as? String {
             if let base64EncodedData=stringifyedData.data(using: Default.STRING_ENCODING) {
                 if let data=Data(base64Encoded: base64EncodedData, options: [.ignoreUnknownCharacters]) {
@@ -162,11 +155,11 @@ extension BartlebyDocument {
                     do {
                         #if os(OSX)
                             let securizedURL = try URL(resolvingBookmarkData: data,
-                                                          options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : (documentfileURL ?? self.fileURL),
+                                                          options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : self.fileURL,
                                                           bookmarkDataIsStale: &bookmarkIsStale)
                         #else
                             let securizedURL = try URL(resolvingBookmarkData: data,
-                                                         options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : (documentfileURL ?? self.fileURL),
+                                                         options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : self.fileURL,
                                                          bookmarkDataIsStale: &bookmarkIsStale)
                         #endif
                         if (!bookmarkIsStale) {
@@ -190,24 +183,24 @@ extension BartlebyDocument {
     }
 
 
-    public func securityScopedBookmarkExits(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil) -> Bool {
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
+    internal func _securityScopedBookmarkExits(_ url: URL, appScoped: Bool=false) -> Bool {
+        let key=_getBookMarkKeyFor(url, appScoped: appScoped)
         let result=self.metadata.URLBookmarkData.keys.contains(key)
         return result
-
     }
 
 
-    fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false, documentfileURL: URL?) throws -> Data {
+
+    fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false) throws -> Data {
         do {
             #if os(OSX)
                 let data = try (fileURL as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
                                                                includingResourceValuesForKeys:nil,
-                                                               relativeTo: appScoped ? nil : ( documentfileURL ?? self.fileURL ) )
+                                                               relativeTo: appScoped ? nil : ( self.fileURL ) )
             #else
                 let data =   try fileURL.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
                                                       includingResourceValuesForKeys: nil,
-                                                      relativeTo: appScoped ? nil : ( documentfileURL ?? self.fileURL ))
+                                                      relativeTo: appScoped ? nil : ( self.fileURL ))
 
             #endif
             // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/URL_Class/index.html#//apple_ref/occ/instm/URL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
@@ -220,6 +213,30 @@ extension BartlebyDocument {
             throw SecurityScopedBookMarkError.bookMarkFailed(message: "\(error)")
         }
     }
-    
-    
+
+    /**
+     Starts acessing to the securityScopedResource
+
+     - parameter scopedUrl: the scopedUrl
+     */
+    fileprivate func _startAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
+        if self._activeSecurityBookmarks.index(of: scopedUrl)==nil {
+            let _ = scopedUrl.startAccessingSecurityScopedResource()
+            self._activeSecurityBookmarks.append(scopedUrl)
+        }
+    }
+
+
+    /**
+     Stops to access to securityScopedResource
+
+     - parameter url: the url
+     */
+    fileprivate func _stopAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
+        if let idx=self._activeSecurityBookmarks.index(of: scopedUrl) {
+            scopedUrl.stopAccessingSecurityScopedResource()
+            self._activeSecurityBookmarks.remove(at: idx)
+        }
+
+    }
 }
