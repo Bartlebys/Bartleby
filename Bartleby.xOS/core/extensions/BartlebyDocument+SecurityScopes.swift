@@ -93,13 +93,16 @@ extension BartlebyDocument {
         }
     }
 
-    ///  Deletes a security scoped bookmark (e.g : when you delete a resource)
+    /// Deletes a security scoped bookmark (e.g : when you delete a resource)
+    /// And Release the resource.
+    /// You do not need to call releaseSecurizedUrl(...)
     ///
     /// - Parameters:
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
         let key=_getBookMarkKeyFor(originalURL, appScoped: appScoped)
+        // Preventive stop
         self._stopAccessingToResourceIdentifiedBy(key)
         if self.metadata.URLBookmarkData.keys.contains(key){
             self.metadata.URLBookmarkData.removeValue(forKey: key)
