@@ -83,8 +83,8 @@ extension BartlebyDocument {
      */
     public func startAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
         let _ = scopedUrl.startAccessingSecurityScopedResource()
-        if _activeSecurityBookmarks.index(of: scopedUrl)==nil {
-            _activeSecurityBookmarks.append(scopedUrl)
+        if self._activeSecurityBookmarks.index(of: scopedUrl)==nil {
+            self._activeSecurityBookmarks.append(scopedUrl)
         }
     }
 
@@ -96,8 +96,8 @@ extension BartlebyDocument {
      */
     public func stopAccessingToSecurityScopedResourceAtURL(_ scopedUrl: URL) {
         scopedUrl.stopAccessingSecurityScopedResource()
-        if let idx=_activeSecurityBookmarks.index(of: scopedUrl) {
-            _activeSecurityBookmarks.remove(at: idx)
+        if let idx=self._activeSecurityBookmarks.index(of: scopedUrl) {
+            self._activeSecurityBookmarks.remove(at: idx)
         }
 
     }
@@ -108,8 +108,8 @@ extension BartlebyDocument {
      Stops to access to all the security Scoped Resources
      */
     public func stopAccessingAllSecurityScopedResources() {
-        while  let key = _activeSecurityBookmarks.first {
-            stopAccessingToSecurityScopedResourceAtURL(key as URL)
+        while  let key = self._activeSecurityBookmarks.first {
+            self.stopAccessingToSecurityScopedResourceAtURL(key as URL)
         }
     }
 
@@ -154,7 +154,7 @@ extension BartlebyDocument {
      - returns: the securized URL
      */
     public func getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false, documentfileURL: URL?=nil)throws -> URL {
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
+        let key=self._getBookMarkKeyFor(url, appScoped: appScoped, documentfileURL: documentfileURL)
         if let stringifyedData=self.metadata.URLBookmarkData[key] as? String {
             if let base64EncodedData=stringifyedData.data(using: Default.STRING_ENCODING) {
                 if let data=Data(base64Encoded: base64EncodedData, options: [.ignoreUnknownCharacters]) {
