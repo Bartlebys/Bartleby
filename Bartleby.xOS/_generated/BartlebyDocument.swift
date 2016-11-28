@@ -77,7 +77,7 @@ import Foundation
     internal var _collections=[String:BartlebyCollection]()
 
     /// We store the URL of the active security bookmarks
-    internal var _activeSecurityBookmarks=[URL]()
+    internal var _activeSecurityBookmarks=[String:URL]()
 
     // Reachability Manager
     internal var _reachabilityManager:NetworkReachabilityManager?
