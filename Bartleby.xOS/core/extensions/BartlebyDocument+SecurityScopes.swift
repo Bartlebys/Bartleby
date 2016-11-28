@@ -56,14 +56,14 @@ extension BartlebyDocument {
     ///   - appScoped: is it an app scoped Bookmark?
     /// - Returns: the Securized URL
     /// - Throws: errors
-    public func acquireSecurizedURLFrom(_ url: URL, appScoped: Bool=false) throws ->URL {
-        if !self._securityScopedBookmarkExits(url, appScoped: false) {
-            let bookmarked = try self._bookmarkURL(url, appScoped: false)
+    public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
+        if !self._securityScopedBookmarkExits(originalURL, appScoped: false) {
+            let bookmarked = try self._bookmarkURL(originalURL, appScoped: false)
             //Start acessing
             self._startAccessingToSecurityScopedResourceAtURL(bookmarked)
             return bookmarked
         } else {
-            return try self._getSecurityScopedURLFrom(url, appScoped: false)
+            return try self._getSecurityScopedURLFrom(originalURL, appScoped: false)
         }
     }
 
@@ -74,7 +74,7 @@ extension BartlebyDocument {
     /// - Parameters:
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
-    public func releaseSecurizedUrl(_ originalURL:URL,appScoped: Bool=false){
+    public func releaseSecurizedUrl(originalURL:URL,appScoped: Bool=false){
         do {
             let securizedURL = try self._bookmarkURL(originalURL, appScoped: false)
             self._stopAccessingToSecurityScopedResourceAtURL(securizedURL)
@@ -98,7 +98,7 @@ extension BartlebyDocument {
     /// - Parameters:
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
-    public func deleteSecurityScopedBookmark(_ originalURL: URL, appScoped: Bool=false) {
+    public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
         let key=_getBookMarkKeyFor(originalURL, appScoped: appScoped)
         if self.metadata.URLBookmarkData.keys.contains(key){
             self.metadata.URLBookmarkData.removeValue(forKey: key)
