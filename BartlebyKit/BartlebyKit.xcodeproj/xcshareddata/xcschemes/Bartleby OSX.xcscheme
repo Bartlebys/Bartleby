@@ -55,6 +55,9 @@
                   Identifier = "BasicApiTests">
                </Test>
                <Test
+                  Identifier = "BlocksTests/test001_Add_File_to_box()">
+               </Test>
+               <Test
                   Identifier = "CompletionWithResultTests">
                </Test>
                <Test
@@ -62,6 +65,9 @@
                </Test>
                <Test
                   Identifier = "LockerTests">
+               </Test>
+               <Test
+                  Identifier = "MultiDocumentsTests/testExample()">
                </Test>
                <Test
                   Identifier = "PStringTests">

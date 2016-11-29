@@ -14,7 +14,7 @@ import BartlebyKit
 // At the end of the chunk process it calls :
 // try self.document?.put(data: data, identifiedBy: chunk.sha1)
 // there is no guarantee the data is written within the package( we use the document file wrappers)
-class BlocksTests: BSFSTestBase {
+class BlocksTests: BartlebyTestCase {
 
     override func setUp() {
         super.setUp()
@@ -27,7 +27,6 @@ class BlocksTests: BSFSTestBase {
     func test001_Add_File_to_box() {
         
         let e = self.expectation(description: "Add a file to a box in the document")
-
         BlocksTests.createFile(size: 20*1000*1000+1, fileName: "file1.txt")
         let url=BlocksTests.urlByAppending(path: "file1.txt")
         let fr=FileReference.publicFileReference(at:url.path)
