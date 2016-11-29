@@ -58,9 +58,7 @@ extension BartlebyDocument {
     /// - Returns: the Securized URL
     /// - Throws: errors
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
-        if !self._securityScopedBookmarkExits(originalURL, appScoped: false) {
-            return try self._bookmarkURL(originalURL, appScoped: false).securizedURL
-        } else {
+        if self._securityScopedBookmarkExits(originalURL, appScoped: false) {
             // The bookmark data exists
             let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
             if let securizedURL=self._activeSecurityBookmarks[key]{
@@ -77,6 +75,11 @@ extension BartlebyDocument {
                     throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Void data when attempting to acquire securized URL")
                 }
             }
+        }else{
+            // try to create and acquire
+            let r = try self._bookmarkURL(originalURL, appScoped: false)
+            // Return the securized url
+            return r.securizedURL
         }
     }
 
