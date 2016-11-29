@@ -100,7 +100,6 @@ extension BartlebyDocument {
     }
 
 
-
     //Stops to access to all the resources
     public func releaseAllSecurizedURLS() {
         for (key,_) in self._activeSecurityBookmarks{
@@ -116,7 +115,6 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
-
         let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
         // Preventive stop
         self._stopAccessingToResourceIdentifiedBy(key)
@@ -162,7 +160,7 @@ extension BartlebyDocument {
         let key = self._getBookMarkKeyFor(url, appScoped: appScoped)
         var data:Data?
         do {
-            // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/URL_Class/index.html#//apple_ref/occ/instm/URL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
+
             // The URL that the bookmark data will be relative to.
             // If you are creating a security-scoped bookmark to support App Sandbox, use this parameter as follows:
             //To create an app-scoped bookmark, use a value of nil.
@@ -184,6 +182,7 @@ extension BartlebyDocument {
         }
 
         if let data = data {
+
             // Store the keyedData
             let keyedData=KeyedData(key:key,data:data)
             self.metadata.URLBookmarkData.append(keyedData)
