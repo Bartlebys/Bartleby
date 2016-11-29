@@ -14,20 +14,6 @@ import Foundation
     import UIKit
 #endif
 
-//
-// Simplified persistent Security Scoped Bookmarks
-// This extension allows to acquire , store and release securized URLs
-//
-// Usage :
-//
-// 1. Call acquireSecurizedURLFrom(...) - The first call must be consecutive to an explicit user Intent.
-// 2. Call releaseSecurizedUrl(...) when you want to release the resource
-//
-// Multiple consecutive call to acquireSecurizedURLFrom(..) counts for one call.
-//
-// If you need more information refer to:
-// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16
-//
 
 public enum SecurityScopedBookMarkError: Error {
     // Bookmarking
@@ -40,11 +26,26 @@ public enum SecurityScopedBookMarkError: Error {
 
 extension BartlebyDocument {
 
-    // MARK: - API Security-Scoped Bookmarks support
+    // MARK: - API Security-Scoped Bookmarks Support
+
+    // Simplified persistent Security Scoped Bookmarks
+    // This extension allows to acquire , store and release securized URLs
+    //
+    // Usage :
+    //
+    // 1. Call acquireSecurizedURLFrom(...) - The first call must be consecutive to an explicit user Intent.
+    // 2. Call releaseSecurizedUrl(...) when you want to release the resource
+    //
+    // Multiple consecutive call to acquireSecurizedURLFrom(..) counts for one call.
+    //
+    // If you need more information refer to:
+    // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16
+    //
+
 
     ///
     ///Returns and acquires securized URL
-    // If the Securirty scoped Bookmark do not exists, it creates one.
+    // If the Securiry scoped Bookmark does not exist, it creates one.
     ///
     /// **IMPORTANT**
     /// 1. You must call this method after a user explicit intent (NSOpenPanel ...)
@@ -58,12 +59,24 @@ extension BartlebyDocument {
     /// - Throws: errors
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
         if !self._securityScopedBookmarkExits(originalURL, appScoped: false) {
-            let bookmarked = try self._bookmarkURL(originalURL, appScoped: false)
-            //Start acessing
-            self._startAccessingToSecurityScopedResourceAtURL(bookmarked.key,bookmarked.url)
-            return bookmarked.url
+            return try self._bookmarkURL(originalURL, appScoped: false).securizedURL
         } else {
-            return try self._getSecurityScopedURLFrom(originalURL, appScoped: false)
+            // The bookmark data exists
+            let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+            if let securizedURL=self._activeSecurityBookmarks[key]{
+                // The Url has already been acquired
+                return securizedURL
+            }else{
+                if let idx=self.metadata.URLBookmarkData.index(where:{$0.key == key}){
+                    //  Acquire the securized URL
+                    let data=self.metadata.URLBookmarkData[idx].data
+                    let securizedURL = try self._getSecurityScopedURLFrom(data)
+                    self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
+                    return securizedURL
+                }else{
+                    throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Void data when attempting to acquire securized URL")
+                }
+            }
         }
     }
 
@@ -84,9 +97,8 @@ extension BartlebyDocument {
     }
 
 
-    /**
-     Stops to access to all the security Scoped Resources
-     */
+
+    //Stops to access to all the resources
     public func releaseAllSecurizedURLS() {
         for (key,_) in self._activeSecurityBookmarks{
             self._stopAccessingToResourceIdentifiedBy(key)
@@ -101,122 +113,135 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
-        let key=_getBookMarkKeyFor(originalURL, appScoped: appScoped)
+
+        let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
         // Preventive stop
         self._stopAccessingToResourceIdentifiedBy(key)
-        if self.metadata.URLBookmarkData.keys.contains(key){
-            self.metadata.URLBookmarkData.removeValue(forKey: key)
+
+        if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == key }){
+            self.metadata.URLBookmarkData.remove(at: idx)
         }else{
             self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
         }
+    }
+
+    /// Deletes all the bookmark data and releases all the accesses.
+    public func deleteAllSecurityScopedBookmars() {
+        self.metadata.URLBookmarkData=[KeyedData]()
+        self.releaseAllSecurizedURLS()
+    }
+
+
+    /// Returns a description of the current bookmark
+    public var bookmarksDescription:String{
+        var description=""
+        for keyedData in self.metadata.URLBookmarkData{
+            if let s=String.init(data: keyedData.data, encoding: String.Encoding.utf8){
+                description += "\(keyedData.key)=" + s + "\n"
+            }
+        }
+        return description
     }
 
 
     //MARK: - Implementation
 
 
-    /**
-     Creates and store for future usage a security scoped bookmark.
+    ///   Creates and store for future usage a security scoped bookmark.
+    ///
+    /// - Parameters:
+    ///   - url: the url to securize
+    ///   - appScoped: if set to true it is an app-scoped bookmark else a document-scoped bookmark
+    /// - Returns: a tupple with the key of the bookmark and the securized URL
+    /// - Throws: SecurityScopedBookMarkError
+    fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws ->(key:String,securizedURL:URL) {
+        // Create the key
+        let key = self._getBookMarkKeyFor(url, appScoped: appScoped)
+        var data:Data?
+        do {
+            // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/URL_Class/index.html#//apple_ref/occ/instm/URL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
+            // The URL that the bookmark data will be relative to.
+            // If you are creating a security-scoped bookmark to support App Sandbox, use this parameter as follows:
+            //To create an app-scoped bookmark, use a value of nil.
+            // To create a document-scoped bookmark, use the absolute path (despite this parameter’s name) to the document file that is to own the new security-scoped bookmark.
 
-     - parameter url:       the url
-     - parameter appScoped: if set to true it is an app-scoped bookmark else a document-scoped bookmark
+            #if os(OSX)
+                data = try (url as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
+                                                         includingResourceValuesForKeys:nil,
+                                                         relativeTo: appScoped ? nil : ( self.fileURL ) )
+            #else
+                data = try url.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
+                                                includingResourceValuesForKeys: nil,
+                                                relativeTo: appScoped ? nil : ( self.fileURL ))
+                
+            #endif
 
-     - returns: return the security scoped resource URL
-     */
-    fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws ->(key:String,url:URL) {
-        var shareData = try self._createDataFromBookmarkForURL(url, appScoped:appScoped)
-        // Encode the bookmark data as a Base64 string.
-        shareData=shareData.base64EncodedData(options: .endLineWithCarriageReturn)
-        let stringifyedData=String(data: shareData, encoding: Default.STRING_ENCODING)
-        let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
-        self.metadata.URLBookmarkData[key]=stringifyedData as AnyObject?
-        self.hasChanged()
-        let sURL = try self._getSecurityScopedURLFrom(url)
-        return (key, sURL)
+        } catch {
+            throw SecurityScopedBookMarkError.bookMarkFailed(message: "\(error)")
+        }
+
+        if let data = data {
+            // Store the keyedData
+            let keyedData=KeyedData(key:key,data:data)
+            self.metadata.URLBookmarkData.append(keyedData)
+
+            // Prepare to return the key and the securized URL
+            let securizedURL = try self._getSecurityScopedURLFrom(data)
+            self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
+            self.hasChanged()
+
+            // Return the tupple
+            return (key, securizedURL)
+
+        }else{
+            throw SecurityScopedBookMarkError.bookMarkFailed(message: "Void data")
+        }
     }
+
+
 
     fileprivate func _getBookMarkKeyFor(_ url: URL, appScoped: Bool=false) -> String {
         let path=url.path
         return"\(path)-\((appScoped ? "YES" : "NO" ))-\(self.UID)".sha1
     }
 
-    /**
-     Returns the URL on success
 
-     - parameter url:             the url
-     - parameter appScoped:       is it appScoped?
-
-     - throws: throws value description
-
-     - returns: the securized URL
-     */
-    internal func _getSecurityScopedURLFrom(_ url: URL, appScoped: Bool=false)throws -> URL {
-        let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
-        if let stringifyedData=self.metadata.URLBookmarkData[key] as? String {
-            if let base64EncodedData=stringifyedData.data(using: Default.STRING_ENCODING) {
-                if let data=Data(base64Encoded: base64EncodedData, options: [.ignoreUnknownCharacters]) {
-                    var bookmarkIsStale: Bool = false
-                    do {
-                        #if os(OSX)
-                            let securizedURL = try URL(resolvingBookmarkData: data,
-                                                          options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : self.fileURL,
-                                                          bookmarkDataIsStale: &bookmarkIsStale)
-                        #else
-                            let securizedURL = try URL(resolvingBookmarkData: data,
-                                                         options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : self.fileURL,
-                                                         bookmarkDataIsStale: &bookmarkIsStale)
-                        #endif
-                        if (!bookmarkIsStale) {
-                            return securizedURL!
-                        } else {
-                            throw SecurityScopedBookMarkError.bookMarkIsStale
-                        }
-                    } catch {
-                        throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Error \(error)")
-                    }
-                } else {
-                    throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Bookmark data Base64 decoding error")
-                }
+    /// Return the securizedURL from the data
+    ///
+    /// - Parameters:
+    ///   - data: the bookMark data
+    ///   - appScoped: if set to true it is an app-scoped bookmark else a document-scoped bookmark
+    /// - Returns: the securizedURL
+    /// - Throws: SecurityScopedBookMarkError
+    internal func _getSecurityScopedURLFrom(_ data: Data, appScoped: Bool=false)throws -> URL {
+        var bookmarkIsStale: Bool = false
+        do {
+            #if os(OSX)
+                let securizedURL = try URL(resolvingBookmarkData: data,
+                                           options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : self.fileURL,
+                                           bookmarkDataIsStale: &bookmarkIsStale)
+            #else
+                let securizedURL = try URL(resolvingBookmarkData: data,
+                                           options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : self.fileURL,
+                                           bookmarkDataIsStale: &bookmarkIsStale)
+            #endif
+            if (!bookmarkIsStale) {
+                return securizedURL!
             } else {
-                throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Bookmark data deserialization error")
+                throw SecurityScopedBookMarkError.bookMarkIsStale
             }
-        } else {
-            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message:"Unable to resolve bookmark for \(url) Did you bookmark that url?")
+        } catch {
+            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Error \(error)")
         }
-
     }
 
 
     internal func _securityScopedBookmarkExits(_ url: URL, appScoped: Bool=false) -> Bool {
-        let key=_getBookMarkKeyFor(url, appScoped: appScoped)
-        let result=self.metadata.URLBookmarkData.keys.contains(key)
+        let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
+        let result=self.metadata.URLBookmarkData.contains(where:{$0.key == key})
         return result
     }
 
-
-
-    fileprivate func _createDataFromBookmarkForURL(_ fileURL: URL, appScoped: Bool=false) throws -> Data {
-        do {
-            #if os(OSX)
-                let data = try (fileURL as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
-                                                               includingResourceValuesForKeys:nil,
-                                                               relativeTo: appScoped ? nil : ( self.fileURL ) )
-            #else
-                let data =   try fileURL.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
-                                                      includingResourceValuesForKeys: nil,
-                                                      relativeTo: appScoped ? nil : ( self.fileURL ))
-
-            #endif
-            // Extract of : https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/URL_Class/index.html#//apple_ref/occ/instm/URL/bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:
-            // The URL that the bookmark data will be relative to.
-            // If you are creating a security-scoped bookmark to support App Sandbox, use this parameter as follows:
-            //To create an app-scoped bookmark, use a value of nil.
-            // To create a document-scoped bookmark, use the absolute path (despite this parameter’s name) to the document file that is to own the new security-scoped bookmark.
-            return data
-        } catch {
-            throw SecurityScopedBookMarkError.bookMarkFailed(message: "\(error)")
-        }
-    }
 
     /**
      Starts acessing to the securityScopedResource

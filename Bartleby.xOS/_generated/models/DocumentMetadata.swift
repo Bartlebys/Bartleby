@@ -55,8 +55,8 @@ import Foundation
 	//The State dictionary to insure document persistency 
 	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
 
-	//The collection of serialized Security-Scoped Bookmarks (you should store Data)
-	dynamic open var URLBookmarkData:[String:Any] = [String:AnyObject]()
+	//A collection of KeyedData
+	dynamic open var URLBookmarkData:[KeyedData] = [KeyedData]()
 
 	//The preferred filename for this document
 	dynamic open var preferredFileName:String?
@@ -203,7 +203,7 @@ import Foundation
                     self.stateDictionary=casted
                 }
             case "URLBookmarkData":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [KeyedData]{
                     self.URLBookmarkData=casted
                 }
             case "preferredFileName":
@@ -399,7 +399,7 @@ import Foundation
 			self.registred=decoder.decodeBool(forKey:"registred") 
 			self.collectionsMetadata=decoder.decodeObject(of: [NSArray.classForCoder(),CollectionMetadatum.classForCoder()], forKey: "collectionsMetadata")! as! [CollectionMetadatum]
 			self.stateDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "stateDictionary")as! [String:Any]
-			self.URLBookmarkData=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "URLBookmarkData")as! [String:Any]
+			self.URLBookmarkData=decoder.decodeObject(of: [NSArray.classForCoder(),KeyedData.classForCoder()], forKey: "URLBookmarkData")! as! [KeyedData]
 			self.preferredFileName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"preferredFileName") as NSString?)
 			self.triggersIndexesDebugHistory=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "triggersIndexesDebugHistory")! as! [Int]
 			self.ownedTriggersIndexes=decoder.decodeObject(of: [NSArray.classForCoder(),NSNumber.self], forKey: "ownedTriggersIndexes")! as! [Int]

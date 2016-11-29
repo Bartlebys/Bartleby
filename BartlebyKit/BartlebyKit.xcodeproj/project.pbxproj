@@ -455,6 +455,9 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54AF9501D4A518A00EE1945 /* WebStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AF94E1D4A518A00EE1945 /* WebStack.swift */; };
 		E54AF9511D4A518A00EE1945 /* WebStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = E54AF94F1D4A518A00EE1945 /* WebStack.xib */; };
+		E559326F1DEDB503001DE10F /* KeyedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E559326E1DEDB503001DE10F /* KeyedData.swift */; };
+		E55932711DEDBB43001DE10F /* KeyedData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55932701DEDBB43001DE10F /* KeyedData+Conveniences.swift */; };
+		E55932721DEDBB50001DE10F /* KeyedData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55932701DEDBB43001DE10F /* KeyedData+Conveniences.swift */; };
 		E55D61421DE9EE7900BF63B6 /* BSFSTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61411DE9EE7900BF63B6 /* BSFSTestBase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E568A78C1DC8762100BE157D /* ReportTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E568A78A1DC8762100BE157D /* ReportTabViewController.swift */; };
@@ -765,6 +768,8 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54AF94E1D4A518A00EE1945 /* WebStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebStack.swift; sourceTree = "<group>"; };
 		E54AF94F1D4A518A00EE1945 /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
+		E559326E1DEDB503001DE10F /* KeyedData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyedData.swift; sourceTree = "<group>"; };
+		E55932701DEDBB43001DE10F /* KeyedData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyedData+Conveniences.swift"; sourceTree = "<group>"; };
 		E55D61411DE9EE7900BF63B6 /* BSFSTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSTestBase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
 		E568A78A1DC8762100BE157D /* ReportTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportTabViewController.swift; sourceTree = "<group>"; };
@@ -897,6 +902,7 @@
 				E509AD9F1DE9D126002DAB73 /* HTTPContext.swift */,
 				E509ADA01DE9D126002DAB73 /* HTTPRequest.swift */,
 				E509ADA11DE9D126002DAB73 /* KeyedChanges.swift */,
+				E559326E1DEDB503001DE10F /* KeyedData.swift */,
 				E509ADA21DE9D126002DAB73 /* Locker.swift */,
 				E509ADA31DE9D126002DAB73 /* LogEntry.swift */,
 				E509ADA41DE9D126002DAB73 /* Metrics.swift */,
@@ -1141,6 +1147,7 @@
 				E509AE2E1DE9D126002DAB73 /* ExternalReference+Resolution.swift */,
 				E509AE2F1DE9D126002DAB73 /* HTTPContext+Conveniences.swift */,
 				E509AE301DE9D126002DAB73 /* HTTPRequest+URLRequest.swift */,
+				E55932701DEDBB43001DE10F /* KeyedData+Conveniences.swift */,
 				E509AE311DE9D126002DAB73 /* LogEntry+Conveniences.swift */,
 				E509AE321DE9D126002DAB73 /* NSNotification+Completion.swift */,
 				E509AE331DE9D126002DAB73 /* NSNotification+Progression.swift */,
@@ -1566,6 +1573,7 @@
 				E509AF531DE9D126002DAB73 /* Default.swift in Sources */,
 				E50F3AFA1D40D27F00532B09 /* SourceEditor.swift in Sources */,
 				E509AFC51DE9D126002DAB73 /* CryptoDelegate.swift in Sources */,
+				E55932711DEDBB43001DE10F /* KeyedData+Conveniences.swift in Sources */,
 				E50A10691DC2261D00869BFB /* MetricsDetailsViewController.swift in Sources */,
 				E509AFFB1DE9D126002DAB73 /* ServerErrorCodes.swift in Sources */,
 				E509AFDB1DE9D126002DAB73 /* JSONString.swift in Sources */,
@@ -1580,6 +1588,7 @@
 				E509AF171DE9D126002DAB73 /* Block+Facilities.swift in Sources */,
 				E509AEB71DE9D126002DAB73 /* CreateLocker.swift in Sources */,
 				E509AFF91DE9D126002DAB73 /* Reaction.swift in Sources */,
+				E559326F1DEDB503001DE10F /* KeyedData.swift in Sources */,
 				E509AECF1DE9D126002DAB73 /* DeleteNode.swift in Sources */,
 				E50F3AEF1D40D27F00532B09 /* ChangesViewController.swift in Sources */,
 				E509B00F1DE9D126002DAB73 /* VerifyLocker.swift in Sources */,
@@ -1838,6 +1847,7 @@
 				E509AF0E1DE9D126002DAB73 /* BSFSError.swift in Sources */,
 				E509AEF61DE9D126002DAB73 /* UpdateBlock.swift in Sources */,
 				E509AEF81DE9D126002DAB73 /* UpdateBlocks.swift in Sources */,
+				E55932721DEDBB50001DE10F /* KeyedData+Conveniences.swift in Sources */,
 				E509AF361DE9D126002DAB73 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E509AEBA1DE9D126002DAB73 /* CreateLockers.swift in Sources */,
 				E509AFE61DE9D126002DAB73 /* ProvisionChanges.swift in Sources */,
