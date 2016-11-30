@@ -21,16 +21,17 @@ open class CryptedDataTransform: TransformType {
 
     open func transformFromJSON(_ value: Any?) -> Data? {
         if let s=value as? String {
-            if let data=s.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
-                return try? Bartleby.cryptoDelegate.decryptData(data)
-            }
+            let s=try? Bartleby.cryptoDelegate.encryptString(s)
+            return s?.data(using: .utf8, allowLossyConversion: false)
         }
         return nil
     }
 
     open func transformToJSON(_ value: Object?) -> JSON? {
-        if let d=value as Data? {
-            return d.base64EncodedString(options: .endLineWithCarriageReturn)
+        if let data=value {
+            if let s=String.init(data: data, encoding: .utf8){
+                return try? Bartleby.cryptoDelegate.decryptString(s)
+            }
         }
         return nil
     }

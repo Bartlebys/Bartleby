@@ -26,7 +26,6 @@ public enum SecurityScopedBookMarkError: Error {
 
 extension BartlebyDocument {
 
-    // MARK: - API Security-Scoped Bookmarks Support
 
     // Simplified persistent Security Scoped Bookmarks
     // This extension allows to acquire , store and release securized URLs
@@ -43,9 +42,12 @@ extension BartlebyDocument {
     //
 
 
+    // MARK: - API Security-Scoped Bookmarks Support
+
     ///
-    ///Returns and acquires securized URL
-    // If the Securiry scoped Bookmark does not exist, it creates one.
+    /// Returns and acquires securized URL
+    //  If the Securiry scoped Bookmark does not exist, it creates one.
+    //  If the URL is in the Main Bundle it is ignored
     ///
     /// **IMPORTANT**
     /// 1. You must call this method after a user explicit intent (NSOpenPanel ...)
@@ -58,28 +60,43 @@ extension BartlebyDocument {
     /// - Returns: the Securized URL
     /// - Throws: errors
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
-        if self._securityScopedBookmarkExits(originalURL, appScoped: false) {
-            // The bookmark data exists
-            let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
-            if let securizedURL=self._activeSecurityBookmarks[key]{
-                // The Url has already been acquired
-                return securizedURL
-            }else{
-                if let idx=self.metadata.URLBookmarkData.index(where:{$0.key == key}){
-                    //  Acquire the securized URL
-                    let data=self.metadata.URLBookmarkData[idx].data
-                    let securizedURL = try self._getSecurityScopedURLFrom(data)
-                    self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
+        do{
+            if originalURL.absoluteString.contains(Bundle.main.bundleURL.path){
+                Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns bundled URL )")
+                return originalURL
+            }
+
+            Swift.print("acquireSecurizedURLFrom(\(originalURL))")
+            if self._securityScopedBookmarkExits(originalURL, appScoped: false) {
+                // The bookmark data exists
+                let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+                if let securizedURL=self._activeSecurityBookmarks[key]{
+                    // The Url has already been acquired
+                    Swift.print("returns \(securizedURL)")
                     return securizedURL
                 }else{
-                    throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Void data when attempting to acquire securized URL")
+                    if let idx=self.metadata.URLBookmarkData.index(where:{$0.key == key}){
+                        //  Acquire the securized URL
+                        let data=self.metadata.URLBookmarkData[idx].data
+                        let securizedURL = try self._getSecurityScopedURLFrom(data)
+                        self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
+                        Swift.print("returns \(securizedURL)")
+                        return securizedURL
+                    }else{
+                        Swift.print("returns Void data when attempting to acquire securized URL")
+                        throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Void data when attempting to acquire securized URL")
+                    }
                 }
+            }else{
+                // try to create and acquire
+                let r = try self._bookmarkURL(originalURL, appScoped: false)
+                // Return the securized url
+                Swift.print("returns \(r.securizedURL)")
+                return r.securizedURL
             }
-        }else{
-            // try to create and acquire
-            let r = try self._bookmarkURL(originalURL, appScoped: false)
-            // Return the securized url
-            return r.securizedURL
+        }catch{
+            Swift.print("returns Exception \(error)")
+            throw error
         }
     }
 
@@ -91,6 +108,7 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func releaseSecurizedUrl(originalURL:URL,appScoped: Bool=false){
+        Swift.print("releaseSecurizedUrl \(originalURL)")
         if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
             let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
             self._stopAccessingToResourceIdentifiedBy(key)
@@ -168,13 +186,13 @@ extension BartlebyDocument {
 
             #if os(OSX)
                 data = try (url as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
-                                                         includingResourceValuesForKeys:nil,
-                                                         relativeTo: appScoped ? nil : ( self.fileURL ) )
+                                                     includingResourceValuesForKeys:nil,
+                                                     relativeTo: appScoped ? nil : ( self.fileURL ) )
             #else
                 data = try url.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
-                                                includingResourceValuesForKeys: nil,
-                                                relativeTo: appScoped ? nil : ( self.fileURL ))
-                
+                                            includingResourceValuesForKeys: nil,
+                                            relativeTo: appScoped ? nil : ( self.fileURL ))
+
             #endif
 
         } catch {
@@ -233,7 +251,7 @@ extension BartlebyDocument {
                 throw SecurityScopedBookMarkError.bookMarkIsStale
             }
         } catch {
-            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "Error \(error)")
+            throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "\(error)")
         }
     }
 
