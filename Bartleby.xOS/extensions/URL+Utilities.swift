@@ -17,4 +17,8 @@ extension URL{
         return resv?.isAliasFile ?? false
     }
 
+    var isInMainBundle:Bool{
+        return self.absoluteString.contains(Bundle.main.bundleURL.path)
+    }
+
 }

@@ -36,6 +36,7 @@ extension BartlebyDocument {
     // 2. Call releaseSecurizedUrl(...) when you want to release the resource
     //
     // Multiple consecutive call to acquireSecurizedURLFrom(..) counts for one call.
+    // You can call those method on bundled and distant files (nothing will occur)
     //
     // If you need more information refer to:
     // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW16
@@ -47,9 +48,7 @@ extension BartlebyDocument {
     ///
     /// Returns and acquires securized URL
     ///  If the Securiry scoped Bookmark does not exist, it creates one.
-    ///  If the URL is in the Main Bundle it is ignored it returns the original URL
-    ///  If the URL is distant it returns the original URL
-    ///
+
     ///  So you can simplify the consumers code and acquire / release any URL
     ///
     /// **IMPORTANT**
@@ -65,10 +64,11 @@ extension BartlebyDocument {
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
         do{
             if originalURL.isFileURL == false{
+                Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns distant URL )")
                 return originalURL
             }
 
-            if originalURL.absoluteString.contains(Bundle.main.bundleURL.path){
+            if originalURL.isInMainBundle{
                 Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns bundled URL )")
                 return originalURL
             }
@@ -115,12 +115,14 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func releaseSecurizedUrl(originalURL:URL,appScoped: Bool=false){
-        Swift.print("releaseSecurizedUrl \(originalURL)")
-        if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
-            let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
-            self._stopAccessingToResourceIdentifiedBy(key)
-        }else{
-            self.log("Unable to release Bookmark for \(originalURL) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+        if originalURL.isFileURL && !originalURL.isInMainBundle{
+            Swift.print("releaseSecurizedUrl \(originalURL)")
+            if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
+                let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+                self._stopAccessingToResourceIdentifiedBy(key)
+            }else{
+                self.log("Unable to release Bookmark for \(originalURL) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            }
         }
     }
 
@@ -140,14 +142,16 @@ extension BartlebyDocument {
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
-        let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
-        // Preventive stop
-        self._stopAccessingToResourceIdentifiedBy(key)
+        if originalURL.isFileURL && !originalURL.isInMainBundle{
+            let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+            // Preventive stop
+            self._stopAccessingToResourceIdentifiedBy(key)
 
-        if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == key }){
-            self.metadata.URLBookmarkData.remove(at: idx)
-        }else{
-            self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == key }){
+                self.metadata.URLBookmarkData.remove(at: idx)
+            }else{
+                self.log("Unable to delete Bookmark for \(originalURL)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            }
         }
     }
 
