@@ -326,7 +326,7 @@ extension BartlebyDocument {
     internal func _normalizeFileURL(_ url:URL?)->URL?{
         let resolved=url?.resolvingSymlinksInPath()
         let standardized=resolved?.standardizedFileURL
-        return resolved
+        return standardized
     }
 
 }
