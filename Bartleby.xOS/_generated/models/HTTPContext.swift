@@ -133,7 +133,7 @@ import Foundation
 			self.caller <- ( map["caller"] )
 			self.code <- ( map["code"] )
 			self.httpStatusCode <- ( map["httpStatusCode"] )
-			self.relatedURL <- ( map["relatedURL"], URLTransform() )
+			self.relatedURL <- ( map["relatedURL"], URLTransform(shouldEncodeURLString:false) )
 			self.request <- ( map["request"] )
 			self.responseString <- ( map["responseString"] )
 			self.message <- ( map["message"] )

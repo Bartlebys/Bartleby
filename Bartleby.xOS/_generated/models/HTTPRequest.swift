@@ -112,7 +112,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self.url <- ( map["url"], URLTransform() )
+			self.url <- ( map["url"], URLTransform(shouldEncodeURLString:false) )
 			self.httpMethod <- ( map["httpMethod"] )
 			self.headers <- ( map["headers"] )
 			self.httpBody <- ( map["httpBody"], DataTransform() )

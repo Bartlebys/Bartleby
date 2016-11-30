@@ -363,7 +363,7 @@ import Foundation
 			self.currentUser <- ( map["currentUser"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.identificationValue <- ( map["identificationValue"] )
-			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform() )
+			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform(shouldEncodeURLString:false) )
 			self.registred <- ( map["registred"] )
 			self.collectionsMetadata <- ( map["collectionsMetadata"] )
 			self.stateDictionary <- ( map["stateDictionary"] )
