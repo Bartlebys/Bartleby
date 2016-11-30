@@ -114,14 +114,16 @@ extension BartlebyDocument {
     /// - Parameters:
     ///   - originalURL: the original URL
     ///   - appScoped: is it an app scoped Bookmark?
-    public func releaseSecurizedUrl(originalURL:URL,appScoped: Bool=false){
-        if originalURL.isFileURL && !originalURL.isInMainBundle{
-            Swift.print("releaseSecurizedUrl \(originalURL)")
-            if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
-                let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
-                self._stopAccessingToResourceIdentifiedBy(key)
-            }else{
-                self.log("Unable to release Bookmark for \(originalURL) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+    public func releaseSecurizedUrl(originalURL:URL?,appScoped: Bool=false){
+        if let originalURL=originalURL{
+            if originalURL.isFileURL && !originalURL.isInMainBundle{
+                Swift.print("releaseSecurizedUrl \(originalURL)")
+                if self._securityScopedBookmarkExits(originalURL,appScoped:appScoped ){
+                    let key=self._getBookMarkKeyFor(originalURL, appScoped: appScoped)
+                    self._stopAccessingToResourceIdentifiedBy(key)
+                }else{
+                    self.log("Unable to release Bookmark for \(originalURL) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                }
             }
         }
     }

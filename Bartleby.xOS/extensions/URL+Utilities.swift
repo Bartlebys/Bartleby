@@ -9,15 +9,15 @@
 import Foundation
 
 
-extension URL{
+public extension URL{
 
-    var isAnAlias:Bool{
+    public var isAnAlias:Bool{
         // Alias? https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/URL.swift#L417
         let resv:URLResourceValues? = try? self.resourceValues(forKeys: [URLResourceKey.isAliasFileKey])
         return resv?.isAliasFile ?? false
     }
 
-    var isInMainBundle:Bool{
+    public var isInMainBundle:Bool{
         return self.absoluteString.contains(Bundle.main.bundleURL.path)
     }
 
