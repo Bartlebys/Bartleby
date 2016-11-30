@@ -46,8 +46,11 @@ extension BartlebyDocument {
 
     ///
     /// Returns and acquires securized URL
-    //  If the Securiry scoped Bookmark does not exist, it creates one.
-    //  If the URL is in the Main Bundle it is ignored
+    ///  If the Securiry scoped Bookmark does not exist, it creates one.
+    ///  If the URL is in the Main Bundle it is ignored it returns the original URL
+    ///  If the URL is distant it returns the original URL
+    ///
+    ///  So you can simplify the consumers code and acquire / release any URL
     ///
     /// **IMPORTANT**
     /// 1. You must call this method after a user explicit intent (NSOpenPanel ...)
@@ -61,6 +64,10 @@ extension BartlebyDocument {
     /// - Throws: errors
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
         do{
+            if originalURL.isFileURL == false{
+                return originalURL
+            }
+
             if originalURL.absoluteString.contains(Bundle.main.bundleURL.path){
                 Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns bundled URL )")
                 return originalURL
