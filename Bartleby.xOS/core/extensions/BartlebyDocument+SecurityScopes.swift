@@ -49,7 +49,7 @@ extension BartlebyDocument {
     ///
     /// Returns and acquires securized URL
     ///  If the Securiry scoped Bookmark does not exist, it creates one.
-    ///  If the url is sandboxed or distant or in main bundle it returns the original url.
+    ///  If the url is  distant or in main bundle it returns the original url.
     ///  So you can simplify the consumers code and acquire / release any URL!
     ///
     /// **IMPORTANT**
@@ -71,11 +71,6 @@ extension BartlebyDocument {
 
             if originalURL.isInMainBundle{
                 Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns bundled URL )")
-                return originalURL
-            }
-
-            if originalURL.isSandBoxed{
-                Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns boxed  URL )")
                 return originalURL
             }
 
@@ -133,7 +128,7 @@ extension BartlebyDocument {
     ///   - appScoped: is it an app scoped Bookmark?
     public func releaseSecurizedUrl(originalURL:URL?,appScoped: Bool=false){
         if let url=self._normalizeFileURL(originalURL){
-            if url.isFileURL && !url.isInMainBundle && !url.isSandBoxed{
+            if url.isFileURL && !url.isInMainBundle {
                 Swift.print("releaseSecurizedUrl \(url)")
                 if self._securityScopedBookmarkExits(url,appScoped:appScoped ){
                     let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
@@ -162,7 +157,7 @@ extension BartlebyDocument {
     ///   - appScoped: is it an app scoped Bookmark?
     public func deleteSecurityScopedBookmark(originalURL: URL, appScoped: Bool=false) {
         if let url=self._normalizeFileURL(originalURL){
-            if url.isFileURL && !url.isInMainBundle && !originalURL.isSandBoxed{
+            if url.isFileURL && !url.isInMainBundle{
                 let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
                 // Preventive stop
                 self._stopAccessingToResourceIdentifiedBy(key)
@@ -185,7 +180,7 @@ extension BartlebyDocument {
 
     /// Returns a description of the current bookmark
     public var bookmarksDescription:String{
-        var description=""
+        var description="Current Security Bookmark list contains \(self.metadata.URLBookmarkData.count) element(s)\n"
         for keyedData in self.metadata.URLBookmarkData{
             if let s=String.init(data: keyedData.data, encoding: String.Encoding.utf8){
                 description += "\(keyedData.key)=" + s + "\n"
@@ -208,6 +203,7 @@ extension BartlebyDocument {
     fileprivate func _bookmarkURL(_ url: URL, appScoped: Bool=false) throws ->(key:String,securizedURL:URL) {
         // Create the key
         let key = self._getBookMarkKeyFor(url, appScoped: appScoped)
+
         var data:Data?
         do {
 
