@@ -8,5 +8,7 @@
 
 // Required for CryptoHelper support
 #import <CommonCrypto/CommonCrypto.h>
+// Required for SecurityScope access()
+#import "unistd.h"
 
 

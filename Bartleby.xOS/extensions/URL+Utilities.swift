@@ -17,8 +17,23 @@ public extension URL{
         return resv?.isAliasFile ?? false
     }
 
+
     public var isInMainBundle:Bool{
         return self.absoluteString.contains(Bundle.main.bundleURL.path)
+    }
+
+
+    /// Returns if the url is accessible. 
+    /// relies  #import "unistd.h" (must be added to the bridging header)
+    /// - Parameter url: the url to test
+    /// - Returns: true if the url is sandboxed
+    public var isSandBoxed:Bool{
+        if self.isFileURL{
+            let fileSystemRepresentation=NSString(string: self.path).fileSystemRepresentation
+            return access(fileSystemRepresentation, R_OK) == 0
+        }else{
+            return true
+        }
     }
 
 }
