@@ -22,6 +22,7 @@ public enum SecurityScopedBookMarkError: Error {
     case voidData
     case bookMarkIsStale
     case URLNormalizationIssue
+    case documentIsADraft
 }
 
 
@@ -65,55 +66,47 @@ extension BartlebyDocument {
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
         do{
             if originalURL.isFileURL == false{
-                Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns URL distant or not )")
                 return originalURL
             }
 
             if originalURL.isInMainBundle{
-                Swift.print("acquireSecurizedURLFrom(\(originalURL) -> returns bundled URL )")
                 return originalURL
+            }
+
+            if !appScoped && self.isDraft{
+                // The document must have an URL to create a Bookmark
+                throw SecurityScopedBookMarkError.documentIsADraft
             }
 
             if let url=self._normalizeFileURL(originalURL){
                 if !FileManager.default.fileExists(atPath: url.path){
                     throw SecurityScopedBookMarkError.unexistingLocalFile
                 }
-
-                Swift.print("acquireSecurizedURLFrom(\(url))")
                 if self._securityScopedBookmarkExits(url, appScoped: false) {
                     // The bookmark data exists
                     let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
                     if let securizedURL=self._activeSecurityBookmarks[key]{
-                        // The Url has already been acquired
-                        Swift.print("returns \(securizedURL)")
                         return securizedURL
                     }else{
                         if let idx=self.metadata.URLBookmarkData.index(where:{$0.key == key}){
                             //  Acquire the securized URL
                             let data=self.metadata.URLBookmarkData[idx].data
-                            let securizedURL = try self._getSecurityScopedURLFrom(data)
+                            let securizedURL = try self._getSecurityScopedURLFrom(data,forKey:key)
                             self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
-                            Swift.print("returns \(securizedURL)")
                             return securizedURL
                         }else{
-                            Swift.print("returns Void data when attempting to acquire securized URL")
                             throw SecurityScopedBookMarkError.voidData
                         }
                     }
                 }else{
                     // try to create and acquire
                     let r = try self._bookmarkURL(url, appScoped: false)
-                    // Return the securized url
-                    Swift.print("returns \(r.securizedURL)")
                     return r.securizedURL
                 }
             }else{
                 throw SecurityScopedBookMarkError.URLNormalizationIssue
             }
-
-
         }catch{
-            Swift.print("returns Exception \(error)")
             throw error
         }
     }
@@ -129,7 +122,6 @@ extension BartlebyDocument {
     public func releaseSecurizedUrl(originalURL:URL?,appScoped: Bool=false){
         if let url=self._normalizeFileURL(originalURL){
             if url.isFileURL && !url.isInMainBundle {
-                Swift.print("releaseSecurizedUrl \(url)")
                 if self._securityScopedBookmarkExits(url,appScoped:appScoped ){
                     let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
                     self._stopAccessingToResourceIdentifiedBy(key)
@@ -234,7 +226,7 @@ extension BartlebyDocument {
             self.metadata.URLBookmarkData.append(keyedData)
 
             // Prepare to return the key and the securized URL
-            let securizedURL = try self._getSecurityScopedURLFrom(data)
+            let securizedURL = try self._getSecurityScopedURLFrom(data,forKey:key)
             self._startAccessingToSecurityScopedResourceAtURL(key,securizedURL)
             self.hasChanged()
 
@@ -259,9 +251,10 @@ extension BartlebyDocument {
     /// - Parameters:
     ///   - data: the bookMark data
     ///   - appScoped: if set to true it is an app-scoped bookmark else a document-scoped bookmark
+    ///   - forKey: the key (in case of error the bookmark will be destroyed)
     /// - Returns: the securizedURL
     /// - Throws: SecurityScopedBookMarkError
-    internal func _getSecurityScopedURLFrom(_ data: Data, appScoped: Bool=false)throws -> URL {
+    internal func _getSecurityScopedURLFrom(_ data: Data, appScoped: Bool=false, forKey:String)throws -> URL {
         var bookmarkIsStale: Bool = false
         do {
             #if os(OSX)
@@ -276,9 +269,18 @@ extension BartlebyDocument {
             if (!bookmarkIsStale) {
                 return securizedURL!
             } else {
+                // Delete the bookmark
+                if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == forKey }){
+                    self.metadata.URLBookmarkData.remove(at: idx)
+                }
                 throw SecurityScopedBookMarkError.bookMarkIsStale
             }
         } catch {
+            // Delete the bookmark
+            if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == forKey }){
+                self.metadata.URLBookmarkData.remove(at: idx)
+            }
+
             throw SecurityScopedBookMarkError.getScopedURLRessourceFailed(message: "\(error)")
         }
     }
