@@ -15,7 +15,7 @@ public final class BSFS:TriggerHook{
     // MARK: -
 
     // Document
-    fileprivate unowned var _document:BartlebyDocument
+    fileprivate var _document:BartlebyDocument
 
     /// The File manager used to perform all the BSFS operation on GCD global utility queue.
     /// Note that we also use specific FileHandle at chunk level

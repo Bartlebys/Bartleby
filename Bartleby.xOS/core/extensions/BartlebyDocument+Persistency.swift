@@ -130,6 +130,7 @@ extension BartlebyDocument{
                                         }
                                     }
                                     let _ = try proxy.updateData(collectionData,provisionChanges: false)
+                                    proxy.propagate()
                                 }
                             } else {
                                 throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
@@ -142,12 +143,6 @@ extension BartlebyDocument{
                     // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                 }
             }
-            do {
-                try self._refreshCollectionsProxies()
-            } catch {
-                self.log("Proxies refreshing failure \(error)", file: #file, function: #function, line: #line)
-            }
-
             Async.main{
                 self.documentDidLoad()
             }

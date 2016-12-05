@@ -14,10 +14,9 @@ extension BartlebyDocument{
     // MARK: - Collections Public API
 
     open func getCollection<T: CollectibleCollection>  () throws -> T {
-        guard var collection=self.collectionByName(T.collectionName) as? T else {
+        guard let collection=self.collectionByName(T.collectionName) as? T else {
             throw DocumentError.unExistingCollection(collectionName: T.collectionName)
         }
-        collection.undoManager=self.undoManager
         return collection
     }
 

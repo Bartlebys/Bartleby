@@ -21,13 +21,16 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     var shouldBeSaved:Bool { get set }
 
     // The undo manager (for automation)
-    weak var undoManager: UndoManager? { get set }
+    weak var undoManager: UndoManager? { get }
 
     // The dataspace UID
     var spaceUID: String { get }
 
     // The document UID
     var documentUID:String { get }
+
+    // Should be called to propagate the collection reference
+    func propagate()
 
     /// You can reference a tableview for automation
     weak var tableView: BXTableView? { get set }

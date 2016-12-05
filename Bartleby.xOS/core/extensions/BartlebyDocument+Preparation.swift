@@ -39,9 +39,6 @@ extension BartlebyDocument{
             blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
             documentFileWrapper.addFileWrapper(blocksFileWrapper)
         }
-
-
-
     }
 
 
@@ -50,24 +47,11 @@ extension BartlebyDocument{
         for metadatum in self.metadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
                 if var proxy = proxy as? BartlebyCollection {
-                    self._addCollection(proxy)
-                    proxy.undoManager=self.undoManager
                     proxy.document=self
+                    self._addCollection(proxy)
                 } else {
                     throw DocumentError.collectionProxyTypeError
                 }
-            } else {
-                throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
-            }
-        }
-    }
-
-    // Injects into the collections proxie the document and undoManager.
-    internal func _refreshCollectionsProxies()throws {
-        for metadatum in self.metadata.collectionsMetadata {
-            if var proxy=self.collectionByName(metadatum.collectionName) {
-                proxy.undoManager=self.undoManager
-                proxy.document=self
             } else {
                 throw DocumentError.missingCollectionProxy(collectionName: metadatum.collectionName)
             }

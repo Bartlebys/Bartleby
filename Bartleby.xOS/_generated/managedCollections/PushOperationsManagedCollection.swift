@@ -41,11 +41,7 @@ extension Notification.Name {
         return "PushOperationsManagedCollection"
     }
 
-    open var spaceUID:String {
-        get{
-            return self.document?.spaceUID ?? Default.NO_UID
-        }
-    }
+    open var spaceUID:String { return self.document?.spaceUID ?? Default.NO_UID }
 
     /// Init with prefetched content
     ///
@@ -55,13 +51,19 @@ extension Notification.Name {
     required public init(items:[PushOperation]) {
         super.init()
         self._items=items
+        self.propagate()
     }
 
     required public init() {
         super.init()
     }
 
-    weak open var undoManager:UndoManager?
+    // Should be called to propagate the collection reference
+    open func propagate(){
+        self.forEach { $0.collection=self }
+    }
+
+    open var undoManager:UndoManager? { return self.document?.undoManager }
 
     weak open var tableView: BXTableView?
 
@@ -235,10 +237,6 @@ extension Notification.Name {
         super.mapping(map: map)
         self.quietChanges {
 			self._items <- ( map["_items"] )
-
-            if map.mappingType == .fromJSON {
-               forEach { $0.collection=self }
-            }
         }
     }
 
