@@ -95,7 +95,13 @@ public final class BSFS:TriggerHook{
     ///     - boxes/<boxUID>/[files]
     ///     - downloads/[files] tmp download files
     public var baseFolderPath:String{
+        if let appGroup=self._document.metadata.appGroup{
+            if let url=self._fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroup){
+                return url.path+"/\(_document.UID)"
+            }
+        }
         return Bartleby.getSearchPath(.documentDirectory)!+"/\(_document.UID)"
+
     }
 
     /// Downloads folder

@@ -37,6 +37,9 @@ import Foundation
 	}
 	open var identificationMethod:IdentificationMethod = .key
 
+	//You can define a shared app group container identifier ( set on documentDidLoad()  self.metadata.appGroup="org.myDomain.groupName")
+	dynamic open var appGroup:String?
+
 	//The current kvid identification value (injected in HTTP headers)
 	dynamic open var identificationValue:String?
 
@@ -149,7 +152,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","identificationValue","collaborationServerURL","registred","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -177,6 +180,10 @@ import Foundation
             case "identificationMethod":
                 if let casted=value as? DocumentMetadata.IdentificationMethod{
                     self.identificationMethod=casted
+                }
+            case "appGroup":
+                if let casted=value as? String{
+                    self.appGroup=casted
                 }
             case "identificationValue":
                 if let casted=value as? String{
@@ -297,6 +304,8 @@ import Foundation
                return self.currentUser
             case "identificationMethod":
                return self.identificationMethod
+            case "appGroup":
+               return self.appGroup
             case "identificationValue":
                return self.identificationValue
             case "collaborationServerURL":
@@ -362,6 +371,7 @@ import Foundation
 			self.persistentUID <- ( map["persistentUID"] )
 			self.currentUser <- ( map["currentUser"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
+			self.appGroup <- ( map["appGroup"] )
 			self.identificationValue <- ( map["identificationValue"] )
 			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform(shouldEncodeURLString:false) )
 			self.registred <- ( map["registred"] )
@@ -394,6 +404,7 @@ import Foundation
 			self.persistentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "persistentUID")! as NSString)
 			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
+			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey:"appGroup") as NSString?)
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 			self.registred=decoder.decodeBool(forKey:"registred") 
@@ -424,6 +435,9 @@ import Foundation
 			coder.encode(currentUser,forKey:"currentUser")
 		}
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
+		if let appGroup = self.appGroup {
+			coder.encode(appGroup,forKey:"appGroup")
+		}
 		if let identificationValue = self.identificationValue {
 			coder.encode(identificationValue,forKey:"identificationValue")
 		}
