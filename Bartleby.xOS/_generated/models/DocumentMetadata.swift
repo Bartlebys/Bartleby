@@ -37,7 +37,7 @@ import Foundation
 	}
 	open var identificationMethod:IdentificationMethod = .key
 
-	//You can define a shared app group container identifier ( set on documentDidLoad()  self.metadata.appGroup="org.myDomain.groupName")
+	//You can define a shared app group container identifier ( set on documentDidLoad()  self.metadata.appGroup="group.myDomain.com.groupName")
 	dynamic open var appGroup:String?
 
 	//The current kvid identification value (injected in HTTP headers)
