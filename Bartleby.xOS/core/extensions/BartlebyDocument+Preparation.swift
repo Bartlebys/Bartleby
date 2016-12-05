@@ -46,8 +46,11 @@ extension BartlebyDocument{
     open func registerCollections() throws {
         for metadatum in self.metadata.collectionsMetadata {
             if let proxy=metadatum.proxy {
-                if var proxy = proxy as? BartlebyCollection {
-                    proxy.document=self
+                if let proxy = proxy as? BartlebyCollection {
+                    // Reference the document
+                    if let object = proxy as? BartlebyObject{
+                        object.document=self
+                    }
                     self._addCollection(proxy)
                 } else {
                     throw DocumentError.collectionProxyTypeError

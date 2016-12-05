@@ -29,7 +29,9 @@ class SourceEditor: NSViewController,Editor {
             }else{
                 self.enableEdition=true
                 let selectedJSON=self._selectedItem!.toJSONString(true)
-                self.textView.string=selectedJSON
+                let d = _selectedItem?.document?.UID ?? "NO_DOCUMENT"
+                let c = _selectedItem?.collection?.d_collectionName ?? "NO_COLLECTION_NAME"
+                self.textView.string="\(d)\n\(c)\n---\n"+selectedJSON
             }
         }
     }

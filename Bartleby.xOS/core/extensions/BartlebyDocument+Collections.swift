@@ -35,8 +35,8 @@ extension BartlebyDocument{
 
     // Any call should always be casted to a CollectibleCollection
     func collectionByName(_ name: String) -> BartlebyCollection? {
-        if _collections.keys.contains(name){
-            return _collections[name]
+        if self._collections.keys.contains(name){
+            return self._collections[name]
         }
         return nil
     }
@@ -47,7 +47,7 @@ extension BartlebyDocument{
     // Those dynamic method are only used internally
     internal func _addCollection(_ collection: BartlebyCollection) {
         let collectionName=collection.d_collectionName
-        _collections[collectionName]=collection
+        self._collections[collectionName]=collection
     }
 
 

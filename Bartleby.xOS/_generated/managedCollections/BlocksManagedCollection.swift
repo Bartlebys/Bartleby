@@ -51,7 +51,7 @@ extension Notification.Name {
     required public init(items:[Block]) {
         super.init()
         self._items=items
-        self.propagate()
+        self.propagateCollection()
     }
 
     required public init() {
@@ -59,7 +59,7 @@ extension Notification.Name {
     }
 
     // Should be called to propagate the collection reference
-    open func propagate(){
+    open func propagateCollection(){
         self.forEach { $0.collection=self }
     }
 

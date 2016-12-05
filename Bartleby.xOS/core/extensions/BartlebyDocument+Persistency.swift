@@ -130,7 +130,7 @@ extension BartlebyDocument{
                                         }
                                     }
                                     let _ = try proxy.updateData(collectionData,provisionChanges: false)
-                                    proxy.propagate()
+                                    proxy.propagateCollection()
                                 }
                             } else {
                                 throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)

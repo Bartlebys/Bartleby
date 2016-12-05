@@ -235,7 +235,6 @@ import Foundation
 
     #1  Define the Schema
     #2  Register the collections (by calling registerCollections())
-    #3  Replace the collections proxies (if you want to use cocoa bindings)
 
     */
 	open func configureSchema(){
