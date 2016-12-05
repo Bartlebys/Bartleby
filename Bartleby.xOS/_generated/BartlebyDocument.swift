@@ -64,8 +64,16 @@ import Foundation
     // The Document Metadata
     dynamic open var metadata=DocumentMetadata()
 
+
     // Bartleby's Synchronized File System for this document.
-    open lazy var bsfs:BSFS=BSFS(in:self)
+    public var bsfs:BSFS{
+        if self._bsfs == nil{
+            self._bsfs=BSFS(in:self)
+        }
+        return self._bsfs!
+    }
+
+    internal var _bsfs:BSFS?
 
     // Hook the triggers
     public var triggerHooks=[TriggerHook]()

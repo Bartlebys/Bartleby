@@ -19,7 +19,7 @@ extension BartlebyDocument{
 
     // Essential document preparation
     internal func _configure(){
-
+        
         // Declare the document
         Bartleby.sharedInstance.declare(self)
 
@@ -39,6 +39,9 @@ extension BartlebyDocument{
             blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
             documentFileWrapper.addFileWrapper(blocksFileWrapper)
         }
+
+
+
     }
 
 
