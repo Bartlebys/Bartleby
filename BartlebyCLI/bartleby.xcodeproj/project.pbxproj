@@ -7,28 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E50805871DF6B5840085E5C3 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508056F1DF6B5840085E5C3 /* CustomDateFormatTransform.swift */; };
-		E50805881DF6B5840085E5C3 /* DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805701DF6B5840085E5C3 /* DataTransform.swift */; };
-		E50805891DF6B5840085E5C3 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805711DF6B5840085E5C3 /* DateFormatterTransform.swift */; };
-		E508058A1DF6B5840085E5C3 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805721DF6B5840085E5C3 /* DateTransform.swift */; };
-		E508058B1DF6B5840085E5C3 /* DictionaryTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805731DF6B5840085E5C3 /* DictionaryTransform.swift */; };
-		E508058C1DF6B5840085E5C3 /* EnumOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805741DF6B5840085E5C3 /* EnumOperators.swift */; };
-		E508058D1DF6B5840085E5C3 /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805751DF6B5840085E5C3 /* EnumTransform.swift */; };
-		E508058E1DF6B5840085E5C3 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805761DF6B5840085E5C3 /* FromJSON.swift */; };
-		E508058F1DF6B5840085E5C3 /* HexColorTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805771DF6B5840085E5C3 /* HexColorTransform.swift */; };
-		E50805901DF6B5840085E5C3 /* ImmutableMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805781DF6B5840085E5C3 /* ImmutableMappable.swift */; };
-		E50805911DF6B5840085E5C3 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057A1DF6B5840085E5C3 /* ISO8601DateTransform.swift */; };
-		E50805921DF6B5840085E5C3 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057B1DF6B5840085E5C3 /* Map.swift */; };
-		E50805931DF6B5840085E5C3 /* MapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057C1DF6B5840085E5C3 /* MapError.swift */; };
-		E50805941DF6B5840085E5C3 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057D1DF6B5840085E5C3 /* Mappable.swift */; };
-		E50805951DF6B5840085E5C3 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057E1DF6B5840085E5C3 /* Mapper.swift */; };
-		E50805961DF6B5840085E5C3 /* NSDecimalNumberTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508057F1DF6B5840085E5C3 /* NSDecimalNumberTransform.swift */; };
-		E50805971DF6B5840085E5C3 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805811DF6B5840085E5C3 /* Operators.swift */; };
-		E50805981DF6B5840085E5C3 /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805821DF6B5840085E5C3 /* ToJSON.swift */; };
-		E50805991DF6B5840085E5C3 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805831DF6B5840085E5C3 /* TransformOf.swift */; };
-		E508059A1DF6B5840085E5C3 /* TransformOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805841DF6B5840085E5C3 /* TransformOperators.swift */; };
-		E508059B1DF6B5840085E5C3 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805851DF6B5840085E5C3 /* TransformType.swift */; };
-		E508059C1DF6B5840085E5C3 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805861DF6B5840085E5C3 /* URLTransform.swift */; };
+		E508060F1DF6D49C0085E5C3 /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805FB1DF6D49C0085E5C3 /* AFError.swift */; };
+		E50806101DF6D49C0085E5C3 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805FD1DF6D49C0085E5C3 /* Alamofire.swift */; };
+		E50806111DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50805FE1DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift */; };
+		E50806121DF6D49C0085E5C3 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806011DF6D49C0085E5C3 /* MultipartFormData.swift */; };
+		E50806131DF6D49C0085E5C3 /* NetworkReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806021DF6D49C0085E5C3 /* NetworkReachabilityManager.swift */; };
+		E50806141DF6D49C0085E5C3 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806031DF6D49C0085E5C3 /* Notifications.swift */; };
+		E50806151DF6D49C0085E5C3 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806041DF6D49C0085E5C3 /* ParameterEncoding.swift */; };
+		E50806161DF6D49C0085E5C3 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806051DF6D49C0085E5C3 /* Request.swift */; };
+		E50806171DF6D49C0085E5C3 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806061DF6D49C0085E5C3 /* Response.swift */; };
+		E50806181DF6D49C0085E5C3 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806071DF6D49C0085E5C3 /* ResponseSerialization.swift */; };
+		E50806191DF6D49C0085E5C3 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806081DF6D49C0085E5C3 /* Result.swift */; };
+		E508061A1DF6D49C0085E5C3 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806091DF6D49C0085E5C3 /* ServerTrustPolicy.swift */; };
+		E508061B1DF6D49C0085E5C3 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508060A1DF6D49C0085E5C3 /* SessionDelegate.swift */; };
+		E508061C1DF6D49C0085E5C3 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508060B1DF6D49C0085E5C3 /* SessionManager.swift */; };
+		E508061D1DF6D49C0085E5C3 /* TaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508060C1DF6D49C0085E5C3 /* TaskDelegate.swift */; };
+		E508061E1DF6D49C0085E5C3 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508060D1DF6D49C0085E5C3 /* Timeline.swift */; };
+		E508061F1DF6D49C0085E5C3 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508060E1DF6D49C0085E5C3 /* Validation.swift */; };
+		E50806391DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806211DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift */; };
+		E508063A1DF6D4CC0085E5C3 /* DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806221DF6D4CC0085E5C3 /* DataTransform.swift */; };
+		E508063B1DF6D4CC0085E5C3 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806231DF6D4CC0085E5C3 /* DateFormatterTransform.swift */; };
+		E508063C1DF6D4CC0085E5C3 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806241DF6D4CC0085E5C3 /* DateTransform.swift */; };
+		E508063D1DF6D4CC0085E5C3 /* DictionaryTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806251DF6D4CC0085E5C3 /* DictionaryTransform.swift */; };
+		E508063E1DF6D4CC0085E5C3 /* EnumOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806261DF6D4CC0085E5C3 /* EnumOperators.swift */; };
+		E508063F1DF6D4CC0085E5C3 /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806271DF6D4CC0085E5C3 /* EnumTransform.swift */; };
+		E50806401DF6D4CC0085E5C3 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806281DF6D4CC0085E5C3 /* FromJSON.swift */; };
+		E50806411DF6D4CC0085E5C3 /* HexColorTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806291DF6D4CC0085E5C3 /* HexColorTransform.swift */; };
+		E50806421DF6D4CC0085E5C3 /* ImmutableMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508062A1DF6D4CC0085E5C3 /* ImmutableMappable.swift */; };
+		E50806431DF6D4CC0085E5C3 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508062C1DF6D4CC0085E5C3 /* ISO8601DateTransform.swift */; };
+		E50806441DF6D4CC0085E5C3 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508062D1DF6D4CC0085E5C3 /* Map.swift */; };
+		E50806451DF6D4CC0085E5C3 /* MapError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508062E1DF6D4CC0085E5C3 /* MapError.swift */; };
+		E50806461DF6D4CC0085E5C3 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508062F1DF6D4CC0085E5C3 /* Mappable.swift */; };
+		E50806471DF6D4CC0085E5C3 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806301DF6D4CC0085E5C3 /* Mapper.swift */; };
+		E50806481DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806311DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift */; };
+		E50806491DF6D4CC0085E5C3 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806331DF6D4CC0085E5C3 /* Operators.swift */; };
+		E508064A1DF6D4CC0085E5C3 /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806341DF6D4CC0085E5C3 /* ToJSON.swift */; };
+		E508064B1DF6D4CC0085E5C3 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806351DF6D4CC0085E5C3 /* TransformOf.swift */; };
+		E508064C1DF6D4CC0085E5C3 /* TransformOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806361DF6D4CC0085E5C3 /* TransformOperators.swift */; };
+		E508064D1DF6D4CC0085E5C3 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806371DF6D4CC0085E5C3 /* TransformType.swift */; };
+		E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806381DF6D4CC0085E5C3 /* URLTransform.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
 		E5A2232B1DF5A7F300B295A9 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A222411DF5A7F300B295A9 /* BartlebyDocument.swift */; };
@@ -243,23 +260,6 @@
 		E5A223FC1DF5A7F300B295A9 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A223281DF5A7F300B295A9 /* HTTPManager.swift */; };
 		E5A223FD1DF5A7F300B295A9 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A223291DF5A7F300B295A9 /* Pluralization.swift */; };
 		E5A223FE1DF5A7F300B295A9 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2232A1DF5A7F300B295A9 /* PString.swift */; };
-		E5CC28F91D846CB300F7C783 /* AFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28521D846CB300F7C783 /* AFError.swift */; };
-		E5CC28FA1D846CB300F7C783 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28541D846CB300F7C783 /* Alamofire.swift */; };
-		E5CC28FB1D846CB300F7C783 /* DispatchQueue+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */; };
-		E5CC28FC1D846CB300F7C783 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28581D846CB300F7C783 /* MultipartFormData.swift */; };
-		E5CC28FD1D846CB300F7C783 /* NetworkReachabilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28591D846CB300F7C783 /* NetworkReachabilityManager.swift */; };
-		E5CC28FE1D846CB300F7C783 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285A1D846CB300F7C783 /* Notifications.swift */; };
-		E5CC28FF1D846CB300F7C783 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285B1D846CB300F7C783 /* ParameterEncoding.swift */; };
-		E5CC29001D846CB300F7C783 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285C1D846CB300F7C783 /* Request.swift */; };
-		E5CC29011D846CB300F7C783 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285D1D846CB300F7C783 /* Response.swift */; };
-		E5CC29021D846CB300F7C783 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285E1D846CB300F7C783 /* ResponseSerialization.swift */; };
-		E5CC29031D846CB300F7C783 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC285F1D846CB300F7C783 /* Result.swift */; };
-		E5CC29041D846CB300F7C783 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28601D846CB300F7C783 /* ServerTrustPolicy.swift */; };
-		E5CC29051D846CB300F7C783 /* SessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28611D846CB300F7C783 /* SessionDelegate.swift */; };
-		E5CC29061D846CB300F7C783 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28621D846CB300F7C783 /* SessionManager.swift */; };
-		E5CC29071D846CB300F7C783 /* TaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28631D846CB300F7C783 /* TaskDelegate.swift */; };
-		E5CC29081D846CB300F7C783 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28641D846CB300F7C783 /* Timeline.swift */; };
-		E5CC29091D846CB300F7C783 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28651D846CB300F7C783 /* Validation.swift */; };
 		E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AC1D846CB300F7C783 /* CommandLine.swift */; };
 		E5CC29201D846CB300F7C783 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AE1D846CB300F7C783 /* Option.swift */; };
 		E5CC29211D846CB300F7C783 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */; };
@@ -279,28 +279,45 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E508056F1DF6B5840085E5C3 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
-		E50805701DF6B5840085E5C3 /* DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTransform.swift; sourceTree = "<group>"; };
-		E50805711DF6B5840085E5C3 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
-		E50805721DF6B5840085E5C3 /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
-		E50805731DF6B5840085E5C3 /* DictionaryTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTransform.swift; sourceTree = "<group>"; };
-		E50805741DF6B5840085E5C3 /* EnumOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumOperators.swift; sourceTree = "<group>"; };
-		E50805751DF6B5840085E5C3 /* EnumTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
-		E50805761DF6B5840085E5C3 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
-		E50805771DF6B5840085E5C3 /* HexColorTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexColorTransform.swift; sourceTree = "<group>"; };
-		E50805781DF6B5840085E5C3 /* ImmutableMappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmutableMappable.swift; sourceTree = "<group>"; };
-		E508057A1DF6B5840085E5C3 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
-		E508057B1DF6B5840085E5C3 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		E508057C1DF6B5840085E5C3 /* MapError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapError.swift; sourceTree = "<group>"; };
-		E508057D1DF6B5840085E5C3 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
-		E508057E1DF6B5840085E5C3 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
-		E508057F1DF6B5840085E5C3 /* NSDecimalNumberTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberTransform.swift; sourceTree = "<group>"; };
-		E50805811DF6B5840085E5C3 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
-		E50805821DF6B5840085E5C3 /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
-		E50805831DF6B5840085E5C3 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
-		E50805841DF6B5840085E5C3 /* TransformOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOperators.swift; sourceTree = "<group>"; };
-		E50805851DF6B5840085E5C3 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
-		E50805861DF6B5840085E5C3 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		E50805FB1DF6D49C0085E5C3 /* AFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
+		E50805FD1DF6D49C0085E5C3 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
+		E50805FE1DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Alamofire.swift"; sourceTree = "<group>"; };
+		E50806011DF6D49C0085E5C3 /* MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
+		E50806021DF6D49C0085E5C3 /* NetworkReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityManager.swift; sourceTree = "<group>"; };
+		E50806031DF6D49C0085E5C3 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		E50806041DF6D49C0085E5C3 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
+		E50806051DF6D49C0085E5C3 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		E50806061DF6D49C0085E5C3 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		E50806071DF6D49C0085E5C3 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
+		E50806081DF6D49C0085E5C3 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		E50806091DF6D49C0085E5C3 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
+		E508060A1DF6D49C0085E5C3 /* SessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionDelegate.swift; sourceTree = "<group>"; };
+		E508060B1DF6D49C0085E5C3 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		E508060C1DF6D49C0085E5C3 /* TaskDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDelegate.swift; sourceTree = "<group>"; };
+		E508060D1DF6D49C0085E5C3 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		E508060E1DF6D49C0085E5C3 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		E50806211DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
+		E50806221DF6D4CC0085E5C3 /* DataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTransform.swift; sourceTree = "<group>"; };
+		E50806231DF6D4CC0085E5C3 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
+		E50806241DF6D4CC0085E5C3 /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
+		E50806251DF6D4CC0085E5C3 /* DictionaryTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTransform.swift; sourceTree = "<group>"; };
+		E50806261DF6D4CC0085E5C3 /* EnumOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumOperators.swift; sourceTree = "<group>"; };
+		E50806271DF6D4CC0085E5C3 /* EnumTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
+		E50806281DF6D4CC0085E5C3 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
+		E50806291DF6D4CC0085E5C3 /* HexColorTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexColorTransform.swift; sourceTree = "<group>"; };
+		E508062A1DF6D4CC0085E5C3 /* ImmutableMappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmutableMappable.swift; sourceTree = "<group>"; };
+		E508062C1DF6D4CC0085E5C3 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
+		E508062D1DF6D4CC0085E5C3 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		E508062E1DF6D4CC0085E5C3 /* MapError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapError.swift; sourceTree = "<group>"; };
+		E508062F1DF6D4CC0085E5C3 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
+		E50806301DF6D4CC0085E5C3 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
+		E50806311DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberTransform.swift; sourceTree = "<group>"; };
+		E50806331DF6D4CC0085E5C3 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		E50806341DF6D4CC0085E5C3 /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
+		E50806351DF6D4CC0085E5C3 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
+		E50806361DF6D4CC0085E5C3 /* TransformOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOperators.swift; sourceTree = "<group>"; };
+		E50806371DF6D4CC0085E5C3 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
+		E50806381DF6D4CC0085E5C3 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -520,23 +537,6 @@
 		E5A223291DF5A7F300B295A9 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E5A2232A1DF5A7F300B295A9 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E5A6BFA31DE302B600E5E3E6 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
-		E5CC28521D846CB300F7C783 /* AFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFError.swift; sourceTree = "<group>"; };
-		E5CC28541D846CB300F7C783 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
-		E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Alamofire.swift"; sourceTree = "<group>"; };
-		E5CC28581D846CB300F7C783 /* MultipartFormData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
-		E5CC28591D846CB300F7C783 /* NetworkReachabilityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityManager.swift; sourceTree = "<group>"; };
-		E5CC285A1D846CB300F7C783 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		E5CC285B1D846CB300F7C783 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
-		E5CC285C1D846CB300F7C783 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Request.swift; sourceTree = "<group>"; };
-		E5CC285D1D846CB300F7C783 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
-		E5CC285E1D846CB300F7C783 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
-		E5CC285F1D846CB300F7C783 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		E5CC28601D846CB300F7C783 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
-		E5CC28611D846CB300F7C783 /* SessionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SessionDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		E5CC28621D846CB300F7C783 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		E5CC28631D846CB300F7C783 /* TaskDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDelegate.swift; sourceTree = "<group>"; };
-		E5CC28641D846CB300F7C783 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
-		E5CC28651D846CB300F7C783 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		E5CC28AC1D846CB300F7C783 /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		E5CC28AE1D846CB300F7C783 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -562,33 +562,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E508056E1DF6B5840085E5C3 /* Sources */ = {
+		E50805FA1DF6D49C0085E5C3 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
-				E508056F1DF6B5840085E5C3 /* CustomDateFormatTransform.swift */,
-				E50805701DF6B5840085E5C3 /* DataTransform.swift */,
-				E50805711DF6B5840085E5C3 /* DateFormatterTransform.swift */,
-				E50805721DF6B5840085E5C3 /* DateTransform.swift */,
-				E50805731DF6B5840085E5C3 /* DictionaryTransform.swift */,
-				E50805741DF6B5840085E5C3 /* EnumOperators.swift */,
-				E50805751DF6B5840085E5C3 /* EnumTransform.swift */,
-				E50805761DF6B5840085E5C3 /* FromJSON.swift */,
-				E50805771DF6B5840085E5C3 /* HexColorTransform.swift */,
-				E50805781DF6B5840085E5C3 /* ImmutableMappable.swift */,
-				E508057A1DF6B5840085E5C3 /* ISO8601DateTransform.swift */,
-				E508057B1DF6B5840085E5C3 /* Map.swift */,
-				E508057C1DF6B5840085E5C3 /* MapError.swift */,
-				E508057D1DF6B5840085E5C3 /* Mappable.swift */,
-				E508057E1DF6B5840085E5C3 /* Mapper.swift */,
-				E508057F1DF6B5840085E5C3 /* NSDecimalNumberTransform.swift */,
-				E50805811DF6B5840085E5C3 /* Operators.swift */,
-				E50805821DF6B5840085E5C3 /* ToJSON.swift */,
-				E50805831DF6B5840085E5C3 /* TransformOf.swift */,
-				E50805841DF6B5840085E5C3 /* TransformOperators.swift */,
-				E50805851DF6B5840085E5C3 /* TransformType.swift */,
-				E50805861DF6B5840085E5C3 /* URLTransform.swift */,
+				E50805FB1DF6D49C0085E5C3 /* AFError.swift */,
+				E50805FD1DF6D49C0085E5C3 /* Alamofire.swift */,
+				E50805FE1DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift */,
+				E50806011DF6D49C0085E5C3 /* MultipartFormData.swift */,
+				E50806021DF6D49C0085E5C3 /* NetworkReachabilityManager.swift */,
+				E50806031DF6D49C0085E5C3 /* Notifications.swift */,
+				E50806041DF6D49C0085E5C3 /* ParameterEncoding.swift */,
+				E50806051DF6D49C0085E5C3 /* Request.swift */,
+				E50806061DF6D49C0085E5C3 /* Response.swift */,
+				E50806071DF6D49C0085E5C3 /* ResponseSerialization.swift */,
+				E50806081DF6D49C0085E5C3 /* Result.swift */,
+				E50806091DF6D49C0085E5C3 /* ServerTrustPolicy.swift */,
+				E508060A1DF6D49C0085E5C3 /* SessionDelegate.swift */,
+				E508060B1DF6D49C0085E5C3 /* SessionManager.swift */,
+				E508060C1DF6D49C0085E5C3 /* TaskDelegate.swift */,
+				E508060D1DF6D49C0085E5C3 /* Timeline.swift */,
+				E508060E1DF6D49C0085E5C3 /* Validation.swift */,
 			);
-			path = Sources;
+			name = Alamofire;
+			path = ../Carthage/Checkouts/Alamofire/Source;
+			sourceTree = "<group>";
+		};
+		E50806201DF6D4CC0085E5C3 /* ObjectMapper */ = {
+			isa = PBXGroup;
+			children = (
+				E50806211DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift */,
+				E50806221DF6D4CC0085E5C3 /* DataTransform.swift */,
+				E50806231DF6D4CC0085E5C3 /* DateFormatterTransform.swift */,
+				E50806241DF6D4CC0085E5C3 /* DateTransform.swift */,
+				E50806251DF6D4CC0085E5C3 /* DictionaryTransform.swift */,
+				E50806261DF6D4CC0085E5C3 /* EnumOperators.swift */,
+				E50806271DF6D4CC0085E5C3 /* EnumTransform.swift */,
+				E50806281DF6D4CC0085E5C3 /* FromJSON.swift */,
+				E50806291DF6D4CC0085E5C3 /* HexColorTransform.swift */,
+				E508062A1DF6D4CC0085E5C3 /* ImmutableMappable.swift */,
+				E508062C1DF6D4CC0085E5C3 /* ISO8601DateTransform.swift */,
+				E508062D1DF6D4CC0085E5C3 /* Map.swift */,
+				E508062E1DF6D4CC0085E5C3 /* MapError.swift */,
+				E508062F1DF6D4CC0085E5C3 /* Mappable.swift */,
+				E50806301DF6D4CC0085E5C3 /* Mapper.swift */,
+				E50806311DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift */,
+				E50806331DF6D4CC0085E5C3 /* Operators.swift */,
+				E50806341DF6D4CC0085E5C3 /* ToJSON.swift */,
+				E50806351DF6D4CC0085E5C3 /* TransformOf.swift */,
+				E50806361DF6D4CC0085E5C3 /* TransformOperators.swift */,
+				E50806371DF6D4CC0085E5C3 /* TransformType.swift */,
+				E50806381DF6D4CC0085E5C3 /* URLTransform.swift */,
+			);
+			name = ObjectMapper;
+			path = ../Carthage/Checkouts/ObjectMapper/Sources;
 			sourceTree = "<group>";
 		};
 		E50A3AAB1C453A6D004BB7E3 = {
@@ -1056,44 +1082,12 @@
 		E5B98E001CC0DC9B00A7ECD1 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
-				E5CC28341D846CB300F7C783 /* Alamofire */,
+				E50806201DF6D4CC0085E5C3 /* ObjectMapper */,
+				E50805FA1DF6D49C0085E5C3 /* Alamofire */,
 				E5CC28A91D846CB300F7C783 /* CommandLine */,
-				E5CC28BD1D846CB300F7C783 /* ObjectMapper */,
 			);
 			name = Vendors;
 			path = ../Vendors;
-			sourceTree = "<group>";
-		};
-		E5CC28341D846CB300F7C783 /* Alamofire */ = {
-			isa = PBXGroup;
-			children = (
-				E5CC28511D846CB300F7C783 /* Source */,
-			);
-			path = Alamofire;
-			sourceTree = "<group>";
-		};
-		E5CC28511D846CB300F7C783 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				E5CC28521D846CB300F7C783 /* AFError.swift */,
-				E5CC28541D846CB300F7C783 /* Alamofire.swift */,
-				E5CC28551D846CB300F7C783 /* DispatchQueue+Alamofire.swift */,
-				E5CC28581D846CB300F7C783 /* MultipartFormData.swift */,
-				E5CC28591D846CB300F7C783 /* NetworkReachabilityManager.swift */,
-				E5CC285A1D846CB300F7C783 /* Notifications.swift */,
-				E5CC285B1D846CB300F7C783 /* ParameterEncoding.swift */,
-				E5CC285C1D846CB300F7C783 /* Request.swift */,
-				E5CC285D1D846CB300F7C783 /* Response.swift */,
-				E5CC285E1D846CB300F7C783 /* ResponseSerialization.swift */,
-				E5CC285F1D846CB300F7C783 /* Result.swift */,
-				E5CC28601D846CB300F7C783 /* ServerTrustPolicy.swift */,
-				E5CC28611D846CB300F7C783 /* SessionDelegate.swift */,
-				E5CC28621D846CB300F7C783 /* SessionManager.swift */,
-				E5CC28631D846CB300F7C783 /* TaskDelegate.swift */,
-				E5CC28641D846CB300F7C783 /* Timeline.swift */,
-				E5CC28651D846CB300F7C783 /* Validation.swift */,
-			);
-			path = Source;
 			sourceTree = "<group>";
 		};
 		E5CC28A91D846CB300F7C783 /* CommandLine */ = {
@@ -1112,14 +1106,6 @@
 				E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */,
 			);
 			path = CommandLineKit;
-			sourceTree = "<group>";
-		};
-		E5CC28BD1D846CB300F7C783 /* ObjectMapper */ = {
-			isa = PBXGroup;
-			children = (
-				E508056E1DF6B5840085E5C3 /* Sources */,
-			);
-			path = ObjectMapper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1234,17 +1220,18 @@
 				E5A223991DF5A7F300B295A9 /* Consignation.swift in Sources */,
 				E5D085411C550DC500F0090E /* BartlebysCommandsFacade.swift in Sources */,
 				E5A223651DF5A7F300B295A9 /* ReadLockersByQuery.swift in Sources */,
+				E508061F1DF6D49C0085E5C3 /* Validation.swift in Sources */,
 				E5A223791DF5A7F300B295A9 /* BytesStats.swift in Sources */,
 				E5A223C01DF5A7F300B295A9 /* KeyedData+Conveniences.swift in Sources */,
-				E5CC29091D846CB300F7C783 /* Validation.swift in Sources */,
 				E5A223491DF5A7F300B295A9 /* CreateBlock.swift in Sources */,
 				E5A2237A1DF5A7F300B295A9 /* Chunk.swift in Sources */,
 				E5A223D71DF5A7F300B295A9 /* DictionaryRepresentation.swift in Sources */,
 				E5A223951DF5A7F300B295A9 /* Async.swift in Sources */,
 				E5A223801DF5A7F300B295A9 /* FileReference.swift in Sources */,
+				E50806181DF6D49C0085E5C3 /* ResponseSerialization.swift in Sources */,
 				E5A223361DF5A7F300B295A9 /* CollectionMetadatum.swift in Sources */,
+				E508063B1DF6D4CC0085E5C3 /* DateFormatterTransform.swift in Sources */,
 				E5A223D31DF5A7F300B295A9 /* Committable.swift in Sources */,
-				E50805891DF6B5840085E5C3 /* DateFormatterTransform.swift in Sources */,
 				E5A223E51DF5A7F300B295A9 /* ProvisionChanges.swift in Sources */,
 				E5A223D41DF5A7F300B295A9 /* ConsolidableProgression.swift in Sources */,
 				E5A223961DF5A7F300B295A9 /* EventSource.swift in Sources */,
@@ -1257,13 +1244,13 @@
 				E5A223FD1DF5A7F300B295A9 /* Pluralization.swift in Sources */,
 				E5A223751DF5A7F300B295A9 /* UpdateUsers.swift in Sources */,
 				E5A223861DF5A7F300B295A9 /* CompressionAlgorithms.swift in Sources */,
+				E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */,
 				E5A223401DF5A7F300B295A9 /* LogEntry.swift in Sources */,
-				E508059C1DF6B5840085E5C3 /* URLTransform.swift in Sources */,
 				E5A223AC1DF5A7F300B295A9 /* BartlebyObject+Committable.swift in Sources */,
 				E5A2232B1DF5A7F300B295A9 /* BartlebyDocument.swift in Sources */,
+				E50806391DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift in Sources */,
+				E508064A1DF6D4CC0085E5C3 /* ToJSON.swift in Sources */,
 				E5A223C91DF5A7F300B295A9 /* ImageTransform.swift in Sources */,
-				E50805871DF6B5840085E5C3 /* CustomDateFormatTransform.swift in Sources */,
-				E50805981DF6B5840085E5C3 /* ToJSON.swift in Sources */,
 				E5A223E81DF5A7F300B295A9 /* Serializable.swift in Sources */,
 				E5A223CD1DF5A7F300B295A9 /* BartlebyOperation.swift in Sources */,
 				E5A223C41DF5A7F300B295A9 /* Progression+Conveniences.swift in Sources */,
@@ -1273,8 +1260,8 @@
 				E5A2239A1DF5A7F300B295A9 /* Context.swift in Sources */,
 				E5A223F31DF5A7F300B295A9 /* URL+Utilities.swift in Sources */,
 				E5A223A01DF5A7F300B295A9 /* BartlebyDocument+ComputedProperties.swift in Sources */,
+				E50806411DF6D4CC0085E5C3 /* HexColorTransform.swift in Sources */,
 				E5A223451DF5A7F300B295A9 /* Report.swift in Sources */,
-				E508058F1DF6B5840085E5C3 /* HexColorTransform.swift in Sources */,
 				E5A223771DF5A7F300B295A9 /* BSFS.swift in Sources */,
 				E5A223E31DF5A7F300B295A9 /* Logger.swift in Sources */,
 				E5A223C71DF5A7F300B295A9 /* Handlers.swift in Sources */,
@@ -1286,28 +1273,26 @@
 				E5A2233F1DF5A7F300B295A9 /* Locker.swift in Sources */,
 				E5A223611DF5A7F300B295A9 /* ReadBoxesByIds.swift in Sources */,
 				E5A2237E1DF5A7F300B295A9 /* Box+Facilities.swift in Sources */,
+				E508061D1DF6D49C0085E5C3 /* TaskDelegate.swift in Sources */,
 				E5A223731DF5A7F300B295A9 /* UpdateNodes.swift in Sources */,
 				E5A223B61DF5A7F300B295A9 /* BartlebyObject+Serializable.swift in Sources */,
 				E5A2239B1DF5A7F300B295A9 /* Default.swift in Sources */,
-				E5CC29021D846CB300F7C783 /* ResponseSerialization.swift in Sources */,
 				E5A223BC1DF5A7F300B295A9 /* DocumentMetadata+Protocol.swift in Sources */,
 				E5A223CE1DF5A7F300B295A9 /* ChangesInspectable.swift in Sources */,
 				E5A223EB1DF5A7F300B295A9 /* Supervisable.swift in Sources */,
 				E5A223411DF5A7F300B295A9 /* Metrics.swift in Sources */,
-				E5CC29001D846CB300F7C783 /* Request.swift in Sources */,
 				E5A223E21DF5A7F300B295A9 /* LogEntriesObserver.swift in Sources */,
 				E5A223F91DF5A7F300B295A9 /* TriggersForIndexes.swift in Sources */,
-				E5CC28FA1D846CB300F7C783 /* Alamofire.swift in Sources */,
 				E5A2238E1DF5A7F300B295A9 /* CryptoHelper.swift in Sources */,
-				E50805941DF6B5840085E5C3 /* Mappable.swift in Sources */,
+				E50806101DF6D49C0085E5C3 /* Alamofire.swift in Sources */,
+				E50806461DF6D4CC0085E5C3 /* Mappable.swift in Sources */,
 				E5A2238B1DF5A7F300B295A9 /* CryptedSerializableTransform.swift in Sources */,
-				E508058E1DF6B5840085E5C3 /* FromJSON.swift in Sources */,
+				E50806401DF6D4CC0085E5C3 /* FromJSON.swift in Sources */,
 				E5A2233A1DF5A7F300B295A9 /* ExternalReference.swift in Sources */,
 				E5A223EE1DF5A7F300B295A9 /* UserProtocol.swift in Sources */,
-				E5CC28FB1D846CB300F7C783 /* DispatchQueue+Alamofire.swift in Sources */,
 				E5A223A91DF5A7F300B295A9 /* BartlebyDocument+SecurityScopes.swift in Sources */,
-				E50805961DF6B5840085E5C3 /* NSDecimalNumberTransform.swift in Sources */,
 				E5A223FB1DF5A7F300B295A9 /* BFileManager.swift in Sources */,
+				E50806481DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift in Sources */,
 				E5A223841DF5A7F300B295A9 /* BoxDelegate.swift in Sources */,
 				E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */,
 				E5A223B01DF5A7F300B295A9 /* BartlebyObject+Extended.swift in Sources */,
@@ -1315,28 +1300,29 @@
 				E5A223531DF5A7F300B295A9 /* DeleteBlock.swift in Sources */,
 				E5A2235D1DF5A7F300B295A9 /* ReadBlockById.swift in Sources */,
 				E5A223781DF5A7F300B295A9 /* BSFSError.swift in Sources */,
-				E50805951DF6B5840085E5C3 /* Mapper.swift in Sources */,
 				E5A2237F1DF5A7F300B295A9 /* Node+Facilities.swift in Sources */,
+				E50806471DF6D4CC0085E5C3 /* Mapper.swift in Sources */,
 				E5A2239F1DF5A7F300B295A9 /* BartlebyDocument+Collections.swift in Sources */,
 				E5A223AE1DF5A7F300B295A9 /* BartlebyObject+DictionaryRepresentation.swift in Sources */,
 				E5A2235B1DF5A7F300B295A9 /* DeleteUser.swift in Sources */,
+				E50806191DF6D49C0085E5C3 /* Result.swift in Sources */,
 				E5A2239D1DF5A7F300B295A9 /* BarltlebyDocument+Consignee.swift in Sources */,
 				E5A2235E1DF5A7F300B295A9 /* ReadBlocksByIds.swift in Sources */,
-				E5CC28FF1D846CB300F7C783 /* ParameterEncoding.swift in Sources */,
+				E508061B1DF6D49C0085E5C3 /* SessionDelegate.swift in Sources */,
 				E5A2234A1DF5A7F300B295A9 /* CreateBlocks.swift in Sources */,
+				E50806171DF6D49C0085E5C3 /* Response.swift in Sources */,
 				E5A223C11DF5A7F300B295A9 /* LogEntry+Conveniences.swift in Sources */,
 				E5A223CB1DF5A7F300B295A9 /* BartlebyCollection.swift in Sources */,
 				E5A223D61DF5A7F300B295A9 /* Descriptible.swift in Sources */,
 				E5A223E11DF5A7F300B295A9 /* LogCategorizable.swift in Sources */,
 				E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */,
 				E5A223671DF5A7F300B295A9 /* ReadNodesByIds.swift in Sources */,
-				E5CC29071D846CB300F7C783 /* TaskDelegate.swift in Sources */,
 				E5A223741DF5A7F300B295A9 /* UpdateUser.swift in Sources */,
 				E5A223371DF5A7F300B295A9 /* Completion.swift in Sources */,
 				E5A223641DF5A7F300B295A9 /* ReadLockersByIds.swift in Sources */,
 				E5A2232C1DF5A7F300B295A9 /* BlocksManagedCollection.swift in Sources */,
 				E5A223891DF5A7F300B295A9 /* CryptedDataTransform.swift in Sources */,
-				E508058B1DF6B5840085E5C3 /* DictionaryTransform.swift in Sources */,
+				E508063D1DF6D4CC0085E5C3 /* DictionaryTransform.swift in Sources */,
 				E5A2236E1DF5A7F300B295A9 /* UpdateBox.swift in Sources */,
 				E5A223EA1DF5A7F300B295A9 /* SuperIterable.swift in Sources */,
 				E5A223FE1DF5A7F300B295A9 /* PString.swift in Sources */,
@@ -1346,7 +1332,9 @@
 				E5A223A31DF5A7F300B295A9 /* BartlebyDocument+Logs.swift in Sources */,
 				E5A223F21DF5A7F300B295A9 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5A223DF1DF5A7F300B295A9 /* IterableCollectibleCollection.swift in Sources */,
-				E508059B1DF6B5840085E5C3 /* TransformType.swift in Sources */,
+				E508064D1DF6D4CC0085E5C3 /* TransformType.swift in Sources */,
+				E50806131DF6D49C0085E5C3 /* NetworkReachabilityManager.swift in Sources */,
+				E508061A1DF6D49C0085E5C3 /* ServerTrustPolicy.swift in Sources */,
 				E5A223DA1DF5A7F300B295A9 /* DocumentProvider.swift in Sources */,
 				E5A223EC1DF5A7F300B295A9 /* TriggerHook.swift in Sources */,
 				E5A223831DF5A7F300B295A9 /* UploadBlock.swift in Sources */,
@@ -1355,14 +1343,13 @@
 				E5A2236C1DF5A7F300B295A9 /* UpdateBlock.swift in Sources */,
 				E5A223AB1DF5A7F300B295A9 /* BartlebyDocument+Triggers.swift in Sources */,
 				E5A223B41DF5A7F300B295A9 /* BartlebyObject+ProvisionChanges.swift in Sources */,
-				E5CC28FE1D846CB300F7C783 /* Notifications.swift in Sources */,
+				E508061E1DF6D49C0085E5C3 /* Timeline.swift in Sources */,
 				E5A223931DF5A7F300B295A9 /* NoCrypto.swift in Sources */,
 				E5A223F51DF5A7F300B295A9 /* LoginUser.swift in Sources */,
 				E5A223381DF5A7F300B295A9 /* Container.swift in Sources */,
 				E5A223FA1DF5A7F300B295A9 /* VerifyLocker.swift in Sources */,
 				E5A223C51DF5A7F300B295A9 /* PushOperation+Conveniences.swift in Sources */,
 				E5A223D21DF5A7F300B295A9 /* CollectionMetadatumProtocol.swift in Sources */,
-				E5CC28FD1D846CB300F7C783 /* NetworkReachabilityManager.swift in Sources */,
 				E5A223B51DF5A7F300B295A9 /* BartlebyObject+QuietChanges.swift in Sources */,
 				E5A2234D1DF5A7F300B295A9 /* CreateLocker.swift in Sources */,
 				E5A223DB1DF5A7F300B295A9 /* Exposed.swift in Sources */,
@@ -1389,11 +1376,11 @@
 				E5A223541DF5A7F300B295A9 /* DeleteBlocks.swift in Sources */,
 				E5A223B31DF5A7F300B295A9 /* BartlebyObject+NSCopying.swift in Sources */,
 				E5A223511DF5A7F300B295A9 /* CreateUser.swift in Sources */,
-				E5CC29011D846CB300F7C783 /* Response.swift in Sources */,
+				E508060F1DF6D49C0085E5C3 /* AFError.swift in Sources */,
 				E5A223941DF5A7F300B295A9 /* String+HMAC.swift in Sources */,
 				E5A223A61DF5A7F300B295A9 /* BartlebyDocument+Persistency.swift in Sources */,
+				E508063C1DF6D4CC0085E5C3 /* DateTransform.swift in Sources */,
 				E5A2232E1DF5A7F300B295A9 /* LockersManagedCollection.swift in Sources */,
-				E508058A1DF6B5840085E5C3 /* DateTransform.swift in Sources */,
 				E5A223501DF5A7F300B295A9 /* CreateNodes.swift in Sources */,
 				E5A223811DF5A7F300B295A9 /* Flocker.swift in Sources */,
 				E5A2235A1DF5A7F300B295A9 /* DeleteNodes.swift in Sources */,
@@ -1403,68 +1390,66 @@
 				E5A2237B1DF5A7F300B295A9 /* Chunker.swift in Sources */,
 				E5A223911DF5A7F300B295A9 /* HMAC.swift in Sources */,
 				E5A223711DF5A7F300B295A9 /* UpdateLockers.swift in Sources */,
+				E50806151DF6D49C0085E5C3 /* ParameterEncoding.swift in Sources */,
 				E5A223AA1DF5A7F300B295A9 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E5A223A81DF5A7F300B295A9 /* BartlebyDocument+Reachability.swift in Sources */,
 				E5A223BD1DF5A7F300B295A9 /* ExternalReference+Resolution.swift in Sources */,
 				E5A223971DF5A7F300B295A9 /* Bartleby.swift in Sources */,
 				E5A2232D1DF5A7F300B295A9 /* BoxesManagedCollection.swift in Sources */,
+				E50806121DF6D49C0085E5C3 /* MultipartFormData.swift in Sources */,
 				E5A2237D1DF5A7F300B295A9 /* Block+Facilities.swift in Sources */,
 				E5A2238A1DF5A7F300B295A9 /* CryptedKeyValueStorage.swift in Sources */,
 				E5A223461DF5A7F300B295A9 /* Tag.swift in Sources */,
 				E5A223571DF5A7F300B295A9 /* DeleteLocker.swift in Sources */,
 				E5A223591DF5A7F300B295A9 /* DeleteNode.swift in Sources */,
+				E508063E1DF6D4CC0085E5C3 /* EnumOperators.swift in Sources */,
 				E5A223FC1DF5A7F300B295A9 /* HTTPManager.swift in Sources */,
 				E5A223A71DF5A7F300B295A9 /* BartlebyDocument+Preparation.swift in Sources */,
 				E5A223441DF5A7F300B295A9 /* PushOperation.swift in Sources */,
-				E508058C1DF6B5840085E5C3 /* EnumOperators.swift in Sources */,
+				E50806441DF6D4CC0085E5C3 /* Map.swift in Sources */,
+				E50806421DF6D4CC0085E5C3 /* ImmutableMappable.swift in Sources */,
 				E5A223311DF5A7F300B295A9 /* UsersManagedCollection.swift in Sources */,
-				E5CC29051D846CB300F7C783 /* SessionDelegate.swift in Sources */,
 				E5A2238D1DF5A7F300B295A9 /* CryptedStringTransform.swift in Sources */,
-				E50805921DF6B5840085E5C3 /* Map.swift in Sources */,
-				E50805901DF6B5840085E5C3 /* ImmutableMappable.swift in Sources */,
-				E5CC29041D846CB300F7C783 /* ServerTrustPolicy.swift in Sources */,
 				E5A2234C1DF5A7F300B295A9 /* CreateBoxes.swift in Sources */,
 				E5A223CF1DF5A7F300B295A9 /* Collectible.swift in Sources */,
 				E5A223721DF5A7F300B295A9 /* UpdateNode.swift in Sources */,
 				E5A2239E1DF5A7F300B295A9 /* BartlebyDocument+Blocks.swift in Sources */,
+				E50806111DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift in Sources */,
 				E5A223D91DF5A7F300B295A9 /* DocumentMetadataProtocol.swift in Sources */,
 				E5A223CA1DF5A7F300B295A9 /* ObjectExpositionError.swift in Sources */,
 				E5A223421DF5A7F300B295A9 /* Node.swift in Sources */,
 				E5A223351DF5A7F300B295A9 /* Box.swift in Sources */,
+				E508063F1DF6D4CC0085E5C3 /* EnumTransform.swift in Sources */,
 				E5A223D81DF5A7F300B295A9 /* DocumentDependent.swift in Sources */,
 				E5A223921DF5A7F300B295A9 /* HMACAlgorithms.swift in Sources */,
-				E508058D1DF6B5840085E5C3 /* EnumTransform.swift in Sources */,
 				E5A223EF1DF5A7F300B295A9 /* Reaction.swift in Sources */,
 				E5A223F71DF5A7F300B295A9 /* TriggersAfterIndex.swift in Sources */,
 				E5A223BE1DF5A7F300B295A9 /* HTTPContext+Conveniences.swift in Sources */,
 				E5A2236D1DF5A7F300B295A9 /* UpdateBlocks.swift in Sources */,
-				E5CC29061D846CB300F7C783 /* SessionManager.swift in Sources */,
-				E5CC29031D846CB300F7C783 /* Result.swift in Sources */,
 				E5A2233D1DF5A7F300B295A9 /* KeyedChanges.swift in Sources */,
+				E50806161DF6D49C0085E5C3 /* Request.swift in Sources */,
+				E50806451DF6D4CC0085E5C3 /* MapError.swift in Sources */,
 				E5A223691DF5A7F300B295A9 /* ReadUserById.swift in Sources */,
-				E50805931DF6B5840085E5C3 /* MapError.swift in Sources */,
 				E5A223981DF5A7F300B295A9 /* BartlebyObjectError.swift in Sources */,
-				E5CC28FC1D846CB300F7C783 /* MultipartFormData.swift in Sources */,
 				E5A223E01DF5A7F300B295A9 /* JSONString.swift in Sources */,
 				E5A223AF1DF5A7F300B295A9 /* BartlebyObject+Equatable.swift in Sources */,
-				E5CC29081D846CB300F7C783 /* Timeline.swift in Sources */,
 				E5A223A51DF5A7F300B295A9 /* BartlebyDocument+Operations.swift in Sources */,
 				E5A223F41DF5A7F300B295A9 /* User+Auth.swift in Sources */,
-				E50805881DF6B5840085E5C3 /* DataTransform.swift in Sources */,
 				E5A223B71DF5A7F300B295A9 /* BartlebyObject+Supervisable.swift in Sources */,
+				E508063A1DF6D4CC0085E5C3 /* DataTransform.swift in Sources */,
 				E5A2234E1DF5A7F300B295A9 /* CreateLockers.swift in Sources */,
 				E5A223E71DF5A7F300B295A9 /* Referenced.swift in Sources */,
 				E5A223471DF5A7F300B295A9 /* Trigger.swift in Sources */,
 				E5A223331DF5A7F300B295A9 /* BartlebyObject.swift in Sources */,
-				E5CC28F91D846CB300F7C783 /* AFError.swift in Sources */,
 				E5A223F61DF5A7F300B295A9 /* LogoutUser.swift in Sources */,
 				E5A223B21DF5A7F300B295A9 /* BartlebyObject+Logs.swift in Sources */,
 				E5A223BB1DF5A7F300B295A9 /* DocumentMetadata+Facilities.swift in Sources */,
 				E5A223851DF5A7F300B295A9 /* NodeAccessor.swift in Sources */,
 				E5A2238F1DF5A7F300B295A9 /* CryptoKeySize.swift in Sources */,
 				E5A223DC1DF5A7F300B295A9 /* GroupedCommits.swift in Sources */,
-				E50805911DF6B5840085E5C3 /* ISO8601DateTransform.swift in Sources */,
+				E50806141DF6D49C0085E5C3 /* Notifications.swift in Sources */,
 				E5A223701DF5A7F300B295A9 /* UpdateLocker.swift in Sources */,
+				E50806431DF6D4CC0085E5C3 /* ISO8601DateTransform.swift in Sources */,
 				E5A2233C1DF5A7F300B295A9 /* HTTPRequest.swift in Sources */,
 				E5CC29201D846CB300F7C783 /* Option.swift in Sources */,
 				E5A223BA1DF5A7F300B295A9 /* Completion+Result.swift in Sources */,
@@ -1474,8 +1459,8 @@
 				E5A223561DF5A7F300B295A9 /* DeleteBoxes.swift in Sources */,
 				E5A223881DF5A7F300B295A9 /* Data+Compression.swift in Sources */,
 				E5A223DE1DF5A7F300B295A9 /* Initializable.swift in Sources */,
-				E50805991DF6B5840085E5C3 /* TransformOf.swift in Sources */,
 				E5A2235C1DF5A7F300B295A9 /* DeleteUsers.swift in Sources */,
+				E508064B1DF6D4CC0085E5C3 /* TransformOf.swift in Sources */,
 				E5A223A41DF5A7F300B295A9 /* BartlebyDocument+Metrics.swift in Sources */,
 				E5A223601DF5A7F300B295A9 /* ReadBoxById.swift in Sources */,
 				E5A223621DF5A7F300B295A9 /* ReadBoxesByQuery.swift in Sources */,
@@ -1483,9 +1468,10 @@
 				E5A223AD1DF5A7F300B295A9 /* BartlebyObject+ConsolidableProgression.swift in Sources */,
 				E5A223D51DF5A7F300B295A9 /* CryptoDelegate.swift in Sources */,
 				E5A223B11DF5A7F300B295A9 /* BartlebyObject+JSONString.swift in Sources */,
-				E50805971DF6B5840085E5C3 /* Operators.swift in Sources */,
-				E508059A1DF6B5840085E5C3 /* TransformOperators.swift in Sources */,
 				E5A223481DF5A7F300B295A9 /* User.swift in Sources */,
+				E50806491DF6D4CC0085E5C3 /* Operators.swift in Sources */,
+				E508064C1DF6D4CC0085E5C3 /* TransformOperators.swift in Sources */,
+				E508061C1DF6D49C0085E5C3 /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
