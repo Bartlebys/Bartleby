@@ -169,7 +169,7 @@ struct BartlebysCommandFacade {
                 if let userDir=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory){
                     let sourceFolder="\(userDir)/FolderForTests"
                     let destination="\(userDir)/flock.flk"
-                    var sourceRef=FileReference.publicFileReference(at: sourceFolder)
+                    let sourceRef=FileReference.publicFileReference(at: sourceFolder)
                     sourceRef.crypted=true
                     sourceRef.compressed=true
                     sourceRef.priority=1
