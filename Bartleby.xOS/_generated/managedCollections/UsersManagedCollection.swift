@@ -371,7 +371,7 @@ extension Notification.Name {
             #endif
 
 
-            if item.shouldBeCommitted && commit==true {
+            if commit==true {
                CreateUser.commit(item, in:self.document!)
             }
 

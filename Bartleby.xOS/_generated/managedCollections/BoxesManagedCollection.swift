@@ -356,7 +356,7 @@ extension Notification.Name {
             #endif
 
 
-            if item.shouldBeCommitted && commit==true {
+            if commit==true {
                CreateBox.commit(item, in:self.document!)
             }
 

@@ -356,7 +356,7 @@ extension Notification.Name {
             #endif
 
 
-            if item.shouldBeCommitted && commit==true {
+            if commit==true {
                CreateBlock.commit(item, in:self.document!)
             }
 
