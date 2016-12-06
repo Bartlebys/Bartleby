@@ -73,10 +73,12 @@ extension BartlebyDocument {
                 return originalURL
             }
 
-            if !appScoped && self.isDraft{
-                // The document must have an URL to create a Bookmark
-                throw SecurityScopedBookMarkError.documentIsADraft
-            }
+            #if os(OSX)
+                if !appScoped && self.isDraft{
+                    // The document must have an URL to create a Bookmark
+                    throw SecurityScopedBookMarkError.documentIsADraft
+                }
+            #endif
 
             if let url=self._normalizeFileURL(originalURL){
                 if !FileManager.default.fileExists(atPath: url.path){
