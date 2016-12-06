@@ -181,6 +181,7 @@ extension Notification.Name {
 				}
 
             }
+            self.hasBeenCommitted()
         }
         return UIDS
     }

@@ -208,22 +208,19 @@ import Foundation
     open func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool{
         return false // Return false by default
     }
+
+
     // MARK: - Collection Controllers
 
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var blocks=BlocksManagedCollection()
-
-	open dynamic var boxes=BoxesManagedCollection()
-
-	open dynamic var lockers=LockersManagedCollection()
-
-	open dynamic var nodes=NodesManagedCollection()
-
-	open dynamic var pushOperations=PushOperationsManagedCollection()
-
-	open dynamic var users=UsersManagedCollection()
+	open dynamic var blocks=BlocksManagedCollection(){ didSet { blocks.document=self } }
+	open dynamic var boxes=BoxesManagedCollection(){ didSet { boxes.document=self } }
+	open dynamic var lockers=LockersManagedCollection(){ didSet { lockers.document=self } }
+	open dynamic var nodes=NodesManagedCollection(){ didSet { nodes.document=self } }
+	open dynamic var pushOperations=PushOperationsManagedCollection(){ didSet { pushOperations.document=self } }
+	open dynamic var users=UsersManagedCollection(){ didSet { users.document=self } }
 
 
     // MARK: - Schemas

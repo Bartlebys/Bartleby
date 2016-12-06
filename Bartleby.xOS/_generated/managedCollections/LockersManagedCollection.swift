@@ -184,6 +184,7 @@ extension Notification.Name {
 			    UpdateLockers.commit(tobeUpdated, in:self.document!)
 			}
 
+            self.hasBeenCommitted()
         }
         return UIDS
     }
