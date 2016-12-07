@@ -24,11 +24,20 @@ import Foundation
 	//Reflects the index of of the item in the collection initial value is -1. During it life cycle the collection updates if necessary its real value. ‡It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
 	dynamic open var collectedIndex:Int = -1
 
-	//Collectible protocol: The Creator UID
+	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && creatorUID != oldValue {
 	            self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID) 
+	       } 
+	    }
+	}
+
+	//Used By Bartleby+Relationships to manage inter objects relationships keys are Relationship
+	internal var _relations:[String:Any] = [String:Any]()  {
+	    didSet { 
+	       if !self.wantsQuietChanges  {
+	            self.provisionChanges(forKey: "_relations",oldValue: oldValue,newValue: _relations)  
 	       } 
 	    }
 	}
@@ -186,6 +195,7 @@ import Foundation
         self.quietChanges {
 			self.collectedIndex <- ( map["collectedIndex"] )
 			self.creatorUID <- ( map["creatorUID"] )
+			self._relations <- ( map["_relations"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
 			self._commitCounter <- ( map["_commitCounter"] )
@@ -205,6 +215,7 @@ import Foundation
         self.quietChanges {
 			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
+			self._relations=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "_relations")as! [String:Any]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
 			self._commitCounter=decoder.decodeInteger(forKey:"_commitCounter") 
@@ -217,6 +228,7 @@ import Foundation
         
 		coder.encode(self.collectedIndex,forKey:"collectedIndex")
 		coder.encode(self.creatorUID,forKey:"creatorUID")
+		coder.encode(self._relations,forKey:"_relations")
 		if let summary = self.summary {
 			coder.encode(summary,forKey:"summary")
 		}

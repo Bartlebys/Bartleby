@@ -60,6 +60,8 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */; };
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
+		E5E0799D1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0799C1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift */; };
+		E5E0799F1DF80C1B00B8A8EC /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */; };
 		E5E465CB1DEF4B5400BFD6C4 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */; };
 		E5E465CC1DEF4B5400BFD6C4 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */; };
 		E5E465CD1DEF4B5400BFD6C4 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E31DEF4B5400BFD6C4 /* BlocksManagedCollection.swift */; };
@@ -591,6 +593,8 @@
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetails.swift; sourceTree = "<group>"; };
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
+		E5E0799C1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyObject+Relationships.swift"; sourceTree = "<group>"; };
+		E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5E464E31DEF4B5400BFD6C4 /* BlocksManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksManagedCollection.swift; sourceTree = "<group>"; };
 		E5E464E41DEF4B5400BFD6C4 /* BoxesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesManagedCollection.swift; sourceTree = "<group>"; };
@@ -1263,6 +1267,7 @@
 				E5E4655D1DEF4B5400BFD6C4 /* BartlebyObjectError.swift */,
 				E5E4655E1DEF4B5400BFD6C4 /* Consignation.swift */,
 				E5E4655F1DEF4B5400BFD6C4 /* Context.swift */,
+				E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */,
 				E5E465601DEF4B5400BFD6C4 /* Default.swift */,
 				E5E465611DEF4B5400BFD6C4 /* DocumentError.swift */,
 				E5E465621DEF4B5400BFD6C4 /* extensions */,
@@ -1305,6 +1310,7 @@
 				E5E465781DEF4B5400BFD6C4 /* BartlebyObject+Logs.swift */,
 				E5E465791DEF4B5400BFD6C4 /* BartlebyObject+NSCopying.swift */,
 				E5E4657A1DEF4B5400BFD6C4 /* BartlebyObject+ProvisionChanges.swift */,
+				E5E0799C1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift */,
 				E5E4657B1DEF4B5400BFD6C4 /* BartlebyObject+QuietChanges.swift */,
 				E5E4657C1DEF4B5400BFD6C4 /* BartlebyObject+Serializable.swift */,
 				E5E4657D1DEF4B5400BFD6C4 /* BartlebyObject+Supervisable.swift */,
@@ -1766,6 +1772,7 @@
 				E5E466651DEF4B5400BFD6C4 /* BSFSError.swift in Sources */,
 				E5E4674F1DEF4B5500BFD6C4 /* UniversalType.swift in Sources */,
 				E5E466811DEF4B5400BFD6C4 /* CompressionAlgorithms.swift in Sources */,
+				E5E0799D1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift in Sources */,
 				E50F3AF81D40D27F00532B09 /* DocumentInspector.swift in Sources */,
 				E5E466891DEF4B5400BFD6C4 /* CryptedKeyValueStorage.swift in Sources */,
 				E50F3AF11D40D27F00532B09 /* InspectorViewController.swift in Sources */,
@@ -1799,6 +1806,7 @@
 				E5E465E11DEF4B5400BFD6C4 /* CollectionMetadatum.swift in Sources */,
 				E5E4665D1DEF4B5400BFD6C4 /* UpdateUser.swift in Sources */,
 				E5E4676F1DEF4B5500BFD6C4 /* Pluralization.swift in Sources */,
+				E5E0799F1DF80C1B00B8A8EC /* Relationship.swift in Sources */,
 				E5E466CF1DEF4B5500BFD6C4 /* BartlebyObject+ConsolidableProgression.swift in Sources */,
 				E5E465D11DEF4B5400BFD6C4 /* LockersManagedCollection.swift in Sources */,
 				E5E4673D1DEF4B5500BFD6C4 /* Monitoring.swift in Sources */,
