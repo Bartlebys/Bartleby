@@ -250,7 +250,6 @@
 		E5E07B511DF841B500B8A8EC /* UniversalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A781DF841B500B8A8EC /* UniversalType.swift */; };
 		E5E07B521DF841B500B8A8EC /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A791DF841B500B8A8EC /* UserProtocol.swift */; };
 		E5E07B531DF841B500B8A8EC /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A7A1DF841B500B8A8EC /* Reaction.swift */; };
-		E5E07B541DF841B500B8A8EC /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A7B1DF841B500B8A8EC /* Relationship.swift */; };
 		E5E07B551DF841B500B8A8EC /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A7C1DF841B500B8A8EC /* ServerErrorCodes.swift */; };
 		E5E07B561DF841B500B8A8EC /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A7D1DF841B500B8A8EC /* StatusOfCompletion.swift */; };
 		E5E07B571DF841B500B8A8EC /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07A7F1DF841B500B8A8EC /* NSUndomanager+RegisterUndo.swift */; };
@@ -530,7 +529,6 @@
 		E5E07A781DF841B500B8A8EC /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E5E07A791DF841B500B8A8EC /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5E07A7A1DF841B500B8A8EC /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
-		E5E07A7B1DF841B500B8A8EC /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		E5E07A7C1DF841B500B8A8EC /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E5E07A7D1DF841B500B8A8EC /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E5E07A7F1DF841B500B8A8EC /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
@@ -964,7 +962,6 @@
 				E5E07A541DF841B500B8A8EC /* ObjectExpositionError.swift */,
 				E5E07A551DF841B500B8A8EC /* protocols */,
 				E5E07A7A1DF841B500B8A8EC /* Reaction.swift */,
-				E5E07A7B1DF841B500B8A8EC /* Relationship.swift */,
 				E5E07A7C1DF841B500B8A8EC /* ServerErrorCodes.swift */,
 				E5E07A7D1DF841B500B8A8EC /* StatusOfCompletion.swift */,
 			);
@@ -1337,7 +1334,6 @@
 				E5E07AD91DF841B500B8A8EC /* UIX.swift in Sources */,
 				E5E07AA21DF841B500B8A8EC /* Locker.swift in Sources */,
 				E5E07AC31DF841B500B8A8EC /* ReadBoxById.swift in Sources */,
-				E5E07B541DF841B500B8A8EC /* Relationship.swift in Sources */,
 				E5E07AAF1DF841B500B8A8EC /* CreateBoxes.swift in Sources */,
 				E5E07B561DF841B500B8A8EC /* StatusOfCompletion.swift in Sources */,
 				E5E07B161DF841B500B8A8EC /* BartlebyObject+NSCopying.swift in Sources */,

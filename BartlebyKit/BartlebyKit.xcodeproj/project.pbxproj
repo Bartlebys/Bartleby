@@ -58,10 +58,11 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5D6706A1DF86F8400408415 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D670691DF86F8400408415 /* Relationship.swift */; };
 		E5DE8E1C1D93FF190018E2F5 /* MetadataDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */; };
 		E5DE8E1D1D93FF190018E2F5 /* MetadataDetails.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */; };
 		E5E0799D1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0799C1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift */; };
-		E5E0799F1DF80C1B00B8A8EC /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */; };
+		E5E07B651DF86BD300B8A8EC /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E07B641DF86BD300B8A8EC /* Relation.swift */; };
 		E5E465CB1DEF4B5400BFD6C4 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */; };
 		E5E465CC1DEF4B5400BFD6C4 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */; };
 		E5E465CD1DEF4B5400BFD6C4 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E464E31DEF4B5400BFD6C4 /* BlocksManagedCollection.swift */; };
@@ -591,10 +592,11 @@
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E598906C1DC77F0600F235B5 /* DecryptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptView.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5D670691DF86F8400408415 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		E5DE8E1A1D93FF190018E2F5 /* MetadataDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetails.swift; sourceTree = "<group>"; };
 		E5DE8E1B1D93FF190018E2F5 /* MetadataDetails.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MetadataDetails.xib; sourceTree = "<group>"; };
 		E5E0799C1DF8035F00B8A8EC /* BartlebyObject+Relationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyObject+Relationships.swift"; sourceTree = "<group>"; };
-		E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
+		E5E07B641DF86BD300B8A8EC /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
 		E5E464E11DEF4B5400BFD6C4 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5E464E31DEF4B5400BFD6C4 /* BlocksManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksManagedCollection.swift; sourceTree = "<group>"; };
 		E5E464E41DEF4B5400BFD6C4 /* BoxesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesManagedCollection.swift; sourceTree = "<group>"; };
@@ -1075,6 +1077,7 @@
 				E5E464F31DEF4B5400BFD6C4 /* HTTPContext.swift */,
 				E5E464F41DEF4B5400BFD6C4 /* HTTPRequest.swift */,
 				E5E464F51DEF4B5400BFD6C4 /* KeyedChanges.swift */,
+				E5E07B641DF86BD300B8A8EC /* Relation.swift */,
 				E5E464F61DEF4B5400BFD6C4 /* KeyedData.swift */,
 				E5E464F71DEF4B5400BFD6C4 /* Locker.swift */,
 				E5E464F81DEF4B5400BFD6C4 /* LogEntry.swift */,
@@ -1267,9 +1270,9 @@
 				E5E4655D1DEF4B5400BFD6C4 /* BartlebyObjectError.swift */,
 				E5E4655E1DEF4B5400BFD6C4 /* Consignation.swift */,
 				E5E4655F1DEF4B5400BFD6C4 /* Context.swift */,
-				E5E0799E1DF80C1B00B8A8EC /* Relationship.swift */,
 				E5E465601DEF4B5400BFD6C4 /* Default.swift */,
 				E5E465611DEF4B5400BFD6C4 /* DocumentError.swift */,
+				E5D670691DF86F8400408415 /* Relationship.swift */,
 				E5E465621DEF4B5400BFD6C4 /* extensions */,
 				E5E4658C1DEF4B5400BFD6C4 /* Global.swift */,
 				E5E4658D1DEF4B5400BFD6C4 /* Handlers.swift */,
@@ -1662,6 +1665,7 @@
 				E5E466491DEF4B5400BFD6C4 /* ReadUsersByIds.swift in Sources */,
 				E5E4669F1DEF4B5400BFD6C4 /* Async.swift in Sources */,
 				E5E4674D1DEF4B5500BFD6C4 /* TriggerHook.swift in Sources */,
+				E5D6706A1DF86F8400408415 /* Relationship.swift in Sources */,
 				E5E4661D1DEF4B5400BFD6C4 /* DeleteBlocks.swift in Sources */,
 				E5E466711DEF4B5400BFD6C4 /* Box+Facilities.swift in Sources */,
 				E5E465D31DEF4B5400BFD6C4 /* NodesManagedCollection.swift in Sources */,
@@ -1806,8 +1810,8 @@
 				E5E465E11DEF4B5400BFD6C4 /* CollectionMetadatum.swift in Sources */,
 				E5E4665D1DEF4B5400BFD6C4 /* UpdateUser.swift in Sources */,
 				E5E4676F1DEF4B5500BFD6C4 /* Pluralization.swift in Sources */,
-				E5E0799F1DF80C1B00B8A8EC /* Relationship.swift in Sources */,
 				E5E466CF1DEF4B5500BFD6C4 /* BartlebyObject+ConsolidableProgression.swift in Sources */,
+				E5E07B651DF86BD300B8A8EC /* Relation.swift in Sources */,
 				E5E465D11DEF4B5400BFD6C4 /* LockersManagedCollection.swift in Sources */,
 				E5E4673D1DEF4B5500BFD6C4 /* Monitoring.swift in Sources */,
 				E5E466751DEF4B5400BFD6C4 /* FileReference.swift in Sources */,

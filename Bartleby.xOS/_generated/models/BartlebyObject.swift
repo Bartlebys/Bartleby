@@ -34,9 +34,9 @@ import Foundation
 	}
 
 	//Used By Bartleby+Relationships to manage inter objects relationships keys are Relationship
-	internal var _relations:[String:Any] = [String:Any]()  {
+	dynamic internal var _relations:[Relation] = [Relation]()  {
 	    didSet { 
-	       if !self.wantsQuietChanges  {
+	       if !self.wantsQuietChanges && _relations != oldValue {
 	            self.provisionChanges(forKey: "_relations",oldValue: oldValue,newValue: _relations)  
 	       } 
 	    }
@@ -215,7 +215,7 @@ import Foundation
         self.quietChanges {
 			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
-			self._relations=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "_relations")as! [String:Any]
+			self._relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "_relations")! as! [Relation]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
 			self._commitCounter=decoder.decodeInteger(forKey:"_commitCounter") 

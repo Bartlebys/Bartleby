@@ -57,8 +57,8 @@ extension BartlebyObject{
     /// - Returns: the collection of related object
     open func relations<T:BartlebyObject>(_ relationship:Relationship)->[T]{
         var related=[T]()
-        for UID in self._getContractedRelations(relationship){
-            if let candidate = try? Bartleby.registredObjectByUID(UID) as T{
+        for relation in self._getContractedRelations(relationship){
+            if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as T{
                 related.append(candidate)
             }
         }
@@ -71,12 +71,12 @@ extension BartlebyObject{
     /// - Returns: the collection of related object
     open func relations<T:BartlebyObject>(_ relationships:Set<Relationship>)->[T]{
         var related=[T]()
-        var relatedUIDs=[String]()
+        var relations=[Relation]()
         for relationShip in relationships{
-            relatedUIDs.append(contentsOf:self._getContractedRelations(relationShip))
+            relations.append(contentsOf:self._getContractedRelations(relationShip))
         }
-        for UID in relatedUIDs{
-             if let candidate = try? Bartleby.registredObjectByUID(UID) as T{
+        for relation in relations{
+             if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as T{
                 related.append(candidate)
              }
         }
@@ -91,9 +91,12 @@ extension BartlebyObject{
     ///
     /// - Parameter object: the object
     internal func _addRelation(to object:BartlebyObject,_ contract:Relationship){
-        var contractedRelations=self._getContractedRelations(contract)
-        if !contractedRelations.contains(object.UID){
-           contractedRelations.append(object.UID)
+        let candidates=self._getContractedRelations(contract)
+        if !candidates.contains(where:{$0.UID==object.UID}){
+            let relation=Relation()
+            relation.relationship=contract.rawValue
+            relation.UID=object.UID
+            self._relations.append(relation)
         }
     }
 
@@ -102,11 +105,8 @@ extension BartlebyObject{
     ///
     /// - Parameter contract: the nature of the contract
     /// - Returns: the relations
-    internal func _getContractedRelations(_ contract:Relationship)->[String]{
-        if self._relations[contract.rawValue]==nil{
-            self._relations[contract.rawValue]=[String]()
-        }
-        return self._relations[contract.rawValue] as! [String]
+    internal func _getContractedRelations(_ contract:Relationship)->[Relation]{
+        return self._relations.filter({$0.relationship==contract.rawValue})
     }
 
 
