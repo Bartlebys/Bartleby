@@ -10,10 +10,19 @@ import Foundation
 // Check BartlebyObject+Relationships for details.
 
 public enum Relationship:String{
-    case free="free" // In case of deletion of one of the related terms the other is preserved
-    case owned="owned" // In case of deletion of the owner the owned is automatically deleted. (the contract is exclusive)
-    case owns="owns" // reciprocity of owned
-    case co_owns="co_owns" // shared ownerships
-    case co_owned="co_owned"// reciprocity of co_owns
-    case fusional="fusional" // both object owns the other if one is deleted the other is also deleted
+
+    // MARK: - Without reciprocity
+
+    case free="free" // In case of deletion of one of the related terms the other is preserved (there is not necessarly reciprocity of the relation)
+
+    // MARK: - With reciprocity
+
+    case owned="owned"// In case of deletion of the owner the owned is automatically deleted. (the contract is exclusive)
+    case ownedBy="ownedBy" // reciprocity of isOwnedBy
+
+    case ownedCollectively="ownedCollectively" // shared ownerships
+    case ownedCollectivelyBy="ownedCollectivelyBy"// reciprocity of ownedCollectively
+
+    case fusional="fusional" // both object owns the other if one is deleted the other is also deleted (exclusivity + both are set to fusional)
+
 }
