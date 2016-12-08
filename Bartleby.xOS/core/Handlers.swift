@@ -117,7 +117,7 @@ public typealias ComposedHandler = (_ progressionState: Progression?, _ completi
  * Composable handlers
  * You can compose multiple completion and progression
  */
-@objc(Handlers) open class Handlers: NSObject {
+open class Handlers: NSObject {
 
     // MARK: Progression handlers
 

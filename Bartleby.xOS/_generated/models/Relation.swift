@@ -23,6 +23,7 @@ import Foundation
 	//the UID of the entity
 	dynamic open var UID:String = "\(Default.NO_UID)"
 
+
     // MARK: - Mappable
 
     required public init?(map: Map) {

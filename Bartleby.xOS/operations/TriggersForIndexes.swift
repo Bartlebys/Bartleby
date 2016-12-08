@@ -12,7 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-@objc(TriggersForIndexes) open class TriggersForIndexes: BartlebyObject {
+open class TriggersForIndexes: BartlebyObject {
 
     // Universal type support
     override open class func typeName() -> String {

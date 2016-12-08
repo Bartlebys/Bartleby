@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-@objc class ChangesViewController: NSViewController,Editor,Identifiable{
+class ChangesViewController: NSViewController,Editor,Identifiable{
 
     typealias EditorOf=BartlebyObject
 

@@ -24,7 +24,7 @@ import Foundation
 
 
  */
-@objc open class CryptoHelper: NSObject, CryptoDelegate {
+open class CryptoHelper: NSObject, CryptoDelegate {
 
     /// The salt is used in conjunction with the key (for initialization vector...)
     let salt: String

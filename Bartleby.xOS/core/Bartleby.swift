@@ -22,7 +22,7 @@ import Foundation
 //MARK: - Bartleby
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
-@objc(Bartleby) open class Bartleby:NSObject {
+open class Bartleby:NSObject {
 
     /// The standard singleton shared instance
     open static let sharedInstance: Bartleby = {

@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-@objc class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate{
+class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate{
 
     override var nibName : String { return "InspectorViewController" }
 

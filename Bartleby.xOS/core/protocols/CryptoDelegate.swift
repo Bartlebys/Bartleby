@@ -22,7 +22,7 @@ import Foundation
  - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
 
  */
-@objc public protocol CryptoDelegate {
+public protocol CryptoDelegate {
 
     // Those function are work by pairs.
     // Do not combinate.
