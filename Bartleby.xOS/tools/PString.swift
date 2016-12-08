@@ -204,17 +204,17 @@ public struct PString {
 
 // MARK: - String extension
 
-extension String {
+public extension String {
 
-    func contains(_ string: String) -> Bool {
+    public func contains(_ string: String) -> Bool {
         return (self.range(of: string) != nil)
     }
 
-    func contains(_ string: String,compareOptions:NSString.CompareOptions) -> Bool {
+    public func contains(_ string: String,compareOptions:NSString.CompareOptions) -> Bool {
         return (self.range(of: string, options: compareOptions, range: self.fullCharactersRange(), locale: Locale.current) != nil )
     }
 
-    func isMatching(_ regex: String) -> Bool {
+    public func isMatching(_ regex: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: [])
             let matchCount = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
@@ -225,7 +225,7 @@ extension String {
         return false
     }
 
-    func getMatches(_ regex: String, options: NSRegularExpression.Options) -> [NSTextCheckingResult]? {
+    public func getMatches(_ regex: String, options: NSRegularExpression.Options) -> [NSTextCheckingResult]? {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: options)
             let matches = regex.matches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
@@ -236,20 +236,20 @@ extension String {
         return nil
     }
 
-    func fullCharactersRange() -> Range<Index> {
+    public func fullCharactersRange() -> Range<Index> {
         return Range(uncheckedBounds: (lower: self.startIndex, upper: self.endIndex))
     }
 
-    func firstCharacterRange()->Range<Index> {
+    public func firstCharacterRange()->Range<Index> {
         return Range(uncheckedBounds: (lower: self.startIndex, upper: self.startIndex))
     }
 
-    func lastCharacterRange()->Range<Index> {
+    public func lastCharacterRange()->Range<Index> {
         return Range(uncheckedBounds: (lower: self.endIndex, upper: self.endIndex))
     }
 
 
-    func jsonPrettify()->String{
+    public func jsonPrettify()->String{
         do {
             if let d=self.data(using:.utf8){
                 let jsonObject = try JSONSerialization.jsonObject(with: d, options:[])

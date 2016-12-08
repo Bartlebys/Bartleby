@@ -8,16 +8,15 @@
 
 import Foundation
 
-extension DocumentMetadata{
+public extension DocumentMetadata{
 
-    var debugTriggersHistory:Bool{ return true } // Should be set to False
+    public var debugTriggersHistory:Bool{ return true } // Should be set to False
 
-    var jsonReceivedTrigger:String{
+    public var jsonReceivedTrigger:String{
         return self.receivedTriggers.toJSONString(prettyPrint: true) ?? "..."
     }
 
-    var jsonOperationsQuarantine:String{
+    public var jsonOperationsQuarantine:String{
         return self.operationsQuarantine.toJSONString(prettyPrint: true) ?? "..."
     }
-
 }
