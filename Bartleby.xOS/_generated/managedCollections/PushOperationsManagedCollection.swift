@@ -18,7 +18,7 @@ import AppKit
 
 // MARK: - Notification
 
-extension Notification.Name {
+public extension Notification.Name {
     public struct PushOperations {
         /// Posted when the selected pushOperations changed
         public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.PushOperations.selectedpushOperationsChanged")
@@ -477,7 +477,7 @@ extension Notification.Name {
     }
 
     // A facility
-    var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
+    open var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
 
 
 

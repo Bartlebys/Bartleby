@@ -18,7 +18,7 @@ import AppKit
 
 // MARK: - Notification
 
-extension Notification.Name {
+public extension Notification.Name {
     public struct Lockers {
         /// Posted when the selected lockers changed
         public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Lockers.selectedlockersChanged")
@@ -524,7 +524,7 @@ extension Notification.Name {
     }
 
     // A facility
-    var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
+    open var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
 
 
 

@@ -18,7 +18,7 @@ import AppKit
 
 // MARK: - Notification
 
-extension Notification.Name {
+public extension Notification.Name {
     public struct Users {
         /// Posted when the selected users changed
         public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Users.selectedusersChanged")
@@ -521,7 +521,7 @@ extension Notification.Name {
     }
 
     // A facility
-    var firstSelectedUser:User? { return self.selectedUsers?.first }
+    open var firstSelectedUser:User? { return self.selectedUsers?.first }
 
 
 

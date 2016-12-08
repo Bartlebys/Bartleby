@@ -18,7 +18,7 @@ import AppKit
 
 // MARK: - Notification
 
-extension Notification.Name {
+public extension Notification.Name {
     public struct Nodes {
         /// Posted when the selected nodes changed
         public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Nodes.selectednodesChanged")
@@ -493,7 +493,7 @@ extension Notification.Name {
     }
 
     // A facility
-    var firstSelectedNode:Node? { return self.selectedNodes?.first }
+    open var firstSelectedNode:Node? { return self.selectedNodes?.first }
 
 
 
