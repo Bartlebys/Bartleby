@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
+#if !USE_EMBEDDED_MODULES && !IN_YOUDUBROBOT && !IN_BARTLEBY_KIT
     import BartlebyKit
 #endif
 
