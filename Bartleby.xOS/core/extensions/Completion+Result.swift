@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ObjectMapper
 
 // MARK: - Result Extensions
 
@@ -43,20 +44,26 @@ public extension Completion {
     ///
     /// - Parameter ref: the reference
     func setExternalReferenceResult<T: Collectible>(from ref:T) {
-        let externalRef=ExternalReference(from:ref)
-        self.data = externalRef.serialize()
+        let externalRef=StringVO()
+        externalRef.value=ref.UID
+        if let json=externalRef.toJSONString(){
+            self.data = json.data(using: String.Encoding.utf8)
+        }
     }
 
 
     /// Retrieve the stored reference
     ///
-    /// - Returns: the external reference
-    func getResultExternalReference() ->ExternalReference? {
-        if let ref:ExternalReference=self.getResult(){
-            return ref
-        }else{
-            return nil
+    /// - Returns: the external reference UID
+    func getResultExternalReference() ->String? {
+        if let data = self.data{
+            if let json=String(data: data, encoding: String.Encoding.utf8){
+                if let ref:StringVO = Mapper<StringVO>().map(JSONString:json){
+                    return ref.value
+                }
+            }
         }
+        return nil
     }
 
 

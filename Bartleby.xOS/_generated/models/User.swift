@@ -119,15 +119,6 @@ import Foundation
 	    }
 	}
 
-	//The user Tags. External reference to Tags instances
-	dynamic open var tags:[ExternalReference] = [ExternalReference]()  {
-	    didSet { 
-	       if !self.wantsQuietChanges && tags != oldValue {
-	            self.provisionChanges(forKey: "tags",oldValue: oldValue,newValue: tags)  
-	       } 
-	    }
-	}
-
 	//Notes
 	dynamic open var notes:String? {
 	    didSet { 
@@ -145,7 +136,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","tags","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["externalID","spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
         return exposed
     }
 
@@ -198,10 +189,6 @@ import Foundation
                 if let casted=value as? User.Status{
                     self.status=casted
                 }
-            case "tags":
-                if let casted=value as? [ExternalReference]{
-                    self.tags=casted
-                }
             case "notes":
                 if let casted=value as? String{
                     self.notes=casted
@@ -245,8 +232,6 @@ import Foundation
                return self.activationCode
             case "status":
                return self.status
-            case "tags":
-               return self.tags
             case "notes":
                return self.notes
             case "loginHasSucceed":
@@ -274,7 +259,6 @@ import Foundation
 			self.password <- ( map["password"], CryptedStringTransform() )
 			self.activationCode <- ( map["activationCode"] )
 			self.status <- ( map["status"] )
-			self.tags <- ( map["tags"] )
 			self.notes <- ( map["notes"] )
         }
     }
@@ -295,7 +279,6 @@ import Foundation
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-			self.tags=decoder.decodeObject(of: [NSArray.classForCoder(),ExternalReference.classForCoder()], forKey: "tags")! as! [ExternalReference]
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
         }
     }
@@ -320,7 +303,6 @@ import Foundation
 		}
 		coder.encode(self.activationCode,forKey:"activationCode")
 		coder.encode(self.status.rawValue ,forKey:"status")
-		coder.encode(self.tags,forKey:"tags")
 		if let notes = self.notes {
 			coder.encode(notes,forKey:"notes")
 		}

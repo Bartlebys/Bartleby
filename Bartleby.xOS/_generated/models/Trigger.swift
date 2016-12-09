@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: a Trigger encapsulates a bunch of ExternalReferencees that's modelizes a state transformation
+// MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
 @objc(Trigger) open class Trigger : BartlebyObject{
 
     // Universal type support

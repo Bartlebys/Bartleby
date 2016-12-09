@@ -124,7 +124,7 @@ public final class BSFS:TriggerHook{
     ///   - boxUID: the Box UID
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
-    ///                the box ref is stored in the completion.getResultExternalReference()
+    ///                the box UID is stored in the completion.getResultExternalReference()
     public func mount( boxUID:String,
                        progressed:@escaping (Progression)->(),
                        completed:@escaping (Completion)->()){
@@ -275,7 +275,7 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
-    ///                the node ref is stored in the completion.getResultExternalReference()
+    ///                the node UID is stored in the completion.getResultExternalReference()
     internal func _assemble(node:Node,
                             progressed:@escaping (Progression)->(),
                             completed:@escaping (Completion)->()) throws->(){
@@ -385,7 +385,7 @@ public final class BSFS:TriggerHook{
     ///
     ///     + generate the blocks in background.
     ///     + adds the node(s)
-    ///     + the first node ref is stored in the Completion (use completion.getResultExternalReference())
+    ///     + the first node UID is stored in the Completion (use completion.getResultExternalReference())
     ///
     /// - Parameters:
     ///   - FileReference: the file reference (Nature == file or flock)
@@ -394,7 +394,7 @@ public final class BSFS:TriggerHook{
     ///   - deleteOriginal: should we delete the original?
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State
-    ///                the node ref is stored in the completion.getResultExternalReference()
+    ///                the node UID is stored in the completion.getResultExternalReference()
     public func add( reference:FileReference,
                      in box:Box,
                      to relativePath:String,
@@ -549,7 +549,7 @@ public final class BSFS:TriggerHook{
     ///   - accessor: the accessor that ask for replacement
     ///   - progressed: a closure  to relay the Progression State
     ///   - completed: a closure called on completion with Completion State.
-    ///                the node ref is stored in the completion.getResultExternalReference()
+    ///                the node UID is stored in the completion.getResultExternalReference()
     func replaceContent(of node:Node,
                         withContentAt path:String,
                         deleteOriginal:Bool,
@@ -752,7 +752,7 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - relativePath: the relative path
     ///   - completed: a closure called on completion with Completion State.
-    ///                the copied node ref is stored in the completion.getResultExternalReference()
+    ///                the copied node UID is stored in the completion.getResultExternalReference()
     public func copy(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
 
         // The nodeIsUsable() will be called when the file will be usable.
@@ -799,7 +799,7 @@ public final class BSFS:TriggerHook{
     ///   - node: the node
     ///   - relativePath: the relative path
     ///   - completed: a closure called on completion with Completion State.
-    ///                the copied node ref is stored in the completion.getResultExternalReference()
+    ///                the copied node UID is stored in the completion.getResultExternalReference()
     public func move(node:Node,to relativePath:String,completed:@escaping (Completion)->())->(){
 
         // The nodeIsUsable() will be called when the file will be usable.

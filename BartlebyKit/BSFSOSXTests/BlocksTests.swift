@@ -39,8 +39,8 @@ class BlocksTests: BartlebyTestCase {
                 print("\(progression)")
         },
               completed: { completion in
-                if let nodeExtRef:ExternalReference=completion.getResultExternalReference(){
-                    if let node:Node=nodeExtRef.toLocalInstance() {
+                if let nodeExtRef:String=completion.getResultExternalReference(){
+                    if let node:Node = try? Bartleby.registredObjectByUID(nodeExtRef) {
                         XCTAssert(node.blocksUIDS.count == 3, "3 blocks expected")
                         XCTAssert(node.isAssemblable, "Node is assemblable")
                     }else{

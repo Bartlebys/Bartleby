@@ -42,14 +42,11 @@ open class VerifyLocker: BartlebyObject {
 
         if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
             // Let's determine if we should verify locally or not.
-            let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
             let verifyer=VerifyLocker()
-            lockerRef.fetchInstance(Locker.self) { (instance) in
-                if let _=instance {
-                    verifyer._proceedToLocalVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
-                } else {
-                    verifyer._proceedToDistantVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
-                }
+            if let _:Locker=try? Bartleby.registredObjectByUID(lockerUID){
+                 verifyer._proceedToLocalVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
+            }else{
+                verifyer._proceedToDistantVerification(lockerUID, inDocumentWithUID:document.UID, code: code, accessGranted: success, accessRefused: failure)
             }
         }else{
             let context = HTTPContext( code: 1,
@@ -83,24 +80,20 @@ open class VerifyLocker: BartlebyObject {
                                    relatedURL:nil,
                                    httpStatusCode: 0)
 
-        let lockerRef=ExternalReference(iUID: lockerUID, iTypeName: Locker.typeName())
-
-        lockerRef.fetchInstance(Locker.self) { (instance) in
-            if let locker=instance {
-                locker.verificationMethod=Locker.VerificationMethod.offline
-                if locker.code==code {
-                    self._verifyLockerBusinessLogic(locker, accessGranted: success, accessRefused: failure)
-                } else {
-                    context.code = 1
-                    context.responseString = "bad code"
-                    failure(context)
-                }
-
+        if let locker:Locker=try? Bartleby.registredObjectByUID(lockerUID){
+            locker.verificationMethod=Locker.VerificationMethod.offline
+            if locker.code==code {
+                self._verifyLockerBusinessLogic(locker, accessGranted: success, accessRefused: failure)
             } else {
-                context.code = 2
-                context.responseString = "The locker do not exists locally"
+                context.code = 1
+                context.responseString = "bad code"
                 failure(context)
             }
+
+        }else{
+            context.code = 2
+            context.responseString = "The locker do not exists locally"
+            failure(context)
         }
     }
 

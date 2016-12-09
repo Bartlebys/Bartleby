@@ -4,7 +4,6 @@
         <page name='Hello World?'/>
         <page name='Barlteby&apos;s Supervision'/>
         <page name='UnversalTypesAndSerialization'/>
-        <page name='Ref-experiments'/>
         <page name='Connected'/>
     </pages>
 </playground>

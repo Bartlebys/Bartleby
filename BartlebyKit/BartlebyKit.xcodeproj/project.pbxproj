@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E5008A4A1DFAA6CE00A7D7D2 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5008A4C1DFAA6D400A7D7D2 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5008A801DFABBCB00A7D7D2 /* StringVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5008A7F1DFABBCB00A7D7D2 /* StringVO.swift */; };
+		E5008A821DFABE7E00A7D7D2 /* DataVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5008A811DFABE7E00A7D7D2 /* DataVO.swift */; };
 		E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E50805C21DF6C26F0085E5C3 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */; };
 		E50805C51DF6C2E00085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C31DF6C2E00085E5C3 /* Alamofire.framework */; };
@@ -48,8 +50,6 @@
 		E53F07F11DF95BE3003301DD /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06F81DF95BE3003301DD /* Container.swift */; };
 		E53F07F21DF95BE3003301DD /* DocumentMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06F91DF95BE3003301DD /* DocumentMetadata.swift */; };
 		E53F07F31DF95BE3003301DD /* DocumentMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06F91DF95BE3003301DD /* DocumentMetadata.swift */; };
-		E53F07F41DF95BE3003301DD /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06FA1DF95BE3003301DD /* ExternalReference.swift */; };
-		E53F07F51DF95BE3003301DD /* ExternalReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06FA1DF95BE3003301DD /* ExternalReference.swift */; };
 		E53F07F61DF95BE3003301DD /* HTTPContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06FB1DF95BE3003301DD /* HTTPContext.swift */; };
 		E53F07F71DF95BE3003301DD /* HTTPContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06FB1DF95BE3003301DD /* HTTPContext.swift */; };
 		E53F07F81DF95BE3003301DD /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F06FC1DF95BE3003301DD /* HTTPRequest.swift */; };
@@ -314,8 +314,6 @@
 		E53F08FB1DF95BE3003301DD /* DocumentMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078B1DF95BE3003301DD /* DocumentMetadata+Facilities.swift */; };
 		E53F08FC1DF95BE3003301DD /* DocumentMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078C1DF95BE3003301DD /* DocumentMetadata+Protocol.swift */; };
 		E53F08FD1DF95BE3003301DD /* DocumentMetadata+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078C1DF95BE3003301DD /* DocumentMetadata+Protocol.swift */; };
-		E53F08FE1DF95BE3003301DD /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078D1DF95BE3003301DD /* ExternalReference+Resolution.swift */; };
-		E53F08FF1DF95BE3003301DD /* ExternalReference+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078D1DF95BE3003301DD /* ExternalReference+Resolution.swift */; };
 		E53F09001DF95BE3003301DD /* HTTPContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078E1DF95BE3003301DD /* HTTPContext+Conveniences.swift */; };
 		E53F09011DF95BE3003301DD /* HTTPContext+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078E1DF95BE3003301DD /* HTTPContext+Conveniences.swift */; };
 		E53F09021DF95BE3003301DD /* HTTPRequest+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F078F1DF95BE3003301DD /* HTTPRequest+URLRequest.swift */; };
@@ -519,6 +517,8 @@
 		5B6FD89B1CAEE42A00940EF7 /* UserStatusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusTests.swift; sourceTree = "<group>"; };
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
 		5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
+		E5008A7F1DFABBCB00A7D7D2 /* StringVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringVO.swift; sourceTree = "<group>"; };
+		E5008A811DFABE7E00A7D7D2 /* DataVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataVO.swift; sourceTree = "<group>"; };
 		E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
 		E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/Mac/ObjectMapper.framework; sourceTree = "<group>"; };
 		E50805C31DF6C2E00085E5C3 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
@@ -545,7 +545,6 @@
 		E53F06F71DF95BE3003301DD /* Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E53F06F81DF95BE3003301DD /* Container.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		E53F06F91DF95BE3003301DD /* DocumentMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentMetadata.swift; sourceTree = "<group>"; };
-		E53F06FA1DF95BE3003301DD /* ExternalReference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalReference.swift; sourceTree = "<group>"; };
 		E53F06FB1DF95BE3003301DD /* HTTPContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPContext.swift; sourceTree = "<group>"; };
 		E53F06FC1DF95BE3003301DD /* HTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
 		E53F06FD1DF95BE3003301DD /* KeyedChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyedChanges.swift; sourceTree = "<group>"; };
@@ -678,7 +677,6 @@
 		E53F078A1DF95BE3003301DD /* Completion+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Result.swift"; sourceTree = "<group>"; };
 		E53F078B1DF95BE3003301DD /* DocumentMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentMetadata+Facilities.swift"; sourceTree = "<group>"; };
 		E53F078C1DF95BE3003301DD /* DocumentMetadata+Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentMetadata+Protocol.swift"; sourceTree = "<group>"; };
-		E53F078D1DF95BE3003301DD /* ExternalReference+Resolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExternalReference+Resolution.swift"; sourceTree = "<group>"; };
 		E53F078E1DF95BE3003301DD /* HTTPContext+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPContext+Conveniences.swift"; sourceTree = "<group>"; };
 		E53F078F1DF95BE3003301DD /* HTTPRequest+URLRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HTTPRequest+URLRequest.swift"; sourceTree = "<group>"; };
 		E53F07901DF95BE3003301DD /* KeyedData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyedData+Conveniences.swift"; sourceTree = "<group>"; };
@@ -896,8 +894,8 @@
 				E53F06F61DF95BE3003301DD /* CollectionMetadatum.swift */,
 				E53F06F71DF95BE3003301DD /* Completion.swift */,
 				E53F06F81DF95BE3003301DD /* Container.swift */,
+				E5008A811DFABE7E00A7D7D2 /* DataVO.swift */,
 				E53F06F91DF95BE3003301DD /* DocumentMetadata.swift */,
-				E53F06FA1DF95BE3003301DD /* ExternalReference.swift */,
 				E53F06FB1DF95BE3003301DD /* HTTPContext.swift */,
 				E53F06FC1DF95BE3003301DD /* HTTPRequest.swift */,
 				E53F06FD1DF95BE3003301DD /* KeyedChanges.swift */,
@@ -908,6 +906,7 @@
 				E53F07021DF95BE3003301DD /* Node.swift */,
 				E53F07031DF95BE3003301DD /* Progression.swift */,
 				E53F07041DF95BE3003301DD /* PushOperation.swift */,
+				E5008A7F1DFABBCB00A7D7D2 /* StringVO.swift */,
 				E53F07051DF95BE3003301DD /* Relation.swift */,
 				E53F07061DF95BE3003301DD /* Report.swift */,
 				E53F07071DF95BE3003301DD /* Tag.swift */,
@@ -1146,7 +1145,6 @@
 				E53F078A1DF95BE3003301DD /* Completion+Result.swift */,
 				E53F078B1DF95BE3003301DD /* DocumentMetadata+Facilities.swift */,
 				E53F078C1DF95BE3003301DD /* DocumentMetadata+Protocol.swift */,
-				E53F078D1DF95BE3003301DD /* ExternalReference+Resolution.swift */,
 				E53F078E1DF95BE3003301DD /* HTTPContext+Conveniences.swift */,
 				E53F078F1DF95BE3003301DD /* HTTPRequest+URLRequest.swift */,
 				E53F07901DF95BE3003301DD /* KeyedData+Conveniences.swift */,
@@ -1520,7 +1518,6 @@
 				E53F084E1DF95BE3003301DD /* ReadNodeById.swift in Sources */,
 				E53F08E81DF95BE3003301DD /* BartlebyObject+NSCopying.swift in Sources */,
 				E53F09761DF95BE3003301DD /* TriggersByIds.swift in Sources */,
-				E53F08FE1DF95BE3003301DD /* ExternalReference+Resolution.swift in Sources */,
 				E53F08C61DF95BE3003301DD /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E53F086E1DF95BE3003301DD /* UIX.swift in Sources */,
 				E53F08A61DF95BE3003301DD /* HMACAlgorithms.swift in Sources */,
@@ -1588,6 +1585,7 @@
 				E53F08AA1DF95BE3003301DD /* String+HMAC.swift in Sources */,
 				E53F08AE1DF95BE3003301DD /* EventSource.swift in Sources */,
 				E53F07E41DF95BE3003301DD /* Acknowledgment.swift in Sources */,
+				E5008A801DFABBCB00A7D7D2 /* StringVO.swift in Sources */,
 				E53F09741DF95BE3003301DD /* TriggersAfterIndex.swift in Sources */,
 				E53F08B41DF95BE3003301DD /* Consignation.swift in Sources */,
 				E53F09241DF95BE3003301DD /* CollectibleCollection.swift in Sources */,
@@ -1631,7 +1629,6 @@
 				E53F090C1DF95BE3003301DD /* Progression+Conveniences.swift in Sources */,
 				E53F09581DF95BE3003301DD /* SuperIterable.swift in Sources */,
 				E53F090E1DF95BE3003301DD /* PushOperation+Conveniences.swift in Sources */,
-				E53F07F41DF95BE3003301DD /* ExternalReference.swift in Sources */,
 				E53F08421DF95BE3003301DD /* ReadBoxById.swift in Sources */,
 				E53F09421DF95BE3003301DD /* IterableCollectibleCollection.swift in Sources */,
 				E53F07F61DF95BE3003301DD /* HTTPContext.swift in Sources */,
@@ -1673,6 +1670,7 @@
 				E53F088C1DF95BE3003301DD /* NodeAccessor.swift in Sources */,
 				E53F096C1DF95BE3003301DD /* URL+Utilities.swift in Sources */,
 				E53F08CA1DF95BE3003301DD /* BartlebyDocument+Metrics.swift in Sources */,
+				E5008A821DFABE7E00A7D7D2 /* DataVO.swift in Sources */,
 				E53F09781DF95BE3003301DD /* TriggersForIndexes.swift in Sources */,
 				E53F080A1DF95BE3003301DD /* Relation.swift in Sources */,
 				E53F093A1DF95BE3003301DD /* Exposed.swift in Sources */,
@@ -1798,7 +1796,6 @@
 				E53F08331DF95BE3003301DD /* DeleteLockers.swift in Sources */,
 				E53F097B1DF95BE3003301DD /* VerifyLocker.swift in Sources */,
 				E53F08DF1DF95BE3003301DD /* BartlebyObject+DictionaryRepresentation.swift in Sources */,
-				E53F07F51DF95BE3003301DD /* ExternalReference.swift in Sources */,
 				E53F08F31DF95BE3003301DD /* BartlebyObject+Supervisable.swift in Sources */,
 				E53F08031DF95BE3003301DD /* Metrics.swift in Sources */,
 				E53F09051DF95BE3003301DD /* KeyedData+Conveniences.swift in Sources */,
@@ -1813,7 +1810,6 @@
 				E53F08CB1DF95BE3003301DD /* BartlebyDocument+Metrics.swift in Sources */,
 				E53F08971DF95BE3003301DD /* CryptedKeyValueStorage.swift in Sources */,
 				E53F08C91DF95BE3003301DD /* BartlebyDocument+Logs.swift in Sources */,
-				E53F08FF1DF95BE3003301DD /* ExternalReference+Resolution.swift in Sources */,
 				E53F09731DF95BE3003301DD /* LogoutUser.swift in Sources */,
 				E53F09831DF95BE3003301DD /* PString.swift in Sources */,
 				E53F09791DF95BE3003301DD /* TriggersForIndexes.swift in Sources */,
