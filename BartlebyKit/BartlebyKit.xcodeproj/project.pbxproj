@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5008A4A1DFAA6CE00A7D7D2 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5008A4C1DFAA6D400A7D7D2 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E50805C21DF6C26F0085E5C3 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */; };
 		E50805C51DF6C2E00085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C31DF6C2E00085E5C3 /* Alamofire.framework */; };
@@ -1694,6 +1696,7 @@
 				E53F07EA1DF95BE3003301DD /* Box.swift in Sources */,
 				E53F09201DF95BE3003301DD /* ChangesInspectable.swift in Sources */,
 				E53F09621DF95BE3003301DD /* Reaction.swift in Sources */,
+				E5008A4A1DFAA6CE00A7D7D2 /* TestsConfiguration.swift in Sources */,
 				E53F08D21DF95BE3003301DD /* BartlebyDocument+Reachability.swift in Sources */,
 				E53F08361DF95BE3003301DD /* DeleteNodes.swift in Sources */,
 				E53F08E01DF95BE3003301DD /* BartlebyObject+Equatable.swift in Sources */,
@@ -1916,6 +1919,7 @@
 				E53F092D1DF95BE3003301DD /* ConsolidableProgression.swift in Sources */,
 				E53F08AB1DF95BE3003301DD /* String+HMAC.swift in Sources */,
 				E53F08711DF95BE3003301DD /* BSFS.swift in Sources */,
+				E5008A4C1DFAA6D400A7D7D2 /* TestsConfiguration.swift in Sources */,
 				E53F080F1DF95BE3003301DD /* Tag.swift in Sources */,
 				E53F08C71DF95BE3003301DD /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E53F08A11DF95BE3003301DD /* CryptoKeySize.swift in Sources */,

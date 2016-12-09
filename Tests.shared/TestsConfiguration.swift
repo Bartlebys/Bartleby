@@ -82,7 +82,7 @@ open class TestsConfiguration: BartlebyConfiguration {
         case production
     }
 
-    static var currentEnvironment: Environment = .development
+    static var currentEnvironment: Environment = .local
 
     static fileprivate var __BASE_URL: URL {
         get {

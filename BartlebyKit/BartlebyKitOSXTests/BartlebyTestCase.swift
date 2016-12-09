@@ -10,21 +10,21 @@ import XCTest
 import BartlebyKit
 
 /// A base test case with document and file oriented facilities
-class BartlebyTestCase: XCTestCase {
+public class BartlebyTestCase: XCTestCase {
 
     static var documents=[BartlebyDocument]()
 
     static var createdURI=[URL]()
 
-    static func urlByAppending(path:String)->URL{
+    public static func urlByAppending(path:String)->URL{
         return URL(fileURLWithPath: Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!+"/"+path)
     }
 
-    static var document:BartlebyDocument{
+    public static var document:BartlebyDocument{
         return documents.first ?? newDocument()
     }
 
-    static func newDocument()->BartlebyDocument{
+    public static func newDocument()->BartlebyDocument{
         let document=BartlebyDocument()
         document.configureSchema()
         Bartleby.sharedInstance.declare(document)
@@ -47,7 +47,7 @@ class BartlebyTestCase: XCTestCase {
     }
 
 
-    static func createFile(size:UInt,fileName:String,letter:String="z"){
+   public static func createFile(size:UInt,fileName:String,letter:String="z"){
         let data=String(repeating: letter, count: Int(size)).data(using: .utf8)!
         do{
             let u=urlByAppending(path: fileName)
@@ -58,13 +58,13 @@ class BartlebyTestCase: XCTestCase {
         }
     }
 
-    override static func setUp(){
+    override public static func setUp(){
         XCTestCase.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         Bartleby.ephemeral=true
     }
 
-    override static func tearDown() {
+    override public static func tearDown() {
         XCTestCase.tearDown()
         for url in BartlebyTestCase.createdURI{
             do{
