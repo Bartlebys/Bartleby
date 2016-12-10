@@ -299,6 +299,20 @@ open class Bartleby:NSObject {
 
 
 
+    ///  Returns the registred instance of by UIDs
+    ///
+    /// - Parameter UIDs: the UIDs
+    /// - Returns: the registred Instances
+    open static func registredObjectsByUIDs<T: Collectible>(_ UIDs: [String]) throws-> [T] {
+        var items=[T]()
+        for UID in UIDs{
+            items.append(try Bartleby.registredObjectByUID(UID))
+        }
+        return items
+    }
+
+
+
     /**
      Returns the instance by its UID
 

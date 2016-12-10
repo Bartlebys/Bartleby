@@ -83,6 +83,18 @@ extension BartlebyObject{
         return related
     }
 
+    /// Resolve the Related Object and returns the first one
+    ///
+    /// - Returns: the collection of related object
+    open func firstRelation<T:BartlebyObject>(_ relationship:Relationship)->T?{
+        for relation in self._getContractedRelations(relationship){
+            if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as T{
+               return candidate
+            }
+        }
+        return nil
+    }
+
 
     // MARK: - implementation
 
