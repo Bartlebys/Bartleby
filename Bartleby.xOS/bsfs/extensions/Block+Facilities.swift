@@ -18,9 +18,9 @@ extension Block{
 
     var data:Data?{
         do{
-            return try self.document?.dataForBlock(identifiedBy: self.digest)
+            return try self.referentDocument?.dataForBlock(identifiedBy: self.digest)
         }catch {
-             self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
         return nil
     }

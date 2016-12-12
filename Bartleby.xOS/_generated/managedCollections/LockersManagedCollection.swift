@@ -41,7 +41,7 @@ public extension Notification.Name {
         return "LockersManagedCollection"
     }
 
-    open var spaceUID:String { return self.document?.spaceUID ?? Default.NO_UID }
+    open var spaceUID:String { return self.referentDocument?.spaceUID ?? Default.NO_UID }
 
     /// Init with prefetched content
     ///
@@ -63,7 +63,7 @@ public extension Notification.Name {
         self.forEach { $0.collection=self }
     }
 
-    open var undoManager:UndoManager? { return self.document?.undoManager }
+    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
     weak open var tableView: BXTableView?
 
@@ -178,10 +178,10 @@ public extension Notification.Name {
 			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
 			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
-			    CreateLockers.commit(toBeCreated, in:self.document!)
+			    CreateLockers.commit(toBeCreated, in:self.referentDocument!)
 			}
 			if tobeUpdated.count > 0 {
-			    UpdateLockers.commit(tobeUpdated, in:self.document!)
+			    UpdateLockers.commit(tobeUpdated, in:self.referentDocument!)
 			}
 
             self.hasBeenCommitted()
@@ -307,7 +307,7 @@ public extension Notification.Name {
                 self.add(item, commit:commit)
             }
         }catch{
-            self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
@@ -375,7 +375,7 @@ public extension Notification.Name {
 
 
             if commit==true {
-               CreateLocker.commit(item, in:self.document!)
+               CreateLocker.commit(item, in:self.referentDocument!)
             }
 
         }else{
@@ -419,7 +419,7 @@ public extension Notification.Name {
 
     
         if commit==true{
-            DeleteLocker.commit(item,from:self.document!) 
+            DeleteLocker.commit(item,from:self.referentDocument!) 
         }
     }
 
@@ -464,13 +464,13 @@ public extension Notification.Name {
             arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            //self.document?.setValue(self, forKey: "lockers")
+            //self.referentDocument?.setValue(self, forKey: "lockers")
             arrayController?.objectClass=Locker.self
             arrayController?.entityName=Locker.className()
             arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.document?.metadata.stateDictionary[self.selectedLockersIndexesKey] as? [Int]{
+            if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedLockersIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 arrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -483,7 +483,7 @@ public extension Notification.Name {
     // Note :
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
-    // e.g: document.lockers.arrayController?.setSelectedObjects(lockers)
+    // e.g: referentDocument.lockers.arrayController?.setSelectedObjects(lockers)
     // Do not use document.lockers.selectedLockers=lockers
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -517,7 +517,7 @@ public extension Notification.Name {
                  let indexes:[Int]=lockers.map({ (locker) -> Int in
                     return lockers.index(where:{ return $0.UID == locker.UID })!
                 })
-                self.document?.metadata.stateDictionary[selectedLockersIndexesKey]=indexes
+                self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
             }
         }

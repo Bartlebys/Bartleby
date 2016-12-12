@@ -34,7 +34,7 @@ extension BartlebyObject{
     open var isInspectable:Bool{
         get{
             var inspectable=false
-            if let m=self.document?.metadata{
+            if let m=self.referentDocument?.metadata{
                 inspectable=m.changesAreInspectables
             }
             return inspectable
@@ -43,7 +43,7 @@ extension BartlebyObject{
 
     // Retunrns the document UID
     open var documentUID:String{
-        return self.document?.UID ?? Default.NO_UID
+        return self.referentDocument?.UID ?? Default.NO_UID
     }
 
 

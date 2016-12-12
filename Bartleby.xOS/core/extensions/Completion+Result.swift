@@ -7,7 +7,10 @@
 //
 
 import Foundation
-import ObjectMapper
+
+#if !USE_EMBEDDED_MODULES
+    import ObjectMapper
+#endif
 
 // MARK: - Result Extensions
 
@@ -128,8 +131,4 @@ public extension Completion {
         }
         return  nil
     }
-
-
-
-
 }

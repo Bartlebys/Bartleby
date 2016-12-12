@@ -41,7 +41,7 @@ public extension Notification.Name {
         return "NodesManagedCollection"
     }
 
-    open var spaceUID:String { return self.document?.spaceUID ?? Default.NO_UID }
+    open var spaceUID:String { return self.referentDocument?.spaceUID ?? Default.NO_UID }
 
     /// Init with prefetched content
     ///
@@ -63,7 +63,7 @@ public extension Notification.Name {
         self.forEach { $0.collection=self }
     }
 
-    open var undoManager:UndoManager? { return self.document?.undoManager }
+    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
     weak open var tableView: BXTableView?
 
@@ -178,10 +178,10 @@ public extension Notification.Name {
 			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
 			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
-			    CreateNodes.commit(toBeCreated, in:self.document!)
+			    CreateNodes.commit(toBeCreated, in:self.referentDocument!)
 			}
 			if tobeUpdated.count > 0 {
-			    UpdateNodes.commit(tobeUpdated, in:self.document!)
+			    UpdateNodes.commit(tobeUpdated, in:self.referentDocument!)
 			}
 
             self.hasBeenCommitted()
@@ -307,7 +307,7 @@ public extension Notification.Name {
                 self.add(item, commit:commit)
             }
         }catch{
-            self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
@@ -357,7 +357,7 @@ public extension Notification.Name {
 
 
             if commit==true {
-               CreateNode.commit(item, in:self.document!)
+               CreateNode.commit(item, in:self.referentDocument!)
             }
 
         }else{
@@ -388,7 +388,7 @@ public extension Notification.Name {
 
     
         if commit==true{
-            DeleteNode.commit(item,from:self.document!) 
+            DeleteNode.commit(item,from:self.referentDocument!) 
         }
     }
 
@@ -433,13 +433,13 @@ public extension Notification.Name {
             arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            //self.document?.setValue(self, forKey: "nodes")
+            //self.referentDocument?.setValue(self, forKey: "nodes")
             arrayController?.objectClass=Node.self
             arrayController?.entityName=Node.className()
             arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.document?.metadata.stateDictionary[self.selectedNodesIndexesKey] as? [Int]{
+            if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedNodesIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 arrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -452,7 +452,7 @@ public extension Notification.Name {
     // Note :
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
-    // e.g: document.nodes.arrayController?.setSelectedObjects(nodes)
+    // e.g: referentDocument.nodes.arrayController?.setSelectedObjects(nodes)
     // Do not use document.nodes.selectedNodes=nodes
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -486,7 +486,7 @@ public extension Notification.Name {
                  let indexes:[Int]=nodes.map({ (node) -> Int in
                     return nodes.index(where:{ return $0.UID == node.UID })!
                 })
-                self.document?.metadata.stateDictionary[selectedNodesIndexesKey]=indexes
+                self.referentDocument?.metadata.stateDictionary[selectedNodesIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name.Nodes.selectionChanged, object: nil)
             }
         }

@@ -41,7 +41,7 @@ public extension Notification.Name {
         return "PushOperationsManagedCollection"
     }
 
-    open var spaceUID:String { return self.document?.spaceUID ?? Default.NO_UID }
+    open var spaceUID:String { return self.referentDocument?.spaceUID ?? Default.NO_UID }
 
     /// Init with prefetched content
     ///
@@ -63,7 +63,7 @@ public extension Notification.Name {
         self.forEach { $0.collection=self }
     }
 
-    open var undoManager:UndoManager? { return self.document?.undoManager }
+    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
     weak open var tableView: BXTableView?
 
@@ -293,7 +293,7 @@ public extension Notification.Name {
                 self.add(item, commit:commit)
             }
         }catch{
-            self.document?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
         }
     }
 
@@ -417,13 +417,13 @@ public extension Notification.Name {
             arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
         didSet{
-            //self.document?.setValue(self, forKey: "pushOperations")
+            //self.referentDocument?.setValue(self, forKey: "pushOperations")
             arrayController?.objectClass=PushOperation.self
             arrayController?.entityName=PushOperation.className()
             arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.document?.metadata.stateDictionary[self.selectedPushOperationsIndexesKey] as? [Int]{
+            if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedPushOperationsIndexesKey] as? [Int]{
                 let indexesSet = NSMutableIndexSet()
                 indexes.forEach{ indexesSet.add($0) }
                 arrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -436,7 +436,7 @@ public extension Notification.Name {
     // Note :
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
-    // e.g: document.pushOperations.arrayController?.setSelectedObjects(pushOperations)
+    // e.g: referentDocument.pushOperations.arrayController?.setSelectedObjects(pushOperations)
     // Do not use document.pushOperations.selectedPushOperations=pushOperations
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -470,7 +470,7 @@ public extension Notification.Name {
                  let indexes:[Int]=pushOperations.map({ (pushOperation) -> Int in
                     return pushOperations.index(where:{ return $0.UID == pushOperation.UID })!
                 })
-                self.document?.metadata.stateDictionary[selectedPushOperationsIndexesKey]=indexes
+                self.referentDocument?.metadata.stateDictionary[selectedPushOperationsIndexesKey]=indexes
                 NotificationCenter.default.post(name:NSNotification.Name.PushOperations.selectionChanged, object: nil)
             }
         }

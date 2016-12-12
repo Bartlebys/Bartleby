@@ -66,7 +66,7 @@ class ReportTabViewController: NSTabViewController,AsyncDocumentDependent,Docume
     public func providerHasADocument(){
         if let documentReference=self.documentProvider?.getDocument(){
             self._document=documentReference // We can become DocumentProvider for the other tab.
-            self._document?.metadata.document=documentReference
+            self._document?.metadata.referentDocument=documentReference
             self.removeTabViewItem(self._decryptorTabViewItem!)
 
             let metadataTabViewItem=NSTabViewItem(viewController:self.metadataDetailsViewController)

@@ -14,7 +14,7 @@ extension Box{
 
     /// The nodes folder path
     public var nodesFolderPath:String{
-        if let bsfs=self.document?.bsfs{
+        if let bsfs=self.referentDocument?.bsfs{
             return bsfs.boxesFolderPath+"/"+self.UID
         }else{
             return Default.NO_PATH
@@ -25,7 +25,7 @@ extension Box{
 
     /// the currently referenced  nodes
     var nodes:[Node]{
-        if let d=self.document{
+        if let d=self.referentDocument{
             return d.nodes.filter({ (node) -> Bool in
                 return node.boxUID==self.UID
             })

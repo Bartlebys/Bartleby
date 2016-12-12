@@ -90,7 +90,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     public func tabView(_ tabView: NSTabView, willSelect tabViewItem: NSTabViewItem?){
         if let tabViewItem = tabViewItem{
-            if let documentReference=self._metadata?.document{
+            if let documentReference=self._metadata?.referentDocument{
                 if let identifier=tabViewItem.identifier as? String{
                     if identifier == "TriggersAnalysis"  {
                         self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
@@ -105,7 +105,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
 
     public func refreshMetadata(notification:Notification){
-        if let documentReference=self._metadata?.document{
+        if let documentReference=self._metadata?.referentDocument{
             self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
             self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine
         }

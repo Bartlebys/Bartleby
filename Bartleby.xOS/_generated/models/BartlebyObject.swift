@@ -91,21 +91,31 @@ import Foundation
 
     // We want to remove all the superviser on removal.
     deinit{
-        self.document=nil
+        self.referentDocument=nil
         self._supervisers.removeAll()
     }
 
     // A reference to the document
-    open var document:BartlebyDocument?
+    open var referentDocument:BartlebyDocument?
 
     // We setup this collection reference on:
     // - object insertion
     // - document deserialization
     // It connects the instance to its document and collection.
-    open var collection:CollectibleCollection?{
+     open var collection:CollectibleCollection?{
+        willSet{
+            if newValue==nil{
+                print("***")
+            }
+        }
         didSet{
-            if let document=collection?.document{
-                self.document=document
+            if let d=collection?.referentDocument{
+                self.referentDocument=d
+                if !(self is PushOperation) && !(self is Box){
+                    print("OK \(self.UID)")
+                }
+            }else{
+                print("!!!!")
             }
         }
     }

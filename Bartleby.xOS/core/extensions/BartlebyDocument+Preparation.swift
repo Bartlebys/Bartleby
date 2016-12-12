@@ -27,8 +27,8 @@ extension BartlebyDocument{
         addGlobalLogsObserver(self)
 
         // Remap the document
-        self.metadata.document=self
-        self.metadata.currentUser?.document=self
+        self.metadata.referentDocument=self
+        self.metadata.currentUser?.referentDocument=self
 
         // Configure the schemas
         self.configureSchema()
@@ -49,7 +49,7 @@ extension BartlebyDocument{
                 if let proxy = proxy as? BartlebyCollection {
                     // Reference the document
                     if let object = proxy as? BartlebyObject{
-                        object.document=self
+                        object.referentDocument=self
                     }
                     self._addCollection(proxy)
                 } else {

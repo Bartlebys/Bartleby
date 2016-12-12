@@ -207,7 +207,7 @@ extension BartlebyDocument {
                         // Reallocate the new  Metadata
                         self.metadata=newDocumentMetadata
                         Bartleby.sharedInstance.declare(self)
-                        self.metadata.currentUser?.document=self
+                        self.metadata.currentUser?.referentDocument=self
 
                         // Reconnect to SSE
                         self._connectToSSE()

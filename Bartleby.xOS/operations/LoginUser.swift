@@ -21,7 +21,7 @@ open class LoginUser: BartlebyObject {
                                sucessHandler success:@escaping ()->(),
                                failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
-        if let document=user.document{
+        if let document=user.referentDocument{
 
             let baseURL=document.baseURL
             let pathURL=baseURL.appendingPathComponent("user/login")

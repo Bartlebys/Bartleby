@@ -78,8 +78,8 @@ extension BartlebyDocument{
 
                     if let metadata=r as? DocumentMetadata {
                         self.metadata = metadata
-                        self.metadata.document = self
-                        self.metadata.currentUser?.document=self
+                        self.metadata.referentDocument = self
+                        self.metadata.currentUser?.referentDocument=self
                     } else {
                         // There is an error
                         self.log("ERROR \(r)", file: #file, function: #function, line: #line)

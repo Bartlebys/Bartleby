@@ -23,6 +23,6 @@ extension BartlebyObject{
      - parameter decorative: if set to true only the message will be displayed.
      */
     open func log(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
-        self.document?.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
+        self.referentDocument?.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }
 }

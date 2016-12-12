@@ -215,12 +215,12 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var blocks=BlocksManagedCollection(){ didSet { blocks.document=self } }
-	open dynamic var boxes=BoxesManagedCollection(){ didSet { boxes.document=self } }
-	open dynamic var lockers=LockersManagedCollection(){ didSet { lockers.document=self } }
-	open dynamic var nodes=NodesManagedCollection(){ didSet { nodes.document=self } }
-	open dynamic var pushOperations=PushOperationsManagedCollection(){ didSet { pushOperations.document=self } }
-	open dynamic var users=UsersManagedCollection(){ didSet { users.document=self } }
+	open dynamic var blocks=BlocksManagedCollection(){ didSet { blocks.referentDocument=self } }
+	open dynamic var boxes=BoxesManagedCollection(){ didSet { boxes.referentDocument=self } }
+	open dynamic var lockers=LockersManagedCollection(){ didSet { lockers.referentDocument=self } }
+	open dynamic var nodes=NodesManagedCollection(){ didSet { nodes.referentDocument=self } }
+	open dynamic var pushOperations=PushOperationsManagedCollection(){ didSet { pushOperations.referentDocument=self } }
+	open dynamic var users=UsersManagedCollection(){ didSet { users.referentDocument=self } }
 
 
     // MARK: - Schemas
@@ -326,7 +326,7 @@ import Foundation
                 // We don't want to add the Document's current user
                 self.users.add(user, commit:false)
             }else{
-                user.document = self
+                user.referentDocument = self
             }
         }
         user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.

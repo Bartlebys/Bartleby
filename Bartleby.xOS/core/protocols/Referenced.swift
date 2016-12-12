@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol Referenced{
-    var document:BartlebyDocument? { get set }
+    var referentDocument:BartlebyDocument? { get set }
 }

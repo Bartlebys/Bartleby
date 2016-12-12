@@ -47,7 +47,7 @@ class OperationViewController: NSViewController,Editor{
             handlers.appendProgressHandler({ (progression) in
                 glog("\(progression)", file:#file, function:#function, line:#line)
             })
-            if let document=self.selectedItem?.document{
+            if let document=self.selectedItem?.referentDocument{
                 document.pushSortedOperations(ops, handlers: handlers)
             }
         }

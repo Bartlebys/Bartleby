@@ -15,7 +15,7 @@ extension Node{
 
     /// true if the node can be assembled
     public var isAssemblable:Bool{
-        if let document=self.document{
+        if let document=self.referentDocument{
             // Do we have all the required blocks?
             for uid in self.blocksUIDS{
                 if let block = try? Bartleby.registredObjectByUID(uid) as Block{
@@ -45,7 +45,7 @@ extension Node{
 
     /// the currently referenced blocks
     var blocks:[Block]{
-        if let d=self.document{
+        if let d=self.referentDocument{
             return d.blocks.filter({ (block) -> Bool in
                 return block.nodeUID==self.UID
             })
