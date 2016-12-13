@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation.
-@objc(PushOperation) open class PushOperation : BartlebyObject{
+@objc(PushOperation) open class PushOperation : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

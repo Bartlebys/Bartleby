@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
-@objc(DocumentMetadata) open class DocumentMetadata : BartlebyObject{
+@objc(DocumentMetadata) open class DocumentMetadata : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

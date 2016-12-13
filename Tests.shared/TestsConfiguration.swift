@@ -70,7 +70,7 @@ open class TestsConfiguration: BartlebyConfiguration {
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     open static var PASSWORD_CHAR_CART: String="ABCDEFGH1234567890"
 
-    // If set to true the keyed changes are stored in the BartlebyObject - When opening the Inspector this default value is remplaced by true
+    // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
     //MARK: - Variable base URL

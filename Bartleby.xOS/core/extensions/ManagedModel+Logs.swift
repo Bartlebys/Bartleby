@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Log.swift
+//  ManagedModel+Log.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -10,7 +10,7 @@ import Foundation
 
 
 
-extension BartlebyObject{
+extension ManagedModel{
 
     /**
      Print indirection with contextual informations.

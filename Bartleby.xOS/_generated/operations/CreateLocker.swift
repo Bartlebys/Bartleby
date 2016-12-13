@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(CreateLocker) public class CreateLocker : BartlebyObject,BartlebyOperation{
+@objc(CreateLocker) public class CreateLocker : ManagedModel,BartlebyOperation{
 
     // Universal type support
     override open class func typeName() -> String {

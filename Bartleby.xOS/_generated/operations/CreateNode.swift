@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(CreateNode) public class CreateNode : BartlebyObject,BartlebyOperation{
+@objc(CreateNode) public class CreateNode : ManagedModel,BartlebyOperation{
 
     // Universal type support
     override open class func typeName() -> String {

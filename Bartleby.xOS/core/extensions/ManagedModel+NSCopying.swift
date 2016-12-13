@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+NSCopying.swift
+//  ManagedModel+NSCopying.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension BartlebyObject:NSCopying{
+extension ManagedModel:NSCopying{
 
 
     open func copy(with zone: NSZone?) -> Any {

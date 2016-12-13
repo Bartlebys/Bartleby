@@ -47,12 +47,12 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
             documentReference.metadata.changedKeys.removeAll()
             documentReference.metadata.currentUser?.changedKeys.removeAll()
             documentReference.iterateOnCollections({ (collection) in
-                if let o = collection as? BartlebyObject{
+                if let o = collection as? ManagedModel{
                     o.changedKeys.removeAll()
                 }
             })
             documentReference.superIterate({ (element) in
-                if let o = element as? BartlebyObject{
+                if let o = element as? ManagedModel{
                     o.changedKeys.removeAll()
                 }
             })
@@ -173,7 +173,7 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
         if selected==nil {
             print("NIL")
         }
-        if let object=selected as? BartlebyObject{
+        if let object=selected as? ManagedModel{
             // Did the type of represented object changed.
             if object.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
 
@@ -259,7 +259,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             return self._collections.count + 1
         }
 
-        if let object=item as? BartlebyObject{
+        if let object=item as? ManagedModel{
             if let collection  = object as?  BartlebyCollection {
                 return collection.count
             }
@@ -280,7 +280,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }
         }
 
-        if let object=item as? BartlebyObject{
+        if let object=item as? ManagedModel{
             if let collection  = object as? BartlebyCollection {
                 if let element=collection.item(at: index){
                     return element
@@ -293,7 +293,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        if let object=item as? BartlebyObject{
+        if let object=item as? ManagedModel{
             return object is BartlebyCollection
         }
         return false
@@ -327,7 +327,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     //MARK: - NSOutlineViewDelegate
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        if let object = item as? BartlebyObject{
+        if let object = item as? ManagedModel{
             if let casted=object as? BartlebyCollection {
                 let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
@@ -400,10 +400,10 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        if let object=item as? BartlebyObject {
+        if let object=item as? ManagedModel {
             if object is BartlebyCollection { return 20 }
             if object is DocumentMetadata { return 20 }
-            return 20 // Any BartlebyObject
+            return 20 // Any ManagedModel
         }
         if item is String{ return 20 }
         return 30 // This is not normal.
@@ -419,7 +419,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineViewSelectionDidChange(_ notification: Notification) {
         Async.main{
             let selected=self._outlineView.selectedRow
-            if let item=self._outlineView.item(atRow: selected) as? BartlebyObject {
+            if let item=self._outlineView.item(atRow: selected) as? ManagedModel {
                 self._selectionHandler(item)
             }
         }

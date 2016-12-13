@@ -7,7 +7,7 @@
 //
 import Foundation
 
-// Check BartlebyObject+Relationships for details.
+// Check ManagedModel+Relationships for details.
 
 public enum Relationship:String{
 

@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+ProvisionChanges.swift
+//  ManagedModel+ProvisionChanges.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension BartlebyObject:ProvisionChanges{
+extension ManagedModel:ProvisionChanges{
 
 
     /**
@@ -21,7 +21,7 @@ extension BartlebyObject:ProvisionChanges{
      ## **Commit** is the first phase of the **distribution** mechanism (the second is Push, and the Third Trigger and integration on another node)
      If auto-commit is enabled on any supervised change an object is marked  to be committed `_shouldBeCommitted=true`
 
-     ## You can add **supervisers** to any BartlebyObject.
+     ## You can add **supervisers** to any ManagedModel.
      On supervised change the closure of the supervisers will be invoked.
 
      ## **Inspection** During debbuging or when  Bartleby's inspector is opened we record and analyse the changes
@@ -66,7 +66,7 @@ extension BartlebyObject:ProvisionChanges{
                 if self.isInspectable {
                     let entityName=Pluralization.singularize(collection.d_collectionName)
                     if key=="items"{
-                        if let oldArray=oldValue as? [BartlebyObject], let newArray=newValue as? [BartlebyObject]{
+                        if let oldArray=oldValue as? [ManagedModel], let newArray=newValue as? [ManagedModel]{
                             if oldArray.count < newArray.count{
                                 let stringValue:String! = (newArray.last?.UID ?? "")
                                 self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
@@ -76,7 +76,7 @@ extension BartlebyObject:ProvisionChanges{
                         }
                     }
                     if key == "item" {
-                        if let o = newValue as? BartlebyObject{
+                        if let o = newValue as? ManagedModel{
                             self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
                         }else{
                             self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")

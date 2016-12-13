@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) open class CollectionMetadatum : BartlebyObject{
+@objc(CollectionMetadatum) open class CollectionMetadatum : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {
@@ -31,7 +31,7 @@ import Foundation
 	dynamic open var collectionName:String = "\(Default.NO_NAME)"
 
 	//The proxy object (not serializable, not supervisable)
-	dynamic open var proxy:BartlebyObject?
+	dynamic open var proxy:ManagedModel?
 
 	//Allow distant persistency?
 	dynamic open var persistsDistantly:Bool = true
@@ -66,7 +66,7 @@ import Foundation
                     self.collectionName=casted
                 }
             case "proxy":
-                if let casted=value as? BartlebyObject{
+                if let casted=value as? ManagedModel{
                     self.proxy=casted
                 }
             case "persistsDistantly":

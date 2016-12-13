@@ -14,69 +14,29 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A progression state
-@objc(Progression) open class Progression : BartlebyObject{
+@objc(Progression) open class Progression : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Progression"
-    }
 
 	//The start time of the progression state
 	open var startTime:Double?
 
 	//Index of the task
-	dynamic open var currentTaskIndex:Int = 0  {
-	    didSet { 
-	       if !self.wantsQuietChanges && currentTaskIndex != oldValue {
-	            self.provisionChanges(forKey: "currentTaskIndex",oldValue: oldValue,newValue: currentTaskIndex)  
-	       } 
-	    }
-	}
+	dynamic open var currentTaskIndex:Int = 0
 
 	//Total number of tasks
-	dynamic open var totalTaskCount:Int = 0  {
-	    didSet { 
-	       if !self.wantsQuietChanges && totalTaskCount != oldValue {
-	            self.provisionChanges(forKey: "totalTaskCount",oldValue: oldValue,newValue: totalTaskCount)  
-	       } 
-	    }
-	}
+	dynamic open var totalTaskCount:Int = 0
 
 	//0 to 100
-	dynamic open var currentPercentProgress:Double = 0  {
-	    didSet { 
-	       if !self.wantsQuietChanges && currentPercentProgress != oldValue {
-	            self.provisionChanges(forKey: "currentPercentProgress",oldValue: oldValue,newValue: currentPercentProgress)  
-	       } 
-	    }
-	}
+	dynamic open var currentPercentProgress:Double = 0
 
 	//The Message
-	dynamic open var message:String = ""{
-	    didSet { 
-	       if !self.wantsQuietChanges && message != oldValue {
-	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
-	       } 
-	    }
-	}
+	dynamic open var message:String = ""
 
 	//The consolidated information (may include the message)
-	dynamic open var informations:String = ""{
-	    didSet { 
-	       if !self.wantsQuietChanges && informations != oldValue {
-	            self.provisionChanges(forKey: "informations",oldValue: oldValue,newValue: informations) 
-	       } 
-	    }
-	}
+	dynamic open var informations:String = ""
 
 	//The associated data
-	dynamic open var data:Data? {
-	    didSet { 
-	       if !self.wantsQuietChanges && data != oldValue {
-	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
-	       } 
-	    }
-	}
+	dynamic open var data:Data?
 
 	//A category to discriminate bunch of progression states
 	dynamic open var category:String = ""
@@ -84,97 +44,7 @@ import Foundation
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["startTime","currentTaskIndex","totalTaskCount","currentPercentProgress","message","informations","data","category","externalIdentifier"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "startTime":
-                if let casted=value as? Double{
-                    self.startTime=casted
-                }
-            case "currentTaskIndex":
-                if let casted=value as? Int{
-                    self.currentTaskIndex=casted
-                }
-            case "totalTaskCount":
-                if let casted=value as? Int{
-                    self.totalTaskCount=casted
-                }
-            case "currentPercentProgress":
-                if let casted=value as? Double{
-                    self.currentPercentProgress=casted
-                }
-            case "message":
-                if let casted=value as? String{
-                    self.message=casted
-                }
-            case "informations":
-                if let casted=value as? String{
-                    self.informations=casted
-                }
-            case "data":
-                if let casted=value as? Data{
-                    self.data=casted
-                }
-            case "category":
-                if let casted=value as? String{
-                    self.category=casted
-                }
-            case "externalIdentifier":
-                if let casted=value as? String{
-                    self.externalIdentifier=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "startTime":
-               return self.startTime
-            case "currentTaskIndex":
-               return self.currentTaskIndex
-            case "totalTaskCount":
-               return self.totalTaskCount
-            case "currentPercentProgress":
-               return self.currentPercentProgress
-            case "message":
-               return self.message
-            case "informations":
-               return self.informations
-            case "data":
-               return self.data
-            case "category":
-               return self.category
-            case "externalIdentifier":
-               return self.externalIdentifier
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -237,13 +107,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "progressions"
-    }
-
-    override open var d_collectionName:String{
-        return Progression.collectionName
     }
 }

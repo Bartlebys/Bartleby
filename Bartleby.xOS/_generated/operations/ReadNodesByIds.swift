@@ -13,7 +13,7 @@ import Foundation
 	import Alamofire
 	import ObjectMapper
 #endif
-@objc(ReadNodesByIdsParameters) public class ReadNodesByIdsParameters : BartlebyObject {
+@objc(ReadNodesByIdsParameters) public class ReadNodesByIdsParameters : ManagedModel {
 		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadNodesByIdsParameters"
@@ -130,7 +130,7 @@ import Foundation
 
 }
 
-@objc(ReadNodesByIds) open class ReadNodesByIds : BartlebyObject{
+@objc(ReadNodesByIds) open class ReadNodesByIds : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

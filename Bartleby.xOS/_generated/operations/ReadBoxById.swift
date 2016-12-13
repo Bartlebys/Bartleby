@@ -14,7 +14,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(ReadBoxById) open class ReadBoxById : BartlebyObject{
+@objc(ReadBoxById) open class ReadBoxById : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

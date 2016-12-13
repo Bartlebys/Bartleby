@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: used to store a specific relation between instances
-@objc(Relation) open class Relation : NSObject, Mappable, NSSecureCoding {
+@objc(Relation) open class Relation : ValueObject {
 
 
 	//the relationship
@@ -27,11 +27,11 @@ import Foundation
     // MARK: - Mappable
 
     required public init?(map: Map) {
-        
+        super.init(map:map)
     }
 
-     open func mapping(map: Map) {
-        
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.quietChanges {
 			self.relationship <- ( map["relationship"] )
 			self.UID <- ( map["UID"] )
@@ -42,28 +42,24 @@ import Foundation
     // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
-        super.init()
+        super.init(coder: decoder)
         self.quietChanges {
 			self.relationship=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relationship")! as NSString)
 			self.UID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UID")! as NSString)
         }
     }
 
-     open func encode(with coder: NSCoder) {
-        
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.relationship,forKey:"relationship")
 		coder.encode(self.UID,forKey:"UID")
     }
 
-     open class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
-    override required public init() {
+     required public init() {
         super.init()
-    }
-
-    // TODO to be removed
-    public func quietChanges(_ changes:()->()){
     }
 }

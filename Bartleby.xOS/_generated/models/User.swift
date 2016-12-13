@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a user in a specified data Space
-@objc(User) open class User : BartlebyObject{
+@objc(User) open class User : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

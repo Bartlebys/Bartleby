@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
-@objc(Container) open class Container : BartlebyObject{
+@objc(Container) open class Container : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

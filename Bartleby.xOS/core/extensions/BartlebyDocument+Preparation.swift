@@ -48,7 +48,7 @@ extension BartlebyDocument{
             if let proxy=metadatum.proxy {
                 if let proxy = proxy as? BartlebyCollection {
                     // Reference the document
-                    if let object = proxy as? BartlebyObject{
+                    if let object = proxy as? ManagedModel{
                         object.referentDocument=self
                     }
                     self._addCollection(proxy)

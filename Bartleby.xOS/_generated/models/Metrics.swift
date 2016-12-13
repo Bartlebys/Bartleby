@@ -13,13 +13,12 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: an object used to record metrics
-@objc(Metrics) open class Metrics : BartlebyObject{
+// MARK: Bartleby's Core: a value object used to record metrics
+@objc(Metrics) open class Metrics : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Metrics"
-    }
+
+	//The referent document
+	dynamic open var referentDocument:BartlebyDocument?
 
 	//The action name e.g: UpdateUser
 	dynamic open var operationName:String = "\(Default.NO_NAME)"
@@ -52,97 +51,7 @@ import Foundation
 	}
 	open var streamOrientation:StreamOrientation = .upStream
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration","httpContext","streamOrientation"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "operationName":
-                if let casted=value as? String{
-                    self.operationName=casted
-                }
-            case "counter":
-                if let casted=value as? Int{
-                    self.counter=casted
-                }
-            case "elapsed":
-                if let casted=value as? Double{
-                    self.elapsed=casted
-                }
-            case "latency":
-                if let casted=value as? Double{
-                    self.latency=casted
-                }
-            case "requestDuration":
-                if let casted=value as? Double{
-                    self.requestDuration=casted
-                }
-            case "serializationDuration":
-                if let casted=value as? Double{
-                    self.serializationDuration=casted
-                }
-            case "totalDuration":
-                if let casted=value as? Double{
-                    self.totalDuration=casted
-                }
-            case "httpContext":
-                if let casted=value as? HTTPContext{
-                    self.httpContext=casted
-                }
-            case "streamOrientation":
-                if let casted=value as? Metrics.StreamOrientation{
-                    self.streamOrientation=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "operationName":
-               return self.operationName
-            case "counter":
-               return self.counter
-            case "elapsed":
-               return self.elapsed
-            case "latency":
-               return self.latency
-            case "requestDuration":
-               return self.requestDuration
-            case "serializationDuration":
-               return self.serializationDuration
-            case "totalDuration":
-               return self.totalDuration
-            case "httpContext":
-               return self.httpContext
-            case "streamOrientation":
-               return self.streamOrientation
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -203,13 +112,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "metrics"
-    }
-
-    override open var d_collectionName:String{
-        return Metrics.collectionName
     }
 }

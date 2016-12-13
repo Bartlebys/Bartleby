@@ -11,7 +11,7 @@ import BartlebyKit
 
 
 public protocol Editor:Identifiable{
-    associatedtype EditorOf:Collectible
+    associatedtype EditorOf:AnyObject
 }
 
 

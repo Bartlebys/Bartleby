@@ -20,12 +20,16 @@ public extension Completion {
 
     // MARK:-  Generic Serializable result
 
-
+    
     ///  Stores the serializabale result
     ///
     /// - Parameter result: the serializable result
-    func setResult<T: Collectible>(_ result: T) {
-        self.data=result.serialize()
+    func setResult<T: Mappable>(_ result: T) {
+        if let json=result.toJSONString(){
+            if let encoded=json.data(using: String.Encoding.utf8){
+                self.data=encoded
+            }
+        }
     }
 
 
@@ -33,13 +37,17 @@ public extension Completion {
     ///  Gets the deserialized result
     ///  If the result is an external reference the reference is resolved automatically
     /// - Returns: the deserialized result
-    func getResult<T: Collectible>() -> T? {
+    func getResult<T: Mappable>() -> T? {
         if let data=self.data {
-            let s = try? JSerializer.deserialize(data)
-            return s as? T
+            if let json = String.init(data: data, encoding: String.Encoding.utf8){
+                if let ref:T = Mapper<T>().map(JSONString:json){
+                    return ref
+                }
+            }
         }
         return nil
     }
+
 
     // MARK: - External Reference result
 

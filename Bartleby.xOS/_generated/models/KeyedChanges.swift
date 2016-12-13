@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: used to keep track of changes in memory when inspecting an App (Value Object)
-@objc(KeyedChanges) open class KeyedChanges : NSObject, Mappable, NSSecureCoding {
+@objc(KeyedChanges) open class KeyedChanges : ValueObject {
 
 
 	//the elapsed time since the app has been launched
@@ -30,11 +30,11 @@ import Foundation
     // MARK: - Mappable
 
     required public init?(map: Map) {
-        
+        super.init(map:map)
     }
 
-     open func mapping(map: Map) {
-        
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.quietChanges {
 			self.elapsed <- ( map["elapsed"] )
 			self.key <- ( map["key"] )
@@ -46,7 +46,7 @@ import Foundation
     // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
-        super.init()
+        super.init(coder: decoder)
         self.quietChanges {
 			self.elapsed=decoder.decodeDouble(forKey:"elapsed") 
 			self.key=String(describing: decoder.decodeObject(of: NSString.self, forKey: "key")! as NSString)
@@ -54,22 +54,18 @@ import Foundation
         }
     }
 
-     open func encode(with coder: NSCoder) {
-        
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		coder.encode(self.elapsed,forKey:"elapsed")
 		coder.encode(self.key,forKey:"key")
 		coder.encode(self.changes,forKey:"changes")
     }
 
-     open class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
-    override required public init() {
+     required public init() {
         super.init()
-    }
-
-    // TODO to be removed
-    public func quietChanges(_ changes:()->()){
     }
 }

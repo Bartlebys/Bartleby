@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
-@objc(Acknowledgment) open class Acknowledgment : Metrics{
+@objc(Acknowledgment) open class Acknowledgment : Metrics {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Acknowledgment"
-    }
 
 	//The trigger index
 	dynamic open var triggerIndex:Int = -1
@@ -30,61 +26,7 @@ import Foundation
 	//The triggerRelayDuration is computed server side it integrates the semaphore impact. (it can be used for QOS computation)
 	dynamic open var triggerRelayDuration:Double = 0
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["triggerIndex","uids","triggerRelayDuration"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "triggerIndex":
-                if let casted=value as? Int{
-                    self.triggerIndex=casted
-                }
-            case "uids":
-                if let casted=value as? [String]{
-                    self.uids=casted
-                }
-            case "triggerRelayDuration":
-                if let casted=value as? Double{
-                    self.triggerRelayDuration=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "triggerIndex":
-               return self.triggerIndex
-            case "uids":
-               return self.uids
-            case "triggerRelayDuration":
-               return self.triggerRelayDuration
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -125,13 +67,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "acknowledgments"
-    }
-
-    override open var d_collectionName:String{
-        return Acknowledgment.collectionName
     }
 }

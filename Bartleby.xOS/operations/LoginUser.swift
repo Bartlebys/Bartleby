@@ -10,7 +10,7 @@ import Foundation
 #endif
 
 
-open class LoginUser: BartlebyObject {
+open class LoginUser: ManagedModel {
 
     // Universal type support
     override open class func typeName() -> String {

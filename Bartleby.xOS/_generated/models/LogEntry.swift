@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: A single print entry
-@objc(LogEntry) open class LogEntry : BartlebyObject{
+@objc(LogEntry) open class LogEntry : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "LogEntry"
-    }
 
 	//The print entry counter
 	dynamic open var counter:Int = -1
@@ -48,91 +44,7 @@ import Foundation
 	//Is the entry decorative or significant? decoration includes separators, etc...
 	dynamic private var _runUID:String = "\(Bartleby.runUID)"
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["counter","line","elapsed","message","file","function","category","decorative"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "counter":
-                if let casted=value as? Int{
-                    self.counter=casted
-                }
-            case "line":
-                if let casted=value as? Int{
-                    self.line=casted
-                }
-            case "elapsed":
-                if let casted=value as? Double{
-                    self.elapsed=casted
-                }
-            case "message":
-                if let casted=value as? String{
-                    self.message=casted
-                }
-            case "file":
-                if let casted=value as? String{
-                    self.file=casted
-                }
-            case "function":
-                if let casted=value as? String{
-                    self.function=casted
-                }
-            case "category":
-                if let casted=value as? String{
-                    self.category=casted
-                }
-            case "decorative":
-                if let casted=value as? Bool{
-                    self.decorative=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "counter":
-               return self.counter
-            case "line":
-               return self.line
-            case "elapsed":
-               return self.elapsed
-            case "message":
-               return self.message
-            case "file":
-               return self.file
-            case "function":
-               return self.function
-            case "category":
-               return self.category
-            case "decorative":
-               return self.decorative
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -191,13 +103,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "logEntries"
-    }
-
-    override open var d_collectionName:String{
-        return LogEntry.collectionName
     }
 }

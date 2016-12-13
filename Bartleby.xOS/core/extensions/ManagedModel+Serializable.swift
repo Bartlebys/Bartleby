@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Serializable.swift
+//  ManagedModel+Serializable.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -14,7 +14,7 @@ import Foundation
 
 // MARK: - Serializable
 
-extension BartlebyObject:Serializable{
+extension ManagedModel:Serializable{
 
     open func serialize() -> Data {
         let dictionaryRepresentation = self.dictionaryRepresentation()

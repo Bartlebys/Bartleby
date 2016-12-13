@@ -30,7 +30,7 @@ public extension Notification.Name {
 
 // This controller implements data automation features.
 
-@objc(UsersManagedCollection) open class UsersManagedCollection : BartlebyObject,IterableCollectibleCollection{
+@objc(UsersManagedCollection) open class UsersManagedCollection : ManagedModel,IterableCollectibleCollection{
 
 
     // Used to determine if the wrapper should be saved.

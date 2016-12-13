@@ -9,7 +9,7 @@
 import Foundation
 
 // Is used to propose an alternative to CustomConvertibleString
-// CustomConvertibleString in BartlebyObject for example normally expose the JSON serialized string.
+// CustomConvertibleString in ManagedModel for example normally expose the JSON serialized string.
 // We want sometimes more user frendly
 // That's the purpose of Descriptible.
 // By convention we use MarkDown.

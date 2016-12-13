@@ -14,48 +14,20 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A completion state
-@objc(Completion) open class Completion : BartlebyObject{
+@objc(Completion) open class Completion : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Completion"
-    }
 
 	//Success if set to true
-	dynamic open var success:Bool = true  {
-	    didSet { 
-	       if !self.wantsQuietChanges && success != oldValue {
-	            self.provisionChanges(forKey: "success",oldValue: oldValue,newValue: success)  
-	       } 
-	    }
-	}
+	dynamic open var success:Bool = true
 
 	//The status
-	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue  {
-	    didSet { 
-	       if !self.wantsQuietChanges && statusCode != oldValue {
-	            self.provisionChanges(forKey: "statusCode",oldValue: oldValue,newValue: statusCode)  
-	       } 
-	    }
-	}
+	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue
 
 	//The Message
-	dynamic open var message:String = ""{
-	    didSet { 
-	       if !self.wantsQuietChanges && message != oldValue {
-	            self.provisionChanges(forKey: "message",oldValue: oldValue,newValue: message) 
-	       } 
-	    }
-	}
+	dynamic open var message:String = ""
 
 	//completion data
-	dynamic open var data:Data? {
-	    didSet { 
-	       if !self.wantsQuietChanges && data != oldValue {
-	            self.provisionChanges(forKey: "data",oldValue: oldValue,newValue: data) 
-	       } 
-	    }
-	}
+	dynamic open var data:Data?
 
 	//A category to discriminate bunch of completion states
 	dynamic open var category:String = ""
@@ -63,79 +35,7 @@ import Foundation
 	//An external identifier
 	dynamic open var externalIdentifier:String = ""
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["success","statusCode","message","data","category","externalIdentifier"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "success":
-                if let casted=value as? Bool{
-                    self.success=casted
-                }
-            case "statusCode":
-                if let casted=value as? Int{
-                    self.statusCode=casted
-                }
-            case "message":
-                if let casted=value as? String{
-                    self.message=casted
-                }
-            case "data":
-                if let casted=value as? Data{
-                    self.data=casted
-                }
-            case "category":
-                if let casted=value as? String{
-                    self.category=casted
-                }
-            case "externalIdentifier":
-                if let casted=value as? String{
-                    self.externalIdentifier=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "success":
-               return self.success
-            case "statusCode":
-               return self.statusCode
-            case "message":
-               return self.message
-            case "data":
-               return self.data
-            case "category":
-               return self.category
-            case "externalIdentifier":
-               return self.externalIdentifier
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -187,13 +87,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "completions"
-    }
-
-    override open var d_collectionName:String{
-        return Completion.collectionName
     }
 }

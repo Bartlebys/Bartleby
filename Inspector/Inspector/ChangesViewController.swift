@@ -11,7 +11,7 @@ import BartlebyKit
 
 class ChangesViewController: NSViewController,Editor,Identifiable{
 
-    typealias EditorOf=BartlebyObject
+    typealias EditorOf=ManagedModel
 
     var UID:String=Bartleby.createUID()
 

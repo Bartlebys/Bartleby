@@ -11,7 +11,7 @@ import BartlebyKit
 
 class SourceEditor: NSViewController,Editor {
 
-    typealias EditorOf=BartlebyObject
+    typealias EditorOf=ManagedModel
 
     var UID:String=Bartleby.createUID()
 

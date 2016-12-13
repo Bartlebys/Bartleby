@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Contracts.swift
+//  ManagedModel+Contracts.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 07/12/2016.
@@ -8,14 +8,14 @@
 
 import Foundation
 
-extension BartlebyObject{
+extension ManagedModel{
 
     // MARK: - Relationships Declaration
 
     /// An Object enters in a free relation Ship with another
     ///
     /// - Parameter object: the owned object
-    open func declaresFreeRelationShip(to object:BartlebyObject){
+    open func declaresFreeRelationShip(to object:ManagedModel){
         self._addRelation(to: object, .free)
     }
 
@@ -24,7 +24,7 @@ extension BartlebyObject{
     /// Both relation are setup owns, and owned
     ///
     /// - Parameter object: the owned object
-    open func declaresOwnership(of object:BartlebyObject){
+    open func declaresOwnership(of object:ManagedModel){
         self._addRelation(to: object, .owned)
         object._addRelation(to: self, .ownedBy)
     }
@@ -33,7 +33,7 @@ extension BartlebyObject{
     /// Both relation are setup owns, and owned
     ///
     /// - Parameter object: the owned object
-    open func declaresCollectiveOwnership(of object:BartlebyObject){
+    open func declaresCollectiveOwnership(of object:ManagedModel){
         self._addRelation(to: object, .ownedCollectively)
         object._addRelation(to: self, .ownedCollectivelyBy)
     }
@@ -43,7 +43,7 @@ extension BartlebyObject{
     /// Both relation are setup owns, and owned
     ///
     /// - Parameter object: the owned object
-    open func declaresFusionalRelationship(with object:BartlebyObject){
+    open func declaresFusionalRelationship(with object:ManagedModel){
         self._addRelation(to: object, .fusional)
         object._addRelation(to: self, .fusional)
     }
@@ -55,7 +55,7 @@ extension BartlebyObject{
     /// Resolve the Related Objects
     ///
     /// - Returns: the collection of related object
-    open func relations<T:BartlebyObject>(_ relationship:Relationship)->[T]{
+    open func relations<T:ManagedModel>(_ relationship:Relationship)->[T]{
         var related=[T]()
         for relation in self._getContractedRelations(relationship){
             if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as T{
@@ -69,7 +69,7 @@ extension BartlebyObject{
     /// Resolve the Related Objects
     ///
     /// - Returns: the collection of related object
-    open func relations<T:BartlebyObject>(_ relationships:Set<Relationship>)->[T]{
+    open func relations<T:ManagedModel>(_ relationships:Set<Relationship>)->[T]{
         var related=[T]()
         var relations=[Relation]()
         for relationShip in relationships{
@@ -86,7 +86,7 @@ extension BartlebyObject{
     /// Resolve the Related Object and returns the first one
     ///
     /// - Returns: the collection of related object
-    open func firstRelation<T:BartlebyObject>(_ relationship:Relationship)->T?{
+    open func firstRelation<T:ManagedModel>(_ relationship:Relationship)->T?{
         for relation in self._getContractedRelations(relationship){
             if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as T{
                return candidate
@@ -102,7 +102,7 @@ extension BartlebyObject{
     /// Add a relation to another object
     ///
     /// - Parameter object: the object
-    internal func _addRelation(to object:BartlebyObject,_ contract:Relationship){
+    internal func _addRelation(to object:ManagedModel,_ contract:Relationship){
         let candidates=self._getContractedRelations(contract)
         if !candidates.contains(where:{$0.UID==object.UID}){
             let relation=Relation()

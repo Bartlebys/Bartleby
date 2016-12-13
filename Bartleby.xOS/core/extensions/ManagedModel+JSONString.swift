@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 
-extension BartlebyObject:JSONString{
+extension ManagedModel:JSONString{
 
     // MARK:-  JSONString
 

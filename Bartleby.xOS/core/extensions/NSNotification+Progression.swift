@@ -14,7 +14,7 @@ public let BARTLEBYS_PROGRESSION_NOTIFICATION_NAME="BARTLEBYS_PROGRESSION_NOTIFI
 extension Notification {
 
     public init(progressionState: Progression, object: AnyObject?) {
-        self.init(name: Notification.Name(rawValue: BARTLEBYS_PROGRESSION_NOTIFICATION_NAME), object: object, userInfo:progressionState.dictionaryRepresentation())
+        self.init(name: Notification.Name(rawValue: BARTLEBYS_PROGRESSION_NOTIFICATION_NAME), object: object, userInfo:progressionState.toJSON())
     }
 
     public func getProgressionState() -> Progression? {

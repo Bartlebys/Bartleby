@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Supervisable.swift
+//  ManagedModel+Supervisable.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BartlebyObject:Supervisable{
+extension ManagedModel:Supervisable{
 
     /**
      Adds a closure observer

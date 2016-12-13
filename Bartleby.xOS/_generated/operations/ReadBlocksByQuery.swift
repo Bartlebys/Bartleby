@@ -13,7 +13,7 @@ import Foundation
 	import Alamofire
 	import ObjectMapper
 #endif
-@objc(ReadBlocksByQueryParameters) public class ReadBlocksByQueryParameters : BartlebyObject {
+@objc(ReadBlocksByQueryParameters) public class ReadBlocksByQueryParameters : ManagedModel {
 		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadBlocksByQueryParameters"
@@ -130,7 +130,7 @@ import Foundation
 
 }
 
-@objc(ReadBlocksByQuery) open class ReadBlocksByQuery : BartlebyObject{
+@objc(ReadBlocksByQuery) open class ReadBlocksByQuery : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

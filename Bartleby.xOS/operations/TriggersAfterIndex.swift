@@ -12,7 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class TriggersAfterIndex: BartlebyObject {
+open class TriggersAfterIndex: ManagedModel {
 
     // Universal type support
     override open class func typeName() -> String {

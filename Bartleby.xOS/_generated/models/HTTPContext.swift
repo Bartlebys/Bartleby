@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the whole http context , request, response
-@objc(HTTPContext) open class HTTPContext : BartlebyObject, CollectibleHTTPContext{
+@objc(HTTPContext) open class HTTPContext : ValueObject, Consignable {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "HTTPContext"
-    }
 
 	//A descriptive string for developer to identify the calling context
 	dynamic open var caller:String = "\(Default.NO_NAME)"
@@ -42,85 +38,7 @@ import Foundation
 	//An optional message
 	dynamic open var message:String?
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["caller","code","httpStatusCode","relatedURL","request","responseString","message"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "caller":
-                if let casted=value as? String{
-                    self.caller=casted
-                }
-            case "code":
-                if let casted=value as? Int{
-                    self.code=casted
-                }
-            case "httpStatusCode":
-                if let casted=value as? Int{
-                    self.httpStatusCode=casted
-                }
-            case "relatedURL":
-                if let casted=value as? URL{
-                    self.relatedURL=casted
-                }
-            case "request":
-                if let casted=value as? HTTPRequest{
-                    self.request=casted
-                }
-            case "responseString":
-                if let casted=value as? String{
-                    self.responseString=casted
-                }
-            case "message":
-                if let casted=value as? String{
-                    self.message=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "caller":
-               return self.caller
-            case "code":
-               return self.code
-            case "httpStatusCode":
-               return self.httpStatusCode
-            case "relatedURL":
-               return self.relatedURL
-            case "request":
-               return self.request
-            case "responseString":
-               return self.responseString
-            case "message":
-               return self.message
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -181,13 +99,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "hTTPContexts"
-    }
-
-    override open var d_collectionName:String{
-        return HTTPContext.collectionName
     }
 }

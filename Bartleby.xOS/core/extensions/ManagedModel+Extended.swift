@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Extended.swift
+//  ManagedModel+Extended.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -9,7 +9,7 @@
 import Foundation
 
 // A bunch of implementation that are not related to any specific protocol
-extension BartlebyObject{
+extension ManagedModel{
 
     /**
      The creation of a Unique Identifier is ressource intensive.

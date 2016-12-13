@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-@objc(DeleteBlock) public class DeleteBlock : BartlebyObject,BartlebyOperation{
+@objc(DeleteBlock) public class DeleteBlock : ManagedModel,BartlebyOperation{
 
     // Universal type support
     override open class func typeName() -> String {

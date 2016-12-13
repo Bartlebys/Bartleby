@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
-@objc(Trigger) open class Trigger : BartlebyObject{
+@objc(Trigger) open class Trigger : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

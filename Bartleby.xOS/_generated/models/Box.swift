@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks
-@objc(Box) open class Box : BartlebyObject{
+@objc(Box) open class Box : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

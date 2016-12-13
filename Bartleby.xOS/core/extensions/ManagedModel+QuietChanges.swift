@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension BartlebyObject{
+public extension ManagedModel{
 
 
     public var wantsQuietChanges:Bool{

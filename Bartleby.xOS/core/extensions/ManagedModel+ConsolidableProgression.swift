@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+ConsolidableProgression.swift
+//  ManagedModel+ConsolidableProgression.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 07/11/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BartlebyObject:ConsolidableProgression{
+extension ManagedModel:ConsolidableProgression{
 
 
     /// Consolidate the progressions of children progression state by category

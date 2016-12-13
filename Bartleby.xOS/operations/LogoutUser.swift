@@ -8,7 +8,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class LogoutUser: BartlebyObject {
+open class LogoutUser: ManagedModel {
 
     // Universal type support
     override open class func typeName() -> String {

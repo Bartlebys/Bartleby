@@ -72,7 +72,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
                 self.responseString="no response"
             }
             if let request=metrics?.httpContext?.request{
-                let formattedString=request.toJSONString(true)
+                let formattedString=request.toJSONString(prettyPrint: true)
                 self.requestString=formattedString
             }else{
                 self.requestString="no request"
@@ -111,7 +111,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
     @IBOutlet var objectController: NSObjectController!
 
     @IBAction func copyAllToPasteBoard(_ sender: Any) {
-        if let c=metrics?.toJSONString(true){
+        if let c=metrics?.toJSONString(prettyPrint: true){
             NSPasteboard.general().clearContents()
             let ns:NSString=c as NSString
             NSPasteboard.general().writeObjects([ns])

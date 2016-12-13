@@ -14,92 +14,16 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a tag can be used to classify instances.
-@objc(Tag) open class Tag : BartlebyObject{
-
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Tag"
-    }
-
-	dynamic open var creationDate:Date? {
-	    didSet { 
-	       if !self.wantsQuietChanges && creationDate != oldValue {
-	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
-	       } 
-	    }
-	}
-
-	dynamic open var color:String? {
-	    didSet { 
-	       if !self.wantsQuietChanges && color != oldValue {
-	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
-	       } 
-	    }
-	}
-
-	dynamic open var icon:String? {
-	    didSet { 
-	       if !self.wantsQuietChanges && icon != oldValue {
-	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
-	       } 
-	    }
-	}
-
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
-
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["creationDate","color","icon"])
-        return exposed
-    }
+@objc(Tag) open class Tag : ValueObject {
 
 
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "creationDate":
-                if let casted=value as? Date{
-                    self.creationDate=casted
-                }
-            case "color":
-                if let casted=value as? String{
-                    self.color=casted
-                }
-            case "icon":
-                if let casted=value as? String{
-                    self.icon=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
+	dynamic open var creationDate:Date?
+
+	dynamic open var color:String?
+
+	dynamic open var icon:String?
 
 
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "creationDate":
-               return self.creationDate
-            case "color":
-               return self.color
-            case "icon":
-               return self.icon
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -146,13 +70,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "tags"
-    }
-
-    override open var d_collectionName:String{
-        return Tag.collectionName
     }
 }

@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: A simple wrapper to associate a key and a Data
-@objc(KeyedData) open class KeyedData : BartlebyObject{
+@objc(KeyedData) open class KeyedData : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "KeyedData"
-    }
 
 	//The key
 	dynamic open var key:String = "\(Default.NO_KEY)"
@@ -27,55 +23,7 @@ import Foundation
 	//The Data
 	dynamic open var data:Data = Data()
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["key","data"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "key":
-                if let casted=value as? String{
-                    self.key=casted
-                }
-            case "data":
-                if let casted=value as? Data{
-                    self.data=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "key":
-               return self.key
-            case "data":
-               return self.data
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -113,13 +61,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "keyedDatas"
-    }
-
-    override open var d_collectionName:String{
-        return KeyedData.collectionName
     }
 }

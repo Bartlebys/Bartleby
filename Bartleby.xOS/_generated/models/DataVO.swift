@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: A simple String ValueObject
-@objc(DataVO) open class DataVO : NSObject, Mappable, NSSecureCoding {
+@objc(DataVO) open class DataVO : ValueObject {
 
 
 	//The data value
@@ -24,11 +24,11 @@ import Foundation
     // MARK: - Mappable
 
     required public init?(map: Map) {
-        
+        super.init(map:map)
     }
 
-     open func mapping(map: Map) {
-        
+    override open func mapping(map: Map) {
+        super.mapping(map: map)
         self.quietChanges {
 			self.value <- ( map["value"], DataTransform() )
         }
@@ -38,28 +38,24 @@ import Foundation
     // MARK: - NSSecureCoding
 
     required public init?(coder decoder: NSCoder) {
-        super.init()
+        super.init(coder: decoder)
         self.quietChanges {
 			self.value=decoder.decodeObject(of: NSData.self, forKey:"value") as Data?
         }
     }
 
-     open func encode(with coder: NSCoder) {
-        
+    override open func encode(with coder: NSCoder) {
+        super.encode(with:coder)
 		if let value = self.value {
 			coder.encode(value,forKey:"value")
 		}
     }
 
-     open class var supportsSecureCoding:Bool{
+    override open class var supportsSecureCoding:Bool{
         return true
     }
 
-    override required public init() {
+     required public init() {
         super.init()
-    }
-
-    // TODO to be removed
-    public func quietChanges(_ changes:()->()){
     }
 }

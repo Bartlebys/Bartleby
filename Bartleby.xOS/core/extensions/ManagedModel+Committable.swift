@@ -1,5 +1,5 @@
 //
-//  BartlebyObject+Distribuable.swift
+//  ManagedModel+Distribuable.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 24/11/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension BartlebyObject:Committable{
+extension ManagedModel:Committable{
 
 
     // MARK: Commit
