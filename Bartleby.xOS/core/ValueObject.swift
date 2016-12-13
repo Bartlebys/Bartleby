@@ -41,9 +41,10 @@ import Foundation
     required public override init() {
         super.init()
     }
-    
-    // TODO to be removed
+
+    // TODO to be removed (this implementation is required for generative purposes but is confusing.
     public func quietChanges(_ changes:()->()){
+        changes()
     }
 
 }
