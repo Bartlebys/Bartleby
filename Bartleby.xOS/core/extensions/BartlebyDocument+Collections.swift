@@ -33,7 +33,7 @@ extension BartlebyDocument{
 
 
 
-    // Any call should always be casted to a CollectibleCollection
+    // Any call should always be casted to a IterableCollectibleCollection
     open func collectionByName(_ name: String) -> BartlebyCollection? {
         if self._collections.keys.contains(name){
             return self._collections[name]

@@ -21,7 +21,7 @@ import AppKit
 public extension Notification.Name {
     public struct Boxes {
         /// Posted when the selected boxes changed
-        public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Boxes.selectedboxesChanged")
+        public static let selectionChanged = Notification.Name(rawValue: "org.bartlebys.notification.Boxes.selectedBoxesChanged")
     }
 }
 
@@ -58,6 +58,13 @@ public extension Notification.Name {
         super.init()
     }
 
+    // Should be called to propagate the collection reference
+    open func propagateCollection(){
+        self.forEach {
+            $0.referentDocument=self.referentDocument
+            $0.collection=self
+        }
+    }
 
     open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
@@ -116,9 +123,13 @@ public extension Notification.Name {
     }
 
     open func item(at index:Int)->Collectible?{
-        return self[index]
+        if index > 0 && index < self._items.count{
+            return self[index]
+        }else{
+            self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+        }
+        return nil
     }
-
 
     fileprivate func _getIndexOf(_ item:Collectible)->Int?{
         if item.collectedIndex >= 0 {
@@ -133,7 +144,7 @@ public extension Notification.Name {
     }
 
     fileprivate func _incrementIndexes(greaterThan lowerIndex:Int){
-        let count=_items.count
+        let count = self._items.count
         if count > lowerIndex{
             for i in lowerIndex...count-1{
                 self[i].collectedIndex += 1
@@ -142,7 +153,7 @@ public extension Notification.Name {
     }
 
     fileprivate func _decrementIndexes(greaterThan lowerIndex:Int){
-        let count=_items.count
+        let count = self._items.count
         if count > lowerIndex{
             for i in lowerIndex...count-1{
                 self[i].collectedIndex -= 1
@@ -481,7 +492,7 @@ public extension Notification.Name {
                     return boxes.index(where:{ return $0.UID == box.UID })!
                 })
                 self.referentDocument?.metadata.stateDictionary[selectedBoxesIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name.Boxes.selectionChanged, object: nil)
+                //NotificationCenter.default.post(name:NSNotification.Name.Boxes.selectionChanged, object: nil)
             }
         }
     }

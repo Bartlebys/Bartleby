@@ -751,7 +751,7 @@
 		E54D55091DFFD54300C8AC58 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
-		E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitMacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
 		E56C00541C8ED51D00BB6B19 /* AuthCookiesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCookiesTests.swift; sourceTree = "<group>"; };
@@ -830,12 +830,12 @@
 			path = ../Tests.shared;
 			sourceTree = "<group>";
 		};
-		E536C06E1DC9F5D00053DE31 /* BSFSOSXTests */ = {
+		E536C06E1DC9F5D00053DE31 /* BsfsMacOSTests */ = {
 			isa = PBXGroup;
 			children = (
 				E55D61431DE9F79800BF63B6 /* BlocksTests.swift */,
 			);
-			path = BSFSOSXTests;
+			path = BsfsMacOSTests;
 			sourceTree = "<group>";
 		};
 		E53E2C3A1DD358670040E32B /* PString */ = {
@@ -1277,7 +1277,7 @@
 			path = tools;
 			sourceTree = "<group>";
 		};
-		E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
+		E56C00471C8ED4A800BB6B19 /* BartlebyKitMacOSTests */ = {
 			isa = PBXGroup;
 			children = (
 				E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */,
@@ -1294,7 +1294,7 @@
 				5BDEF70D1C9FF50800D9FB70 /* Authentication-ACL */,
 				E595A2EB1CE4B34800099EB3 /* Support-files */,
 			);
-			path = BartlebyKitOSXTests;
+			path = BartlebyKitMacOSTests;
 			sourceTree = "<group>";
 		};
 		E576E0A81C3A67BD00F1ED6B = {
@@ -1302,8 +1302,8 @@
 			children = (
 				E54D541A1DFFD54300C8AC58 /* Bartleby.xOS */,
 				E549996D1C3A7E2A00C52A9D /* Support-Files */,
-				E56C00471C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
-				E536C06E1DC9F5D00053DE31 /* BSFSOSXTests */,
+				E56C00471C8ED4A800BB6B19 /* BartlebyKitMacOSTests */,
+				E536C06E1DC9F5D00053DE31 /* BsfsMacOSTests */,
 				E52F94871D01C23A005BDA2D /* Tests.shared */,
 				E54995081C3A754F00C52A9D /* Frameworks */,
 				E576E0B51C3A67FD00F1ED6B /* Products */,
@@ -1315,7 +1315,7 @@
 			children = (
 				E54999581C3A7D0100C52A9D /* BartlebyKit.framework */,
 				E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */,
-				E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */,
+				E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1359,9 +1359,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E54999571C3A7D0100C52A9D /* Bartleby OSX */ = {
+		E54999571C3A7D0100C52A9D /* Bartleby macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E549995D1C3A7D0200C52A9D /* Build configuration list for PBXNativeTarget "Bartleby OSX" */;
+			buildConfigurationList = E549995D1C3A7D0200C52A9D /* Build configuration list for PBXNativeTarget "Bartleby macOS" */;
 			buildPhases = (
 				E54999531C3A7D0100C52A9D /* Sources */,
 				E54999541C3A7D0100C52A9D /* Frameworks */,
@@ -1374,7 +1374,7 @@
 			);
 			dependencies = (
 			);
-			name = "Bartleby OSX";
+			name = "Bartleby macOS";
 			productName = "Bartleby OSX";
 			productReference = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1399,9 +1399,9 @@
 			productReference = E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E56C00451C8ED4A800BB6B19 /* BartlebyKitOSXTests */ = {
+		E56C00451C8ED4A800BB6B19 /* BartlebyKitMacOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E56C004E1C8ED4A800BB6B19 /* Build configuration list for PBXNativeTarget "BartlebyKitOSXTests" */;
+			buildConfigurationList = E56C004E1C8ED4A800BB6B19 /* Build configuration list for PBXNativeTarget "BartlebyKitMacOSTests" */;
 			buildPhases = (
 				E56C00421C8ED4A800BB6B19 /* Sources */,
 				E56C00431C8ED4A800BB6B19 /* Frameworks */,
@@ -1412,9 +1412,9 @@
 			dependencies = (
 				E5361D001CD8DF03005855DC /* PBXTargetDependency */,
 			);
-			name = BartlebyKitOSXTests;
+			name = BartlebyKitMacOSTests;
 			productName = BartlebyKitOSXTests;
-			productReference = E56C00461C8ED4A800BB6B19 /* BartlebyKitOSXTests.xctest */;
+			productReference = E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1452,9 +1452,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E54999571C3A7D0100C52A9D /* Bartleby OSX */,
+				E54999571C3A7D0100C52A9D /* Bartleby macOS */,
 				E54999641C3A7D1B00C52A9D /* Bartleby iOS */,
-				E56C00451C8ED4A800BB6B19 /* BartlebyKitOSXTests */,
+				E56C00451C8ED4A800BB6B19 /* BartlebyKitMacOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1977,7 +1977,7 @@
 /* Begin PBXTargetDependency section */
 		E5361D001CD8DF03005855DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E54999571C3A7D0100C52A9D /* Bartleby OSX */;
+			target = E54999571C3A7D0100C52A9D /* Bartleby macOS */;
 			targetProxy = E5361CFF1CD8DF03005855DC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2393,7 +2393,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E549995D1C3A7D0200C52A9D /* Build configuration list for PBXNativeTarget "Bartleby OSX" */ = {
+		E549995D1C3A7D0200C52A9D /* Build configuration list for PBXNativeTarget "Bartleby macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E549995E1C3A7D0200C52A9D /* Debug */,
@@ -2411,7 +2411,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E56C004E1C8ED4A800BB6B19 /* Build configuration list for PBXNativeTarget "BartlebyKitOSXTests" */ = {
+		E56C004E1C8ED4A800BB6B19 /* Build configuration list for PBXNativeTarget "BartlebyKitMacOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E56C004F1C8ED4A800BB6B19 /* Debug */,

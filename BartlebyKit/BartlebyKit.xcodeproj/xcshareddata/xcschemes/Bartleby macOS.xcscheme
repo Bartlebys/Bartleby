@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E54999571C3A7D0100C52A9D"
                BuildableName = "BartlebyKit.framework"
-               BlueprintName = "Bartleby OSX"
+               BlueprintName = "Bartleby macOS"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E56C00451C8ED4A800BB6B19"
-               BuildableName = "BartlebyKitOSXTests.xctest"
-               BlueprintName = "BartlebyKitOSXTests"
+               BuildableName = "BartlebyKitMacOSTests.xctest"
+               BlueprintName = "BartlebyKitMacOSTests"
                ReferencedContainer = "container:BartlebyKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -45,7 +45,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E54999571C3A7D0100C52A9D"
             BuildableName = "BartlebyKit.framework"
-            BlueprintName = "Bartleby OSX"
+            BlueprintName = "Bartleby macOS"
             ReferencedContainer = "container:BartlebyKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -67,7 +67,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E54999571C3A7D0100C52A9D"
             BuildableName = "BartlebyKit.framework"
-            BlueprintName = "Bartleby OSX"
+            BlueprintName = "Bartleby macOS"
             ReferencedContainer = "container:BartlebyKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E54999571C3A7D0100C52A9D"
             BuildableName = "BartlebyKit.framework"
-            BlueprintName = "Bartleby OSX"
+            BlueprintName = "Bartleby macOS"
             ReferencedContainer = "container:BartlebyKit.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
