@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) open class CollectionMetadatum : ManagedModel{
+@objc(CollectionMetadatum) open class CollectionMetadatum : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "CollectionMetadatum"
-    }
 
 	//the used file storage
 	public enum Storage:String{
@@ -39,73 +35,7 @@ import Foundation
 	//In Memory?
 	dynamic open var inMemory:Bool = true
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["storage","collectionName","proxy","persistsDistantly","inMemory"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "storage":
-                if let casted=value as? CollectionMetadatum.Storage{
-                    self.storage=casted
-                }
-            case "collectionName":
-                if let casted=value as? String{
-                    self.collectionName=casted
-                }
-            case "proxy":
-                if let casted=value as? ManagedModel{
-                    self.proxy=casted
-                }
-            case "persistsDistantly":
-                if let casted=value as? Bool{
-                    self.persistsDistantly=casted
-                }
-            case "inMemory":
-                if let casted=value as? Bool{
-                    self.inMemory=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "storage":
-               return self.storage
-            case "collectionName":
-               return self.collectionName
-            case "proxy":
-               return self.proxy
-            case "persistsDistantly":
-               return self.persistsDistantly
-            case "inMemory":
-               return self.inMemory
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -149,13 +79,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "collectionMetadata"
-    }
-
-    override open var d_collectionName:String{
-        return CollectionMetadatum.collectionName
     }
 }

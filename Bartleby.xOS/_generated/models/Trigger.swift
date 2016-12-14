@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
-@objc(Trigger) open class Trigger : ManagedModel{
+@objc(Trigger) open class Trigger : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Trigger"
-    }
 
 	//The index is injected server side (each observationUID) has it own counter)
 	dynamic open var index:Int = -1
@@ -57,115 +53,7 @@ import Foundation
 	//A collection of JSON payload
 	dynamic open var payloads:[[String:Any]]?
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["index","spaceUID","observationUID","senderUID","runUID","origin","targetCollectionName","creationDate","action","UIDS","sseDbProcessingDuration","payloads"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "index":
-                if let casted=value as? Int{
-                    self.index=casted
-                }
-            case "spaceUID":
-                if let casted=value as? String{
-                    self.spaceUID=casted
-                }
-            case "observationUID":
-                if let casted=value as? String{
-                    self.observationUID=casted
-                }
-            case "senderUID":
-                if let casted=value as? String{
-                    self.senderUID=casted
-                }
-            case "runUID":
-                if let casted=value as? String{
-                    self.runUID=casted
-                }
-            case "origin":
-                if let casted=value as? String{
-                    self.origin=casted
-                }
-            case "targetCollectionName":
-                if let casted=value as? String{
-                    self.targetCollectionName=casted
-                }
-            case "creationDate":
-                if let casted=value as? Date{
-                    self.creationDate=casted
-                }
-            case "action":
-                if let casted=value as? String{
-                    self.action=casted
-                }
-            case "UIDS":
-                if let casted=value as? String{
-                    self.UIDS=casted
-                }
-            case "sseDbProcessingDuration":
-                if let casted=value as? Double{
-                    self.sseDbProcessingDuration=casted
-                }
-            case "payloads":
-                if let casted=value as? [[String:Any]]{
-                    self.payloads=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "index":
-               return self.index
-            case "spaceUID":
-               return self.spaceUID
-            case "observationUID":
-               return self.observationUID
-            case "senderUID":
-               return self.senderUID
-            case "runUID":
-               return self.runUID
-            case "origin":
-               return self.origin
-            case "targetCollectionName":
-               return self.targetCollectionName
-            case "creationDate":
-               return self.creationDate
-            case "action":
-               return self.action
-            case "UIDS":
-               return self.UIDS
-            case "sseDbProcessingDuration":
-               return self.sseDbProcessingDuration
-            case "payloads":
-               return self.payloads
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -247,13 +135,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "triggers"
-    }
-
-    override open var d_collectionName:String{
-        return Trigger.collectionName
     }
 }

@@ -134,7 +134,7 @@ extension BartlebyDocument{
 
                                 }
                             } else {
-                                throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)
+                                throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)
                             }
                         }
                     } else {

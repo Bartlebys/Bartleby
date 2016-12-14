@@ -286,9 +286,10 @@ extension BartlebyDocument {
         informations += "\n"
         informations += "Triggers to be integrated (\(self.metadata.receivedTriggers.count)):\n"
         for trigger in self.metadata.receivedTriggers {
-            let s = trigger.serialize()
-            let n = s.count // We can should the trigger envelop.
-            informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
+            if let s = trigger.toJSONString(){
+                let n = s.characters.count// We can  the trigger envelop.
+                informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
+            }
         }
 
         // Owned Indexes
