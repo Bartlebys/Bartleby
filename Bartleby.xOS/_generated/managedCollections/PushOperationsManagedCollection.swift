@@ -476,7 +476,7 @@ public extension Notification.Name {
                     return pushOperations.index(where:{ return $0.UID == pushOperation.UID })!
                 })
                 self.referentDocument?.metadata.stateDictionary[selectedPushOperationsIndexesKey]=indexes
-                //NotificationCenter.default.post(name:NSNotification.Name.PushOperations.selectionChanged, object: nil)
+                NotificationCenter.default.post(name:NSNotification.Name.PushOperations.selectionChanged, object: nil)
             }
         }
     }

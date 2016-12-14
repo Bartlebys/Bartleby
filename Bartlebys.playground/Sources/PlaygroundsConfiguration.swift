@@ -7,10 +7,7 @@
 //
 
 import Foundation
-
-#if !USE_EMBEDDED_MODULES
-    import BartlebyKit
-#endif
+import BartlebyKit
 
 
 // A shared configuration Model

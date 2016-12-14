@@ -492,7 +492,7 @@ public extension Notification.Name {
                     return nodes.index(where:{ return $0.UID == node.UID })!
                 })
                 self.referentDocument?.metadata.stateDictionary[selectedNodesIndexesKey]=indexes
-                //NotificationCenter.default.post(name:NSNotification.Name.Nodes.selectionChanged, object: nil)
+                NotificationCenter.default.post(name:NSNotification.Name.Nodes.selectionChanged, object: nil)
             }
         }
     }
