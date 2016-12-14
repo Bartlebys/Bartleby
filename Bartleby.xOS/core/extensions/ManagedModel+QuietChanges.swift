@@ -12,7 +12,7 @@ public extension ManagedModel{
 
 
     public var wantsQuietChanges:Bool{
-        return _quietChanges
+        return self._quietChanges
     }
 
 
@@ -20,10 +20,9 @@ public extension ManagedModel{
     ///
     /// - parameter changes: the changes closure
     public func quietChanges(_ changes:()->()){
-        _quietChanges=true
+        self._quietChanges=true
         changes()
-       _quietChanges=false
+        self._quietChanges=false
     }
-
-
+    
 }

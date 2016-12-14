@@ -58,7 +58,10 @@ import Foundation
         self.online=false
     }
 
-   // Keep a reference to the document file Wrapper
+    // The document shared Serializer
+    open lazy var serializer:Serializer=JSerializer(document: self)
+
+    // Keep a reference to the document file Wrapper
     open var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
 
     // The Document Metadata
@@ -322,11 +325,11 @@ import Foundation
                 user.creatorUID = user.UID
             }
             user.spaceUID = self.metadata.spaceUID
+            user.referentDocument = self
+            user.collection = self.users
             if(user.creatorUID != user.UID){
                 // We don't want to add the Document's current user
                 self.users.add(user, commit:false)
-            }else{
-                user.referentDocument = self
             }
         }
         user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
@@ -339,14 +342,13 @@ import Foundation
      */
     open func newBlock() -> Block {
         let block=Block()
-        block.quietChanges {
-            if let creator=self.metadata.currentUser {
-                block.creatorUID = creator.UID
-            }
-            // Become managed
-            self.blocks.add(block, commit:false)
+        block.referentDocument = self
+        block.collection = self.blocks
+        self.blocks.add(block, commit:false)
+        if let creator=self.metadata.currentUser {
+            block.creatorUID = creator.UID
         }
-        block.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
+        block.needsToBeCommitted()
         return  block
     }
 
@@ -356,14 +358,13 @@ import Foundation
      */
     open func newBox() -> Box {
         let box=Box()
-        box.quietChanges {
-            if let creator=self.metadata.currentUser {
-                box.creatorUID = creator.UID
-            }
-            // Become managed
-            self.boxes.add(box, commit:false)
+        box.referentDocument = self
+        box.collection = self.boxes
+        self.boxes.add(box, commit:false)
+        if let creator=self.metadata.currentUser {
+            box.creatorUID = creator.UID
         }
-        box.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
+        box.needsToBeCommitted()
         return  box
     }
 
@@ -373,14 +374,13 @@ import Foundation
      */
     open func newLocker() -> Locker {
         let locker=Locker()
-        locker.quietChanges {
-            if let creator=self.metadata.currentUser {
-                locker.creatorUID = creator.UID
-            }
-            // Become managed
-            self.lockers.add(locker, commit:false)
+        locker.referentDocument = self
+        locker.collection = self.lockers
+        self.lockers.add(locker, commit:false)
+        if let creator=self.metadata.currentUser {
+            locker.creatorUID = creator.UID
         }
-        locker.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
+        locker.needsToBeCommitted()
         return  locker
     }
 
@@ -390,14 +390,13 @@ import Foundation
      */
     open func newNode() -> Node {
         let node=Node()
-        node.quietChanges {
-            if let creator=self.metadata.currentUser {
-                node.creatorUID = creator.UID
-            }
-            // Become managed
-            self.nodes.add(node, commit:false)
+        node.referentDocument = self
+        node.collection = self.nodes
+        self.nodes.add(node, commit:false)
+        if let creator=self.metadata.currentUser {
+            node.creatorUID = creator.UID
         }
-        node.needsToBeCommitted() // We defer the commit to allow to take account of overriden possible changes.
+        node.needsToBeCommitted()
         return  node
     }
 

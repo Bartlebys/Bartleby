@@ -14,15 +14,19 @@ import Foundation
 
 open class JSerializer: Serializer {
 
-    /// The standard singleton shared instance
-    open static let sharedInstance: JSerializer = {
-        let instance = JSerializer()
-        return instance
-    }()
 
-    public init() {}
+    // The containing document reference
+    public var document:BartlebyDocument
 
-    open static var autoDecrypt=false
+    /// The file extension for file based serializers.
+    open var fileExtension: String { return "json" }
+
+    // The initializer
+    public required init(document:BartlebyDocument){
+        self.document=document
+    }
+
+    open var autoDecrypt=false
 
     // MARK: - Deserialization
 
@@ -31,8 +35,8 @@ open class JSerializer: Serializer {
     /// - Parameter data:  data
     /// - Returns: the serizalizable Object
     /// - Throws: ...
-    static open func deserialize(_ data: Data) throws -> Serializable {
-        return try JSerializer._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
+    open func deserialize(_ data: Data) throws -> Serializable {
+        return try self._deserializeFromData(data, autoDecrypt: self.autoDecrypt)
     }
 
 
@@ -43,16 +47,16 @@ open class JSerializer: Serializer {
     ///   - autoDecrypt: should we try to autodecrypt ?
     /// - Returns: the Serializable instance
     /// - Throws: SerializableError and CryptoError
-    static fileprivate func _deserializeFromData(_ data: Data,autoDecrypt:Bool) throws -> Serializable{
+    fileprivate func _deserializeFromData(_ data: Data,autoDecrypt:Bool) throws -> Serializable{
         do {
             if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-                return try JSerializer.deserializeFromDictionary(JSONDictionary)
+                return try self.deserializeFromDictionary(JSONDictionary)
             }
             throw SerializableError.enableToTransformDataToDictionary
         }catch{
             if (autoDecrypt){
                 let decrypted=try Bartleby.cryptoDelegate.decryptData(data)
-                return try JSerializer._deserializeFromData(decrypted, autoDecrypt: false)
+                return try self._deserializeFromData(decrypted, autoDecrypt: false)
             }else{
                 throw SerializableError.enableToTransformDataToDictionary
             }
@@ -64,9 +68,9 @@ open class JSerializer: Serializer {
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
     /// - Throws: SerializableError and CryptoError
-    open static func deserializeFromUTF8String(_ string: String) throws -> Serializable {
+    open  func deserializeFromUTF8String(_ string: String) throws -> Serializable {
         if let data=string.data(using: .utf8){
-            return try self._deserializeFromData(data, autoDecrypt: JSerializer.autoDecrypt)
+            return try self._deserializeFromData(data, autoDecrypt: self.autoDecrypt)
         }
         throw SerializableError.invalidUTF8String
     }
@@ -77,14 +81,20 @@ open class JSerializer: Serializer {
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
     /// - Throws:  SerializableError and CryptoError JSON errors
-    static open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
+    open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
         if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
                     let map=Map(mappingType: .fromJSON, JSON : dictionary)
                     mappable.mapping(map: map)
-                    if let serializable = mappable as? Serializable {
-                        return serializable
+                    if var collectible = mappable as? Collectible {
+                        // Add the referentDocument reference
+                        collectible.referentDocument=self.document
+                        if !(collectible is BartlebyCollection){
+                            // Add the collection reference
+                            collectible.collection=self.document.collectionByName(collectible.d_collectionName)
+                        }
+                        return collectible
                     } else {
                         throw SerializableError.typeMissmatch
                     }
@@ -105,7 +115,7 @@ open class JSerializer: Serializer {
     ///
     /// - Parameter instance: the Serializable instance
     /// - Returns: the data
-    static open func serialize(_ instance: Serializable) -> Data {
+    open func serialize(_ instance: Serializable) -> Data {
         return instance.serialize() as Data
     }
 
@@ -114,12 +124,8 @@ open class JSerializer: Serializer {
     ///
     /// - Parameter instance: the serializable instance
     /// - Returns: the UTF8 string
-    public static func serializeToUTF8String(_ instance: Serializable) -> String{
+    open func serializeToUTF8String(_ instance: Serializable) -> String{
         return instance.serializeToUFf8String()
     }
-
-
-    /// The file extension for file based serializers.
-    open static var fileExtension: String { return "json" }
 
 }

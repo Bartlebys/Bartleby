@@ -36,6 +36,10 @@ extension ManagedModel:ProvisionChanges{
      */
     open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
 
+        if self.referentDocument==nil{
+            print("---:---")
+        }
+
         // Invoke the closures (changes Observers)
         // note that it occurs even changes are not inspectable.
         for (_,supervisionClosure) in self._supervisers{

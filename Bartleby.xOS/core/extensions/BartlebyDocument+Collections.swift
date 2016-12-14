@@ -34,7 +34,7 @@ extension BartlebyDocument{
 
 
     // Any call should always be casted to a CollectibleCollection
-    func collectionByName(_ name: String) -> BartlebyCollection? {
+    open func collectionByName(_ name: String) -> BartlebyCollection? {
         if self._collections.keys.contains(name){
             return self._collections[name]
         }
@@ -60,7 +60,7 @@ extension BartlebyDocument{
      */
     internal func _collectionFileNames(_ metadatum: CollectionMetadatum) -> (notCrypted: String, crypted: String) {
         let cryptedExtension=BartlebyDocument.DATA_EXTENSION
-        let nonCryptedExtension=".\(Bartleby.defaultSerializer.fileExtension)"
+        let nonCryptedExtension=".\(self.serializer.fileExtension)"
         let cryptedFileName=metadatum.collectionName + cryptedExtension
         let nonCryptedFileName=metadatum.collectionName + nonCryptedExtension
         return (notCrypted:nonCryptedFileName, crypted:cryptedFileName)

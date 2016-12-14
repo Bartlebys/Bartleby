@@ -25,13 +25,7 @@ import Foundation
 	dynamic open var collectedIndex:Int = -1
 
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
-	dynamic open var creatorUID:String = "\(Default.NO_UID)"{
-	    didSet { 
-	       if !self.wantsQuietChanges && creatorUID != oldValue {
-	            self.provisionChanges(forKey: "creatorUID",oldValue: oldValue,newValue: creatorUID) 
-	       } 
-	    }
-	}
+	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
 	//Used By Bartleby+Relationships to manage inter objects relationships keys are Relationship
 	dynamic internal var _relations:[Relation] = [Relation]()  {
@@ -102,23 +96,7 @@ import Foundation
     // - object insertion
     // - document deserialization
     // It connects the instance to its document and collection.
-     open var collection:CollectibleCollection?{
-        willSet{
-            if newValue==nil{
-                print("***")
-            }
-        }
-        didSet{
-            if let d=collection?.referentDocument{
-                self.referentDocument=d
-                if !(self is PushOperation) && !(self is Box){
-                    print("OK \(self.UID)")
-                }
-            }else{
-                print("!!!!")
-            }
-        }
-    }
+    open var collection:CollectibleCollection?
 
     // MARK: UniversalType
 

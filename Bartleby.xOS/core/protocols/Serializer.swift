@@ -17,6 +17,20 @@ import Foundation
 /// To support UTF8 you can use base64Encoded Data
 public protocol Serializer {
 
+    // MARK: -
+
+    // The containing document reference
+    var document:BartlebyDocument { get }
+
+    /// The file extension for file based serializers. eg: "json" for JSerializer
+    var fileExtension: String { get }
+
+
+    /// The initializer
+    ///
+    /// - Parameter document: the document that contains the serializer
+    init(document:BartlebyDocument)
+
     // MARK: - Deserialization
 
     /// Deserializes a fully typed object
@@ -24,7 +38,7 @@ public protocol Serializer {
     /// - Parameter data:  data
     /// - Returns: the serizalizable Object
     /// - Throws: ...
-    static func deserialize(_ data: Data) throws -> Serializable
+    func deserialize(_ data: Data) throws -> Serializable
 
 
     /// Deserializes from an UTF8 string
@@ -32,7 +46,7 @@ public protocol Serializer {
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
     /// - Throws: Variable exception (serializer based)
-    static func deserializeFromUTF8String(_ string:String)throws ->Serializable
+    func deserializeFromUTF8String(_ string:String)throws ->Serializable
 
 
     /// Deserializes from a dictionary
@@ -40,7 +54,7 @@ public protocol Serializer {
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
     /// - Throws: Variable exception (serializer based)
-    static func deserializeFromDictionary(_ dictionary: [String:Any])throws ->Serializable
+    func deserializeFromDictionary(_ dictionary: [String:Any])throws ->Serializable
 
     // MARK: - Serialization
 
@@ -48,17 +62,14 @@ public protocol Serializer {
     ///
     /// - Parameter instance: the Serializable instance
     /// - Returns: the data
-    static func serialize(_ instance: Serializable) -> Data
+    func serialize(_ instance: Serializable) -> Data
 
 
     /// Serializes the current instance to an UTF8 String
     ///
     /// - Parameter instance: the serializable instance
     /// - Returns: the UTF8 string
-    static func serializeToUTF8String(_ instance: Serializable) -> String
+    func serializeToUTF8String(_ instance: Serializable) -> String
 
-
-    /// The file extension for file based serializers. eg: "json" for JSerializer
-    static var fileExtension: String { get }
 
 }

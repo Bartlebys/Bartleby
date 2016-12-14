@@ -216,8 +216,6 @@
 		E54D55CB1DFFD54300C8AC58 /* CryptedDataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54871DFFD54300C8AC58 /* CryptedDataTransform.swift */; };
 		E54D55CC1DFFD54300C8AC58 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54881DFFD54300C8AC58 /* CryptedKeyValueStorage.swift */; };
 		E54D55CD1DFFD54300C8AC58 /* CryptedKeyValueStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54881DFFD54300C8AC58 /* CryptedKeyValueStorage.swift */; };
-		E54D55CE1DFFD54300C8AC58 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54891DFFD54300C8AC58 /* CryptedSerializableTransform.swift */; };
-		E54D55CF1DFFD54300C8AC58 /* CryptedSerializableTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54891DFFD54300C8AC58 /* CryptedSerializableTransform.swift */; };
 		E54D55D01DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D548A1DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift */; };
 		E54D55D11DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D548A1DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift */; };
 		E54D55D21DFFD54300C8AC58 /* CryptedStringTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D548B1DFFD54300C8AC58 /* CryptedStringTransform.swift */; };
@@ -634,7 +632,6 @@
 		E54D54851DFFD54300C8AC58 /* Data+Compression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Compression.swift"; sourceTree = "<group>"; };
 		E54D54871DFFD54300C8AC58 /* CryptedDataTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedDataTransform.swift; sourceTree = "<group>"; };
 		E54D54881DFFD54300C8AC58 /* CryptedKeyValueStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedKeyValueStorage.swift; sourceTree = "<group>"; };
-		E54D54891DFFD54300C8AC58 /* CryptedSerializableTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedSerializableTransform.swift; sourceTree = "<group>"; };
 		E54D548A1DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringKeyValueTransform.swift; sourceTree = "<group>"; };
 		E54D548B1DFFD54300C8AC58 /* CryptedStringTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptedStringTransform.swift; sourceTree = "<group>"; };
 		E54D548C1DFFD54300C8AC58 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
@@ -1076,7 +1073,6 @@
 			children = (
 				E54D54871DFFD54300C8AC58 /* CryptedDataTransform.swift */,
 				E54D54881DFFD54300C8AC58 /* CryptedKeyValueStorage.swift */,
-				E54D54891DFFD54300C8AC58 /* CryptedSerializableTransform.swift */,
 				E54D548A1DFFD54300C8AC58 /* CryptedStringKeyValueTransform.swift */,
 				E54D548B1DFFD54300C8AC58 /* CryptedStringTransform.swift */,
 				E54D548C1DFFD54300C8AC58 /* CryptoHelper.swift */,
@@ -1644,7 +1640,6 @@
 				E54D552E1DFFD54300C8AC58 /* KeyedData.swift in Sources */,
 				E54D567A1DFFD54300C8AC58 /* LogCategorizable.swift in Sources */,
 				E54D56401DFFD54300C8AC58 /* Progression+Conveniences.swift in Sources */,
-				E54D55CE1DFFD54300C8AC58 /* CryptedSerializableTransform.swift in Sources */,
 				E54D55C41DFFD54300C8AC58 /* CompressionAlgorithms.swift in Sources */,
 				E54D56AA1DFFD54300C8AC58 /* TriggersAfterIndex.swift in Sources */,
 				E54D55E21DFFD54300C8AC58 /* Async.swift in Sources */,
@@ -1868,7 +1863,6 @@
 				E54D552F1DFFD54300C8AC58 /* KeyedData.swift in Sources */,
 				E54D567B1DFFD54300C8AC58 /* LogCategorizable.swift in Sources */,
 				E54D56411DFFD54300C8AC58 /* Progression+Conveniences.swift in Sources */,
-				E54D55CF1DFFD54300C8AC58 /* CryptedSerializableTransform.swift in Sources */,
 				E54D55C51DFFD54300C8AC58 /* CompressionAlgorithms.swift in Sources */,
 				E54D56AB1DFFD54300C8AC58 /* TriggersAfterIndex.swift in Sources */,
 				E54D55E31DFFD54300C8AC58 /* Async.swift in Sources */,

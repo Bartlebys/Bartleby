@@ -50,29 +50,31 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
 
     func pasted(){
         let p=NSPasteboard.general()
-        if let objects=p.readObjects(forClasses: [NSString.self], options: [:]) as? [String]{
-            if let first=objects.first{
-                let c=first.components(separatedBy: AppHelper.copyFlag)
-                if c.count >= 3{
-                    let crypted=c[1]
-                    // Let's decrypt the data
-                    self.decryptedString = try? Bartleby.cryptoDelegate.decryptString(crypted)
-                    if let d=self.decryptedString?.data(using:.utf8){
-                        if let report = try? JSerializer.deserialize(d) as? Report{
-                            if let metadata=report?.metadata{
-                                self._document.metadata=metadata
-                            }
-                            if let logs=report?.logs{
-                                self._document.logs=logs
-                            }
-                            if let metrics=report?.metrics{
-                                self._document.metrics=metrics
-                            }
+        if let document = self.getDocument(){
+            if let objects=p.readObjects(forClasses: [NSString.self], options: [:]) as? [String]{
+                if let first=objects.first{
+                    let c=first.components(separatedBy: AppHelper.copyFlag)
+                    if c.count >= 3{
+                        let crypted=c[1]
+                        // Let's decrypt the data
+                        self.decryptedString = try? Bartleby.cryptoDelegate.decryptString(crypted)
+                        if let d=self.decryptedString?.data(using:.utf8){
+                            if let report = try? document.serializer.deserialize(d) as? Report{
+                                if let metadata=report?.metadata{
+                                    self._document.metadata=metadata
+                                }
+                                if let logs=report?.logs{
+                                    self._document.logs=logs
+                                }
+                                if let metrics=report?.metrics{
+                                    self._document.metrics=metrics
+                                }
 
-                            for c in self._consumers{
-                                c.providerHasADocument()
+                                for c in self._consumers{
+                                    c.providerHasADocument()
+                                }
+                                return // Everything seems ok
                             }
-                            return // Everything seems ok
                         }
                     }
                 }

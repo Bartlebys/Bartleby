@@ -12,7 +12,9 @@ import BartlebyKit
 class BaseObjectTests: XCTestCase {
 
     func test_001Copy_using_NSCopying() {
+        let document=BartlebyDocument()
         let user=User()
+        user.referentDocument=document
         user.email="bartleby@barltebys.org"
         user.creatorUID=user.UID
         user.verificationMethod=User.VerificationMethod.byEmail

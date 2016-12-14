@@ -8,6 +8,11 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+    import ObjectMapper
+#endif
+
 public let BARTLEBYS_PROGRESSION_NOTIFICATION_NAME="BARTLEBYS_PROGRESSION_NOTIFICATION_NAME"
 
 /// A Completion notification
@@ -19,8 +24,8 @@ extension Notification {
 
     public func getProgressionState() -> Progression? {
         if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
-            let progression = try? JSerializer.deserializeFromDictionary(dictionary)
-            return  progression as? Progression
+            let progression = Mapper<Progression>().map(JSON: dictionary)
+            return progression
         }
         return nil
     }

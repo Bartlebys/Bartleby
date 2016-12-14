@@ -48,20 +48,16 @@ public extension Notification.Name {
     /// - parameter items: itels
     ///
     /// - returns: the instance
-    required public init(items:[Locker]) {
+    required public init(items:[Locker], within document:BartlebyDocument) {
         super.init()
-        self._items=items
-        self.propagateCollection()
+        self.referentDocument = document
+        self._items = items
     }
 
     required public init() {
         super.init()
     }
 
-    // Should be called to propagate the collection reference
-    open func propagateCollection(){
-        self.forEach { $0.collection=self }
-    }
 
     open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
@@ -329,8 +325,6 @@ public extension Notification.Name {
     */
     open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true) {
         if let item=item as? Locker{
-
-            item.collection = self // Reference the collection
             item.collectedIndex = index // Update the index
             self._incrementIndexes(greaterThan:index)
 

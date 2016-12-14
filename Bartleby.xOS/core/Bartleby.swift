@@ -52,9 +52,6 @@ open class Bartleby:NSObject {
     // The File manager
     static open var fileManager: BartlebyFileIO=BFileManager()
 
-    //The default serializer
-    static open var defaultSerializer: Serializer.Type=JSerializer.self
-
     /**
      This method should be only used to cleanup in core unit test
      */

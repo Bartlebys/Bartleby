@@ -29,9 +29,6 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     // The document UID
     var documentUID:String { get }
 
-    // Should be called to propagate the collection reference
-    func propagateCollection()
-
     /// You can reference a tableview for automation
     weak var tableView: BXTableView? { get set }
 

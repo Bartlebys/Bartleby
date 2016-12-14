@@ -303,8 +303,8 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
      NOTE: Returning nil indicates that the item's state will not be persisted.
      */
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
-        if let object=item as? Serializable{
-            return JSerializer.serialize(object)
+        if let object=item as? Serializable {
+            return self._documentReference.serializer.serialize(object)
         }
         return nil
     }
@@ -315,7 +315,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         if let deserializable = object as? Data {
             do {
-                let o = try JSerializer.deserialize(deserializable)
+                let o = try self._documentReference.serializer.deserialize(deserializable)
                 return o
             } catch {
                 glog("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)

@@ -71,7 +71,7 @@ extension BartlebyDocument{
             if let wrapper=fileWrappers[_metadataFileName] {
                 if var metadataData=wrapper.regularFileContents {
                     metadataData = try Bartleby.cryptoDelegate.decryptData(metadataData)
-                    let r = try Bartleby.defaultSerializer.deserialize(metadataData)
+                    let r = try self.serializer.deserialize(metadataData)
 
                     // What is the proxy UID?
                     let proxyDocumentUID=self.UID
@@ -130,7 +130,6 @@ extension BartlebyDocument{
                                         }
                                     }
                                     let _ = try proxy.updateData(collectionData,provisionChanges: false)
-                                    proxy.propagateCollection()
                                 }
                             } else {
                                 throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.d_collectionName)

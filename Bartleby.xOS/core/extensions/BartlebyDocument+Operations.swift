@@ -169,7 +169,7 @@ extension BartlebyDocument {
 
             for operation in bunchOfOperations{
                 if let serialized=operation.toDictionary {
-                    if let o = try? JSerializer.deserializeFromDictionary(serialized) {
+                    if let o = try? self.serializer.deserializeFromDictionary(serialized) {
                         if let op=o as? BartlebyOperation {
                            Async.main{
                                 // Push the command.

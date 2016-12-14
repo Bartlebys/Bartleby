@@ -116,7 +116,7 @@ extension BartlebyDocument {
                                             for itemRep in collectionDictionary{
                                                 if let itemRepDictionary = itemRep as? [String:Any]{
                                                     do {
-                                                        if let instance=try Bartleby.defaultSerializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
+                                                        if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
                                                             if let user:User=instance as? User{
                                                                 // We donnot want to expose the document current user
                                                                 if user.creatorUID != user.UID{
@@ -195,7 +195,7 @@ extension BartlebyDocument {
                     if crypted{
                         data = try Bartleby.cryptoDelegate.decryptData(data)
                     }
-                    if let newDocumentMetadata=try Bartleby.defaultSerializer.deserialize(data) as? DocumentMetadata{
+                    if let newDocumentMetadata=try self.serializer.deserialize(data) as? DocumentMetadata{
                         newDocumentMetadata.saveThePassword=false // Do not allow password bypassing on .bart import
                         self.dotBart=true// turn on the flag (the UI should ask for the password)
                         let previousUID=self.UID
@@ -252,7 +252,7 @@ extension BartlebyDocument {
      - throws: deserialization exceptions
      */
     fileprivate func _useSerializedMetadata(_ data:Data) throws {
-        if let metadata = try Bartleby.defaultSerializer.deserialize(data) as? DocumentMetadata{
+        if let metadata = try self.serializer.deserialize(data) as? DocumentMetadata{
             self.metadata=metadata
         }
     }

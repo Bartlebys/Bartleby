@@ -7,6 +7,10 @@
 //
 
 import Foundation
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+    import ObjectMapper
+#endif
 
 public let BARTLEBYS_COMPLETION_NOTIFICATION_NAME="BARTLEBYS_COMPLETION_NOTIFICATION_NAME"
 
@@ -19,8 +23,8 @@ extension Notification {
 
     public func getCompletionState() -> Completion? {
         if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
-            let completion = try? JSerializer.deserializeFromDictionary(dictionary)
-            return completion as? Completion
+            let completion = Mapper<Completion>().map(JSON: dictionary)
+            return completion
         }
         return nil
     }
