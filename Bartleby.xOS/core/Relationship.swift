@@ -17,10 +17,10 @@ public enum Relationship:String{
 
     // MARK: - With reciprocity
 
-    case owned="owned"// In case of deletion of the owner the owned is automatically deleted. (the contract is exclusive)
+    case owns="owns"// In case of deletion of the owner the owned is automatically deleted. (the contract is exclusive)
     case ownedBy="ownedBy" // reciprocity of isOwnedBy
 
-    case ownedCollectively="ownedCollectively" // shared ownerships
+    case ownsCollectively="ownsCollectively" // shared ownerships
     case ownedCollectivelyBy="ownedCollectivelyBy"// reciprocity of ownedCollectively
 
     case fusional="fusional" // both object owns the other if one is deleted the other is also deleted (exclusivity + both are set to fusional)

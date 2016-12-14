@@ -16,7 +16,7 @@ extension ManagedModel{
     ///
     /// - Parameter object: the owned object
     open func declaresFreeRelationShip(to object:ManagedModel){
-        self._addRelation(to: object, .free)
+        self._addRelation(.free,to: object)
     }
 
 
@@ -25,8 +25,8 @@ extension ManagedModel{
     ///
     /// - Parameter object: the owned object
     open func declaresOwnership(of object:ManagedModel){
-        self._addRelation(to: object, .owned)
-        object._addRelation(to: self, .ownedBy)
+        self._addRelation(.owns,to: object)
+        object._addRelation(.ownedBy,to: self)
     }
 
     /// The owner declares it properties
@@ -34,8 +34,8 @@ extension ManagedModel{
     ///
     /// - Parameter object: the owned object
     open func declaresCollectiveOwnership(of object:ManagedModel){
-        self._addRelation(to: object, .ownedCollectively)
-        object._addRelation(to: self, .ownedCollectivelyBy)
+        self._addRelation(.ownsCollectively,to: object)
+        object._addRelation(.ownedCollectivelyBy,to: self)
     }
 
 
@@ -44,8 +44,8 @@ extension ManagedModel{
     ///
     /// - Parameter object: the owned object
     open func declaresFusionalRelationship(with object:ManagedModel){
-        self._addRelation(to: object, .fusional)
-        object._addRelation(to: self, .fusional)
+        self._addRelation(.fusional, to: object)
+        object._addRelation(.fusional, to: self)
     }
 
 
@@ -102,7 +102,7 @@ extension ManagedModel{
     /// Add a relation to another object
     ///
     /// - Parameter object: the object
-    internal func _addRelation(to object:ManagedModel,_ contract:Relationship){
+    internal func _addRelation(_ contract:Relationship,to object:ManagedModel){
         let candidates=self._getContractedRelations(contract)
         if !candidates.contains(where:{$0.UID==object.UID}){
             let relation=Relation()
