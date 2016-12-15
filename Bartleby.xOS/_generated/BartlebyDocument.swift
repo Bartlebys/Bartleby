@@ -292,9 +292,9 @@ import Foundation
 			try self.metadata.configureSchema(userDefinition)
 
         }catch DocumentError.duplicatedCollectionName(let collectionName){
-            self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line,category: Default.LOG_DEVELOPER_CATEGORY)
+            self.log("Multiple Attempt to add the Collection named \(collectionName)",file:#file,function:#function,line:#line,category: Default.LOG_WARNING)
         }catch {
-            self.log("\(error)",file:#file,function:#function,line:#line,category: Default.LOG_DEVELOPER_CATEGORY)
+            self.log("\(error)",file:#file,function:#function,line:#line,category: Default.LOG_WARNING)
         }
 
         // #2 Registers the collections

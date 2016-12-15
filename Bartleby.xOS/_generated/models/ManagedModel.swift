@@ -68,17 +68,56 @@ import Foundation
 
     // MARK: -
 
+    #if BARTLEBY_CORE_DEBUG
+
+   // This  id is always  created locally and used as primary index by MONGODB
+    internal var _id: String?{
+        willSet{
+            let entityName=Pluralization.singularize(self.d_collectionName)
+            if newValue == nil{
+                glog("<!FAULT> Attempt to set _id to nil \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            }
+            if newValue != nil && _id != nil && newValue != _id{
+                glog("<!FAULT> Reset _id to different value  \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            }
+        }
+        didSet {
+            let entityName=Pluralization.singularize(self.d_collectionName)
+            if _id != oldValue{
+                // tag ephemeral instance
+                if Bartleby.ephemeral {
+                    self.ephemeral=true
+                }
+
+                if entityName == "managedModel"{
+                    glog("\(_id) to managedModel", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+                }
+                // And register.
+                Bartleby.register(self)
+            }else{
+                glog("Reset _id to same value \(entityName) \(oldValue)) -> \(_id) ", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+            }
+        }
+    }
+    #else
+
     // This  id is always  created locally and used as primary index by MONGODB
     internal var _id: String?{
         didSet {
-            // tag ephemeral instance
-            if Bartleby.ephemeral {
-                self.ephemeral=true
+            if _id != oldValue{
+                // tag ephemeral instance
+                if Bartleby.ephemeral {
+                    self.ephemeral=true
+                }
+
+                // And register.
+                Bartleby.register(self)
             }
-            // And register.
-            Bartleby.register(self)
         }
     }
+
+    #endif
+
 
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()

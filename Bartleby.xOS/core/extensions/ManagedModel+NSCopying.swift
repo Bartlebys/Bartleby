@@ -18,7 +18,7 @@ extension ManagedModel:NSCopying{
             if let copied = try? document.serializer.deserialize(data) {
                 return copied as AnyObject
             }
-            self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_CATEGORY)
+            self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) " as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_DEFAULT)
             return self as AnyObject
         }
         return self

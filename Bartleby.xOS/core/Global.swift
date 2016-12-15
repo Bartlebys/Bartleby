@@ -23,7 +23,7 @@ public func logsCategoryFor(_ subject: Any) -> String {
     if let s = subject as? Collectible {
         return s.d_collectionName
     }
-    return Default.LOG_CATEGORY
+    return Default.LOG_DEFAULT
 }
 
 
@@ -54,7 +54,7 @@ You can create code snippet
 - parameter function : the function name
 - parameter context: a contextual string
 */
-public func glog(_ message: Any, file: String, function: String, line: Int, category: String=Default.LOG_CATEGORY,decorative:Bool=false) {
+public func glog(_ message: Any, file: String, function: String, line: Int, category: String=Default.LOG_DEFAULT,decorative:Bool=false) {
     for observer in glogObservers{
         observer.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }

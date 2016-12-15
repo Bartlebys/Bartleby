@@ -58,7 +58,7 @@ public protocol Logger:Identifiable{
 
      Bartleby.dumpLogsEntries ({ (entry) -> Bool in
      // Entries matching default category
-     return entry.category==Default.LOG_CATEGORY
+     return entry.category==Default.LOG_DEFAULT
      },fileName:"Default")
 
 

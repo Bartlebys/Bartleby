@@ -205,14 +205,14 @@ class TestCase: XCTestCase {
                     handlers.on(Completion.successState())
 
                     }, failureHandler: { (context) in
-                        glog("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
+                        glog("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_DEFAULT)
                         handlers.on(Completion.failureStateFromHTTPContext(context))
                 })
             } else {
                 handlers.on(Completion.successState())
             }
         }) { (context) in
-            glog("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_CATEGORY)
+            glog("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_DEFAULT)
             handlers.on(Completion.failureStateFromHTTPContext(context))
         }
 

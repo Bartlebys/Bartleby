@@ -126,7 +126,7 @@ public extension Notification.Name {
         if index > 0 && index < self._items.count{
             return self[index]
         }else{
-            self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
         return nil
     }
@@ -311,7 +311,7 @@ public extension Notification.Name {
                 self.add(item, commit:commit)
             }
         }catch{
-            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
     }
 

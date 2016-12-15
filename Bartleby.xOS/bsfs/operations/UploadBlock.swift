@@ -182,7 +182,7 @@ public class UploadBlock {
             }
 
         }else{
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" _documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" _documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
     }
 }

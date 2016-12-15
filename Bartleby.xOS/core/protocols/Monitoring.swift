@@ -74,11 +74,11 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  // MARK: Monitoring
 
  public func receiveProgression(progression:Progression){
- self.log("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
+ self.log("\(identifier) \(progression)",file:#file,function:#function,line:#line,category:Default.LOG_DEFAULT,decorative:false)
  }
 
  public func receiveCompletion(completion:Completion){
- self.log("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
+ self.log("\(identifier) \(completion)",file:#file,function:#function,line:#line,category:Default.LOG_DEFAULT,decorative:false)
  }
 
  ```

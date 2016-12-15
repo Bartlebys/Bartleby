@@ -224,7 +224,7 @@ struct  Chunker {
                             do{
                                 aliasDestinationPath = try self._resolveAlias(at:absolutePath)
                             }catch{
-                                glog("Alias resolution error for path \(absolutePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                glog("Alias resolution error for path \(absolutePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                             }
                             var chunk=Chunk(rank: 0,
                                             baseDirectory:chunksFolderPath,

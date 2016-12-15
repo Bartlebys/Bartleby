@@ -284,7 +284,7 @@ struct Flocker{
                         do{
                             aliasDestinationPath = try self._resolveAlias(at:filePath)
                         }catch{
-                            glog("Alias resolution error for path \(filePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                            glog("Alias resolution error for path \(filePath) s\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                         }
                         node.nature=Node.Nature.alias
                         node.proxyPath=aliasDestinationPath

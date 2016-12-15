@@ -20,7 +20,7 @@ extension Block{
         do{
             return try self.referentDocument?.dataForBlock(identifiedBy: self.digest)
         }catch {
-             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
         return nil
     }

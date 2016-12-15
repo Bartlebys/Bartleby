@@ -111,7 +111,7 @@ extension BartlebyDocument {
             if self.pushOperations.count > 0 {
                 let nextBunchOfOperations=self._getNextBunchOfPendingOperations()
                 if nextBunchOfOperations.count>0{
-                    self.log("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:Default.LOG_CATEGORY,decorative:false)
+                    self.log("Pushing Next Bunch of operations",file:#file,function:#function,line:#line,category:Default.LOG_DEFAULT,decorative:false)
                     let bunchHandlers=Handlers(completionHandler: { (completionState) in
                         self._pushNextBunch()
                         }, progressionHandler: { (progressionState) in

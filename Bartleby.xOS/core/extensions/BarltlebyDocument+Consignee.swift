@@ -215,7 +215,7 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
 
 
     open func putMessageInLogs(_ title: String, body: String)->() {
-        glog("\(title):\n\(body)", file:#file, function:#function, line: #line,category:Default.LOG_CATEGORY)
+        glog("\(title):\n\(body)", file:#file, function:#function, line: #line,category:Default.LOG_DEFAULT)
     }
     
     // MARK: - IOS only

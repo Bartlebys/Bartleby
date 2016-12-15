@@ -139,7 +139,7 @@ import Foundation
                                              body: "Operation collection is missing in \(operationInstance.runTimeTypeName())",
                 onSelectedIndex: { (selectedIndex) -> () in
             })
-            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
     }
 
@@ -182,7 +182,7 @@ import Foundation
                     )
                 }else{
                     // This document is not available there is nothing to do.
-                    glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self.documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                    glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self.documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 }
             }catch{
                 let context = HTTPContext( code:3 ,
@@ -191,11 +191,11 @@ import Foundation
                 httpStatusCode:StatusOfCompletion.undefined.rawValue)
                 context.message="\(error)"
                 failure(context)
-                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
 
         }else{
-            glog("nodes should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            glog("nodes should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
     }
 
@@ -310,7 +310,7 @@ import Foundation
                 }
 
             }else{
-                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
         }
 }

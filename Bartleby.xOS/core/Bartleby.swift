@@ -232,7 +232,7 @@ open class Bartleby:NSObject {
 
     open func destroyLocalEphemeralInstances() {
         for (dataSpaceUID, document) in self._documents {
-            document.log("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.LOG_CATEGORY)
+            document.log("Destroying EphemeralInstances on \(dataSpaceUID)", file:#file, function:#function, line:#line, category: Default.LOG_DEFAULT)
             document.superIterate({ (element) in
                 if element.ephemeral {
                     document.delete(element)
@@ -344,7 +344,7 @@ open class Bartleby:NSObject {
         if let instance=Bartleby.collectibleInstanceByUID(instanceUID){
             instance.hasBeenCommitted()
         }else{
-            glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+            glog("\(instanceUID) not found", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
     }
 

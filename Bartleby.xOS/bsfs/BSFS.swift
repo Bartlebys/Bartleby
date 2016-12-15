@@ -171,7 +171,7 @@ public final class BSFS:TriggerHook{
                             __popNode()
                         })
                     }catch{
-                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                         completed(Completion.failureStateFromError(error))
                     }
 
@@ -254,7 +254,7 @@ public final class BSFS:TriggerHook{
             if isAssembled{
                 if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
                     if let size:Int=attributes[FileAttributeKey.size] as? Int{
-                        self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                         if size != node.size{
                             isAssembled=false
                         }
@@ -466,7 +466,7 @@ public final class BSFS:TriggerHook{
                     do {
                         try self._fileManager.removeItem(atPath: reference.absolutePath)
                     } catch  {
-                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                     }
                 }
 
@@ -647,7 +647,7 @@ public final class BSFS:TriggerHook{
                                                 do {
                                                     try self._fileManager.removeItem(atPath: path)
                                                 } catch  {
-                                                    self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                                    self._document.log("Deletion has failed. Path:\( path)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                                                 }
                                             }
                                         }
@@ -978,12 +978,12 @@ public final class BSFS:TriggerHook{
                         self._uploadsInProgress.append(uploadOperation)
 
                     }else{
-                        self._document.log("Block not found \(toBeUploaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        self._document.log("Block not found \(toBeUploaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                     }
                 }
 
             } catch{
-                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
             }
         }
 
@@ -1035,7 +1035,7 @@ public final class BSFS:TriggerHook{
                                     data=try Data(contentsOf:tempURL)
                                     sha1=data!.sha1
                                 }catch{
-                                    self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                    self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                                 }
                                 }.main{
                                     do{
@@ -1044,10 +1044,10 @@ public final class BSFS:TriggerHook{
                                             __removeBlockFromList(block)
                                             self._uploadNext()
                                         }else{
-                                            self._document.log("Digest of the block is not matching", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY_CATEGORY, decorative: false)
+                                            self._document.log("Digest of the block is not matching", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                                         }
                                     }catch{
-                                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                                        self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                                     }
                             }
                         }, failureHandler: { (context) in
@@ -1057,12 +1057,12 @@ public final class BSFS:TriggerHook{
                         })
                         self._downloadsInProgress.append(downLoadOperation)
                     }else{
-                        self._document.log("Block not found \(toBeDownloaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                        self._document.log("Block not found \(toBeDownloaded!.UID)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                     }
                 }
                 
             }catch{
-                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
             }
             
         }
@@ -1094,7 +1094,7 @@ public final class BSFS:TriggerHook{
                 self._document.blocks.removeObject(self._document.blocks[idx])
             }
         }catch{
-            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_CATEGORY, decorative: false)
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
         
     }

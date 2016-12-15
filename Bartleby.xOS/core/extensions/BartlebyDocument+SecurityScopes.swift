@@ -128,7 +128,7 @@ extension BartlebyDocument {
                     let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
                     self._stopAccessingToResourceIdentifiedBy(key)
                 }else{
-                    self.log("Unable to release Bookmark for \(url) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                    self.log("Unable to release Bookmark for \(url) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 }
             }
         }
@@ -159,7 +159,7 @@ extension BartlebyDocument {
                 if let idx=self.metadata.URLBookmarkData.index(where:{ $0.key == key }){
                     self.metadata.URLBookmarkData.remove(at: idx)
                 }else{
-                    self.log("Unable to delete Bookmark for \(url)", file: #file, function: #function, line: #line, category: Default.LOG_DEVELOPER_CATEGORY, decorative: false)
+                    self.log("Unable to delete Bookmark for \(url)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 }
             }
         }
