@@ -141,10 +141,10 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 public struct Default {
 
     // Log categories
-    static public let LOG_DEFAULT="default"
-    static public let LOG_WARNING="<WARNING!>"
-    static public let LOG_FAULT="<FAULT!>"
-    static public let LOG_SECURITY="<SECURITY!>"
+    static public let LOG_DEFAULT="Default"
+    static public let LOG_WARNING="Warning"
+    static public let LOG_FAULT="FAULT"
+    static public let LOG_SECURITY="SECURITY"
 
 
     //MARK: UserDefault key/values
