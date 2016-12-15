@@ -75,10 +75,10 @@ import Foundation
         willSet{
             let entityName=Pluralization.singularize(self.d_collectionName)
             if newValue == nil{
-                glog("<!FAULT> Attempt to set _id to nil \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+                glog("Attempt to set _id to nil \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
             if newValue != nil && _id != nil && newValue != _id{
-                glog("<!FAULT> Reset _id to different value  \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+                glog("Reset _id to different value  \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
         }
         didSet {
