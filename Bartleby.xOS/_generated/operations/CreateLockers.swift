@@ -22,13 +22,6 @@ import Foundation
 
     fileprivate var _payload:String=Default.VOID_STRING
 
-    // Required because the command is serialized in a PushOperation container
-    override public var documentUID: String{
-        return self._documentUID
-    }
-
-    fileprivate var _documentUID:String=Default.NO_UID
-
     required public init() {
         super.init()
     }
@@ -39,7 +32,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_payload","_documentUID"])
+        exposed.append(contentsOf:["_payload"])
         return exposed
     }
 
@@ -55,10 +48,6 @@ import Foundation
             case "_payload":
                 if let casted=value as? String{
                     self._payload=casted
-                }
-            case "_documentUID":
-                if let casted=value as? String{
-                    self._documentUID=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -77,8 +66,6 @@ import Foundation
         switch key {
             case "_payload":
                return self._payload
-            case "_documentUID":
-               return self._documentUID
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -93,7 +80,6 @@ import Foundation
         super.mapping(map: map)
         self.quietChanges {
 			self._payload <- ( map["_payload"] )
-			self._documentUID <- ( map["_documentUID"] )
         }
     }
 
@@ -104,14 +90,12 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self._payload=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_payload")! as NSString)
-			self._documentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_documentUID")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._payload,forKey:"_payload")
-		coder.encode(self._documentUID,forKey:"_documentUID")
     }
 
     override open class var supportsSecureCoding:Bool{
@@ -127,7 +111,7 @@ import Foundation
     */
     static func commit(_ lockers:[Locker], in document:BartlebyDocument){
         let operationInstance=CreateLockers()
-        operationInstance._documentUID=document.UID
+        operationInstance.referentDocument=document
         operationInstance._payload=lockers.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:3510917490, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{

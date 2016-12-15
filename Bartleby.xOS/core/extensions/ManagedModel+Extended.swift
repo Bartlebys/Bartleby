@@ -41,7 +41,7 @@ extension ManagedModel{
         }
     }
 
-    // Retunrns the document UID
+    // Returns the document UID
     open var documentUID:String{
         return self.referentDocument?.UID ?? Default.NO_UID
     }
