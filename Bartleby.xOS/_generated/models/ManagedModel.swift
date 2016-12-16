@@ -67,100 +67,36 @@ import Foundation
 	dynamic internal var _commitCounter:Int = 0
 
     // A reference to the document that currently holds this Managed Model.
+    // Most of the time set by its collection (with notable exclusion of currentUser, and a few other special cases)
     public var referentDocument:BartlebyDocument?
 
     // Set by propagation or when using the document factory
     // It connects the instance to its collection and document
     public var collection:CollectibleCollection?{
-        willSet{
-            self.defineUID()
-        }
         didSet{
             if let document=collection?.referentDocument{
                 self.referentDocument = document
+                // tag ephemeral instance
+                if Bartleby.ephemeral {
+                    self.ephemeral=true
+                }
+                // And register to Bartleby
+                Bartleby.register(self)
             }else{
                 glog("Referent document is not set on \(collection?.runTimeTypeName())", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
         }
     }
 
-
-    #if BARTLEBY_CORE_DEBUG
-
-   // This  id is always  created locally and used as primary index by MONGODB
-    public var _id: String?{
-        willSet{
-            let entityName=self.runTimeTypeName()
-            if newValue == nil{
-                glog("Attempt to set _id to nil \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-            }
-            if newValue != nil && _id != nil && newValue != _id{
-                glog("Reset _id to different value  \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-            }
-        }
-        didSet {
-
-            if _id != oldValue && _id != nil {
-                // tag ephemeral instance
-                if Bartleby.ephemeral {
-                    self.ephemeral=true
-                }
-                // And register.
-                Bartleby.register(self)
-            }else{
-                //let entityName=self.runTimeTypeName()
-                //glog("Reset _id to same value \(entityName) \(oldValue)) -> \(_id) ", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-            }
-        }
-    }
-
-    #else
-
-    // This  id is always  created locally and used as primary index by MONGODB
-    internal var _id: String?{
-        didSet {
-            if _id != oldValue{
-                // tag ephemeral instance
-                if Bartleby.ephemeral {
-                    self.ephemeral=true
-                }
-
-                // And register.
-                Bartleby.register(self)
-            }
-        }
-    }
-
-
-    #endif
-
+    // The internal _id
+    internal lazy var _id: String = Bartleby.createUID()
 
     // Returns the UID
-    final public var UID: String {
-        get {
-            // Define the UID if necessary
-            self.defineUID()
-            return  self._id!
-        }
-    }
+    public var UID: String { return  self._id }
 
-    /// We create the UID only if necessary.
-    open func defineUID() {
-        if  self._id == nil{
-            self._id=Bartleby.createUID()
-            let entityName=self.runTimeTypeName()
-            //glog("Defining _id of \(entityName) \(_id)", file: #file, function: #function, line: #line, category: "UID_DEFINITION", decorative: false)
-        }
-    }
 
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()
-
-    // We want to remove all the superviser on removal.
-    deinit{
-        self._supervisers.removeAll()
-    }
-
     // MARK: UniversalType
 
     // Used to store the type name on serialization
