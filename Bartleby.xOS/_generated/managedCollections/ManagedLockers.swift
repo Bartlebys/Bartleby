@@ -127,7 +127,7 @@ public extension Notification.Name {
     }
 
     open func item(at index:Int)->Collectible?{
-        if index > 0 && index < self._items.count{
+        if index >= 0 && index < self._items.count{
             return self[index]
         }else{
             self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
