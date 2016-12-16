@@ -272,7 +272,7 @@ class LockerTests: XCTestCase {
                                                     XCTFail("Verification should fail with bad code")
         }) { (context) in
             expectation.fulfill()
-            XCTAssertEqual(context.code, 1)
+            XCTAssertEqual(context.code, 901)
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
