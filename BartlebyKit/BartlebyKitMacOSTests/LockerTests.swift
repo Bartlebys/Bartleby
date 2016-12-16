@@ -116,10 +116,12 @@ class LockerTests: XCTestCase {
 
     func test104_CreateLocker() {
         let expectation = self.expectation(description: "CreateLocker should respond")
-        let locker = Locker()
+        let locker = LockerTests._document.newLocker()
         locker.associatedDocumentUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID
+        locker.startDate=Date.init(timeIntervalSinceNow:-3600)
+        locker.endDate=Date.distantFuture
         locker.verificationMethod = .online
         LockerTests._locker = locker
         LockerTests._lockerCode = locker.code
@@ -272,7 +274,7 @@ class LockerTests: XCTestCase {
                                                     XCTFail("Verification should fail with bad code")
         }) { (context) in
             expectation.fulfill()
-            XCTAssertEqual(context.code, 901)
+            XCTAssertEqual(context.code, 1)
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
