@@ -85,8 +85,22 @@ open class JSerializer: Serializer {
         if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
-                    let map=Map(mappingType: .fromJSON, JSON : dictionary)
-                    mappable.mapping(map: map)
+                    // Remove the UID_KEY if set to nil or NO_UID
+                    if dictionary[Default.UID_KEY] == nil || dictionary[Default.UID_KEY] as? String == Default.NO_UID{
+                        // We provide a mutable copy only if necessary (for performance purposes)
+                        var mutableDictionary=dictionary
+                        mutableDictionary.removeValue(forKey: Default.UID_KEY)
+                        // Create the Map
+                        let map=Map(mappingType: .fromJSON, JSON : mutableDictionary)
+                        // Proceed to Mapping
+                        mappable.mapping(map: map)
+                    }else{
+                        // Create the Map
+                        let map=Map(mappingType: .fromJSON, JSON : dictionary)
+                        // Proceed to Mapping
+                        mappable.mapping(map: map)
+                    }
+                    // Set up the runtime references.
                     if var collectible = mappable as? Collectible {
                         if (collectible is BartlebyCollection) || (collectible is BartlebyOperation){
                              // Add the document reference

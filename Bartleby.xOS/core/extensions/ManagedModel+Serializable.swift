@@ -38,7 +38,11 @@ extension ManagedModel:Serializable{
     }
 
     open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
-        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
+        if var JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
+            // Remove the UID_KEY if set to nil or NO_UID
+            if JSONDictionary[Default.UID_KEY] == nil || JSONDictionary[Default.UID_KEY] as? String == Default.NO_UID{
+                JSONDictionary.removeValue(forKey: Default.UID_KEY)
+            }
             let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
             self.mapping(map: map)
             if provisionChanges && self.isInspectable {

@@ -62,11 +62,10 @@ import Foundation
     open lazy var serializer:Serializer=JSerializer(document: self)
 
     // Keep a reference to the document file Wrapper
-    open var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
+    open lazy var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
 
     // The Document Metadata
-    dynamic open var metadata=DocumentMetadata()
-
+    dynamic open lazy var metadata=DocumentMetadata()
 
     // Bartleby's Synchronized File System for this document.
     public var bsfs:BSFS{

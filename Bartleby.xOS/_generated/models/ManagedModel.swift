@@ -66,8 +66,24 @@ import Foundation
 	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
 	dynamic internal var _commitCounter:Int = 0
 
+    // A reference to the document that currently holds this Managed Model.
+    public var referentDocument:BartlebyDocument?
 
-    // MARK: -
+    // Set by propagation or when using the document factory
+    // It connects the instance to its collection and document
+    public var collection:CollectibleCollection?{
+        willSet{
+            self.defineUID()
+        }
+        didSet{
+            if let document=collection?.referentDocument{
+                self.referentDocument = document
+            }else{
+                glog("Referent document is not set on \(collection?.runTimeTypeName())", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            }
+        }
+    }
+
 
     #if BARTLEBY_CORE_DEBUG
 
@@ -144,25 +160,6 @@ import Foundation
     deinit{
         self._supervisers.removeAll()
     }
-
-    // Set by propagation or when using the document factory
-    // It connects the instance to its collection and document
-    public var collection:CollectibleCollection?{
-        willSet{
-            self.defineUID()
-        }
-        didSet{
-            if let document=collection?.referentDocument{
-                self.referentDocument = document
-            }else{
-                 glog("Referent document is not set on \(collection?.runTimeTypeName())", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-            }
-        }
-    }
-
-    // A reference to the document
-    public var referentDocument:BartlebyDocument?
-
 
     // MARK: UniversalType
 
