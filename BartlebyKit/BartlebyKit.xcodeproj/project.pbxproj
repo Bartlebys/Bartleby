@@ -20,6 +20,10 @@
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E54AD7021E04581500436B9D /* Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AD7011E04581500436B9D /* Relational.swift */; };
+		E54AD7031E04581800436B9D /* Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AD7011E04581500436B9D /* Relational.swift */; };
+		E54AD7051E04596A00436B9D /* ManagedModel+RelationsResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AD7041E04596A00436B9D /* ManagedModel+RelationsResolution.swift */; };
+		E54AD7071E0459D700436B9D /* RelationsResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54AD7061E0459D700436B9D /* RelationsResolution.swift */; };
 		E54D550A1DFFD54300C8AC58 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */; };
 		E54D550B1DFFD54300C8AC58 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */; };
 		E54D55181DFFD54300C8AC58 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54251DFFD54300C8AC58 /* Acknowledgment.swift */; };
@@ -306,8 +310,8 @@
 		E54D56331DFFD54300C8AC58 /* ManagedModel+ProvisionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C01DFFD54300C8AC58 /* ManagedModel+ProvisionChanges.swift */; };
 		E54D56341DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C11DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift */; };
 		E54D56351DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C11DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift */; };
-		E54D56361DFFD54300C8AC58 /* ManagedModel+Relationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C21DFFD54300C8AC58 /* ManagedModel+Relationships.swift */; };
-		E54D56371DFFD54300C8AC58 /* ManagedModel+Relationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C21DFFD54300C8AC58 /* ManagedModel+Relationships.swift */; };
+		E54D56361DFFD54300C8AC58 /* ManagedObject+Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C21DFFD54300C8AC58 /* ManagedObject+Relational.swift */; };
+		E54D56371DFFD54300C8AC58 /* ManagedObject+Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C21DFFD54300C8AC58 /* ManagedObject+Relational.swift */; };
 		E54D56381DFFD54300C8AC58 /* ManagedModel+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C31DFFD54300C8AC58 /* ManagedModel+Serializable.swift */; };
 		E54D56391DFFD54300C8AC58 /* ManagedModel+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C31DFFD54300C8AC58 /* ManagedModel+Serializable.swift */; };
 		E54D563A1DFFD54300C8AC58 /* ManagedModel+Supervisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54C41DFFD54300C8AC58 /* ManagedModel+Supervisable.swift */; };
@@ -534,6 +538,9 @@
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E54AD7011E04581500436B9D /* Relational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relational.swift; sourceTree = "<group>"; };
+		E54AD7041E04596A00436B9D /* ManagedModel+RelationsResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+RelationsResolution.swift"; sourceTree = "<group>"; };
+		E54AD7061E0459D700436B9D /* RelationsResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationsResolution.swift; sourceTree = "<group>"; };
 		E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E54D54251DFFD54300C8AC58 /* Acknowledgment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Acknowledgment.swift; sourceTree = "<group>"; };
 		E54D54261DFFD54300C8AC58 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -677,7 +684,7 @@
 		E54D54BF1DFFD54300C8AC58 /* ManagedModel+NSCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+NSCopying.swift"; sourceTree = "<group>"; };
 		E54D54C01DFFD54300C8AC58 /* ManagedModel+ProvisionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+ProvisionChanges.swift"; sourceTree = "<group>"; };
 		E54D54C11DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+QuietChanges.swift"; sourceTree = "<group>"; };
-		E54D54C21DFFD54300C8AC58 /* ManagedModel+Relationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Relationships.swift"; sourceTree = "<group>"; };
+		E54D54C21DFFD54300C8AC58 /* ManagedObject+Relational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedObject+Relational.swift"; sourceTree = "<group>"; };
 		E54D54C31DFFD54300C8AC58 /* ManagedModel+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Serializable.swift"; sourceTree = "<group>"; };
 		E54D54C41DFFD54300C8AC58 /* ManagedModel+Supervisable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Supervisable.swift"; sourceTree = "<group>"; };
 		E54D54C51DFFD54300C8AC58 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
@@ -1172,7 +1179,8 @@
 				E54D54BF1DFFD54300C8AC58 /* ManagedModel+NSCopying.swift */,
 				E54D54C01DFFD54300C8AC58 /* ManagedModel+ProvisionChanges.swift */,
 				E54D54C11DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift */,
-				E54D54C21DFFD54300C8AC58 /* ManagedModel+Relationships.swift */,
+				E54D54C21DFFD54300C8AC58 /* ManagedObject+Relational.swift */,
+				E54AD7041E04596A00436B9D /* ManagedModel+RelationsResolution.swift */,
 				E54D54C31DFFD54300C8AC58 /* ManagedModel+Serializable.swift */,
 				E54D54C41DFFD54300C8AC58 /* ManagedModel+Supervisable.swift */,
 				E54D54C51DFFD54300C8AC58 /* NSNotification+Completion.swift */,
@@ -1232,6 +1240,8 @@
 				E54D54EB1DFFD54300C8AC58 /* ProvisionChanges.swift */,
 				E54D54EC1DFFD54300C8AC58 /* Pusher.swift */,
 				E54D54ED1DFFD54300C8AC58 /* Referenced.swift */,
+				E54AD7011E04581500436B9D /* Relational.swift */,
+				E54AD7061E0459D700436B9D /* RelationsResolution.swift */,
 				E54D54EE1DFFD54300C8AC58 /* Serializable.swift */,
 				E54D54EF1DFFD54300C8AC58 /* Serializer.swift */,
 				E54D54F01DFFD54300C8AC58 /* SuperIterable.swift */,
@@ -1565,10 +1575,12 @@
 				E54D558C1DFFD54300C8AC58 /* ReadUsersByIds.swift in Sources */,
 				E54D566E1DFFD54300C8AC58 /* Exposed.swift in Sources */,
 				E54D55B21DFFD54300C8AC58 /* Block+Facilities.swift in Sources */,
+				E54AD7071E0459D700436B9D /* RelationsResolution.swift in Sources */,
 				E54D55941DFFD54300C8AC58 /* UpdateBox.swift in Sources */,
+				E54AD7021E04581500436B9D /* Relational.swift in Sources */,
 				E54D563C1DFFD54300C8AC58 /* NSNotification+Completion.swift in Sources */,
 				E54D55581DFFD54300C8AC58 /* CreateNodes.swift in Sources */,
-				E54D56361DFFD54300C8AC58 /* ManagedModel+Relationships.swift in Sources */,
+				E54D56361DFFD54300C8AC58 /* ManagedObject+Relational.swift in Sources */,
 				E54D553E1DFFD54300C8AC58 /* Relation.swift in Sources */,
 				E54D561A1DFFD54300C8AC58 /* HTTPContext+Conveniences.swift in Sources */,
 				E54D567E1DFFD54300C8AC58 /* Logger.swift in Sources */,
@@ -1584,6 +1596,7 @@
 				E54D56261DFFD54300C8AC58 /* ManagedModel+DictionaryRepresentation.swift in Sources */,
 				E54D56241DFFD54300C8AC58 /* ManagedModel+ConsolidableProgression.swift in Sources */,
 				E54D56061DFFD54300C8AC58 /* BartlebyDocument+Preparation.swift in Sources */,
+				E54AD7051E04596A00436B9D /* ManagedModel+RelationsResolution.swift in Sources */,
 				E54D55FC1DFFD54300C8AC58 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E54D55321DFFD54300C8AC58 /* LogEntry.swift in Sources */,
 				E54D55BA1DFFD54300C8AC58 /* Flocker.swift in Sources */,
@@ -1789,9 +1802,10 @@
 				E54D566F1DFFD54300C8AC58 /* Exposed.swift in Sources */,
 				E54D55B31DFFD54300C8AC58 /* Block+Facilities.swift in Sources */,
 				E54D55951DFFD54300C8AC58 /* UpdateBox.swift in Sources */,
+				E54AD7031E04581800436B9D /* Relational.swift in Sources */,
 				E54D563D1DFFD54300C8AC58 /* NSNotification+Completion.swift in Sources */,
 				E54D55591DFFD54300C8AC58 /* CreateNodes.swift in Sources */,
-				E54D56371DFFD54300C8AC58 /* ManagedModel+Relationships.swift in Sources */,
+				E54D56371DFFD54300C8AC58 /* ManagedObject+Relational.swift in Sources */,
 				E54D553F1DFFD54300C8AC58 /* Relation.swift in Sources */,
 				E54D561B1DFFD54300C8AC58 /* HTTPContext+Conveniences.swift in Sources */,
 				E54D567F1DFFD54300C8AC58 /* Logger.swift in Sources */,

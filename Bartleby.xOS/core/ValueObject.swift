@@ -14,8 +14,10 @@ import Foundation
 // Models can be :
 // - ManagedModel ( fully managed models)
 // - ValueObject ( json & secure Coding serialization support)
+// - RelationalValueObject ( ValueObject + relationShip )
 
 @objc(ValueObject) open class ValueObject: NSObject, Mappable, NSSecureCoding {
+
 
     // MARK: - Mappable
 
@@ -42,7 +44,6 @@ import Foundation
         super.init()
     }
 
-    // TODO to be removed (this implementation is required for generative purposes but is confusing.
     public func quietChanges(_ changes:()->()){
         changes()
     }
