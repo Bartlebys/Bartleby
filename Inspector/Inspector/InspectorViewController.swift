@@ -289,7 +289,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 if let element=collection.item(at: index){
                     return element
                 }
-                return "NOTHING"
+                return "<!>\(object.runTimeTypeName())"
             }
         }
         return "ERROR #\(index)"
