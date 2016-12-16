@@ -56,14 +56,14 @@ extension ManagedModel:Relational{
     open func removeRelation(_ contract:Relationship,to object:Relational){
         var toBeDeleted=[Int]()
         var idx=0
-        for relation in self.relations{
+        for relation in self._relations{
             if relation.relationship==contract.rawValue{
                 toBeDeleted.append(idx)
             }
             idx += 1
         }
         for deletionIndex in toBeDeleted.reversed(){
-            self.relations.remove(at: deletionIndex)
+            self._relations.remove(at: deletionIndex)
         }
     }
 
@@ -73,7 +73,7 @@ extension ManagedModel:Relational{
     /// - Parameter contract: the nature of the contract
     /// - Returns: the relations
     open func getContractedRelations(_ contract:Relationship)->[Relation]{
-        return self.relations.filter({$0.relationship==contract.rawValue})
+        return self._relations.filter({$0.relationship==contract.rawValue})
     }
 
 
@@ -86,7 +86,7 @@ extension ManagedModel:Relational{
             let relation=Relation()
             relation.relationship=contract.rawValue
             relation.UID=object.UID
-            self.relations.append(relation)
+            self._relations.append(relation)
         }
     }
 }

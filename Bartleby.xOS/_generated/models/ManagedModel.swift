@@ -28,10 +28,10 @@ import Foundation
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
 	//Used to store inter objects relationships
-	dynamic open var relations:[Relation] = [Relation]()  {
+	dynamic internal var _relations:[Relation] = [Relation]()  {
 	    didSet { 
-	       if !self.wantsQuietChanges && relations != oldValue {
-	            self.provisionChanges(forKey: "relations",oldValue: oldValue,newValue: relations)  
+	       if !self.wantsQuietChanges && _relations != oldValue {
+	            self.provisionChanges(forKey: "_relations",oldValue: oldValue,newValue: _relations)  
 	       } 
 	    }
 	}
@@ -109,7 +109,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","relations","summary","ephemeral","changedKeys"])
+        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","changedKeys"])
         return exposed
     }
 
@@ -129,10 +129,6 @@ import Foundation
             case "creatorUID":
                 if let casted=value as? String{
                     self.creatorUID=casted
-                }
-            case "relations":
-                if let casted=value as? [Relation]{
-                    self.relations=casted
                 }
             case "summary":
                 if let casted=value as? String{
@@ -165,8 +161,6 @@ import Foundation
                return self.collectedIndex
             case "creatorUID":
                return self.creatorUID
-            case "relations":
-               return self.relations
             case "summary":
                return self.summary
             case "ephemeral":
@@ -188,7 +182,7 @@ import Foundation
         self.quietChanges {
 			self.collectedIndex <- ( map["collectedIndex"] )
 			self.creatorUID <- ( map["creatorUID"] )
-			self.relations <- ( map["relations"] )
+			self._relations <- ( map["_relations"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
 			self._commitCounter <- ( map["_commitCounter"] )
@@ -205,7 +199,7 @@ import Foundation
         self.quietChanges {
 			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
-			self.relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "relations")! as! [Relation]
+			self._relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "_relations")! as! [Relation]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
 			self._commitCounter=decoder.decodeInteger(forKey:"_commitCounter") 
@@ -218,7 +212,7 @@ import Foundation
         
 		coder.encode(self.collectedIndex,forKey:"collectedIndex")
 		coder.encode(self.creatorUID,forKey:"creatorUID")
-		coder.encode(self.relations,forKey:"relations")
+		coder.encode(self._relations,forKey:"_relations")
 		if let summary = self.summary {
 			coder.encode(summary,forKey:"summary")
 		}

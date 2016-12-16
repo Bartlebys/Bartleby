@@ -8,9 +8,6 @@
 
 public protocol Relational:Identifiable{
 
-    // Used to store inter objects relationships
-    var relations:[Relation] { get set }
-
     // MARK: - Relationships Declaration
 
     /// An Object enters in a free relation Ship with another
