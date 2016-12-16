@@ -23,13 +23,13 @@ extension ManagedModel{
         }
     }
 
-    // Returns the document UID
+    // Returns the referent document UID
     open var documentUID:String{
         return self.referentDocument?.UID ?? Default.NO_UID
     }
 
 
-    // The runTypeName is used when deserializing the instance.
+    // The runTypeName is used when deserializing the insta@nce.
     open func runTimeTypeName() -> String {
         guard let _ = self._runTimeTypeName  else {
             self._runTimeTypeName = NSStringFromClass(type(of: self))
