@@ -11,24 +11,6 @@ import Foundation
 // A bunch of implementation that are not related to any specific protocol
 extension ManagedModel{
 
-    /**
-     The creation of a Unique Identifier is ressource intensive.
-     We create the UID only if necessary.
-     */
-    open func defineUID() {
-        if  self._id == nil{
-            self._id=Bartleby.createUID()
-        }
-    }
-
-    // Returns the UID
-    final public var UID: String {
-        get {
-            self.defineUID()
-            return  self._id!
-        }
-    }
-
 
     /// Return true if the inspector has been openned.
     open var isInspectable:Bool{

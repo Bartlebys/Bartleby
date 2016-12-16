@@ -20,6 +20,14 @@ import Foundation
         return "CreateBoxes"
     }
 
+    override open class var collectionName:String{
+        return "embeddedInPushOperations"
+    }
+
+    override open var d_collectionName:String{
+        return "embeddedInPushOperations"
+    }
+
     fileprivate var _payload:String=Default.VOID_STRING
 
     required public init() {
@@ -111,11 +119,11 @@ import Foundation
     */
     static func commit(_ boxes:[Box], in document:BartlebyDocument){
         let operationInstance=CreateBoxes()
-        operationInstance.referentDocument=document
+        operationInstance.referentDocument = document
         operationInstance._payload=boxes.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:1896855256, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
-            let ic:PushOperationsManagedCollection = try document.getCollection()
+            let ic:ManagedPushOperations = try document.getCollection()
             // Create the pushOperation
             let pushOperation = PushOperation()
             pushOperation.quietChanges{
@@ -146,8 +154,6 @@ import Foundation
             glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
     }
-
-
 
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
@@ -321,5 +327,4 @@ import Foundation
             }else{
                 glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
-        }
-}
+        }}

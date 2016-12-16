@@ -170,8 +170,9 @@ extension BartlebyDocument{
                     // Try to store a preferred filename
                     self.metadata.preferredFileName=self.fileURL.lastPathComponent
                 #endif
-
+                Swift.print(metadata.referentDocument?.UID)
                 var metadataData=self.metadata.serialize()
+                Swift.print(metadata.referentDocument?.UID)
 
                 metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
 

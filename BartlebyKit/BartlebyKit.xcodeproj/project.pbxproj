@@ -22,18 +22,6 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54D550A1DFFD54300C8AC58 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */; };
 		E54D550B1DFFD54300C8AC58 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */; };
-		E54D550C1DFFD54300C8AC58 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541E1DFFD54300C8AC58 /* BlocksManagedCollection.swift */; };
-		E54D550D1DFFD54300C8AC58 /* BlocksManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541E1DFFD54300C8AC58 /* BlocksManagedCollection.swift */; };
-		E54D550E1DFFD54300C8AC58 /* BoxesManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541F1DFFD54300C8AC58 /* BoxesManagedCollection.swift */; };
-		E54D550F1DFFD54300C8AC58 /* BoxesManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D541F1DFFD54300C8AC58 /* BoxesManagedCollection.swift */; };
-		E54D55101DFFD54300C8AC58 /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54201DFFD54300C8AC58 /* LockersManagedCollection.swift */; };
-		E54D55111DFFD54300C8AC58 /* LockersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54201DFFD54300C8AC58 /* LockersManagedCollection.swift */; };
-		E54D55121DFFD54300C8AC58 /* NodesManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54211DFFD54300C8AC58 /* NodesManagedCollection.swift */; };
-		E54D55131DFFD54300C8AC58 /* NodesManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54211DFFD54300C8AC58 /* NodesManagedCollection.swift */; };
-		E54D55141DFFD54300C8AC58 /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54221DFFD54300C8AC58 /* PushOperationsManagedCollection.swift */; };
-		E54D55151DFFD54300C8AC58 /* PushOperationsManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54221DFFD54300C8AC58 /* PushOperationsManagedCollection.swift */; };
-		E54D55161DFFD54300C8AC58 /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54231DFFD54300C8AC58 /* UsersManagedCollection.swift */; };
-		E54D55171DFFD54300C8AC58 /* UsersManagedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54231DFFD54300C8AC58 /* UsersManagedCollection.swift */; };
 		E54D55181DFFD54300C8AC58 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54251DFFD54300C8AC58 /* Acknowledgment.swift */; };
 		E54D55191DFFD54300C8AC58 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54251DFFD54300C8AC58 /* Acknowledgment.swift */; };
 		E54D551A1DFFD54300C8AC58 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D54261DFFD54300C8AC58 /* Block.swift */; };
@@ -450,6 +438,18 @@
 		E54D56B71DFFD54300C8AC58 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D55081DFFD54300C8AC58 /* Pluralization.swift */; };
 		E54D56B81DFFD54300C8AC58 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D55091DFFD54300C8AC58 /* PString.swift */; };
 		E54D56B91DFFD54300C8AC58 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54D55091DFFD54300C8AC58 /* PString.swift */; };
+		E5530F731E03CC2100E5B347 /* ManagedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6D1E03CC2100E5B347 /* ManagedBlocks.swift */; };
+		E5530F741E03CC2100E5B347 /* ManagedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6D1E03CC2100E5B347 /* ManagedBlocks.swift */; };
+		E5530F751E03CC2100E5B347 /* ManagedBoxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6E1E03CC2100E5B347 /* ManagedBoxes.swift */; };
+		E5530F761E03CC2100E5B347 /* ManagedBoxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6E1E03CC2100E5B347 /* ManagedBoxes.swift */; };
+		E5530F771E03CC2100E5B347 /* ManagedLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6F1E03CC2100E5B347 /* ManagedLockers.swift */; };
+		E5530F781E03CC2100E5B347 /* ManagedLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F6F1E03CC2100E5B347 /* ManagedLockers.swift */; };
+		E5530F791E03CC2100E5B347 /* ManagedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F701E03CC2100E5B347 /* ManagedNodes.swift */; };
+		E5530F7A1E03CC2100E5B347 /* ManagedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F701E03CC2100E5B347 /* ManagedNodes.swift */; };
+		E5530F7B1E03CC2100E5B347 /* ManagedPushOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F711E03CC2100E5B347 /* ManagedPushOperations.swift */; };
+		E5530F7C1E03CC2100E5B347 /* ManagedPushOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F711E03CC2100E5B347 /* ManagedPushOperations.swift */; };
+		E5530F7D1E03CC2100E5B347 /* ManagedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F721E03CC2100E5B347 /* ManagedUsers.swift */; };
+		E5530F7E1E03CC2100E5B347 /* ManagedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5530F721E03CC2100E5B347 /* ManagedUsers.swift */; };
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
@@ -535,12 +535,6 @@
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E54D541C1DFFD54300C8AC58 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
-		E54D541E1DFFD54300C8AC58 /* BlocksManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksManagedCollection.swift; sourceTree = "<group>"; };
-		E54D541F1DFFD54300C8AC58 /* BoxesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxesManagedCollection.swift; sourceTree = "<group>"; };
-		E54D54201DFFD54300C8AC58 /* LockersManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockersManagedCollection.swift; sourceTree = "<group>"; };
-		E54D54211DFFD54300C8AC58 /* NodesManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodesManagedCollection.swift; sourceTree = "<group>"; };
-		E54D54221DFFD54300C8AC58 /* PushOperationsManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperationsManagedCollection.swift; sourceTree = "<group>"; };
-		E54D54231DFFD54300C8AC58 /* UsersManagedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersManagedCollection.swift; sourceTree = "<group>"; };
 		E54D54251DFFD54300C8AC58 /* Acknowledgment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Acknowledgment.swift; sourceTree = "<group>"; };
 		E54D54261DFFD54300C8AC58 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		E54D54271DFFD54300C8AC58 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
@@ -749,6 +743,12 @@
 		E54D55071DFFD54300C8AC58 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E54D55081DFFD54300C8AC58 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E54D55091DFFD54300C8AC58 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
+		E5530F6D1E03CC2100E5B347 /* ManagedBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBlocks.swift; sourceTree = "<group>"; };
+		E5530F6E1E03CC2100E5B347 /* ManagedBoxes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBoxes.swift; sourceTree = "<group>"; };
+		E5530F6F1E03CC2100E5B347 /* ManagedLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedLockers.swift; sourceTree = "<group>"; };
+		E5530F701E03CC2100E5B347 /* ManagedNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedNodes.swift; sourceTree = "<group>"; };
+		E5530F711E03CC2100E5B347 /* ManagedPushOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedPushOperations.swift; sourceTree = "<group>"; };
+		E5530F721E03CC2100E5B347 /* ManagedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedUsers.swift; sourceTree = "<group>"; };
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitMacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -900,12 +900,12 @@
 		E54D541D1DFFD54300C8AC58 /* managedCollections */ = {
 			isa = PBXGroup;
 			children = (
-				E54D541E1DFFD54300C8AC58 /* BlocksManagedCollection.swift */,
-				E54D541F1DFFD54300C8AC58 /* BoxesManagedCollection.swift */,
-				E54D54201DFFD54300C8AC58 /* LockersManagedCollection.swift */,
-				E54D54211DFFD54300C8AC58 /* NodesManagedCollection.swift */,
-				E54D54221DFFD54300C8AC58 /* PushOperationsManagedCollection.swift */,
-				E54D54231DFFD54300C8AC58 /* UsersManagedCollection.swift */,
+				E5530F6D1E03CC2100E5B347 /* ManagedBlocks.swift */,
+				E5530F6E1E03CC2100E5B347 /* ManagedBoxes.swift */,
+				E5530F6F1E03CC2100E5B347 /* ManagedLockers.swift */,
+				E5530F701E03CC2100E5B347 /* ManagedNodes.swift */,
+				E5530F711E03CC2100E5B347 /* ManagedPushOperations.swift */,
+				E5530F721E03CC2100E5B347 /* ManagedUsers.swift */,
 			);
 			path = managedCollections;
 			sourceTree = "<group>";
@@ -1506,7 +1506,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E54D550C1DFFD54300C8AC58 /* BlocksManagedCollection.swift in Sources */,
 				E54D56341DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift in Sources */,
 				E54D557A1DFFD54300C8AC58 /* ReadBoxesByIds.swift in Sources */,
 				E54D56801DFFD54300C8AC58 /* Monitoring.swift in Sources */,
@@ -1538,6 +1537,7 @@
 				E54D55C21DFFD54300C8AC58 /* NodeAccessor.swift in Sources */,
 				E54D559A1DFFD54300C8AC58 /* UpdateLockers.swift in Sources */,
 				E54D56521DFFD54300C8AC58 /* BartlebyOperation.swift in Sources */,
+				E5530F751E03CC2100E5B347 /* ManagedBoxes.swift in Sources */,
 				E54D55B81DFFD54300C8AC58 /* FileReference.swift in Sources */,
 				E54D55C61DFFD54300C8AC58 /* CompressionError.swift in Sources */,
 				E54D56781DFFD54300C8AC58 /* JSONString.swift in Sources */,
@@ -1551,6 +1551,7 @@
 				E54D55761DFFD54300C8AC58 /* ReadBlocksByQuery.swift in Sources */,
 				E54D56841DFFD54300C8AC58 /* Pusher.swift in Sources */,
 				E54D56541DFFD54300C8AC58 /* ChangesInspectable.swift in Sources */,
+				E5530F791E03CC2100E5B347 /* ManagedNodes.swift in Sources */,
 				E54D557C1DFFD54300C8AC58 /* ReadBoxesByQuery.swift in Sources */,
 				E54D55C81DFFD54300C8AC58 /* Data+Compression.swift in Sources */,
 				E54D56001DFFD54300C8AC58 /* BartlebyDocument+Metrics.swift in Sources */,
@@ -1589,12 +1590,11 @@
 				E54D56121DFFD54300C8AC58 /* Completion+Conveniences.swift in Sources */,
 				E54D55DE1DFFD54300C8AC58 /* NoCrypto.swift in Sources */,
 				E54D55E81DFFD54300C8AC58 /* BartlebyObjectError.swift in Sources */,
+				E5530F7D1E03CC2100E5B347 /* ManagedUsers.swift in Sources */,
 				E54D55241DFFD54300C8AC58 /* DataVO.swift in Sources */,
-				E54D55101DFFD54300C8AC58 /* LockersManagedCollection.swift in Sources */,
 				E54D55F01DFFD54300C8AC58 /* DocumentError.swift in Sources */,
 				E54D563E1DFFD54300C8AC58 /* NSNotification+Progression.swift in Sources */,
 				E54D56B41DFFD54300C8AC58 /* HTTPManager.swift in Sources */,
-				E54D55161DFFD54300C8AC58 /* UsersManagedCollection.swift in Sources */,
 				E54D56301DFFD54300C8AC58 /* ManagedModel+NSCopying.swift in Sources */,
 				E54D55F41DFFD54300C8AC58 /* BartlebyDocument+Blocks.swift in Sources */,
 				E54D55A21DFFD54300C8AC58 /* UpdateUsers.swift in Sources */,
@@ -1604,7 +1604,6 @@
 				E54D568A1DFFD54300C8AC58 /* Serializer.swift in Sources */,
 				E54D55A81DFFD54300C8AC58 /* BSFSError.swift in Sources */,
 				E54D55801DFFD54300C8AC58 /* ReadLockersByIds.swift in Sources */,
-				E54D550E1DFFD54300C8AC58 /* BoxesManagedCollection.swift in Sources */,
 				E54D55E41DFFD54300C8AC58 /* EventSource.swift in Sources */,
 				E5008A4A1DFAA6CE00A7D7D2 /* TestsConfiguration.swift in Sources */,
 				E54D55C01DFFD54300C8AC58 /* BoxDelegate.swift in Sources */,
@@ -1655,6 +1654,7 @@
 				E54D56721DFFD54300C8AC58 /* Identifiable.swift in Sources */,
 				E54D55701DFFD54300C8AC58 /* DeleteUsers.swift in Sources */,
 				E54D55AE1DFFD54300C8AC58 /* Chunker.swift in Sources */,
+				E5530F771E03CC2100E5B347 /* ManagedLockers.swift in Sources */,
 				E54D55EA1DFFD54300C8AC58 /* Consignation.swift in Sources */,
 				E54D55901DFFD54300C8AC58 /* UpdateBlock.swift in Sources */,
 				E54D55E01DFFD54300C8AC58 /* String+HMAC.swift in Sources */,
@@ -1677,7 +1677,6 @@
 				E54D55CC1DFFD54300C8AC58 /* CryptedKeyValueStorage.swift in Sources */,
 				E54D56381DFFD54300C8AC58 /* ManagedModel+Serializable.swift in Sources */,
 				E54D561E1DFFD54300C8AC58 /* KeyedData+Conveniences.swift in Sources */,
-				E54D55141DFFD54300C8AC58 /* PushOperationsManagedCollection.swift in Sources */,
 				E54D552A1DFFD54300C8AC58 /* HTTPRequest.swift in Sources */,
 				E54D55EE1DFFD54300C8AC58 /* Default.swift in Sources */,
 				E54D56821DFFD54300C8AC58 /* ProvisionChanges.swift in Sources */,
@@ -1703,11 +1702,11 @@
 				E54D562A1DFFD54300C8AC58 /* ManagedModel+Extended.swift in Sources */,
 				E54D554C1DFFD54300C8AC58 /* CreateBlocks.swift in Sources */,
 				E54D55881DFFD54300C8AC58 /* ReadNodesByQuery.swift in Sources */,
-				E54D55121DFFD54300C8AC58 /* NodesManagedCollection.swift in Sources */,
 				E54D554A1DFFD54300C8AC58 /* CreateBlock.swift in Sources */,
 				E54D55F81DFFD54300C8AC58 /* BartlebyDocument+ComputedProperties.swift in Sources */,
 				E54D556E1DFFD54300C8AC58 /* DeleteUser.swift in Sources */,
 				E54D56941DFFD54300C8AC58 /* UserProtocol.swift in Sources */,
+				E5530F7B1E03CC2100E5B347 /* ManagedPushOperations.swift in Sources */,
 				E54D56181DFFD54300C8AC58 /* DocumentMetadata+Protocol.swift in Sources */,
 				E54D56561DFFD54300C8AC58 /* Collectible.swift in Sources */,
 				E54D56B61DFFD54300C8AC58 /* Pluralization.swift in Sources */,
@@ -1718,6 +1717,7 @@
 				E54D56201DFFD54300C8AC58 /* LogEntry+Conveniences.swift in Sources */,
 				E54D55861DFFD54300C8AC58 /* ReadNodesByIds.swift in Sources */,
 				E54D560E1DFFD54300C8AC58 /* BartlebyDocument+Triggers.swift in Sources */,
+				E5530F731E03CC2100E5B347 /* ManagedBlocks.swift in Sources */,
 				E54D55E61DFFD54300C8AC58 /* Bartleby.swift in Sources */,
 				E54D55981DFFD54300C8AC58 /* UpdateLocker.swift in Sources */,
 				E54D56481DFFD54300C8AC58 /* JSerializer.swift in Sources */,
@@ -1729,7 +1729,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E54D550D1DFFD54300C8AC58 /* BlocksManagedCollection.swift in Sources */,
 				E54D56351DFFD54300C8AC58 /* ManagedModel+QuietChanges.swift in Sources */,
 				E54D557B1DFFD54300C8AC58 /* ReadBoxesByIds.swift in Sources */,
 				E54D56811DFFD54300C8AC58 /* Monitoring.swift in Sources */,
@@ -1761,6 +1760,7 @@
 				E54D55C31DFFD54300C8AC58 /* NodeAccessor.swift in Sources */,
 				E54D559B1DFFD54300C8AC58 /* UpdateLockers.swift in Sources */,
 				E54D56531DFFD54300C8AC58 /* BartlebyOperation.swift in Sources */,
+				E5530F761E03CC2100E5B347 /* ManagedBoxes.swift in Sources */,
 				E54D55B91DFFD54300C8AC58 /* FileReference.swift in Sources */,
 				E54D55C71DFFD54300C8AC58 /* CompressionError.swift in Sources */,
 				E54D56791DFFD54300C8AC58 /* JSONString.swift in Sources */,
@@ -1774,6 +1774,7 @@
 				E54D55771DFFD54300C8AC58 /* ReadBlocksByQuery.swift in Sources */,
 				E54D56851DFFD54300C8AC58 /* Pusher.swift in Sources */,
 				E54D56551DFFD54300C8AC58 /* ChangesInspectable.swift in Sources */,
+				E5530F7A1E03CC2100E5B347 /* ManagedNodes.swift in Sources */,
 				E54D557D1DFFD54300C8AC58 /* ReadBoxesByQuery.swift in Sources */,
 				E54D55C91DFFD54300C8AC58 /* Data+Compression.swift in Sources */,
 				E54D56011DFFD54300C8AC58 /* BartlebyDocument+Metrics.swift in Sources */,
@@ -1812,12 +1813,11 @@
 				E54D56131DFFD54300C8AC58 /* Completion+Conveniences.swift in Sources */,
 				E54D55DF1DFFD54300C8AC58 /* NoCrypto.swift in Sources */,
 				E54D55E91DFFD54300C8AC58 /* BartlebyObjectError.swift in Sources */,
+				E5530F7E1E03CC2100E5B347 /* ManagedUsers.swift in Sources */,
 				E54D55251DFFD54300C8AC58 /* DataVO.swift in Sources */,
-				E54D55111DFFD54300C8AC58 /* LockersManagedCollection.swift in Sources */,
 				E54D55F11DFFD54300C8AC58 /* DocumentError.swift in Sources */,
 				E54D563F1DFFD54300C8AC58 /* NSNotification+Progression.swift in Sources */,
 				E54D56B51DFFD54300C8AC58 /* HTTPManager.swift in Sources */,
-				E54D55171DFFD54300C8AC58 /* UsersManagedCollection.swift in Sources */,
 				E54D56311DFFD54300C8AC58 /* ManagedModel+NSCopying.swift in Sources */,
 				E54D55F51DFFD54300C8AC58 /* BartlebyDocument+Blocks.swift in Sources */,
 				E54D55A31DFFD54300C8AC58 /* UpdateUsers.swift in Sources */,
@@ -1827,7 +1827,6 @@
 				E54D568B1DFFD54300C8AC58 /* Serializer.swift in Sources */,
 				E54D55A91DFFD54300C8AC58 /* BSFSError.swift in Sources */,
 				E54D55811DFFD54300C8AC58 /* ReadLockersByIds.swift in Sources */,
-				E54D550F1DFFD54300C8AC58 /* BoxesManagedCollection.swift in Sources */,
 				E54D55E51DFFD54300C8AC58 /* EventSource.swift in Sources */,
 				E5008A4C1DFAA6D400A7D7D2 /* TestsConfiguration.swift in Sources */,
 				E54D55C11DFFD54300C8AC58 /* BoxDelegate.swift in Sources */,
@@ -1878,6 +1877,7 @@
 				E54D56731DFFD54300C8AC58 /* Identifiable.swift in Sources */,
 				E54D55711DFFD54300C8AC58 /* DeleteUsers.swift in Sources */,
 				E54D55AF1DFFD54300C8AC58 /* Chunker.swift in Sources */,
+				E5530F781E03CC2100E5B347 /* ManagedLockers.swift in Sources */,
 				E54D55EB1DFFD54300C8AC58 /* Consignation.swift in Sources */,
 				E54D55911DFFD54300C8AC58 /* UpdateBlock.swift in Sources */,
 				E54D55E11DFFD54300C8AC58 /* String+HMAC.swift in Sources */,
@@ -1900,7 +1900,6 @@
 				E54D55CD1DFFD54300C8AC58 /* CryptedKeyValueStorage.swift in Sources */,
 				E54D56391DFFD54300C8AC58 /* ManagedModel+Serializable.swift in Sources */,
 				E54D561F1DFFD54300C8AC58 /* KeyedData+Conveniences.swift in Sources */,
-				E54D55151DFFD54300C8AC58 /* PushOperationsManagedCollection.swift in Sources */,
 				E54D552B1DFFD54300C8AC58 /* HTTPRequest.swift in Sources */,
 				E54D55EF1DFFD54300C8AC58 /* Default.swift in Sources */,
 				E54D56831DFFD54300C8AC58 /* ProvisionChanges.swift in Sources */,
@@ -1926,11 +1925,11 @@
 				E54D562B1DFFD54300C8AC58 /* ManagedModel+Extended.swift in Sources */,
 				E54D554D1DFFD54300C8AC58 /* CreateBlocks.swift in Sources */,
 				E54D55891DFFD54300C8AC58 /* ReadNodesByQuery.swift in Sources */,
-				E54D55131DFFD54300C8AC58 /* NodesManagedCollection.swift in Sources */,
 				E54D554B1DFFD54300C8AC58 /* CreateBlock.swift in Sources */,
 				E54D55F91DFFD54300C8AC58 /* BartlebyDocument+ComputedProperties.swift in Sources */,
 				E54D556F1DFFD54300C8AC58 /* DeleteUser.swift in Sources */,
 				E54D56951DFFD54300C8AC58 /* UserProtocol.swift in Sources */,
+				E5530F7C1E03CC2100E5B347 /* ManagedPushOperations.swift in Sources */,
 				E54D56191DFFD54300C8AC58 /* DocumentMetadata+Protocol.swift in Sources */,
 				E54D56571DFFD54300C8AC58 /* Collectible.swift in Sources */,
 				E54D56B71DFFD54300C8AC58 /* Pluralization.swift in Sources */,
@@ -1941,6 +1940,7 @@
 				E54D56211DFFD54300C8AC58 /* LogEntry+Conveniences.swift in Sources */,
 				E54D55871DFFD54300C8AC58 /* ReadNodesByIds.swift in Sources */,
 				E54D560F1DFFD54300C8AC58 /* BartlebyDocument+Triggers.swift in Sources */,
+				E5530F741E03CC2100E5B347 /* ManagedBlocks.swift in Sources */,
 				E54D55E71DFFD54300C8AC58 /* Bartleby.swift in Sources */,
 				E54D55991DFFD54300C8AC58 /* UpdateLocker.swift in Sources */,
 				E54D56491DFFD54300C8AC58 /* JSerializer.swift in Sources */,

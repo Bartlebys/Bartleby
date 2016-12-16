@@ -17,7 +17,6 @@ extension BartlebyDocument{
     open func report(_ metrics:Metrics){
         metrics.counter=self.metrics.count+1
         metrics.elapsed=Bartleby.elapsedTime
-        metrics.referentDocument=self
         if metrics.streamOrientation == .upStream{
             self.metadata.totalNumberOfUpMetrics += 1
             self.metadata.cumulatedUpMetricsDuration += metrics.totalDuration

@@ -66,14 +66,15 @@ import Foundation
 	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
 	dynamic internal var _commitCounter:Int = 0
 
+
     // MARK: -
 
     #if BARTLEBY_CORE_DEBUG
 
    // This  id is always  created locally and used as primary index by MONGODB
-    internal var _id: String?{
+    public var _id: String?{
         willSet{
-            let entityName=Pluralization.singularize(self.d_collectionName)
+            let entityName=self.runTimeTypeName()
             if newValue == nil{
                 glog("Attempt to set _id to nil \(entityName) \(_id) -> \(newValue)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
@@ -82,23 +83,21 @@ import Foundation
             }
         }
         didSet {
-            let entityName=Pluralization.singularize(self.d_collectionName)
-            if _id != oldValue{
+
+            if _id != oldValue && _id != nil {
                 // tag ephemeral instance
                 if Bartleby.ephemeral {
                     self.ephemeral=true
                 }
-
-                if entityName == "managedModel"{
-                    glog("\(_id) to managedModel", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-                }
                 // And register.
                 Bartleby.register(self)
             }else{
-                glog("Reset _id to same value \(entityName) \(oldValue)) -> \(_id) ", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                //let entityName=self.runTimeTypeName()
+                //glog("Reset _id to same value \(entityName) \(oldValue)) -> \(_id) ", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
         }
     }
+
     #else
 
     // This  id is always  created locally and used as primary index by MONGODB
@@ -116,26 +115,54 @@ import Foundation
         }
     }
 
+
     #endif
 
+
+    // Returns the UID
+    final public var UID: String {
+        get {
+            // Define the UID if necessary
+            self.defineUID()
+            return  self._id!
+        }
+    }
+
+    /// We create the UID only if necessary.
+    open func defineUID() {
+        if  self._id == nil{
+            self._id=Bartleby.createUID()
+            let entityName=self.runTimeTypeName()
+            //glog("Defining _id of \(entityName) \(_id)", file: #file, function: #function, line: #line, category: "UID_DEFINITION", decorative: false)
+        }
+    }
 
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()
 
     // We want to remove all the superviser on removal.
     deinit{
-        self.referentDocument=nil
         self._supervisers.removeAll()
     }
 
-    // A reference to the document
-    open var referentDocument:BartlebyDocument?
+    // Set by propagation or when using the document factory
+    // It connects the instance to its collection and document
+    public var collection:CollectibleCollection?{
+        willSet{
+            self.defineUID()
+        }
+        didSet{
+            if let document=collection?.referentDocument{
+                self.referentDocument = document
+            }else{
+                 glog("Referent document is not set on \(collection?.runTimeTypeName())", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            }
+        }
+    }
 
-    // We setup this collection reference on:
-    // - object insertion
-    // - document deserialization
-    // It connects the instance to its document and collection.
-    open var collection:CollectibleCollection?
+    // A reference to the document
+    public var referentDocument:BartlebyDocument?
+
 
     // MARK: UniversalType
 
@@ -226,9 +253,6 @@ import Foundation
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
 			self._commitCounter <- ( map["_commitCounter"] )
-            if map.mappingType == .toJSON {
-                self.defineUID()// Define if necessary the UID
-            }
             self._typeName <- map[Default.TYPE_NAME_KEY]
             self._id <- map[Default.UID_KEY]
         }
@@ -262,7 +286,6 @@ import Foundation
 		coder.encode(self.ephemeral,forKey:"ephemeral")
 		coder.encode(self._commitCounter,forKey:"_commitCounter")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
-        self.defineUID()// Define if necessary the UID    
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)
         

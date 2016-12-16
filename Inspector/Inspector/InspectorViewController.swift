@@ -169,14 +169,16 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
      - parameter selected: the outline selected Object
      */
     func updateRepresentedObject(_ selected:Any?) -> () {
-
-        if selected==nil {
-            print("NIL")
+        if let document=self.documentProvider?.getDocument(){
+            if selected==nil {
+                document.log("Represented object is nil", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+            }
+        }else{
+            glog("Document provider fault", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
         if let object=selected as? ManagedModel{
             // Did the type of represented object changed.
             if object.runTimeTypeName() != (self._bottomViewController?.representedObject as? Collectible)?.runTimeTypeName(){
-
                 switch object {
                 case _  where object is PushOperation :
                     self._topViewController=self.sourceEditor
@@ -199,11 +201,13 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
                 }
             }
 
-            self._topViewController?.representedObject=selected
-            self._bottomViewController?.representedObject=selected
+            if (self._topViewController?.representedObject as? ManagedModel) != object{
+                self._topViewController?.representedObject=object
+            }
+            if (self._bottomViewController?.representedObject as? ManagedModel) != object{
+                self._bottomViewController?.representedObject=object
+            }
         }
-
-
     }
 
 }

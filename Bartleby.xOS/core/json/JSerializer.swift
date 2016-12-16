@@ -88,9 +88,10 @@ open class JSerializer: Serializer {
                     let map=Map(mappingType: .fromJSON, JSON : dictionary)
                     mappable.mapping(map: map)
                     if var collectible = mappable as? Collectible {
-                        // Add the referentDocument reference
-                        collectible.referentDocument=self.document
-                        if !(collectible is BartlebyCollection){
+                        if (collectible is BartlebyCollection) || (collectible is BartlebyOperation){
+                             // Add the document reference
+                            collectible.referentDocument=self.document
+                        }else{
                             // Add the collection reference
                             collectible.collection=self.document.collectionByName(collectible.d_collectionName)
                         }

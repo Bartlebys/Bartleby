@@ -45,7 +45,7 @@ class User: Mappable {
     var dictionary: [String : AnyObject] = [:]
     var bestFriend: User?                       // Nested User object
     var friends: [User]?                        // Array of Users
-    var birthday: NSDate?
+    var birthday: Date?
 
     required init?(map: Map) {
 
@@ -235,7 +235,7 @@ User(JSONString: JSONString)
 
 #### `init(map: Map) throws`
 
-This throwable initializer is used to map immutable properties from the given `Map`. Every immutable propertie should be initialized in this initializer.
+This throwable initializer is used to map immutable properties from the given `Map`. Every immutable property should be initialized in this initializer.
 
 This initializer throws an error when:
 - `Map` fails to get a value for the given key
@@ -302,7 +302,7 @@ ObjectMapper also supports custom transforms that convert values during the mapp
 ```swift
 birthday <- (map["birthday"], DateTransform())
 ```
-The above transform will convert the JSON Int value to an NSDate when reading JSON and will convert the NSDate to an Int when converting objects to JSON.
+The above transform will convert the JSON Int value to an Date when reading JSON and will convert the Date to an Int when converting objects to JSON.
 
 You can easily create your own custom transforms by adopting and implementing the methods in the ```TransformType``` protocol:
 ```swift
@@ -395,7 +395,7 @@ let result = Mapper<Result<User>>().map(JSON)
 
 The `Map` object which is passed around during mapping, has an optional `MapContext` object that is available for developers to use if they need to pass information around during mapping. 
 
-To take advantage of this feature, simple create an object that implements `MapContext` (which is an empty protocol) and pass it into `Mapper` during initialization. 
+To take advantage of this feature, simply create an object that implements `MapContext` (which is an empty protocol) and pass it into `Mapper` during initialization. 
 ```swift
 struct Context: MapContext {
 	var importantMappingInfo = "Info that I need during mapping"

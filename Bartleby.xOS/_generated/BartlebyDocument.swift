@@ -218,12 +218,42 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	open dynamic var blocks=BlocksManagedCollection(){ didSet { blocks.referentDocument=self } }
-	open dynamic var boxes=BoxesManagedCollection(){ didSet { boxes.referentDocument=self } }
-	open dynamic var lockers=LockersManagedCollection(){ didSet { lockers.referentDocument=self } }
-	open dynamic var nodes=NodesManagedCollection(){ didSet { nodes.referentDocument=self } }
-	open dynamic var pushOperations=PushOperationsManagedCollection(){ didSet { pushOperations.referentDocument=self } }
-	open dynamic var users=UsersManagedCollection(){ didSet { users.referentDocument=self } }
+	open dynamic var blocks=ManagedBlocks(){
+	    didSet {
+	        blocks.referentDocument = self
+	    } 
+	}
+	 
+	open dynamic var boxes=ManagedBoxes(){
+	    didSet {
+	        boxes.referentDocument = self
+	    } 
+	}
+	 
+	open dynamic var lockers=ManagedLockers(){
+	    didSet {
+	        lockers.referentDocument = self
+	    } 
+	}
+	 
+	open dynamic var nodes=ManagedNodes(){
+	    didSet {
+	        nodes.referentDocument = self
+	    } 
+	}
+	 
+	open dynamic var pushOperations=ManagedPushOperations(){
+	    didSet {
+	        pushOperations.referentDocument = self
+	    } 
+	}
+	 
+	open dynamic var users=ManagedUsers(){
+	    didSet {
+	        users.referentDocument = self
+	    } 
+	}
+	 
 
 
     // MARK: - Schemas
@@ -325,11 +355,12 @@ import Foundation
                 user.creatorUID = user.UID
             }
             user.spaceUID = self.metadata.spaceUID
-            user.referentDocument = self
-            user.collection = self.users
             if(user.creatorUID != user.UID){
-                // We don't want to add the Document's current user
+                // We don't want to add the Document's current user the managed User Collection
                 self.users.add(user, commit:false)
+            }else{
+                // We add a de
+                user.referentDocument=self
             }
         }
         user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
@@ -342,8 +373,7 @@ import Foundation
      */
     open func newBlock() -> Block {
         let block=Block()
-        block.referentDocument = self
-        block.collection = self.blocks
+        // The block becomes managed by its collection
         self.blocks.add(block, commit:false)
         if let creator=self.metadata.currentUser {
             block.creatorUID = creator.UID
@@ -358,8 +388,7 @@ import Foundation
      */
     open func newBox() -> Box {
         let box=Box()
-        box.referentDocument = self
-        box.collection = self.boxes
+        // The box becomes managed by its collection
         self.boxes.add(box, commit:false)
         if let creator=self.metadata.currentUser {
             box.creatorUID = creator.UID
@@ -374,8 +403,7 @@ import Foundation
      */
     open func newLocker() -> Locker {
         let locker=Locker()
-        locker.referentDocument = self
-        locker.collection = self.lockers
+        // The locker becomes managed by its collection
         self.lockers.add(locker, commit:false)
         if let creator=self.metadata.currentUser {
             locker.creatorUID = creator.UID
@@ -390,8 +418,7 @@ import Foundation
      */
     open func newNode() -> Node {
         let node=Node()
-        node.referentDocument = self
-        node.collection = self.nodes
+        // The node becomes managed by its collection
         self.nodes.add(node, commit:false)
         if let creator=self.metadata.currentUser {
             node.creatorUID = creator.UID
