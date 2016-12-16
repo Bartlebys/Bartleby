@@ -93,9 +93,7 @@ struct Flocker{
 
         var stats=BytesStats(name: "Flocking: \(path)")
         let container=Container()
-        container.defineUID()
         let box=Box()
-        box.defineUID()
         container.boxes.append(box)
         Async.utility{
 
@@ -267,7 +265,6 @@ struct Flocker{
 
         let filePath=folderPath+relativePath
         let node=Node()
-        node.defineUID()
         node.relativePath=relativePath
         node.boxUID=container.boxes[0].UID
         node.compressedBlocks=compress
@@ -367,7 +364,6 @@ struct Flocker{
 
                                         // Create the related block
                                         let block=Block()
-                                        block.defineUID()
                                         block.startsAt = writePosition
                                         block.size = lengthOfAddedData
                                         block.digest=sha1
