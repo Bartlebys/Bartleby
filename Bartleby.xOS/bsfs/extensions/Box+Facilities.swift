@@ -23,11 +23,8 @@ extension Box{
 
     /// the currently referenced  nodes
     var nodes:[Node]{
-        if let ownedNodes:[Node]=self.relations(Relationship.owns){
-            return ownedNodes
-        }else{
-            return [Node]()
-        }
+        let ownedNodes:[Node]=self.relations(Relationship.owns)
+        return ownedNodes
     }
 
 
