@@ -13,8 +13,16 @@ extension Box{
 
     /// We deal with Bsfs before deleting instances.
 
-    override public func erase(commit: Bool) throws {
-        // Delete files.
-        try super.erase()
+    override public func erase(commit: Bool=true) throws {
+        if self.isMounted{
+            if let document=self.referentDocument{
+                // Un mount the Box
+                document.bsfs.unMount(boxUID: self.UID, completed: { (completed) in })
+            }else{
+                throw DocumentError.instanceNotFound
+            }
+        }
+        try super.erase(commit:commit)
+
     }
 }

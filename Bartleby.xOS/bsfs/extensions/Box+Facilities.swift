@@ -21,14 +21,10 @@ extension Box{
         }
     }
 
-
-
     /// the currently referenced  nodes
     var nodes:[Node]{
-        if let d=self.referentDocument{
-            return d.nodes.filter({ (node) -> Bool in
-                return node.boxUID==self.UID
-            })
+        if let ownedNodes:[Node]=self.relations(Relationship.owns){
+            return ownedNodes
         }else{
             return [Node]()
         }

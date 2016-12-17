@@ -30,7 +30,7 @@ extension ManagedModel:RelationsResolution{
     /// Resolve the Related Objects
     ///
     /// - Returns: the collection of related object
-    open func relations<T:Relational>(_ relationships:Set<Relationship>)->[T]{
+    open func relationsInSet<T:Relational>(_ relationships:Set<Relationship>)->[T]{
         var related=[T]()
         var relations=[Relation]()
         for relationShip in relationships{
@@ -45,6 +45,7 @@ extension ManagedModel:RelationsResolution{
         }
         return related
     }
+
 
     /// Resolve the Related Object and returns the first one
     ///

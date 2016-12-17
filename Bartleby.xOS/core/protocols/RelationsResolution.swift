@@ -20,7 +20,7 @@ public protocol RelationsResolution{
     /// Resolve the Related Objects
     ///
     /// - Returns: the collection of related object
-    func relations<T:Relational>(_ relationships:Set<Relationship>)->[T]
+    func relationsInSet<T:Relational>(_ relationships:Set<Relationship>)->[T]
 
     /// Resolve the Related Object and returns the first one
     ///

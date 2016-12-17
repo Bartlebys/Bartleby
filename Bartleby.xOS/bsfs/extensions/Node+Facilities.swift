@@ -34,21 +34,18 @@ extension Node{
 
     /// The parent box
     var box:Box?{
-        if let box = try? Bartleby.registredObjectByUID(boxUID) as Box{
-            return box
+        if let owner:Box = self.relations(Relationship.ownedBy){
+            return owner
+        }else{
+            return nil
         }
-        return nil
     }
-
-
 
 
     /// the currently referenced blocks
     var blocks:[Block]{
-        if let d=self.referentDocument{
-            return d.blocks.filter({ (block) -> Bool in
-                return block.nodeUID==self.UID
-            })
+        if let ownedBlocks:[Block]=self.relations(Relationship.owns){
+            return ownedBlocks
         }else{
             return [Block]()
         }

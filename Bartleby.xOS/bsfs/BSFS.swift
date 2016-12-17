@@ -434,6 +434,10 @@ public final class BSFS:TriggerHook{
                         var cumulatedDigests=""
                         var cumulatedSize=0
 
+                        box.quietChanges {
+                            box.declaresOwnership(of: node)
+                        }
+
                         // Let's add the blocks
                         for chunk in groupOfChunks{
                             let block=self._document.newObject() as Block
@@ -444,9 +448,11 @@ public final class BSFS:TriggerHook{
                                 block.startsAt=chunk.startsAt
                                 block.size=chunk.originalSize
                                 block.priority=reference.priority
+
                             }
                             cumulatedSize += chunk.originalSize
                             cumulatedDigests += chunk.sha1
+                            node.declaresOwnership(of: block)
                             node.blocksUIDS.append(block.UID)
                             self._toBeUploadedBlocksUIDS.append(block.UID)
                         }
@@ -581,7 +587,7 @@ public final class BSFS:TriggerHook{
                                 /// delete the blocks to be deleted
                                 for chunk in toBeDeleted{
                                     if let block=self._findBlockMatching(chunk: chunk){
-                                        self._deleteBlock(block)
+                                        self.deleteBlockFile(block)
                                     }
                                 }
 
@@ -616,6 +622,11 @@ public final class BSFS:TriggerHook{
                                                     block?.needsToBeCommitted()
                                                 }else{
                                                     block=self._document.newObject() as Block
+                                                    node.quietChanges {
+                                                        block?.quietChanges {
+                                                            node.declaresOwnership(of:block!)
+                                                        }
+                                                    }
                                                 }
 
                                                 block!.quietChanges{
@@ -765,7 +776,9 @@ public final class BSFS:TriggerHook{
 
                             // Create the copiedNode
                             let copiedNode=self._document.newObject() as Node
+
                             copiedNode.quietChanges{
+                                box.declaresOwnership(of: copiedNode)
                                 try? copiedNode.mergeWith(node)// merge
                                 copiedNode.relativePath=relativePath // Thats it!
                             }
@@ -993,7 +1006,7 @@ public final class BSFS:TriggerHook{
     /// Respecting the priorities
     internal func _downloadNext()->(){
 
-        if self._downloadsInProgress.count<_maxSimultaneousOperations{
+        if self._downloadsInProgress.count<self._maxSimultaneousOperations{
             do{
 
                 let downloadableBlocks = try self._toBeDownloadedBlocksUIDS.map({ (UID) -> Block in
@@ -1062,7 +1075,7 @@ public final class BSFS:TriggerHook{
                 }
                 
             }catch{
-                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
             
         }
@@ -1085,7 +1098,7 @@ public final class BSFS:TriggerHook{
     /// Delete a Block its Block, raw file
     ///
     /// - Parameter block: the block or the Block reference
-    func _deleteBlock(_ block:Block) {
+    open func deleteBlockFile(_ block:Block) {
         do{
             try self._document.removeBlock(with: block.digest)
             
@@ -1094,7 +1107,7 @@ public final class BSFS:TriggerHook{
                 self._document.blocks.removeObject(self._document.blocks[idx])
             }
         }catch{
-            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+            self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
         
     }

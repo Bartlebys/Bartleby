@@ -491,6 +491,8 @@
 		E58F97051E057FA7008A2182 /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F97031E057FA7008A2182 /* Mergeable.swift */; };
 		E58F97071E058033008A2182 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F97061E058033008A2182 /* ManagedModel+Mergeable.swift */; };
 		E58F97081E058033008A2182 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F97061E058033008A2182 /* ManagedModel+Mergeable.swift */; };
+		E58F970E1E059AE1008A2182 /* Node+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F970D1E059AE1008A2182 /* Node+Erasure.swift */; };
+		E58F970F1E059AE1008A2182 /* Node+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F970D1E059AE1008A2182 /* Node+Erasure.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -815,6 +817,7 @@
 		E58F97001E057A62008A2182 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
 		E58F97031E057FA7008A2182 /* Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
 		E58F97061E058033008A2182 /* ManagedModel+Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Mergeable.swift"; sourceTree = "<group>"; };
+		E58F970D1E059AE1008A2182 /* Node+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Erasure.swift"; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
@@ -1268,6 +1271,7 @@
 				E58F94C81E055C6A008A2182 /* BartlebyDocument+Triggers.swift */,
 				E58F94C91E055C6A008A2182 /* Block+FileErasure.swift */,
 				E58F94CA1E055C6A008A2182 /* Box+FileErasures.swift */,
+				E58F970D1E059AE1008A2182 /* Node+Erasure.swift */,
 				E58F94CB1E055C6A008A2182 /* CollectionMetadatum+Proxy.swift */,
 				E58F94CC1E055C6A008A2182 /* Completion+Conveniences.swift */,
 				E58F94CD1E055C6A008A2182 /* Completion+Result.swift */,
@@ -1697,6 +1701,7 @@
 				E58F954A1E055C6A008A2182 /* HTTPContext.swift in Sources */,
 				E58F95A81E055C6A008A2182 /* ReadLockerById.swift in Sources */,
 				E58F969A1E055C6A008A2182 /* Committable.swift in Sources */,
+				E58F970E1E059AE1008A2182 /* Node+Erasure.swift in Sources */,
 				E58F95461E055C6A008A2182 /* DataVO.swift in Sources */,
 				E58F95381E055C6A008A2182 /* ManagedUsers.swift in Sources */,
 				E58F96641E055C6A008A2182 /* ManagedModel+JSONString.swift in Sources */,
@@ -1939,6 +1944,7 @@
 				E58F954B1E055C6A008A2182 /* HTTPContext.swift in Sources */,
 				E58F95A91E055C6A008A2182 /* ReadLockerById.swift in Sources */,
 				E58F969B1E055C6A008A2182 /* Committable.swift in Sources */,
+				E58F970F1E059AE1008A2182 /* Node+Erasure.swift in Sources */,
 				E58F95471E055C6A008A2182 /* DataVO.swift in Sources */,
 				E58F95391E055C6A008A2182 /* ManagedUsers.swift in Sources */,
 				E58F96651E055C6A008A2182 /* ManagedModel+JSONString.swift in Sources */,

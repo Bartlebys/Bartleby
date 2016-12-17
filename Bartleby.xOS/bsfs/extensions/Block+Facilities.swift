@@ -12,7 +12,11 @@ extension Block{
 
 
     public var node:Node?{
-        return try? Bartleby.registredObjectByUID(self.nodeUID) as Node
+        if let owner:Node = self.relations(Relationship.ownedBy){
+             return owner
+        }else{
+            return nil
+        }
     }
 
 
