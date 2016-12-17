@@ -42,7 +42,7 @@ class UsersCreationLoadTest: TestCase {
         Bartleby.sharedInstance.declare(document)
         document.metadata.identificationMethod=idMethod
 
-        let user=document.newUser()
+        let user=document.newObject() as User
         user.email=Bartleby.randomStringWithLength(6)+"@bartlebys.org"
         user.verificationMethod = .byEmail
         user.creatorUID = user.UID // (!) Auto creation in this context (Check ACL)

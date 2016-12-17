@@ -23,7 +23,7 @@ print(document.UID)
 
 HTTPManager.apiIsReachable(document.baseURL, successHandler: {
     print ("\(document.baseURL) is Reachable")
-    let user=document.newUser()
+    let user=document.newObject() as User
     document.metadata.currentUser=user
     user.creatorUID=user.UID
 
@@ -71,4 +71,4 @@ HTTPManager.apiIsReachable(document.baseURL, successHandler: {
 XCPlaygroundPage.currentPage.needsIndefiniteExecution = true
 
 
-//: [Next](@next)
+//: [Nex

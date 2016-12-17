@@ -30,7 +30,7 @@ class BasicApiTests: TestCase {
     func test101_createUser() {
         let expectation = self.expectation(description: "CreateUser should respond")
 
-        let user=BasicApiTests.document.newUser()
+        let user=BasicApiTests.document.newObject() as User
         user.email=BasicApiTests._email
         user.verificationMethod = .byEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)

@@ -419,7 +419,7 @@ public final class BSFS:TriggerHook{
                 for (nodeRelativePath,groupOfChunks) in groupedChunks{
                     // Create the new node.
                     // And add its blocks
-                    let node=self._document.newNode()
+                    let node=self._document.newObject() as Node
                     if firstNode==nil{
                         firstNode=node
                     }
@@ -436,7 +436,7 @@ public final class BSFS:TriggerHook{
 
                         // Let's add the blocks
                         for chunk in groupOfChunks{
-                            let block=self._document.newBlock()
+                            let block=self._document.newObject() as Block
                             block.quietChanges{
                                 block.nodeUID=node.UID
                                 block.rank=chunk.rank
@@ -615,7 +615,7 @@ public final class BSFS:TriggerHook{
                                                     block=b
                                                     block?.needsToBeCommitted()
                                                 }else{
-                                                    block=self._document.newBlock()
+                                                    block=self._document.newObject() as Block
                                                 }
 
                                                 block!.quietChanges{
@@ -764,7 +764,7 @@ public final class BSFS:TriggerHook{
                             try self._fileManager.copyItem(atPath: self._assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
                             // Create the copiedNode
-                            let copiedNode=self._document.newNode()
+                            let copiedNode=self._document.newObject() as Node
                             copiedNode.quietChanges{
                                 try? copiedNode.mergeWith(node)// merge
                                 copiedNode.relativePath=relativePath // Thats it!

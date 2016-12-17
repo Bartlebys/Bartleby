@@ -211,7 +211,6 @@ import Foundation
         return false // Return false by default
     }
 
-
     // MARK: - Collection Controllers
 
     // The initial instances are proxies
@@ -222,47 +221,38 @@ import Foundation
 	        blocks.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var boxes=ManagedBoxes(){
 	    didSet {
 	        boxes.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var lockers=ManagedLockers(){
 	    didSet {
 	        lockers.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var nodes=ManagedNodes(){
 	    didSet {
 	        nodes.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var pushOperations=ManagedPushOperations(){
 	    didSet {
 	        pushOperations.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var tags=ManagedTags(){
 	    didSet {
 	        tags.referentDocument = self
 	    } 
 	}
-	 
 	open dynamic var users=ManagedUsers(){
 	    didSet {
 	        users.referentDocument = self
 	    } 
 	}
-	 
-
 
     // MARK: - Schemas
-
 
     /**
 
@@ -346,18 +336,42 @@ import Foundation
         }catch{
         }
     }
-
-
-
     
     // MARK: -  Entities factories
 
-    /**
-    * Creates a new user
-    *
-    * you should override this method to customize default (name, email, ...)
-    */
-    open func newUser() -> User {
+    /// Model Factory
+    /// Usage:
+    /// let user=document.newObject() as User
+    /// let tag:Tag=document.newObject()
+    /// - Returns: a Collectible Model
+    open func newObject<T:Collectible>()->T{
+        // User as a special factory Method
+        if T.typeName()=="User"{
+            return self._newUser() as! T
+        }
+        var instance=T()
+        if let collection=self.collectionByName(instance.d_collectionName){
+            collection.add(instance, commit: false)
+        }
+        if let creator=self.metadata.currentUser {
+            instance.creatorUID = creator.UID
+        }
+        instance.needsToBeCommitted()
+        self.didCreate(instance)
+        return  instance
+    }
+
+    /// Called just after Factory Method
+    /// Override this method in your document instance
+    /// to perform instance customization
+    ///
+    /// - Parameter instance: the fresh instance
+    open func didCreate(_ instance:Collectible){
+
+    }
+
+
+    internal func _newUser() -> User {
         let user=User()
         user.quietChanges {
             user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
@@ -377,82 +391,8 @@ import Foundation
             }
         }
         user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
+        self.didCreate(user)
         return user
-    }
-
-    /**
-     * Creates a new Block
-     * you can override this method to customize the properties
-     */
-    open func newBlock() -> Block {
-        let block=Block()
-        // The block becomes managed by its collection
-        self.blocks.add(block, commit:false)
-        if let creator=self.metadata.currentUser {
-            block.creatorUID = creator.UID
-        }
-        block.needsToBeCommitted()
-        return  block
-    }
-
-    /**
-     * Creates a new Box
-     * you can override this method to customize the properties
-     */
-    open func newBox() -> Box {
-        let box=Box()
-        // The box becomes managed by its collection
-        self.boxes.add(box, commit:false)
-        if let creator=self.metadata.currentUser {
-            box.creatorUID = creator.UID
-        }
-        box.needsToBeCommitted()
-        return  box
-    }
-
-    /**
-     * Creates a new Locker
-     * you can override this method to customize the properties
-     */
-    open func newLocker() -> Locker {
-        let locker=Locker()
-        // The locker becomes managed by its collection
-        self.lockers.add(locker, commit:false)
-        if let creator=self.metadata.currentUser {
-            locker.creatorUID = creator.UID
-        }
-        locker.needsToBeCommitted()
-        return  locker
-    }
-
-    /**
-     * Creates a new Node
-     * you can override this method to customize the properties
-     */
-    open func newNode() -> Node {
-        let node=Node()
-        // The node becomes managed by its collection
-        self.nodes.add(node, commit:false)
-        if let creator=self.metadata.currentUser {
-            node.creatorUID = creator.UID
-        }
-        node.needsToBeCommitted()
-        return  node
-    }
-
-    /**
-     * Creates a new Tag
-     * you can override this method to customize the properties
-     */
-    open func newTag() -> Tag {
-        let tag=Tag()
-        // The tag becomes managed by its collection
-        self.tags.add(tag, commit:false)
-        if let creator=self.metadata.currentUser {
-            tag.creatorUID = creator.UID
-        }
-        tag.needsToBeCommitted()
-        return  tag
     }
 
 }

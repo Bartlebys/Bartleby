@@ -280,6 +280,8 @@
 		E58F94271E055C57008A2182 /* HTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F933F1E055C57008A2182 /* HTTPManager.swift */; };
 		E58F94281E055C57008A2182 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F93401E055C57008A2182 /* Pluralization.swift */; };
 		E58F94291E055C57008A2182 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F93411E055C57008A2182 /* PString.swift */; };
+		E58F970A1E05844F008A2182 /* Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F97091E05844F008A2182 /* Mergeable.swift */; };
+		E58F970C1E058477008A2182 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F970B1E058477008A2182 /* ManagedModel+Mergeable.swift */; };
 		E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AC1D846CB300F7C783 /* CommandLine.swift */; };
 		E5CC29201D846CB300F7C783 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AE1D846CB300F7C783 /* Option.swift */; };
 		E5CC29211D846CB300F7C783 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */; };
@@ -576,6 +578,8 @@
 		E58F933F1E055C57008A2182 /* HTTPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPManager.swift; sourceTree = "<group>"; };
 		E58F93401E055C57008A2182 /* Pluralization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pluralization.swift; sourceTree = "<group>"; };
 		E58F93411E055C57008A2182 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
+		E58F97091E05844F008A2182 /* Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mergeable.swift; sourceTree = "<group>"; };
+		E58F970B1E058477008A2182 /* ManagedModel+Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Mergeable.swift"; sourceTree = "<group>"; };
 		E5CC28AC1D846CB300F7C783 /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		E5CC28AE1D846CB300F7C783 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -1018,6 +1022,7 @@
 				E58F92F01E055C57008A2182 /* ManagedModel+Extended.swift */,
 				E58F92F11E055C57008A2182 /* ManagedModel+JSONString.swift */,
 				E58F92F21E055C57008A2182 /* ManagedModel+Logs.swift */,
+				E58F970B1E058477008A2182 /* ManagedModel+Mergeable.swift */,
 				E58F92F31E055C57008A2182 /* ManagedModel+NSCopying.swift */,
 				E58F92F41E055C57008A2182 /* ManagedModel+ProvisionChanges.swift */,
 				E58F92F51E055C57008A2182 /* ManagedModel+QuietChanges.swift */,
@@ -1079,6 +1084,7 @@
 				E58F931D1E055C57008A2182 /* LogCategorizable.swift */,
 				E58F931E1E055C57008A2182 /* LogEntriesObserver.swift */,
 				E58F931F1E055C57008A2182 /* Logger.swift */,
+				E58F97091E05844F008A2182 /* Mergeable.swift */,
 				E58F93201E055C57008A2182 /* Monitoring.swift */,
 				E58F93211E055C57008A2182 /* ProvisionChanges.swift */,
 				E58F93221E055C57008A2182 /* Pusher.swift */,
@@ -1376,6 +1382,7 @@
 				E58F938F1E055C57008A2182 /* UpdateBox.swift in Sources */,
 				E58F93F31E055C57008A2182 /* BartlebyFileIO.swift in Sources */,
 				E58F94001E055C57008A2182 /* DocumentMetadataProtocol.swift in Sources */,
+				E58F970C1E058477008A2182 /* ManagedModel+Mergeable.swift in Sources */,
 				E58F94121E055C57008A2182 /* Serializer.swift in Sources */,
 				E50806191DF6D49C0085E5C3 /* Result.swift in Sources */,
 				E58F93911E055C57008A2182 /* UpdateLocker.swift in Sources */,
@@ -1491,6 +1498,7 @@
 				E58F93B11E055C57008A2182 /* CryptoKeySize.swift in Sources */,
 				E58F937F1E055C57008A2182 /* ReadBoxesByIds.swift in Sources */,
 				E58F93A91E055C57008A2182 /* CompressionAlgorithms.swift in Sources */,
+				E58F970A1E05844F008A2182 /* Mergeable.swift in Sources */,
 				E58F93601E055C57008A2182 /* Tag.swift in Sources */,
 				E58F935D1E055C57008A2182 /* Relation.swift in Sources */,
 				E58F93DD1E055C57008A2182 /* ManagedModel+Equatable.swift in Sources */,

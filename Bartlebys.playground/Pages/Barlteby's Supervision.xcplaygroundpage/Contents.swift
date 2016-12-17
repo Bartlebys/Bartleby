@@ -5,8 +5,8 @@ import ObjectMapper
 import BartlebyKit
 
 var document=BartlebyDocument()
-var userA=document.newUser()
-var spy=document.newUser()
+var userA=document.newObject() as User
+var spy=document.newObject() as User
 
 
 userA.addChangesSuperviser(spy) { (key, oldValue, newValue) in
@@ -33,5 +33,3 @@ melanie.lastname="Le Neveu"
 try? benoit.mergeWith(melanie)
 benoit.firstname
 benoit.lastname
-
-//: [Next](@next)

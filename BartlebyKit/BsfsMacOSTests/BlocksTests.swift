@@ -31,7 +31,7 @@ class BlocksTests: BartlebyTestCase {
         let url=BlocksTests.urlByAppending(path: "file1.txt")
         let fr=FileReference.publicFileReference(at:url.path)
 
-        let box=BlocksTests.document.newBox()
+        let box=BlocksTests.document.newObject() as Box
         BlocksTests.document.bsfs.add(reference: fr,
                                       in:box
             , to: "/a/file1.txt",
