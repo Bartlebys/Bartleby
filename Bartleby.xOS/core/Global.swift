@@ -63,5 +63,6 @@ public func glog(_ message: Any, file: String, function: String, line: Int, cate
     }else{
         print("\(category)-\(file)(\(line)).\(function): \(message)")
     }
-
 }
+
+

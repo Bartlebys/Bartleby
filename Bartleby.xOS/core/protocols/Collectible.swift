@@ -35,5 +35,12 @@ public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRe
 
     // An accessor to the static collectionName
     var d_collectionName: String { get }
+
+    /// Erases globally the instance and its dependent relations.
+    /// Throws ErasingError and DocumentError
+    /// You may Override this method to purge files (e.g: Node, Block, ...)
+    /// Erase the collectible instance (and its dependent relations)
+    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
+    func erase(commit:Bool)throws->()
 }
 

@@ -104,6 +104,53 @@ import Foundation
 
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
+
+
+    /// Erases globally the instance and its dependent relations.
+    /// Throws ErasingError and DocumentError
+    /// You may Override this method to purge files (e.g: Node, Block, ...)
+    /// Erase the collectible instance (and its dependent relations)
+    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
+    public func erase(commit:Bool=true)throws->(){
+        if let document=self.referentDocument{
+            var toBeErased:[ManagedModel]=[self]
+            var erasableUIDS:[String]=[self.UID]
+            func __append(_ UID:String)throws->(){
+                if !erasableUIDS.contains(UID){
+                    let target:ManagedModel = try Bartleby.registredObjectByUID(UID)
+                    toBeErased.append(target)
+                    erasableUIDS.append(UID)
+                }
+            }
+            for relation in self._relations{
+                if relation.relationship == Relationship.fusional.rawValue
+                    || relation.relationship == Relationship.owns.rawValue{
+                    try __append(relation.UID)
+                }
+                if relation.relationship == Relationship.coOwns.rawValue{
+                    let m:[ManagedModel] = self.relations(Relationship.coOwns)
+                    if m.count == 1{
+                        try __append(relation.UID)
+                    }
+                }
+                // There is nothing to do for:
+                // - Relationship.free
+                // - Relationship.ownedBy
+                // - Relationship.coOwnedBy
+            }
+            for erasable in toBeErased{
+                // Erase from the collection
+                if let collection=document.collectionByName(erasable.d_collectionName) as? CollectibleCollection {
+                    collection.removeObject(self, commit:commit)
+                    // Unregister the ManagedModel
+                    Bartleby.unRegister(erasable)
+                }
+            }
+        }else{
+            throw ErasingError.referentDocumentUndefined
+        }
+    }
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).

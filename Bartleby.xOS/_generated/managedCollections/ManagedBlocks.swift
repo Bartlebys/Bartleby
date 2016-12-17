@@ -339,7 +339,7 @@ public extension Notification.Name {
     - parameter commit: should we commit the insertion?
     */
     open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true) {
-        if let item=item as? Block{
+        if let item = item as? Block{
             item.collectedIndex = index // Update the index
             item.collection = self
             self._incrementIndexes(greaterThan:index)
@@ -389,9 +389,6 @@ public extension Notification.Name {
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
        let item : Block =  self[index]
         self._decrementIndexes(greaterThan:index)
-
-        // Unregister the item
-        Bartleby.unRegister(item)
 
         // Remove the item from the collection
         self._items.remove(at:index)

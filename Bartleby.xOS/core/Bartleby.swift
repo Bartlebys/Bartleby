@@ -143,7 +143,7 @@ open class Bartleby:NSObject {
      - parameter documentUID: the target document UID
      */
     open func forget(_ documentUID: String) {
-        _documents.removeValue(forKey: documentUID)
+        self._documents.removeValue(forKey: documentUID)
     }
 
     /**
@@ -295,6 +295,16 @@ open class Bartleby:NSObject {
     }
 
 
+    /// Returns a ManagedModel by its UID
+    /// Those instance are not casted.
+    /// You should most of the time use : `registredObjectByUID<T: Collectible>(_ UID: String) throws-> T`
+    /// - parameter UID:
+    /// - returns: the instance
+    open static func registredManagedModelByUID(_ UID: String)-> ManagedModel? {
+        return try? Bartleby.registredObjectByUID(UID)
+    }
+
+
 
     ///  Returns the registred instance of by UIDs
     ///
@@ -349,5 +359,28 @@ open class Bartleby:NSObject {
     }
 
 
+    // MARK: - eraser 
+
+
+    /// Erases globally the instance and its dependent relations.
+    /// Throws ErasingError and DocumentError
+    /// You may Override this method to purge files (e.g: Node, Block, ...)
+    /// Erase the collectible instance (and its dependent relations)
+    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
+    open static func erase(_ instance:Collectible,commit:Bool=true)throws->(){
+        try instance.erase(commit: commit)
+    }
+
+
+    /// Erases globally the instances and their dependents relations.
+    /// Throws ErasingError and DocumentError
+    /// You may Override this method to purge files (e.g: Node, Block, ...)
+    /// Erase the collectible instance (and its dependent relations)
+    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
+    open static func erase(_ instances:[Collectible],commit:Bool=true)throws->(){
+        for i in instances{
+            try i.erase(commit: commit)
+        }
+    }
 
 }

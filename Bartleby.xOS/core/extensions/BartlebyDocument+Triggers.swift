@@ -162,8 +162,7 @@ extension BartlebyDocument {
         if trigger.action.contains("Delete") {
             // It is a deletion.
             let UIDS=trigger.UIDS.components(separatedBy: ",")
-            let collectionName=trigger.targetCollectionName
-            self.deleteByIds(UIDS, fromCollectionWithName: collectionName)
+            self.deleteByIds(UIDS)
         }else{
             // it is a creation or un update
             if let jsonDictionaries=trigger.payloads{

@@ -325,7 +325,7 @@ public extension Notification.Name {
     - parameter commit: should we commit the insertion?
     */
     open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true) {
-        if let item=item as? PushOperation{
+        if let item = item as? PushOperation{
             item.collectedIndex = index // Update the index
             item.collection = self
             self._incrementIndexes(greaterThan:index)
@@ -372,11 +372,8 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-       let item : PushOperation =  self[index]
+       let _ : PushOperation =  self[index]
         self._decrementIndexes(greaterThan:index)
-
-        // Unregister the item
-        Bartleby.unRegister(item)
 
         // Remove the item from the collection
         self._items.remove(at:index)
@@ -384,7 +381,7 @@ public extension Notification.Name {
     
         // Commit is ignored because
         // Distant persistency is not allowed for PushOperation
-            }
+    }
 
 
     open func removeObjects(_ items: [Collectible],commit:Bool=true){
