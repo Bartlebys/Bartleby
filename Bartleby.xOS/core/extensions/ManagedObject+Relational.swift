@@ -35,8 +35,8 @@ extension ManagedModel:Relational{
     ///
     /// - Parameter object: the owned object
     open func declaresCollectiveOwnership(of object:Relational){
-        self.addRelation(.ownsCollectively,to: object)
-        object.addRelation(.ownedCollectivelyBy,to: self)
+        self.addRelation(.coOwns,to: object)
+        object.addRelation(.coOwnedBy,to: self)
     }
 
 

@@ -247,6 +247,12 @@ import Foundation
 	    } 
 	}
 	 
+	open dynamic var tags=ManagedTags(){
+	    didSet {
+	        tags.referentDocument = self
+	    } 
+	}
+	 
 	open dynamic var users=ManagedUsers(){
 	    didSet {
 	        users.referentDocument = self
@@ -302,6 +308,13 @@ import Foundation
         pushOperationDefinition.persistsDistantly = false
         pushOperationDefinition.inMemory = false
         
+        let tagDefinition = CollectionMetadatum()
+        tagDefinition.proxy = self.tags
+        tagDefinition.collectionName = Tag.collectionName
+        tagDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        tagDefinition.persistsDistantly = true
+        tagDefinition.inMemory = false
+        
         let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
         userDefinition.collectionName = User.collectionName
@@ -318,6 +331,7 @@ import Foundation
 			try self.metadata.configureSchema(lockerDefinition)
 			try self.metadata.configureSchema(nodeDefinition)
 			try self.metadata.configureSchema(pushOperationDefinition)
+			try self.metadata.configureSchema(tagDefinition)
 			try self.metadata.configureSchema(userDefinition)
 
         }catch DocumentError.duplicatedCollectionName(let collectionName){
@@ -424,6 +438,21 @@ import Foundation
         }
         node.needsToBeCommitted()
         return  node
+    }
+
+    /**
+     * Creates a new Tag
+     * you can override this method to customize the properties
+     */
+    open func newTag() -> Tag {
+        let tag=Tag()
+        // The tag becomes managed by its collection
+        self.tags.add(tag, commit:false)
+        if let creator=self.metadata.currentUser {
+            tag.creatorUID = creator.UID
+        }
+        tag.needsToBeCommitted()
+        return  tag
     }
 
 }
