@@ -40,7 +40,7 @@ import Foundation
 	dynamic open var startsAt:Int = 0
 
 	//The size of the Block
-	dynamic open var size:Int = Int.max
+	dynamic open var size:Int = Default.MAX_INT
 
 	//The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
 	dynamic open var priority:Int = 0

@@ -34,7 +34,7 @@ import Foundation
 	dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)
-	dynamic open var blocksMaxSize:Int = Int.max
+	dynamic open var blocksMaxSize:Int = Default.MAX_INT
 
 	//The priority level of the node (is applicated to its block)
 	dynamic open var priority:Int = 0
@@ -64,7 +64,7 @@ import Foundation
 	dynamic open var authorized:[String] = [String]()
 
 	//The size of the file
-	dynamic open var size:Int = Int.max
+	dynamic open var size:Int = Default.MAX_INT
 
 	//The SHA1 digest of the node is the digest of all its blocks digest.
 	dynamic open var digest:String = "\(Default.NO_DIGEST)"{

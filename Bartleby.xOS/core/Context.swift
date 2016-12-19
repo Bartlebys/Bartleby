@@ -12,7 +12,7 @@ import Foundation
 public struct Context: Consignable {
 
     // A developer set code to provide filtering
-    public var code: Int=Int.max
+    public var code: Int=Default.MAX_INT
 
     // A descriptive string for developper to identify the calling context
     public var caller: String=Default.NO_NAME

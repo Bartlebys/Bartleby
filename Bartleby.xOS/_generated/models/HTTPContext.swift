@@ -21,10 +21,10 @@ import Foundation
 	dynamic open var caller:String = "\(Default.NO_NAME)"
 
 	// A developer set code to provide filtering
-	dynamic open var code:Int = Int.max
+	dynamic open var code:Int = Default.MAX_INT
 
 	//The responded HTTP status code
-	dynamic open var httpStatusCode:Int = Int.max
+	dynamic open var httpStatusCode:Int = Default.MAX_INT
 
 	//The related url
 	dynamic open var relatedURL:URL?
