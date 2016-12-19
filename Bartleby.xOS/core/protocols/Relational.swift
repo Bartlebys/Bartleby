@@ -48,11 +48,13 @@ public protocol Relational:Identifiable{
     /// - Parameter object: the object
     func removeRelation(_ contract:Relationship,to object:Relational)
 
-    /// Returns the contracted relations
+    ///  Returns the contracted relations
     ///
-    /// - Parameter contract: the nature of the contract
+    /// - Parameters:
+    ///   - contract:  the nature of the contract
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
     /// - Returns: the relations
-    func getContractedRelations(_ contract:Relationship)->[Relation]
+    func getContractedRelations(_ contract:Relationship,includeAssociations:Bool)->[Relation]
 
 }
 

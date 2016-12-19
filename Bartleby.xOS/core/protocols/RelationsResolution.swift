@@ -11,20 +11,30 @@ import Foundation
 public protocol RelationsResolution{
 
     // MARK: - Relationships getters
+    /// Resolve the Related Objects
+    ///
+    /// - Parameters:
+    ///   - relationship: the searched relationship
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    /// - Returns: return the related Objects
+    func relations<T:Relational>(_ relationship:Relationship,includeAssociations:Bool)->[T]
+
 
     /// Resolve the Related Objects
     ///
-    /// - Returns: the collection of related object
-    func relations<T:Relational>(_ relationship:Relationship)->[T]
+    /// - Parameters:
+    ///   - relationship: the searched relationships
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    /// - Returns: return the related Objects
+    func relationsInSet<T:Relational>(_ relationships:Set<Relationship>,includeAssociations:Bool)->[T]
 
-    /// Resolve the Related Objects
-    ///
-    /// - Returns: the collection of related object
-    func relationsInSet<T:Relational>(_ relationships:Set<Relationship>)->[T]
 
     /// Resolve the Related Object and returns the first one
     ///
-    /// - Returns: the collection of related object
-    func firstRelation<T:Relational>(_ relationship:Relationship)->T?
-    
+    /// - Parameters:
+    ///   - relationship: the searched relationships
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    func firstRelation<T:Relational>(_ relationship:Relationship,includeAssociations:Bool)->T?
+
+
 }

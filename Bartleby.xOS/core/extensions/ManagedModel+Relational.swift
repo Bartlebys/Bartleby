@@ -11,6 +11,7 @@ import Foundation
 
 extension ManagedModel:Relational{
 
+
     // MARK: - Relationships Declaration
 
     /// An Object enters in a free relation Ship with another
@@ -68,12 +69,27 @@ extension ManagedModel:Relational{
     }
 
 
-    /// Returns the contracted relations
+    ///  Returns the contracted relations
     ///
-    /// - Parameter contract: the nature of the contract
+    /// - Parameters:
+    ///   - contract:  the nature of the contract
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
     /// - Returns: the relations
-    open func getContractedRelations(_ contract:Relationship)->[Relation]{
-        return self._relations.filter({$0.relationship==contract.rawValue})
+    open func getContractedRelations(_ contract:Relationship,includeAssociations:Bool=false)->[Relation]{
+        if includeAssociations{
+            var relations = self._relations.filter({$0.relationship==contract.rawValue})
+            if let associated:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
+               return (association.subjectUID == self.UID && association.contract.relationship == contract.rawValue)
+            }){
+                for association in associated {
+                    relations.append(association.contract)
+                }
+            }
+            return relations
+        }else{
+            return self._relations.filter({$0.relationship==contract.rawValue})
+        }
+
     }
 
 

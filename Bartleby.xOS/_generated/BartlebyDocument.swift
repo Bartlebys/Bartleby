@@ -216,6 +216,11 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
+	open dynamic var associations=ManagedAssociations(){
+	    didSet {
+	        associations.referentDocument = self
+	    } 
+	}
 	open dynamic var blocks=ManagedBlocks(){
 	    didSet {
 	        blocks.referentDocument = self
@@ -263,6 +268,13 @@ import Foundation
 
     */
 	open func configureSchema(){
+        let associationDefinition = CollectionMetadatum()
+        associationDefinition.proxy = self.associations
+        associationDefinition.collectionName = Association.collectionName
+        associationDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        associationDefinition.persistsDistantly = true
+        associationDefinition.inMemory = false
+        
         let blockDefinition = CollectionMetadatum()
         blockDefinition.proxy = self.blocks
         blockDefinition.collectionName = Block.collectionName
@@ -316,6 +328,7 @@ import Foundation
         // Proceed to configuration
         do{
 
+			try self.metadata.configureSchema(associationDefinition)
 			try self.metadata.configureSchema(blockDefinition)
 			try self.metadata.configureSchema(boxDefinition)
 			try self.metadata.configureSchema(lockerDefinition)

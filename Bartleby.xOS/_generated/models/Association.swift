@@ -25,10 +25,10 @@ import Foundation
 	dynamic open var subjectUID:String = "\(Default.NO_UID)"
 
 	//The relation
-	dynamic open var contract:Relation? {
+	dynamic open var contract:Relation = Relation()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && contract != oldValue {
-	            self.provisionChanges(forKey: "contract",oldValue: oldValue,newValue: contract) 
+	            self.provisionChanges(forKey: "contract",oldValue: oldValue,newValue: contract)  
 	       } 
 	    }
 	}
@@ -103,16 +103,14 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
-			self.contract=decoder.decodeObject(of:Relation.self, forKey: "contract") 
+			self.contract=decoder.decodeObject(of:Relation.self, forKey: "contract")! 
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.subjectUID,forKey:"subjectUID")
-		if let contract = self.contract {
-			coder.encode(contract,forKey:"contract")
-		}
+		coder.encode(self.contract,forKey:"contract")
     }
 
     override open class var supportsSecureCoding:Bool{
