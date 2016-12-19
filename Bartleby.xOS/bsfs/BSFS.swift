@@ -1093,17 +1093,25 @@ public final class BSFS:TriggerHook{
         return nil
     }
     
-    /// Delete a Block its Block, raw file
+    ///
     ///
     /// - Parameter block: the block or the Block reference
+
+
+    ///  Delete a Block its Block, raw file
+    ///
+    /// - Parameters:
+    ///   - block: the block or the Block
     open func deleteBlockFile(_ block:Block) {
+        if let node:Node = block.firstRelation(Relationship.ownedBy){
+            node.removeRelation(Relationship.owns, to: block)
+            node.numberOfBlocks -= 1
+        }else{
+             self._document.log("Block's node not found (block.UID:\(block.UID)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+        }
+        self._document.blocks.removeObject(block)
         do{
             try self._document.removeBlock(with: block.digest)
-            
-            // Delete the distant Block
-            if let idx=self._document.blocks.index(where: { $0.UID == block.UID }){
-                self._document.blocks.removeObject(self._document.blocks[idx])
-            }
         }catch{
             self._document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
