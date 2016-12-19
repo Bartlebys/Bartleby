@@ -27,9 +27,6 @@ class UsersCreationLoadTest: TestCase {
                 HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
-
-
-
     }
 
 
@@ -173,7 +170,7 @@ class UsersCreationLoadTest: TestCase {
      */
     func test_003_1X5_cookie() {
         UsersCreationLoadTest.simultaneousCreations=1
-        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*5
+        UsersCreationLoadTest.nbOfIteration=UsersCFreationLoadTest.simultaneousCreations*5
         let expectation = self.expectation(description: "Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
         self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.cookie)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
@@ -198,17 +195,17 @@ class UsersCreationLoadTest: TestCase {
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
-    func test_005B_100X1_key() {
-        UsersCreationLoadTest.simultaneousCreations=100
+    func test_005B_50X1_key() {
+        UsersCreationLoadTest.simultaneousCreations=50
         UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*1
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
         self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
 
-    func test_005C_1X100_key() {
+    func test_005C_1X50_key() {
         UsersCreationLoadTest.simultaneousCreations=1
-        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*100
+        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*50
         let expectation = self.expectation(description: "Multi Users creations, login and deletions should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
         self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)

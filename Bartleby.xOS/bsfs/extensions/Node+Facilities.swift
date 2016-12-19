@@ -16,13 +16,13 @@ extension Node{
     /// true if the node can be assembled
     public var isAssemblable:Bool{
         if let document=self.referentDocument{
+            let blocks:[Block] = self.relations(Relationship.owns)
+            if blocks.count != self.numberOfBlocks{
+                return false
+            }
             // Do we have all the required blocks?
-            for uid in self.blocksUIDS{
-                if let block = try? Bartleby.registredObjectByUID(uid) as Block{
-                    if !document.blockIsAvailable(identifiedBy:block.digest){
-                        return false
-                    }
-                }else{
+            for block in blocks{
+                if !document.blockIsAvailable(identifiedBy:block.digest){
                     return false
                 }
             }
@@ -39,6 +39,12 @@ extension Node{
         }else{
             return nil
         }
+    }
+
+
+    func addBlock(_ block:Block){
+        self.declaresOwnership(of: block)
+        self.numberOfBlocks += 1
     }
 
 

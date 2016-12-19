@@ -17,11 +17,11 @@ import Foundation
 @objc(Relation) open class Relation : ValueObject {
 
 
-	//the relationship
-	dynamic open var relationship:String = "\(Relationship.free)"
-
 	//the UID of the entity
 	dynamic open var UID:String = "\(Default.NO_UID)"
+
+	//the relationship
+	dynamic open var relationship:String = "\(Relationship.free)"
 
 
     // MARK: - Mappable
@@ -33,8 +33,8 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self.relationship <- ( map["relationship"] )
 			self.UID <- ( map["UID"] )
+			self.relationship <- ( map["relationship"] )
         }
     }
 
@@ -44,15 +44,15 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.quietChanges {
-			self.relationship=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relationship")! as NSString)
 			self.UID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UID")! as NSString)
+			self.relationship=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relationship")! as NSString)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self.relationship,forKey:"relationship")
 		coder.encode(self.UID,forKey:"UID")
+		coder.encode(self.relationship,forKey:"relationship")
     }
 
     override open class var supportsSecureCoding:Bool{

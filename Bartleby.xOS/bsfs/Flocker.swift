@@ -266,7 +266,7 @@ struct Flocker{
         let filePath=folderPath+relativePath
         let node=Node()
         node.relativePath=relativePath
-        node.boxUID=container.boxes[0].UID
+        container.boxes[0].declaresOwnership(of: node)
         node.compressedBlocks=compress
         node.cryptedBlocks=encrypt
         node.authorized=authorized
@@ -371,7 +371,7 @@ struct Flocker{
                                         block.nodeUID=node.UID
                                         block.compressed=compress
                                         block.crypted=encrypt
-                                        node.blocksUIDS.append(block.UID)
+                                        node.addBlock(block)
                                         container.blocks.append(block)
                                         counter+=1
                                         Async.main{

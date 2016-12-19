@@ -19,18 +19,17 @@ class BlocksTests: BartlebyTestCase {
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
 
     func test001_Add_File_to_box() {
-        
+
         let e = self.expectation(description: "Add a file to a box in the document")
         BlocksTests.createFile(size: 20*1000*1000+1, fileName: "file1.txt")
         let url=BlocksTests.urlByAppending(path: "file1.txt")
         let fr=FileReference.publicFileReference(at:url.path)
-
         let box=BlocksTests.document.newObject() as Box
         BlocksTests.document.bsfs.add(reference: fr,
                                       in:box
@@ -41,10 +40,11 @@ class BlocksTests: BartlebyTestCase {
               completed: { completion in
                 if let nodeExtRef:String=completion.getResultExternalReference(){
                     if let node:Node = try? Bartleby.registredObjectByUID(nodeExtRef) {
-                        XCTAssert(node.blocksUIDS.count == 3, "3 blocks expected")
+                        let blocks:[Block] = node.relations(Relationship.owns)
+                        XCTAssert(blocks.count == 3, "3 blocks expected")
                         XCTAssert(node.isAssemblable, "Node is assemblable")
                     }else{
-                         XCTFail("Node not found")
+                        XCTFail("Node not found")
                     }
                 }else{
                     XCTFail("Node external Reference not found")
@@ -56,6 +56,6 @@ class BlocksTests: BartlebyTestCase {
 
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
-
-
+    
+    
 }

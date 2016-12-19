@@ -424,7 +424,6 @@ public final class BSFS:TriggerHook{
                         firstNode=node
                     }
                     node.quietChanges{
-                        node.boxUID=box.UID
                         node.nature=reference.nodeNature.forNode
                         node.relativePath=relativePath///
                         node.priority=reference.priority
@@ -452,8 +451,7 @@ public final class BSFS:TriggerHook{
                             }
                             cumulatedSize += chunk.originalSize
                             cumulatedDigests += chunk.sha1
-                            node.declaresOwnership(of: block)
-                            node.blocksUIDS.append(block.UID)
+                            node.addBlock(block)
                             self._toBeUploadedBlocksUIDS.append(block.UID)
                         }
                         // Store the digest of the cumulated digests.
@@ -624,7 +622,7 @@ public final class BSFS:TriggerHook{
                                                     block=self._document.newObject() as Block
                                                     node.quietChanges {
                                                         block?.quietChanges {
-                                                            node.declaresOwnership(of:block!)
+                                                             node.addBlock(block!)
                                                         }
                                                     }
                                                 }

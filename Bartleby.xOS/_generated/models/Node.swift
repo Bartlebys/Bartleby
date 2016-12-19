@@ -27,20 +27,17 @@ import Foundation
 	//The relative path inside the box
 	dynamic open var relativePath:String = "\(Default.NO_PATH)"
 
-	//The Box UID
-	dynamic open var boxUID:String = "\(Default.NO_UID)"
-
 	//A relative path for a proxy file (And the resolved path if nature==.alias)
 	dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)
 	dynamic open var blocksMaxSize:Int = Default.MAX_INT
 
+	//The total number of blocks
+	dynamic open var numberOfBlocks:Int = 0
+
 	//The priority level of the node (is applicated to its block)
 	dynamic open var priority:Int = 0
-
-	//An ordered list of the Block UIDS
-	dynamic open var blocksUIDS:[String] = [String]()
 
 	//The node nature
 	public enum Nature:String{
@@ -101,7 +98,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","relativePath","boxUID","proxyPath","blocksMaxSize","priority","blocksUIDS","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["externalID","relativePath","proxyPath","blocksMaxSize","numberOfBlocks","priority","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -122,10 +119,6 @@ import Foundation
                 if let casted=value as? String{
                     self.relativePath=casted
                 }
-            case "boxUID":
-                if let casted=value as? String{
-                    self.boxUID=casted
-                }
             case "proxyPath":
                 if let casted=value as? String{
                     self.proxyPath=casted
@@ -134,13 +127,13 @@ import Foundation
                 if let casted=value as? Int{
                     self.blocksMaxSize=casted
                 }
+            case "numberOfBlocks":
+                if let casted=value as? Int{
+                    self.numberOfBlocks=casted
+                }
             case "priority":
                 if let casted=value as? Int{
                     self.priority=casted
-                }
-            case "blocksUIDS":
-                if let casted=value as? [String]{
-                    self.blocksUIDS=casted
                 }
             case "nature":
                 if let casted=value as? Node.Nature{
@@ -217,16 +210,14 @@ import Foundation
                return self.externalID
             case "relativePath":
                return self.relativePath
-            case "boxUID":
-               return self.boxUID
             case "proxyPath":
                return self.proxyPath
             case "blocksMaxSize":
                return self.blocksMaxSize
+            case "numberOfBlocks":
+               return self.numberOfBlocks
             case "priority":
                return self.priority
-            case "blocksUIDS":
-               return self.blocksUIDS
             case "nature":
                return self.nature
             case "modificationDate":
@@ -270,11 +261,10 @@ import Foundation
         self.quietChanges {
 			self.externalID <- ( map["externalID"] )
 			self.relativePath <- ( map["relativePath"] )
-			self.boxUID <- ( map["boxUID"] )
 			self.proxyPath <- ( map["proxyPath"] )
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
+			self.numberOfBlocks <- ( map["numberOfBlocks"] )
 			self.priority <- ( map["priority"] )
-			self.blocksUIDS <- ( map["blocksUIDS"] )// @todo marked generatively as Cryptable Should be crypted!
 			self.nature <- ( map["nature"] )
 			self.modificationDate <- ( map["modificationDate"], ISO8601DateTransform() )
 			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
@@ -295,11 +285,10 @@ import Foundation
         self.quietChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relativePath")! as NSString)
-			self.boxUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "boxUID")! as NSString)
 			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
+			self.numberOfBlocks=decoder.decodeInteger(forKey:"numberOfBlocks") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
-			self.blocksUIDS=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "blocksUIDS")! as! [String]
 			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
 			self.modificationDate=decoder.decodeObject(of: NSDate.self , forKey:"modificationDate") as Date?
 			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
@@ -318,13 +307,12 @@ import Foundation
 			coder.encode(externalID,forKey:"externalID")
 		}
 		coder.encode(self.relativePath,forKey:"relativePath")
-		coder.encode(self.boxUID,forKey:"boxUID")
 		if let proxyPath = self.proxyPath {
 			coder.encode(proxyPath,forKey:"proxyPath")
 		}
 		coder.encode(self.blocksMaxSize,forKey:"blocksMaxSize")
+		coder.encode(self.numberOfBlocks,forKey:"numberOfBlocks")
 		coder.encode(self.priority,forKey:"priority")
-		coder.encode(self.blocksUIDS,forKey:"blocksUIDS")
 		coder.encode(self.nature.rawValue ,forKey:"nature")
 		if let modificationDate = self.modificationDate {
 			coder.encode(modificationDate,forKey:"modificationDate")
