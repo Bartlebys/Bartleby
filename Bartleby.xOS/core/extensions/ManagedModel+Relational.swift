@@ -100,7 +100,7 @@ extension ManagedModel:Relational{
                         let relation=Relation()
                         relation.UID = object.UID
                         if let c = object as? UniversalType{
-                            relation.typeName = c.runTimeTypeName()
+                            relation.typeName = type(of: c).typeName()
                         }
                         relation.relationship = relationship
                         association.associated.append(relation)
@@ -111,7 +111,7 @@ extension ManagedModel:Relational{
                 relation.relationship=relationship
                 relation.UID=object.UID
                 if let c = object as? UniversalType{
-                    relation.typeName = c.runTimeTypeName()
+                    relation.typeName = type(of: c).typeName()
                 }
                 self._relations.append(relation)
             }
