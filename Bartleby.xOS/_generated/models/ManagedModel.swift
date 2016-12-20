@@ -134,9 +134,9 @@ import Foundation
                     }
                 }
                 // There is nothing to do for:
-                // - Relationship.free
-                // - Relationship.ownedBy
-                // - Relationship.coOwnedBy
+                // - Relation.Relationship.free
+                // - Relation.Relationship.ownedBy
+                // - Relation.Relationship.coOwnedBy
             }
             for erasable in toBeErased{
                 // Erase from the collection
