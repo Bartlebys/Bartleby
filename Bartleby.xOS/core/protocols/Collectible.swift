@@ -40,7 +40,7 @@ public protocol Collectible:  Identifiable,Referenced, Serializable,DictionaryRe
     /// Throws ErasingError and DocumentError
     /// You may Override this method to purge files (e.g: Node, Block, ...)
     /// Erase the collectible instance (and its dependent relations)
-    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
+    /// - Parameter commit: set to true by default (we set to false only  not to commit triggered Deletion)
     func erase(commit:Bool)throws->()
 }
 

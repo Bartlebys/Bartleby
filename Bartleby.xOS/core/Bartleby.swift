@@ -358,29 +358,4 @@ open class Bartleby:NSObject {
         }
     }
 
-
-    // MARK: - eraser 
-
-
-    /// Erases globally the instance and its dependent relations.
-    /// Throws ErasingError and DocumentError
-    /// You may Override this method to purge files (e.g: Node, Block, ...)
-    /// Erase the collectible instance (and its dependent relations)
-    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
-    open static func erase(_ instance:Collectible,commit:Bool=true)throws->(){
-        try instance.erase(commit: commit)
-    }
-
-
-    /// Erases globally the instances and their dependents relations.
-    /// Throws ErasingError and DocumentError
-    /// You may Override this method to purge files (e.g: Node, Block, ...)
-    /// Erase the collectible instance (and its dependent relations)
-    /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
-    open static func erase(_ instances:[Collectible],commit:Bool=true)throws->(){
-        for i in instances{
-            try i.erase(commit: commit)
-        }
-    }
-
 }
