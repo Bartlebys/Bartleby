@@ -13,7 +13,7 @@ extension Block{
 
     /// We deal with Bsfs before deleting instances.
 
-    override public func erase(commit: Bool=true) throws {
+    override open func erase(commit: Bool=true) throws {
         if let document=self.referentDocument{
             // Delete files.
             document.bsfs.deleteBlockFile(self)

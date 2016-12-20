@@ -13,7 +13,7 @@ extension Box{
 
     /// We deal with Bsfs before deleting instances.
 
-    override public func erase(commit: Bool=true) throws {
+    override open func erase(commit: Bool=true) throws {
         if self.isMounted{
             if let document=self.referentDocument{
                 // Un mount the Box

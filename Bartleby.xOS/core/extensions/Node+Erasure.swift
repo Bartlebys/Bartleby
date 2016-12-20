@@ -10,7 +10,7 @@ import Foundation
 
 extension Node{
 
-    override public func erase(commit: Bool=true) throws {
+    override open func erase(commit: Bool=true) throws {
         if let document=self.referentDocument{
             // Cancel any Pending Operation
 
