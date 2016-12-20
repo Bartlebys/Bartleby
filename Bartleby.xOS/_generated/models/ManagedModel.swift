@@ -110,7 +110,7 @@ import Foundation
     /// You may Override this method to purge files (e.g: Node, Block, ...)
     /// Erase the collectible instance (and its dependent relations)
     /// - Parameter commit: set to true by default (we do not commit triggered Deletion)
-    public func erase(commit:Bool=true)throws->(){
+    open func erase(commit:Bool=true)throws->(){
         if let document=self.referentDocument{
             var erasableUIDS:[String]=[self.UID]
 
