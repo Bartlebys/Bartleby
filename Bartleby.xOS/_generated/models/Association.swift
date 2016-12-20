@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: Bartleby's Core: used to store externaly a relation between a subject and an object
+// MARK: Bartleby's Core: used to store externaly relations between a subject and objects
 @objc(Association) open class Association : ManagedModel{
 
     // Universal type support
@@ -24,11 +24,11 @@ import Foundation
 	//the UID of the subject
 	dynamic open var subjectUID:String = "\(Default.NO_UID)"
 
-	//The relation
-	dynamic open var contract:Relation = Relation()  {
+	//The relations
+	dynamic open var associated:[Relation] = [Relation]()  {
 	    didSet { 
-	       if !self.wantsQuietChanges && contract != oldValue {
-	            self.provisionChanges(forKey: "contract",oldValue: oldValue,newValue: contract)  
+	       if !self.wantsQuietChanges && associated != oldValue {
+	            self.provisionChanges(forKey: "associated",oldValue: oldValue,newValue: associated)  
 	       } 
 	    }
 	}
@@ -38,7 +38,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["subjectUID","contract"])
+        exposed.append(contentsOf:["subjectUID","associated"])
         return exposed
     }
 
@@ -55,9 +55,9 @@ import Foundation
                 if let casted=value as? String{
                     self.subjectUID=casted
                 }
-            case "contract":
-                if let casted=value as? Relation{
-                    self.contract=casted
+            case "associated":
+                if let casted=value as? [Relation]{
+                    self.associated=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -76,8 +76,8 @@ import Foundation
         switch key {
             case "subjectUID":
                return self.subjectUID
-            case "contract":
-               return self.contract
+            case "associated":
+               return self.associated
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -92,7 +92,7 @@ import Foundation
         super.mapping(map: map)
         self.quietChanges {
 			self.subjectUID <- ( map["subjectUID"] )
-			self.contract <- ( map["contract"] )
+			self.associated <- ( map["associated"] )
         }
     }
 
@@ -103,14 +103,14 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
-			self.contract=decoder.decodeObject(of:Relation.self, forKey: "contract")! 
+			self.associated=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "associated")! as! [Relation]
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.subjectUID,forKey:"subjectUID")
-		coder.encode(self.contract,forKey:"contract")
+		coder.encode(self.associated,forKey:"associated")
     }
 
     override open class var supportsSecureCoding:Bool{

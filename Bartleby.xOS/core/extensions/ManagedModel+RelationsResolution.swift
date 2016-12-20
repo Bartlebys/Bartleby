@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 extension ManagedModel:RelationsResolution{
 
 
@@ -16,7 +15,7 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationship
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
     open func relations<T:Relational>(_ relationship:Relationship,includeAssociations:Bool=false)->[T]{
         var related=[T]()
@@ -35,7 +34,7 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
     open func relationsInSet<T:Relational>(_ relationships:Set<Relationship>,includeAssociations:Bool=false)->[T]{
         var related=[T]()
@@ -58,7 +57,7 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     open func firstRelation<T:Relational>(_ relationship:Relationship,includeAssociations:Bool=false)->T?{
         // Internal relations.
         let internalRelations=self._relations.filter({$0.relationship==relationship.rawValue})
@@ -71,14 +70,26 @@ extension ManagedModel:RelationsResolution{
                 }
             }
         }else{
-            // Try external relations
-            if let associated:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
-                return (association.subjectUID == self.UID && association.contract.relationship == relationship.rawValue)
+            // Try external relations 
+            // TODO  registry Optimization (the current implementation is temporary)
+            if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
+                if association.subjectUID != self.UID {
+                    return false
+                }
+                if association.associated.contains(where: { (relation) -> Bool in
+                    return relation.relationship == relationship.rawValue
+                }){
+                    return true
+                }else{
+                    return false
+                }
             }){
-                for association in associated {
-                    if let candidate = try? Bartleby.registredObjectByUID(association.contract.UID) as ManagedModel{
-                        if let casted = candidate as? T{
-                            return casted
+                for association in associations {
+                    for relation in association.associated{
+                        if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
+                            if let casted = candidate as? T{
+                                return casted
+                            }
                         }
                     }
                 }

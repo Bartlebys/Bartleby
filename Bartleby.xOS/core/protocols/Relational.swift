@@ -12,49 +12,62 @@ public protocol Relational:Identifiable{
 
     /// An Object enters in a free relation Ship with another
     ///
-    /// - Parameter object: the owned object
-    func declaresFreeRelationShip(to object:Relational)
-
-    /// The owner declares it properties
-    /// Both relation are setup owns, and owned
-    ///
-    /// - Parameter object: the owned object
-
-    func declaresOwnership(of object:Relational)
-
-    /// The owner declares it properties
-    /// Both relation are setup owns, and owned
-    ///
-    /// - Parameter object: the owned object
-    func declaresCollectiveOwnership(of object:Relational)
+    /// - Parameters:
+    ///   - object:  object: the owned object
+    ///   - external: if set to true we will create an external association
+    func declaresFreeRelationShip(to object:Relational,external:Bool)
 
 
     /// The owner declares it properties
     /// Both relation are setup owns, and owned
     ///
-    /// - Parameter object: the owned object
-    func declaresFusionalRelationship(with object:Relational)
+    /// - Parameters:
+    ///   - object:  object: the owned object
+    ///   - external: if set to true we will create an external association
+    func declaresOwnership(of object:Relational,external:Bool)
 
-    // MARK: - Relationships Management
+    /// The owner declares it properties
+    /// Both relation are setup coOwns, and coOwnedBy
+    ///
+    /// - Parameters:
+    ///   - object:  object: the owned object
+    ///   - external: if set to true we will create an external association
+    func declaresCollectiveOwnership(of object:Relational,external:Bool)
+
+    /// The owner declares it properties
+    /// Both fusional relation are setup
+    ///
+    /// - Parameters:
+    ///   - object:  object: the owned object
+    ///   - external: if set to true we will create an external association
+    func declaresFusionalRelationship(with object:Relational,external:Bool)
+
 
     /// Add a relation to another object
-    ///
-    /// - Parameter object: the object
-    func addRelation(_ contract:Relationship,to object:Relational)
+    /// - Parameters:
+    ///   - contract: define the relationship
+    ///   - object:  the related object
+    ///   - external: if set to true we will create an external association
+    func addRelation(_ relationship:Relationship,to object:Relational,external:Bool)
 
 
-    /// Add a relation to another object
+    /// Remove a relation to another object
     ///
-    /// - Parameter object: the object
-    func removeRelation(_ contract:Relationship,to object:Relational)
+    /// - Parameters:
+    ///   - relationship: define the relationship
+    ///   - object:  object: the owned object
+    ///   - external: if set to true we will create an external association
+    func removeRelation(_ relationship:Relationship,to object:Relational,external:Bool)
 
     ///  Returns the contracted relations
     ///
     /// - Parameters:
-    ///   - contract:  the nature of the contract
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - relationship:  the nature of the contract
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: the relations
-    func getContractedRelations(_ contract:Relationship,includeAssociations:Bool)->[Relation]
+    func getContractedRelations(_ relationship:Relationship,includeAssociations:Bool)->[Relation]
+
+
 
 }
 

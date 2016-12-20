@@ -16,7 +16,7 @@ extension Block{
     override public func erase(commit: Bool=true) throws {
         if let document=self.referentDocument{
             // Delete files.
-            self.referentDocument?.bsfs.deleteBlockFile(self)
+            document.bsfs.deleteBlockFile(self)
         }else{
             throw DocumentError.instanceNotFound
         }

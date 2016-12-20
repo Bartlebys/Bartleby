@@ -15,7 +15,7 @@ public protocol RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationship
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
     func relations<T:Relational>(_ relationship:Relationship,includeAssociations:Bool)->[T]
 
@@ -24,7 +24,7 @@ public protocol RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
     func relationsInSet<T:Relational>(_ relationships:Set<Relationship>,includeAssociations:Bool)->[T]
 
@@ -33,7 +33,7 @@ public protocol RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations (computationnaly intensive)
+    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     func firstRelation<T:Relational>(_ relationship:Relationship,includeAssociations:Bool)->T?
 
 
