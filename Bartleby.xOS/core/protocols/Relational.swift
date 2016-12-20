@@ -48,7 +48,7 @@ public protocol Relational:Identifiable{
     ///   - contract: define the relationship
     ///   - object:  the related object
     ///   - external: if set to true we will create an external association
-    func addRelation(_ relationship:Relationship,to object:Relational,external:Bool)
+    func addRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool)
 
 
     /// Remove a relation to another object
@@ -57,7 +57,7 @@ public protocol Relational:Identifiable{
     ///   - relationship: define the relationship
     ///   - object:  object: the owned object
     ///   - external: if set to true we will create an external association
-    func removeRelation(_ relationship:Relationship,to object:Relational,external:Bool)
+    func removeRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool)
 
     ///  Returns the contracted relations
     ///
@@ -65,7 +65,7 @@ public protocol Relational:Identifiable{
     ///   - relationship:  the nature of the contract
     ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: the relations
-    func getContractedRelations(_ relationship:Relationship,includeAssociations:Bool)->[Relation]
+    func getContractedRelations(_ relationship:Relation.Relationship,includeAssociations:Bool)->[Relation]
 
 
 

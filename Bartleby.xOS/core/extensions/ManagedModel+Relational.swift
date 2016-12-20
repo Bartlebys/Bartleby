@@ -9,6 +9,31 @@
 import Foundation
 
 
+// MARK: - Without reciprocity
+
+// In case of deletion of one of the related terms the other is preserved
+// (there is not necessarly reciprocity of the relation)
+// E.G: tags can freely associated
+// N -> N
+// free
+
+// MARK: - With reciprocity
+
+// In case of deletion of the owner the owned is automatically deleted.
+//(the contract is exclusive)
+// If the owner is deleted its properties are deleted.
+// 1 -> 1 X N
+// owns
+// ownedBy: reciprocity of owns
+
+// N -> 1
+// coOwns: shared ownerships
+// coOwnedBy: reciprocity of ownedCollectively
+
+// 1 <-> 1
+// fusional: both object owns the other if one is deleted the other is also deleted (exclusivity + both are set to fusional)
+
+
 extension ManagedModel:Relational{
 
 
@@ -64,7 +89,7 @@ extension ManagedModel:Relational{
     ///   - contract: define the relationship
     ///   - object:  the related object
     ///   - external: if set to true we will create an external association
-    open func addRelation(_ relationship:Relationship,to object:Relational,external:Bool=false){
+    open func addRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool=false){
         let candidates=self.getContractedRelations(relationship,includeAssociations:external)
         if !candidates.contains(where:{$0.UID==object.UID}){
             if external{
@@ -74,14 +99,20 @@ extension ManagedModel:Relational{
                         association.subjectUID = self.UID
                         let relation=Relation()
                         relation.UID = object.UID
-                        relation.relationship = relationship.rawValue
+                        if let c = object as? UniversalType{
+                            relation.typeName = c.runTimeTypeName()
+                        }
+                        relation.relationship = relationship
                         association.associated.append(relation)
                     }
                 }
             }else{
                 let relation=Relation()
-                relation.relationship=relationship.rawValue
+                relation.relationship=relationship
                 relation.UID=object.UID
+                if let c = object as? UniversalType{
+                    relation.typeName = c.runTimeTypeName()
+                }
                 self._relations.append(relation)
             }
         }
@@ -90,14 +121,14 @@ extension ManagedModel:Relational{
     /// Remove a relation to another object
     ///
     /// - Parameter object: the object
-    open func removeRelation(_ relationship:Relationship,to object:Relational,external:Bool=false){
+    open func removeRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool=false){
         if external{
             if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
                 if association.subjectUID != self.UID {
                     return false
                 }
                 if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship.rawValue
+                    return relation.relationship == relationship
                 }){
                     return true
                 }else{
@@ -108,7 +139,7 @@ extension ManagedModel:Relational{
                     var toBeDeleted=[Int]()
                     for i in 0 ..< association.associated.count{
                         let relation=association.associated[i]
-                        if (relation.relationship == relationship.rawValue && relation.UID == object.UID){
+                        if (relation.relationship == relationship && relation.UID == object.UID){
                             toBeDeleted.append(i)
                         }
                     }
@@ -125,7 +156,7 @@ extension ManagedModel:Relational{
             var toBeDeleted=[Int]()
             var idx=0
             for relation in self._relations{
-                if relation.relationship==relationship.rawValue && relation.UID==object.UID{
+                if relation.relationship==relationship && relation.UID==object.UID{
                     toBeDeleted.append(idx)
                 }
                 idx += 1
@@ -143,16 +174,16 @@ extension ManagedModel:Relational{
     ///   - relationship:  the nature of the contract
     ///   - includeAssociations: if set to true aggregates externally Associated Relations
     /// - Returns: the relations
-    open func getContractedRelations(_ relationship:Relationship,includeAssociations:Bool=false)->[Relation]{
+    open func getContractedRelations(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->[Relation]{
         if includeAssociations{
             // TODO  registry Optimization (the current implementation is temporary)
-            var relations = self._relations.filter({$0.relationship==relationship.rawValue})
+            var relations = self._relations.filter({$0.relationship==relationship})
             if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
                 if association.subjectUID != self.UID {
                     return false
                 }
                 if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship.rawValue
+                    return relation.relationship == relationship
                 }){
                     return true
                 }else{
@@ -165,7 +196,7 @@ extension ManagedModel:Relational{
             }
             return relations
         }else{
-            return self._relations.filter({$0.relationship==relationship.rawValue})
+            return self._relations.filter({$0.relationship==relationship})
         }
     }
 

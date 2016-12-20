@@ -374,7 +374,6 @@ import Foundation
         return  instance
     }
 
-
     /// Called just after Factory Method
     /// Override this method in your document instance
     /// to perform instance customization

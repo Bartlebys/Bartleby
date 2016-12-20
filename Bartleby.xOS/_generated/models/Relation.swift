@@ -20,8 +20,19 @@ import Foundation
 	//the UID of the entity
 	dynamic open var UID:String = "\(Default.NO_UID)"
 
-	//the relationship
-	dynamic open var relationship:String = "\(Relationship.free)"
+	//The relationship 
+	public enum Relationship:String{
+		case free = "free"
+		case owns = "owns"
+		case ownedBy = "ownedBy"
+		case coOwns = "coOwns"
+		case coOwnedBy = "coOwnedBy"
+		case fusional = "fusional"
+	}
+	open var relationship:Relationship = .free
+
+	//the object type
+	dynamic open var typeName:String?
 
 
     // MARK: - Mappable
@@ -35,6 +46,7 @@ import Foundation
         self.quietChanges {
 			self.UID <- ( map["UID"] )
 			self.relationship <- ( map["relationship"] )
+			self.typeName <- ( map["typeName"] )
         }
     }
 
@@ -45,14 +57,18 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self.UID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "UID")! as NSString)
-			self.relationship=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relationship")! as NSString)
+			self.relationship=Relation.Relationship(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "relationship")! as NSString))! 
+			self.typeName=String(describing: decoder.decodeObject(of: NSString.self, forKey:"typeName") as NSString?)
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.UID,forKey:"UID")
-		coder.encode(self.relationship,forKey:"relationship")
+		coder.encode(self.relationship.rawValue ,forKey:"relationship")
+		if let typeName = self.typeName {
+			coder.encode(typeName,forKey:"typeName")
+		}
     }
 
     override open class var supportsSecureCoding:Bool{

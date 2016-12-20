@@ -17,7 +17,7 @@ extension ManagedModel:RelationsResolution{
     ///   - relationship: the searched relationship
     ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    open func relations<T:Relational>(_ relationship:Relationship,includeAssociations:Bool=false)->[T]{
+    open func relations<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->[T]{
         var related=[T]()
         for relation in self.getContractedRelations(relationship,includeAssociations: includeAssociations){
             if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
@@ -36,7 +36,7 @@ extension ManagedModel:RelationsResolution{
     ///   - relationship: the searched relationships
     ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    open func relationsInSet<T:Relational>(_ relationships:Set<Relationship>,includeAssociations:Bool=false)->[T]{
+    open func relationsInSet<T:Relational>(_ relationships:Set<Relation.Relationship>,includeAssociations:Bool=false)->[T]{
         var related=[T]()
         var relations=[Relation]()
         for relationShip in relationships{
@@ -58,9 +58,9 @@ extension ManagedModel:RelationsResolution{
     /// - Parameters:
     ///   - relationship: the searched relationships
     ///   - includeAssociations: if set to true aggregates externally Associated Relations 
-    open func firstRelation<T:Relational>(_ relationship:Relationship,includeAssociations:Bool=false)->T?{
+    open func firstRelation<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->T?{
         // Internal relations.
-        let internalRelations=self._relations.filter({$0.relationship==relationship.rawValue})
+        let internalRelations=self._relations.filter({$0.relationship==relationship})
         if internalRelations.count>0{
             for relation in internalRelations{
                 if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
@@ -77,7 +77,7 @@ extension ManagedModel:RelationsResolution{
                     return false
                 }
                 if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship.rawValue
+                    return relation.relationship == relationship
                 }){
                     return true
                 }else{

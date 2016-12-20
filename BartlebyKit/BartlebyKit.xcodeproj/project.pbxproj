@@ -475,8 +475,6 @@
 		E5135C491E084B7F001E65A0 /* UserProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6A1E084B7F001E65A0 /* UserProtocol.swift */; };
 		E5135C4A1E084B7F001E65A0 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6B1E084B7F001E65A0 /* Reaction.swift */; };
 		E5135C4B1E084B7F001E65A0 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6B1E084B7F001E65A0 /* Reaction.swift */; };
-		E5135C4C1E084B7F001E65A0 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6C1E084B7F001E65A0 /* Relationship.swift */; };
-		E5135C4D1E084B7F001E65A0 /* Relationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6C1E084B7F001E65A0 /* Relationship.swift */; };
 		E5135C4E1E084B7F001E65A0 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */; };
 		E5135C4F1E084B7F001E65A0 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */; };
 		E5135C501E084B7F001E65A0 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */; };
@@ -817,7 +815,6 @@
 		E5135A691E084B7F001E65A0 /* UniversalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalType.swift; sourceTree = "<group>"; };
 		E5135A6A1E084B7F001E65A0 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5135A6B1E084B7F001E65A0 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
-		E5135A6C1E084B7F001E65A0 /* Relationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relationship.swift; sourceTree = "<group>"; };
 		E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E5135A6F1E084B7F001E65A0 /* ValueObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueObject.swift; sourceTree = "<group>"; };
@@ -1192,7 +1189,6 @@
 				E5135A421E084B7F001E65A0 /* ObjectExpositionError.swift */,
 				E5135A431E084B7F001E65A0 /* protocols */,
 				E5135A6B1E084B7F001E65A0 /* Reaction.swift */,
-				E5135A6C1E084B7F001E65A0 /* Relationship.swift */,
 				E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */,
 				E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */,
 				E5135A6F1E084B7F001E65A0 /* ValueObject.swift */,
@@ -1779,7 +1775,6 @@
 				E5135BDC1E084B7F001E65A0 /* ManagedModel+Relational.swift in Sources */,
 				E5135AFE1E084B7F001E65A0 /* ReadAssociationById.swift in Sources */,
 				E5135C161E084B7F001E65A0 /* DocumentDependent.swift in Sources */,
-				E5135C4C1E084B7F001E65A0 /* Relationship.swift in Sources */,
 				E5135BC61E084B7F001E65A0 /* ManagedModel+Committable.swift in Sources */,
 				E5135AD21E084B7F001E65A0 /* CreateLocker.swift in Sources */,
 				E5135BF01E084B7F001E65A0 /* Global.swift in Sources */,
@@ -2033,7 +2028,6 @@
 				E5135BDD1E084B7F001E65A0 /* ManagedModel+Relational.swift in Sources */,
 				E5135AFF1E084B7F001E65A0 /* ReadAssociationById.swift in Sources */,
 				E5135C171E084B7F001E65A0 /* DocumentDependent.swift in Sources */,
-				E5135C4D1E084B7F001E65A0 /* Relationship.swift in Sources */,
 				E5135BC71E084B7F001E65A0 /* ManagedModel+Committable.swift in Sources */,
 				E5135AD31E084B7F001E65A0 /* CreateLocker.swift in Sources */,
 				E5135BF11E084B7F001E65A0 /* Global.swift in Sources */,

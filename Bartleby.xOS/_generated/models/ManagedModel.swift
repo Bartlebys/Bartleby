@@ -123,12 +123,12 @@ import Foundation
                 }
             }
             for relation in self._relations{
-                if relation.relationship == Relationship.fusional.rawValue
-                    || relation.relationship == Relationship.owns.rawValue{
+                if relation.relationship == Relation.Relationship.fusional
+                    || relation.relationship == Relation.Relationship.owns{
                     try __append(relation.UID)
                 }
-                if relation.relationship == Relationship.coOwns.rawValue{
-                    let m:[ManagedModel] = self.relations(Relationship.coOwns)
+                if relation.relationship == Relation.Relationship.coOwns{
+                    let m:[ManagedModel] = self.relations(Relation.Relationship.coOwns)
                     if m.count == 1{
                         try __append(relation.UID)
                     }
