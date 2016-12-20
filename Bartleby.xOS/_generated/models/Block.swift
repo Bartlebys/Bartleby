@@ -30,9 +30,6 @@ import Foundation
 	    }
 	}
 
-	//The UID of the holding node
-	dynamic open var nodeUID:String = "\(Default.NO_UID)"
-
 	//The rank of the Block in the node
 	dynamic open var rank:Int = 0
 
@@ -68,7 +65,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","nodeUID","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -84,10 +81,6 @@ import Foundation
             case "digest":
                 if let casted=value as? String{
                     self.digest=casted
-                }
-            case "nodeUID":
-                if let casted=value as? String{
-                    self.nodeUID=casted
                 }
             case "rank":
                 if let casted=value as? Int{
@@ -146,8 +139,6 @@ import Foundation
         switch key {
             case "digest":
                return self.digest
-            case "nodeUID":
-               return self.nodeUID
             case "rank":
                return self.rank
             case "startsAt":
@@ -182,7 +173,6 @@ import Foundation
         super.mapping(map: map)
         self.quietChanges {
 			self.digest <- ( map["digest"] )
-			self.nodeUID <- ( map["nodeUID"] )
 			self.rank <- ( map["rank"] )
 			self.startsAt <- ( map["startsAt"] )
 			self.size <- ( map["size"] )
@@ -199,7 +189,6 @@ import Foundation
         super.init(coder: decoder)
         self.quietChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
-			self.nodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "nodeUID")! as NSString)
 			self.rank=decoder.decodeInteger(forKey:"rank") 
 			self.startsAt=decoder.decodeInteger(forKey:"startsAt") 
 			self.size=decoder.decodeInteger(forKey:"size") 
@@ -212,7 +201,6 @@ import Foundation
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self.digest,forKey:"digest")
-		coder.encode(self.nodeUID,forKey:"nodeUID")
 		coder.encode(self.rank,forKey:"rank")
 		coder.encode(self.startsAt,forKey:"startsAt")
 		coder.encode(self.size,forKey:"size")

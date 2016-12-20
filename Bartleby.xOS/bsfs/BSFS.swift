@@ -441,7 +441,6 @@ public final class BSFS:TriggerHook{
                         for chunk in groupOfChunks{
                             let block=self._document.newObject() as Block
                             block.quietChanges{
-                                block.nodeUID=node.UID
                                 block.rank=chunk.rank
                                 block.digest=chunk.sha1
                                 block.startsAt=chunk.startsAt
@@ -621,14 +620,13 @@ public final class BSFS:TriggerHook{
                                                 }else{
                                                     block=self._document.newObject() as Block
                                                     node.quietChanges {
-                                                        block?.quietChanges {
+                                                        block!.quietChanges {
                                                              node.addBlock(block!)
                                                         }
                                                     }
                                                 }
 
                                                 block!.quietChanges{
-                                                    block!.nodeUID=node.UID
                                                     block!.rank=chunk.rank
                                                     block!.digest=chunk.sha1
                                                     block!.startsAt=chunk.startsAt

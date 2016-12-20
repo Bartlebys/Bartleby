@@ -368,7 +368,7 @@ struct Flocker{
                                         block.size = lengthOfAddedData
                                         block.digest=sha1
                                         block.rank=counter
-                                        block.nodeUID=node.UID
+                                        node.declaresOwnership(of: block)
                                         block.compressed=compress
                                         block.crypted=encrypt
                                         node.addBlock(block)
@@ -495,9 +495,7 @@ struct Flocker{
                     }
 
                     for node in container.nodes{
-                        let blocks=container.blocks.filter({ (block) -> Bool in
-                            return block.nodeUID==node.UID
-                        })
+                        let blocks:[Block]=container.relations(Relation.Relationship.owns)
                         // Consecutive blocks are faster to assemble
                         let sortedBlocks=blocks.sorted(by: { (lb, rb) -> Bool in
                             return lb.rank < rb.rank
