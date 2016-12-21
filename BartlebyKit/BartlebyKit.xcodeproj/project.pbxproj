@@ -321,10 +321,6 @@
 		E5135BAD1E084B7F001E65A0 /* BartlebyDocument+SuperIterable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A191E084B7F001E65A0 /* BartlebyDocument+SuperIterable.swift */; };
 		E5135BAE1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1A1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift */; };
 		E5135BAF1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1A1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift */; };
-		E5135BB01E084B7F001E65A0 /* Block+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1B1E084B7F001E65A0 /* Block+Erasure.swift */; };
-		E5135BB11E084B7F001E65A0 /* Block+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1B1E084B7F001E65A0 /* Block+Erasure.swift */; };
-		E5135BB21E084B7F001E65A0 /* Box+Erasures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1C1E084B7F001E65A0 /* Box+Erasures.swift */; };
-		E5135BB31E084B7F001E65A0 /* Box+Erasures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1C1E084B7F001E65A0 /* Box+Erasures.swift */; };
 		E5135BB41E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1D1E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift */; };
 		E5135BB51E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1D1E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift */; };
 		E5135BB61E084B7F001E65A0 /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */; };
@@ -375,8 +371,6 @@
 		E5135BE31E084B7F001E65A0 /* ManagedModel+Supervisable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A341E084B7F001E65A0 /* ManagedModel+Supervisable.swift */; };
 		E5135BE41E084B7F001E65A0 /* ManagedModel+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A351E084B7F001E65A0 /* ManagedModel+Tags.swift */; };
 		E5135BE51E084B7F001E65A0 /* ManagedModel+Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A351E084B7F001E65A0 /* ManagedModel+Tags.swift */; };
-		E5135BE61E084B7F001E65A0 /* Node+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A361E084B7F001E65A0 /* Node+Erasure.swift */; };
-		E5135BE71E084B7F001E65A0 /* Node+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A361E084B7F001E65A0 /* Node+Erasure.swift */; };
 		E5135BE81E084B7F001E65A0 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A371E084B7F001E65A0 /* NSNotification+Completion.swift */; };
 		E5135BE91E084B7F001E65A0 /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A371E084B7F001E65A0 /* NSNotification+Completion.swift */; };
 		E5135BEA1E084B7F001E65A0 /* NSNotification+Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A381E084B7F001E65A0 /* NSNotification+Progression.swift */; };
@@ -526,6 +520,8 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5D205371E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */; };
+		E5D205381E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -738,8 +734,6 @@
 		E5135A181E084B7F001E65A0 /* BartlebyDocument+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SecurityScopes.swift"; sourceTree = "<group>"; };
 		E5135A191E084B7F001E65A0 /* BartlebyDocument+SuperIterable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SuperIterable.swift"; sourceTree = "<group>"; };
 		E5135A1A1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Triggers.swift"; sourceTree = "<group>"; };
-		E5135A1B1E084B7F001E65A0 /* Block+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Block+Erasure.swift"; sourceTree = "<group>"; };
-		E5135A1C1E084B7F001E65A0 /* Box+Erasures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Box+Erasures.swift"; sourceTree = "<group>"; };
 		E5135A1D1E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionMetadatum+Proxy.swift"; sourceTree = "<group>"; };
 		E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Conveniences.swift"; sourceTree = "<group>"; };
 		E5135A1F1E084B7F001E65A0 /* Completion+Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Result.swift"; sourceTree = "<group>"; };
@@ -765,7 +759,6 @@
 		E5135A331E084B7F001E65A0 /* ManagedModel+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Serializable.swift"; sourceTree = "<group>"; };
 		E5135A341E084B7F001E65A0 /* ManagedModel+Supervisable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Supervisable.swift"; sourceTree = "<group>"; };
 		E5135A351E084B7F001E65A0 /* ManagedModel+Tags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Tags.swift"; sourceTree = "<group>"; };
-		E5135A361E084B7F001E65A0 /* Node+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+Erasure.swift"; sourceTree = "<group>"; };
 		E5135A371E084B7F001E65A0 /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
 		E5135A381E084B7F001E65A0 /* NSNotification+Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Progression.swift"; sourceTree = "<group>"; };
 		E5135A391E084B7F001E65A0 /* Progression+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Progression+Conveniences.swift"; sourceTree = "<group>"; };
@@ -849,6 +842,7 @@
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Erasure.swift"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1214,8 +1208,6 @@
 				E5135A181E084B7F001E65A0 /* BartlebyDocument+SecurityScopes.swift */,
 				E5135A191E084B7F001E65A0 /* BartlebyDocument+SuperIterable.swift */,
 				E5135A1A1E084B7F001E65A0 /* BartlebyDocument+Triggers.swift */,
-				E5135A1B1E084B7F001E65A0 /* Block+Erasure.swift */,
-				E5135A1C1E084B7F001E65A0 /* Box+Erasures.swift */,
 				E5135A1D1E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift */,
 				E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */,
 				E5135A1F1E084B7F001E65A0 /* Completion+Result.swift */,
@@ -1229,6 +1221,7 @@
 				E5135A271E084B7F001E65A0 /* ManagedModel+ConsolidableProgression.swift */,
 				E5135A281E084B7F001E65A0 /* ManagedModel+DictionaryRepresentation.swift */,
 				E5135A291E084B7F001E65A0 /* ManagedModel+Equatable.swift */,
+				E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */,
 				E5135A2A1E084B7F001E65A0 /* ManagedModel+Extended.swift */,
 				E5135A2B1E084B7F001E65A0 /* ManagedModel+JSONString.swift */,
 				E5135A2C1E084B7F001E65A0 /* ManagedModel+Logs.swift */,
@@ -1241,7 +1234,6 @@
 				E5135A331E084B7F001E65A0 /* ManagedModel+Serializable.swift */,
 				E5135A341E084B7F001E65A0 /* ManagedModel+Supervisable.swift */,
 				E5135A351E084B7F001E65A0 /* ManagedModel+Tags.swift */,
-				E5135A361E084B7F001E65A0 /* Node+Erasure.swift */,
 				E5135A371E084B7F001E65A0 /* NSNotification+Completion.swift */,
 				E5135A381E084B7F001E65A0 /* NSNotification+Progression.swift */,
 				E5135A391E084B7F001E65A0 /* Progression+Conveniences.swift */,
@@ -1765,7 +1757,7 @@
 				E5135C2A1E084B7F001E65A0 /* LogEntriesObserver.swift in Sources */,
 				E5135BAA1E084B7F001E65A0 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5135A861E084B7F001E65A0 /* ManagedBoxes.swift in Sources */,
-				E5135BB21E084B7F001E65A0 /* Box+Erasures.swift in Sources */,
+				E5D205371E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */,
 				E5135B121E084B7F001E65A0 /* ReadLockersByIds.swift in Sources */,
 				E5135B5A1E084B7F001E65A0 /* Flocker.swift in Sources */,
 				E5135B5E1E084B7F001E65A0 /* UploadBlock.swift in Sources */,
@@ -1829,7 +1821,6 @@
 				E5135A941E084B7F001E65A0 /* Association.swift in Sources */,
 				E5135B021E084B7F001E65A0 /* ReadAssociationsByQuery.swift in Sources */,
 				E5135B481E084B7F001E65A0 /* BSFSError.swift in Sources */,
-				E5135BE61E084B7F001E65A0 /* Node+Erasure.swift in Sources */,
 				E5135C281E084B7F001E65A0 /* LogCategorizable.swift in Sources */,
 				E5135C401E084B7F001E65A0 /* SuperIterable.swift in Sources */,
 				E5135A8E1E084B7F001E65A0 /* ManagedTags.swift in Sources */,
@@ -1856,7 +1847,6 @@
 				E5135C201E084B7F001E65A0 /* Identifiable.swift in Sources */,
 				E5135B8A1E084B7F001E65A0 /* Context.swift in Sources */,
 				E5135AC41E084B7F001E65A0 /* User.swift in Sources */,
-				E5135BB01E084B7F001E65A0 /* Block+Erasure.swift in Sources */,
 				E5135BFC1E084B7F001E65A0 /* BartlebyCollection.swift in Sources */,
 				E5135B281E084B7F001E65A0 /* UpdateAssociation.swift in Sources */,
 				E5135AE81E084B7F001E65A0 /* DeleteBlocks.swift in Sources */,
@@ -2018,7 +2008,7 @@
 				E5135C2B1E084B7F001E65A0 /* LogEntriesObserver.swift in Sources */,
 				E5135BAB1E084B7F001E65A0 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5135A871E084B7F001E65A0 /* ManagedBoxes.swift in Sources */,
-				E5135BB31E084B7F001E65A0 /* Box+Erasures.swift in Sources */,
+				E5D205381E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */,
 				E5135B131E084B7F001E65A0 /* ReadLockersByIds.swift in Sources */,
 				E5135B5B1E084B7F001E65A0 /* Flocker.swift in Sources */,
 				E5135B5F1E084B7F001E65A0 /* UploadBlock.swift in Sources */,
@@ -2082,7 +2072,6 @@
 				E5135A951E084B7F001E65A0 /* Association.swift in Sources */,
 				E5135B031E084B7F001E65A0 /* ReadAssociationsByQuery.swift in Sources */,
 				E5135B491E084B7F001E65A0 /* BSFSError.swift in Sources */,
-				E5135BE71E084B7F001E65A0 /* Node+Erasure.swift in Sources */,
 				E5135C291E084B7F001E65A0 /* LogCategorizable.swift in Sources */,
 				E5135C411E084B7F001E65A0 /* SuperIterable.swift in Sources */,
 				E5135A8F1E084B7F001E65A0 /* ManagedTags.swift in Sources */,
@@ -2109,7 +2098,6 @@
 				E5135C211E084B7F001E65A0 /* Identifiable.swift in Sources */,
 				E5135B8B1E084B7F001E65A0 /* Context.swift in Sources */,
 				E5135AC51E084B7F001E65A0 /* User.swift in Sources */,
-				E5135BB11E084B7F001E65A0 /* Block+Erasure.swift in Sources */,
 				E5135BFD1E084B7F001E65A0 /* BartlebyCollection.swift in Sources */,
 				E5135B291E084B7F001E65A0 /* UpdateAssociation.swift in Sources */,
 				E5135AE91E084B7F001E65A0 /* DeleteBlocks.swift in Sources */,

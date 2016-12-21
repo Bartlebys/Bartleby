@@ -350,6 +350,7 @@ import Foundation
         }
     }
     
+
     // MARK: -  Entities factories
 
     /// Model Factory
@@ -383,6 +384,22 @@ import Foundation
 
     }
 
+    /// Called just before to Erase a Collectible
+    /// Related object are cleaned by the Relational logic
+    /// But you may want to clean up or perform something before Erasure.
+    /// Override this method in your document instance
+    /// to perform associated cleaning before erasure
+    ///
+    /// - Parameter instance: the fresh instance
+    open func willErase(_ instance:Collectible){
+        if let o = instance as? Box {
+            self.bsfs.unMount(boxUID: o.UID, completed: { (completed) in })
+        }else if let _ = instance as? Node{
+            // Cancel any pending operation
+        }else if let o = instance as? Block {
+            self.bsfs.deleteBlockFile(o)
+        }
+    }
 
     internal func _newUser() -> User {
         let user=User()
@@ -407,5 +424,7 @@ import Foundation
         self.didCreate(user)
         return user
     }
+
+
 
 }
