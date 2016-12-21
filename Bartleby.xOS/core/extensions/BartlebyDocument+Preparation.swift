@@ -33,9 +33,9 @@ extension BartlebyDocument{
         self.configureSchema()
 
         // We want to be able to write blocks even on Document drafts.
-        if  self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName] == nil{
+        if  self.documentFileWrapper.fileWrappers?[self.blocksDirectoryWrapperName] == nil{
             let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-            blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+            blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
             documentFileWrapper.addFileWrapper(blocksFileWrapper)
         }
     }

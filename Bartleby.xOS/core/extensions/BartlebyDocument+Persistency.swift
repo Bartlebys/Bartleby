@@ -239,9 +239,9 @@ extension BartlebyDocument{
                 }
 
                 // Bsfs blocks
-                if  fileWrappers[self._blocksDirectoryWrapperName] == nil{
+                if  fileWrappers[self.blocksDirectoryWrapperName] == nil{
                     let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-                    blocksFileWrapper.preferredFilename=self._blocksDirectoryWrapperName
+                    blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
                     self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
                 }
             }

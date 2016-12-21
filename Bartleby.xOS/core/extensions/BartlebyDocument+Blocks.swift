@@ -12,13 +12,10 @@ extension BartlebyDocument{
 
     // MARK: - Blocks Wrappers
 
-
-    // The bsfs data file name
-    internal var _blocksDirectoryWrapperName: String { return "blocks" }
-    internal var _blocksWrapper:FileWrapper? {
-        return self.documentFileWrapper.fileWrappers?[self._blocksDirectoryWrapperName]
+    public var blocksDirectoryWrapperName: String { return "blocks" }
+    public var blocksWrapper:FileWrapper? {
+        return self.documentFileWrapper.fileWrappers?[self.blocksDirectoryWrapperName]
     }
-
 
 
     /// Returns the list of the digest (sha1) of each blocks in the blocks wrapper
@@ -26,7 +23,7 @@ extension BartlebyDocument{
     /// - Returns: the list of the digest (sha1) of each blocks in the blocks wrapper
     public func availableBlocksDigests()->[String]{
         var digests=[String]()
-        if let fileWrappers=self._blocksWrapper?.fileWrappers{
+        if let fileWrappers=self.blocksWrapper?.fileWrappers{
             digests=fileWrappers.map({ (digest, _) ->String in
                 return digest
             })
@@ -41,7 +38,7 @@ extension BartlebyDocument{
     /// - Parameter digest: the identifier of the file
     /// - Returns: the availability of the block
     public func blockIsAvailable(identifiedBy digest:String)->Bool{
-        return !(self._blocksWrapper?.fileWrappers?.index(forKey: digest) == nil)
+        return !(self.blocksWrapper?.fileWrappers?.index(forKey: digest) == nil)
     }
 
 
@@ -55,7 +52,7 @@ extension BartlebyDocument{
     ///   - digest: the identifier of the block (use the block digests)
     ///   - isABlock: defines if the file must be considerate as a block (bsfs)
     public func put(data:Data,identifiedBy digest:String)throws->(){
-        if let directoryFileWrapper = self._blocksWrapper {
+        if let directoryFileWrapper = self.blocksWrapper {
             Async.main{
                 // Remove the previous wrapper if there is one
                 if let w=directoryFileWrapper.fileWrappers?[digest]{
@@ -78,7 +75,7 @@ extension BartlebyDocument{
     ///   - digest: the identifier of the file
     ///   - isABlock: defines if the file must be considerate as a block (bsfs)
     public func removeBlock(with digest:String)throws->(){
-        if let directoryFileWrapper:FileWrapper = self._blocksWrapper {
+        if let directoryFileWrapper:FileWrapper = self.blocksWrapper {
             if let w=directoryFileWrapper.fileWrappers?[digest]{
                 Async.main{
                     directoryFileWrapper.removeFileWrapper(w)
@@ -100,7 +97,7 @@ extension BartlebyDocument{
         let mainGroup=AsyncGroup()
         var data:Data?
         mainGroup.main {
-            data=self._blocksWrapper?.fileWrappers?[digest]?.regularFileContents
+            data=self.blocksWrapper?.fileWrappers?[digest]?.regularFileContents
         }
         mainGroup.wait()
         if let data=data{
@@ -114,7 +111,7 @@ extension BartlebyDocument{
 
     /// Clean procedure usable during maintenance to clean up potential Orphans blocks@
     public func eraseOrphansBlocks()throws->(){
-        if let fileWrappers=self._blocksWrapper?.fileWrappers{
+        if let fileWrappers=self.blocksWrapper?.fileWrappers{
             for (k,_) in fileWrappers {
                 if !self.blocks.contains(where: { return $0.digest==k }){
                     try removeBlock(with: k)
