@@ -11,27 +11,30 @@ import Foundation
 
 // MARK: - Without reciprocity
 
+// "free"
 // In case of deletion of one of the related terms the other is preserved
 // (there is not necessarly reciprocity of the relation)
 // E.G: tags can freely associated
 // N -> N
-// free
+
 
 // MARK: - With reciprocity
 
+// "owns"
+// "ownedBy": reciprocity of "owns"
 // In case of deletion of the owner the owned is automatically deleted.
-//(the contract is exclusive)
-// If the owner is deleted its properties are deleted.
-// 1 -> 1 X N
-// owns
-// ownedBy: reciprocity of owns
+// If the owner is deleted its "ownees" are deleted.
+// if any owner is deleted all the ownees are destroyed.
+// N -> N
 
-// N -> 1
-// coOwns: shared ownerships
-// coOwnedBy: reciprocity of ownedCollectively
 
-// 1 <-> 1
-// fusional: both object owns the other if one is deleted the other is also deleted (exclusivity + both are set to fusional)
+// "coOwns": shared ownerships
+// "coOwnedBy": reciprocity of coOwns
+// In case of deletion of one of it owner that the ownee will survive if at least one of its co owner exists.
+// N -> N
+
+// fusional: both object owns the other if one is deleted the other is also deleted ( both are set to fusional)
+// N <-> N
 
 
 extension ManagedModel:Relational{
