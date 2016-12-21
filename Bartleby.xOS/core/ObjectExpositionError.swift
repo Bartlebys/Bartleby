@@ -9,5 +9,5 @@
 import Foundation
 
 public enum ObjectExpositionError:Error {
-    case UnknownKey(key:String,forTypeName:String)
+    case unknownKey(key:String,forTypeName:String)
 }

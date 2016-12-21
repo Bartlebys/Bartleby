@@ -145,7 +145,7 @@ import Foundation
                     self.changedKeys=casted
                 }
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: ManagedModel.typeName())
+                throw ObjectExpositionError.unknownKey(key: key,forTypeName: ManagedModel.typeName())
         }
     }
 
@@ -170,7 +170,7 @@ import Foundation
             case "changedKeys":
                return self.changedKeys
             default:
-                throw ObjectExpositionError.UnknownKey(key: key,forTypeName: ManagedModel.typeName())
+                throw ObjectExpositionError.unknownKey(key: key,forTypeName: ManagedModel.typeName())
         }
     }
     // MARK: - Mappable
