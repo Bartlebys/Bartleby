@@ -32,6 +32,26 @@ public extension Notification.Name {
 
 @objc(ManagedPushOperations) open class ManagedPushOperations : ManagedModel,IterableCollectibleCollection{
 
+    // Stagged "pushOperations" identifiers
+    fileprivate dynamic var _staged=[String]()
+
+    // The underling "pushOperations" storage
+    fileprivate dynamic var _items:[PushOperation]=[PushOperation](){
+        didSet {
+            if !self.wantsQuietChanges && _items != oldValue {
+                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
+            }
+        }
+    }
+
+    /// Marks that a collectible instance should be committed.
+    ///
+    /// - Parameter item: the collectible instance
+    open func stage(_ item: Collectible){
+        if !self._staged.contains(item.UID){
+            self._staged.append(item.UID)
+        }
+    }
 
     // Used to determine if the wrapper should be saved.
     open var shouldBeSaved:Bool=false
@@ -74,14 +94,7 @@ public extension Notification.Name {
 
     weak open var tableView: BXTableView?
 
-    // The underling _items storage
-    fileprivate dynamic var _items:[PushOperation]=[PushOperation](){
-        didSet {
-            if !self.wantsQuietChanges && _items != oldValue {
-                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
-            }
-        }
-    }
+
 
     open func generate() -> AnyIterator<PushOperation> {
         var nextIndex = -1
@@ -200,7 +213,7 @@ public extension Notification.Name {
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_items"])
+        exposed.append(contentsOf:["_items","_staged"])
         return exposed
     }
 
@@ -216,6 +229,10 @@ public extension Notification.Name {
             case "_items":
                 if let casted=value as? [PushOperation]{
                     self._items=casted
+                }
+            case "_staged":
+                if let casted=value as? [String]{
+                    self._staged=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -234,6 +251,8 @@ public extension Notification.Name {
         switch key {
             case "_items":
                return self._items
+            case "_staged":
+               return self._staged
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -248,6 +267,7 @@ public extension Notification.Name {
         super.mapping(map: map)
         self.quietChanges {
 			self._items <- ( map["_items"] )
+			self._staged <- ( map["_staged"] )
         }
     }
 
@@ -258,12 +278,14 @@ public extension Notification.Name {
         super.init(coder: decoder)
         self.quietChanges {
 			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),PushOperation.classForCoder()], forKey: "_items")! as! [PushOperation]
+			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._items,forKey:"_items")
+		coder.encode(self._staged,forKey:"_staged")
     }
 
     override open class var supportsSecureCoding:Bool{

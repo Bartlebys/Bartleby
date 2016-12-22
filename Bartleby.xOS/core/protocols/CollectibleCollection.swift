@@ -17,8 +17,14 @@ import Cocoa
 // The collection behavior is generated using flexions.
 public protocol CollectibleCollection: Collectible,ProvisionChanges {
 
-      // Used to determine if the wrapper should be saved.
+    // Used to determine if the wrapper should be saved.
     var shouldBeSaved:Bool { get set }
+
+
+    /// Marks that a collectible instance should be committed.
+    ///
+    /// - Parameter item: the collectible instance
+    func stage(_ item: Collectible)
 
     // The undo manager (for automation)
     weak var undoManager: UndoManager? { get }

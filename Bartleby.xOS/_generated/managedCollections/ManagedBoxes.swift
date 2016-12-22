@@ -32,6 +32,26 @@ public extension Notification.Name {
 
 @objc(ManagedBoxes) open class ManagedBoxes : ManagedModel,IterableCollectibleCollection{
 
+    // Stagged "boxes" identifiers
+    fileprivate dynamic var _staged=[String]()
+
+    // The underling "boxes" storage
+    fileprivate dynamic var _items:[Box]=[Box](){
+        didSet {
+            if !self.wantsQuietChanges && _items != oldValue {
+                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
+            }
+        }
+    }
+
+    /// Marks that a collectible instance should be committed.
+    ///
+    /// - Parameter item: the collectible instance
+    open func stage(_ item: Collectible){
+        if !self._staged.contains(item.UID){
+            self._staged.append(item.UID)
+        }
+    }
 
     // Used to determine if the wrapper should be saved.
     open var shouldBeSaved:Bool=false
@@ -74,14 +94,7 @@ public extension Notification.Name {
 
     weak open var tableView: BXTableView?
 
-    // The underling _items storage
-    fileprivate dynamic var _items:[Box]=[Box](){
-        didSet {
-            if !self.wantsQuietChanges && _items != oldValue {
-                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
-            }
-        }
-    }
+
 
     open func generate() -> AnyIterator<Box> {
         var nextIndex = -1
@@ -175,17 +188,16 @@ public extension Notification.Name {
     }
 
 
-    /**
-    Commit all the changes in one bunch
-    Marking commit on each item will toggle hasChanged flag.
-    */
+    /// Commit all the staged changes.
+    ///
+    /// - Returns: the UIDS that have been Committed
     open func commitChanges() -> [String] {
-        var UIDS=[String]()
-        if self.shouldBeCommitted{
-            let changedItems=self._items.filter { $0.shouldBeCommitted == true }
-            for changed in changedItems{
-                UIDS.append(changed.UID)
-            }
+        let UIDS=self._staged
+        if UIDS.count>0{
+            let changedItems=self._staged.map({ (UID) -> Box in
+                let box:Box = try! Bartleby.registredObjectByUID(UID)
+                return box
+            })
 			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
 			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
@@ -196,6 +208,7 @@ public extension Notification.Name {
 			}
 
             self.hasBeenCommitted()
+            self._staged.removeAll()
         }
         return UIDS
     }
@@ -214,7 +227,7 @@ public extension Notification.Name {
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_items"])
+        exposed.append(contentsOf:["_items","_staged"])
         return exposed
     }
 
@@ -230,6 +243,10 @@ public extension Notification.Name {
             case "_items":
                 if let casted=value as? [Box]{
                     self._items=casted
+                }
+            case "_staged":
+                if let casted=value as? [String]{
+                    self._staged=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -248,6 +265,8 @@ public extension Notification.Name {
         switch key {
             case "_items":
                return self._items
+            case "_staged":
+               return self._staged
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -262,6 +281,7 @@ public extension Notification.Name {
         super.mapping(map: map)
         self.quietChanges {
 			self._items <- ( map["_items"] )
+			self._staged <- ( map["_staged"] )
         }
     }
 
@@ -272,12 +292,14 @@ public extension Notification.Name {
         super.init(coder: decoder)
         self.quietChanges {
 			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "_items")! as! [Box]
+			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
 		coder.encode(self._items,forKey:"_items")
+		coder.encode(self._staged,forKey:"_staged")
     }
 
     override open class var supportsSecureCoding:Bool{

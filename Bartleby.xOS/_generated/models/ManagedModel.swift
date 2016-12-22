@@ -60,9 +60,6 @@ import Foundation
 	//Is supervision enabled?
 	dynamic internal var _supervisionIsEnabled:Bool = true
 
-	//The internal flag for auto commit
-	dynamic internal var _shouldBeCommitted:Bool = false
-
 	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
 	dynamic internal var _commitCounter:Int = 0
 

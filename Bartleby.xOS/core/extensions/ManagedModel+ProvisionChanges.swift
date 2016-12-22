@@ -19,7 +19,7 @@ extension ManagedModel:ProvisionChanges{
      Properties that are declared `supervisable` provision their changes using this method.
 
      ## **Commit** is the first phase of the **distribution** mechanism (the second is Push, and the Third Trigger and integration on another node)
-     If auto-commit is enabled on any supervised change an object is marked  to be committed `_shouldBeCommitted=true`
+     If auto-commit is enabled on any supervised change an object is "staged" in its collection
 
      ## You can add **supervisers** to any ManagedModel.
      On supervised change the closure of the supervisers will be invoked.
@@ -48,8 +48,7 @@ extension ManagedModel:ProvisionChanges{
         }
 
        if self._autoCommitIsEnabled == true {
-            // Set up the commit flag (can be propagated to the collection)
-            self._shouldBeCommitted=true
+            self.collection?.stage(self)
         }
 
         // Changes propagation & Inspection
@@ -65,7 +64,7 @@ extension ManagedModel:ProvisionChanges{
             if let collection = self as? BartlebyCollection {
                 if self.isInspectable {
                     let entityName=Pluralization.singularize(collection.d_collectionName)
-                    if key=="items"{
+                    if key=="_items"{
                         if let oldArray=oldValue as? [ManagedModel], let newArray=newValue as? [ManagedModel]{
                             if oldArray.count < newArray.count{
                                 let stringValue:String! = (newArray.last?.UID ?? "")

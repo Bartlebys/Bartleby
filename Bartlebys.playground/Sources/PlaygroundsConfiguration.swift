@@ -6,19 +6,23 @@
 //  Copyright © 2015 Benoit Pereira da silva. All rights reserved.
 //
 
-import Foundation
+import Alamofire
+import ObjectMapper
 import BartlebyKit
 
 
 // A shared configuration Model
 open class PlaygroundsConfiguration: BartlebyConfiguration {
 
+
     // The cryptographic key used to encrypt/decrypt the data
-    open static var KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
+    open static var KEY: String="UDJDJJDJJDJDJDJDJJDDJJDJDJJDJ-O9393972AA"
 
     open static var SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
 
-    public static var KEY_SIZE:KeySize = .s128bits
+    // To conform to crypto legal context
+    open static var KEY_SIZE: KeySize = .s128bits
+
 
     //MARK: - URLS
 
@@ -78,7 +82,7 @@ open class PlaygroundsConfiguration: BartlebyConfiguration {
         case production
     }
 
-    static var currentEnvironment: Environment = .local
+    static var currentEnvironment: Environment = .development
 
     static fileprivate var __BASE_URL: URL {
         get {
@@ -97,9 +101,10 @@ open class PlaygroundsConfiguration: BartlebyConfiguration {
     }
 
     open static let TIME_OUT_DURATION = 10.0
-
+    
     open static let LONG_TIME_OUT_DURATION = 360.0
     
     
-    open static let ENABLE_TEST_OBSERVATION=false
+    open static let ENABLE_TEST_OBSERVATION=true
+
 }

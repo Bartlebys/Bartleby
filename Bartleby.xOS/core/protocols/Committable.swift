@@ -14,14 +14,11 @@ public protocol Committable {
     // MARK: Commit
 
     // You can in specific situation mark that an instance should be committed by calling this method.
-    // For example after a bunch of un supervised changes.
+    // For example after a bunch of unSupervised changes.
     func needsToBeCommitted()
 
     // Marks the entity as committed and increments it provisionning counter
     func hasBeenCommitted()
-
-    /// Shall we commit that instance during next autocommit?
-    var shouldBeCommitted: Bool { get }
 
     // Returns the current commit counter
     var commitCounter:UInt { get }
