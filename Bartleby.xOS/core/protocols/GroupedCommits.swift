@@ -10,11 +10,8 @@ import Foundation
 
 public protocol GroupedCommits {
 
-    /**
 
-     Commits the changes in one bunch
-     - returns: an array of UID.
-     */
-    func commitChanges() -> [String]
+    /// Commits all the staged changes and planned deletions.
+    func commitChanges()
     
 }

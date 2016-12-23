@@ -71,8 +71,6 @@ extension ManagedModel{
             // Erase from managed collection
             if let collection=document.collectionByName(self.d_collectionName) as? CollectibleCollection {
                 collection.removeObject(self, commit:commit)
-                // Unregister the ManagedModel
-                Bartleby.unRegister(self)
             }
 
         }else{

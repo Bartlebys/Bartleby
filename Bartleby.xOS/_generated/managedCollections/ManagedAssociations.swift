@@ -32,8 +32,11 @@ public extension Notification.Name {
 
 @objc(ManagedAssociations) open class ManagedAssociations : ManagedModel,IterableCollectibleCollection{
 
-    // Staged "associations" identifiers (used to determine what should be committed)
+    // Staged "associations" identifiers (used to determine what should be committed on the next loop)
     fileprivate dynamic var _staged=[String]()
+
+    // Store the  "associations" identifiers to be deleted on the next loop
+    fileprivate var _deleted=[String]()
 
     // Ordered UIDS
     fileprivate var _UIDS=[String]()
@@ -182,12 +185,9 @@ public extension Notification.Name {
     }
 
 
-    /// Commit all the staged changes.
-    ///
-    /// - Returns: the UIDS that have been Committed
-    open func commitChanges() -> [String] {
-        let UIDS=self._staged
-        if UIDS.count>0{
+    /// Commit all the staged changes and planned deletions.
+    open func commitChanges(){
+        if self._staged.count>0{
             let changedItems=self._staged.map({ (UID) -> Association in
                 let association:Association = try! Bartleby.registredObjectByUID(UID)
                 return association
@@ -204,7 +204,13 @@ public extension Notification.Name {
             self.hasBeenCommitted()
             self._staged.removeAll()
         }
-        return UIDS
+     
+        if self._deleted.count > 0 {
+            let associations:[Association] = try! Bartleby.registredObjectsByUIDs(self._deleted)
+            DeleteAssociations.commit(associations, from: self.referentDocument!)
+            Bartleby.unRegister(associations)
+            self._deleted.removeAll()
+        }
     }
 
     override open class var collectionName:String{
@@ -276,6 +282,7 @@ public extension Notification.Name {
         self.quietChanges {
 			self._storage <- ( map["_storage"] )
 			self._staged <- ( map["_staged"] )
+            self._deleted <- ( map["_deleted"] )
             if map.mappingType == MappingType.fromJSON{
                 self._rebuildFromStorage()
             }
@@ -290,6 +297,7 @@ public extension Notification.Name {
         self.quietChanges {
             self._storage=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.self,Association.classForCoder()], forKey: "_storage")! as! [String:Association]
 			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
+            self._deleted=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_deleted")! as! [String]
             self._rebuildFromStorage()
         }
     }
@@ -411,7 +419,7 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-       let item : Association =  self[index]
+        let item : Association =  self[index]
 
         // Add the inverse of this invocation to the undo stack
         if let undoManager: UndoManager = undoManager {
@@ -427,7 +435,7 @@ public extension Notification.Name {
         }
         
         // Remove the item from the collection
-        let UID=self._UIDS[index]
+        let UID=item.UID
         self._UIDS.remove(at: index)
         self._items.remove(at: index)
         self._storage.removeValue(forKey: UID)
@@ -436,7 +444,7 @@ public extension Notification.Name {
         }
     
         if commit==true{
-            DeleteAssociation.commit(item,from:self.referentDocument!) 
+           self._deleted.append(UID)
         }
     }
 

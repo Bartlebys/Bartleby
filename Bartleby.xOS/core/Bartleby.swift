@@ -277,6 +277,18 @@ open class Bartleby:NSObject {
     }
 
     /**
+     UnRegisters an instance
+
+     - parameter instance: the collectible instance
+     */
+    open static func unRegister<T: Collectible>(_ instances: [T]) {
+        for instance in instances{
+            self._instancesByUID.removeValue(forKey: instance.UID)
+        }
+
+    }
+
+    /**
      Returns the registred instance of by its UID
 
      - parameter UID:

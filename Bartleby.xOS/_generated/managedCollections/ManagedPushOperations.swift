@@ -32,8 +32,11 @@ public extension Notification.Name {
 
 @objc(ManagedPushOperations) open class ManagedPushOperations : ManagedModel,IterableCollectibleCollection{
 
-    // Staged "pushOperations" identifiers (used to determine what should be committed)
+    // Staged "pushOperations" identifiers (used to determine what should be committed on the next loop)
     fileprivate dynamic var _staged=[String]()
+
+    // Store the  "pushOperations" identifiers to be deleted on the next loop
+    fileprivate var _deleted=[String]()
 
     // Ordered UIDS
     fileprivate var _UIDS=[String]()
@@ -183,12 +186,9 @@ public extension Notification.Name {
 
 
 
-    /**
-     Commit is ignored because
-     Distant persistency is not allowed for PushOperation
-    */
-    open func commitChanges() ->[String] {
-        return [String]()
+    /// Commit is ignored because
+    /// Distant persistency is not allowed for PushOperation
+    open func commitChanges(){
     }
     
 
@@ -262,6 +262,7 @@ public extension Notification.Name {
         self.quietChanges {
 			self._storage <- ( map["_storage"] )
 			self._staged <- ( map["_staged"] )
+            self._deleted <- ( map["_deleted"] )
             if map.mappingType == MappingType.fromJSON{
                 self._rebuildFromStorage()
             }
@@ -276,6 +277,7 @@ public extension Notification.Name {
         self.quietChanges {
             self._storage=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.self,PushOperation.classForCoder()], forKey: "_storage")! as! [String:PushOperation]
 			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
+            self._deleted=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_deleted")! as! [String]
             self._rebuildFromStorage()
         }
     }
@@ -378,10 +380,10 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-       let _ : PushOperation =  self[index]
+        let item : PushOperation =  self[index]
 
         // Remove the item from the collection
-        let UID=self._UIDS[index]
+        let UID=item.UID
         self._UIDS.remove(at: index)
         self._items.remove(at: index)
         self._storage.removeValue(forKey: UID)

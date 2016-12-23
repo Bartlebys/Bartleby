@@ -32,8 +32,11 @@ public extension Notification.Name {
 
 @objc(ManagedBlocks) open class ManagedBlocks : ManagedModel,IterableCollectibleCollection{
 
-    // Staged "blocks" identifiers (used to determine what should be committed)
+    // Staged "blocks" identifiers (used to determine what should be committed on the next loop)
     fileprivate dynamic var _staged=[String]()
+
+    // Store the  "blocks" identifiers to be deleted on the next loop
+    fileprivate var _deleted=[String]()
 
     // Ordered UIDS
     fileprivate var _UIDS=[String]()
@@ -182,12 +185,9 @@ public extension Notification.Name {
     }
 
 
-    /// Commit all the staged changes.
-    ///
-    /// - Returns: the UIDS that have been Committed
-    open func commitChanges() -> [String] {
-        let UIDS=self._staged
-        if UIDS.count>0{
+    /// Commit all the staged changes and planned deletions.
+    open func commitChanges(){
+        if self._staged.count>0{
             let changedItems=self._staged.map({ (UID) -> Block in
                 let block:Block = try! Bartleby.registredObjectByUID(UID)
                 return block
@@ -204,7 +204,13 @@ public extension Notification.Name {
             self.hasBeenCommitted()
             self._staged.removeAll()
         }
-        return UIDS
+     
+        if self._deleted.count > 0 {
+            let blocks:[Block] = try! Bartleby.registredObjectsByUIDs(self._deleted)
+            DeleteBlocks.commit(blocks, from: self.referentDocument!)
+            Bartleby.unRegister(blocks)
+            self._deleted.removeAll()
+        }
     }
 
     override open class var collectionName:String{
@@ -276,6 +282,7 @@ public extension Notification.Name {
         self.quietChanges {
 			self._storage <- ( map["_storage"] )
 			self._staged <- ( map["_staged"] )
+            self._deleted <- ( map["_deleted"] )
             if map.mappingType == MappingType.fromJSON{
                 self._rebuildFromStorage()
             }
@@ -290,6 +297,7 @@ public extension Notification.Name {
         self.quietChanges {
             self._storage=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.self,Block.classForCoder()], forKey: "_storage")! as! [String:Block]
 			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
+            self._deleted=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_deleted")! as! [String]
             self._rebuildFromStorage()
         }
     }
@@ -363,7 +371,25 @@ public extension Notification.Name {
             self._UIDS.insert(item.UID, at: index)
             self._items.insert(item, at:index)
             self._storage[item.UID]=item
-            #if os(OSX) && !USE_EMBEDDED_MODULES
+
+            if let undoManager = self.undoManager{
+                // Has an edit occurred already in this event?
+                if undoManager.groupingLevel > 0 {
+                    // Close the last group
+                    undoManager.endUndoGrouping()
+                    // Open a new group
+                    undoManager.beginUndoGrouping()
+                }
+            }
+
+            // Add the inverse of this invocation to the undo stack
+            if let undoManager: UndoManager = undoManager {
+                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectFromItemsAtIndex(index, commit:commit)
+                if !undoManager.isUndoing {
+                    undoManager.setActionName(NSLocalizedString("AddBlock", comment: "AddBlock undo action"))
+                }
+            }
+                        #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
                 // Re-arrange (in case the user has sorted a column)
@@ -393,10 +419,23 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-       let item : Block =  self[index]
+        let item : Block =  self[index]
 
+        // Add the inverse of this invocation to the undo stack
+        if let undoManager: UndoManager = undoManager {
+            // We don't want to introduce a retain cycle
+            // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersManagedCollection fails
+            // That's why we have added an registerUndo extension on UndoManager
+            undoManager.registerUndo({ () -> Void in
+               self.insertObject(item, inItemsAtIndex: index, commit:commit)
+            })
+            if !undoManager.isUndoing {
+                undoManager.setActionName(NSLocalizedString("RemoveBlock", comment: "Remove Block undo action"))
+            }
+        }
+        
         // Remove the item from the collection
-        let UID=self._UIDS[index]
+        let UID=item.UID
         self._UIDS.remove(at: index)
         self._items.remove(at: index)
         self._storage.removeValue(forKey: UID)
@@ -405,7 +444,7 @@ public extension Notification.Name {
         }
     
         if commit==true{
-            DeleteBlock.commit(item,from:self.referentDocument!) 
+           self._deleted.append(UID)
         }
     }
 

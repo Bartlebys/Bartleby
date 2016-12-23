@@ -170,7 +170,7 @@ class UsersCreationLoadTest: TestCase {
      */
     func test_003_1X5_cookie() {
         UsersCreationLoadTest.simultaneousCreations=1
-        UsersCreationLoadTest.nbOfIteration=UsersCFreationLoadTest.simultaneousCreations*5
+        UsersCreationLoadTest.nbOfIteration=UsersCreationLoadTest.simultaneousCreations*5
         let expectation = self.expectation(description: "Multi Users creations, login and deletions via Cookie Idenditifcation should succeed \(UsersCreationLoadTest.simultaneousCreations)|\(UsersCreationLoadTest.nbOfIteration)")
         self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.cookie)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)

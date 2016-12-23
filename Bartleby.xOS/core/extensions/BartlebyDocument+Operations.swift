@@ -95,12 +95,8 @@ extension BartlebyDocument {
      - throws: may throw on collection iteration
      */
     public func commitPendingChanges() throws {
-        var triggerUpsertString=""
         self.iterateOnCollections { (collection) in
-            let UIDS=collection.commitChanges()
-            if UIDS.count>0{
-                triggerUpsertString += "\(UIDS.count),\(collection.d_collectionName)"+UIDS.joined(separator: ",")
-            }
+            collection.commitChanges()
         }
     }
 
