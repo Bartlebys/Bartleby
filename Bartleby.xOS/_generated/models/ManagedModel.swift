@@ -21,9 +21,6 @@ import Foundation
         return "ManagedModel"
     }
 
-	//Reflects the index of of the item in the collection initial value is -1. During it life cycle the collection updates if necessary its real value. ‡It allow better perfomance in Collection Controllers ( e.g : random insertion and entity removal )
-	dynamic open var collectedIndex:Int = -1
-
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
@@ -108,7 +105,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["collectedIndex","creatorUID","summary","ephemeral","changedKeys"])
+        exposed.append(contentsOf:["creatorUID","summary","ephemeral","changedKeys"])
         return exposed
     }
 
@@ -121,10 +118,6 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
      open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "collectedIndex":
-                if let casted=value as? Int{
-                    self.collectedIndex=casted
-                }
             case "creatorUID":
                 if let casted=value as? String{
                     self.creatorUID=casted
@@ -156,8 +149,6 @@ import Foundation
     /// - returns: returns the value
      open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "collectedIndex":
-               return self.collectedIndex
             case "creatorUID":
                return self.creatorUID
             case "summary":
@@ -179,7 +170,6 @@ import Foundation
      open func mapping(map: Map) {
         
         self.quietChanges {
-			self.collectedIndex <- ( map["collectedIndex"] )
 			self.creatorUID <- ( map["creatorUID"] )
 			self._relations <- ( map["_relations"] )
 			self.summary <- ( map["summary"] )
@@ -196,7 +186,6 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init()
         self.quietChanges {
-			self.collectedIndex=decoder.decodeInteger(forKey:"collectedIndex") 
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self._relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "_relations")! as! [Relation]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
@@ -209,7 +198,6 @@ import Foundation
 
      open func encode(with coder: NSCoder) {
         
-		coder.encode(self.collectedIndex,forKey:"collectedIndex")
 		coder.encode(self.creatorUID,forKey:"creatorUID")
 		coder.encode(self._relations,forKey:"_relations")
 		if let summary = self.summary {

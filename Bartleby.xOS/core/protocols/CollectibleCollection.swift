@@ -38,9 +38,6 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     // Should be called to propagate the collection reference
     func propagateCollection()
 
-    /// You can reference a tableview for automation
-    weak var tableView: BXTableView? { get set }
-
     /**
      Update or create an item
 

@@ -32,15 +32,30 @@ public extension Notification.Name {
 
 @objc(ManagedTags) open class ManagedTags : ManagedModel,IterableCollectibleCollection{
 
-    // Stagged "tags" identifiers
+    // Staged "tags" identifiers (used to determine what should be committed)
     fileprivate dynamic var _staged=[String]()
 
-    // The underling "tags" storage
-    fileprivate dynamic var _items:[Tag]=[Tag](){
+    // Ordered UIDS
+    fileprivate var _UIDS=[String]()
+
+    // The underlining "tags" list
+    fileprivate dynamic var _items=[Tag]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
+        }
+    }
+
+    // The underlining "tags" storage
+    fileprivate var _storage=[String:Tag]()
+
+    fileprivate func _rebuildFromStorage(){
+        self._UIDS=[String]()
+        self._items=[Tag]()
+        for (UID,item) in self._storage{
+            self._UIDS.append(UID)
+            self._items.append(item)
         }
     }
 
@@ -71,7 +86,12 @@ public extension Notification.Name {
     required public init(items:[Tag], within document:BartlebyDocument) {
         super.init()
         self.referentDocument = document
-        self._items = items
+        for item in items{
+            let UID=item.UID
+            self._UIDS.append(UID)
+            self._storage[UID]=item
+            self._items=items
+        }
     }
 
     required public init() {
@@ -92,25 +112,23 @@ public extension Notification.Name {
 
     open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
 
-    weak open var tableView: BXTableView?
-
-
-
     open func generate() -> AnyIterator<Tag> {
         var nextIndex = -1
-        let limit=self._items.count-1
+        let limit=self._storage.count-1
         return AnyIterator {
             nextIndex += 1
             if (nextIndex > limit) {
                 return nil
             }
-            return self._items[nextIndex]
+            let key=self._UIDS[nextIndex]
+            return self._storage[key]
         }
     }
 
 
     open subscript(index: Int) -> Tag {
-        return self._items[index]
+        let key=self._UIDS[index]
+        return self._storage[key]!
     }
 
     open var startIndex:Int {
@@ -118,7 +136,7 @@ public extension Notification.Name {
     }
 
     open var endIndex:Int {
-        return self._items.count
+        return self._UIDS.count
     }
 
     /// Returns the position immediately after the given index.
@@ -132,7 +150,7 @@ public extension Notification.Name {
 
 
     open var count:Int {
-        return self._items.count
+        return self._storage.count
     }
 
     open func indexOf(element:@escaping(Tag) throws -> Bool) rethrows -> Int?{
@@ -140,7 +158,7 @@ public extension Notification.Name {
     }
 
     open func item(at index:Int)->Collectible?{
-        if index >= 0 && index < self._items.count{
+        if index >= 0 && index < self._storage.count{
             return self[index]
         }else{
             self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
@@ -149,40 +167,16 @@ public extension Notification.Name {
     }
 
     fileprivate func _getIndexOf(_ item:Collectible)->Int?{
-        if item.collectedIndex >= 0 {
-            return item.collectedIndex
-        }else{
-            if let idx=_items.index(where:{return $0.UID == item.UID}){
-                self[idx].collectedIndex=idx
-                return idx
-            }
-        }
-        return nil
+        return self._UIDS.index(of: item.UID)
     }
 
-    fileprivate func _incrementIndexes(greaterThan lowerIndex:Int){
-        let count = self._items.count
-        if count > lowerIndex{
-            for i in lowerIndex...count-1{
-                self[i].collectedIndex += 1
-            }
-        }
-    }
-
-    fileprivate func _decrementIndexes(greaterThan lowerIndex:Int){
-        let count = self._items.count
-        if count > lowerIndex{
-            for i in lowerIndex...count-1{
-                self[i].collectedIndex -= 1
-            }
-        }
-    }
     /**
     An iterator that permit dynamic approaches.
     - parameter on: the closure
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
-        for item in self._items {
+        for UID in self._UIDS {
+            let item=self._storage[UID] as! Collectible
             on(item)
         }
     }
@@ -227,7 +221,7 @@ public extension Notification.Name {
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_items","_staged"])
+        exposed.append(contentsOf:["_storage","_staged"])
         return exposed
     }
 
@@ -240,9 +234,9 @@ public extension Notification.Name {
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "_items":
-                if let casted=value as? [Tag]{
-                    self._items=casted
+            case "_storage":
+                if let casted=value as? [String:Tag]{
+                    self._storage=casted
                 }
             case "_staged":
                 if let casted=value as? [String]{
@@ -263,8 +257,8 @@ public extension Notification.Name {
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "_items":
-               return self._items
+            case "_storage":
+               return self._storage
             case "_staged":
                return self._staged
             default:
@@ -280,8 +274,11 @@ public extension Notification.Name {
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self._items <- ( map["_items"] )
+			self._storage <- ( map["_storage"] )
 			self._staged <- ( map["_staged"] )
+            if map.mappingType == MappingType.fromJSON{
+                self._rebuildFromStorage()
+            }
         }
     }
 
@@ -291,14 +288,15 @@ public extension Notification.Name {
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.quietChanges {
-			self._items=decoder.decodeObject(of: [NSArray.classForCoder(),Tag.classForCoder()], forKey: "_items")! as! [Tag]
+            self._storage=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.self,Tag.classForCoder()], forKey: "_storage")! as! [String:Tag]
 			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
+            self._rebuildFromStorage()
         }
     }
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		coder.encode(self._items,forKey:"_items")
+		coder.encode(self._storage,forKey:"_storage")
 		coder.encode(self._staged,forKey:"_staged")
     }
 
@@ -306,16 +304,15 @@ public extension Notification.Name {
         return true
     }
 
-
     // MARK: - Upsert
 
 
     open func upsert(_ item: Collectible, commit:Bool=true){
         do{
-            if let idx=_items.index(where:{return $0.UID == item.UID}){
+            if self._UIDS.contains(item.UID){
                 // it is an update
                 // we must patch it
-                let currentInstance=_items[idx]
+                let currentInstance=_storage[item.UID]!
                 if commit==false{
                     var catched:Error?
                     // When upserting from a trigger
@@ -348,7 +345,7 @@ public extension Notification.Name {
 
 
     open func add(_ item:Collectible, commit:Bool=true){
-        self.insertObject(item, inItemsAtIndex: _items.count, commit:commit)
+        self.insertObject(item, inItemsAtIndex: _storage.count, commit:commit)
     }
 
     // MARK: Insert
@@ -362,10 +359,10 @@ public extension Notification.Name {
     */
     open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true) {
         if let item = item as? Tag{
-            item.collectedIndex = index // Update the index
             item.collection = self
-            self._incrementIndexes(greaterThan:index)
-
+            self._UIDS.insert(item.UID, at: index)
+            self._items.insert(item, at:index)
+            self._storage[item.UID]=item
 
             if let undoManager = self.undoManager{
                 // Has an edit occurred already in this event?
@@ -384,24 +381,11 @@ public extension Notification.Name {
                     undoManager.setActionName(NSLocalizedString("AddTag", comment: "AddTag undo action"))
                 }
             }
-                        // Insert the item
-            self._items.insert(item, at: index)
-            #if os(OSX) && !USE_EMBEDDED_MODULES
+                        #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
 
                 // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
-
-                if let tableView = self.tableView{
-                    Async.main{
-                        let sorted=self.arrayController?.arrangedObjects as! [Tag]
-                        // Find the object just added
-                        if let row=sorted.index(where:{ $0.UID==item.UID }){
-                            // Start editing
-                            tableView.editColumn(0, row: row, with: nil, select: true)
-                        }
-                    }
-                }
             }
             #endif
 
@@ -428,7 +412,6 @@ public extension Notification.Name {
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
        let item : Tag =  self[index]
-        self._decrementIndexes(greaterThan:index)
 
         // Add the inverse of this invocation to the undo stack
         if let undoManager: UndoManager = undoManager {
@@ -444,8 +427,13 @@ public extension Notification.Name {
         }
         
         // Remove the item from the collection
-        self._items.remove(at:index)
-
+        let UID=self._UIDS[index]
+        self._UIDS.remove(at: index)
+        self._items.remove(at: index)
+        self._storage.removeValue(forKey: UID)
+        if let stagedIdx=self._staged.index(of: UID){
+            self._staged.remove(at: stagedIdx)
+        }
     
         if commit==true{
             DeleteTag.commit(item,from:self.referentDocument!) 
