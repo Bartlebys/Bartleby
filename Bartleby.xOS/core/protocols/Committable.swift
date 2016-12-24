@@ -21,7 +21,7 @@ public protocol Committable {
     func hasBeenCommitted()
 
     // Returns the current commit counter
-    var commitCounter:UInt { get }
+    var commitCounter:Int { get }
 
     // MARK: Changes
 

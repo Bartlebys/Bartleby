@@ -116,7 +116,7 @@ extension ManagedModel:Relational{
                 if let c = object as? UniversalType{
                     relation.typeName = type(of: c).typeName()
                 }
-                self._relations.append(relation)
+                self.relations.append(relation)
             }
         }
     }
@@ -158,14 +158,14 @@ extension ManagedModel:Relational{
         }else{
             var toBeDeleted=[Int]()
             var idx=0
-            for relation in self._relations{
+            for relation in self.relations{
                 if relation.relationship==relationship && relation.UID==object.UID{
                     toBeDeleted.append(idx)
                 }
                 idx += 1
             }
             for deletionIndex in toBeDeleted.reversed(){
-                self._relations.remove(at: deletionIndex)
+                self.relations.remove(at: deletionIndex)
             }
         }
     }
@@ -180,7 +180,7 @@ extension ManagedModel:Relational{
     open func getContractedRelations(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->[Relation]{
         if includeAssociations{
             // TODO  registry Optimization (the current implementation is temporary)
-            var relations = self._relations.filter({$0.relationship==relationship})
+            var relations = self.relations.filter({$0.relationship==relationship})
             if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
                 if association.subjectUID != self.UID {
                     return false
@@ -199,7 +199,7 @@ extension ManagedModel:Relational{
             }
             return relations
         }else{
-            return self._relations.filter({$0.relationship==relationship})
+            return self.relations.filter({$0.relationship==relationship})
         }
     }
 

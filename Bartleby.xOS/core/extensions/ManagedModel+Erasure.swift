@@ -33,7 +33,7 @@ extension ManagedModel{
                 }
             }
 
-            for relation in self._relations{
+            for relation in self.relations{
                 switch relation.relationship {
                 case Relation.Relationship.free:
                     // That's FreeDom! There is nothing to do

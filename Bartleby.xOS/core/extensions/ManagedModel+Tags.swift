@@ -25,7 +25,7 @@ public extension ManagedModel{
     }
 
     func hasTag(_ tag:Tag)->Bool{
-        return self._relations.contains { $0.UID == tag.UID }
+        return self.relations.contains { $0.UID == tag.UID }
     }
 
 }

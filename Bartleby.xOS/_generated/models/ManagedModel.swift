@@ -25,10 +25,10 @@ import Foundation
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
 	//Used to store inter objects relationships
-	dynamic internal var _relations:[Relation] = [Relation]()  {
+	dynamic open var relations:[Relation] = [Relation]()  {
 	    didSet { 
-	       if !self.wantsQuietChanges && _relations != oldValue {
-	            self.provisionChanges(forKey: "_relations",oldValue: oldValue,newValue: _relations)  
+	       if !self.wantsQuietChanges && relations != oldValue {
+	            self.provisionChanges(forKey: "relations",oldValue: oldValue,newValue: relations)  
 	       } 
 	    }
 	}
@@ -58,7 +58,7 @@ import Foundation
 	dynamic internal var _supervisionIsEnabled:Bool = true
 
 	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
-	dynamic internal var _commitCounter:Int = 0
+	dynamic open var commitCounter:Int = 0
 
     // A reference to the document that currently holds this Managed Model.
     // Most of the time set by its collection (with notable exclusion of currentUser, and a few other special cases)
@@ -105,7 +105,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["creatorUID","summary","ephemeral","changedKeys"])
+        exposed.append(contentsOf:["creatorUID","relations","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -122,6 +122,10 @@ import Foundation
                 if let casted=value as? String{
                     self.creatorUID=casted
                 }
+            case "relations":
+                if let casted=value as? [Relation]{
+                    self.relations=casted
+                }
             case "summary":
                 if let casted=value as? String{
                     self.summary=casted
@@ -133,6 +137,10 @@ import Foundation
             case "changedKeys":
                 if let casted=value as? [KeyedChanges]{
                     self.changedKeys=casted
+                }
+            case "commitCounter":
+                if let casted=value as? Int{
+                    self.commitCounter=casted
                 }
             default:
                 throw ObjectExpositionError.unknownKey(key: key,forTypeName: ManagedModel.typeName())
@@ -151,12 +159,16 @@ import Foundation
         switch key {
             case "creatorUID":
                return self.creatorUID
+            case "relations":
+               return self.relations
             case "summary":
                return self.summary
             case "ephemeral":
                return self.ephemeral
             case "changedKeys":
                return self.changedKeys
+            case "commitCounter":
+               return self.commitCounter
             default:
                 throw ObjectExpositionError.unknownKey(key: key,forTypeName: ManagedModel.typeName())
         }
@@ -171,10 +183,10 @@ import Foundation
         
         self.quietChanges {
 			self.creatorUID <- ( map["creatorUID"] )
-			self._relations <- ( map["_relations"] )
+			self.relations <- ( map["relations"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
-			self._commitCounter <- ( map["_commitCounter"] )
+			self.commitCounter <- ( map["commitCounter"] )
             self._typeName <- map[Default.TYPE_NAME_KEY]
             self._id <- map[Default.UID_KEY]
         }
@@ -187,10 +199,10 @@ import Foundation
         super.init()
         self.quietChanges {
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
-			self._relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "_relations")! as! [Relation]
+			self.relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "relations")! as! [Relation]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
-			self._commitCounter=decoder.decodeInteger(forKey:"_commitCounter") 
+			self.commitCounter=decoder.decodeInteger(forKey:"commitCounter") 
             self._typeName=type(of: self).typeName()
             self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
         }
@@ -199,12 +211,12 @@ import Foundation
      open func encode(with coder: NSCoder) {
         
 		coder.encode(self.creatorUID,forKey:"creatorUID")
-		coder.encode(self._relations,forKey:"_relations")
+		coder.encode(self.relations,forKey:"relations")
 		if let summary = self.summary {
 			coder.encode(summary,forKey:"summary")
 		}
 		coder.encode(self.ephemeral,forKey:"ephemeral")
-		coder.encode(self._commitCounter,forKey:"_commitCounter")
+		coder.encode(self.commitCounter,forKey:"commitCounter")
         self._typeName=type(of: self).typeName()// Store the universal type name on serialization
         coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
         coder.encode(self._id, forKey: Default.UID_KEY)

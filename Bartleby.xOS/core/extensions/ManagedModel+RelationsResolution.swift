@@ -60,7 +60,7 @@ extension ManagedModel:RelationsResolution{
     ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     open func firstRelation<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->T?{
         // Internal relations.
-        let internalRelations=self._relations.filter({$0.relationship==relationship})
+        let internalRelations=self.relations.filter({$0.relationship==relationship})
         if internalRelations.count>0{
             for relation in internalRelations{
                 if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{

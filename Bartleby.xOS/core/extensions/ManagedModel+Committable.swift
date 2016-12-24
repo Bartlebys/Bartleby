@@ -21,13 +21,9 @@ extension ManagedModel:Committable{
 
     // Marks the entity as committed and increments it provisionning counter
     open func hasBeenCommitted(){
-        self._commitCounter += 1
+        self.commitCounter += 1
     }
 
-    // Returns the current commit counter
-    public var commitCounter: UInt {
-        return UInt(self._commitCounter)
-    }
 
     // MARK: Changes
 
