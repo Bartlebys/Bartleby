@@ -21,6 +21,15 @@ import Foundation
         return "ManagedModel"
     }
 
+	//An external unique identifier
+	dynamic open var externalID:String? {
+	    didSet { 
+	       if !self.wantsQuietChanges && externalID != oldValue {
+	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
+	       } 
+	    }
+	}
+
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
@@ -105,7 +114,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["creatorUID","relations","summary","ephemeral","changedKeys","commitCounter"])
+        exposed.append(contentsOf:["externalID","creatorUID","relations","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -118,6 +127,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
      open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "externalID":
+                if let casted=value as? String{
+                    self.externalID=casted
+                }
             case "creatorUID":
                 if let casted=value as? String{
                     self.creatorUID=casted
@@ -157,6 +170,8 @@ import Foundation
     /// - returns: returns the value
      open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "externalID":
+               return self.externalID
             case "creatorUID":
                return self.creatorUID
             case "relations":
@@ -182,6 +197,7 @@ import Foundation
      open func mapping(map: Map) {
         
         self.quietChanges {
+			self.externalID <- ( map["externalID"] )
 			self.creatorUID <- ( map["creatorUID"] )
 			self.relations <- ( map["relations"] )
 			self.summary <- ( map["summary"] )
@@ -198,6 +214,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init()
         self.quietChanges {
+			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "relations")! as! [Relation]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
@@ -210,6 +227,9 @@ import Foundation
 
      open func encode(with coder: NSCoder) {
         
+		if let externalID = self.externalID {
+			coder.encode(externalID,forKey:"externalID")
+		}
 		coder.encode(self.creatorUID,forKey:"creatorUID")
 		coder.encode(self.relations,forKey:"relations")
 		if let summary = self.summary {

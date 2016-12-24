@@ -21,15 +21,6 @@ import Foundation
         return "User"
     }
 
-	//An external unique identifier
-	dynamic open var externalID:String? {
-	    didSet { 
-	       if !self.wantsQuietChanges && externalID != oldValue {
-	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
-	       } 
-	    }
-	}
-
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
 	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
 	    didSet { 
@@ -136,7 +127,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["externalID","spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
         return exposed
     }
 
@@ -149,10 +140,6 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "externalID":
-                if let casted=value as? String{
-                    self.externalID=casted
-                }
             case "spaceUID":
                 if let casted=value as? String{
                     self.spaceUID=casted
@@ -212,8 +199,6 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "externalID":
-               return self.externalID
             case "spaceUID":
                return self.spaceUID
             case "verificationMethod":
@@ -249,7 +234,6 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self.externalID <- ( map["externalID"] )
 			self.spaceUID <- ( map["spaceUID"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
 			self.firstname <- ( map["firstname"] )
@@ -269,7 +253,6 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.quietChanges {
-			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
 			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
@@ -285,9 +268,6 @@ import Foundation
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
-		if let externalID = self.externalID {
-			coder.encode(externalID,forKey:"externalID")
-		}
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
 		coder.encode(self.firstname,forKey:"firstname")
