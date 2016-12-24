@@ -279,8 +279,8 @@
 		E5135B831E084B7F001E65A0 /* EventSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A021E084B7F001E65A0 /* EventSource.swift */; };
 		E5135B841E084B7F001E65A0 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A041E084B7F001E65A0 /* Bartleby.swift */; };
 		E5135B851E084B7F001E65A0 /* Bartleby.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A041E084B7F001E65A0 /* Bartleby.swift */; };
-		E5135B861E084B7F001E65A0 /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A051E084B7F001E65A0 /* BartlebyObjectError.swift */; };
-		E5135B871E084B7F001E65A0 /* BartlebyObjectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A051E084B7F001E65A0 /* BartlebyObjectError.swift */; };
+		E5135B861E084B7F001E65A0 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A051E084B7F001E65A0 /* ManagedModelError.swift */; };
+		E5135B871E084B7F001E65A0 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A051E084B7F001E65A0 /* ManagedModelError.swift */; };
 		E5135B881E084B7F001E65A0 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A061E084B7F001E65A0 /* Consignation.swift */; };
 		E5135B891E084B7F001E65A0 /* Consignation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A061E084B7F001E65A0 /* Consignation.swift */; };
 		E5135B8A1E084B7F001E65A0 /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A071E084B7F001E65A0 /* Context.swift */; };
@@ -713,7 +713,7 @@
 		E5135A001E084B7F001E65A0 /* Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Async.swift; sourceTree = "<group>"; };
 		E5135A021E084B7F001E65A0 /* EventSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventSource.swift; sourceTree = "<group>"; };
 		E5135A041E084B7F001E65A0 /* Bartleby.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bartleby.swift; sourceTree = "<group>"; };
-		E5135A051E084B7F001E65A0 /* BartlebyObjectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyObjectError.swift; sourceTree = "<group>"; };
+		E5135A051E084B7F001E65A0 /* ManagedModelError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModelError.swift; sourceTree = "<group>"; };
 		E5135A061E084B7F001E65A0 /* Consignation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consignation.swift; sourceTree = "<group>"; };
 		E5135A071E084B7F001E65A0 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		E5135A081E084B7F001E65A0 /* Default.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Default.swift; sourceTree = "<group>"; };
@@ -1169,8 +1169,6 @@
 		E5135A031E084B7F001E65A0 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				E5135A041E084B7F001E65A0 /* Bartleby.swift */,
-				E5135A051E084B7F001E65A0 /* BartlebyObjectError.swift */,
 				E5135A061E084B7F001E65A0 /* Consignation.swift */,
 				E5135A071E084B7F001E65A0 /* Context.swift */,
 				E5135A081E084B7F001E65A0 /* Default.swift */,
@@ -1182,6 +1180,8 @@
 				E5135A3D1E084B7F001E65A0 /* json */,
 				E5135A421E084B7F001E65A0 /* ObjectExpositionError.swift */,
 				E5135A431E084B7F001E65A0 /* protocols */,
+				E5135A051E084B7F001E65A0 /* ManagedModelError.swift */,
+				E5135A041E084B7F001E65A0 /* Bartleby.swift */,
 				E5135A6B1E084B7F001E65A0 /* Reaction.swift */,
 				E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */,
 				E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */,
@@ -1744,7 +1744,7 @@
 				E5135B681E084B7F001E65A0 /* Data+Compression.swift in Sources */,
 				E5135AD41E084B7F001E65A0 /* CreateLockers.swift in Sources */,
 				E5135AAA1E084B7F001E65A0 /* KeyedData.swift in Sources */,
-				E5135B861E084B7F001E65A0 /* BartlebyObjectError.swift in Sources */,
+				E5135B861E084B7F001E65A0 /* ManagedModelError.swift in Sources */,
 				E5135B701E084B7F001E65A0 /* CryptedStringTransform.swift in Sources */,
 				E5135AF01E084B7F001E65A0 /* DeleteLockers.swift in Sources */,
 				E5135C381E084B7F001E65A0 /* Relational.swift in Sources */,
@@ -1995,7 +1995,7 @@
 				E5135B691E084B7F001E65A0 /* Data+Compression.swift in Sources */,
 				E5135AD51E084B7F001E65A0 /* CreateLockers.swift in Sources */,
 				E5135AAB1E084B7F001E65A0 /* KeyedData.swift in Sources */,
-				E5135B871E084B7F001E65A0 /* BartlebyObjectError.swift in Sources */,
+				E5135B871E084B7F001E65A0 /* ManagedModelError.swift in Sources */,
 				E5135B711E084B7F001E65A0 /* CryptedStringTransform.swift in Sources */,
 				E5135AF11E084B7F001E65A0 /* DeleteLockers.swift in Sources */,
 				E5135C391E084B7F001E65A0 /* Relational.swift in Sources */,
