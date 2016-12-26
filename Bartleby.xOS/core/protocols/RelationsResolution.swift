@@ -15,26 +15,23 @@ public protocol RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationship
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    func relations<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool)->[T]
+    func relations<T:Relational>(_ relationship:Relationship)->[T]
 
 
     /// Resolve the Related Objects
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    func relationsInSet<T:Relational>(_ relationships:Set<Relation.Relationship>,includeAssociations:Bool)->[T]
+    func relationsInSet<T:Relational>(_ relationships:Set<Relationship>)->[T]
 
 
     /// Resolve the Related Object and returns the first one
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
-    func firstRelation<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool)->T?
+    func firstRelation<T:Relational>(_ relationship:Relationship)->T?
 
 
 }

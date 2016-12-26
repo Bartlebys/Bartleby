@@ -1101,8 +1101,8 @@ public final class BSFS:TriggerHook{
     /// - Parameters:
     ///   - block: the block or the Block
     open func deleteBlockFile(_ block:Block) {
-        if let node:Node = block.firstRelation(Relation.Relationship.ownedBy){
-            node.removeRelation(Relation.Relationship.owns, to: block)
+        if let node:Node = block.firstRelation(Relationship.ownedBy){
+            node.removeRelation(Relationship.owns, to: block)
             node.numberOfBlocks -= 1
         }else{
              self._document.log("Block's node not found (block.UID:\(block.UID)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)

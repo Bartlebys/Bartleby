@@ -14,8 +14,7 @@ public protocol Relational:Identifiable{
     ///
     /// - Parameters:
     ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    func declaresFreeRelationShip(to object:Relational,external:Bool)
+    func declaresFreeRelationShip(to object:Relational)
 
 
     /// The owner declares it properties
@@ -23,32 +22,14 @@ public protocol Relational:Identifiable{
     ///
     /// - Parameters:
     ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    func declaresOwnership(of object:Relational,external:Bool)
+    func declaresOwnership(of object:Relational)
 
-    /// The owner declares it properties
-    /// Both relation are setup coOwns, and coOwnedBy
-    ///
-    /// - Parameters:
-    ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    func declaresCollectiveOwnership(of object:Relational,external:Bool)
-
-    /// The owner declares it properties
-    /// Both fusional relation are setup
-    ///
-    /// - Parameters:
-    ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    func declaresFusionalRelationship(with object:Relational,external:Bool)
-
-
+    
     /// Add a relation to another object
     /// - Parameters:
     ///   - contract: define the relationship
     ///   - object:  the related object
-    ///   - external: if set to true we will create an external association
-    func addRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool)
+    func addRelation(_ relationship:Relationship,to object:Relational)
 
 
     /// Remove a relation to another object
@@ -56,18 +37,13 @@ public protocol Relational:Identifiable{
     /// - Parameters:
     ///   - relationship: define the relationship
     ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    func removeRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool)
+    func removeRelation(_ relationship:Relationship,to object:Relational)
 
     ///  Returns the contracted relations
     ///
     /// - Parameters:
     ///   - relationship:  the nature of the contract
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
-    /// - Returns: the relations
-    func getContractedRelations(_ relationship:Relation.Relationship,includeAssociations:Bool)->[Relation]
-
-
+    /// - Returns: the UIDS
+    func getContractedRelations(_ relationship:Relationship)->[String]
 
 }
-

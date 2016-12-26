@@ -15,12 +15,11 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationship
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    open func relations<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->[T]{
+    open func relations<T:Relational>(_ relationship:Relationship)->[T]{
         var related=[T]()
-        for relation in self.getContractedRelations(relationship,includeAssociations: includeAssociations){
-            if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
+        for object in self.getContractedRelations(relationship){
+            if let candidate = try? Bartleby.registredObjectByUID(object) as ManagedModel{
                 if let casted = candidate as? T{
                     related.append(casted)
                 }
@@ -34,16 +33,15 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
     /// - Returns: return the related Objects
-    open func relationsInSet<T:Relational>(_ relationships:Set<Relation.Relationship>,includeAssociations:Bool=false)->[T]{
+    open func relationsInSet<T:Relational>(_ relationships:Set<Relationship>)->[T]{
         var related=[T]()
-        var relations=[Relation]()
+        var objectsUID=[String]()
         for relationShip in relationships{
-            relations.append(contentsOf:self.getContractedRelations(relationShip,includeAssociations:includeAssociations))
+            objectsUID.append(contentsOf:self.getContractedRelations(relationShip))
         }
-        for relation in relations{
-            if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
+        for objectUID in objectsUID{
+            if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
                 if let casted = candidate as? T{
                     related.append(casted)
                 }
@@ -57,40 +55,14 @@ extension ManagedModel:RelationsResolution{
     ///
     /// - Parameters:
     ///   - relationship: the searched relationships
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations 
-    open func firstRelation<T:Relational>(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->T?{
+    open func firstRelation<T:Relational>(_ relationship:Relationship)->T?{
         // Internal relations.
-        let internalRelations=self.relations.filter({$0.relationship==relationship})
-        if internalRelations.count>0{
-            for relation in internalRelations{
-                if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
+        let objectsUID=self.getContractedRelations(relationship)
+        if objectsUID.count>0{
+            for objectUID in objectsUID{
+                if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
                     if let casted = candidate as? T{
                         return casted
-                    }
-                }
-            }
-        }else{
-            // Try external relations 
-            // TODO  registry Optimization (the current implementation is temporary)
-            if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
-                if association.subjectUID != self.UID {
-                    return false
-                }
-                if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship
-                }){
-                    return true
-                }else{
-                    return false
-                }
-            }){
-                for association in associations {
-                    for relation in association.associated{
-                        if let candidate = try? Bartleby.registredObjectByUID(relation.UID) as ManagedModel{
-                            if let casted = candidate as? T{
-                                return casted
-                            }
-                        }
                     }
                 }
             }

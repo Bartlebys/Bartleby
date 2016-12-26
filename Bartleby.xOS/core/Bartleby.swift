@@ -182,11 +182,6 @@ open class Bartleby:NSObject {
         return CFAbsoluteTimeGetCurrent()-Bartleby.startTime
     }
 
-    // OBJC relay (for Bsync to be deprecdated)
-    open static func glog(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool){
-        glog(message, file: file, function: function, line: line, category: category, decorative: decorative)
-    }
-
 
     /**
      Returns a random string of a given size.
@@ -265,7 +260,25 @@ open class Bartleby:NSObject {
      */
     open static func register<T: Collectible>(_ instance: T) {
         self._instancesByUID[instance.UID]=instance
+        // Check the deferred Ownership
+        if let owneesUIDS = self._deferredOwnerships[instance.UID] {
+            /// This situation is rare
+            /// It requires that an Ownee is loaded before its owner.
+            /// E.g the ownee has been triggered.
+            if let o=instance as? ManagedModel{
+                for owneeUID in  owneesUIDS{
+                    if let _ = Bartleby.registredManagedModelByUID(owneeUID){
+                        // Add the owns entry
+                        if !o.owns.contains(owneeUID){
+                            o.owns.append(owneeUID)
+                        }
+                    }
+                }
+            }
+            self._deferredOwnerships.removeValue(forKey: instance.UID)
+        }
     }
+
 
     /**
      UnRegisters an instance
@@ -342,6 +355,33 @@ open class Bartleby:NSObject {
     open static func collectibleInstanceByUID(_ UID: String) -> Collectible? {
         return self._instancesByUID[UID]
     }
+
+
+    // MARK: - Deferred Ownwerships
+
+    /// If we receive a Instance that refers to an unexisting Owner
+    /// We store its missing entry is the deferredOwnerships dictionary
+    /// For future resolution (on registration)
+    /// [notAvailableOwnerUID][relatedOwnedUIDS]
+    fileprivate static var _deferredOwnerships=[String:[String]]()
+
+
+
+    /// Store the ownee
+    ///
+    /// - Parameters:
+    ///   - ownee: the ownee
+    ///   - ownerUID: the currently unavailable owner UID
+    open static func appendDeferredOwnerships(_ ownee:Collectible,ownerUID:String){
+        if self._deferredOwnerships.keys.contains(ownerUID) {
+            self._deferredOwnerships[ownerUID]!.append(ownee.UID)
+        }else{
+            self._deferredOwnerships[ownerUID]=[ownee.UID]
+        }
+    }
+
+
+    // MARK: - Report
 
 
     /// Report the metrics to general endpoint calls (not clearly attached to a specific document)

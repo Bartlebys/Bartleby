@@ -130,8 +130,6 @@ extension BartlebyDocument{
                                         }
                                     }
                                     let _ = try proxy.updateData(collectionData,provisionChanges: false)
-                                    proxy.propagateCollection()
-
                                 }
                             } else {
                                 throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)
@@ -145,6 +143,14 @@ extension BartlebyDocument{
                 }
             }
 
+            // # Optimization
+            // We call the  proxy.propagate() after full deserialization.
+            // It allows for example to reduce deferredOwnerships rebuilding
+            for metadatum in self.metadata.collectionsMetadata {
+                if let proxy=self.collectionByName(metadatum.collectionName) {
+                    proxy.propagate()
+                }
+            }
             
             Async.main{
                 self.documentDidLoad()

@@ -33,16 +33,28 @@ import Foundation
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
-	//Used to store inter objects relationships
-	dynamic open var relations:[Relation] = [Relation]()  {
+	//The UIDS of the owners
+	dynamic open var ownedBy:[String] = [String]()  {
 	    didSet { 
-	       if !self.wantsQuietChanges && relations != oldValue {
-	            self.provisionChanges(forKey: "relations",oldValue: oldValue,newValue: relations)  
+	       if !self.wantsQuietChanges && ownedBy != oldValue {
+	            self.provisionChanges(forKey: "ownedBy",oldValue: oldValue,newValue: ownedBy)  
 	       } 
 	    }
 	}
 
-	//The object summary can be used for example by externalReferences to describe the JObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
+	//The UIDS of the free relations
+	dynamic open var freeRelations:[String] = [String]()  {
+	    didSet { 
+	       if !self.wantsQuietChanges && freeRelations != oldValue {
+	            self.provisionChanges(forKey: "freeRelations",oldValue: oldValue,newValue: freeRelations)  
+	       } 
+	    }
+	}
+
+	//The UIDS of the owned entities (Neither supervised nor serialized)
+	dynamic open var owns:[String] = [String]()
+
+	//The object summary can be used for example by externalReferences to describe the ManagedObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
 	dynamic open var summary:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && summary != oldValue {
@@ -114,7 +126,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["externalID","creatorUID","relations","summary","ephemeral","changedKeys","commitCounter"])
+        exposed.append(contentsOf:["externalID","creatorUID","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -135,9 +147,17 @@ import Foundation
                 if let casted=value as? String{
                     self.creatorUID=casted
                 }
-            case "relations":
-                if let casted=value as? [Relation]{
-                    self.relations=casted
+            case "ownedBy":
+                if let casted=value as? [String]{
+                    self.ownedBy=casted
+                }
+            case "freeRelations":
+                if let casted=value as? [String]{
+                    self.freeRelations=casted
+                }
+            case "owns":
+                if let casted=value as? [String]{
+                    self.owns=casted
                 }
             case "summary":
                 if let casted=value as? String{
@@ -174,8 +194,12 @@ import Foundation
                return self.externalID
             case "creatorUID":
                return self.creatorUID
-            case "relations":
-               return self.relations
+            case "ownedBy":
+               return self.ownedBy
+            case "freeRelations":
+               return self.freeRelations
+            case "owns":
+               return self.owns
             case "summary":
                return self.summary
             case "ephemeral":
@@ -199,7 +223,8 @@ import Foundation
         self.quietChanges {
 			self.externalID <- ( map["externalID"] )
 			self.creatorUID <- ( map["creatorUID"] )
-			self.relations <- ( map["relations"] )
+			self.ownedBy <- ( map["ownedBy"] )
+			self.freeRelations <- ( map["freeRelations"] )
 			self.summary <- ( map["summary"] )
 			self.ephemeral <- ( map["ephemeral"] )
 			self.commitCounter <- ( map["commitCounter"] )
@@ -216,7 +241,8 @@ import Foundation
         self.quietChanges {
 			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
-			self.relations=decoder.decodeObject(of: [NSArray.classForCoder(),Relation.classForCoder()], forKey: "relations")! as! [Relation]
+			self.ownedBy=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ownedBy")! as! [String]
+			self.freeRelations=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "freeRelations")! as! [String]
 			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
 			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
 			self.commitCounter=decoder.decodeInteger(forKey:"commitCounter") 
@@ -231,7 +257,8 @@ import Foundation
 			coder.encode(externalID,forKey:"externalID")
 		}
 		coder.encode(self.creatorUID,forKey:"creatorUID")
-		coder.encode(self.relations,forKey:"relations")
+		coder.encode(self.ownedBy,forKey:"ownedBy")
+		coder.encode(self.freeRelations,forKey:"freeRelations")
 		if let summary = self.summary {
 			coder.encode(summary,forKey:"summary")
 		}

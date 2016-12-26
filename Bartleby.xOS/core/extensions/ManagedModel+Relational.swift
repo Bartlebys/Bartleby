@@ -23,22 +23,12 @@ import Foundation
 // "owns"
 // "ownedBy": reciprocity of "owns"
 // In case of deletion of the owner the owned is automatically deleted.
-// If the owner is deleted its "ownees" are deleted.
-// if any owner is deleted all the ownees are destroyed.
+// If all the owners are deleted their "ownees" are deleted.
 // N -> N
-
-
-// "coOwns": shared ownerships
-// "coOwnedBy": reciprocity of coOwns
-// In case of deletion of one of it owner that the ownee will survive if at least one of its co owner exists.
-// N -> N
-
-// fusional: both object owns the other if one is deleted the other is also deleted ( both are set to fusional)
-// N <-> N
 
 
 extension ManagedModel:Relational{
-
+ 
 
     // MARK: - Relationships Declaration
 
@@ -46,9 +36,8 @@ extension ManagedModel:Relational{
     ///
     /// - Parameters:
     ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    open func declaresFreeRelationShip(to object:Relational,external:Bool=false){
-        self.addRelation(.free,to: object,external:external)
+    open func declaresFreeRelationShip(to object:Relational){
+        self.addRelation(.free,to: object)
     }
 
 
@@ -57,116 +46,58 @@ extension ManagedModel:Relational{
     ///
     /// - Parameters:
     ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    open func declaresOwnership(of object:Relational,external:Bool=false){
-        self.addRelation(.owns,to: object,external:external)
-        object.addRelation(.ownedBy,to: self,external:external)
+    open func declaresOwnership(of object:Relational){
+        self.addRelation(.owns,to: object)
+        object.addRelation(.ownedBy,to: self)
     }
 
-    /// The owner declares it properties
-    /// Both relation are setup coOwns, and coOwnedBy
-    ///
-    /// - Parameters:
-    ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    open func declaresCollectiveOwnership(of object:Relational,external:Bool=false){
-        self.addRelation(.coOwns,to: object,external:external)
-        object.addRelation(.coOwnedBy,to: self,external:external)
-    }
-
-
-    /// The owner declares it properties
-    /// Both fusional relation are setup
-    ///
-    /// - Parameters:
-    ///   - object:  object: the owned object
-    ///   - external: if set to true we will create an external association
-    open func declaresFusionalRelationship(with object:Relational,external:Bool=false){
-        self.addRelation(.fusional, to: object,external:external)
-        object.addRelation(.fusional, to: self,external:external)
-    }
 
 
     /// Add a relation to another object
     /// - Parameters:
     ///   - contract: define the relationship
     ///   - object:  the related object
-    ///   - external: if set to true we will create an external association
-    open func addRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool=false){
-        let candidates=self.getContractedRelations(relationship,includeAssociations:external)
-        if !candidates.contains(where:{$0.UID==object.UID}){
-            if external{
-                if let document = self.referentDocument{
-                    let association = document.newObject() as Association
-                    association.quietChanges {
-                        association.subjectUID = self.UID
-                        let relation=Relation()
-                        relation.UID = object.UID
-                        if let c = object as? UniversalType{
-                            relation.typeName = type(of: c).typeName()
-                        }
-                        relation.relationship = relationship
-                        association.associated.append(relation)
-                    }
-                }
-            }else{
-                let relation=Relation()
-                relation.relationship=relationship
-                relation.UID=object.UID
-                if let c = object as? UniversalType{
-                    relation.typeName = type(of: c).typeName()
-                }
-                self.relations.append(relation)
+    open func addRelation(_ relationship:Relationship,to object:Relational){
+        switch relationship {
+        case Relationship.free:
+            if !self.freeRelations.contains(object.UID){
+                self.freeRelations.append(object.UID)
             }
+            break
+        case Relationship.owns:
+            if !self.owns.contains(object.UID){
+                self.owns.append(object.UID)
+            }
+            break
+        case Relationship.ownedBy:
+            if !self.ownedBy.contains(object.UID){
+                self.ownedBy.append(object.UID)
+            }
+            break
         }
     }
 
     /// Remove a relation to another object
     ///
     /// - Parameter object: the object
-    open func removeRelation(_ relationship:Relation.Relationship,to object:Relational,external:Bool=false){
-        if external{
-            if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
-                if association.subjectUID != self.UID {
-                    return false
-                }
-                if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship
-                }){
-                    return true
-                }else{
-                    return false
-                }
-            }){
-                for association in associations {
-                    var toBeDeleted=[Int]()
-                    for i in 0 ..< association.associated.count{
-                        let relation=association.associated[i]
-                        if (relation.relationship == relationship && relation.UID == object.UID){
-                            toBeDeleted.append(i)
-                        }
-                    }
-                    for idx in toBeDeleted{
-                        association.associated.remove(at: idx)
-                    }
-                    // If there are no more relations delete the association
-                    if association.associated.count==0{
-                        self.referentDocument?.associations.removeObject(association)
-                    }
-                }
+    open func removeRelation(_ relationship:Relationship,to object:Relational){
+        switch relationship {
+        case Relationship.free:
+            if let idx=self.freeRelations.index(of:object.UID){
+                self.freeRelations.remove(at: idx)
             }
-        }else{
-            var toBeDeleted=[Int]()
-            var idx=0
-            for relation in self.relations{
-                if relation.relationship==relationship && relation.UID==object.UID{
-                    toBeDeleted.append(idx)
-                }
-                idx += 1
+            break
+        case Relationship.owns:
+            if let idx=self.owns.index(of:object.UID){
+                self.owns.remove(at: idx)
+                object.removeRelation(Relationship.ownedBy, to: self)
             }
-            for deletionIndex in toBeDeleted.reversed(){
-                self.relations.remove(at: deletionIndex)
+            break
+        case Relationship.ownedBy:
+            if let idx=self.ownedBy.index(of:object.UID){
+                self.ownedBy.remove(at: idx)
             }
+            break
         }
     }
 
@@ -175,32 +106,16 @@ extension ManagedModel:Relational{
     ///
     /// - Parameters:
     ///   - relationship:  the nature of the contract
-    ///   - includeAssociations: if set to true aggregates externally Associated Relations
     /// - Returns: the relations
-    open func getContractedRelations(_ relationship:Relation.Relationship,includeAssociations:Bool=false)->[Relation]{
-        if includeAssociations{
-            // TODO  registry Optimization (the current implementation is temporary)
-            var relations = self.relations.filter({$0.relationship==relationship})
-            if let associations:[Association]=self.referentDocument?.associations.filter({ (association) -> Bool in
-                if association.subjectUID != self.UID {
-                    return false
-                }
-                if association.associated.contains(where: { (relation) -> Bool in
-                    return relation.relationship == relationship
-                }){
-                    return true
-                }else{
-                    return false
-                }
-            }){
-                for association in associations {
-                    relations.append(contentsOf:  association.associated)
-                }
-            }
-            return relations
-        }else{
-            return self.relations.filter({$0.relationship==relationship})
+    open func getContractedRelations(_ relationship:Relationship)->[String]{
+        switch relationship {
+        case Relationship.free:
+            return self.freeRelations
+        case Relationship.owns:
+            return self.owns
+        case Relationship.ownedBy:
+            return self.ownedBy
         }
     }
-
+    
 }

@@ -40,8 +40,8 @@ class BlocksTests: BartlebyTestCase {
               completed: { completion in
                 if let nodeExtRef:String=completion.getResultExternalReference(){
                     if let node:Node = try? Bartleby.registredObjectByUID(nodeExtRef) {
-                        let blocks:[Block] = node.relations(Relation.Relationship.owns)
-                        XCTAssert(blocks.count == 3, "3 blocks expected")
+                        let blocks:[Block] = node.relations(Relationship.owns)
+                        XCTAssert(blocks.count == 3, "3 blocks expected \(blocks.count)")
                         XCTAssert(node.isAssemblable, "Node is assemblable")
                     }else{
                         XCTFail("Node not found")

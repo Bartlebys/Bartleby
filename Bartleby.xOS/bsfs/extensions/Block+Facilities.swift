@@ -12,7 +12,7 @@ extension Block{
 
 
     public var node:Node?{
-        if let owner:Node = self.firstRelation(Relation.Relationship.ownedBy){
+        if let owner:Node = self.firstRelation(Relationship.ownedBy){
              return owner
         }else{
             return nil

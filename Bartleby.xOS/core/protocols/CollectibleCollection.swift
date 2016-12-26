@@ -35,8 +35,8 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     // The document UID
     var documentUID:String { get }
 
-    // Should be called to propagate the collection reference
-    func propagateCollection()
+    // Should be called to propagat references (Collection, ReferentDocument, Owned relations)
+    func propagate()
 
     /**
      Update or create an item

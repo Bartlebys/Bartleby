@@ -495,7 +495,7 @@ struct Flocker{
                     }
 
                     for node in container.nodes{
-                        let blocks:[Block]=container.relations(Relation.Relationship.owns)
+                        let blocks:[Block]=container.relations(Relationship.owns)
                         // Consecutive blocks are faster to assemble
                         let sortedBlocks=blocks.sorted(by: { (lb, rb) -> Bool in
                             return lb.rank < rb.rank

@@ -48,12 +48,12 @@
 		E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806381DF6D4CC0085E5C3 /* URLTransform.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
+		E5AA490B1E1121D0009FB51B /* RelationShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA490A1E1121D0009FB51B /* RelationShip.swift */; };
 		E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AC1D846CB300F7C783 /* CommandLine.swift */; };
 		E5CC29201D846CB300F7C783 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AE1D846CB300F7C783 /* Option.swift */; };
 		E5CC29211D846CB300F7C783 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */; };
 		E5D085411C550DC500F0090E /* BartlebysCommandsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */; };
 		E5D206441E0A875500D60628 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2053B1E0A875500D60628 /* BartlebyDocument.swift */; };
-		E5D206451E0A875500D60628 /* ManagedAssociations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2053D1E0A875500D60628 /* ManagedAssociations.swift */; };
 		E5D206461E0A875500D60628 /* ManagedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2053E1E0A875500D60628 /* ManagedBlocks.swift */; };
 		E5D206471E0A875500D60628 /* ManagedBoxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2053F1E0A875500D60628 /* ManagedBoxes.swift */; };
 		E5D206481E0A875500D60628 /* ManagedLockers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205401E0A875500D60628 /* ManagedLockers.swift */; };
@@ -62,7 +62,6 @@
 		E5D2064B1E0A875500D60628 /* ManagedTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205431E0A875500D60628 /* ManagedTags.swift */; };
 		E5D2064C1E0A875500D60628 /* ManagedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205441E0A875500D60628 /* ManagedUsers.swift */; };
 		E5D2064D1E0A875500D60628 /* Acknowledgment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205461E0A875500D60628 /* Acknowledgment.swift */; };
-		E5D2064E1E0A875500D60628 /* Association.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205471E0A875500D60628 /* Association.swift */; };
 		E5D2064F1E0A875500D60628 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205481E0A875500D60628 /* Block.swift */; };
 		E5D206501E0A875500D60628 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205491E0A875500D60628 /* Box.swift */; };
 		E5D206511E0A875500D60628 /* CollectionMetadatum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2054A1E0A875500D60628 /* CollectionMetadatum.swift */; };
@@ -81,14 +80,11 @@
 		E5D2065E1E0A875500D60628 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205571E0A875500D60628 /* Node.swift */; };
 		E5D2065F1E0A875500D60628 /* Progression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205581E0A875500D60628 /* Progression.swift */; };
 		E5D206601E0A875500D60628 /* PushOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205591E0A875500D60628 /* PushOperation.swift */; };
-		E5D206611E0A875500D60628 /* Relation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055A1E0A875500D60628 /* Relation.swift */; };
 		E5D206621E0A875500D60628 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055B1E0A875500D60628 /* Report.swift */; };
 		E5D206631E0A875500D60628 /* StringVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055C1E0A875500D60628 /* StringVO.swift */; };
 		E5D206641E0A875500D60628 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055D1E0A875500D60628 /* Tag.swift */; };
 		E5D206651E0A875500D60628 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055E1E0A875500D60628 /* Trigger.swift */; };
 		E5D206661E0A875600D60628 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2055F1E0A875500D60628 /* User.swift */; };
-		E5D206671E0A875600D60628 /* CreateAssociation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205611E0A875500D60628 /* CreateAssociation.swift */; };
-		E5D206681E0A875600D60628 /* CreateAssociations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205621E0A875500D60628 /* CreateAssociations.swift */; };
 		E5D206691E0A875600D60628 /* CreateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205631E0A875500D60628 /* CreateBlock.swift */; };
 		E5D2066A1E0A875600D60628 /* CreateBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205641E0A875500D60628 /* CreateBlocks.swift */; };
 		E5D2066B1E0A875600D60628 /* CreateBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205651E0A875500D60628 /* CreateBox.swift */; };
@@ -101,8 +97,6 @@
 		E5D206721E0A875600D60628 /* CreateTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2056C1E0A875500D60628 /* CreateTags.swift */; };
 		E5D206731E0A875600D60628 /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2056D1E0A875500D60628 /* CreateUser.swift */; };
 		E5D206741E0A875600D60628 /* CreateUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2056E1E0A875500D60628 /* CreateUsers.swift */; };
-		E5D206751E0A875600D60628 /* DeleteAssociation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2056F1E0A875500D60628 /* DeleteAssociation.swift */; };
-		E5D206761E0A875600D60628 /* DeleteAssociations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205701E0A875500D60628 /* DeleteAssociations.swift */; };
 		E5D206771E0A875600D60628 /* DeleteBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205711E0A875500D60628 /* DeleteBlock.swift */; };
 		E5D206781E0A875600D60628 /* DeleteBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205721E0A875500D60628 /* DeleteBlocks.swift */; };
 		E5D206791E0A875600D60628 /* DeleteBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205731E0A875500D60628 /* DeleteBox.swift */; };
@@ -115,9 +109,6 @@
 		E5D206801E0A875600D60628 /* DeleteTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057A1E0A875500D60628 /* DeleteTags.swift */; };
 		E5D206811E0A875600D60628 /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057B1E0A875500D60628 /* DeleteUser.swift */; };
 		E5D206821E0A875600D60628 /* DeleteUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057C1E0A875500D60628 /* DeleteUsers.swift */; };
-		E5D206831E0A875600D60628 /* ReadAssociationById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057D1E0A875500D60628 /* ReadAssociationById.swift */; };
-		E5D206841E0A875600D60628 /* ReadAssociationsByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057E1E0A875500D60628 /* ReadAssociationsByIds.swift */; };
-		E5D206851E0A875600D60628 /* ReadAssociationsByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2057F1E0A875500D60628 /* ReadAssociationsByQuery.swift */; };
 		E5D206861E0A875600D60628 /* ReadBlockById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205801E0A875500D60628 /* ReadBlockById.swift */; };
 		E5D206871E0A875600D60628 /* ReadBlocksByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205811E0A875500D60628 /* ReadBlocksByIds.swift */; };
 		E5D206881E0A875600D60628 /* ReadBlocksByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205821E0A875500D60628 /* ReadBlocksByQuery.swift */; };
@@ -136,8 +127,6 @@
 		E5D206951E0A875600D60628 /* ReadUserById.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D2058F1E0A875500D60628 /* ReadUserById.swift */; };
 		E5D206961E0A875600D60628 /* ReadUsersByIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205901E0A875500D60628 /* ReadUsersByIds.swift */; };
 		E5D206971E0A875600D60628 /* ReadUsersByQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205911E0A875500D60628 /* ReadUsersByQuery.swift */; };
-		E5D206981E0A875600D60628 /* UpdateAssociation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205921E0A875500D60628 /* UpdateAssociation.swift */; };
-		E5D206991E0A875600D60628 /* UpdateAssociations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205931E0A875500D60628 /* UpdateAssociations.swift */; };
 		E5D2069A1E0A875600D60628 /* UpdateBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205941E0A875500D60628 /* UpdateBlock.swift */; };
 		E5D2069B1E0A875600D60628 /* UpdateBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205951E0A875500D60628 /* UpdateBlocks.swift */; };
 		E5D2069C1E0A875600D60628 /* UpdateBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205961E0A875500D60628 /* UpdateBox.swift */; };
@@ -355,13 +344,13 @@
 		E548A4821D880577006FF410 /* bartlebyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bartlebyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E548A4841D880577006FF410 /* bartlebyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bartlebyTests.swift; sourceTree = "<group>"; };
 		E548A4861D880577006FF410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5AA490A1E1121D0009FB51B /* RelationShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationShip.swift; sourceTree = "<group>"; };
 		E5CC28AC1D846CB300F7C783 /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		E5CC28AE1D846CB300F7C783 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		E5D085401C550DC500F0090E /* BartlebysCommandsFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysCommandsFacade.swift; sourceTree = "<group>"; };
 		E5D086D01C550EFD00F0090E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5D2053B1E0A875500D60628 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
-		E5D2053D1E0A875500D60628 /* ManagedAssociations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAssociations.swift; sourceTree = "<group>"; };
 		E5D2053E1E0A875500D60628 /* ManagedBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBlocks.swift; sourceTree = "<group>"; };
 		E5D2053F1E0A875500D60628 /* ManagedBoxes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBoxes.swift; sourceTree = "<group>"; };
 		E5D205401E0A875500D60628 /* ManagedLockers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedLockers.swift; sourceTree = "<group>"; };
@@ -370,7 +359,6 @@
 		E5D205431E0A875500D60628 /* ManagedTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedTags.swift; sourceTree = "<group>"; };
 		E5D205441E0A875500D60628 /* ManagedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedUsers.swift; sourceTree = "<group>"; };
 		E5D205461E0A875500D60628 /* Acknowledgment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Acknowledgment.swift; sourceTree = "<group>"; };
-		E5D205471E0A875500D60628 /* Association.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Association.swift; sourceTree = "<group>"; };
 		E5D205481E0A875500D60628 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		E5D205491E0A875500D60628 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E5D2054A1E0A875500D60628 /* CollectionMetadatum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMetadatum.swift; sourceTree = "<group>"; };
@@ -389,14 +377,11 @@
 		E5D205571E0A875500D60628 /* Node.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		E5D205581E0A875500D60628 /* Progression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Progression.swift; sourceTree = "<group>"; };
 		E5D205591E0A875500D60628 /* PushOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushOperation.swift; sourceTree = "<group>"; };
-		E5D2055A1E0A875500D60628 /* Relation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Relation.swift; sourceTree = "<group>"; };
 		E5D2055B1E0A875500D60628 /* Report.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		E5D2055C1E0A875500D60628 /* StringVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringVO.swift; sourceTree = "<group>"; };
 		E5D2055D1E0A875500D60628 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		E5D2055E1E0A875500D60628 /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		E5D2055F1E0A875500D60628 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		E5D205611E0A875500D60628 /* CreateAssociation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAssociation.swift; sourceTree = "<group>"; };
-		E5D205621E0A875500D60628 /* CreateAssociations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAssociations.swift; sourceTree = "<group>"; };
 		E5D205631E0A875500D60628 /* CreateBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlock.swift; sourceTree = "<group>"; };
 		E5D205641E0A875500D60628 /* CreateBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBlocks.swift; sourceTree = "<group>"; };
 		E5D205651E0A875500D60628 /* CreateBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBox.swift; sourceTree = "<group>"; };
@@ -409,8 +394,6 @@
 		E5D2056C1E0A875500D60628 /* CreateTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTags.swift; sourceTree = "<group>"; };
 		E5D2056D1E0A875500D60628 /* CreateUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
 		E5D2056E1E0A875500D60628 /* CreateUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUsers.swift; sourceTree = "<group>"; };
-		E5D2056F1E0A875500D60628 /* DeleteAssociation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAssociation.swift; sourceTree = "<group>"; };
-		E5D205701E0A875500D60628 /* DeleteAssociations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAssociations.swift; sourceTree = "<group>"; };
 		E5D205711E0A875500D60628 /* DeleteBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteBlock.swift; sourceTree = "<group>"; };
 		E5D205721E0A875500D60628 /* DeleteBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteBlocks.swift; sourceTree = "<group>"; };
 		E5D205731E0A875500D60628 /* DeleteBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteBox.swift; sourceTree = "<group>"; };
@@ -423,9 +406,6 @@
 		E5D2057A1E0A875500D60628 /* DeleteTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTags.swift; sourceTree = "<group>"; };
 		E5D2057B1E0A875500D60628 /* DeleteUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
 		E5D2057C1E0A875500D60628 /* DeleteUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteUsers.swift; sourceTree = "<group>"; };
-		E5D2057D1E0A875500D60628 /* ReadAssociationById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadAssociationById.swift; sourceTree = "<group>"; };
-		E5D2057E1E0A875500D60628 /* ReadAssociationsByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadAssociationsByIds.swift; sourceTree = "<group>"; };
-		E5D2057F1E0A875500D60628 /* ReadAssociationsByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadAssociationsByQuery.swift; sourceTree = "<group>"; };
 		E5D205801E0A875500D60628 /* ReadBlockById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadBlockById.swift; sourceTree = "<group>"; };
 		E5D205811E0A875500D60628 /* ReadBlocksByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadBlocksByIds.swift; sourceTree = "<group>"; };
 		E5D205821E0A875500D60628 /* ReadBlocksByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadBlocksByQuery.swift; sourceTree = "<group>"; };
@@ -444,8 +424,6 @@
 		E5D2058F1E0A875500D60628 /* ReadUserById.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUserById.swift; sourceTree = "<group>"; };
 		E5D205901E0A875500D60628 /* ReadUsersByIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUsersByIds.swift; sourceTree = "<group>"; };
 		E5D205911E0A875500D60628 /* ReadUsersByQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadUsersByQuery.swift; sourceTree = "<group>"; };
-		E5D205921E0A875500D60628 /* UpdateAssociation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAssociation.swift; sourceTree = "<group>"; };
-		E5D205931E0A875500D60628 /* UpdateAssociations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateAssociations.swift; sourceTree = "<group>"; };
 		E5D205941E0A875500D60628 /* UpdateBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateBlock.swift; sourceTree = "<group>"; };
 		E5D205951E0A875500D60628 /* UpdateBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateBlocks.swift; sourceTree = "<group>"; };
 		E5D205961E0A875500D60628 /* UpdateBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateBox.swift; sourceTree = "<group>"; };
@@ -794,7 +772,6 @@
 		E5D2053C1E0A875500D60628 /* managedCollections */ = {
 			isa = PBXGroup;
 			children = (
-				E5D2053D1E0A875500D60628 /* ManagedAssociations.swift */,
 				E5D2053E1E0A875500D60628 /* ManagedBlocks.swift */,
 				E5D2053F1E0A875500D60628 /* ManagedBoxes.swift */,
 				E5D205401E0A875500D60628 /* ManagedLockers.swift */,
@@ -810,7 +787,6 @@
 			isa = PBXGroup;
 			children = (
 				E5D205461E0A875500D60628 /* Acknowledgment.swift */,
-				E5D205471E0A875500D60628 /* Association.swift */,
 				E5D205481E0A875500D60628 /* Block.swift */,
 				E5D205491E0A875500D60628 /* Box.swift */,
 				E5D2054A1E0A875500D60628 /* CollectionMetadatum.swift */,
@@ -829,7 +805,6 @@
 				E5D205571E0A875500D60628 /* Node.swift */,
 				E5D205581E0A875500D60628 /* Progression.swift */,
 				E5D205591E0A875500D60628 /* PushOperation.swift */,
-				E5D2055A1E0A875500D60628 /* Relation.swift */,
 				E5D2055B1E0A875500D60628 /* Report.swift */,
 				E5D2055C1E0A875500D60628 /* StringVO.swift */,
 				E5D2055D1E0A875500D60628 /* Tag.swift */,
@@ -842,8 +817,6 @@
 		E5D205601E0A875500D60628 /* operations */ = {
 			isa = PBXGroup;
 			children = (
-				E5D205611E0A875500D60628 /* CreateAssociation.swift */,
-				E5D205621E0A875500D60628 /* CreateAssociations.swift */,
 				E5D205631E0A875500D60628 /* CreateBlock.swift */,
 				E5D205641E0A875500D60628 /* CreateBlocks.swift */,
 				E5D205651E0A875500D60628 /* CreateBox.swift */,
@@ -856,8 +829,6 @@
 				E5D2056C1E0A875500D60628 /* CreateTags.swift */,
 				E5D2056D1E0A875500D60628 /* CreateUser.swift */,
 				E5D2056E1E0A875500D60628 /* CreateUsers.swift */,
-				E5D2056F1E0A875500D60628 /* DeleteAssociation.swift */,
-				E5D205701E0A875500D60628 /* DeleteAssociations.swift */,
 				E5D205711E0A875500D60628 /* DeleteBlock.swift */,
 				E5D205721E0A875500D60628 /* DeleteBlocks.swift */,
 				E5D205731E0A875500D60628 /* DeleteBox.swift */,
@@ -870,9 +841,6 @@
 				E5D2057A1E0A875500D60628 /* DeleteTags.swift */,
 				E5D2057B1E0A875500D60628 /* DeleteUser.swift */,
 				E5D2057C1E0A875500D60628 /* DeleteUsers.swift */,
-				E5D2057D1E0A875500D60628 /* ReadAssociationById.swift */,
-				E5D2057E1E0A875500D60628 /* ReadAssociationsByIds.swift */,
-				E5D2057F1E0A875500D60628 /* ReadAssociationsByQuery.swift */,
 				E5D205801E0A875500D60628 /* ReadBlockById.swift */,
 				E5D205811E0A875500D60628 /* ReadBlocksByIds.swift */,
 				E5D205821E0A875500D60628 /* ReadBlocksByQuery.swift */,
@@ -891,8 +859,6 @@
 				E5D2058F1E0A875500D60628 /* ReadUserById.swift */,
 				E5D205901E0A875500D60628 /* ReadUsersByIds.swift */,
 				E5D205911E0A875500D60628 /* ReadUsersByQuery.swift */,
-				E5D205921E0A875500D60628 /* UpdateAssociation.swift */,
-				E5D205931E0A875500D60628 /* UpdateAssociations.swift */,
 				E5D205941E0A875500D60628 /* UpdateBlock.swift */,
 				E5D205951E0A875500D60628 /* UpdateBlocks.swift */,
 				E5D205961E0A875500D60628 /* UpdateBox.swift */,
@@ -1046,6 +1012,7 @@
 				E5D206311E0A875500D60628 /* ServerErrorCodes.swift */,
 				E5D206321E0A875500D60628 /* StatusOfCompletion.swift */,
 				E5D206331E0A875500D60628 /* ValueObject.swift */,
+				E5AA490A1E1121D0009FB51B /* RelationShip.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1338,7 +1305,6 @@
 				E5D2071C1E0A875600D60628 /* Referenced.swift in Sources */,
 				E508063B1DF6D4CC0085E5C3 /* DateFormatterTransform.swift in Sources */,
 				E5D2072C1E0A875600D60628 /* User+Auth.swift in Sources */,
-				E5D206751E0A875600D60628 /* DeleteAssociation.swift in Sources */,
 				E5D2069B1E0A875600D60628 /* UpdateBlocks.swift in Sources */,
 				E5D2069F1E0A875600D60628 /* UpdateLockers.swift in Sources */,
 				E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */,
@@ -1355,7 +1321,6 @@
 				E5D206A61E0A875600D60628 /* UIX.swift in Sources */,
 				E5D206F41E0A875600D60628 /* ManagedModel+Supervisable.swift in Sources */,
 				E5D206A71E0A875600D60628 /* BSFS.swift in Sources */,
-				E5D206851E0A875600D60628 /* ReadAssociationsByQuery.swift in Sources */,
 				E5D206A91E0A875600D60628 /* BytesStats.swift in Sources */,
 				E5D206441E0A875500D60628 /* BartlebyDocument.swift in Sources */,
 				E5D206CC1E0A875600D60628 /* ErasingError.swift in Sources */,
@@ -1365,7 +1330,6 @@
 				E5D207031E0A875600D60628 /* Collectible.swift in Sources */,
 				E5D2072B1E0A875600D60628 /* URL+Utilities.swift in Sources */,
 				E5D206771E0A875600D60628 /* DeleteBlock.swift in Sources */,
-				E5D2064E1E0A875500D60628 /* Association.swift in Sources */,
 				E50806391DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift in Sources */,
 				E5D2071E1E0A875600D60628 /* RelationsResolution.swift in Sources */,
 				E5D206521E0A875500D60628 /* Completion.swift in Sources */,
@@ -1403,7 +1367,6 @@
 				E5D206C21E0A875600D60628 /* NoCrypto.swift in Sources */,
 				E5D2064C1E0A875500D60628 /* ManagedUsers.swift in Sources */,
 				E5D206571E0A875500D60628 /* HTTPRequest.swift in Sources */,
-				E5D206451E0A875500D60628 /* ManagedAssociations.swift in Sources */,
 				E5D206C51E0A875600D60628 /* EventSource.swift in Sources */,
 				E50806481DF6D4CC0085E5C3 /* NSDecimalNumberTransform.swift in Sources */,
 				E5D206731E0A875600D60628 /* CreateUser.swift in Sources */,
@@ -1415,7 +1378,6 @@
 				E5D206FA1E0A875600D60628 /* Global.swift in Sources */,
 				E5D207061E0A875600D60628 /* CollectionMetadatumProtocol.swift in Sources */,
 				E5D206C01E0A875600D60628 /* HMAC.swift in Sources */,
-				E5D206761E0A875600D60628 /* DeleteAssociations.swift in Sources */,
 				E5D206A21E0A875600D60628 /* UpdateTag.swift in Sources */,
 				E5D206ED1E0A875600D60628 /* ManagedModel+Mergeable.swift in Sources */,
 				E5D206E41E0A875600D60628 /* LogEntry+Conveniences.swift in Sources */,
@@ -1444,7 +1406,6 @@
 				E5D2072F1E0A875600D60628 /* TriggersAfterIndex.swift in Sources */,
 				E5D206EF1E0A875600D60628 /* ManagedModel+ProvisionChanges.swift in Sources */,
 				E5D2068E1E0A875600D60628 /* ReadLockersByQuery.swift in Sources */,
-				E5D206671E0A875600D60628 /* CreateAssociation.swift in Sources */,
 				E5D206741E0A875600D60628 /* CreateUsers.swift in Sources */,
 				E50806171DF6D49C0085E5C3 /* Response.swift in Sources */,
 				E5D2066C1E0A875600D60628 /* CreateBoxes.swift in Sources */,
@@ -1498,7 +1459,6 @@
 				E5D2069E1E0A875600D60628 /* UpdateLocker.swift in Sources */,
 				E5D206CB1E0A875600D60628 /* DocumentError.swift in Sources */,
 				E5D206941E0A875600D60628 /* ReadTagsByQuery.swift in Sources */,
-				E5D206981E0A875600D60628 /* UpdateAssociation.swift in Sources */,
 				E5D206901E0A875600D60628 /* ReadNodesByIds.swift in Sources */,
 				E5D206CE1E0A875600D60628 /* BartlebyDocument+Blocks.swift in Sources */,
 				E5D207301E0A875600D60628 /* TriggersByIds.swift in Sources */,
@@ -1508,7 +1468,6 @@
 				E5D206F01E0A875600D60628 /* ManagedModel+QuietChanges.swift in Sources */,
 				E5D2066B1E0A875600D60628 /* CreateBox.swift in Sources */,
 				E5D2064D1E0A875500D60628 /* Acknowledgment.swift in Sources */,
-				E5D206611E0A875500D60628 /* Relation.swift in Sources */,
 				E5D206B21E0A875600D60628 /* DownloadBlock.swift in Sources */,
 				E5D207151E0A875600D60628 /* LogCategorizable.swift in Sources */,
 				E5D207251E0A875600D60628 /* UserProtocol.swift in Sources */,
@@ -1538,16 +1497,15 @@
 				E5D207171E0A875600D60628 /* Logger.swift in Sources */,
 				E5D206E61E0A875600D60628 /* ManagedModel+ConsolidableProgression.swift in Sources */,
 				E5D206511E0A875500D60628 /* CollectionMetadatum.swift in Sources */,
+				E5AA490B1E1121D0009FB51B /* RelationShip.swift in Sources */,
 				E5D2066D1E0A875600D60628 /* CreateLocker.swift in Sources */,
 				E5D206921E0A875600D60628 /* ReadTagById.swift in Sources */,
 				E5D206491E0A875500D60628 /* ManagedNodes.swift in Sources */,
 				E5D206AF1E0A875600D60628 /* Node+Facilities.swift in Sources */,
-				E5D206831E0A875600D60628 /* ReadAssociationById.swift in Sources */,
 				E5D2069D1E0A875600D60628 /* UpdateBoxes.swift in Sources */,
 				E5D206601E0A875500D60628 /* PushOperation.swift in Sources */,
 				E5D206AC1E0A875600D60628 /* DeltaAnalyzer.swift in Sources */,
 				E5D2068F1E0A875600D60628 /* ReadNodeById.swift in Sources */,
-				E5D206991E0A875600D60628 /* UpdateAssociations.swift in Sources */,
 				E50806421DF6D4CC0085E5C3 /* ImmutableMappable.swift in Sources */,
 				E50806111DF6D49C0085E5C3 /* DispatchQueue+Alamofire.swift in Sources */,
 				E5D2069A1E0A875600D60628 /* UpdateBlock.swift in Sources */,
@@ -1573,7 +1531,6 @@
 				E5D206471E0A875500D60628 /* ManagedBoxes.swift in Sources */,
 				E5D206DA1E0A875600D60628 /* BartlebyDocument+SuperIterable.swift in Sources */,
 				E5D206871E0A875600D60628 /* ReadBlocksByIds.swift in Sources */,
-				E5D206681E0A875600D60628 /* CreateAssociations.swift in Sources */,
 				E508064B1DF6D4CC0085E5C3 /* TransformOf.swift in Sources */,
 				E5D206E51E0A875600D60628 /* ManagedModel+Committable.swift in Sources */,
 				E5D206EA1E0A875600D60628 /* ManagedModel+Extended.swift in Sources */,
@@ -1592,7 +1549,6 @@
 				E5D206C41E0A875600D60628 /* Async.swift in Sources */,
 				E5D206911E0A875600D60628 /* ReadNodesByQuery.swift in Sources */,
 				E508061C1DF6D49C0085E5C3 /* SessionManager.swift in Sources */,
-				E5D206841E0A875600D60628 /* ReadAssociationsByIds.swift in Sources */,
 				E5D207101E0A875600D60628 /* GroupedCommits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

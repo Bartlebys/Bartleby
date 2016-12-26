@@ -16,7 +16,7 @@ extension Node{
     /// true if the node can be assembled
     public var isAssemblable:Bool{
         if let document=self.referentDocument{
-            let blocks:[Block] = self.relations(Relation.Relationship.owns)
+            let blocks:[Block] = self.relations(Relationship.owns)
             if blocks.count != self.numberOfBlocks{
                 return false
             }
@@ -34,7 +34,7 @@ extension Node{
 
     /// The parent box
     var box:Box?{
-        if let owner:Box = self.firstRelation(Relation.Relationship.ownedBy){
+        if let owner:Box = self.firstRelation(Relationship.ownedBy){
             return owner
         }else{
             return nil
@@ -50,7 +50,7 @@ extension Node{
 
     /// the currently referenced blocks
     var blocks:[Block]{
-        let ownedBlocks:[Block]=self.relations(Relation.Relationship.owns)
+        let ownedBlocks:[Block]=self.relations(Relationship.owns)
         return ownedBlocks
     }
 

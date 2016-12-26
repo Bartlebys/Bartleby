@@ -17,15 +17,15 @@ public extension ManagedModel{
     }
 
     func unTag(_ tag:Tag){
-        self.removeRelation(Relation.Relationship.free, to: tag)
+        self.removeRelation(Relationship.free, to: tag)
     }
 
     func tags()->[Tag]?{
-        return self.relations(Relation.Relationship.free)
+        return self.relations(Relationship.free)
     }
 
     func hasTag(_ tag:Tag)->Bool{
-        return self.relations.contains { $0.UID == tag.UID }
+        return self.freeRelations.contains(tag.UID)
     }
 
 }

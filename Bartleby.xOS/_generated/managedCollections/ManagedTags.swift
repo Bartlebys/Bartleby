@@ -101,15 +101,27 @@ public extension Notification.Name {
         super.init()
     }
 
-    // Should be called to propagate the collection reference
-    open func propagateCollection(){
+    // Should be called to propagate references (Collection, ReferentDocument, Owned relations)
+    open func propagate(){
         #if BARTLEBY_CORE_DEBUG
         if self.referentDocument == nil{
             glog("Document Reference is nil during Propagation on ManagedTags", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
         #endif
-        self.forEach {
-            $0.collection=self
+        for item in self{
+            // Reference the collection
+            item.collection=self
+            // Re-build the own relation.
+            item.ownedBy.forEach({ (ownerUID) in
+                if let o = Bartleby.registredManagedModelByUID(ownerUID){
+                    if !o.owns.contains(item.UID){
+                        o.owns.append(item.UID)
+                    }
+                }else{
+                    // If the owner is not already available defer the homologous ownership registration.
+                    Bartleby.appendDeferredOwnerships(item, ownerUID: ownerUID)
+                }
+            })
         }
     }
 

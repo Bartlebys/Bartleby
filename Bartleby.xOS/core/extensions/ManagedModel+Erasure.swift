@@ -25,49 +25,27 @@ extension ManagedModel{
             var erasableUIDS:[String]=[self.UID]
 
             // Erase recursively
-            func __stageForErasure(_ UID:String)throws->(){
-                if !erasableUIDS.contains(UID){
-                    erasableUIDS.append(UID)
-                    let target:ManagedModel = try Bartleby.registredObjectByUID(UID)
+            func __stageForErasure(_ objectUID:String)throws->(){
+                if !erasableUIDS.contains(objectUID){
+                    erasableUIDS.append(objectUID)
+                    let target:ManagedModel = try Bartleby.registredObjectByUID(objectUID)
                     try target.erase(commit: commit)
                 }
             }
 
-            for relation in self.relations{
-                switch relation.relationship {
-                case Relation.Relationship.free:
-                    // That's FreeDom! There is nothing to do
-                    break
-                case Relation.Relationship.owns:
-                    try __stageForErasure(relation.UID)
-                    break
-                case Relation.Relationship.ownedBy:
-                    // Remove the homologous relation
-                    if let object:ManagedModel = try? Bartleby.registredObjectByUID(relation.UID){
-                        object.removeRelation(Relation.Relationship.owns, to:self)
-                    }
-                    break
-                case Relation.Relationship.coOwns:
-                    // Count the owners to define if the object should be erased.
-                    let m:[ManagedModel] = self.relations(Relation.Relationship.coOwns)
-                    if m.count == 1{
-                        try __stageForErasure(relation.UID)
-                    }
-                case Relation.Relationship.coOwnedBy:
-                    // Remove the homologous relation
-                    if let object:ManagedModel = try? Bartleby.registredObjectByUID(relation.UID){
-                        object.removeRelation(Relation.Relationship.coOwns, to:self)
-                    }
-                    break
-                case Relation.Relationship.fusional:
-                    // Prevent Circularity
-                    if let object:ManagedModel = try? Bartleby.registredObjectByUID(relation.UID){
-                        object.removeRelation(Relation.Relationship.fusional, to:self)
-                    }
-                    try __stageForErasure(relation.UID)
-                    break
+            try self.owns.forEach({ (objectUID) in
+                try __stageForErasure(objectUID)
+            })
+
+            // That's FreeDom! There is nothing to do with self.free
+
+            self.ownedBy.forEach({ (objectUID) in
+                // Remove the homologous relation
+                if let object:ManagedModel = try? Bartleby.registredObjectByUID(objectUID){
+                    object.removeRelation(Relationship.owns, to:self)
                 }
-            }
+            })
+
             // Erase from managed collection
             if let collection=document.collectionByName(self.d_collectionName) as? CollectibleCollection {
                 collection.removeObject(self, commit:commit)
@@ -77,5 +55,5 @@ extension ManagedModel{
             throw ErasingError.referentDocumentUndefined
         }
     }
-
+    
 }
