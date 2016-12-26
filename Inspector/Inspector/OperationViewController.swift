@@ -39,8 +39,7 @@ class OperationViewController: NSViewController,Editor{
 
     @IBAction func pushSelectedOperation(_ sender: AnyObject) {
         if let operation=self.selectedItem{
-            var ops=[PushOperation]()
-            ops.append(operation)
+            let ops=[operation]
             let handlers=Handlers(completionHandler: { (completion) in
                 glog("\(completion)", file:#file, function:#function, line:#line)
             })

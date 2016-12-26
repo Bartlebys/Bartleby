@@ -186,9 +186,8 @@ import Foundation
                         }
                     )
                 }else{
-                    // This document is not available there is nothing to do.
-                    glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(self.documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                }
+                    glog("Operation can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+    }
             }catch{
                 let context = HTTPContext( code:3 ,
                 caller: "DeleteLocker.execute",
