@@ -879,7 +879,6 @@
 				E51359ED1E084B7F001E65A0 /* components */,
 				E5135A031E084B7F001E65A0 /* core */,
 				E5135A701E084B7F001E65A0 /* extensions */,
-				E5135A741E084B7F001E65A0 /* operations */,
 				E5135A7B1E084B7F001E65A0 /* tools */,
 			);
 			name = Bartleby.xOS;
@@ -1141,6 +1140,7 @@
 				E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */,
 				E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */,
 				E5135A6F1E084B7F001E65A0 /* ValueObject.swift */,
+				E5135A741E084B7F001E65A0 /* operations */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1280,7 +1280,8 @@
 				E5135A791E084B7F001E65A0 /* TriggersForIndexes.swift */,
 				E5135A7A1E084B7F001E65A0 /* VerifyLocker.swift */,
 			);
-			path = operations;
+			name = operations;
+			path = ../operations;
 			sourceTree = "<group>";
 		};
 		E5135A7B1E084B7F001E65A0 /* tools */ = {
