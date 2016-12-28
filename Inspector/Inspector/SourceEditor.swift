@@ -24,13 +24,13 @@ class SourceEditor: NSViewController,Editor {
             if let collection = self._selectedItem as? CollectibleCollection{
                 self.enableEdition=false
                 self.textView.string="{\"numberOfItems\":\(collection.count)}"
-            }else if self._selectedItem is DocumentMetadata{
+            }else if self._selectedItem is ManagedModel{
                 let selectedJSON=self._selectedItem!.toJSONString(true)
                 self.textView.string=selectedJSON
-                self.enableEdition=false
+                self.enableEdition=true
             }else if let valueObject = representedObject as? ValueObject{
                 let selectedJSON=valueObject.toJSONString(prettyPrint: true)
-                self.enableEdition=true
+                self.enableEdition=false
                 self.textView.string=selectedJSON
             }
         }

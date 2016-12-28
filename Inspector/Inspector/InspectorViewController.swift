@@ -186,7 +186,7 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
                 }
             }
         }else{
-            // It maa ValueObject
+            // It  a ValueObject
             if let _ = selected as? DocumentMetadata{
                 self._topViewController=self.sourceEditor
                 self._bottomViewController=self.metadataViewController
