@@ -18,7 +18,6 @@ import Foundation
 
 @objc(ValueObject) open class ValueObject: NSObject, Mappable, NSSecureCoding {
 
-
     // MARK: - Mappable
 
     required public init?(map: Map) {

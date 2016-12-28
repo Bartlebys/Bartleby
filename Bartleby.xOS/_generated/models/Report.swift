@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Report object that can be used for analytics and support purposes
-@objc(Report) open class Report : ManagedModel{
+@objc(Report) open class Report : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Report"
-    }
 
 	//The document Metadata (contains highly sensitive data)
 	dynamic open var metadata:DocumentMetadata?
@@ -30,61 +26,7 @@ import Foundation
 	//A collection metrics
 	dynamic open var metrics:[Metrics] = [Metrics]()
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["metadata","logs","metrics"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "metadata":
-                if let casted=value as? DocumentMetadata{
-                    self.metadata=casted
-                }
-            case "logs":
-                if let casted=value as? [LogEntry]{
-                    self.logs=casted
-                }
-            case "metrics":
-                if let casted=value as? [Metrics]{
-                    self.metrics=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "metadata":
-               return self.metadata
-            case "logs":
-               return self.logs
-            case "metrics":
-               return self.metrics
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -127,13 +69,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "reports"
-    }
-
-    override open var d_collectionName:String{
-        return Report.collectionName
     }
 }

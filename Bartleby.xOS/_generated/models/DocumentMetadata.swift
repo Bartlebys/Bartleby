@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
-@objc(DocumentMetadata) open class DocumentMetadata : ManagedModel{
+@objc(DocumentMetadata) open class DocumentMetadata : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "DocumentMetadata"
-    }
 
 	//The data space UID can be shared between multiple Docuemnt.
 	dynamic open var spaceUID:String = "\(Bartleby.createUID())"
@@ -89,22 +85,10 @@ import Foundation
 	dynamic open var pendingOperationsProgressionState:Progression?
 
 	//When monitoring reachability we need to know if we should be connected to Collaborative server
-	dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
-	    didSet { 
-	       if !self.wantsQuietChanges && shouldBeOnline != oldValue {
-	            self.provisionChanges(forKey: "shouldBeOnline",oldValue: oldValue,newValue: shouldBeOnline)  
-	       } 
-	    }
-	}
+	dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//is the user performing Online
-	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
-	    didSet { 
-	       if !self.wantsQuietChanges && online != oldValue {
-	            self.provisionChanges(forKey: "online",oldValue: oldValue,newValue: online)  
-	       } 
-	    }
-	}
+	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//Is the document transitionning offToOn: offline > online, onToOff: online > offine
 	public enum Transition:String{
@@ -112,31 +96,13 @@ import Foundation
 		case offToOn = "offToOn"
 		case onToOff = "onToOff"
 	}
-	open var transition:Transition = .none  {
-	    didSet { 
-	       if !self.wantsQuietChanges && transition != oldValue {
-	            self.provisionChanges(forKey: "transition",oldValue: oldValue.rawValue,newValue: transition.rawValue)  
-	       } 
-	    }
-	}
+	open var transition:Transition = .none
 
 	//If set to true committed object will be pushed as soon as possible.
-	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT  {
-	    didSet { 
-	       if !self.wantsQuietChanges && pushOnChanges != oldValue {
-	            self.provisionChanges(forKey: "pushOnChanges",oldValue: oldValue,newValue: pushOnChanges)  
-	       } 
-	    }
-	}
+	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//Save the password or not?
-	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE  {
-	    didSet { 
-	       if !self.wantsQuietChanges && saveThePassword != oldValue {
-	            self.provisionChanges(forKey: "saveThePassword",oldValue: oldValue,newValue: saveThePassword)  
-	       } 
-	    }
-	}
+	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
 
 	//The sum of all the metrics
 	dynamic open var cumulatedUpMetricsDuration:Double = 0
@@ -147,217 +113,7 @@ import Foundation
 	//The qos Indice
 	dynamic open var qosIndice:Double = 0
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","persistentUID","currentUser","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "spaceUID":
-                if let casted=value as? String{
-                    self.spaceUID=casted
-                }
-            case "persistentUID":
-                if let casted=value as? String{
-                    self.persistentUID=casted
-                }
-            case "currentUser":
-                if let casted=value as? User{
-                    self.currentUser=casted
-                }
-            case "identificationMethod":
-                if let casted=value as? DocumentMetadata.IdentificationMethod{
-                    self.identificationMethod=casted
-                }
-            case "appGroup":
-                if let casted=value as? String{
-                    self.appGroup=casted
-                }
-            case "identificationValue":
-                if let casted=value as? String{
-                    self.identificationValue=casted
-                }
-            case "collaborationServerURL":
-                if let casted=value as? URL{
-                    self.collaborationServerURL=casted
-                }
-            case "registred":
-                if let casted=value as? Bool{
-                    self.registred=casted
-                }
-            case "changesAreInspectables":
-                if let casted=value as? Bool{
-                    self.changesAreInspectables=casted
-                }
-            case "collectionsMetadata":
-                if let casted=value as? [CollectionMetadatum]{
-                    self.collectionsMetadata=casted
-                }
-            case "stateDictionary":
-                if let casted=value as? [String:Any]{
-                    self.stateDictionary=casted
-                }
-            case "URLBookmarkData":
-                if let casted=value as? [KeyedData]{
-                    self.URLBookmarkData=casted
-                }
-            case "preferredFileName":
-                if let casted=value as? String{
-                    self.preferredFileName=casted
-                }
-            case "triggersIndexesDebugHistory":
-                if let casted=value as? [Int]{
-                    self.triggersIndexesDebugHistory=casted
-                }
-            case "ownedTriggersIndexes":
-                if let casted=value as? [Int]{
-                    self.ownedTriggersIndexes=casted
-                }
-            case "lastIntegratedTriggerIndex":
-                if let casted=value as? Int{
-                    self.lastIntegratedTriggerIndex=casted
-                }
-            case "receivedTriggers":
-                if let casted=value as? [Trigger]{
-                    self.receivedTriggers=casted
-                }
-            case "operationsQuarantine":
-                if let casted=value as? [PushOperation]{
-                    self.operationsQuarantine=casted
-                }
-            case "bunchInProgress":
-                if let casted=value as? Bool{
-                    self.bunchInProgress=casted
-                }
-            case "totalNumberOfOperations":
-                if let casted=value as? Int{
-                    self.totalNumberOfOperations=casted
-                }
-            case "pendingOperationsProgressionState":
-                if let casted=value as? Progression{
-                    self.pendingOperationsProgressionState=casted
-                }
-            case "shouldBeOnline":
-                if let casted=value as? Bool{
-                    self.shouldBeOnline=casted
-                }
-            case "online":
-                if let casted=value as? Bool{
-                    self.online=casted
-                }
-            case "transition":
-                if let casted=value as? DocumentMetadata.Transition{
-                    self.transition=casted
-                }
-            case "pushOnChanges":
-                if let casted=value as? Bool{
-                    self.pushOnChanges=casted
-                }
-            case "saveThePassword":
-                if let casted=value as? Bool{
-                    self.saveThePassword=casted
-                }
-            case "cumulatedUpMetricsDuration":
-                if let casted=value as? Double{
-                    self.cumulatedUpMetricsDuration=casted
-                }
-            case "totalNumberOfUpMetrics":
-                if let casted=value as? Int{
-                    self.totalNumberOfUpMetrics=casted
-                }
-            case "qosIndice":
-                if let casted=value as? Double{
-                    self.qosIndice=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "spaceUID":
-               return self.spaceUID
-            case "persistentUID":
-               return self.persistentUID
-            case "currentUser":
-               return self.currentUser
-            case "identificationMethod":
-               return self.identificationMethod
-            case "appGroup":
-               return self.appGroup
-            case "identificationValue":
-               return self.identificationValue
-            case "collaborationServerURL":
-               return self.collaborationServerURL
-            case "registred":
-               return self.registred
-            case "changesAreInspectables":
-               return self.changesAreInspectables
-            case "collectionsMetadata":
-               return self.collectionsMetadata
-            case "stateDictionary":
-               return self.stateDictionary
-            case "URLBookmarkData":
-               return self.URLBookmarkData
-            case "preferredFileName":
-               return self.preferredFileName
-            case "triggersIndexesDebugHistory":
-               return self.triggersIndexesDebugHistory
-            case "ownedTriggersIndexes":
-               return self.ownedTriggersIndexes
-            case "lastIntegratedTriggerIndex":
-               return self.lastIntegratedTriggerIndex
-            case "receivedTriggers":
-               return self.receivedTriggers
-            case "operationsQuarantine":
-               return self.operationsQuarantine
-            case "bunchInProgress":
-               return self.bunchInProgress
-            case "totalNumberOfOperations":
-               return self.totalNumberOfOperations
-            case "pendingOperationsProgressionState":
-               return self.pendingOperationsProgressionState
-            case "shouldBeOnline":
-               return self.shouldBeOnline
-            case "online":
-               return self.online
-            case "transition":
-               return self.transition
-            case "pushOnChanges":
-               return self.pushOnChanges
-            case "saveThePassword":
-               return self.saveThePassword
-            case "cumulatedUpMetricsDuration":
-               return self.cumulatedUpMetricsDuration
-            case "totalNumberOfUpMetrics":
-               return self.totalNumberOfUpMetrics
-            case "qosIndice":
-               return self.qosIndice
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -471,13 +227,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "documentMetadatas"
-    }
-
-    override open var d_collectionName:String{
-        return DocumentMetadata.collectionName
     }
 }

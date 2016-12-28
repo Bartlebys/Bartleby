@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ReportTabViewController" customModule="BartlebyKit" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="ReportTabViewController" customModule="BartlebysInspector" customModuleProvider="target">
             <connections>
                 <outlet property="chronologyController" destination="QXo-JB-Kqn" id="tbP-lo-e0K"/>
                 <outlet property="decryptor" destination="XFK-1o-l3n" id="XlW-Ga-Z70"/>
@@ -22,9 +22,9 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <point key="canvasLocation" x="195" y="227"/>
         </customView>
-        <viewController id="XFK-1o-l3n" customClass="DecryptorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="QXo-JB-Kqn" customClass="ChronologyViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="ABM-j5-YKK" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController title="Metadata" id="1z8-fL-0wj" customClass="MetadataDetails" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="XFK-1o-l3n" customClass="DecryptorViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="QXo-JB-Kqn" customClass="ChronologyViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="ABM-j5-YKK" customClass="LogsViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController title="Metadata" id="1z8-fL-0wj" customClass="MetadataDetails" customModule="BartlebysInspector" customModuleProvider="target"/>
     </objects>
 </document>

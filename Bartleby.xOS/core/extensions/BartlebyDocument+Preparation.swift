@@ -25,8 +25,6 @@ extension BartlebyDocument{
 
         // Add the document to globals logs observer
         addGlobalLogsObserver(self)
-
-        self.metadata.referentDocument = self
         self.metadata.currentUser?.referentDocument = self
 
         // Configure the schemas

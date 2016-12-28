@@ -8,6 +8,7 @@
 
 import Cocoa
 import BartlebyKit
+import ObjectMapper
 
 class SourceEditor: NSViewController,Editor {
 
@@ -27,8 +28,8 @@ class SourceEditor: NSViewController,Editor {
                 let selectedJSON=self._selectedItem!.toJSONString(true)
                 self.textView.string=selectedJSON
                 self.enableEdition=false
-            }else{
-                let selectedJSON=self._selectedItem!.toJSONString(true)
+            }else if let valueObject = representedObject as? ValueObject{
+                let selectedJSON=valueObject.toJSONString(prettyPrint: true)
                 self.enableEdition=true
                 self.textView.string=selectedJSON
             }

@@ -44,7 +44,6 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
 
     @IBAction func resetAllSupervisionCounter(_ sender: AnyObject) {
         if let documentReference=self.documentProvider?.getDocument(){
-            documentReference.metadata.changedKeys.removeAll()
             documentReference.metadata.currentUser?.changedKeys.removeAll()
             documentReference.iterateOnCollections({ (collection) in
                 if let o = collection as? ManagedModel{
@@ -110,14 +109,9 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
     }
 
 
-
-
-
     //MARK:-  Collections
 
     fileprivate var _collectionListDelegate:CollectionListDelegate?
-
-
 
     // MARK - DocumentDependent
 
@@ -137,6 +131,8 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
                 self.listOutlineView.delegate = self._collectionListDelegate
                 self.listOutlineView.dataSource = self._collectionListDelegate
                 self._collectionListDelegate?.reloadData()
+
+                self.metadataViewController.documentProvider=self.documentProvider
 
             }
         }
@@ -184,27 +180,33 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
                     self._topViewController=self.sourceEditor
                     self._bottomViewController=self.operationViewController
                     break
-                case _  where object is DocumentMetadata :
-                    self._topViewController=self.sourceEditor
-                    self._bottomViewController=self.metadataViewController
-                    break
                 default:
                     self._topViewController=self.sourceEditor
                     self._bottomViewController=self.changesViewController
                 }
-                if self.topBox.contentView != self._topViewController!.view{
-                    self.topBox.contentView=self._topViewController!.view
-                }
+            }
+        }else{
+            // It maa ValueObject
+            if let _ = selected as? DocumentMetadata{
+                self._topViewController=self.sourceEditor
+                self._bottomViewController=self.metadataViewController
+            }
+        }
 
-                if self.bottomBox.contentView != self._bottomViewController!.view{
-                    self.bottomBox.contentView=self._bottomViewController!.view
-                }
+        if let object = selected as? NSObject{
+
+            if self.topBox.contentView != self._topViewController!.view{
+                self.topBox.contentView=self._topViewController!.view
             }
 
-            if (self._topViewController?.representedObject as? ManagedModel) != object{
+            if self.bottomBox.contentView != self._bottomViewController!.view{
+                self.bottomBox.contentView=self._bottomViewController!.view
+            }
+
+            if (self._topViewController?.representedObject as? NSObject) != object{
                 self._topViewController?.representedObject=object
             }
-            if (self._bottomViewController?.representedObject as? ManagedModel) != object{
+            if (self._bottomViewController?.representedObject as? NSObject) != object {
                 self._bottomViewController?.representedObject=object
             }
         }
@@ -221,21 +223,18 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     fileprivate var _outlineView:NSOutlineView!
 
 
-    fileprivate var _selectionHandler:((_ selected:Collectible)->())
+    fileprivate var _selectionHandler:((_ selected:Any)->())
 
     fileprivate var _collections:[BartlebyCollection]=[BartlebyCollection]()
 
 
     var UID: String = Bartleby.createUID()
 
-    required init(documentReference:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Collectible)->())) {
+    required init(documentReference:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Any)->())) {
         self._documentReference=documentReference
         self._outlineView=outlineView
         self._selectionHandler=onSelection
         super.init()
-        self._documentReference.metadata.addChangesSuperviser(self, closure: {(key, oldValue, newValue) in
-            self.reloadData()
-        })
         self._documentReference.iterateOnCollections { (collection) in
             self._collections.append(collection)
             collection.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
@@ -339,13 +338,6 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 }
                 self.configureInlineButton(view, object: casted)
                 return view
-            }else if object is DocumentMetadata {
-                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    textField.stringValue = "Document Metadata"
-                }
-                self.configureInlineButton(view, object: object)
-                return view
             }else if  let casted=object as? User {
                 let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
@@ -367,15 +359,25 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 return view
             }
         }else{
-            let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
-            if let textField = view.textField {
-                if let s=item as? String{
-                    textField.stringValue = s
-                }else{
-                    textField.stringValue = "Anomaly"
+            // Value Object
+            if let object = item as? DocumentMetadata{
+                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
+                    textField.stringValue = "Document Metadata"
                 }
+                self.configureInlineButton(view, object: object)
+                return view
+            }else{
+                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                if let textField = view.textField {
+                    if let s=item as? String{
+                        textField.stringValue = s
+                    }else{
+                        textField.stringValue = "Anomaly"
+                    }
+                }
+                return view
             }
-            return view
         }
     }
 
@@ -406,9 +408,9 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let object=item as? ManagedModel {
             if object is BartlebyCollection { return 20 }
-            if object is DocumentMetadata { return 20 }
             return 20 // Any ManagedModel
         }
+        if item is DocumentMetadata { return 20 }
         if item is String{ return 20 }
         return 30 // This is not normal.
     }
@@ -418,12 +420,12 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
         return true
     }
-    
+
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
         Async.main{
             let selected=self._outlineView.selectedRow
-            if let item=self._outlineView.item(atRow: selected) as? ManagedModel {
+            if let item=self._outlineView.item(atRow: selected){
                 self._selectionHandler(item)
             }
         }

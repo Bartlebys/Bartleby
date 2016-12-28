@@ -63,9 +63,6 @@ public protocol BartlebyConfiguration {
      // To guarantee the sequential Execution use 1 (!)
     static var MAX_OPERATIONS_BUNCH_SIZE: Int { get set }
 
-    // Should the registries metadata be crypted on export
-    static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool { get set }
-
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool { get set }
 
@@ -126,9 +123,6 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
     public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
-
-    // Should the registries metadata be crypted on export (should be true)!
-    public static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool = true
 
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false

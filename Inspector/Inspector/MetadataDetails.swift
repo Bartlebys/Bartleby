@@ -11,7 +11,7 @@ import BartlebyKit
 
 public let REFRESH_METADATA_INFOS_NOTIFICATION_NAME="REFRESH_METADATA_INFOS_NOTIFICATION_NAME"
 
-class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate{
+class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate,DocumentDependent{
 
 
     @IBOutlet weak var infosItem: NSTabViewItem!
@@ -34,6 +34,13 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
             tabView.delegate=self
         }
     }
+
+
+    // MARK: - DocumentDependent
+
+    internal var documentProvider: DocumentProvider?
+
+
 
     // No Bindings we "observe" the selected index ( NSTabViewDelegate)
     @IBOutlet var triggersDiagnosticTextView: NSTextView!{
@@ -76,9 +83,6 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     override var representedObject: Any?{
         willSet{
-            if let _=self._metadata{
-                self._metadata?.removeChangesSuperviser(self)
-            }
         }
         didSet{
             self._metadata=representedObject as? EditorOf
@@ -90,7 +94,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     public func tabView(_ tabView: NSTabView, willSelect tabViewItem: NSTabViewItem?){
         if let tabViewItem = tabViewItem{
-            if let documentReference=self._metadata?.referentDocument{
+            if let documentReference=self.documentProvider?.getDocument(){
                 if let identifier=tabViewItem.identifier as? String{
                     if identifier == "TriggersAnalysis"  {
                         self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
@@ -105,7 +109,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
 
     public func refreshMetadata(notification:Notification){
-        if let documentReference=self._metadata?.referentDocument{
+        if let documentReference=self.documentProvider?.getDocument(){
             self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
             self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine
         }

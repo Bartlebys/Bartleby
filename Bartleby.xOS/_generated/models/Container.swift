@@ -14,12 +14,8 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
-@objc(Container) open class Container : ManagedModel{
+@objc(Container) open class Container : ValueObject {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "Container"
-    }
 
 	//You can setup a password
 	dynamic open var password:String?
@@ -33,67 +29,7 @@ import Foundation
 	//Blocks
 	dynamic open var blocks:[Block] = [Block]()
 
-    // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
-    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["password","boxes","nodes","blocks"])
-        return exposed
-    }
-
-
-    /// Set the value of the given key
-    ///
-    /// - parameter value: the value
-    /// - parameter key:   the key
-    ///
-    /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
-        switch key {
-            case "password":
-                if let casted=value as? String{
-                    self.password=casted
-                }
-            case "boxes":
-                if let casted=value as? [Box]{
-                    self.boxes=casted
-                }
-            case "nodes":
-                if let casted=value as? [Node]{
-                    self.nodes=casted
-                }
-            case "blocks":
-                if let casted=value as? [Block]{
-                    self.blocks=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
-        }
-    }
-
-
-    /// Returns the value of an exposed key.
-    ///
-    /// - parameter key: the key
-    ///
-    /// - throws: throws Exception when the key is not exposed
-    ///
-    /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
-        switch key {
-            case "password":
-               return self.password
-            case "boxes":
-               return self.boxes
-            case "nodes":
-               return self.nodes
-            case "blocks":
-               return self.blocks
-            default:
-                return try super.getExposedValueForKey(key)
-        }
-    }
     // MARK: - Mappable
 
     required public init?(map: Map) {
@@ -139,13 +75,5 @@ import Foundation
 
      required public init() {
         super.init()
-    }
-
-    override open class var collectionName:String{
-        return "containers"
-    }
-
-    override open var d_collectionName:String{
-        return Container.collectionName
     }
 }

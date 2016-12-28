@@ -47,7 +47,6 @@ class LockerTests: XCTestCase {
         LockerTests._creatorUser = document.newObject() as User
         if let user =  LockerTests._creatorUser {
             document.metadata.currentUser = user
-            document.metadata.creatorUID = user.UID
         }
 
     }

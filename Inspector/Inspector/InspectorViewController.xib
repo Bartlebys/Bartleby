@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="InspectorViewController" customModule="BartlebysInspector" customModuleProvider="target">
             <connections>
                 <outlet property="bottomBox" destination="1AX-jR-v4E" id="IYi-xo-tT7"/>
                 <outlet property="changesViewController" destination="3kS-31-sl3" id="Coo-mf-yFN"/>
@@ -256,10 +257,10 @@
             </connections>
             <point key="canvasLocation" x="539" y="956.5"/>
         </splitView>
-        <viewController id="A1J-3y-mLd" customClass="SourceEditor" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="rF1-h1-Fwc" customClass="OperationViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="maX-jp-4xo" customClass="MetadataDetails" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="A1J-3y-mLd" customClass="SourceEditor" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="rF1-h1-Fwc" customClass="OperationViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="3kS-31-sl3" customClass="ChangesViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="maX-jp-4xo" customClass="MetadataDetails" customModule="BartlebysInspector" customModuleProvider="target"/>
         <menu id="c12-ge-CBZ">
             <items>
                 <menuItem title="Reset Changes Counters" id="p08-AH-Eqj">

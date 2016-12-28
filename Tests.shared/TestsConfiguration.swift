@@ -49,8 +49,6 @@ open class TestsConfiguration: BartlebyConfiguration {
     open static var API_CALL_TRACKING_IS_ENABLED: Bool=true
     open static var BPRINT_API_TRACKED_CALLS: Bool=true
 
-    // Should the registries metadata be crypted on export (should be true)!
-    open static var CRYPTED_REGISTRIES_METADATA_EXPORT: Bool = true
 
     // Should we save the password by Default ?
     open static var SAVE_PASSWORD_DEFAULT_VALUE: Bool=false

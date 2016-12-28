@@ -17,6 +17,28 @@ import Foundation
 // The underlining model has been implemented by flexions in BaseDocumentMetadata
 extension DocumentMetadata:DocumentMetadataProtocol {
 
+    // Data Serialization
+    public func toCryptedData() throws -> Data{
+        if let metadataString=self.toJSONString(){
+            let crypted = try Bartleby.cryptoDelegate.encryptString(metadataString)
+            if let metadataData = crypted.data(using:.utf8){
+                   return metadataData
+            }
+        }
+        throw DocumentMetadataError.dataSerializationFailed
+    }
+
+    // Data DeSerialization
+    public static func fromCryptedData(_ data:Data) throws ->DocumentMetadata{
+        if let cryptedJson = String(data: data, encoding:.utf8){
+            let decrypted = try Bartleby.cryptoDelegate.decryptString(cryptedJson)
+            if let metadata = Mapper <DocumentMetadata>().map(JSONString:decrypted){
+                return metadata
+            }
+        }
+        throw DocumentMetadataError.dataDeserializationFailed
+    }
+
 
     public func configureSchema(_ metadatum: CollectionMetadatum) throws ->() {
         for m in self.collectionsMetadata {

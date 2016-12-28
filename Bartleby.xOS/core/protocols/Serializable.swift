@@ -36,15 +36,5 @@ public protocol Serializable:Initializable{
     ///
     /// - Returns: return an UTF8 string
     func serializeToUFf8String()->String
-
-
-    /// Update an existant instance
-    /// This approach is used by proxies.
-    /// - Parameters:
-    ///   - data: the data
-    ///   - provisionChanges: should we provision the changes?
-    /// - Returns: the Serialiable fully typed instance
-    /// - Throws: ...
-    func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable
-
 }
+

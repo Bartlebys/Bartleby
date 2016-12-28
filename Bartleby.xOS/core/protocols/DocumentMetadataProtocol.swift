@@ -8,19 +8,34 @@
 
 import Foundation
 
+#if !USE_EMBEDDED_MODULES
+    import Alamofire
+    import ObjectMapper
+#endif
+
+
 
 public enum DocumentMetadataError: Error {
     case duplicatedCollectionName(name:String)
     case errorOfCasting
+    case dataSerializationFailed
+    case dataDeserializationFailed
 }
 
 // A model that encapsulates the descriptions-CollectionMetadatum of its persitent collections
 // and stores the collaborative session data
 
-public protocol DocumentMetadataProtocol: Identifiable, Serializable {
+public protocol DocumentMetadataProtocol:  Mappable {
 
     associatedtype CollectionMetadatumType
     associatedtype User
+
+
+    // Data Serialization
+    func toCryptedData() throws -> Data
+
+    // Data DeSerialization
+    static func fromCryptedData(_ data:Data) throws ->DocumentMetadata
 
     //The data space UID can be shared between multiple Documents.
     var spaceUID: String { get set }

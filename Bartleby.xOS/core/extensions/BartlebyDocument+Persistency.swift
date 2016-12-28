@@ -69,22 +69,14 @@ extension BartlebyDocument{
             // ##############
 
             if let wrapper=fileWrappers[_metadataFileName] {
-                if var metadataData=wrapper.regularFileContents {
-                    metadataData = try Bartleby.cryptoDelegate.decryptData(metadataData)
-                    let r = try self.serializer.deserialize(metadataData)
+                if let metadataData=wrapper.regularFileContents {
 
                     // What is the proxy UID?
                     let proxyDocumentUID=self.UID
 
-                    if let metadata=r as? DocumentMetadata {
-                        self.metadata = metadata
-                        self.metadata.referentDocument = self
-                        self.metadata.currentUser?.referentDocument=self
-                    } else {
-                        // There is an error
-                        self.log("ERROR \(r)", file: #file, function: #function, line: #line)
-                        return
-                    }
+                    let metadata = try DocumentMetadata.fromCryptedData(metadataData)
+                    self.metadata = metadata
+                    self.metadata.currentUser?.referentDocument=self
 
                     // Replace the document proxy declared document UID
                     // By the persistent UID
@@ -177,8 +169,7 @@ extension BartlebyDocument{
                 self.metadata.preferredFileName=self.fileURL.lastPathComponent
             #endif
 
-            var metadataData=self.metadata.serialize()
-            metadataData = try Bartleby.cryptoDelegate.encryptData(metadataData)
+            let metadataData=try self.metadata.toCryptedData()
 
             // Remove the previous metadata
             if let wrapper=fileWrappers[self._metadataFileName] {
