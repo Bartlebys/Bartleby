@@ -8,7 +8,6 @@
 
 import Cocoa
 import BartlebyKit
-import Locksmith
 
 
 public protocol IdentifactionDelegate{

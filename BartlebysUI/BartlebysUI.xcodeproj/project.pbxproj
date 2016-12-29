@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F09851DF95C4E003301DD /* BartlebyKit.framework */; };
 		E53F0B571DF95D80003301DD /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B561DF95D80003301DD /* DropView.swift */; };
-		E55FF9791E15584F00EE3393 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55FF9781E15584F00EE3393 /* Locksmith.framework */; };
 		E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */; };
 		E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */; };
 		E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */; };
@@ -38,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E53ECDF51E1575720084DD6C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		E53F09851DF95C4E003301DD /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/Bartleby-gnbycabytonvqxecnlfitmgmkmiu/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E53F0B561DF95D80003301DD /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		E53F0B631DF95F4A003301DD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -67,7 +67,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55FF9791E15584F00EE3393 /* Locksmith.framework in Frameworks */,
 				E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +85,7 @@
 		E53F09841DF95C4E003301DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E53ECDF51E1575720084DD6C /* Security.framework */,
 				E55FF9781E15584F00EE3393 /* Locksmith.framework */,
 				E53F0B631DF95F4A003301DD /* AppKit.framework */,
 				E53F09851DF95C4E003301DD /* BartlebyKit.framework */,
@@ -398,6 +398,7 @@
 		E5FAC5351DF95B1D00398C95 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -422,6 +423,7 @@
 		E5FAC5361DF95B1D00398C95 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
