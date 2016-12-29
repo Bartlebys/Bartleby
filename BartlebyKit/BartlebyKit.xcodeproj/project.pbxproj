@@ -877,7 +877,6 @@
 			isa = PBXGroup;
 			children = (
 				E51359721E084B7F001E65A0 /* _generated */,
-				E51359D81E084B7F001E65A0 /* adapters */,
 				E51359DA1E084B7F001E65A0 /* bsfs */,
 				E51359ED1E084B7F001E65A0 /* components */,
 				E5135A031E084B7F001E65A0 /* core */,
@@ -894,6 +893,8 @@
 				E51359731E084B7F001E65A0 /* BartlebyDocument.swift */,
 				E51359741E084B7F001E65A0 /* managedCollections */,
 				E513597D1E084B7F001E65A0 /* models */,
+				E51359981E084B7F001E65A0 /* operations */,
+				E51359D81E084B7F001E65A0 /* adapters */,
 			);
 			path = _generated;
 			sourceTree = "<group>";
@@ -938,7 +939,6 @@
 				E51359941E084B7F001E65A0 /* StringVO.swift */,
 				E51359951E084B7F001E65A0 /* Tag.swift */,
 				E51359961E084B7F001E65A0 /* Trigger.swift */,
-				E51359981E084B7F001E65A0 /* operations */,
 				E51359971E084B7F001E65A0 /* User.swift */,
 			);
 			path = models;
@@ -1002,8 +1002,7 @@
 				E51359D61E084B7F001E65A0 /* UpdateUser.swift */,
 				E51359D71E084B7F001E65A0 /* UpdateUsers.swift */,
 			);
-			name = operations;
-			path = ../operations;
+			path = operations;
 			sourceTree = "<group>";
 		};
 		E51359D81E084B7F001E65A0 /* adapters */ = {
@@ -1011,7 +1010,8 @@
 			children = (
 				E51359D91E084B7F001E65A0 /* UIX.swift */,
 			);
-			path = adapters;
+			name = adapters;
+			path = ../adapters;
 			sourceTree = "<group>";
 		};
 		E51359DA1E084B7F001E65A0 /* bsfs */ = {
