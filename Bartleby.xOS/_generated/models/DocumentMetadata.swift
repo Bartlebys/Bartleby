@@ -23,8 +23,8 @@ import Foundation
 	//Defines the document UID.
 	dynamic open var persistentUID:String = "\(Bartleby.createUID())"
 
-	//The user currently associated to the local instance of the document
-	dynamic open var currentUser:User?
+	//The user UID currently associated to the local instance of the document
+	dynamic open var currentUserUID:String = "\(Default.NO_UID)"
 
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
@@ -125,7 +125,7 @@ import Foundation
         self.quietChanges {
 			self.spaceUID <- ( map["spaceUID"] )
 			self.persistentUID <- ( map["persistentUID"] )
-			self.currentUser <- ( map["currentUser"] )
+			self.currentUserUID <- ( map["currentUserUID"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.appGroup <- ( map["appGroup"] )
 			self.identificationValue <- ( map["identificationValue"] )
@@ -158,7 +158,7 @@ import Foundation
         self.quietChanges {
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.persistentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "persistentUID")! as NSString)
-			self.currentUser=decoder.decodeObject(of:User.self, forKey: "currentUser") 
+			self.currentUserUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserUID")! as NSString)
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey:"appGroup") as NSString?)
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
@@ -187,9 +187,7 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		coder.encode(self.persistentUID,forKey:"persistentUID")
-		if let currentUser = self.currentUser {
-			coder.encode(currentUser,forKey:"currentUser")
-		}
+		coder.encode(self.currentUserUID,forKey:"currentUserUID")
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
 		if let appGroup = self.appGroup {
 			coder.encode(appGroup,forKey:"appGroup")

@@ -354,9 +354,7 @@ import Foundation
         if let collection=self.collectionByName(instance.d_collectionName){
             collection.add(instance, commit: false)
         }
-        if let creator=self.metadata.currentUser {
-            instance.creatorUID = creator.UID
-        }
+        instance.creatorUID = self.metadata.currentUserUID
         instance.needsToBeCommitted()
         self.didCreate(instance)
         return  instance
@@ -399,13 +397,7 @@ import Foundation
                 user.creatorUID = user.UID
             }
             user.spaceUID = self.metadata.spaceUID
-            if(user.creatorUID != user.UID){
-                // We don't want to add the Document's current user the managed User Collection
-                self.users.add(user, commit:false)
-            }else{
-                // We add a de
-                user.referentDocument=self
-            }
+            self.users.add(user, commit:false)
         }
         user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
         self.didCreate(user)

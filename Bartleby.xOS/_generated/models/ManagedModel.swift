@@ -54,7 +54,7 @@ import Foundation
 	//The UIDS of the owned entities (Neither supervised nor serialized)
 	dynamic open var owns:[String] = [String]()
 
-	//The object summary can be used for example by externalReferences to describe the ManagedObject instance. If you want to disclose more information you can adopt the Descriptible protocol.
+	//A human readable model summary. If you want to disclose more information you can adopt the Descriptible protocol.
 	dynamic open var summary:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && summary != oldValue {

@@ -133,10 +133,9 @@ import Foundation
                 pushOperation.status=PushOperation.Status.pending
                 pushOperation.creationDate=Date()
 				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(block.UID))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    operationInstance.creatorUID=currentUser.UID
-                }
+                pushOperation.creatorUID=document.metadata.currentUserUID
+                operationInstance.creatorUID=document.metadata.currentUserUID
+                
 				Bartleby.markCommitted(block.UID)
 
             }

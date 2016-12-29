@@ -114,5 +114,5 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
             self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine
         }
     }
-    
+
 }

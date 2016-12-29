@@ -134,10 +134,9 @@ import Foundation
                 pushOperation.creationDate=Date()
 				let stringIDS=PString.ltrim(boxes.reduce("", { $0+","+$1.UID }),characters:",")
 				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(stringIDS))"
-                if let currentUser=document.metadata.currentUser{
-                    pushOperation.creatorUID=currentUser.UID
-                    operationInstance.creatorUID=currentUser.UID
-                }
+                pushOperation.creatorUID=document.metadata.currentUserUID
+                operationInstance.creatorUID=document.metadata.currentUserUID
+                
             }
             pushOperation.toDictionary=operationInstance.dictionaryRepresentation()
             ic.add(pushOperation, commit:false)

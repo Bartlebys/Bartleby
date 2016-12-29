@@ -52,7 +52,6 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
     }
 
 
-
     /// Sends a report by Email
     ///
     /// - Parameters:
@@ -81,9 +80,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
                     }
                 }
             }
-
         }
-
     }
 
     public func unAcceptableActionFeedBack(){

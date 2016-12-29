@@ -19,4 +19,18 @@ public extension DocumentMetadata{
     public var jsonOperationsQuarantine:String{
         return self.operationsQuarantine.toJSONString(prettyPrint: true) ?? "..."
     }
+
+    public dynamic var currentUser:User?{
+        get{
+           return try? Bartleby.registredObjectByUID(self.currentUserUID)
+        }
+        set{
+            if let currentUser = currentUser{
+                self.currentUserUID=currentUser.UID
+            }else{
+                self.currentUserUID=Default.NO_UID
+            }
+        }
+    }
+
 }

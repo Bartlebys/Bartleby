@@ -482,6 +482,8 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
+		E55FF97B1E15588C00EE3393 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55FF97A1E15588C00EE3393 /* Locksmith.framework */; };
+		E55FF97D1E1558A300EE3393 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55FF97C1E1558A300EE3393 /* Locksmith.framework */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E5A845CE1E13C7C200E153BD /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A845CD1E13C7C200E153BD /* DataUpdatable.swift */; };
 		E5A845CF1E13C7C200E153BD /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A845CD1E13C7C200E153BD /* DataUpdatable.swift */; };
@@ -801,6 +803,8 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
+		E55FF97A1E15588C00EE3393 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = ../Carthage/Build/Mac/Locksmith.framework; sourceTree = "<group>"; };
+		E55FF97C1E1558A300EE3393 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = ../Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitMacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
@@ -820,6 +824,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E55FF97B1E15588C00EE3393 /* Locksmith.framework in Frameworks */,
 				E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */,
 				E50805C21DF6C26F0085E5C3 /* ObjectMapper.framework in Frameworks */,
 			);
@@ -829,6 +834,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E55FF97D1E1558A300EE3393 /* Locksmith.framework in Frameworks */,
 				E50805C51DF6C2E00085E5C3 /* Alamofire.framework in Frameworks */,
 				E50805C61DF6C2E00085E5C3 /* ObjectMapper.framework in Frameworks */,
 			);
@@ -1171,8 +1177,8 @@
 				E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */,
 				E5135A1F1E084B7F001E65A0 /* Completion+Result.swift */,
 				E5135A201E084B7F001E65A0 /* DocumentMetadata+Facilities.swift */,
-				E5135A221E084B7F001E65A0 /* HTTPContext+Conveniences.swift */,
 				E5135A211E084B7F001E65A0 /* DocumentMetadata+Protocol.swift */,
+				E5135A221E084B7F001E65A0 /* HTTPContext+Conveniences.swift */,
 				E5135A231E084B7F001E65A0 /* HTTPRequest+URLRequest.swift */,
 				E5135A241E084B7F001E65A0 /* KeyedData+Conveniences.swift */,
 				E5135A251E084B7F001E65A0 /* LogEntry+Conveniences.swift */,
@@ -1331,7 +1337,9 @@
 			children = (
 				E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */,
 				E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */,
+				E55FF97C1E1558A300EE3393 /* Locksmith.framework */,
 				E50805C31DF6C2E00085E5C3 /* Alamofire.framework */,
+				E55FF97A1E15588C00EE3393 /* Locksmith.framework */,
 				E50805C41DF6C2E00085E5C3 /* ObjectMapper.framework */,
 				E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */,
 				E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */,
