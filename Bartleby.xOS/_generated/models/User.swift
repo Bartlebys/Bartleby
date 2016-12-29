@@ -44,6 +44,15 @@ import Foundation
 	    }
 	}
 
+	//The localAssociationID is an UID used to group accounts that are stored in the KeyChain. The first Created Account determines that UID
+	dynamic open var localAssociationID:String = "\(Default.NO_UID)"{
+	    didSet { 
+	       if !self.wantsQuietChanges && localAssociationID != oldValue {
+	            self.provisionChanges(forKey: "localAssociationID",oldValue: oldValue,newValue: localAssociationID) 
+	       } 
+	    }
+	}
+
 	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
 	    didSet { 
 	       if !self.wantsQuietChanges && firstname != oldValue {
@@ -127,7 +136,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
         return exposed
     }
 
@@ -147,6 +156,10 @@ import Foundation
             case "verificationMethod":
                 if let casted=value as? User.VerificationMethod{
                     self.verificationMethod=casted
+                }
+            case "localAssociationID":
+                if let casted=value as? String{
+                    self.localAssociationID=casted
                 }
             case "firstname":
                 if let casted=value as? String{
@@ -203,6 +216,8 @@ import Foundation
                return self.spaceUID
             case "verificationMethod":
                return self.verificationMethod
+            case "localAssociationID":
+               return self.localAssociationID
             case "firstname":
                return self.firstname
             case "lastname":
@@ -236,6 +251,7 @@ import Foundation
         self.quietChanges {
 			self.spaceUID <- ( map["spaceUID"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
+			self.localAssociationID <- ( map["localAssociationID"] )
 			self.firstname <- ( map["firstname"] )
 			self.lastname <- ( map["lastname"] )
 			self.email <- ( map["email"] )
@@ -255,6 +271,7 @@ import Foundation
         self.quietChanges {
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+			self.localAssociationID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "localAssociationID")! as NSString)
 			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
 			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
 			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
@@ -270,6 +287,7 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encode(self.localAssociationID,forKey:"localAssociationID")
 		coder.encode(self.firstname,forKey:"firstname")
 		coder.encode(self.lastname,forKey:"lastname")
 		if let email = self.email {

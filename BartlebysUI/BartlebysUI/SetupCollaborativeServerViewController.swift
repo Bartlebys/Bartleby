@@ -1,5 +1,5 @@
 //
-//  NewDocumentViewController.swift
+//  SetupCollaborativeServerViewController.swift
 //  BartlebysUI
 //
 //  Created by Benoit Pereira da silva on 29/12/2016.
@@ -7,14 +7,8 @@
 //
 
 import Cocoa
-import BartlebyKit
 
-class NewDocumentViewController: NSViewController,DocumentDependent {
-
-    var documentProvider:DocumentProvider?{
-        didSet{
-        }
-    }
+class SetupCollaborativeServerViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
