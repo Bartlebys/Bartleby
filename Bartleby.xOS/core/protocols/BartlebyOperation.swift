@@ -17,5 +17,5 @@ public enum BartlebyOperationError:Error{
 }
 
 /// An operation is a client server request CRUD or URD
-public protocol BartlebyOperation:  Collectible, Mappable, NSCopying, NSSecureCoding,Pusher {
+public protocol BartlebyOperation:Collectible,Pusher {
 }

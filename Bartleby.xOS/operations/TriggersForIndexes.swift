@@ -12,12 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class TriggersForIndexes: ManagedModel {
-
-    // Universal type support
-    override open class func typeName() -> String {
-        return "TriggersForIndexes"
-    }
+open class TriggersForIndexes {
 
 
     open static func execute(  from documentUID: String,

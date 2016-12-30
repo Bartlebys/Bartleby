@@ -10,13 +10,8 @@ import Foundation
 #endif
 
 
-open class LoginUser: ManagedModel {
-
-    // Universal type support
-    override open class func typeName() -> String {
-        return "LoginUser"
-    }
-
+open class LoginUser {
+    
     static open func execute(  _ user: User,
                                sucessHandler success:@escaping ()->(),
                                failureHandler failure:@escaping (_ context: HTTPContext)->()) {

@@ -8,12 +8,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class LogoutUser: ManagedModel {
-
-    // Universal type support
-    override open class func typeName() -> String {
-        return "LogoutUser"
-    }
+open class LogoutUser{
 
     static open func execute( _ user: User,
                               sucessHandler success:@escaping ()->(),

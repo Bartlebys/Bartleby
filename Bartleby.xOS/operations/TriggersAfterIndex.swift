@@ -12,12 +12,8 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class TriggersAfterIndex: ManagedModel {
+open class TriggersAfterIndex {
 
-    // Universal type support
-    override open class func typeName() -> String {
-        return "TriggersAfterIndex"
-    }
 
 
     open static func execute( from documentUID: String,

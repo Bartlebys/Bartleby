@@ -250,7 +250,7 @@ struct IdentitiesManager {
                                   cryptoPassword: cryptoPassword,
                                   email:identification.email ,
                                   phoneNumber: identification.phoneNumber,
-                                  sucessHandler: {
+                                  sucessHandler:{ (context) in
                                     __patchHasSucceededOn(profile, with: identification)
                 }, failureHandler: { (context) in
                     glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)

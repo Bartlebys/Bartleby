@@ -12,13 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class TriggersByIds: ManagedModel {
-
-    // Universal type support
-    override open class func typeName() -> String {
-        return "TriggersByIds"
-    }
-
+open class TriggersByIds {
 
     open static func execute( from documentUID: String,
                               ids: [String],
