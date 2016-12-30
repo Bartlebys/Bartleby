@@ -32,7 +32,7 @@ open class PatchUser {
                               sucessHandler success: @escaping(_ context:HTTPContext)->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
-        let pathURL=baseURL.appendingPathComponent("user/patch")
+        let pathURL=baseURL.appendingPathComponent("patchUser")
 
         // A valid document is required for any authentication.
         // So you must create a Document and use its spaceUID before to login.
