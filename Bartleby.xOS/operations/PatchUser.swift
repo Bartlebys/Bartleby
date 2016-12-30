@@ -32,11 +32,12 @@ open class PatchUser {
                               sucessHandler success: @escaping(_ context:HTTPContext)->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
-        let pathURL=baseURL.appendingPathComponent("patchUser")
+        /// This operation is special
+        /// It may occur on a document that is not available locally
+        /// Check IdentityManager for details
 
-        // A valid document is required for any authentication.
-        // So you must create a Document and use its spaceUID before to login.
-        let dictionary: Dictionary<String, String>=["userUID":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
+        let pathURL=baseURL.appendingPathComponent("patchUser")
+        let dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"PatchUser", forMethod:"POST", and: pathURL)
         do {
             let r=try JSONEncoding().encode(urlRequest,with:dictionary)
