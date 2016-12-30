@@ -97,6 +97,18 @@ public struct PString {
     }
 
 
+    public static func trim(_ string: String,characters: String) -> String {
+        return rtrim(ltrim(string,characters:characters),characters:characters)
+    }
+    
+
+
+
+    public static func trim(_ string: String) -> String {
+        return rtrim(ltrim(string))
+    }
+
+
 
     ///Returns a sub string
     ///behaves 100% like PHP substring http://php.net/manual/en/function.substr.php
