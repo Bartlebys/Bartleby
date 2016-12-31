@@ -24,6 +24,9 @@ public protocol IdentifactionDelegate{
  */
 public class IdentityWindowController: NSWindowController,DocumentProvider {
 
+    override public var windowNibName: String? { return "IdentityWindowController" }
+
+
     // MARK: DocumentDependent
 
     /// Returns a BartlebyDocument
@@ -62,18 +65,22 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
         self.configureControllers()
     }
 
-    override public var windowNibName: String? { return "IdentityWindowController" }
+
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
 
-
         }else{
-            print("**")
+            print("NO DOCUMENT **")
         }
     }
    
 
+    @IBAction func leftAction(_ sender: Any) {
+        self.window?.close()
+    }
 
+    @IBAction func rightAction(_ sender: Any) {
+    }
 
 }
