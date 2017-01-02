@@ -7,12 +7,22 @@
 //
 
 import Cocoa
+import BartlebyKit
 
-class ConfirmActivationViewController: NSViewController {
+class ConfirmActivationViewController: IdentityStepViewController{
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
+    override var nibName : String { return "ConfirmActivationViewController" }
+
+
+    override func proceedToValidation(){
+        super.proceedToValidation()
+        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
+        // You should call:
+        //
+        //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
+        //      or
+        //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
     }
     
 }

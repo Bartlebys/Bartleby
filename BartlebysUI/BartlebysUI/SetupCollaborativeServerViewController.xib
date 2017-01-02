@@ -3,19 +3,66 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SetupCollaborativeServerViewController" customModule="BartlebysUI" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="box" destination="9mu-2F-jrk" id="oG3-g7-Idu"/>
+                <outlet property="explanationTextField" destination="Eoh-li-aL9" id="BOt-vI-d7Q"/>
+                <outlet property="view" destination="53Z-gg-OKP" id="PO7-t5-fWG"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="220"/>
+        <customView id="53Z-gg-OKP">
+            <rect key="frame" x="0.0" y="0.0" width="494" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box title="Server" translatesAutoresizingMaskIntoConstraints="NO" id="9mu-2F-jrk">
+                    <rect key="frame" x="7" y="6" width="480" height="204"/>
+                    <view key="contentView" id="XJR-RM-fI9">
+                        <rect key="frame" x="2" y="2" width="476" height="187"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Eoh-li-aL9">
+                                <rect key="frame" x="27" y="145" width="417" height="17"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Select the Collaborative Server..." id="KFm-8z-lyo">
+                                    <font key="font" metaFont="titleBar"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q5z-f8-aQl">
+                                <rect key="frame" x="27" y="111" width="416" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="ZKD-LL-hSo"/>
+                                </constraints>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="lk9-1d-7HY">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </comboBoxCell>
+                            </comboBox>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Q5z-f8-aQl" firstAttribute="leading" secondItem="XJR-RM-fI9" secondAttribute="leading" constant="27" id="5Sq-3c-Ps2"/>
+                            <constraint firstItem="Eoh-li-aL9" firstAttribute="top" secondItem="XJR-RM-fI9" secondAttribute="top" constant="25" id="PRh-fd-WNZ"/>
+                            <constraint firstItem="Q5z-f8-aQl" firstAttribute="top" secondItem="Eoh-li-aL9" secondAttribute="bottom" constant="10" id="RFr-tq-w1r"/>
+                            <constraint firstAttribute="trailing" secondItem="Eoh-li-aL9" secondAttribute="trailing" constant="34" id="clK-qs-taM"/>
+                            <constraint firstItem="Eoh-li-aL9" firstAttribute="leading" secondItem="XJR-RM-fI9" secondAttribute="leading" constant="29" id="ila-Tz-J43"/>
+                            <constraint firstAttribute="trailing" secondItem="Q5z-f8-aQl" secondAttribute="trailing" constant="36" id="vpc-hM-wPm"/>
+                        </constraints>
+                    </view>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="9mu-2F-jrk" secondAttribute="trailing" constant="10" id="Bvo-1c-Sun"/>
+                <constraint firstAttribute="bottom" secondItem="9mu-2F-jrk" secondAttribute="bottom" constant="10" id="DSQ-T4-6V7"/>
+                <constraint firstItem="9mu-2F-jrk" firstAttribute="top" secondItem="53Z-gg-OKP" secondAttribute="top" constant="10" id="Saw-HQ-dnG"/>
+                <constraint firstItem="9mu-2F-jrk" firstAttribute="leading" secondItem="53Z-gg-OKP" secondAttribute="leading" constant="10" id="acB-jM-Waj"/>
+            </constraints>
         </customView>
     </objects>
 </document>

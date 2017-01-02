@@ -9,13 +9,19 @@
 import Cocoa
 import BartlebyKit
 
-class ValidatePasswordViewController: NSViewController,DocumentDependent{
+class ValidatePasswordViewController: IdentityStepViewController{
 
-    var documentProvider: DocumentProvider?
+    override var nibName : String { return "ValidatePasswordViewController" }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
+    override func proceedToValidation(){
+        super.proceedToValidation()
+        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
+        // You should call:
+        //
+        //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
+        //      or
+        //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
     }
     
 }

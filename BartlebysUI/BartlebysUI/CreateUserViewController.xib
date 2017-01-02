@@ -3,19 +3,107 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CreateUserViewController" customModule="BartlebysUI" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="box" destination="zaz-dK-tzX" id="fvP-P3-Lsd"/>
+                <outlet property="emailComboBox" destination="sFe-8x-VhC" id="ye9-0Y-Gzq"/>
+                <outlet property="emailLabel" destination="KXO-xO-OZj" id="FOr-B4-WKz"/>
+                <outlet property="explanationsTextField" destination="QFa-dm-hoj" id="EeQ-Zy-ZQ0"/>
+                <outlet property="phoneNumberComboBox" destination="sRa-Qn-NsB" id="jft-tD-g1q"/>
+                <outlet property="phoneNumberLabel" destination="nIy-GY-Z2t" id="4F8-80-BmA"/>
+                <outlet property="view" destination="ffh-YB-Euh" id="Ezc-eg-pVL"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="220"/>
+        <customView id="ffh-YB-Euh">
+            <rect key="frame" x="0.0" y="0.0" width="494" height="220"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box title="Identification" translatesAutoresizingMaskIntoConstraints="NO" id="zaz-dK-tzX">
+                    <rect key="frame" x="7" y="6" width="480" height="204"/>
+                    <view key="contentView" id="NfU-gd-Idz">
+                        <rect key="frame" x="2" y="2" width="476" height="187"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="QFa-dm-hoj">
+                                <rect key="frame" x="27" y="128" width="417" height="34"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document." id="cZQ-6s-kNK">
+                                    <font key="font" metaFont="titleBar"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXO-xO-OZj">
+                                <rect key="frame" x="27" y="86" width="104" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="4Cz-EH-2of"/>
+                                    <constraint firstAttribute="width" constant="100" id="rfl-TH-dxL"/>
+                                </constraints>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Email" id="OEu-it-aD5">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIy-GY-Z2t">
+                                <rect key="frame" x="27" y="57" width="104" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Phone Number" id="2ms-ee-WMj">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sFe-8x-VhC">
+                                <rect key="frame" x="139" y="81" width="304" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="301" id="hch-zg-qXy"/>
+                                    <constraint firstAttribute="height" constant="20" id="kL7-0s-JPf"/>
+                                </constraints>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="b7e-ys-1a5">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </comboBoxCell>
+                            </comboBox>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRa-Qn-NsB">
+                                <rect key="frame" x="139" y="52" width="304" height="26"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="TEM-7G-c33">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </comboBoxCell>
+                            </comboBox>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="top" secondItem="sFe-8x-VhC" secondAttribute="bottom" constant="9" id="A3D-Ph-Sbg"/>
+                            <constraint firstItem="nIy-GY-Z2t" firstAttribute="top" secondItem="KXO-xO-OZj" secondAttribute="bottom" constant="12" id="BT9-0R-pye"/>
+                            <constraint firstItem="sFe-8x-VhC" firstAttribute="leading" secondItem="KXO-xO-OZj" secondAttribute="trailing" constant="10" id="IgW-jZ-AEy"/>
+                            <constraint firstItem="KXO-xO-OZj" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="25" id="Kwt-jf-Kcg"/>
+                            <constraint firstItem="QFa-dm-hoj" firstAttribute="top" secondItem="NfU-gd-Idz" secondAttribute="top" constant="25" id="OlH-I5-bRC"/>
+                            <constraint firstAttribute="trailing" secondItem="sFe-8x-VhC" secondAttribute="trailing" constant="36" id="TeP-tS-AOj"/>
+                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="leading" secondItem="nIy-GY-Z2t" secondAttribute="trailing" constant="10" id="bOD-Xy-DNb"/>
+                            <constraint firstItem="nIy-GY-Z2t" firstAttribute="centerX" secondItem="KXO-xO-OZj" secondAttribute="centerX" id="fd5-Ye-I9M"/>
+                            <constraint firstItem="QFa-dm-hoj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="jfX-KE-epZ"/>
+                            <constraint firstAttribute="trailing" secondItem="QFa-dm-hoj" secondAttribute="trailing" constant="34" id="lEz-qV-m82"/>
+                            <constraint firstItem="nIy-GY-Z2t" firstAttribute="width" secondItem="KXO-xO-OZj" secondAttribute="width" id="mTk-gd-1Or"/>
+                            <constraint firstItem="sFe-8x-VhC" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="23" id="o14-sT-kvD"/>
+                            <constraint firstItem="KXO-xO-OZj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="qNU-7p-bl0"/>
+                            <constraint firstAttribute="trailing" secondItem="sRa-Qn-NsB" secondAttribute="trailing" constant="36" id="uSK-Ph-7Ep"/>
+                        </constraints>
+                    </view>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="zaz-dK-tzX" secondAttribute="trailing" constant="10" id="EtM-aP-Ikp"/>
+                <constraint firstItem="zaz-dK-tzX" firstAttribute="leading" secondItem="ffh-YB-Euh" secondAttribute="leading" constant="10" id="GJj-Yz-HZd"/>
+                <constraint firstAttribute="bottom" secondItem="zaz-dK-tzX" secondAttribute="bottom" constant="10" id="UoB-SA-V4j"/>
+                <constraint firstItem="zaz-dK-tzX" firstAttribute="top" secondItem="ffh-YB-Euh" secondAttribute="top" constant="10" id="wy8-bS-qPK"/>
+            </constraints>
         </customView>
     </objects>
 </document>

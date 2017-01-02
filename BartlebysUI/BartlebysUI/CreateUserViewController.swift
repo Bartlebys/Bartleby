@@ -9,16 +9,33 @@
 import Cocoa
 import BartlebyKit
 
-class CreateUserViewController: NSViewController,DocumentDependent{
+class CreateUserViewController: IdentityStepViewController{
 
-    /// There are credentials for that Server.
-    /// Use them an set - up the association
+    override var nibName : String { return "CreateUserViewController" }
 
-    var documentProvider: DocumentProvider?
+    @IBOutlet weak var box: NSBox!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
+    @IBOutlet weak var explanationsTextField: NSTextField!
+
+    @IBOutlet weak var emailLabel: NSTextField!
+
+    @IBOutlet weak var phoneNumberLabel: NSTextField!
+
+    @IBOutlet weak var emailComboBox: NSComboBox!
+
+    @IBOutlet weak var phoneNumberComboBox: NSComboBox!
+
+
+
+    override func proceedToValidation(){
+        super.proceedToValidation()
+        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+        
+        // You should call:
+        //
+        //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
+        //      or
+        //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
     }
-    
+  
 }
