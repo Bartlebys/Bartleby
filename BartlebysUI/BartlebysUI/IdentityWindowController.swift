@@ -26,7 +26,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
 
     override public var windowNibName: String? { return "IdentityWindowController" }
 
-
     // MARK: DocumentDependent
 
     /// Returns a BartlebyDocument
@@ -37,7 +36,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
         return self.document as? BartlebyDocument
     }
 
-    public var delegate:IdentifactionDelegate?
+    public var identificationDelegate:IdentifactionDelegate?
 
     // MARK: - Outlets
 
@@ -64,7 +63,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
         super.windowDidLoad()
         self.configureControllers()
     }
-
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
