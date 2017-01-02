@@ -21,20 +21,8 @@
 		E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */; };
 		E55FF99A1E15667800EE3393 /* ConfirmActivationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */; };
 		E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */; };
-		E5FAC52A1DF95B1D00398C95 /* BartlebysUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */; };
-		E5FAC52F1DF95B1D00398C95 /* BartlebysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FAC52E1DF95B1D00398C95 /* BartlebysUITests.swift */; };
 		E5FAC5311DF95B1D00398C95 /* BartlebysUI.h in Headers */ = {isa = PBXBuildFile; fileRef = E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		E5FAC52B1DF95B1D00398C95 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E5FAC5171DF95B1C00398C95 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E5FAC51F1DF95B1C00398C95;
-			remoteInfo = BartlebysUI;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		E53ECDF51E1575720084DD6C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -57,9 +45,6 @@
 		E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BartlebysUI.h; sourceTree = "<group>"; };
 		E5FAC5241DF95B1C00398C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E5FAC5291DF95B1D00398C95 /* BartlebysUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebysUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E5FAC52E1DF95B1D00398C95 /* BartlebysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BartlebysUITests.swift; sourceTree = "<group>"; };
-		E5FAC5301DF95B1D00398C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,14 +53,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E5FAC5261DF95B1D00398C95 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E5FAC52A1DF95B1D00398C95 /* BartlebysUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				E5FAC5221DF95B1C00398C95 /* BartlebysUI */,
-				E5FAC52D1DF95B1D00398C95 /* BartlebysUITests */,
 				E5FAC5211DF95B1C00398C95 /* Products */,
 				E53F09841DF95C4E003301DD /* Frameworks */,
 			);
@@ -116,7 +92,6 @@
 			isa = PBXGroup;
 			children = (
 				E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */,
-				E5FAC5291DF95B1D00398C95 /* BartlebysUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,15 +115,6 @@
 				E53F0B611DF95EBE003301DD /* supportFiles */,
 			);
 			path = BartlebysUI;
-			sourceTree = "<group>";
-		};
-		E5FAC52D1DF95B1D00398C95 /* BartlebysUITests */ = {
-			isa = PBXGroup;
-			children = (
-				E5FAC52E1DF95B1D00398C95 /* BartlebysUITests.swift */,
-				E5FAC5301DF95B1D00398C95 /* Info.plist */,
-			);
-			path = BartlebysUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,24 +149,6 @@
 			productReference = E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E5FAC5281DF95B1D00398C95 /* BartlebysUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E5FAC5371DF95B1D00398C95 /* Build configuration list for PBXNativeTarget "BartlebysUITests" */;
-			buildPhases = (
-				E5FAC5251DF95B1D00398C95 /* Sources */,
-				E5FAC5261DF95B1D00398C95 /* Frameworks */,
-				E5FAC5271DF95B1D00398C95 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E5FAC52C1DF95B1D00398C95 /* PBXTargetDependency */,
-			);
-			name = BartlebysUITests;
-			productName = BartlebysUITests;
-			productReference = E5FAC5291DF95B1D00398C95 /* BartlebysUITests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -215,11 +163,6 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 984ZD3F8L6;
 						LastSwiftMigration = 0810;
-						ProvisioningStyle = Automatic;
-					};
-					E5FAC5281DF95B1D00398C95 = {
-						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 984ZD3F8L6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -237,7 +180,6 @@
 			projectRoot = "";
 			targets = (
 				E5FAC51F1DF95B1C00398C95 /* BartlebysUI */,
-				E5FAC5281DF95B1D00398C95 /* BartlebysUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -253,13 +195,6 @@
 				E55FF98D1E1562E000EE3393 /* CreateUserViewController.xib in Resources */,
 				E55FF9911E15637F00EE3393 /* ValidatePasswordViewController.xib in Resources */,
 				E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E5FAC5271DF95B1D00398C95 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,23 +215,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5FAC5251DF95B1D00398C95 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E5FAC52F1DF95B1D00398C95 /* BartlebysUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E5FAC52C1DF95B1D00398C95 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E5FAC51F1DF95B1C00398C95 /* BartlebysUI */;
-			targetProxy = E5FAC52B1DF95B1D00398C95 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E5FAC5321DF95B1D00398C95 /* Debug */ = {
@@ -444,34 +363,6 @@
 			};
 			name = Release;
 		};
-		E5FAC5381DF95B1D00398C95 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 984ZD3F8L6;
-				INFOPLIST_FILE = BartlebysUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BartlebysUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		E5FAC5391DF95B1D00398C95 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 984ZD3F8L6;
-				INFOPLIST_FILE = BartlebysUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BartlebysUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -489,15 +380,6 @@
 			buildConfigurations = (
 				E5FAC5351DF95B1D00398C95 /* Debug */,
 				E5FAC5361DF95B1D00398C95 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E5FAC5371DF95B1D00398C95 /* Build configuration list for PBXNativeTarget "BartlebysUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E5FAC5381DF95B1D00398C95 /* Debug */,
-				E5FAC5391DF95B1D00398C95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

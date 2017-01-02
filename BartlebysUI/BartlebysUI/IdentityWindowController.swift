@@ -66,7 +66,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
     }
 
 
-
     func configureControllers() -> () {
         if let document=self.getDocument(){
 
