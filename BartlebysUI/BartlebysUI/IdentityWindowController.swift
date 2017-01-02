@@ -11,7 +11,7 @@ import BartlebyKit
 
 
 public protocol IdentifactionDelegate{
-    func userWantsToClose()
+    func userWantsToCloseIndentityController()
 }
 
 /*
@@ -74,10 +74,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider {
    
 
     @IBAction func leftAction(_ sender: Any) {
-        self.window?.close()
+        self.identificationDelegate?.userWantsToCloseIndentityController()
     }
 
     @IBAction func rightAction(_ sender: Any) {
+
     }
 
 }
