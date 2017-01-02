@@ -1,36 +1,64 @@
 //
-//  PatchUser.swift
+//  RelayActivationCode.swift
 //  BartlebyKit
 //
-//  Created by Benoit Pereira da silva on 30/12/2016.
+//  Created by Benoit Pereira da silva on 02/01/2017.
 //
 //
 
 import Foundation
+
 #if !USE_EMBEDDED_MODULES
     import Alamofire
     import ObjectMapper
 #endif
 
 
-open class PatchUser {
+open class RelayActivationCode {
 
-    static open func execute(  baseURL:URL,
-                              documentUID:String,
-                              userUID: String,
-                              cryptoPassword:String,
-                              email:String,
-                              phoneNumber:String,
-                              sucessHandler success: @escaping(_ context:HTTPContext)->(),
-                              failureHandler failure:@escaping (_ context: HTTPContext)->()) {
+
+    /// Relays the activation code (ove SSL)
+    ///
+    /// - Parameters:
+    ///   - baseURL: the server base URL
+    ///   - documentUID: the document UID (we will extract the spaceUID for integrity control)
+    ///   - fromEmail: the emitter email *
+    ///   - fromPhoneNumber: the emitter phone number *
+    ///   - toEmail: the recipient email *
+    ///   - toPhoneNumber: the recipient phone number
+    ///   - code: the code
+    ///   - title: the title
+    ///   - body: the body `$code` will be replaced by the code server side
+    ///   - success: the success closure
+    ///   - failure: the failure closure
+    static open func execute(   baseURL:URL,
+                                documentUID:String,
+                                fromEmail: String,
+                                fromPhoneNumber:String,
+                                toEmail:String,
+                                toPhoneNumber:String,
+                                code:String,
+                                title:String,
+                                body:String,
+        sucessHandler success: @escaping(_ context:HTTPContext)->(),
+        failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
         /// This operation is special
         /// It may occur on a document that is not available locally
         /// Check IdentityManager for details
 
-        let pathURL=baseURL.appendingPathComponent("patchUser")
-        let dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
-        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"PatchUser", forMethod:"POST", and: pathURL)
+        let pathURL=baseURL.appendingPathComponent("relay")
+        let dictionary: Dictionary<String, String>=[
+            "fromEmail":fromEmail,
+            "fromPhoneNumber":fromPhoneNumber,
+            "toEmail":toEmail,
+            "toPhoneNumber":toPhoneNumber,
+            "code":code,
+            "title":title,
+            "body":body
+        ]
+
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"RelayActivationCode", forMethod:"POST", and: pathURL)
         do {
             let r=try JSONEncoding().encode(urlRequest,with:dictionary)
             request(r).validate().responseJSON(completionHandler: { (response) in
@@ -42,8 +70,8 @@ open class PatchUser {
                 let statusCode=response.response?.statusCode ?? 0
 
                 // Bartleby consignation
-                let context = HTTPContext( code: 666,
-                                           caller: "PatchUser.execute",
+                let context = HTTPContext( code: 667,
+                                           caller: "RelayActivationCode.execute",
                                            relatedURL:request?.url,
                                            httpStatusCode: statusCode)
 
@@ -58,8 +86,8 @@ open class PatchUser {
                 var reactions = Array<Reaction> ()
 
                 if result.isFailure {
-                    let m = NSLocalizedString("Patch of user",
-                                              comment: "Patch of user failure description")
+                    let m = NSLocalizedString("Relay failure",
+                                              comment: "Relay failure failure description")
                     let failureReaction =  Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
@@ -77,14 +105,14 @@ open class PatchUser {
                                 let triggerRelayDuration=dictionary["triggerRelayDuration"] as? NSNumber{
                                 let acknowledgment=Acknowledgment()
                                 acknowledgment.httpContext=context
-                                acknowledgment.operationName="PatchUser"
+                                acknowledgment.operationName="RelayActivationCode"
                                 acknowledgment.triggerIndex=index.intValue
                                 acknowledgment.latency=timeline.latency
                                 acknowledgment.requestDuration=timeline.requestDuration
                                 acknowledgment.serializationDuration=timeline.serializationDuration
                                 acknowledgment.totalDuration=timeline.totalDuration
                                 acknowledgment.triggerRelayDuration=triggerRelayDuration.doubleValue
-                                acknowledgment.uids=[userUID]
+                                acknowledgment.uids=[]
                                 if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
                                     document.record(acknowledgment)
                                     document.report(acknowledgment) // Acknowlegments are also metrics
@@ -97,8 +125,8 @@ open class PatchUser {
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
 
-                        let m=NSLocalizedString("Patch of user",
-                                                comment: "Patch of user failure description")
+                        let m=NSLocalizedString("Relay failure",
+                                                comment: "Relay failure description")
                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",
@@ -110,7 +138,7 @@ open class PatchUser {
                         failure(context)
                     }
                 }
-                 if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
+                if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
                     //Let's react according to the context.
                     document.perform(reactions, forContext: context)
                 }
@@ -119,7 +147,7 @@ open class PatchUser {
             })
         }catch{
             let context = HTTPContext( code:2 ,
-                                       caller: "PatchUser.execute",
+                                       caller: "RelayActivationCode.execute",
                                        relatedURL:nil,
                                        httpStatusCode:500)
             context.responseString = "{\"message\":\"\(error)}"
