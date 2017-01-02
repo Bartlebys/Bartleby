@@ -494,6 +494,7 @@
 		E57536171E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
 		E57536181E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E59AABA91E1AC15D00BE4BF1 /* RelayActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA81E1AC15D00BE4BF1 /* RelayActivationCode.swift */; };
 		E5A845CE1E13C7C200E153BD /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A845CD1E13C7C200E153BD /* DataUpdatable.swift */; };
 		E5A845CF1E13C7C200E153BD /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A845CD1E13C7C200E153BD /* DataUpdatable.swift */; };
 		E5AA490D1E112575009FB51B /* RelationShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AA490C1E112575009FB51B /* RelationShip.swift */; };
@@ -826,6 +827,7 @@
 		E57536161E16B276008207BA /* PatchUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchUser.swift; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
+		E59AABA81E1AC15D00BE4BF1 /* RelayActivationCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelayActivationCode.swift; sourceTree = "<group>"; };
 		E5A845CD1E13C7C200E153BD /* DataUpdatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataUpdatable.swift; sourceTree = "<group>"; };
 		E5AA490C1E112575009FB51B /* RelationShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationShip.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1301,6 +1303,7 @@
 			children = (
 				E5135A751E084B7F001E65A0 /* LoginUser.swift */,
 				E57536161E16B276008207BA /* PatchUser.swift */,
+				E59AABA81E1AC15D00BE4BF1 /* RelayActivationCode.swift */,
 				E5135A761E084B7F001E65A0 /* LogoutUser.swift */,
 				E5135A771E084B7F001E65A0 /* TriggersAfterIndex.swift */,
 				E5135A781E084B7F001E65A0 /* TriggersByIds.swift */,
@@ -1676,6 +1679,7 @@
 				E5135BF61E084B7F001E65A0 /* ImageTransform.swift in Sources */,
 				E5135C661E084B7F001E65A0 /* BFileManager.swift in Sources */,
 				E5135B661E084B7F001E65A0 /* CompressionError.swift in Sources */,
+				E59AABA91E1AC15D00BE4BF1 /* RelayActivationCode.swift in Sources */,
 				E5135BD41E084B7F001E65A0 /* ManagedModel+Mergeable.swift in Sources */,
 				E5135AD01E084B7F001E65A0 /* CreateBoxes.swift in Sources */,
 				E5135B4C1E084B7F001E65A0 /* Chunk.swift in Sources */,
