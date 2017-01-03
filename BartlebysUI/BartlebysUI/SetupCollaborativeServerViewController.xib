@@ -11,6 +11,8 @@
             <connections>
                 <outlet property="box" destination="9mu-2F-jrk" id="oG3-g7-Idu"/>
                 <outlet property="explanationTextField" destination="Eoh-li-aL9" id="BOt-vI-d7Q"/>
+                <outlet property="messageTextField" destination="e3P-C9-zVQ" id="f8q-Hb-f3A"/>
+                <outlet property="serverComboBox" destination="Q5z-f8-aQl" id="mMR-EQ-H4t"/>
                 <outlet property="view" destination="53Z-gg-OKP" id="PO7-t5-fWG"/>
             </connections>
         </customObject>
@@ -35,7 +37,7 @@
                                 </textFieldCell>
                             </textField>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q5z-f8-aQl">
-                                <rect key="frame" x="27" y="111" width="416" height="26"/>
+                                <rect key="frame" x="27" y="114" width="416" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="ZKD-LL-hSo"/>
                                 </constraints>
@@ -45,11 +47,21 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </comboBoxCell>
                             </comboBox>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="e3P-C9-zVQ">
+                                <rect key="frame" x="25" y="94" width="417" height="17"/>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="oJF-uJ-2F4">
+                                    <font key="font" metaFont="titleBar"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Q5z-f8-aQl" firstAttribute="leading" secondItem="XJR-RM-fI9" secondAttribute="leading" constant="27" id="5Sq-3c-Ps2"/>
+                            <constraint firstItem="e3P-C9-zVQ" firstAttribute="top" secondItem="Q5z-f8-aQl" secondAttribute="bottom" constant="7" id="9a6-U3-60V"/>
+                            <constraint firstItem="e3P-C9-zVQ" firstAttribute="leading" secondItem="XJR-RM-fI9" secondAttribute="leading" constant="27" id="IVp-go-3Wf"/>
                             <constraint firstItem="Eoh-li-aL9" firstAttribute="top" secondItem="XJR-RM-fI9" secondAttribute="top" constant="25" id="PRh-fd-WNZ"/>
-                            <constraint firstItem="Q5z-f8-aQl" firstAttribute="top" secondItem="Eoh-li-aL9" secondAttribute="bottom" constant="10" id="RFr-tq-w1r"/>
+                            <constraint firstItem="Q5z-f8-aQl" firstAttribute="top" secondItem="Eoh-li-aL9" secondAttribute="bottom" constant="7" id="RFr-tq-w1r"/>
                             <constraint firstAttribute="trailing" secondItem="Eoh-li-aL9" secondAttribute="trailing" constant="34" id="clK-qs-taM"/>
                             <constraint firstItem="Eoh-li-aL9" firstAttribute="leading" secondItem="XJR-RM-fI9" secondAttribute="leading" constant="29" id="ila-Tz-J43"/>
                             <constraint firstAttribute="trailing" secondItem="Q5z-f8-aQl" secondAttribute="trailing" constant="36" id="vpc-hM-wPm"/>
@@ -62,6 +74,7 @@
                 <constraint firstAttribute="bottom" secondItem="9mu-2F-jrk" secondAttribute="bottom" constant="10" id="DSQ-T4-6V7"/>
                 <constraint firstItem="9mu-2F-jrk" firstAttribute="top" secondItem="53Z-gg-OKP" secondAttribute="top" constant="10" id="Saw-HQ-dnG"/>
                 <constraint firstItem="9mu-2F-jrk" firstAttribute="leading" secondItem="53Z-gg-OKP" secondAttribute="leading" constant="10" id="acB-jM-Waj"/>
+                <constraint firstAttribute="trailing" secondItem="e3P-C9-zVQ" secondAttribute="trailing" constant="45" id="zKD-Kp-3TU"/>
             </constraints>
         </customView>
     </objects>

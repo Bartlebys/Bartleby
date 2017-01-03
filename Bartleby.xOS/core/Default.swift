@@ -12,12 +12,13 @@ import Foundation
 // MARK: - BartlebyConfiguration
 public protocol BartlebyConfiguration {
 
-    // The key used to encrypt / decrypt
-    static var KEY: String { get set }
+    // The Default base key used to encrypt / decrypt (the metadata)
+    // We use a different key for the data (saved during the activation process)
+    static var KEY: String { get }
 
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    static var SHARED_SALT: String { get set }
+    static var SHARED_SALT: String { get }
 
     // To conform to crypto legal context
     static var KEY_SIZE: KeySize { get set }
@@ -25,6 +26,8 @@ public protocol BartlebyConfiguration {
     // Collaboration server base URL
     // eg : https://demo.bartlebys.org/www/api/v1
     static var API_BASE_URL: URL { get set }
+
+    static var defaultBaseURLList: [String] { get }
 
     // Bartleby Bprint
     static var ENABLE_GLOG: Bool { get set }
@@ -73,12 +76,15 @@ public protocol BartlebyConfiguration {
 
 public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
-    // The key used to encrypt / decrypt
-    public static var KEY: String="zHfAKvIb5DexA5hB18Jih92fKyv01niSMU38l8hPRddwduaJ_client"
+
+
+    // The Default base key used to encrypt / decrypt (the metadata)
+    // We use a different key for the data (saved during the activation process)
+    public static let KEY: String="zHfAKvIb5DexA5hB18Jih92fKyv01niSMU38l8hPRddwduaJ_client"
 
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    public static var SHARED_SALT: String="rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
+    public static let SHARED_SALT: String="rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
 
     // To conform to crypto legal context
     public static var KEY_SIZE: KeySize = .s128bits
@@ -86,6 +92,10 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Collaboration server base URL
     // This bartlebys default ephemeral demo server (data are erased chronically)
     public static var API_BASE_URL: URL = URL(string: "https://demo.bartlebys.org/www/api/v1")!
+
+    public static var defaultBaseURLList: [String] {
+        return ["https://demo.bartlebys.org/www/api/v1"]
+    }
 
     // Bartleby Bprint
     public static var ENABLE_GLOG: Bool=true

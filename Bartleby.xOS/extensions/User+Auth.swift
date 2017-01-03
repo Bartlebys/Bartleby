@@ -27,7 +27,7 @@ extension User {
     open var cryptoPassword:String{
         if let p=self.password{
             do{
-                let encrypted=try Bartleby.cryptoDelegate.encryptString(p)
+                let encrypted=try Bartleby.cryptoDelegate.encryptString(p,useKey:Bartleby.configuration.KEY)
                 return encrypted
             }catch{
                 return  "CRYPTO_ERROR"

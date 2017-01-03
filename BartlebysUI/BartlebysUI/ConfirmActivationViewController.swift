@@ -23,6 +23,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
         //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
         //      or
         //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
+
     }
     
 }

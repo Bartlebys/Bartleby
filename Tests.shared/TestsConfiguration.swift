@@ -15,10 +15,12 @@ import Foundation
 
 // A shared configuration Model
 open class TestsConfiguration: BartlebyConfiguration {
-    // The cryptographic key used to encrypt/decrypt the data
-    open static var KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
 
-    open static var SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
+
+    // The cryptographic key used to encrypt/decrypt the data
+    open static let KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
+
+    open static let SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
 
     // To conform to crypto legal context
     open static var KEY_SIZE: KeySize = .s128bits
@@ -29,6 +31,12 @@ open class TestsConfiguration: BartlebyConfiguration {
     static let trackAllApiCalls=true
 
     open static var API_BASE_URL=__BASE_URL
+
+    public static var defaultBaseURLList: [String] {
+        return ["http://yd.local:8001/api/v1","https://dev.api.lylo.tv/api/v1","https://api.lylo.tv/api/v1","https://demo.bartlebys.org/www/api/v1"]
+    }
+
+
 
     // Bartleby Bprint
     open static var ENABLE_GLOG: Bool=true

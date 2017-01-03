@@ -35,9 +35,6 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     // Options
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
 
-
-
-
     var _keySize=kCCKeySizeAES128
 
 
@@ -96,7 +93,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A base 64 string representing a crypted buffer (eg. suitable for copy and paste)
      */
-    open func encryptString(_ string: String) throws ->String {
+    open func encryptString(_ string: String,useKey:String=Default.NO_KEY) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
             let crypted=try encryptData(data)
             // (!) IMPORTANT
@@ -122,7 +119,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A string
      */
-    open func decryptString(_ string: String) throws ->String {
+    open func decryptString(_ string: String,useKey:String=Default.NO_KEY) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
             if let b64Data=Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
                 let decrypted=try decryptData(b64Data)
@@ -149,7 +146,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: An encrypted buffer
      */
-    open func encryptData(_ data: Data) throws ->Data {
+    open func encryptData(_ data: Data,useKey:String=Default.NO_KEY) throws ->Data {
         return try self._proceedTo(CCOperation(kCCEncrypt), on: data)
     }
 
@@ -162,7 +159,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A decrypted buffer
      */
-    open func decryptData(_ data: Data) throws ->Data {
+    open func decryptData(_ data: Data,useKey:String=Default.NO_KEY) throws ->Data {
         return try self._proceedTo(CCOperation(kCCDecrypt), on:data)
     }
 
@@ -171,17 +168,17 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
     // (the crypted data is not a valid String but this approach is faster)
 
-    public func encryptStringToData(_ string:String)throws->Data{
+    public func encryptStringToData(_ string:String,useKey:String=Default.NO_KEY)throws->Data{
         if let data=string.data(using: .utf8){
-            return try encryptData(data)
+            return try encryptData(data,useKey: useKey)
         }else{
             throw CryptoError.codingError(message: "UTF8 encoding issue")
         }
     }
 
     
-    public func decryptStringFromData(_ data:Data)throws->String{
-        let decrypted = try decryptData(data)
+    public func decryptStringFromData(_ data:Data,useKey:String=Default.NO_KEY)throws->String{
+        let decrypted = try decryptData(data,useKey:useKey)
         if let string = String(data: decrypted, encoding:.utf8){
             return string
         }else{
@@ -200,7 +197,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     // MARK: - Crypt operation
 
 
-    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data) throws ->Data {
+    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data,useKey:String=Default.NO_KEY) throws ->Data {
         if let d=self.key.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data

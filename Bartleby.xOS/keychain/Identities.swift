@@ -37,7 +37,7 @@ public struct Identities:Mappable {
     func saveToKeyChain()throws->(){
         if let json=self.toJSONString(){
             // The identities are crypted in the KeyChain
-            let crypted = try Bartleby.cryptoDelegate.encryptString(json)
+            let crypted = try Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY)
             try Locksmith.saveData(data: ["data":crypted], forUserAccount:"bartleby")
         }else{
             throw IdentitiesError.serializationFailure
@@ -48,7 +48,7 @@ public struct Identities:Mappable {
         if let data=Locksmith.loadDataForUserAccount(userAccount: "bartleby"){
             if let cryptedJson=data["data"] as? String{
                 // The identities are crypted in the KeyChain
-                let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson)
+                let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
                 if let instance = Mapper <Identities>().map(JSONString:json){
                     return instance
                 }else{

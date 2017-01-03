@@ -21,7 +21,7 @@ open class CryptedDataTransform: TransformType {
 
     open func transformFromJSON(_ value: Any?) -> Data? {
         if let s=value as? String {
-            let s=try? Bartleby.cryptoDelegate.encryptString(s)
+            let s=try? Bartleby.cryptoDelegate.encryptString(s,useKey:Bartleby.configuration.KEY)
             return s?.data(using: .utf8, allowLossyConversion: false)
         }
         return nil
@@ -30,7 +30,7 @@ open class CryptedDataTransform: TransformType {
     open func transformToJSON(_ value: Object?) -> JSON? {
         if let data=value {
             if let s=String.init(data: data, encoding: .utf8){
-                return try? Bartleby.cryptoDelegate.decryptString(s)
+                return try? Bartleby.cryptoDelegate.decryptString(s,useKey:Bartleby.configuration.KEY)
             }
         }
         return nil

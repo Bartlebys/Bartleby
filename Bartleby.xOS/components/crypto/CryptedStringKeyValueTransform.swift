@@ -27,7 +27,7 @@ open class CryptedStringKeyValueTransform: TransformType {
                     if let jsonDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? Dictionary<String, String> {
                         var dictionary = Dictionary<String, String>()
                         for (key, value) in jsonDictionary {
-                            dictionary[try Bartleby.cryptoDelegate.decryptString(key)]=try Bartleby.cryptoDelegate.decryptString(value)
+                            dictionary[try Bartleby.cryptoDelegate.decryptString(key,useKey:Bartleby.configuration.KEY)]=try Bartleby.cryptoDelegate.decryptString(value,useKey:Bartleby.configuration.KEY)
                         }
                         return dictionary
                     }
@@ -45,7 +45,7 @@ open class CryptedStringKeyValueTransform: TransformType {
             var cryptedDictionary = Dictionary<String, String>()
             do {
                 for (key, value) in dictionary {
-                    cryptedDictionary[try Bartleby.cryptoDelegate.encryptString(key)]=try Bartleby.cryptoDelegate.encryptString(value)
+                    cryptedDictionary[try Bartleby.cryptoDelegate.encryptString(key,useKey:Bartleby.configuration.KEY)]=try Bartleby.cryptoDelegate.encryptString(value,useKey:Bartleby.configuration.KEY)
                 }
                 let jsonData = try JSONSerialization.data(withJSONObject: cryptedDictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
                 return String(data: jsonData, encoding: Default.STRING_ENCODING)

@@ -23,28 +23,28 @@ open class NoCrypto: NSObject, CryptoDelegate {
 
     // MARK: - Encryption + Base64 encoding / decoding
 
-    open func encryptString(_ string: String)throws->String {
+    open func encryptString(_ string: String,useKey:String)throws->String {
         return string
     }
 
-    open func decryptString(_ string: String)throws->String {
+    open func decryptString(_ string: String,useKey:String)throws->String {
         return string
     }
 
 
     // MARK: - Raw Data encryption
 
-    open func encryptData(_ data: Data)throws ->Data {
+    open func encryptData(_ data: Data,useKey:String)throws ->Data {
         return data
     }
 
-    open func decryptData(_ data: Data)throws ->Data {
+    open func decryptData(_ data: Data,useKey:String)throws ->Data {
         return data
     }
 
     // MARK: - String encryption without reencoding (the crypted data is not a valid String but this approach is faster)
 
-    open func encryptStringToData(_ string:String)throws->Data{
+    open func encryptStringToData(_ string:String,useKey:String)throws->Data{
         if let d = string.data(using: .utf8){
             return d
         }else{
@@ -52,7 +52,7 @@ open class NoCrypto: NSObject, CryptoDelegate {
         }
     }
 
-    open func decryptStringFromData(_ data:Data)throws->String{
+    open func decryptStringFromData(_ data:Data,useKey:String)throws->String{
         if let s = String(data: data, encoding: .utf8){
             return s
         }else{

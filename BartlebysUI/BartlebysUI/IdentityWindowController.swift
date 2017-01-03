@@ -100,7 +100,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self.setUpCollaborativeServer.stepIndex=1
                 self.tabView.addTabViewItem(setupServerItem)
 
-                let confirmActivationItem=NSTabViewItem(viewController:self.setUpCollaborativeServer)
+                let confirmActivationItem=NSTabViewItem(viewController:self.confirmActivation)
                 self.confirmActivation.documentProvider=self
                 self.confirmActivation.stepDelegate=self
                 self.confirmActivation.stepIndex=2
@@ -115,7 +115,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     var currentStep:Int = -1{
         didSet{
-            if self.tabView.tabViewItems.count >= currentStep && currentStep >= 0{
+            if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
                 self.tabView.selectTabViewItem(at: currentStep)
             }
         }

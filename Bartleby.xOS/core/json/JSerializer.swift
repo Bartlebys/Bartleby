@@ -55,7 +55,7 @@ open class JSerializer: Serializer {
             throw SerializableError.enableToTransformDataToDictionary
         }catch{
             if (autoDecrypt){
-                let decrypted=try Bartleby.cryptoDelegate.decryptData(data)
+                let decrypted=try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
                 return try self._deserializeFromData(decrypted, autoDecrypt: false)
             }else{
                 throw SerializableError.enableToTransformDataToDictionary

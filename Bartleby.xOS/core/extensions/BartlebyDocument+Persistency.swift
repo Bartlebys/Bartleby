@@ -92,7 +92,7 @@ extension BartlebyDocument{
 
             if let wrapper=fileWrappers[_bsfsDataFileName] {
                 if var data=wrapper.regularFileContents {
-                    data = try Bartleby.cryptoDelegate.decryptData(data)
+                    data = try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
                     try self.bsfs.restoreStateFrom(data: data)
                 }
             } else {
@@ -117,7 +117,7 @@ extension BartlebyDocument{
                                         if  pathExtension == BartlebyDocument.DATA_EXTENSION {
                                             // Use the faster possible approach.
                                             // The resulting data is not a valid String check CryptoDelegate for details.
-                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData)
+                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData,useKey:Bartleby.configuration.KEY)
                                             collectionData = collectionString.data(using:.utf8) ?? Data()
                                         }
                                     }
@@ -187,7 +187,7 @@ extension BartlebyDocument{
                 self.documentFileWrapper.removeFileWrapper(wrapper)
             }
 
-            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState())
+            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState(),useKey:Bartleby.configuration.KEY)
             let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
             bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
             self.documentFileWrapper.addFileWrapper(bsfsFileWrapper)
@@ -211,7 +211,7 @@ extension BartlebyDocument{
                                 // We use multiple files
                                 // The resulting data is not a valid String check CryptoDelegate for details.
                                 let collectionString = collection.serializeToUFf8String()
-                                let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString)
+                                let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString,useKey:Bartleby.configuration.KEY)
 
                                 // Remove the previous data
                                 if let wrapper=fileWrappers[collectionfileName] {

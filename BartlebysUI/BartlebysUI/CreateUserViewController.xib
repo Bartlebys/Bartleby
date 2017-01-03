@@ -39,7 +39,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXO-xO-OZj">
-                                <rect key="frame" x="27" y="86" width="104" height="17"/>
+                                <rect key="frame" x="27" y="104" width="104" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="4Cz-EH-2of"/>
                                     <constraint firstAttribute="width" constant="100" id="rfl-TH-dxL"/>
@@ -51,7 +51,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIy-GY-Z2t">
-                                <rect key="frame" x="27" y="57" width="104" height="17"/>
+                                <rect key="frame" x="27" y="75" width="104" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Phone Number" id="2ms-ee-WMj">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -59,7 +59,7 @@
                                 </textFieldCell>
                             </textField>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sFe-8x-VhC">
-                                <rect key="frame" x="139" y="81" width="304" height="26"/>
+                                <rect key="frame" x="139" y="97" width="304" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="301" id="hch-zg-qXy"/>
                                     <constraint firstAttribute="height" constant="20" id="kL7-0s-JPf"/>
@@ -71,7 +71,7 @@
                                 </comboBoxCell>
                             </comboBox>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRa-Qn-NsB">
-                                <rect key="frame" x="139" y="52" width="304" height="26"/>
+                                <rect key="frame" x="139" y="68" width="304" height="26"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="TEM-7G-c33">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -83,7 +83,7 @@
                             <constraint firstItem="sRa-Qn-NsB" firstAttribute="top" secondItem="sFe-8x-VhC" secondAttribute="bottom" constant="9" id="A3D-Ph-Sbg"/>
                             <constraint firstItem="nIy-GY-Z2t" firstAttribute="top" secondItem="KXO-xO-OZj" secondAttribute="bottom" constant="12" id="BT9-0R-pye"/>
                             <constraint firstItem="sFe-8x-VhC" firstAttribute="leading" secondItem="KXO-xO-OZj" secondAttribute="trailing" constant="10" id="IgW-jZ-AEy"/>
-                            <constraint firstItem="KXO-xO-OZj" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="25" id="Kwt-jf-Kcg"/>
+                            <constraint firstItem="KXO-xO-OZj" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="7" id="Kwt-jf-Kcg"/>
                             <constraint firstItem="QFa-dm-hoj" firstAttribute="top" secondItem="NfU-gd-Idz" secondAttribute="top" constant="25" id="OlH-I5-bRC"/>
                             <constraint firstAttribute="trailing" secondItem="sFe-8x-VhC" secondAttribute="trailing" constant="36" id="TeP-tS-AOj"/>
                             <constraint firstItem="sRa-Qn-NsB" firstAttribute="leading" secondItem="nIy-GY-Z2t" secondAttribute="trailing" constant="10" id="bOD-Xy-DNb"/>
@@ -91,7 +91,7 @@
                             <constraint firstItem="QFa-dm-hoj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="jfX-KE-epZ"/>
                             <constraint firstAttribute="trailing" secondItem="QFa-dm-hoj" secondAttribute="trailing" constant="34" id="lEz-qV-m82"/>
                             <constraint firstItem="nIy-GY-Z2t" firstAttribute="width" secondItem="KXO-xO-OZj" secondAttribute="width" id="mTk-gd-1Or"/>
-                            <constraint firstItem="sFe-8x-VhC" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="23" id="o14-sT-kvD"/>
+                            <constraint firstItem="sFe-8x-VhC" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="7" id="o14-sT-kvD"/>
                             <constraint firstItem="KXO-xO-OZj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="qNU-7p-bl0"/>
                             <constraint firstAttribute="trailing" secondItem="sRa-Qn-NsB" secondAttribute="trailing" constant="36" id="uSK-Ph-7Ep"/>
                         </constraints>
