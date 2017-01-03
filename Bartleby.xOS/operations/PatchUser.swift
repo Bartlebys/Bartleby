@@ -21,6 +21,7 @@ open class PatchUser {
                               cryptoPassword:String,
                               email:String,
                               phoneNumber:String,
+                              externalID:String,
                               sucessHandler success: @escaping(_ context:HTTPContext)->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
@@ -29,7 +30,10 @@ open class PatchUser {
         /// Check IdentityManager for details
 
         let pathURL=baseURL.appendingPathComponent("patchUser")
-        let dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
+        var dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
+        if externalID != Default.NO_UID{
+            dictionary["externalID"]=externalID
+        }
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"PatchUser", forMethod:"POST", and: pathURL)
         do {
             let r=try JSONEncoding().encode(urlRequest,with:dictionary)

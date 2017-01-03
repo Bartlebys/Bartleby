@@ -17,6 +17,7 @@ public struct Identification:Mappable {
     var email:String=""
     var phoneNumber:String=""
     var password:String=""
+    var externalID:String=Default.NO_UID
 
     public init() {}
 
@@ -26,5 +27,6 @@ public struct Identification:Mappable {
         self.email <- ( map["email"] )
         self.phoneNumber <- ( map["phoneNumber"] )
         self.password <- ( map["password"] )
+        self.externalID <- (map["externalID"])
     }
 }

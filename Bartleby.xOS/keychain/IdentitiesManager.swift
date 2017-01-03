@@ -222,6 +222,7 @@ struct IdentitiesManager {
             profile.user?.email=identification.email
             profile.user?.phoneNumber=identification.phoneNumber
             profile.user?.password=identification.password
+            profile.user?.externalID=identification.externalID
             profile.requiresSynchronization=false
             do{
                 var identities=try Identities.loadFromKeyChain()
@@ -250,6 +251,7 @@ struct IdentitiesManager {
                                   cryptoPassword: cryptoPassword,
                                   email:identification.email ,
                                   phoneNumber: identification.phoneNumber,
+                                  externalID: identification.externalID,
                                   sucessHandler:{ (context) in
                                     __patchHasSucceededOn(profile, with: identification)
                 }, failureHandler: { (context) in
