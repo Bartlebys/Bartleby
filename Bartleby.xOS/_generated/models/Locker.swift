@@ -74,7 +74,7 @@ import Foundation
 	    }
 	}
 
-	//This code should be crypted / decrypted
+	//This code should be cryptable / decryptable
 	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
 	    didSet { 
 	       if !self.wantsQuietChanges && code != oldValue {
@@ -223,16 +223,16 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self.associatedDocumentUID <- ( map["associatedDocumentUID"] )
-			self.subjectUID <- ( map["subjectUID"] )
-			self.userUID <- ( map["userUID"] )
+			self.associatedDocumentUID <- ( map["associatedDocumentUID"], CryptedStringTransform() )
+			self.subjectUID <- ( map["subjectUID"], CryptedStringTransform() )
+			self.userUID <- ( map["userUID"], CryptedStringTransform() )
 			self.mode <- ( map["mode"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
-			self.code <- ( map["code"] )
+			self.code <- ( map["code"], CryptedStringTransform() )
 			self.numberOfAttempt <- ( map["numberOfAttempt"] )
 			self.startDate <- ( map["startDate"], ISO8601DateTransform() )
 			self.endDate <- ( map["endDate"], ISO8601DateTransform() )
-			self.gems <- ( map["gems"] )
+			self.gems <- ( map["gems"], CryptedStringTransform() )
         }
     }
 

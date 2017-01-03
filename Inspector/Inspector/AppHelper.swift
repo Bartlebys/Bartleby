@@ -68,7 +68,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
         let recipientsList=recipients.components(separatedBy: ",")
         if let  json = report.toJSONString(){
             if crypted{
-                if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json){
+                if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY){
                     let string="\(body)\n\n\(AppHelper.copyFlag)\(cryptedJson)\(AppHelper.copyFlag)\n"
                     if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
                         sharingService.delegate=self

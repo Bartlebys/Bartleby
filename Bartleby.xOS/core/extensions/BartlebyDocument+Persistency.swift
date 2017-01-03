@@ -85,6 +85,22 @@ extension BartlebyDocument{
             } else {
                 // ERROR
             }
+            try self.loadCollectionData(from:fileWrappers)
+
+            Async.main{
+                self.documentDidLoad()
+            }
+        }
+        // Store the reference
+        self.documentFileWrapper=fileWrapper
+    }
+
+
+
+    open func loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
+
+        // We load the data if the sugar is defined
+        if self.metadata.sugar != Default.NO_UID{
 
             // ##############
             // # BSFS DATA
@@ -117,7 +133,7 @@ extension BartlebyDocument{
                                         if  pathExtension == BartlebyDocument.DATA_EXTENSION {
                                             // Use the faster possible approach.
                                             // The resulting data is not a valid String check CryptoDelegate for details.
-                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData,useKey:Bartleby.configuration.KEY)
+                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData,useKey:self.metadata.sugar)
                                             collectionData = collectionString.data(using:.utf8) ?? Data()
                                         }
                                     }
@@ -143,18 +159,17 @@ extension BartlebyDocument{
                     proxy.propagate()
                 }
             }
-
-            Async.main{
-                self.documentDidLoad()
-            }
         }
-        // Store the reference
-        self.documentFileWrapper=fileWrapper
+
     }
+
+
+
 
 
     private func _updatedFileWrappers()throws ->FileWrapper{
         self.documentWillSave()
+
         if var fileWrappers=self.documentFileWrapper.fileWrappers {
 
             // ##############
@@ -196,50 +211,54 @@ extension BartlebyDocument{
             // ##############
             // # Collections
             // ##############
+            // We load the data if the sugar is defined
 
-            for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
+            if self.metadata.sugar != Default.NO_UID{
 
-                if !metadatum.inMemory {
-                    let collectionfileName=self._collectionFileNames(metadatum).crypted
-                    // MONOLITHIC STORAGE
-                    if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
+                for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
 
-                        if var collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
+                    if !metadatum.inMemory {
+                        let collectionfileName=self._collectionFileNames(metadatum).crypted
+                        // MONOLITHIC STORAGE
+                        if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
 
-                            if collection.shouldBeSaved{
+                            if var collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
 
-                                // We use multiple files
-                                // The resulting data is not a valid String check CryptoDelegate for details.
-                                let collectionString = collection.serializeToUFf8String()
-                                let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString,useKey:Bartleby.configuration.KEY)
+                                if collection.shouldBeSaved{
 
-                                // Remove the previous data
-                                if let wrapper=fileWrappers[collectionfileName] {
-                                    self.documentFileWrapper.removeFileWrapper(wrapper)
+                                    // We use multiple files
+                                    // The resulting data is not a valid String check CryptoDelegate for details.
+                                    let collectionString = collection.serializeToUFf8String()
+                                    let collectionData = try Bartleby.cryptoDelegate.encryptStringToData(collectionString,useKey:self.metadata.sugar)
+
+                                    // Remove the previous data
+                                    if let wrapper=fileWrappers[collectionfileName] {
+                                        self.documentFileWrapper.removeFileWrapper(wrapper)
+                                    }
+
+                                    let collectionFileWrapper=FileWrapper(regularFileWithContents: collectionData)
+                                    collectionFileWrapper.preferredFilename=collectionfileName
+                                    self.documentFileWrapper.addFileWrapper(collectionFileWrapper)
+
+                                    // Reinitialize the flag
+                                    collection.shouldBeSaved=false
                                 }
 
-                                let collectionFileWrapper=FileWrapper(regularFileWithContents: collectionData)
-                                collectionFileWrapper.preferredFilename=collectionfileName
-                                self.documentFileWrapper.addFileWrapper(collectionFileWrapper)
-
-                                // Reinitialize the flag
-                                collection.shouldBeSaved=false
+                            } else {
+                                // NO COLLECTION
                             }
-
                         } else {
-                            // NO COLLECTION
+                            // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                         }
-                    } else {
-                        // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
                     }
                 }
-            }
-
-            // Bsfs blocks
-            if  fileWrappers[self.blocksDirectoryWrapperName] == nil{
-                let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
-                blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
-                self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
+                
+                // Bsfs blocks
+                if  fileWrappers[self.blocksDirectoryWrapperName] == nil{
+                    let blocksFileWrapper=FileWrapper(directoryWithFileWrappers: [:])
+                    blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
+                    self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
+                }
             }
         }
         

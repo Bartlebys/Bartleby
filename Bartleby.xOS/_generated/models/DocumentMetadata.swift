@@ -26,6 +26,9 @@ import Foundation
 	//The user UID currently associated to the local instance of the document
 	dynamic open var currentUserUID:String = "\(Default.NO_UID)"
 
+	//The sugar
+	dynamic open var sugar:String = "\(Default.NO_UID)"
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"

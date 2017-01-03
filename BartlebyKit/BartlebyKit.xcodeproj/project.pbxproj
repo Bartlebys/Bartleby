@@ -484,6 +484,8 @@
 		E53ECE151E1585C00084DD6C /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE111E1585C00084DD6C /* Profile.swift */; };
 		E53ED0061E1587490084DD6C /* IdentitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ED0051E1587490084DD6C /* IdentitiesManager.swift */; };
 		E53ED0071E1587490084DD6C /* IdentitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ED0051E1587490084DD6C /* IdentitiesManager.swift */; };
+		E53F02381E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F02371E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift */; };
+		E53F02391E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F02371E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
@@ -810,6 +812,7 @@
 		E53ECE101E1585C00084DD6C /* Identities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identities.swift; sourceTree = "<group>"; };
 		E53ECE111E1585C00084DD6C /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		E53ED0051E1587490084DD6C /* IdentitiesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentitiesManager.swift; sourceTree = "<group>"; };
+		E53F02371E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentMetadata+Sugar.swift"; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -1194,6 +1197,7 @@
 				E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */,
 				E5135A1F1E084B7F001E65A0 /* Completion+Result.swift */,
 				E5135A201E084B7F001E65A0 /* DocumentMetadata+Facilities.swift */,
+				E53F02371E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift */,
 				E5135A211E084B7F001E65A0 /* DocumentMetadata+Protocol.swift */,
 				E5135A221E084B7F001E65A0 /* HTTPContext+Conveniences.swift */,
 				E5135A231E084B7F001E65A0 /* HTTPRequest+URLRequest.swift */,
@@ -1684,6 +1688,7 @@
 				E5135AD01E084B7F001E65A0 /* CreateBoxes.swift in Sources */,
 				E5135B4C1E084B7F001E65A0 /* Chunk.swift in Sources */,
 				E5135B721E084B7F001E65A0 /* CryptoHelper.swift in Sources */,
+				E53F02381E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift in Sources */,
 				E5135B6E1E084B7F001E65A0 /* CryptedStringKeyValueTransform.swift in Sources */,
 				E5135AA01E084B7F001E65A0 /* DataVO.swift in Sources */,
 				E5135B301E084B7F001E65A0 /* UpdateBox.swift in Sources */,
@@ -2047,6 +2052,7 @@
 				E5135C5D1E084B7F001E65A0 /* LogoutUser.swift in Sources */,
 				E57536181E16B276008207BA /* PatchUser.swift in Sources */,
 				E5135AEB1E084B7F001E65A0 /* DeleteBox.swift in Sources */,
+				E53F02391E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift in Sources */,
 				E5135AA51E084B7F001E65A0 /* HTTPContext.swift in Sources */,
 				E5135B071E084B7F001E65A0 /* ReadBlocksByIds.swift in Sources */,
 				E5135B9B1E084B7F001E65A0 /* BartlebyDocument+DotBart.swift in Sources */,
