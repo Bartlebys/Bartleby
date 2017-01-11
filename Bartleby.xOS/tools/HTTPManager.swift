@@ -320,7 +320,6 @@ open class HTTPManager: NSObject {
                     }
                     failureHandler(context)
                 }
-
             }
         }
     }
@@ -339,7 +338,30 @@ open class HTTPManager: NSObject {
         return emailTest.evaluate(with: testStr)
     }
     
-    
+
+    /**
+     A Simple validation routine
+
+     - parameter testStr: the string to be evaluated
+
+     - returns: true if it is a valid phone Number.v
+     */
+    static open func isValidPhoneNumber(_ testStr: String) -> Bool {
+            do {
+                let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+                let matches = detector.matches(in: testStr, options: [], range: NSMakeRange(0, testStr.characters.count))
+                if let res = matches.first {
+                    return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == testStr.characters.count
+                } else {
+                    return false
+                }
+            } catch {
+                return false
+            }
+        }
+
+
+
     /**
      Salts a string to guarantee that the app "knows" the shared salt
      

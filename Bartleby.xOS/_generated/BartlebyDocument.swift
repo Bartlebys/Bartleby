@@ -338,24 +338,26 @@ import Foundation
     }
     
 
-    // MARK: -  Entities factories
+   // MARK: -  Entities factories
 
     /// Model Factory
     /// Usage:
-    /// let user=document.newObject() as User
-    /// let tag:Tag=document.newObject()
+    /// let user=document.newObject() a
+    /// - Parameter commit: should we commit the entity
     /// - Returns: a Collectible Model
-    open func newObject<T:Collectible>()->T{
+    open func newObject<T:Collectible>(commit:Bool=true)->T{
         // User as a special factory Method
         if T.typeName()=="User"{
-            return self._newUser() as! T
+            return self._newUser(commit:commit) as! T
         }
         var instance=T()
         if let collection=self.collectionByName(instance.d_collectionName){
             collection.add(instance, commit: false)
         }
         instance.creatorUID = self.metadata.currentUserUID
-        instance.needsToBeCommitted()
+        if commit{
+            instance.needsToBeCommitted()// We defer the commit to the next synchronization loop
+        }
         self.didCreate(instance)
         return  instance
     }
@@ -386,7 +388,7 @@ import Foundation
         }
     }
 
-    internal func _newUser() -> User {
+    internal func _newUser(commit:Bool=true) -> User {
         let user=User()
         user.quietChanges {
             user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
@@ -399,7 +401,9 @@ import Foundation
             user.spaceUID = self.metadata.spaceUID
             self.users.add(user, commit:false)
         }
-        user.needsToBeCommitted()// We defer the commit to allow to take account of overriden possible changes.
+        if commit{
+            user.needsToBeCommitted()
+        }
         self.didCreate(user)
         return user
     }

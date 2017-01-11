@@ -1166,10 +1166,10 @@
 				E5135A051E084B7F001E65A0 /* ManagedModelError.swift */,
 				E5135A041E084B7F001E65A0 /* Bartleby.swift */,
 				E5135A6B1E084B7F001E65A0 /* Reaction.swift */,
-				E5AA490C1E112575009FB51B /* RelationShip.swift */,
 				E5135A6D1E084B7F001E65A0 /* ServerErrorCodes.swift */,
 				E5135A6E1E084B7F001E65A0 /* StatusOfCompletion.swift */,
 				E5135A6F1E084B7F001E65A0 /* ValueObject.swift */,
+				E5AA490C1E112575009FB51B /* RelationShip.swift */,
 				E5135A741E084B7F001E65A0 /* operations */,
 			);
 			path = core;

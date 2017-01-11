@@ -13,7 +13,6 @@ import Foundation
 #endif
 
 public enum IdentitiesError:Error{
-    case identitiesNotFound
     case serializationFailure
     case deserializationFailure
     case missingData
@@ -38,6 +37,7 @@ public struct Identities:Mappable {
         if let json=self.toJSONString(){
             // The identities are crypted in the KeyChain
             let crypted = try Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY)
+            let _ = try? Locksmith.deleteDataForUserAccount(userAccount: "bartleby")
             try Locksmith.saveData(data: ["data":crypted], forUserAccount:"bartleby")
         }else{
             throw IdentitiesError.serializationFailure
@@ -57,8 +57,10 @@ public struct Identities:Mappable {
             }else{
                 throw IdentitiesError.missingData
             }
+        }else{
+            // Return a void Identities
+            return Identities()
         }
-        throw IdentitiesError.identitiesNotFound
     }
 }
 

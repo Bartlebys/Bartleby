@@ -17,11 +17,8 @@ class ValidatePasswordViewController: IdentityStepViewController{
         super.proceedToValidation()
         self.stepDelegate?.didValidateStep(number: self.stepIndex)
 
-        // You should call:
-        //
+        // You should call on success:
         //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
-        //      or
-        //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
     }
     
 }

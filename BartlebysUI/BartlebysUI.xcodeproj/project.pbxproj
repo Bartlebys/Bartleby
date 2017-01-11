@@ -13,8 +13,8 @@
 		E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */; };
 		E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */; };
 		E55FF9891E155FF300EE3393 /* UpdatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9871E155FF300EE3393 /* UpdatePasswordViewController.xib */; };
-		E55FF98C1E1562E000EE3393 /* CreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF98A1E1562E000EE3393 /* CreateUserViewController.swift */; };
-		E55FF98D1E1562E000EE3393 /* CreateUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF98B1E1562E000EE3393 /* CreateUserViewController.xib */; };
+		E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF98A1E1562E000EE3393 /* PrepareUserCreationViewController.swift */; };
+		E55FF98D1E1562E000EE3393 /* PrepareUserCreationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF98B1E1562E000EE3393 /* PrepareUserCreationViewController.xib */; };
 		E55FF9901E15637F00EE3393 /* ValidatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF98E1E15637F00EE3393 /* ValidatePasswordViewController.swift */; };
 		E55FF9911E15637F00EE3393 /* ValidatePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF98F1E15637F00EE3393 /* ValidatePasswordViewController.xib */; };
 		E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9941E1564D600EE3393 /* SetupCollaborativeServerViewController.swift */; };
@@ -37,8 +37,8 @@
 		E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdentityWindowController.xib; sourceTree = "<group>"; };
 		E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
 		E55FF9871E155FF300EE3393 /* UpdatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpdatePasswordViewController.xib; sourceTree = "<group>"; };
-		E55FF98A1E1562E000EE3393 /* CreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateUserViewController.swift; sourceTree = "<group>"; };
-		E55FF98B1E1562E000EE3393 /* CreateUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateUserViewController.xib; sourceTree = "<group>"; };
+		E55FF98A1E1562E000EE3393 /* PrepareUserCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrepareUserCreationViewController.swift; sourceTree = "<group>"; };
+		E55FF98B1E1562E000EE3393 /* PrepareUserCreationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PrepareUserCreationViewController.xib; sourceTree = "<group>"; };
 		E55FF98E1E15637F00EE3393 /* ValidatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidatePasswordViewController.swift; sourceTree = "<group>"; };
 		E55FF98F1E15637F00EE3393 /* ValidatePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ValidatePasswordViewController.xib; sourceTree = "<group>"; };
 		E55FF9941E1564D600EE3393 /* SetupCollaborativeServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupCollaborativeServerViewController.swift; sourceTree = "<group>"; };
@@ -109,8 +109,8 @@
 				E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */,
 				E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */,
 				E55FF9871E155FF300EE3393 /* UpdatePasswordViewController.xib */,
-				E55FF98A1E1562E000EE3393 /* CreateUserViewController.swift */,
-				E55FF98B1E1562E000EE3393 /* CreateUserViewController.xib */,
+				E55FF98A1E1562E000EE3393 /* PrepareUserCreationViewController.swift */,
+				E55FF98B1E1562E000EE3393 /* PrepareUserCreationViewController.xib */,
 				E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */,
 				E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */,
 				E55FF98E1E15637F00EE3393 /* ValidatePasswordViewController.swift */,
@@ -202,7 +202,7 @@
 				E55FF9891E155FF300EE3393 /* UpdatePasswordViewController.xib in Resources */,
 				E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */,
 				E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */,
-				E55FF98D1E1562E000EE3393 /* CreateUserViewController.xib in Resources */,
+				E55FF98D1E1562E000EE3393 /* PrepareUserCreationViewController.xib in Resources */,
 				E55FF9911E15637F00EE3393 /* ValidatePasswordViewController.xib in Resources */,
 				E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */,
 			);
@@ -217,7 +217,7 @@
 			files = (
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
-				E55FF98C1E1562E000EE3393 /* CreateUserViewController.swift in Sources */,
+				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
 				E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */,
 				E53F0B571DF95D80003301DD /* DropView.swift in Sources */,
 				E55FF99A1E15667800EE3393 /* ConfirmActivationViewController.swift in Sources */,

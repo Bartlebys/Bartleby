@@ -32,7 +32,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
 
     @IBOutlet weak var messageTextField: NSTextField!
 
-    let countryCodes:[String]=["France (+33)"]
+    var countryCodes:[String]=["Greece (+30)","Netherlands (+31)","Belgium (+32)","France (+33)","United Kingdom (+44)"]
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -52,23 +52,20 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                 }
             }
             self.emailComboBox.addItem(withObjectValue:NSLocalizedString("Add your Email", comment: "Add your Email"))
-            self.phoneNumberComboBox.addItem(withObjectValue:NSLocalizedString("Country code e.g: +33", comment: "Country code e.g: +33"))
-            self.phoneCountryCodeComboBox.addItem(withObjectValue:NSLocalizedString("Phone number", comment: "Phone number"))
-            for country in countryCodes{
+            self.phoneNumberComboBox.addItem(withObjectValue:NSLocalizedString("Phone number", comment: "Phone number"))
+            for country in countryCodes.sorted(){
                 self.phoneCountryCodeComboBox.addItem(withObjectValue: country)
             }
             self.emailComboBox.selectItem(at: 0)
+            self.phoneCountryCodeComboBox.selectItem(at: 1)
             self.phoneNumberComboBox.selectItem(at: 0)
-            self.phoneCountryCodeComboBox.selectItem(at: 0)
+
         }
     }
 
     @IBAction func didChange(_ sender: NSComboBox) {
         if sender != self.emailComboBox{
             self.emailComboBox.selectItem(at: sender.indexOfSelectedItem)
-        }
-        if sender != self.phoneCountryCodeComboBox{
-            self.phoneCountryCodeComboBox.selectItem(at: sender.indexOfSelectedItem)
         }
         if sender != self.phoneNumberComboBox{
             self.phoneNumberComboBox.selectItem(at: sender.indexOfSelectedItem)
@@ -90,15 +87,13 @@ class PrepareUserCreationViewController: IdentityStepViewController{
             let phoneNumber=prefix+self.phoneNumberComboBox.stringValue
             if HTTPManager.isValidEmail(email){
                 if HTTPManager.isValidPhoneNumber(phoneNumber){
-                    // In rare situation we prefer to push manually the entities
-                    // To do so we do not commit the object created by the newObject() factory
-                    let user:User=document.newObject(commit:false)
-                    user.email=email
-                    user.phoneCountryCode=self.phoneCountryCodeComboBox.stringValue
-                    user.phoneNumber=self.phoneNumberComboBox.stringValue
-                    document.metadata.currentUserUID=user.UID
+                    var id=Identification()
+                    id.email=email
+                    id.phoneCountryCode=self.phoneCountryCodeComboBox.stringValue
+                    id.phoneNumber=self.phoneNumberComboBox.stringValue
+                    // We store the prepared identification
+                    self.identityWindowController?.identification=id
                     self.stepDelegate?.didValidateStep(number: self.stepIndex)
-
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid phone number!", comment: "Invalid phone number!")
                 }
@@ -106,10 +101,6 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                 self.messageTextField.stringValue=NSLocalizedString("Invalid email!", comment: "Invalid email!")
             }
         }
-    }
-    
-    public func reusedExistingCredentials()->Bool{
-        return true
     }
     
     

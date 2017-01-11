@@ -17,14 +17,14 @@ import Foundation
 ///
 /// When various users share the the same phone or email in different dataspace
 /// this class tries to synchronize the passwords, phone and email of matching users on all the registred collaborative servers.
-struct IdentitiesManager {
+public struct IdentitiesManager {
 
 
     /// Returns suggested profiles for the document.
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    static func suggestedProfiles(in document:BartlebyDocument)->[Profile]{
+    public static func suggestedProfiles(forDocument document:BartlebyDocument)->[Profile]{
         var profiles=[Profile]()
         do{
             let identities = try Identities.loadFromKeyChain()
@@ -86,7 +86,7 @@ struct IdentitiesManager {
     /// and synchronizes the identification and associated profiles.
     ///
     /// - Parameter document: the document
-    static func synchronize(_ document:BartlebyDocument){
+    public static func synchronize(_ document:BartlebyDocument){
         do{
             var identities=try Identities.loadFromKeyChain()
             /// Update the Masters users.
@@ -151,11 +151,25 @@ struct IdentitiesManager {
         }
     }
 
+    public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
+        var identities=try? Identities.loadFromKeyChain()
+        if let profiles=identities?.profiles{
+            for profile in profiles{
+                if let user=profile.user{
+                    if IdentitiesManager._matching(user,identification){
+                        return profile
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
     // MARK: - Implementation
 
 
     /// Intents to patch the associatied identification with the new password
-    /// There is no guarantee it will work as we may refer to various servers.s
+    /// There is no guarantee it will work as we may refer to various servers.
     fileprivate static func _synchronize(identities:Identities, with user:User,from document:BartlebyDocument){
         for profile in identities.profiles {
             if profile.requiresSynchronization{
@@ -169,7 +183,6 @@ struct IdentitiesManager {
             }
         }
     }
-
 
 
     fileprivate static func _matching(_ user:User,_ identification:Identification)->Bool{

@@ -79,6 +79,9 @@ open class TestsConfiguration: BartlebyConfiguration {
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
+    // If set to true the confirmation code will be for example printed in the console...
+    open static var DEVELOPER_MODE: Bool = true // Should be turned to false in production
+    
     //MARK: - Variable base URL
 
     enum Environment {

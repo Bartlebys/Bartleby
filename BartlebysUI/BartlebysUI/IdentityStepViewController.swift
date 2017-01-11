@@ -19,6 +19,11 @@ class IdentityStepViewController: NSViewController ,DocumentDependent,IdentitySt
 
     var documentProvider: DocumentProvider?
 
+
+    var identityWindowController:IdentityWindowController?{
+        return self.documentProvider as? IdentityWindowController
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
@@ -29,11 +34,7 @@ class IdentityStepViewController: NSViewController ,DocumentDependent,IdentitySt
     var stepIndex:Int = -1
 
     func proceedToValidation(){
-        // You should call:
-        //
+        // On success You should call:
         //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
-        //      or
-        //      self.stepDelegate?.didFailValidatingStep(number: self.stepIndex)
     }
-
 }

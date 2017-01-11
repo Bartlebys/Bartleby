@@ -13,12 +13,12 @@ public enum SugarError:Error{
     case salted
 }
 
-extension DocumentMetadata{
+public extension DocumentMetadata{
 
     /// Loads the sugar String and save it to self.sugar
-    func loadSugar()throws{
+    public func loadSugar()throws{
         // We gonna try to load
-        if let data=FileManager.default.contents(atPath: self._bowlPath+"/"+self.currentUserUID){
+        if let data=FileManager.default.contents(atPath: self._bowlPath+"/"+self.persistentUID){
             if let cryptedSugar = String.init(data: data, encoding: String.Encoding.utf8){
                 self.sugar = try Bartleby.cryptoDelegate.decryptString(cryptedSugar, useKey: Bartleby.configuration.KEY)
             }else{
@@ -30,8 +30,8 @@ extension DocumentMetadata{
     }
 
     /// Cooks a good pie
-    func cookThePie()throws{
-        let _ = try FileManager.default.createDirectory(atPath: self._bowlPath+"/"+self.currentUserUID, withIntermediateDirectories: true)
+    public func cookThePie()throws{
+        let _ = try FileManager.default.createDirectory(atPath: self._bowlPath, withIntermediateDirectories: true)
         if self.sugar == Default.NO_UID {
             do{
                 try loadSugar()
@@ -42,7 +42,7 @@ extension DocumentMetadata{
             }
         }
         let cryptedSugar = try Bartleby.cryptoDelegate.encryptString(self.sugar, useKey: Bartleby.configuration.KEY)
-        try cryptedSugar.write(toFile: self._bowlPath, atomically: true, encoding: String.Encoding.utf8)
+        try cryptedSugar.write(toFile: self._bowlPath+"/"+self.persistentUID, atomically: true, encoding: String.Encoding.utf8)
     }
 
 

@@ -10,7 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="SetupCollaborativeServerViewController" customModule="BartlebysUI" customModuleProvider="target">
             <connections>
                 <outlet property="box" destination="9mu-2F-jrk" id="oG3-g7-Idu"/>
-                <outlet property="explanationTextField" destination="Eoh-li-aL9" id="BOt-vI-d7Q"/>
+                <outlet property="explanationsTextField" destination="Eoh-li-aL9" id="Ph2-Dx-Lhf"/>
                 <outlet property="messageTextField" destination="e3P-C9-zVQ" id="f8q-Hb-f3A"/>
                 <outlet property="serverComboBox" destination="Q5z-f8-aQl" id="mMR-EQ-H4t"/>
                 <outlet property="view" destination="53Z-gg-OKP" id="PO7-t5-fWG"/>
@@ -49,7 +49,7 @@
                             </comboBox>
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="e3P-C9-zVQ">
                                 <rect key="frame" x="25" y="94" width="417" height="17"/>
-                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="oJF-uJ-2F4">
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" id="oJF-uJ-2F4">
                                     <font key="font" metaFont="titleBar"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

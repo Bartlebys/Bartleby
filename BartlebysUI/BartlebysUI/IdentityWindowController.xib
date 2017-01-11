@@ -9,8 +9,9 @@
         <customObject id="-2" userLabel="File's Owner" customClass="IdentityWindowController" customModule="BartlebysUI" customModuleProvider="target">
             <connections>
                 <outlet property="confirmActivation" destination="uEZ-ba-9Iq" id="jdK-5O-Kic"/>
-                <outlet property="createUser" destination="DaE-jK-97s" id="IZt-E7-gOn"/>
                 <outlet property="leftButton" destination="fDC-hP-g9s" id="Qju-DJ-VpW"/>
+                <outlet property="prepareUserCreation" destination="DaE-jK-97s" id="i0n-BR-2lC"/>
+                <outlet property="revealPassword" destination="BhJ-PB-9OU" id="7kA-Cz-wDH"/>
                 <outlet property="rightButton" destination="uUc-Qk-CbG" id="PzL-bL-bJP"/>
                 <outlet property="setUpCollaborativeServer" destination="dNR-CV-jVC" id="Cks-GK-DLS"/>
                 <outlet property="tabView" destination="N3Z-Og-1Mr" id="GKG-9h-60R"/>
@@ -21,11 +22,17 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <viewController id="lvp-d7-bjf" customClass="UpdatePasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="DaE-jK-97s" customClass="PrepareUserCreationViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="myt-lN-i1u" customClass="ValidatePasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="uEZ-ba-9Iq" customClass="ConfirmActivationViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="dNR-CV-jVC" customClass="SetupCollaborativeServerViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="BhJ-PB-9OU" customClass="RevealPasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
         <window identifier="identityWindow" title="Identity" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="identityContainerWindow" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
             <view key="contentView" wantsLayer="YES" focusRingType="none" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -69,10 +76,5 @@
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
         </window>
-        <viewController id="lvp-d7-bjf" customClass="UpdatePasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
-        <viewController id="DaE-jK-97s" customClass="CreateUserViewController" customModule="BartlebysUI" customModuleProvider="target"/>
-        <viewController id="myt-lN-i1u" customClass="ValidatePasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
-        <viewController id="uEZ-ba-9Iq" customClass="ConfirmActivationViewController" customModule="BartlebysUI" customModuleProvider="target"/>
-        <viewController id="dNR-CV-jVC" customClass="SetupCollaborativeServerViewController" customModule="BartlebysUI" customModuleProvider="target"/>
     </objects>
 </document>

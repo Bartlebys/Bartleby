@@ -19,7 +19,8 @@ public protocol IdentifactionDelegate{
 
 protocol IdentityStepNavigation{
     func didValidateStep(number:Int)
-    func didFailValidatingStep(number:Int)
+    func disableActions()
+    func enableActions()
 }
 
 // MARK: - IdentityStep
@@ -29,6 +30,12 @@ protocol IdentityStep{
     func proceedToValidation()
 }
 
+
+public enum IdentityControllerMode {
+    case creation
+    case recreation // Reuse an existing profile
+    case identification
+}
 
 // MARK: - IdentityWindowController
 
@@ -43,6 +50,7 @@ protocol IdentityStep{
  */
 public class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
 
+
     override public var windowNibName: String? { return "IdentityWindowController" }
 
     // MARK: DocumentDependent
@@ -55,15 +63,24 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         return self.document as? BartlebyDocument
     }
 
+
+    public var creationMode=true
+
+    public var identification:Identification?
+
+    public var reuseCredentials=false
+
     public var identificationDelegate:IdentifactionDelegate?
 
     // MARK: - Outlets
 
-    @IBOutlet var createUser: CreateUserViewController!
+    @IBOutlet var prepareUserCreation: PrepareUserCreationViewController!
 
     @IBOutlet var confirmActivation: ConfirmActivationViewController!
 
     @IBOutlet var setUpCollaborativeServer: SetupCollaborativeServerViewController!
+
+    @IBOutlet var revealPassword: RevealPasswordViewController!
 
     @IBOutlet var validatePassword: ValidatePasswordViewController!
 
@@ -85,14 +102,16 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
-            if document.metadata.currentUserUID == Default.NO_UID{
+            if document.metadata.currentUserUID == Default.NO_UID || document.users.count==0{
+
+                self.creationMode=true
                 // It is a new document
 
-                let createUserItem=NSTabViewItem(viewController:self.createUser)
-                self.createUser.documentProvider=self
-                self.createUser.stepDelegate=self
-                self.createUser.stepIndex=0
-                self.tabView.addTabViewItem(createUserItem)
+                let prepareUserCreationItem=NSTabViewItem(viewController:self.prepareUserCreation)
+                self.prepareUserCreation.documentProvider=self
+                self.prepareUserCreation.stepDelegate=self
+                self.prepareUserCreation.stepIndex=0
+                self.tabView.addTabViewItem(prepareUserCreationItem)
 
                 let setupServerItem=NSTabViewItem(viewController:self.setUpCollaborativeServer)
                 self.setUpCollaborativeServer.documentProvider=self
@@ -106,7 +125,26 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self.confirmActivation.stepIndex=2
                 self.tabView.addTabViewItem(confirmActivationItem)
 
+                let revealPasswordItem=NSTabViewItem(viewController:self.revealPassword)
+                self.revealPassword.documentProvider=self
+                self.revealPassword.stepDelegate=self
+                self.revealPassword.stepIndex=3
+                self.tabView.addTabViewItem(revealPasswordItem)
+
                 self.currentStep=0
+
+            }else{
+
+                self.creationMode=false
+
+                let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
+                self.validatePassword.documentProvider=self
+                self.validatePassword.stepDelegate=self
+                self.validatePassword.stepIndex=0
+                self.tabView.addTabViewItem(validatePasswordItem)
+
+                self.currentStep=0
+
             }
         }
     }
@@ -144,11 +182,37 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(number:Int){
+
+        if self.creationMode {
+
+            if number==0{
+            }
+            if number==1{
+            }
+            // The SMS / second factor auth has been verified.
+            if number==2{
+                // user status is confirmed.
+                // deserialize the collection
+                // Set the status of the user.
+                // IdentitiesManager.synchronize(self.document)
+                if let document=self.getDocument(){
+                    document.currentUser.status = .actived
+                    IdentitiesManager.synchronize(document)
+                }
+            }
+        }
+
         self.nextStep()
+        self.enableActions()
     }
 
-    public func didFailValidatingStep(number:Int){
-        
+    public func disableActions(){
+        self.leftButton.isEnabled=false
+        self.rightButton.isEnabled=false
+    }
+    public func enableActions(){
+        self.leftButton.isEnabled=true
+        self.rightButton.isEnabled=true
     }
 
 

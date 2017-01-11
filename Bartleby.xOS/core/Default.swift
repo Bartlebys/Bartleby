@@ -69,6 +69,8 @@ public protocol BartlebyConfiguration {
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool { get set }
 
+    // If set to true the confirmation code will be for example printed in the console...
+    static var DEVELOPER_MODE: Bool { get set }
 }
 
 
@@ -137,7 +139,8 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
-
+    // If set to true the confirmation code will be for example printed in the console...
+    public static var DEVELOPER_MODE: Bool = false
 }
 
 // MARK: - Default values

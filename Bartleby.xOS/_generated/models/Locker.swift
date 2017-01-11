@@ -92,7 +92,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var startDate:Date = Date.distantPast  {
+	dynamic open var startDate:Date = Date()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -100,7 +100,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var endDate:Date = Date.distantFuture  {
+	dynamic open var endDate:Date = Date()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  

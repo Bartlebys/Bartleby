@@ -14,10 +14,11 @@ import Foundation
 
 public struct Identification:Mappable {
 
-    var email:String=""
-    var phoneNumber:String=""
-    var password:String=""
-    var externalID:String=Default.NO_UID
+    public var email:String=""
+    public var phoneCountryCode:String=""
+    public var phoneNumber:String=""
+    public var password:String=""
+    public var externalID:String=Default.NO_UID
 
     public init() {}
 
@@ -25,6 +26,7 @@ public struct Identification:Mappable {
 
     public mutating func mapping(map: Map) {
         self.email <- ( map["email"] )
+        self.phoneCountryCode <- ( map["phoneCountryCode"] )
         self.phoneNumber <- ( map["phoneNumber"] )
         self.password <- ( map["password"] )
         self.externalID <- (map["externalID"])

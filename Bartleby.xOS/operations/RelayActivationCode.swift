@@ -31,7 +31,7 @@ open class RelayActivationCode {
     ///   - body: the body `$code` will be replaced by the code server side
     ///   - success: the success closure
     ///   - failure: the failure closure
-    static open func execute(   baseURL:URL,
+    static open func execute(    baseURL:URL,
                                 documentUID:String,
                                 fromEmail: String,
                                 fromPhoneNumber:String,
@@ -69,6 +69,13 @@ open class RelayActivationCode {
                 let timeline=response.timeline
                 let statusCode=response.response?.statusCode ?? 0
 
+                let metrics=Metrics()
+                metrics.operationName="RelayActivationCode"
+                metrics.latency=timeline.latency
+                metrics.requestDuration=timeline.requestDuration
+                metrics.serializationDuration=timeline.serializationDuration
+                metrics.totalDuration=timeline.totalDuration
+
                 // Bartleby consignation
                 let context = HTTPContext( code: 667,
                                            caller: "RelayActivationCode.execute",
@@ -82,6 +89,9 @@ open class RelayActivationCode {
                 if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                     context.responseString=utf8Text
                 }
+                metrics.httpContext=context
+
+
                 // React according to the situation
                 var reactions = Array<Reaction> ()
 
@@ -99,26 +109,6 @@ open class RelayActivationCode {
                     failure(context)
                 }else{
                     if 200...299 ~= statusCode {
-                        // Acknowledge the trigger if there is one
-                        if let dictionary = result.value as? Dictionary< String,AnyObject > {
-                            if let index=dictionary["triggerIndex"] as? NSNumber,
-                                let triggerRelayDuration=dictionary["triggerRelayDuration"] as? NSNumber{
-                                let acknowledgment=Acknowledgment()
-                                acknowledgment.httpContext=context
-                                acknowledgment.operationName="RelayActivationCode"
-                                acknowledgment.triggerIndex=index.intValue
-                                acknowledgment.latency=timeline.latency
-                                acknowledgment.requestDuration=timeline.requestDuration
-                                acknowledgment.serializationDuration=timeline.serializationDuration
-                                acknowledgment.totalDuration=timeline.totalDuration
-                                acknowledgment.triggerRelayDuration=triggerRelayDuration.doubleValue
-                                acknowledgment.uids=[]
-                                if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
-                                    document.record(acknowledgment)
-                                    document.report(acknowledgment) // Acknowlegments are also metrics
-                                }
-                            }
-                        }
                         success(context)
                     }else{
                         // Bartlby does not currenlty discriminate status codes 100 & 101
@@ -139,10 +129,16 @@ open class RelayActivationCode {
                     }
                 }
                 if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
+                    // report the metrics
+                    document.report(metrics)
                     //Let's react according to the context.
                     document.perform(reactions, forContext: context)
+                }else{
+                    // Not normal
+                    if let url=request?.url{
+                        Bartleby.sharedInstance.report(metrics,forURL:url)
+                    }
                 }
-
 
             })
         }catch{

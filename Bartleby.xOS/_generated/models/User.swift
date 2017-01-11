@@ -69,7 +69,7 @@ import Foundation
 	    }
 	}
 
-	//The user's email. Can be the secondary Identification source 
+	//The user's email. 
 	dynamic open var email:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && email != oldValue {
@@ -78,7 +78,16 @@ import Foundation
 	    }
 	}
 
-	//The user's phone number. Can be the secondary Identification source 
+	//The user's phone country code
+	dynamic open var phoneCountryCode:String? {
+	    didSet { 
+	       if !self.wantsQuietChanges && phoneCountryCode != oldValue {
+	            self.provisionChanges(forKey: "phoneCountryCode",oldValue: oldValue,newValue: phoneCountryCode) 
+	       } 
+	    }
+	}
+
+	//The user's phone number
 	dynamic open var phoneNumber:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneNumber != oldValue {
@@ -136,7 +145,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
         return exposed
     }
 
@@ -172,6 +181,10 @@ import Foundation
             case "email":
                 if let casted=value as? String{
                     self.email=casted
+                }
+            case "phoneCountryCode":
+                if let casted=value as? String{
+                    self.phoneCountryCode=casted
                 }
             case "phoneNumber":
                 if let casted=value as? String{
@@ -224,6 +237,8 @@ import Foundation
                return self.lastname
             case "email":
                return self.email
+            case "phoneCountryCode":
+               return self.phoneCountryCode
             case "phoneNumber":
                return self.phoneNumber
             case "password":
@@ -255,6 +270,7 @@ import Foundation
 			self.firstname <- ( map["firstname"] )
 			self.lastname <- ( map["lastname"] )
 			self.email <- ( map["email"] )
+			self.phoneCountryCode <- ( map["phoneCountryCode"] )
 			self.phoneNumber <- ( map["phoneNumber"] )
 			self.password <- ( map["password"], CryptedStringTransform() )
 			self.activationCode <- ( map["activationCode"] )
@@ -275,6 +291,7 @@ import Foundation
 			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
 			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
 			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
+			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneCountryCode") as NSString?)
 			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
@@ -292,6 +309,9 @@ import Foundation
 		coder.encode(self.lastname,forKey:"lastname")
 		if let email = self.email {
 			coder.encode(email,forKey:"email")
+		}
+		if let phoneCountryCode = self.phoneCountryCode {
+			coder.encode(phoneCountryCode,forKey:"phoneCountryCode")
 		}
 		if let phoneNumber = self.phoneNumber {
 			coder.encode(phoneNumber,forKey:"phoneNumber")
