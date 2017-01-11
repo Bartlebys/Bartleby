@@ -13,7 +13,6 @@ import BartlebyKit
 
 public protocol IdentifactionDelegate{
     func userWantsToCloseIndentityController()
-    func userCreationDidSucceed()
 }
 
 // MARK: - IdentityStepNavigation
@@ -153,7 +152,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self.tabView.selectTabViewItem(at: currentStep)
             }else{
                 if currentStep==3 && self.creationMode==true{
-                    self.identificationDelegate?.userCreationDidSucceed()
+                    if let document=self.getDocument(){
+                        document.currentUserHasBeenCreated()
+                    }
                 }
                 self.identificationDelegate?.userWantsToCloseIndentityController()
             }
