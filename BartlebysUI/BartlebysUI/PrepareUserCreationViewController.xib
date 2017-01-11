@@ -7,12 +7,15 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="CreateUserViewController" customModule="BartlebysUI" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="PrepareUserCreationViewController" customModule="BartlebysUI" customModuleProvider="target">
             <connections>
                 <outlet property="box" destination="zaz-dK-tzX" id="fvP-P3-Lsd"/>
                 <outlet property="emailComboBox" destination="sFe-8x-VhC" id="ye9-0Y-Gzq"/>
                 <outlet property="emailLabel" destination="KXO-xO-OZj" id="FOr-B4-WKz"/>
                 <outlet property="explanationsTextField" destination="QFa-dm-hoj" id="EeQ-Zy-ZQ0"/>
+                <outlet property="messageTextField" destination="sE4-L9-jTH" id="pAz-sY-ybP"/>
+                <outlet property="phoneCountryCodeComboBox" destination="ork-AC-vv8" id="KA2-Qb-59G"/>
+                <outlet property="phoneCountryCodeLabel" destination="nIy-GY-Z2t" id="9bH-qc-nfF"/>
                 <outlet property="phoneNumberComboBox" destination="sRa-Qn-NsB" id="jft-tD-g1q"/>
                 <outlet property="phoneNumberLabel" destination="nIy-GY-Z2t" id="4F8-80-BmA"/>
                 <outlet property="view" destination="ffh-YB-Euh" id="Ezc-eg-pVL"/>
@@ -33,7 +36,7 @@
                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="QFa-dm-hoj">
                                 <rect key="frame" x="27" y="128" width="417" height="34"/>
                                 <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document." id="cZQ-6s-kNK">
-                                    <font key="font" metaFont="titleBar"/>
+                                    <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -52,7 +55,7 @@
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIy-GY-Z2t">
                                 <rect key="frame" x="27" y="75" width="104" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Phone Number" id="2ms-ee-WMj">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Country Code" id="2ms-ee-WMj">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -69,31 +72,76 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </comboBoxCell>
+                                <connections>
+                                    <action selector="didChange:" target="-2" id="S9z-bz-R07"/>
+                                </connections>
                             </comboBox>
                             <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRa-Qn-NsB">
-                                <rect key="frame" x="139" y="68" width="304" height="26"/>
+                                <rect key="frame" x="139" y="38" width="304" height="26"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="TEM-7G-c33">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </comboBoxCell>
+                                <connections>
+                                    <action selector="didChange:" target="-2" id="I9b-Bj-pBh"/>
+                                </connections>
                             </comboBox>
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="sE4-L9-jTH">
+                                <rect key="frame" x="27" y="-9" width="417" height="47"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="3Bf-jg-qbQ"/>
+                                </constraints>
+                                <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="right" title="..." id="YEZ-02-3m0">
+                                    <font key="font" metaFont="titleBar"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ork-AC-vv8">
+                                <rect key="frame" x="139" y="68" width="304" height="26"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="dTC-qL-3V7">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </comboBoxCell>
+                                <connections>
+                                    <action selector="didChange:" target="-2" id="BqW-Cl-qK1"/>
+                                </connections>
+                            </comboBox>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHR-YO-jco">
+                                <rect key="frame" x="27" y="45" width="104" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Phone Number" id="gae-8t-h1u">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="top" secondItem="sFe-8x-VhC" secondAttribute="bottom" constant="9" id="A3D-Ph-Sbg"/>
+                            <constraint firstItem="sE4-L9-jTH" firstAttribute="top" secondItem="sRa-Qn-NsB" secondAttribute="bottom" constant="4" id="2yA-lu-wVc"/>
+                            <constraint firstAttribute="trailing" secondItem="sE4-L9-jTH" secondAttribute="trailing" constant="34" id="8QD-cj-Qdm"/>
                             <constraint firstItem="nIy-GY-Z2t" firstAttribute="top" secondItem="KXO-xO-OZj" secondAttribute="bottom" constant="12" id="BT9-0R-pye"/>
+                            <constraint firstItem="ork-AC-vv8" firstAttribute="leading" secondItem="nIy-GY-Z2t" secondAttribute="trailing" constant="10" id="Flt-Ad-jCp"/>
                             <constraint firstItem="sFe-8x-VhC" firstAttribute="leading" secondItem="KXO-xO-OZj" secondAttribute="trailing" constant="10" id="IgW-jZ-AEy"/>
                             <constraint firstItem="KXO-xO-OZj" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="7" id="Kwt-jf-Kcg"/>
+                            <constraint firstItem="EHR-YO-jco" firstAttribute="width" secondItem="nIy-GY-Z2t" secondAttribute="width" id="MoZ-Na-Ll0"/>
                             <constraint firstItem="QFa-dm-hoj" firstAttribute="top" secondItem="NfU-gd-Idz" secondAttribute="top" constant="25" id="OlH-I5-bRC"/>
+                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="width" secondItem="ork-AC-vv8" secondAttribute="width" id="PPY-H2-cyv"/>
+                            <constraint firstItem="EHR-YO-jco" firstAttribute="top" secondItem="nIy-GY-Z2t" secondAttribute="bottom" constant="13" id="QCg-uV-FOM"/>
+                            <constraint firstItem="sE4-L9-jTH" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="T3n-B0-cPC"/>
                             <constraint firstAttribute="trailing" secondItem="sFe-8x-VhC" secondAttribute="trailing" constant="36" id="TeP-tS-AOj"/>
-                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="leading" secondItem="nIy-GY-Z2t" secondAttribute="trailing" constant="10" id="bOD-Xy-DNb"/>
+                            <constraint firstItem="ork-AC-vv8" firstAttribute="width" secondItem="sFe-8x-VhC" secondAttribute="width" id="UZT-ys-aF3"/>
+                            <constraint firstItem="ork-AC-vv8" firstAttribute="top" secondItem="sFe-8x-VhC" secondAttribute="bottom" constant="9" id="ahc-AA-rQf"/>
                             <constraint firstItem="nIy-GY-Z2t" firstAttribute="centerX" secondItem="KXO-xO-OZj" secondAttribute="centerX" id="fd5-Ye-I9M"/>
+                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="top" secondItem="ork-AC-vv8" secondAttribute="bottom" constant="10" id="hCC-Ol-iqT"/>
                             <constraint firstItem="QFa-dm-hoj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="jfX-KE-epZ"/>
                             <constraint firstAttribute="trailing" secondItem="QFa-dm-hoj" secondAttribute="trailing" constant="34" id="lEz-qV-m82"/>
                             <constraint firstItem="nIy-GY-Z2t" firstAttribute="width" secondItem="KXO-xO-OZj" secondAttribute="width" id="mTk-gd-1Or"/>
                             <constraint firstItem="sFe-8x-VhC" firstAttribute="top" secondItem="QFa-dm-hoj" secondAttribute="bottom" constant="7" id="o14-sT-kvD"/>
                             <constraint firstItem="KXO-xO-OZj" firstAttribute="leading" secondItem="NfU-gd-Idz" secondAttribute="leading" constant="29" id="qNU-7p-bl0"/>
-                            <constraint firstAttribute="trailing" secondItem="sRa-Qn-NsB" secondAttribute="trailing" constant="36" id="uSK-Ph-7Ep"/>
+                            <constraint firstItem="sRa-Qn-NsB" firstAttribute="centerX" secondItem="ork-AC-vv8" secondAttribute="centerX" id="uhF-C4-lka"/>
+                            <constraint firstItem="EHR-YO-jco" firstAttribute="centerX" secondItem="nIy-GY-Z2t" secondAttribute="centerX" id="yvz-H8-37o"/>
                         </constraints>
                     </view>
                 </box>
