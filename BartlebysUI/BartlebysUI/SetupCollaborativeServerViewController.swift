@@ -37,10 +37,11 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
         if let document=self.documentProvider?.getDocument(),
             let identityWindowController=self.identityWindowController{
             if let serverURL:URL=URL(string:self.serverComboBox.stringValue){
+                self.stepDelegate?.disableActions()
                 Async.main{
                     HTTPManager.apiIsReachable(serverURL, successHandler: {
                         // We prefer to wait for reachability response before to disable the actions
-                        self.stepDelegate?.disableActions()
+
                         // The server is Reachable
                         self.messageTextField.stringValue=""
 
@@ -124,9 +125,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                 self.messageTextField.stringValue="\(context.message)"
                                 document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                             })
-
                         }
-
                         do{
                             // This will create and save the sugar cryptic key.
                             try document.metadata.cookThePie()
