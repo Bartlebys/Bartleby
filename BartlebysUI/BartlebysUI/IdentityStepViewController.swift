@@ -9,31 +9,31 @@
 import Cocoa
 import BartlebyKit
 
-class IdentityStepViewController: NSViewController ,DocumentDependent,IdentityStep{
+open class IdentityStepViewController: NSViewController ,DocumentDependent,IdentityStep{
 
-    var stepDelegate:IdentityStepNavigation?
+    open var stepDelegate:IdentityStepNavigation?
 
 
     /// There are credentials for that Server.
     /// Use them an set - up the association
 
-    var documentProvider: DocumentProvider?
+    open var documentProvider: DocumentProvider?
 
 
-    var identityWindowController:IdentityWindowController?{
+    open var identityWindowController:IdentityWindowController?{
         return self.documentProvider as? IdentityWindowController
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
     // MARK: - IdentityStep
 
-    var stepIndex:Int = -1
+    open var stepIndex:Int = -1
 
-    func proceedToValidation(){
+    open func proceedToValidation(){
         // On success You should call:
         //      self.stepDelegate?.didValidateStep(number: self.stepIndex)
     }

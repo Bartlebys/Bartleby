@@ -9,9 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-class UpdatePasswordViewController: NSViewController ,DocumentDependent{
-
-    var documentProvider: DocumentProvider?
+class UpdatePasswordViewController: IdentityStepViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()

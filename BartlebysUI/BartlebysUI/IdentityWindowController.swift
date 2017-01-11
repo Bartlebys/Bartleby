@@ -17,7 +17,7 @@ public protocol IdentifactionDelegate{
 
 // MARK: - IdentityStepNavigation
 
-protocol IdentityStepNavigation{
+public protocol IdentityStepNavigation{
     func didValidateStep(number:Int)
     func disableActions()
     func enableActions()
@@ -25,7 +25,7 @@ protocol IdentityStepNavigation{
 
 // MARK: - IdentityStep
 
-protocol IdentityStep{
+public protocol IdentityStep{
     var stepIndex:Int { get set }
     func proceedToValidation()
 }
@@ -144,7 +144,26 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         }
     }
 
-    // MARK: 
+
+
+    /// Appends a view Controller to the stack
+    ///
+    /// - Parameters:
+    ///   - viewController: an IdentityStepViewController children
+    ///   - selectImmediately: display immediately the added view Controller
+    public func append(viewController:IdentityStepViewController,selectImmediately:Bool){
+        let viewControllerItem=NSTabViewItem(viewController:viewController)
+        viewController.documentProvider=self
+        viewController.stepDelegate=self
+        viewController.stepIndex=self.tabView.tabViewItems.count
+        self.tabView.addTabViewItem(viewControllerItem)
+        if selectImmediately{
+            self.tabView.selectTabViewItem(at: viewController.stepIndex)
+        }
+    }
+
+
+    // MARK:
 
     var currentStep:Int = -1{
         didSet{
@@ -201,6 +220,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             if number == 3 {}
             self.nextStep()
             self.enableActions()
+            if number > 2 {
+                self.leftButton.isEnabled=false
+            }
         }
     }
 
@@ -209,6 +231,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.rightButton.isEnabled=false
     }
     public func enableActions(){
+
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
     }

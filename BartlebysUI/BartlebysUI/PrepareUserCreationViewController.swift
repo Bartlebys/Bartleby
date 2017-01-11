@@ -56,6 +56,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                 self.phoneCountryCodeComboBox.addItem(withObjectValue: country)
             }
             self.emailComboBox.selectItem(at: 0)
+            self.phoneCountryCodeComboBox.selectItem(at: 0)
             self.phoneNumberComboBox.selectItem(at: 0)
             Async.main{
                 self.didChange(self.emailComboBox)
