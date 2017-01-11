@@ -31,19 +31,19 @@
         <window identifier="identityWindow" title="Identity" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="identityContainerWindow" id="F0z-JX-Cv5">
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="contentRect" x="196" y="240" width="500" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
             <view key="contentView" wantsLayer="YES" focusRingType="none" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="500" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <tabView type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="N3Z-Og-1Mr">
-                        <rect key="frame" x="0.0" y="50" width="480" height="220"/>
+                        <rect key="frame" x="0.0" y="50" width="500" height="220"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems/>
                     </tabView>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fDC-hP-g9s">
-                        <rect key="frame" x="3" y="5" width="161" height="32"/>
+                        <rect key="frame" x="8" y="5" width="161" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="s9F-u9-gee">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

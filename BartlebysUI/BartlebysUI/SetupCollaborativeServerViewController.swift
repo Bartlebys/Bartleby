@@ -138,8 +138,8 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             }else{
 
                                 CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
-                                }, failureHandler: { (context) in
                                     __postCreationPhase(user: user)
+                                }, failureHandler: { (context) in
                                     self.stepDelegate?.enableActions()
                                     self.messageTextField.stringValue="\(context.responseString)"
                                     document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)

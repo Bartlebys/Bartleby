@@ -408,6 +408,12 @@ import Foundation
         return user
     }
 
+    /// Called on document creation when the current user has been confirmed
+    /// You should ovveride this method to add your business logic.
+    open func currentUserHasBeenCreated(){
+
+    }
+
 
 
 }

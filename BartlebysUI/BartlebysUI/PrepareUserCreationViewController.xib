@@ -105,9 +105,6 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </comboBoxCell>
-                                <connections>
-                                    <action selector="didChange:" target="-2" id="BqW-Cl-qK1"/>
-                                </connections>
                             </comboBox>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHR-YO-jco">
                                 <rect key="frame" x="27" y="45" width="104" height="17"/>

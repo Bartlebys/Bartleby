@@ -13,6 +13,7 @@ import BartlebyKit
 
 public protocol IdentifactionDelegate{
     func userWantsToCloseIndentityController()
+    func userCreationDidSucceed()
 }
 
 // MARK: - IdentityStepNavigation
@@ -31,11 +32,6 @@ protocol IdentityStep{
 }
 
 
-public enum IdentityControllerMode {
-    case creation
-    case recreation // Reuse an existing profile
-    case identification
-}
 
 // MARK: - IdentityWindowController
 
@@ -64,7 +60,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
 
-    public var creationMode=true
+    public var creationMode=false
 
     public var identification:Identification?
 
@@ -155,6 +151,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         didSet{
             if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
                 self.tabView.selectTabViewItem(at: currentStep)
+            }else{
+                if currentStep==3 && self.creationMode==true{
+                    self.identificationDelegate?.userCreationDidSucceed()
+                }
+                self.identificationDelegate?.userWantsToCloseIndentityController()
             }
         }
     }
@@ -182,15 +183,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(number:Int){
-
         if self.creationMode {
-
-            if number==0{
-            }
-            if number==1{
-            }
+            if number == 0{}
+            if number == 1{}
             // The SMS / second factor auth has been verified.
-            if number==2{
+            if number == 2{
                 // user status is confirmed.
                 // deserialize the collection
                 // Set the status of the user.
@@ -200,10 +197,10 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                     IdentitiesManager.synchronize(document)
                 }
             }
+            if number == 3 {}
+            self.nextStep()
+            self.enableActions()
         }
-
-        self.nextStep()
-        self.enableActions()
     }
 
     public func disableActions(){
@@ -213,6 +210,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     public func enableActions(){
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
+    }
+
+
+    public func resetMyPassword(){
+        //
     }
 
 
