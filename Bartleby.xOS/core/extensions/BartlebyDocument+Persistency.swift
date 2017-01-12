@@ -20,7 +20,7 @@ import Foundation
 #if os(OSX)
     import AppKit
 #else
-    import UIKit
+    import UIKit 
 #endif
 
 import Foundation
@@ -108,7 +108,7 @@ extension BartlebyDocument{
 
             if let wrapper=fileWrappers[_bsfsDataFileName] {
                 if var data=wrapper.regularFileContents {
-                    data = try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
+                    data = try Bartleby.cryptoDelegate.decryptData(data,useKey:self.metadata.sugar)
                     try self.bsfs.restoreStateFrom(data: data)
                 }
             } else {
@@ -159,6 +159,8 @@ extension BartlebyDocument{
                     proxy.propagate()
                 }
             }
+        }else{
+             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
 
     }
@@ -169,7 +171,9 @@ extension BartlebyDocument{
 
     private func _updatedFileWrappers()throws ->FileWrapper{
         self.documentWillSave()
-
+        if self.metadata.sugar == Default.NO_UID{
+            self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+        }
         if var fileWrappers=self.documentFileWrapper.fileWrappers {
 
             // ##############
@@ -202,7 +206,7 @@ extension BartlebyDocument{
                 self.documentFileWrapper.removeFileWrapper(wrapper)
             }
 
-            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState(),useKey:Bartleby.configuration.KEY)
+            let data = try Bartleby.cryptoDelegate.encryptData(self.bsfs.saveState(),useKey:self.metadata.sugar)
             let bsfsFileWrapper=FileWrapper(regularFileWithContents:data)
             bsfsFileWrapper.preferredFilename=self._bsfsDataFileName
             self.documentFileWrapper.addFileWrapper(bsfsFileWrapper)

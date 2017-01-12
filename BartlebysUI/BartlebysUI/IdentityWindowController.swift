@@ -65,6 +65,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     public var reuseCredentials=false
 
+    public var userHasBeenValidated=false
+
     public var identificationDelegate:IdentifactionDelegate?
 
     // MARK: - Outlets
@@ -97,6 +99,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
+            print("\(document.metadata.currentUserUID) \(document.users.count)")
             if document.metadata.currentUserUID == Default.NO_UID || document.users.count==0{
 
                 self.creationMode=true
@@ -131,6 +134,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             }else{
 
                 self.creationMode=false
+                self.userHasBeenValidated=true
 
                 let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
                 self.validatePassword.documentProvider=self
@@ -215,6 +219,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 if let document=self.getDocument(){
                     document.currentUser.status = .actived
                     IdentitiesManager.synchronize(document)
+                    self.userHasBeenValidated=true
                 }
             }
             if number == 3 {}

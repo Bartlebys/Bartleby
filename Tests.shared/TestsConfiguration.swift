@@ -18,7 +18,8 @@ open class TestsConfiguration: BartlebyConfiguration {
 
 
     // The cryptographic key used to encrypt/decrypt the data
-    open static let KEY: String="UnitTestsSharedConfiguration-!-lkJ-O9393972AA"
+    open static let KEY: String=Bartleby.randomStringWithLength(1024)
+
 
     open static let SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
 

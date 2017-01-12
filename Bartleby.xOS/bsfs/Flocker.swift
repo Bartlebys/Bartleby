@@ -347,7 +347,7 @@ struct Flocker{
                                             data = try data.compress(algorithm: .lz4)
                                         }
                                         if encrypt{
-                                            data = try self._cryptoHelper.encryptData(data)
+                                            data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
                                         }
 
                                         // Store the current write position before adding the new data
@@ -431,7 +431,7 @@ struct Flocker{
             let jsonDictionary=container.toJSON()
             var data = try JSONSerialization.data(withJSONObject: jsonDictionary)
             data = try data.compress(algorithm: .lz4)
-            data = try self._cryptoHelper.encryptData(data)
+            data = try self._cryptoHelper.encryptData(data,useKey:Bartleby.configuration.KEY)
             var cryptedSize:UInt64=UInt64(data.count)
             let intSize=MemoryLayout<UInt64>.size
             // Write the serialized container
@@ -581,7 +581,7 @@ struct Flocker{
                     let footerPosition=UInt64(l)-(UInt64(intSize)+footerSize)
                     fileHandle.seek(toFileOffset:footerPosition)
                     var data=fileHandle.readData(ofLength: Int(footerSize))
-                    data = try self._cryptoHelper.decryptData(data)
+                    data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
                     data = try data.decompress(algorithm: .lz4)
                     if let jsonString=String.init(data: data, encoding: String.Encoding.utf8){
                          container = Mapper<Container>().map(JSONString: jsonString)
@@ -703,7 +703,7 @@ struct Flocker{
                                 flockFileHandle.seek(toFileOffset: startsAt)
                                 var data = flockFileHandle.readData(ofLength: size)
                                 if decrypt{
-                                    data = try self._cryptoHelper.decryptData(data)
+                                    data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
                                 }
                                 if decompress{
                                     data = try data.decompress(algorithm: .lz4)

@@ -25,7 +25,7 @@ public extension DocumentMetadata{
            return try? Bartleby.registredObjectByUID(self.currentUserUID)
         }
         set{
-            if let currentUser = currentUser{
+            if let currentUser = newValue{
                 self.currentUserUID=currentUser.UID
             }else{
                 self.currentUserUID=Default.NO_UID

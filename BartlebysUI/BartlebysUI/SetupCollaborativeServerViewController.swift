@@ -11,6 +11,9 @@ import BartlebyKit
 
 class SetupCollaborativeServerViewController: IdentityStepViewController{
 
+    // During dev you can setup to false
+    let relayActivationCode:Bool=false
+
     override var nibName : String { return "SetupCollaborativeServerViewController" }
 
     @IBOutlet weak var box: NSBox!
@@ -92,28 +95,35 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                 locker.userUID=user.UID
                                 locker.mode = .persistent
                                 CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
-                                    
                                     let email=user.email!
-                                    let phoneNumber=user.phoneNumber!
+                                    var prefix=""
+                                    if let phoneCountryCode=user.phoneCountryCode{
+                                        if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
+                                            prefix=phoneCountryCode.substring(with: match)
+                                        }
+                                    }
+                                    let phoneNumber=prefix+user.phoneNumber!
 
-                                    // The Locker has been successfully pushed
-                                    // we need now  to confirm the account
-                                    RelayActivationCode.execute(baseURL: serverURL,
-                                                                documentUID: document.UID,
-                                                                fromEmail:email, // @TODO may be we should remove this option
-                                        fromPhoneNumber: phoneNumber, //@TODO may be we should remove this option
-                                        toEmail: email,
-                                        toPhoneNumber: phoneNumber,
-                                        code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
-                                        body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                        sucessHandler: { (context) in
-                                            document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
-                                    }, failureHandler: { (context) in
-                                        self.stepDelegate?.enableActions()
-                                        document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                        print("\(context.responseString)")
-                                    })
+                                    if self.relayActivationCode{
+                                        // The Locker has been successfully pushed
+                                        // we need now  to confirm the account
+                                        RelayActivationCode.execute(baseURL: serverURL,
+                                                                    documentUID: document.UID,
+                                                                    fromEmail:email, // @TODO may be we should remove this option
+                                            fromPhoneNumber: phoneNumber, //@TODO may be we should remove this option
+                                            toEmail: email,
+                                            toPhoneNumber: phoneNumber,
+                                            code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
+                                            body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
+                                            sucessHandler: { (context) in
+                                                self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                        }, failureHandler: { (context) in
+                                            self.stepDelegate?.enableActions()
+                                            document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                        })
+                                    }else{
+                                        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                    }
 
                                 }, failureHandler: { (context) in
                                     self.stepDelegate?.enableActions()

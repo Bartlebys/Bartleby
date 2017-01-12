@@ -15,5 +15,9 @@ class UpdatePasswordViewController: IdentityStepViewController{
         super.viewDidLoad()
         // Do view setup here.
     }
-    
+
+    override func proceedToValidation(){
+        super.proceedToValidation()
+    }
+
 }

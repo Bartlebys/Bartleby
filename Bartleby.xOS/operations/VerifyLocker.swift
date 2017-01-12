@@ -265,7 +265,7 @@ open class VerifyLocker {
                             return
                         }
                     } else {
-                        context.responseString="There is no root user in the document"
+                        context.responseString="There is no current user in the document"
                         failure(context)
                         return
                     }

@@ -30,7 +30,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     let salt: String
 
     // The key
-    let key: String
+    var key: String
 
     // Options
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
@@ -93,9 +93,9 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A base 64 string representing a crypted buffer (eg. suitable for copy and paste)
      */
-    open func encryptString(_ string: String,useKey:String=Default.NO_KEY) throws ->String {
+    open func encryptString(_ string: String,useKey:String) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
-            let crypted=try encryptData(data)
+            let crypted=try encryptData(data,useKey: useKey)
             // (!) IMPORTANT
             // the crypted data may produces invalid UTF8 data producing nil Strings
             // We need to base64 encode any NSData.
@@ -119,10 +119,10 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A string
      */
-    open func decryptString(_ string: String,useKey:String=Default.NO_KEY) throws ->String {
+    open func decryptString(_ string: String,useKey:String) throws ->String {
         if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
             if let b64Data=Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
-                let decrypted=try decryptData(b64Data)
+                let decrypted=try decryptData(b64Data,useKey: useKey)
                 if let decryptedString=String(data: decrypted, encoding:String.Encoding.utf8) {
                     return decryptedString
                 }else{
@@ -146,8 +146,8 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: An encrypted buffer
      */
-    open func encryptData(_ data: Data,useKey:String=Default.NO_KEY) throws ->Data {
-        return try self._proceedTo(CCOperation(kCCEncrypt), on: data)
+    open func encryptData(_ data: Data,useKey:String) throws ->Data {
+        return try self._proceedTo(CCOperation(kCCEncrypt), on: data,useKey: useKey)
     }
 
     /**
@@ -159,8 +159,8 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A decrypted buffer
      */
-    open func decryptData(_ data: Data,useKey:String=Default.NO_KEY) throws ->Data {
-        return try self._proceedTo(CCOperation(kCCDecrypt), on:data)
+    open func decryptData(_ data: Data,useKey:String) throws ->Data {
+        return try self._proceedTo(CCOperation(kCCDecrypt), on:data,useKey: useKey)
     }
 
 
@@ -168,7 +168,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
     // (the crypted data is not a valid String but this approach is faster)
 
-    public func encryptStringToData(_ string:String,useKey:String=Default.NO_KEY)throws->Data{
+    public func encryptStringToData(_ string:String,useKey:String)throws->Data{
         if let data=string.data(using: .utf8){
             return try encryptData(data,useKey: useKey)
         }else{
@@ -177,7 +177,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     }
 
     
-    public func decryptStringFromData(_ data:Data,useKey:String=Default.NO_KEY)throws->String{
+    public func decryptStringFromData(_ data:Data,useKey:String)throws->String{
         let decrypted = try decryptData(data,useKey:useKey)
         if let string = String(data: decrypted, encoding:.utf8){
             return string
@@ -197,7 +197,8 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     // MARK: - Crypt operation
 
 
-    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data,useKey:String=Default.NO_KEY) throws ->Data {
+    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data,useKey:String) throws ->Data {
+        self.key=useKey
         if let d=self.key.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
@@ -243,7 +244,6 @@ open class CryptoHelper: NSObject, CryptoDelegate {
             throw CryptoError.errorWithStatusCode(cryptStatus: Int(cryptStatus))
         }
     }
-
 
 }
 
