@@ -270,6 +270,8 @@ import Foundation
                                 if let index=dictionary["triggerIndex"] as? NSNumber,
                                     let triggerRelayDuration=dictionary["triggerRelayDuration"] as? NSNumber{
 										if index.intValue >= 0 {
+										    // -2 means the trigger relay has been discarded (the status code can be in 200...299
+										    // -1 means an error has occured (the status code should be >299
 										    let acknowledgment=Acknowledgment()
 										    acknowledgment.httpContext=context
 										    acknowledgment.operationName="CreateNode"
