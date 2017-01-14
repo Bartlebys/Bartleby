@@ -17,43 +17,37 @@ import Foundation
 open class GetActivationCode {
 
 
-    /// Relays the activation code (ove SSL)
+
+
+    /// Used to obtain the Code from a Locker (the user must be authenticated before to call this operation)
     ///
     /// - Parameters:
     ///   - baseURL: the server base URL
     ///   - documentUID: the document UID (we will extract the spaceUID for integrity control)
     ///   - fromEmail: the emitter email *
     ///   - fromPhoneNumber: the emitter phone number *
-    ///   - toEmail: the recipient email *
-    ///   - toPhoneNumber: the recipient phone number
-    ///   - code: the code
+    ///   - lockerUID: the lockerUID
     ///   - title: the title
-    ///   - body: the body `$code` will be replaced by the code server side
+    ///   - body: the body message `$code` will be replaced by the code server side
     ///   - success: the success closure
     ///   - failure: the failure closure
     static open func execute(    baseURL:URL,
                                  documentUID:String,
                                  fromEmail: String,
                                  fromPhoneNumber:String,
-                                 toEmail:String,
-                                 toPhoneNumber:String,
-                                 code:String,
+                                 lockerUID:String,
                                  title:String,
                                  body:String,
                                  sucessHandler success: @escaping(_ context:HTTPContext)->(),
                                  failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
         /// This operation is special
-        /// It may occur on a document that is not available locally
-        /// Check IdentityManager for details
 
         let pathURL=baseURL.appendingPathComponent("activationCode")
         let dictionary: Dictionary<String, String>=[
             "fromEmail":fromEmail,
             "fromPhoneNumber":fromPhoneNumber,
-            "toEmail":toEmail,
-            "toPhoneNumber":toPhoneNumber,
-            "code":code,
+            "lockerUID":lockerUID,
             "title":title,
             "body":body
         ]
@@ -96,8 +90,8 @@ open class GetActivationCode {
                 var reactions = Array<Reaction> ()
 
                 if result.isFailure {
-                    let m = NSLocalizedString("Relay failure",
-                                              comment: "Relay failure failure description")
+                    let m = NSLocalizedString("Activation failure",
+                                              comment: "Activation failure description")
                     let failureReaction =  Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
@@ -115,8 +109,8 @@ open class GetActivationCode {
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
 
-                        let m=NSLocalizedString("Relay failure",
-                                                comment: "Relay failure description")
+                        let m=NSLocalizedString("Activation failure",
+                                                comment: "Activation failure description")
                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",
@@ -143,7 +137,7 @@ open class GetActivationCode {
             })
         }catch{
             let context = HTTPContext( code:2 ,
-                                       caller: "RelayActivationCode.execute",
+                                       caller: "GetActivationCode.execute",
                                        relatedURL:nil,
                                        httpStatusCode:500)
             context.responseString = "{\"message\":\"\(error)}"

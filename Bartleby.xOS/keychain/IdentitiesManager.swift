@@ -152,7 +152,7 @@ public struct IdentitiesManager {
     }
 
     public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
-        var identities=try? Identities.loadFromKeyChain()
+        let identities=try? Identities.loadFromKeyChain()
         if let profiles=identities?.profiles{
             for profile in profiles{
                 if let user=profile.user{

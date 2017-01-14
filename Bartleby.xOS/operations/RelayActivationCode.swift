@@ -97,7 +97,7 @@ open class RelayActivationCode {
 
                 if result.isFailure {
                     let m = NSLocalizedString("Relay failure",
-                                              comment: "Relay failure failure description")
+                                              comment: "Relay failure description")
                     let failureReaction =  Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",

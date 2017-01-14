@@ -26,8 +26,6 @@ open class PatchUser {
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
         /// This operation is special
-        /// It may occur on a document that is not available locally
-        /// Check IdentityManager for details
 
         let pathURL=baseURL.appendingPathComponent("patchUser")
         var dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
