@@ -64,31 +64,67 @@ class ValidatePasswordViewController: IdentityStepViewController{
             let currentPassword=PString.trim(self.passwordTextField.stringValue)
             if currentPassword == document.currentUser.password{
                 if self.identityWindowController?.creationMode == true{
-                     self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                    self.stepDelegate?.didValidateStep(number: self.stepIndex)
                 }else{
 
-                    /// IF there is a Sugar in the Bowl we can validate
-                    /// Else we should login + grab the Locker to recover the sugar
+                    /// If there is a valid Sugar we can validate
+                    /// Else we should recover the sugar (using second security factor)
 
-                    HTTPManager.apiIsReachable(document.baseURL, successHandler: {
-                        document.currentUser.login(sucessHandler: {
+                    if document.metadata.sugar != Default.NO_UID{
+                        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                    }else{
+                        HTTPManager.apiIsReachable(document.baseURL, successHandler: {
+                            do{
+                                // We need to encrypt the serialized password.
+                                /// We create a temporary to authenticate
+                                /// Note that the real user is serialized within the collections (with the sugar)
+                                let password = try Bartleby.cryptoDelegate.encryptString(self.passwordTextField.stringValue,useKey:Bartleby.configuration.KEY)
+                                let dictionary=[
+                                    Default.TYPE_NAME_KEY:User.typeName(),
+                                    Default.UID_KEY:document.metadata.currentUserUID,
+                                    Default.USER_EMAIL_KEY:self.emailTextField.stringValue,
+                                    Default.USER_PASSWORD_KEY:password,
+                                ];
+
+                                let serializable = try document.serializer.deserializeFromDictionary(dictionary)
+                                if var user:User = serializable as? User{
+                                    user.creatorUID=user.UID
+                                    user.referentDocument=document
+                                    user.login(sucessHandler: {
+
+                                        /// Find the locker to be verifyed
+                                        let lockerUID=document.metadata.lockerUID
+
+                                        /// GetActivationCode(for :lockerUID)
+                                        /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
+
+                                        /// Go to activation screen.
+
+                                        /// On activation Proceed to Verify Locker
+                                        /// When the locker is verifyed use the sugar
+
+
+                                        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
+                                    }, failureHandler: { (context) in
+                                        self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
+                                    })
+                                }
+                            }catch{
+                                self.messageTextField.stringValue="\(error)"
+                                 document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                            }
 
                         }, failureHandler: { (context) in
-                            self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
+                            self.messageTextField.stringValue=NSLocalizedString("The server is not Reachable", comment: "The server is not Reachable")
                         })
-                    }, failureHandler: { (context) in
-                        self.messageTextField.stringValue=NSLocalizedString("The server is not Reachable", comment: "The server is not Reachable")
-                    })
-
-
-
+                    }
                 }
             }else{
                 self.messageTextField.stringValue=NSLocalizedString("Invalid Password", comment: "Invalid Password")
             }
         }
     }
-
 
     @IBAction func resetMyPassword(_ sender: Any) {
         self.identityWindowController?.resetMyPassword()

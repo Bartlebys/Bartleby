@@ -1,8 +1,8 @@
 //
-//  RelayActivationCode.swift
+//  GetActivationCode.swift
 //  BartlebyKit
 //
-//  Created by Benoit Pereira da silva on 02/01/2017.
+//  Created by Benoit Pereira da silva on 13/01/2017.
 //
 //
 
@@ -14,10 +14,10 @@ import Foundation
 #endif
 
 
-open class RelayActivationCode {
+open class GetActivationCode {
 
 
-    /// Relays the activation code (over SSL)
+    /// Relays the activation code (ove SSL)
     ///
     /// - Parameters:
     ///   - baseURL: the server base URL
@@ -32,22 +32,22 @@ open class RelayActivationCode {
     ///   - success: the success closure
     ///   - failure: the failure closure
     static open func execute(    baseURL:URL,
-                                documentUID:String,
-                                fromEmail: String,
-                                fromPhoneNumber:String,
-                                toEmail:String,
-                                toPhoneNumber:String,
-                                code:String,
-                                title:String,
-                                body:String,
-        sucessHandler success: @escaping(_ context:HTTPContext)->(),
-        failureHandler failure:@escaping (_ context: HTTPContext)->()) {
+                                 documentUID:String,
+                                 fromEmail: String,
+                                 fromPhoneNumber:String,
+                                 toEmail:String,
+                                 toPhoneNumber:String,
+                                 code:String,
+                                 title:String,
+                                 body:String,
+                                 sucessHandler success: @escaping(_ context:HTTPContext)->(),
+                                 failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
         /// This operation is special
         /// It may occur on a document that is not available locally
         /// Check IdentityManager for details
 
-        let pathURL=baseURL.appendingPathComponent("relay")
+        let pathURL=baseURL.appendingPathComponent("activationCode")
         let dictionary: Dictionary<String, String>=[
             "fromEmail":fromEmail,
             "fromPhoneNumber":fromPhoneNumber,
@@ -58,7 +58,7 @@ open class RelayActivationCode {
             "body":body
         ]
 
-        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"RelayActivationCode", forMethod:"POST", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"GetActivationCode", forMethod:"GET", and: pathURL)
         do {
             let r=try JSONEncoding().encode(urlRequest,with:dictionary)
             request(r).validate().responseJSON(completionHandler: { (response) in
@@ -70,7 +70,7 @@ open class RelayActivationCode {
                 let statusCode=response.response?.statusCode ?? 0
 
                 let metrics=Metrics()
-                metrics.operationName="RelayActivationCode"
+                metrics.operationName="GetActivationCode"
                 metrics.latency=timeline.latency
                 metrics.requestDuration=timeline.requestDuration
                 metrics.serializationDuration=timeline.serializationDuration
@@ -78,7 +78,7 @@ open class RelayActivationCode {
 
                 // Bartleby consignation
                 let context = HTTPContext( code: 667,
-                                           caller: "RelayActivationCode.execute",
+                                           caller: "GetActivationCode.execute",
                                            relatedURL:request?.url,
                                            httpStatusCode: statusCode)
 

@@ -94,6 +94,9 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                 locker.subjectUID=document.UID
                                 locker.userUID=user.UID
                                 locker.mode = .persistent
+                                // Store the locker UID
+                                document.metadata.lockerUID=locker.UID
+
                                 CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
                                     let email=user.email!
                                     var prefix=""

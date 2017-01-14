@@ -26,8 +26,11 @@ import Foundation
 	//The user UID currently associated to the local instance of the document
 	dynamic open var currentUserUID:String = "\(Default.NO_UID)"
 
-	//The sugar
+	//The sugar (not serialized but loaded from the Bowl)
 	dynamic open var sugar:String = "\(Default.NO_UID)"
+
+	//The locker UID to be used by the user to obtain the sugar from the locker
+	dynamic open var lockerUID:String = "\(Default.NO_UID)"
 
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
@@ -129,7 +132,7 @@ import Foundation
 			self.spaceUID <- ( map["spaceUID"] )
 			self.persistentUID <- ( map["persistentUID"] )
 			self.currentUserUID <- ( map["currentUserUID"] )
-			self.sugar <- ( map["sugar"] )
+			self.lockerUID <- ( map["lockerUID"], CryptedStringTransform() )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.appGroup <- ( map["appGroup"] )
 			self.identificationValue <- ( map["identificationValue"] )
@@ -163,7 +166,7 @@ import Foundation
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.persistentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "persistentUID")! as NSString)
 			self.currentUserUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserUID")! as NSString)
-			self.sugar=String(describing: decoder.decodeObject(of: NSString.self, forKey: "sugar")! as NSString)
+			self.lockerUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lockerUID")! as NSString)
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey:"appGroup") as NSString?)
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
@@ -193,7 +196,7 @@ import Foundation
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		coder.encode(self.persistentUID,forKey:"persistentUID")
 		coder.encode(self.currentUserUID,forKey:"currentUserUID")
-		coder.encode(self.sugar,forKey:"sugar")
+		coder.encode(self.lockerUID,forKey:"lockerUID")
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
 		if let appGroup = self.appGroup {
 			coder.encode(appGroup,forKey:"appGroup")

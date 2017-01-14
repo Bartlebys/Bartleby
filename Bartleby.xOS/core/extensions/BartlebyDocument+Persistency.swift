@@ -78,6 +78,9 @@ extension BartlebyDocument{
                     self.metadata = metadata
                     self.metadata.currentUser?.referentDocument=self
 
+                    // We load the sugar (if there is one in the bowl)
+                    try? self.metadata.loadSugar()
+
                     // Replace the document proxy declared document UID
                     // By the persistent UID
                     Bartleby.sharedInstance.replaceDocumentUID(proxyDocumentUID, by: self.metadata.persistentUID)

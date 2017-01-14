@@ -65,7 +65,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     public var reuseCredentials=false
 
-    public var userHasBeenValidated=false
+    public var userHasBeenActivated=false
 
     public var identificationDelegate:IdentifactionDelegate?
 
@@ -99,7 +99,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
-            print("\(document.metadata.currentUserUID) \(document.users.count)")
             if document.metadata.currentUserUID == Default.NO_UID || document.users.count==0{
 
                 self.creationMode=true
@@ -134,7 +133,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             }else{
 
                 self.creationMode=false
-                self.userHasBeenValidated=true
+                self.userHasBeenActivated=true
 
                 let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
                 self.validatePassword.documentProvider=self
@@ -219,7 +218,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 if let document=self.getDocument(){
                     document.currentUser.status = .actived
                     IdentitiesManager.synchronize(document)
-                    self.userHasBeenValidated=true
+                    self.userHasBeenActivated=true
                 }
             }
             if number == 3 {}
@@ -228,6 +227,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             if number > 2 {
                 self.leftButton.isEnabled=false
             }
+        }else{
+            self.nextStep()
+            self.enableActions()
         }
     }
 
