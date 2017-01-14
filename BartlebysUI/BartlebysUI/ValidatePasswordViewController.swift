@@ -98,10 +98,22 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                         /// GetActivationCode(for :lockerUID)
                                         /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
 
-                                        /// Go to activation screen.
 
-                                        /// On activation Proceed to Verify Locker
-                                        /// When the locker is verifyed use the sugar
+                                        GetActivationCode.execute(baseURL: document.baseURL,
+                                                                  documentUID: document.UID,
+                                                                  lockerUID: lockerUID,
+                                                                  title: "",
+                                                                  body: "$code",
+                                                                  sucessHandler: { (context) in
+                                            /// Go to activation screen.
+
+                                            /// On activation Proceed to Verify Locker
+                                            /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+
+                                        }, failureHandler: { (context) in
+
+                                        })
+
 
 
                                         self.stepDelegate?.didValidateStep(number: self.stepIndex)

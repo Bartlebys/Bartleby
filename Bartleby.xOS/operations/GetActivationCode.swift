@@ -24,8 +24,6 @@ open class GetActivationCode {
     /// - Parameters:
     ///   - baseURL: the server base URL
     ///   - documentUID: the document UID (we will extract the spaceUID for integrity control)
-    ///   - fromEmail: the emitter email *
-    ///   - fromPhoneNumber: the emitter phone number *
     ///   - lockerUID: the lockerUID
     ///   - title: the title
     ///   - body: the body message `$code` will be replaced by the code server side
@@ -33,8 +31,6 @@ open class GetActivationCode {
     ///   - failure: the failure closure
     static open func execute(    baseURL:URL,
                                  documentUID:String,
-                                 fromEmail: String,
-                                 fromPhoneNumber:String,
                                  lockerUID:String,
                                  title:String,
                                  body:String,
@@ -45,8 +41,6 @@ open class GetActivationCode {
 
         let pathURL=baseURL.appendingPathComponent("activationCode")
         let dictionary: Dictionary<String, String>=[
-            "fromEmail":fromEmail,
-            "fromPhoneNumber":fromPhoneNumber,
             "lockerUID":lockerUID,
             "title":title,
             "body":body

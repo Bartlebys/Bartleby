@@ -112,8 +112,6 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                         // we need now  to confirm the account
                                         RelayActivationCode.execute(baseURL: serverURL,
                                                                     documentUID: document.UID,
-                                                                    fromEmail:email, // @TODO may be we should remove this option
-                                            fromPhoneNumber: phoneNumber, //@TODO may be we should remove this option
                                             toEmail: email,
                                             toPhoneNumber: phoneNumber,
                                             code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),

@@ -22,9 +22,7 @@ open class RelayActivationCode {
     /// - Parameters:
     ///   - baseURL: the server base URL
     ///   - documentUID: the document UID (we will extract the spaceUID for integrity control)
-    ///   - fromEmail: the emitter email *
-    ///   - fromPhoneNumber: the emitter phone number *
-    ///   - toEmail: the recipient email *
+    ///   - toEmail: the recipient email
     ///   - toPhoneNumber: the recipient phone number
     ///   - code: the code
     ///   - title: the title
@@ -33,8 +31,6 @@ open class RelayActivationCode {
     ///   - failure: the failure closure
     static open func execute(    baseURL:URL,
                                 documentUID:String,
-                                fromEmail: String,
-                                fromPhoneNumber:String,
                                 toEmail:String,
                                 toPhoneNumber:String,
                                 code:String,
@@ -49,8 +45,6 @@ open class RelayActivationCode {
 
         let pathURL=baseURL.appendingPathComponent("relay")
         let dictionary: Dictionary<String, String>=[
-            "fromEmail":fromEmail,
-            "fromPhoneNumber":fromPhoneNumber,
             "toEmail":toEmail,
             "toPhoneNumber":toPhoneNumber,
             "code":code,
