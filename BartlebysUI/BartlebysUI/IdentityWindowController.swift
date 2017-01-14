@@ -36,12 +36,12 @@ public protocol IdentityStep{
 
 
 /*
-  To use the identity Controller
+ To use the identity Controller
 
-  1# Instantiate the IdentityWindowController
-  2# Pass the document instance
-  3# Register as IdentificationDelegate
- 
+ 1# Instantiate the IdentityWindowController
+ 2# Pass the document instance
+ 3# Register as IdentificationDelegate
+
  */
 public class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
 
@@ -65,7 +65,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     public var reuseCredentials=false
 
-    public var userHasBeenActivated=false
+    public var identificationIsValid=false
 
     public var identificationDelegate:IdentifactionDelegate?
 
@@ -127,13 +127,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self.revealPassword.stepDelegate=self
                 self.revealPassword.stepIndex=3
                 self.tabView.addTabViewItem(revealPasswordItem)
-
                 self.currentStep=0
-
             }else{
-
                 self.creationMode=false
-                self.userHasBeenActivated=true
 
                 let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
                 self.validatePassword.documentProvider=self
@@ -202,7 +198,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.currentIdentityStep?.proceedToValidation()
     }
 
-    
+
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(number:Int){
@@ -218,7 +214,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 if let document=self.getDocument(){
                     document.currentUser.status = .actived
                     IdentitiesManager.synchronize(document)
-                    self.userHasBeenActivated=true
+                    self.identificationIsValid=true
                 }
             }
             if number == 3 {}
@@ -238,17 +234,17 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.rightButton.isEnabled=false
     }
     public func enableActions(){
-
+        
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
     }
-
-
+    
+    
     public func resetMyPassword(){
         //
     }
-
-
+    
+    
 }
 
 
