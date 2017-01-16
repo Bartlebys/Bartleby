@@ -29,10 +29,12 @@ public struct IdentitiesManager {
         var allProfiles=IdentitiesManager._suggestedProfiles(forDocument:document)
         for profile in allProfiles{
             if !identifications.contains(where: { (embeddedIdentification) -> Bool in
-                if PString.trim(embeddedIdentification.email) == PString.trim(profile.user?.email ?? "") &&
-                    PString.trim(embeddedIdentification.phoneNumber) == PString.trim(profile.user?.phoneNumber ?? "") {
+                let email = PString.trim(profile.user?.email ?? "")
+                let phone = PString.trim(profile.user?.phoneNumber ?? "")
+                if PString.trim(embeddedIdentification.email) == email &&
+                    PString.trim(embeddedIdentification.phoneNumber) == phone {
                 }
-                return false
+                return true
             }){
                 var identification=Identification()
                 identification.email=profile.user?.email ?? ""
