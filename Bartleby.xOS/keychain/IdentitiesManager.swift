@@ -24,62 +24,27 @@ public struct IdentitiesManager {
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    public static func suggestedProfiles(forDocument document:BartlebyDocument)->[Profile]{
-        var profiles=[Profile]()
-        do{
-            let identities = try Identities.loadFromKeyChain()
-            /// Try to find the better profile
-
-            // Do we have already profiles with the same currentUser UID
-            for profile in identities.profiles{
-                if profile.user?.UID==document.currentUser.UID{
-                    profiles.append(profile)
+    public static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
+        var identifications=[Identification]()
+        var allProfiles=IdentitiesManager._suggestedProfiles(forDocument:document)
+        for profile in allProfiles{
+            if !identifications.contains(where: { (embeddedIdentification) -> Bool in
+                if PString.trim(embeddedIdentification.email) == PString.trim(profile.user?.email ?? "") &&
+                    PString.trim(embeddedIdentification.phoneNumber) == PString.trim(profile.user?.phoneNumber ?? "") {
                 }
+                return false
+            }){
+                var identification=Identification()
+                identification.email=profile.user?.email ?? ""
+                identification.phoneCountryCode=profile.user?.phoneCountryCode ?? ""
+                identification.phoneNumber=profile.user?.phoneNumber ?? ""
+                identification.password=profile.user?.password ?? Default.NO_PASSWORD
+                identifications.append(identification)
             }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already profiles for this document
-            for profile in identities.profiles{
-                if profile.documentUID==document.UID{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already profiles in this dataspace
-            for profile in identities.profiles{
-                if profile.documentSpaceUID==document.spaceUID{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already a profiles on this server
-            for profile in identities.profiles{
-                if profile.url==document.baseURL{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Return all the profiles
-            if identities.profiles.count>0{
-                 return identities.profiles
-            }
-
-        }catch{
-            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
         }
-        return profiles
+        return identifications
     }
+
 
 
     /// Take the information from the Document Current User 
@@ -149,6 +114,68 @@ public struct IdentitiesManager {
         }catch{
             glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
         }
+    }
+
+
+    /// Returns suggested profiles for the document.
+    ///
+    /// - Parameter document: the current document
+    /// - Returns: the suggested profiles (can be used to propose a user account)
+    fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)->[Profile]{
+        var profiles=[Profile]()
+        do{
+            let identities = try Identities.loadFromKeyChain()
+            /// Try to find the better profile
+
+            // Do we have already profiles with the same currentUser UID
+            for profile in identities.profiles{
+                if profile.user?.UID==document.currentUser.UID{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already profiles for this document
+            for profile in identities.profiles{
+                if profile.documentUID==document.UID{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already profiles in this dataspace
+            for profile in identities.profiles{
+                if profile.documentSpaceUID==document.spaceUID{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already a profiles on this server
+            for profile in identities.profiles{
+                if profile.url==document.baseURL{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Return all the profiles
+            if identities.profiles.count>0{
+                return identities.profiles
+            }
+
+        }catch{
+            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+        }
+        return profiles
     }
 
     public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
