@@ -46,7 +46,7 @@ class LockerTests: XCTestCase {
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = document.newObject() as User
         if let user =  LockerTests._creatorUser {
-            document.metadata.currentUser = user
+            document.metadata.memorizeUser(user)
         }
 
     }

@@ -20,16 +20,36 @@ public extension DocumentMetadata{
         return self.operationsQuarantine.toJSONString(prettyPrint: true) ?? "..."
     }
 
+
     public dynamic var currentUser:User?{
         get{
            return try? Bartleby.registredObjectByUID(self.currentUserUID)
         }
-        set{
-            if let currentUser = newValue{
-                self.currentUserUID=currentUser.UID
-            }else{
-                self.currentUserUID=Default.NO_UID
+    }
+
+
+    /// Store the user's UID, its email and computed Phone number.
+    ///
+    /// - Parameter user: the current user to memorize in the document metadata
+    public func memorizeUser(_ user:User){
+
+        /// Stores the current user UID
+        self.currentUserUID=user.UID
+
+        // Store the email and Phonenumber into the metadata
+        // For user clarity purposes
+
+        if let email=user.email{
+            self.currentUserEmail=email
+        }
+        var prefix=""
+        if let phoneCountryCode=user.phoneCountryCode{
+            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
+                prefix=phoneCountryCode.substring(with: match)
             }
+        }
+        if let phoneNumber=user.phoneNumber{
+            self.currentUserFullPhoneNumber=prefix+phoneNumber
         }
     }
 

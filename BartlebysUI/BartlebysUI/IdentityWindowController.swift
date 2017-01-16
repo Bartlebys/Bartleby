@@ -99,7 +99,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     func configureControllers() -> () {
         if let document=self.getDocument(){
-            if document.metadata.currentUserUID == Default.NO_UID || document.users.count==0{
+            if document.metadata.currentUserUID == Default.NO_UID {
 
                 self.creationMode=true
                 // It is a new document

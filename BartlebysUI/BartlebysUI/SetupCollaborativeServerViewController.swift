@@ -60,7 +60,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                     if let user = matchingProfile.user {
                                         // We should reuse the user.
                                         document.users.add(user, commit: false)
-                                        document.metadata.currentUserUID=user.UID
+                                        document.metadata.memorizeUser(user)
                                         userHasBeenFound=true
                                     }
                                 }
@@ -80,10 +80,13 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                     user.externalID=matchingUser.externalID
                                 }
                             }
-                            document.metadata.currentUserUID=user.UID
+                            document.metadata.memorizeUser(user)
                         }
 
                         func __postCreationPhase(user:User){
+
+
+
                             // The user has been successfully pushed
                             // Let's login
                             user.login(sucessHandler: {

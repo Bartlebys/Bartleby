@@ -26,6 +26,12 @@ import Foundation
 	//The user UID currently associated to the local instance of the document
 	dynamic open var currentUserUID:String = "\(Default.NO_UID)"
 
+	//The current user email (to be displayed during identity control)
+	dynamic open var currentUserEmail:String = "\(Default.VOID_STRING)"
+
+	//The current user full phone number including the prefix (to be displayed during identity control)
+	dynamic open var currentUserFullPhoneNumber:String = "\(Default.VOID_STRING)"
+
 	//The sugar (not serialized but loaded from the Bowl)
 	dynamic open var sugar:String = "\(Default.NO_UID)"
 
@@ -132,7 +138,9 @@ import Foundation
 			self.spaceUID <- ( map["spaceUID"] )
 			self.persistentUID <- ( map["persistentUID"] )
 			self.currentUserUID <- ( map["currentUserUID"] )
-			self.lockerUID <- ( map["lockerUID"], CryptedStringTransform() )
+			self.currentUserEmail <- ( map["currentUserEmail"] )
+			self.currentUserFullPhoneNumber <- ( map["currentUserFullPhoneNumber"] )
+			self.lockerUID <- ( map["lockerUID"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.appGroup <- ( map["appGroup"] )
 			self.identificationValue <- ( map["identificationValue"] )
@@ -166,6 +174,8 @@ import Foundation
 			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
 			self.persistentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "persistentUID")! as NSString)
 			self.currentUserUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserUID")! as NSString)
+			self.currentUserEmail=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserEmail")! as NSString)
+			self.currentUserFullPhoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserFullPhoneNumber")! as NSString)
 			self.lockerUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lockerUID")! as NSString)
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey:"appGroup") as NSString?)
@@ -196,6 +206,8 @@ import Foundation
 		coder.encode(self.spaceUID,forKey:"spaceUID")
 		coder.encode(self.persistentUID,forKey:"persistentUID")
 		coder.encode(self.currentUserUID,forKey:"currentUserUID")
+		coder.encode(self.currentUserEmail,forKey:"currentUserEmail")
+		coder.encode(self.currentUserFullPhoneNumber,forKey:"currentUserFullPhoneNumber")
 		coder.encode(self.lockerUID,forKey:"lockerUID")
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
 		if let appGroup = self.appGroup {

@@ -35,13 +35,8 @@ class ValidatePasswordViewController: IdentityStepViewController{
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
 
-            if let email=document.currentUser.email{
-                self.emailTextField.stringValue=email
-            }
-            if let phoneNumber=document.currentUser.phoneNumber,
-                let code=document.currentUser.phoneCountryCode{
-                self.phoneNumberTextField.stringValue=code+phoneNumber
-            }
+            self.emailTextField.stringValue=document.metadata.currentUserEmail
+            self.phoneNumberTextField.stringValue=document.metadata.currentUserFullPhoneNumber
 
             if Bartleby.configuration.DEVELOPER_MODE &&  document.metadata.saveThePassword == true{
                 self.memorizePasswordCheckBox.state=1
@@ -80,15 +75,15 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 HTTPManager.apiIsReachable(document.baseURL, successHandler: {
                     do{
                         /// We create a temporary user
-                        /// We need to encrypt its serialized password (we never store the directly the passwords)
-                        /// We create a temporary to authenticate
+                        /// We create a temporary user to authenticate
                         /// Note that the real user is serialized within the collections (with the sugar)
-                        let password = try Bartleby.cryptoDelegate.encryptString(self.passwordTextField.stringValue,useKey:Bartleby.configuration.KEY)
+                        /// We never store the directly the passwords (on login we use user.cryptoPassword)
+                        let password = try Bartleby.cryptoDelegate.encryptString(self.passwordTextField.stringValue, useKey: Bartleby.configuration.KEY)
                         let dictionary=[
                             Default.TYPE_NAME_KEY:User.typeName(),
                             Default.UID_KEY:document.metadata.currentUserUID,
-                            Default.USER_EMAIL_KEY:self.emailTextField.stringValue,
-                            Default.USER_PASSWORD_KEY:password,
+                            "email":self.emailTextField.stringValue,
+                            "password":password,
                             ];
 
                         let serializable = try document.serializer.deserializeFromDictionary(dictionary)
@@ -103,27 +98,25 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                 /// GetActivationCode(for :lockerUID)
                                 /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
 
-
                                 GetActivationCode.execute(baseURL: document.baseURL,
                                                           documentUID: document.UID,
                                                           lockerUID: lockerUID,
                                                           title: "",
                                                           body: "$code",
                                                           sucessHandler: { (context) in
+
+
+                                                            self.identityWindowController?.identificationIsValid=true
+                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
                                                             /// Go to activation screen.
 
                                                             /// On activation Proceed to Verify Locker
                                                             /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
 
                                 }, failureHandler: { (context) in
-
+                                    self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
                                 })
-
-                                self.identityWindowController?.identificationIsValid=true
-
-
-                                self.stepDelegate?.didValidateStep(number: self.stepIndex)
-
                             }, failureHandler: { (context) in
                                 self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
                             })
