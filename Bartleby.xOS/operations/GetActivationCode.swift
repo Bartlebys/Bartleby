@@ -48,7 +48,7 @@ open class GetActivationCode {
 
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"GetActivationCode", forMethod:"GET", and: pathURL)
         do {
-            let r=try JSONEncoding().encode(urlRequest,with:dictionary)
+            let r=try URLEncoding().encode(urlRequest,with:dictionary)
             request(r).validate().responseJSON(completionHandler: { (response) in
 
                 // Store the response
