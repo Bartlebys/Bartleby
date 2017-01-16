@@ -108,7 +108,7 @@ import Foundation
 	    }
 	}
 
-	//Thoses data gems will be return on success
+	//Thoses data gems will be return on success (the gems are crypted client side)
 	dynamic open var gems:String = "\(Default.NO_GEM)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && gems != oldValue {
@@ -223,12 +223,12 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
-			self.associatedDocumentUID <- ( map["associatedDocumentUID"], CryptedStringTransform() )
-			self.subjectUID <- ( map["subjectUID"], CryptedStringTransform() )
-			self.userUID <- ( map["userUID"], CryptedStringTransform() )
+			self.associatedDocumentUID <- ( map["associatedDocumentUID"] )
+			self.subjectUID <- ( map["subjectUID"] )
+			self.userUID <- ( map["userUID"] )
 			self.mode <- ( map["mode"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
-			self.code <- ( map["code"], CryptedStringTransform() )
+			self.code <- ( map["code"] )
 			self.numberOfAttempt <- ( map["numberOfAttempt"] )
 			self.startDate <- ( map["startDate"], ISO8601DateTransform() )
 			self.endDate <- ( map["endDate"], ISO8601DateTransform() )
