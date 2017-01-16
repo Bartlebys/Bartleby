@@ -14,7 +14,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
 
     override var nibName : String { return "PrepareUserCreationViewController" }
 
-    var profiles=[Profile]()
+    fileprivate var _suggestedIdentifications=[Identification]()
 
     @IBOutlet weak var box: NSBox!
 
@@ -41,14 +41,10 @@ class PrepareUserCreationViewController: IdentityStepViewController{
         self.messageTextField.stringValue=""
         self.explanationsTextField.stringValue=NSLocalizedString("We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.", comment: "We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.")
         if let document=self.documentProvider?.getDocument(){
-            self.profiles=IdentitiesManager.suggestedProfiles(forDocument:document)
-            for profile in self.profiles{
-                if let email=profile.user?.email{
-                    self.emailComboBox.addItem(withObjectValue: email)
-                }
-                if let phoneNumber=profile.user?.phoneNumber{
-                    self.phoneNumberComboBox.addItem(withObjectValue: phoneNumber)
-                }
+            self._suggestedIdentifications = IdentitiesManager.suggestedIdentifications(forDocument: document)
+            for identification in self._suggestedIdentifications{
+                self.emailComboBox.addItem(withObjectValue: identification.email)
+                self.phoneNumberComboBox.addItem(withObjectValue: identification.phoneNumber)
             }
             self.emailComboBox.addItem(withObjectValue:NSLocalizedString("Add your Email", comment: "Add your Email"))
             self.phoneNumberComboBox.addItem(withObjectValue:NSLocalizedString("Phone number", comment: "Phone number"))
@@ -70,34 +66,34 @@ class PrepareUserCreationViewController: IdentityStepViewController{
             if sender == self.emailComboBox{
                 self.phoneNumberComboBox.selectItem(at: index)
                 if let email = self.emailComboBox.itemObjectValue(at: index) as? String{
-                    for i in 0 ..< self.profiles.count{
-                        if let userProfile=self.profiles[i].user{
-                            if userProfile.email==email{
-                                // Select the Phone code
-                                let idx=self.phoneCountryCodeComboBox.indexOfItem(withObjectValue: userProfile.phoneCountryCode)
-                                if idx <= self.phoneCountryCodeComboBox.objectValues.count{
-                                    self.phoneCountryCodeComboBox.selectItem(at: idx)
-                                }
-                                break
+                    for i in 0 ..< self._suggestedIdentifications.count{
+                        let identification=self._suggestedIdentifications[i]
+                        if identification.email==email{
+                            // Select the Phone code
+                            let idx=self.phoneCountryCodeComboBox.indexOfItem(withObjectValue: identification.phoneCountryCode)
+                            if idx <= self.phoneCountryCodeComboBox.objectValues.count{
+                                self.phoneCountryCodeComboBox.selectItem(at: idx)
                             }
+                            break
                         }
+
                     }
                 }
             }
             if sender == self.phoneNumberComboBox{
                 self.emailComboBox.selectItem(at: index)
                 if let phoneNumber = self.phoneNumberComboBox.itemObjectValue(at: index) as? String{
-                    for i in 0 ..< self.profiles.count{
-                        if let userProfile=self.profiles[i].user{
-                            if userProfile.phoneNumber == phoneNumber{
-                                // Select the Phone code
-                                let idx=self.phoneCountryCodeComboBox.indexOfItem(withObjectValue: userProfile.phoneCountryCode)
-                                if idx <= self.phoneCountryCodeComboBox.objectValues.count{
-                                    self.phoneCountryCodeComboBox.selectItem(at: idx)
-                                }
-                                break
+                    for i in 0 ..< self._suggestedIdentifications.count{
+                        let identification=self._suggestedIdentifications[i]
+                        if identification.phoneNumber == phoneNumber{
+                            // Select the Phone code
+                            let idx=self.phoneCountryCodeComboBox.indexOfItem(withObjectValue: identification.phoneCountryCode)
+                            if idx <= self.phoneCountryCodeComboBox.objectValues.count{
+                                self.phoneCountryCodeComboBox.selectItem(at: idx)
                             }
+                            break
                         }
+
                     }
                 }
             }

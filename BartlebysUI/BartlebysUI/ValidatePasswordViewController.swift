@@ -60,7 +60,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
             /// If there is a valid Sugar we can validate
             /// Else we should recover the sugar (using second security factor)
-            
+
             if documentSugar != Default.NO_UID {
                 let currentPassword=PString.trim(self.passwordTextField.stringValue)
                 let documentPassword=PString.trim(document.currentUser.password ?? "")
@@ -90,6 +90,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                         if var user:User = serializable as? User{
                             user.creatorUID=user.UID
                             user.referentDocument=document
+                            document.metadata.memorizeUser(user)  // Will be replaced by deserialized occurence after decrypting
                             user.login(sucessHandler: {
 
                                 /// Find the locker to be verifyed
@@ -98,14 +99,11 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                 /// GetActivationCode(for :lockerUID)
                                 /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
 
-                                GetActivationCode.execute(baseURL: document.baseURL,
-                                                          documentUID: document.UID,
-                                                          lockerUID: lockerUID,
+
+                                GetActivationCode.execute(baseURL: document.baseURL, documentUID: document.UID, lockerUID: lockerUID,
                                                           title: "",
-                                                          body: "$code",
+                                                          body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
                                                           sucessHandler: { (context) in
-
-
                                                             self.identityWindowController?.identificationIsValid=true
                                                             self.stepDelegate?.didValidateStep(number: self.stepIndex)
 
@@ -116,6 +114,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
                                 }, failureHandler: { (context) in
                                     self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
+
                                 })
                             }, failureHandler: { (context) in
                                 self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
@@ -131,7 +130,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 })
             }
         }
-
+        
     }
     
     @IBAction func resetMyPassword(_ sender: Any) {
