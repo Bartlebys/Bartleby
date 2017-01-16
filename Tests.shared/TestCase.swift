@@ -194,6 +194,10 @@ class TestCase: XCTestCase {
             user.verificationMethod = .byEmail
             user.email = email
         }
+
+        // Activate the user
+        user.status = .actived // PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
+
         TestCase._createdUsers.append(user)
 
         // Create user on the server

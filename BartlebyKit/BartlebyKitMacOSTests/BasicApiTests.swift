@@ -30,16 +30,18 @@ class BasicApiTests: TestCase {
     func test101_createUser() {
         let expectation = self.expectation(description: "CreateUser should respond")
 
-        let user=BasicApiTests.document.newObject() as User
-        user.email=BasicApiTests._email
+        let user = BasicApiTests.document.newObject() as User
+        user.email = BasicApiTests._email
         user.verificationMethod = .byEmail
-        user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
-        user.password=BasicApiTests._password
-        user.spaceUID=TestCase.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
-        BasicApiTests._userID=user.UID // We store the UID for future deletion
+        user.creatorUID = user.UID // (!) Auto creation in this context (Check ACL)
+        user.password = BasicApiTests._password
+        user.spaceUID = TestCase.document.spaceUID// (!) VERY IMPORTANT A USER MUST BE ASSOCIATED TO A spaceUID
+        user.status = .actived
+        BasicApiTests._userID = user.UID // We store the UID for future deletion
 
         // Store the current user
-        BasicApiTests._createdUser=user
+        BasicApiTests._createdUser = user
+        BasicApiTests.document.metadata.memorizeUser(user)
 
         CreateUser.execute(user,
                            in:TestCase.document.UID,

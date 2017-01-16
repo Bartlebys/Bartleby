@@ -22,6 +22,7 @@ class LockerTests: XCTestCase {
                 user.spaceUID = LockerTests._spaceUID
                 user.email = LockerTests._creatorEmail
                 user.password = LockerTests._creatorUserPassword
+                user.status = .actived
             }
         }
     }
@@ -195,7 +196,7 @@ class LockerTests: XCTestCase {
         if let consumerUser = LockerTests._consumerUser {
 
             // (!) TO BECOME THE MAIN USER
-            LockerTests._document.metadata.currentUser=consumerUser
+            LockerTests._document.metadata.memorizeUser(consumerUser)
 
             consumerUser.login(sucessHandler: { () -> () in
                         expectation.fulfill()

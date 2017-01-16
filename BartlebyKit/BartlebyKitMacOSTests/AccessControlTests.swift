@@ -40,7 +40,7 @@ class AccessControlTests: TestCase {
         // Store the current user
         AccessControlTests._creatorUser = user
         AccessControlTests._creatorUserID = user.UID // We store the UID for future deletion
-        
+        AccessControlTests.document.metadata.memorizeUser(user)
         
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
