@@ -208,27 +208,39 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             if number == 1{}
             // The SMS / second factor auth has been verified.
             if number == 2{
-                // user status is confirmed.
-                // deserialize the collection
-                // Set the status of the user.
-                // IdentitiesManager.synchronize(self.document)
+                // user is confirmed.
                 if let document=self.getDocument(){
                     proceedImmediately = false
-                    document.currentUser.status = .actived
-                    IdentitiesManager.synchronize(document)
-                    document.online=true
-                    self.identificationIsValid=true
-                    self.nextStep()
-                    self.enableActions()
+                    document.currentUser.doNotCommit {
+                        // We want to update the user status
+                        // And then we will move online
+                        // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION 
+                        // for the majority of the CRUD/URD calls
+                        document.currentUser.status = .actived
+                        UpdateUser.execute(document.currentUser, in: document.UID,
+                                           sucessHandler: { (context) in
+
+                                            IdentitiesManager.synchronize(document)
+                                            document.online=true
+                                            self.identificationIsValid=true
+                                            self.nextStep()
+                                            self.enableActions()
+                        }, failureHandler: { (context) in
+                            document.log("Activation status updated did fail \(context)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                            self.enableActions()
+                        })
+                        // Mark as committed to prevent from re-upserting
+                        document.currentUser.hasBeenCommitted()
+                    }
+
+
                 }
             }
             if number == 3 {}
-
             if proceedImmediately{
                 self.nextStep()
                 self.enableActions()
             }
-
             if number > 2 {
                 self.leftButton.isEnabled=false
             }
@@ -244,6 +256,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.leftButton.isEnabled=false
         self.rightButton.isEnabled=false
     }
+
     public func enableActions(){
         
         self.leftButton.isEnabled=true
