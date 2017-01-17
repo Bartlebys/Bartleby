@@ -78,7 +78,7 @@ import Foundation
 	//Is supervision enabled?
 	dynamic internal var _supervisionIsEnabled:Bool = true
 
-	//The internal commit provisionning counter to discriminate Creation from Update and for possible frequency analysis
+	//The internal commit provisioning counter to discriminate Creation from Update and for possible frequency analysis
 	dynamic open var commitCounter:Int = 0
 
     // A reference to the document that currently holds this Managed Model.

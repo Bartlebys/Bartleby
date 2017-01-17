@@ -96,20 +96,11 @@ import Foundation
 	    }
 	}
 
-	//The hashed version of the user password
+	//The user password
 	dynamic open var password:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
-	       } 
-	    }
-	}
-
-	//An activation code
-	dynamic open var activationCode:String = "\(Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART))"{
-	    didSet { 
-	       if !self.wantsQuietChanges && activationCode != oldValue {
-	            self.provisionChanges(forKey: "activationCode",oldValue: oldValue,newValue: activationCode) 
 	       } 
 	    }
 	}
@@ -145,7 +136,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","activationCode","status","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed"])
         return exposed
     }
 
@@ -194,10 +185,6 @@ import Foundation
                 if let casted=value as? String{
                     self.password=casted
                 }
-            case "activationCode":
-                if let casted=value as? String{
-                    self.activationCode=casted
-                }
             case "status":
                 if let casted=value as? User.Status{
                     self.status=casted
@@ -243,8 +230,6 @@ import Foundation
                return self.phoneNumber
             case "password":
                return self.password
-            case "activationCode":
-               return self.activationCode
             case "status":
                return self.status
             case "notes":
@@ -273,7 +258,6 @@ import Foundation
 			self.phoneCountryCode <- ( map["phoneCountryCode"] )
 			self.phoneNumber <- ( map["phoneNumber"] )
 			self.password <- ( map["password"], CryptedStringTransform() )
-			self.activationCode <- ( map["activationCode"] )
 			self.status <- ( map["status"] )
 			self.notes <- ( map["notes"] )
         }
@@ -294,7 +278,6 @@ import Foundation
 			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneCountryCode") as NSString?)
 			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
-			self.activationCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "activationCode")! as NSString)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
         }
@@ -319,7 +302,6 @@ import Foundation
 		if let password = self.password {
 			coder.encode(password,forKey:"password")
 		}
-		coder.encode(self.activationCode,forKey:"activationCode")
 		coder.encode(self.status.rawValue ,forKey:"status")
 		if let notes = self.notes {
 			coder.encode(notes,forKey:"notes")
