@@ -162,7 +162,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
 
-    // MARK:
+    // MARK: -
 
     var currentStep:Int = -1{
         didSet{
@@ -215,15 +215,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 if let document=self.getDocument(){
                     proceedImmediately = false
                     document.currentUser.status = .actived
-                    UpdateUser.execute(document.currentUser, in: document.UID,
-                                       sucessHandler: { (context) in
-                                        IdentitiesManager.synchronize(document)
-                                        self.identificationIsValid=true
-                                        self.nextStep()
-                                        self.enableActions()
-                    }, failureHandler: { (context) in
-                        document.log("Activation status updated did fail \(context)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                    })
+                    IdentitiesManager.synchronize(document)
+                    document.online=true
+                    self.identificationIsValid=true
+                    self.nextStep()
+                    self.enableActions()
                 }
             }
             if number == 3 {}
