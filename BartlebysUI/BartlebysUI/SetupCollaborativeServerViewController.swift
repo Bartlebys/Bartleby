@@ -84,56 +84,55 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                         }
 
                         func __postCreationPhase(user:User){
-
-
-
                             // The user has been successfully pushed
                             // Let's login
                             user.login(sucessHandler: {
-
                                 let locker:Locker=document.newObject(commit:false)
-                                locker.gems=document.metadata.sugar
-                                locker.associatedDocumentUID=document.UID
-                                locker.subjectUID=document.UID
-                                locker.userUID=user.UID
-                                locker.mode = .persistent
-                                // Store the locker UID
-                                document.metadata.lockerUID=locker.UID
+                                locker.doNotCommit {
+                                    locker.gems=document.metadata.sugar
+                                    locker.associatedDocumentUID=document.UID
+                                    locker.subjectUID=document.UID
+                                    locker.userUID=user.UID
+                                    locker.mode = .persistent
+                                    // Store the locker UID
+                                    document.metadata.lockerUID=locker.UID
 
-                                CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
-                                    let email=user.email!
-                                    var prefix=""
-                                    if let phoneCountryCode=user.phoneCountryCode{
-                                        if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-                                            prefix=phoneCountryCode.substring(with: match)
+                                    CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
+                                        let email=user.email!
+                                        var prefix=""
+                                        if let phoneCountryCode=user.phoneCountryCode{
+                                            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
+                                                prefix=phoneCountryCode.substring(with: match)
+                                            }
                                         }
-                                    }
-                                    let phoneNumber=prefix+user.phoneNumber!
+                                        let phoneNumber=prefix+user.phoneNumber!
 
-                                    if self.relayActivationCode{
-                                        // The Locker has been successfully pushed
-                                        // we need now  to confirm the account
-                                        RelayActivationCode.execute(baseURL: serverURL,
-                                                                    documentUID: document.UID,
-                                            toEmail: email,
-                                            toPhoneNumber: phoneNumber,
-                                            code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
-                                            body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                            sucessHandler: { (context) in
-                                                self.stepDelegate?.didValidateStep(number: self.stepIndex)
-                                        }, failureHandler: { (context) in
-                                            self.stepDelegate?.enableActions()
-                                            document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                        })
-                                    }else{
-                                        self.stepDelegate?.didValidateStep(number: self.stepIndex)
-                                    }
+                                        if self.relayActivationCode{
+                                            // The Locker has been successfully pushed
+                                            // we need now  to confirm the account
+                                            RelayActivationCode.execute(baseURL: serverURL,
+                                                                        documentUID: document.UID,
+                                                                        toEmail: email,
+                                                                        toPhoneNumber: phoneNumber,
+                                                                        code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
+                                                                        body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
+                                                                        sucessHandler: { (context) in
+                                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                            }, failureHandler: { (context) in
+                                                self.stepDelegate?.enableActions()
+                                                document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                            })
+                                        }else{
+                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                        }
 
-                                }, failureHandler: { (context) in
-                                    self.stepDelegate?.enableActions()
-                                    self.messageTextField.stringValue="\(context.responseString)"
-                                    document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                })
+                                    }, failureHandler: { (context) in
+                                        self.stepDelegate?.enableActions()
+                                        self.messageTextField.stringValue="\(context.responseString)"
+                                        document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                    })
+
+                                }
                             }, failureHandler: { (context) in
                                 self.stepDelegate?.enableActions()
                                 self.messageTextField.stringValue="\(context.message)"
@@ -177,6 +176,6 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
             }
         }
     }
-
-
+    
+    
 }

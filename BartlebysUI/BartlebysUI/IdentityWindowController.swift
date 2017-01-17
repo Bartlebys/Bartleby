@@ -202,6 +202,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(number:Int){
+        var proceedImmediately=true
         if self.creationMode {
             if number == 0{}
             if number == 1{}
@@ -212,23 +213,37 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 // Set the status of the user.
                 // IdentitiesManager.synchronize(self.document)
                 if let document=self.getDocument(){
+                    proceedImmediately = false
                     document.currentUser.status = .actived
-                    IdentitiesManager.synchronize(document)
-                    self.identificationIsValid=true
+                    UpdateUser.execute(document.currentUser, in: document.UID,
+                                       sucessHandler: { (context) in
+                                        IdentitiesManager.synchronize(document)
+                                        self.identificationIsValid=true
+                                        self.nextStep()
+                                        self.enableActions()
+                    }, failureHandler: { (context) in
+                        document.log("Activation status updated did fail \(context)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                    })
                 }
             }
             if number == 3 {}
-            self.nextStep()
-            self.enableActions()
+
+            if proceedImmediately{
+                self.nextStep()
+                self.enableActions()
+            }
+
             if number > 2 {
                 self.leftButton.isEnabled=false
             }
         }else{
-            self.nextStep()
-            self.enableActions()
+            if proceedImmediately{
+                self.nextStep()
+                self.enableActions()
+            }
         }
     }
-
+    
     public func disableActions(){
         self.leftButton.isEnabled=false
         self.rightButton.isEnabled=false

@@ -25,7 +25,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
-            if let locker=document.lockers.first {
+            if let locker:Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID) {
                 self.locker=locker
                 var phoneNumber=""
                 if let c=document.currentUser.phoneCountryCode,
@@ -37,6 +37,8 @@ class ConfirmActivationViewController: IdentityStepViewController{
                 if Bartleby.configuration.DEVELOPER_MODE{
                     print("\(locker.code)")
                 }
+            }else{
+                self.confirmLabel.stringValue=NSLocalizedString("Locker not found", comment: "Locker not found")
             }
         }
     }

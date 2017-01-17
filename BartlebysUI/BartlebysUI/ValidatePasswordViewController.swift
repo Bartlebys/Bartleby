@@ -38,7 +38,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
             self.emailTextField.stringValue=document.metadata.currentUserEmail
             self.phoneNumberTextField.stringValue=document.metadata.currentUserFullPhoneNumber
 
-            if Bartleby.configuration.DEVELOPER_MODE &&  document.metadata.saveThePassword == true{
+            if document.metadata.saveThePassword == true{
                 self.memorizePasswordCheckBox.state=1
                 if let password=document.currentUser.password{
                     self.passwordTextField.stringValue=password
@@ -67,6 +67,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 if currentPassword == document.currentUser.password{
                     document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state==1)
                     self.identityWindowController?.identificationIsValid=true
+                    document.online=true
                     self.stepDelegate?.didValidateStep(number: self.stepIndex)
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid Password", comment: "Invalid Password")
@@ -104,13 +105,21 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                           title: "",
                                                           body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
                                                           sucessHandler: { (context) in
-                                                            self.identityWindowController?.identificationIsValid=true
-                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
 
                                                             /// Go to activation screen.
 
+                                                            /// On activation if necessary set user.status = .actived
+
                                                             /// On activation Proceed to Verify Locker
                                                             /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+
+
+                                                            self.identityWindowController?.identificationIsValid=true
+                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+
+
+                                                            
 
                                 }, failureHandler: { (context) in
                                     self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
