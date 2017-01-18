@@ -79,6 +79,9 @@ open class GetActivationCode {
                 }
                 metrics.httpContext=context
 
+                if Bartleby.configuration.DEVELOPER_MODE{
+                    print(context.toJSONString())
+                }
 
                 // React according to the situation
                 var reactions = Array<Reaction> ()
