@@ -34,10 +34,8 @@ class ValidatePasswordViewController: IdentityStepViewController{
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
-
             self.emailTextField.stringValue=document.metadata.currentUserEmail
             self.phoneNumberTextField.stringValue=document.metadata.currentUserFullPhoneNumber
-
             if document.metadata.saveThePassword == true{
                 self.memorizePasswordCheckBox.state=1
                 if let password=document.currentUser.password{
@@ -46,6 +44,10 @@ class ValidatePasswordViewController: IdentityStepViewController{
             }else{
                 self.memorizePasswordCheckBox.state=0
                 self.passwordTextField.stringValue=""
+            }
+            if document.metadata.sugar == Default.NO_UID {
+                self.resetMyPasswordButton.isEnabled=false
+                self.resetMyPasswordButton.isHidden=true
             }
         }
     }
