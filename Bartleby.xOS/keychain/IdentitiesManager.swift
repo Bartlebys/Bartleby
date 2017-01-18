@@ -49,7 +49,7 @@ public struct IdentitiesManager {
 
 
 
-    /// Take the information from the Document Current User 
+    /// Take the information from the Document Current User
     /// and synchronizes the identification and associated profiles.
     ///
     /// - Parameter document: the document
@@ -248,62 +248,67 @@ public struct IdentitiesManager {
 
     fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument){
 
-        func __cryptoPassword(_ identification:Identification )->String{
-            let p=identification.password
-            do{
-                let encrypted=try Bartleby.cryptoDelegate.encryptString(p,useKey:Bartleby.configuration.KEY)
-                return encrypted
-            }catch{
-                return  "CRYPTO_ERROR"
-            }
-        }
+        if profile.user?.supportsPasswordSyndication==true && profile.user?.UID != document.currentUser.UID{
 
-        func __patchHasSucceededOn(_ profile:Profile, with identification:Identification){
-            // Recover the identification and profile.
-            var profile = profile
-            profile.user?.email=identification.email
-            profile.user?.phoneNumber=identification.phoneNumber
-            profile.user?.password=identification.password
-            profile.user?.externalID=identification.externalID
-            profile.requiresPatch=false
-            do{
-                var identities=try Identities.loadFromKeyChain()
-                if let idx=identities.profiles.index(where: { (p) -> Bool in
-                    return p.user?.UID == profile.user?.UID
-                }){
-                    identities.profiles[idx]=profile
+            // We do patch user that explicitly accept to be patched
+
+            func __cryptoPassword(_ identification:Identification )->String{
+                let p=identification.password
+                do{
+                    let encrypted=try Bartleby.cryptoDelegate.encryptString(p,useKey:Bartleby.configuration.KEY)
+                    return encrypted
+                }catch{
+                    return  "CRYPTO_ERROR"
                 }
-                try identities.saveToKeyChain()
-            }catch{
-                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
             }
-        }
 
-        // STORE the password in  associated.lastPassword on success
-        // Login then call PatchUser with the CryptoPassword, Email and PhoneNumber
-        if let user=profile.user{
+            func __patchHasSucceededOn(_ profile:Profile, with identification:Identification){
+                // Recover the identification and profile.
+                var profile = profile
+                profile.user?.email=identification.email
+                profile.user?.phoneNumber=identification.phoneNumber
+                profile.user?.password=identification.password
+                profile.user?.externalID=identification.externalID
+                profile.requiresPatch=false
+                do{
+                    var identities=try Identities.loadFromKeyChain()
+                    if let idx=identities.profiles.index(where: { (p) -> Bool in
+                        return p.user?.UID == profile.user?.UID
+                    }){
+                        identities.profiles[idx]=profile
+                    }
+                    try identities.saveToKeyChain()
+                }catch{
+                    glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                }
+            }
 
-            user.referentDocument=document
-            // Login with the previous credentials.
-            user.login(sucessHandler: {
-                // On success patch the user
-                let cryptoPassword=__cryptoPassword(identification)
-                PatchUser.execute(baseURL: profile.url,
-                                  documentUID: profile.documentUID,
-                                  userUID: profile.documentUID,
-                                  cryptoPassword: cryptoPassword,
-                                  email:identification.email ,
-                                  phoneNumber: identification.phoneNumber,
-                                  externalID: identification.externalID,
-                                  sucessHandler:{ (context) in
-                                    __patchHasSucceededOn(profile, with: identification)
+            // STORE the password in  associated.lastPassword on success
+            // Login then call PatchUser with the CryptoPassword, Email and PhoneNumber
+            if let user=profile.user{
+
+                user.referentDocument=document
+                // Login with the previous credentials.
+                user.login(sucessHandler: {
+                    // On success patch the user
+                    let cryptoPassword=__cryptoPassword(identification)
+                    PatchUser.execute(baseURL: profile.url,
+                                      documentUID: profile.documentUID,
+                                      userUID: profile.documentUID,
+                                      cryptoPassword: cryptoPassword,
+                                      email:identification.email ,
+                                      phoneNumber: identification.phoneNumber,
+                                      externalID: identification.externalID,
+                                      sucessHandler:{ (context) in
+                                        __patchHasSucceededOn(profile, with: identification)
+                    }, failureHandler: { (context) in
+                        // This may be normal if user.supportsPasswordSyndication == false
+                        glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                    })
                 }, failureHandler: { (context) in
-                    // This may be normal if user.supportsPasswordSyndication == false
-                    glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                    glog("Not able to patch the user because the Login has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 })
-            }, failureHandler: { (context) in
-                glog("Not able to patch the user because the Login has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-            })
+            }
         }
     }
     
